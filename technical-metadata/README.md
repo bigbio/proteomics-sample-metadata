@@ -1,4 +1,200 @@
 RAW Metadata
 ============
 
-The ELIXIR metadata group wand to define a set of standards to
+The RAW metadata defines an structure to describe an MSRun (RAW file or MzML). The representation contains the minimum metadata needed to describe an MSRun, it also will help repositories such as PRIDE database to enable rapid query of RAW data.
+
+We agree to represent each data type as a Ontology Term (CVTerm). The use of CVTerm enables a common understanding of the structure of information among people or software agents, standarize the terminology etc.
+
+In the present implementation we are using the following ontologies:
+
+ - PRIDE Ontology (https://www.ebi.ac.uk/ols/ontologies/pride): This ontology has been created by PRIDE team to help the development of PRIDE database. You can request a CVterm or create a term by fork and PR the following github repository https://github.com/PRIDE-Utilities/pride-ontology.
+
+ - PSI-MS Ontology (https://www.ebi.ac.uk/ols/ontologies/ms): This ontology has been created and is mantained by PSI organization.
+
+In the current implementation an Ontology term is represented as:
+
+```json
+ "accession": "NCIT:C69199",
+ "cvLabel": "NCIT",
+ "name": "Content Creation Date",
+ "value": "15/07/2014 23:58:41"
+```
+
+Where the **accession** is the Identifier of the term in the Ontology, the **cvLabe**l is the ontology identifier, the **name** is the name of the term in the ontology and the **value** is the value (_optional_) of the term is case is parameterized.
+
+## File Properties
+
+The file properties section is a **collection** of Ontology terms that describe general information of the file and filepath. This information is captured from the original RAW file (see example - [raw-file-metadata.json]). In  case the developer or pipeline wants to add more metadata at FileProperties, new CVterms should be added to the collection.
+
+```json
+
+"FileProperties": [
+    {
+      "accession": "NCIT:C47922",
+      "cvLabel": "NCIT",
+      "name": "Pathname",
+      "value": "/Users/yperez/Downloads/SMXL7_GR24_1.raw"
+    },
+    {
+      "accession": "NCIT:C25714",
+      "cvLabel": "NCIT",
+      "name": "Version",
+      "value": "64"
+    },
+    {
+      "accession": "NCIT:C69199",
+      "cvLabel": "NCIT",
+      "name": "Content Creation Date",
+      "value": "15/07/2014 23:58:41"
+    },
+    {
+      "accession": "NCIT:C25365",
+      "cvLabel": "NCIT",
+      "name": "Description",
+      "value": ""
+    }
+  ],
+```
+
+
+## Instrument Properties
+
+The instrumnet properties is the minimun information about the instrument (e.g. model, name, version). In the following example all the information can be captured using PSI-MS ontology terms.
+
+```json
+
+"InstrumentProperties": [
+    {
+      "accession": "MS:1000494",
+      "cvLabel": "MS",
+      "name": "Thermo Scientific instrument model",
+      "value": "LTQ Orbitrap Velos"
+    },
+    {
+      "accession": "MS:1000496",
+      "cvLabel": "MS",
+      "name": "instrument attribute",
+      "value": "LTQ Orbitrap Velos"
+    },
+    {
+      "accession": "MS:1000529",
+      "cvLabel": "MS",
+      "name": "instrument serial number",
+      "value": "SN03346B"
+    }
+  ],
+```
+
+## Scan Settings
+
+The scan seetings is the paramters defined by the researcher in the instrument to capture the data. This is a resume of the data provided in the RAW file and also in mzML. The minimum information in the current representation will allow users to filter in the entire PRIDE RAW files for example for _mass resolution_. Similar to previous sections, more metadata can be added my including more CVTerms.
+
+```json
+"ScanSettings": [
+    {
+      "accession": "MS:1000016",
+      "cvLabel": "MS",
+      "name": "scan start time",
+      "value": "0.00342666666666667"
+    },
+    {
+      "accession": "MS:1000011",
+      "cvLabel": "MS",
+      "name": "mass resolution",
+      "value": "0.5"
+    },
+    {
+      "accession": "UO:0000002",
+      "cvLabel": "MS",
+      "name": "mass unit",
+      "value": "None"
+    },
+    {
+      "accession": "PRIDE:0000478",
+      "cvLabel": "PRIDE",
+      "name": "Number of scans",
+      "value": "5709"
+    },
+    {
+      "accession": "PRIDE:0000479",
+      "cvLabel": "PRIDE",
+      "name": "MS scan range",
+      "value": "1:5709"
+    },
+    {
+      "accession": "PRIDE:0000484",
+      "cvLabel": "PRIDE",
+      "name": "Retention time range",
+      "value": "0.00342666666666667:46.9964033333333"
+    },
+    {
+      "accession": "PRIDE:0000485",
+      "cvLabel": "PRIDE",
+      "name": "Mz range",
+      "value": "70:2000"
+    },
+    {
+      "accession": "MS:1000133",
+      "cvLabel": "MS",
+      "name": "collision-induced dissociation",
+      "value": "CID"
+    }
+    ]
+```
+
+## Ms Data
+
+The mass spectrometry data section (**MsData**) contains minimun information to describe the actul MS datra in the file. For example, it provided the minimum and maximum values for the charge/mz/rt times. This can be really useful for users of the APIs that will be able to query the data in resources easily.
+
+```json
+"MsData": [
+    {
+      "accession": "PRIDE:0000481",
+      "cvLabel": "PRIDE",
+      "name": "Number of MS1 spectra",
+      "value": "2864"
+    },
+    {
+      "accession": "PRIDE:0000482",
+      "cvLabel": "PRIDE",
+      "name": "Number of MS2 spectra",
+      "value": "2845"
+    },
+    {
+      "accession": "PRIDE:0000472",
+      "cvLabel": "PRIDE",
+      "name": "MS min charge",
+      "value": "0"
+    },
+    {
+      "accession": "PRIDE:0000473",
+      "cvLabel": "PRIDE",
+      "name": "MS max charge",
+      "value": "3"
+    },
+    {
+      "accession": "PRIDE:0000474",
+      "cvLabel": "PRIDE",
+      "name": "MS min RT",
+      "value": "0.00342666666666667"
+    },
+    {
+      "accession": "PRIDE:0000475",
+      "cvLabel": "PRIDE",
+      "name": "MS max RT",
+      "value": "46.9964033333333"
+    },
+    {
+      "accession": "PRIDE:0000476",
+      "cvLabel": "PRIDE",
+      "name": "MS min MZ",
+      "value": "300.178894042969"
+    },
+    {
+      "accession": "PRIDE:0000477",
+      "cvLabel": "PRIDE",
+      "name": "MS min MZ",
+      "value": "1283.64050292969"
+    }
+  ],
+```
