@@ -1,48 +1,81 @@
 {
-  "marshallableParameterType": "identification_parameters",
-  "description": "DB: not set.\n",
-  "defaultDescription": true,
   "searchParameters": {
-    "precursorAccuracyType": "PPM",
-    "fragmentAccuracyType": "DA",
-    "precursorTolerance": 1.4289282440804871,
-    "precursorToleranceDalton": 0.5,
-    "fragmentIonMZTolerance": 0.28760622199163927,
-    "ptmSettings": {
-      "fixedModifications": [],
-      "variableModifications": [],
-      "refinementVariableModifications": [],
-      "refinementFixedModifications": [],
+    "precursorAccuracyType": {
+      "cvLabel": "MS",
+      "accession": "UO:0000169",
+      "name": "parts per million",
+      "value": "PPM"
     },
-    "nMissedCleavages": 2,
+    "fragmentAccuracyType": {
+      "cvLabel": "MS",
+      "accession": "UO:0000221",
+      "name": "dalton",
+      "value": "DA"
+
+    },
+    "precursorTolerance": [{
+      "cvLabel": "MS",
+      "accession": "MS:1001412",
+      "name": "search tolerance plus value",
+      "value": "5"
+    },
+      {
+        "cvLabel": "MS",
+        "accession": "MS:1001413",
+        "name": "search tolerance minus value",
+        "value": "5"
+      }
+    ],
+    "fragmentIonMZTolerance": [{
+      "cvLabel": "MS",
+      "accession": "MS:1001412",
+      "name": "search tolerance plus value",
+      "value": "0.2"
+    },
+      {
+        "cvLabel": "MS",
+        "accession": "MS:1001413",
+        "name": "search tolerance minus value",
+        "value": "0.2"
+      }
+    ],
+    "ptmSettings": {
+      "fixedModifications": [
+
+      ],
+      "variableModifications": [
+
+      ],
+      "refinementVariableModifications": [
+
+      ],
+      "refinementFixedModifications": [
+
+      ]
+
+    },
     "digestionPreferences": {
       "cleavagePreference": "enzyme",
-      "enzymes": [
-        {
-          "id": 0,
-          "name": "Trypsin",
-          "aminoAcidBefore": [],
-          "aminoAcidAfter": [],
-          "restrictionBefore": [],
-          "restrictionAfter": [],
-          "aminoAcidBeforeSet": [
-            "R",
-            "K"
-          ],
-          "aminoAcidAfterSet": [],
-          "restrictionBeforeSet": [],
-          "restrictionAfterSet": [
-            "P"
-          ],
-          "isSemiSpecific": false,
-          "isWholeProtein": false,
-          "cvTerm": {
-            "ontology": "PSI-MS",
-            "accession": "MS:1001251",
-            "name": "Trypsin"
-          }
-        }
-      ],
+      "enzymes": [{
+        "id": 0,
+        "name": "Trypsin",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1001313",
+          "name": "Trypsin"
+        },
+        "siteRegexp": "<![CDATA[(?<=[KR])]]>",
+        "aminoAcidBefore": [],
+        "aminoAcidAfter": [],
+        "restrictionBefore": [],
+        "restrictionAfter": [],
+        "aminoAcidBeforeSet": ["R", "K"],
+        "aminoAcidAfterSet": [],
+        "restrictionBeforeSet": [],
+        "restrictionAfterSet": ["P"],
+        "isSemiSpecific": false,
+        "isWholeProtein": false
+      }],
       "nMissedCleavages": {
         "Trypsin": 2
       },
@@ -50,8 +83,50 @@
         "Trypsin": "specific"
       }
     },
-    "fastaFile": {},
-    "parametersFile": {},
+    "proteinDatabase": {
+      "fastaFile": {},
+      "cvTerms": [{
+        "cvLabel": "MS",
+        "accession": "MS:1002060",
+        "name": "database UniProtKB/TrEMBL"
+      }],
+      "databaseFilters": [{
+        "filterType": [{
+          "cvLabel": "MS",
+          "accession": "MS:1001020",
+          "name": "DB filter taxonomy"
+        }],
+        "include": [{
+          "cvLabel": "MS",
+          "accession": "MS:1001467",
+          "name": "taxonomy: NCBI TaxID",
+          "value": "3701"
+        },
+          {
+            "cvLabel": "MS",
+            "accession": "MS:1001469",
+            "name": "taxonomy: scientific name",
+            "value": "Arabidopsis"
+          }
+        ],
+        "exclude": [{
+          "cvLabel": "MS",
+          "accession": "MS:1001467",
+          "name": "taxonomy: NCBI TaxID",
+          "value": "45251"
+        },
+          {
+            "cvLabel": "MS",
+            "accession": "MS:1001469",
+            "name": "taxonomy: scientific name",
+            "value": "Arabidopsis neglecta"
+          }
+        ]
+      }]
+    },
+    "parametersFile": {
+
+    },
     "forwardIons": [
       1
     ],
@@ -71,8 +146,13 @@
     "refMass": 2000.0,
     "algorithmParameters": {
       "1": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.OmssaParameters",
-        "data": {
+        "type": "OMSSA",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1001475",
+          "name": "OMSSA"
+        },
+        "config": {
           "maxEValue": 100.0,
           "hitListLength": 10,
           "minimalChargeForMultipleChargedFragments": {
@@ -119,8 +199,13 @@
         }
       },
       "2": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.XtandemParameters",
-        "data": {
+        "type": "Xtandem",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1001476",
+          "name": "X!Tandem"
+        },
+        "config": {
           "maxEValue": 0.01,
           "outputResults": "all",
           "dynamicRange": 100.0,
@@ -149,8 +234,13 @@
         }
       },
       "3": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.PepnovoParameters",
-        "data": {
+        "type": "Pepnovo",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1001475",
+          "name": "OMSSA"
+        },
+        "config": {
           "hitListLength": 10,
           "estimateCharge": true,
           "correctPrecursorMass": false,
@@ -160,8 +250,13 @@
         }
       },
       "4": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.AndromedaParameters",
-        "data": {
+        "type": "Andromeda",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1002337",
+          "name": "Andromeda"
+        },
+        "config": {
           "maxPeptideMass": 4600.0,
           "maxCombinations": 250,
           "topPeaks": 8,
@@ -178,13 +273,20 @@
           "maxPeptideLengthNoEnzyme": 25,
           "equalIL": false,
           "numberOfCandidates": 10,
-          "ptmIndexes": {},
+          "ptmIndexes": {
+
+          },
           "decoyMode": "none"
         }
       },
       "5": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.MsAmandaParameters",
-        "data": {
+        "type": "MsAmanda",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1002336",
+          "name": "Amanda"
+        },
+        "config": {
           "generateDecoy": false,
           "instrumentID": "b, y",
           "maxRank": 10,
@@ -193,8 +295,13 @@
         }
       },
       "7": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.MsgfParameters",
-        "data": {
+        "type": "Msgf",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1002048",
+          "name": "MS-GF+"
+        },
+        "config": {
           "searchDecoyDatabase": false,
           "instrumentID": 3,
           "fragmentationType": 3,
@@ -210,8 +317,13 @@
         }
       },
       "8": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.DirecTagParameters",
-        "data": {
+        "type": "DirecTag",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1001586",
+          "name": "DirecTag"
+        },
+        "config": {
           "ticCutoffPercentage": 100.0,
           "maxPeakCount": 100,
           "numIntensityClasses": 3,
@@ -232,12 +344,19 @@
           "intensityScoreWeight": 1.0,
           "mzFidelityScoreWeight": 1.0,
           "complementScoreWeight": 1.0,
-          "variablePtms": []
+          "variablePtms": [
+
+          ]
         }
       },
       "10": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.CometParameters",
-        "data": {
+        "type": "Comet",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1002251",
+          "name": "Comet"
+        },
+        "config": {
           "numberOfSpectrumMatches": 10,
           "maxVariableMods": 10,
           "requireVariableMods": false,
@@ -262,8 +381,8 @@
         }
       },
       "27": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.PNovoParameters",
-        "data": {
+        "type": "PNovo",
+        "config": {
           "numberOfPeptides": 10,
           "lowerPrecursorMass": 300,
           "upperPrecursorMass": 5000,
@@ -271,8 +390,13 @@
         }
       },
       "28": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.TideParameters",
-        "data": {
+        "type": "Tide",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1002575",
+          "name": "Tide"
+        },
+        "config": {
           "fastIndexFolderName": "fasta-index",
           "maxVariablePtmsPerTypePerPeptide": 2,
           "minPeptideLength": 6,
@@ -311,8 +435,13 @@
         }
       },
       "13": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.MyriMatchParameters",
-        "data": {
+        "type": "MyriMatch",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1001585",
+          "name": "MyriMatch"
+        },
+        "config": {
           "minPeptideLength": 8,
           "maxPeptideLength": 30,
           "numberOfSpectrumMatches": 10,
@@ -334,267 +463,18 @@
         }
       },
       "29": {
-        "type": "com.compomics.util.experiment.identification.identification_parameters.tool_specific.NovorParameters",
-        "data": {
+        "type": "Novor",
+        "cvTerm": {
+          "cvLabel": "MS",
+          "accession": "MS:1002251",
+          "name": "Comet"
+        },
+        "config": {
           "fragmentationMethod": "HCD",
           "massAnalyzer": "FT"
         }
       }
     }
-  },
-  "annotationSettings": {
-    "yAxisZoomExcludesBackgroundPeaks": true,
-    "showAllPeaks": false,
-    "intensityLimit": 0.75,
-    "automaticAnnotation": true,
-    "selectedIonsMap": {
-      "RELATED_ION": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18
-      ],
-      "PEPTIDE_FRAGMENT_ION": [
-        1,
-        4
-      ],
-      "REPORTER_ION": [],
-      "TAG_FRAGMENT_ION": [
-        1,
-        4
-      ],
-      "PRECURSOR_ION": [
-        0
-      ],
-      "IMMONIUM_ION": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        16,
-        17,
-        18,
-        19,
-        20
-      ]
-    },
-    "neutralLossesList": [
-      {
-        "composition": {
-          "atomChain": [
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Hydrogen",
-                "data": {
-                  "monoisotopicMass": 1.00782503207,
-                  "isotopeMap": {
-                    "0": 1.00782503207,
-                    "1": 2.0141017778
-                  },
-                  "representativeComposition": {
-                    "0": 0.999885,
-                    "1": 1.15E-4
-                  },
-                  "name": "Hydrogen",
-                  "letter": "H"
-                }
-              },
-              "isotope": 0
-            },
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Hydrogen",
-                "data": {
-                  "monoisotopicMass": 1.00782503207,
-                  "isotopeMap": {
-                    "0": 1.00782503207,
-                    "1": 2.0141017778
-                  },
-                  "representativeComposition": {
-                    "0": 0.999885,
-                    "1": 1.15E-4
-                  },
-                  "name": "Hydrogen",
-                  "letter": "H"
-                }
-              },
-              "isotope": 0
-            },
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Oxygen",
-                "data": {
-                  "monoisotopicMass": 15.99491461956,
-                  "isotopeMap": {
-                    "-1": 15.0030656,
-                    "0": 15.99491461956,
-                    "-2": 14.00859625,
-                    "1": 16.9991317,
-                    "-3": 13.024812,
-                    "2": 17.999161,
-                    "-4": 12.034405,
-                    "3": 19.00358,
-                    "4": 20.0040767,
-                    "5": 21.008656,
-                    "6": 22.00997,
-                    "7": 23.01569,
-                    "8": 24.02047
-                  },
-                  "representativeComposition": {
-                    "0": 0.99757,
-                    "1": 3.8E-4,
-                    "2": 0.00205
-                  },
-                  "name": "Oxygen",
-                  "letter": "O"
-                }
-              },
-              "isotope": 0
-            }
-          ],
-          "mass1": -1.0,
-          "stringValue1": "H(2)O"
-        },
-        "name": "H2O",
-        "fixed": false
-      },
-      {
-        "composition": {
-          "atomChain": [
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Nitrogen",
-                "data": {
-                  "monoisotopicMass": 14.0030740048,
-                  "isotopeMap": {
-                    "-1": 13.00573861,
-                    "0": 14.0030740048,
-                    "-2": 12.0186132,
-                    "1": 15.0001088982,
-                    "-3": 11.02609,
-                    "2": 16.0061017,
-                    "-4": 10.04165,
-                    "3": 17.00845,
-                    "4": 18.014079,
-                    "5": 19.017029,
-                    "6": 20.02337,
-                    "7": 21.02711,
-                    "8": 22.03439,
-                    "9": 23.04122,
-                    "10": 24.05104,
-                    "11": 25.06066
-                  },
-                  "representativeComposition": {
-                    "0": 0.99636,
-                    "1": 0.00364
-                  },
-                  "name": "Nitrogen",
-                  "letter": "N"
-                }
-              },
-              "isotope": 0
-            },
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Hydrogen",
-                "data": {
-                  "monoisotopicMass": 1.00782503207,
-                  "isotopeMap": {
-                    "0": 1.00782503207,
-                    "1": 2.0141017778
-                  },
-                  "representativeComposition": {
-                    "0": 0.999885,
-                    "1": 1.15E-4
-                  },
-                  "name": "Hydrogen",
-                  "letter": "H"
-                }
-              },
-              "isotope": 0
-            },
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Hydrogen",
-                "data": {
-                  "monoisotopicMass": 1.00782503207,
-                  "isotopeMap": {
-                    "0": 1.00782503207,
-                    "1": 2.0141017778
-                  },
-                  "representativeComposition": {
-                    "0": 0.999885,
-                    "1": 1.15E-4
-                  },
-                  "name": "Hydrogen",
-                  "letter": "H"
-                }
-              },
-              "isotope": 0
-            },
-            {
-              "atom": {
-                "type": "com.compomics.util.experiment.biology.atoms.Hydrogen",
-                "data": {
-                  "monoisotopicMass": 1.00782503207,
-                  "isotopeMap": {
-                    "0": 1.00782503207,
-                    "1": 2.0141017778
-                  },
-                  "representativeComposition": {
-                    "0": 0.999885,
-                    "1": 1.15E-4
-                  },
-                  "name": "Hydrogen",
-                  "letter": "H"
-                }
-              },
-              "isotope": 0
-            }
-          ],
-          "mass1": -1.0,
-          "stringValue1": "H(3)N"
-        },
-        "name": "NH3",
-        "fixed": false
-      }
-    ],
-    "neutralLossesAuto": true,
-    "reporterIons": true,
-    "relatedIons": true,
-    "fragmentIonAccuracy": 0.5,
-    "fragmentIonPpm": false,
-    "showForwardIonDeNovoTags": false,
-    "showRewindIonDeNovoTags": false,
-    "deNovoCharge": 1,
-    "highResolutionAnnotation": true,
-    "tiesResolution": "mostAccurateMz"
   },
   "sequenceMatchingPreferences": {
     "sequenceMatchingType": "indistiguishableAminoAcids",
@@ -611,11 +491,17 @@
     "aaSubstitutionMatrix": {
       "name": "No Substitution",
       "description": "No substitution",
-      "substitutions": {},
-      "reverseMap": {}
+      "substitutions": {
+
+      },
+      "reverseMap": {
+
+      }
     }
   },
-  "genePreferences": {},
+  "genePreferences": {
+
+  },
   "psmScoringPreferences": {
     "spectrumMatchingScores": {
       "8": [
@@ -628,9 +514,7 @@
         1
       ]
     },
-    "defaultScores": [
-      -1
-    ],
+    "defaultScores": [-1],
     "minDecoysInBin": 10
   },
   "peptideAssumptionFilter": {
@@ -656,7 +540,9 @@
     "alignNonConfidentPTMs": true
   },
   "proteinInferencePreferences": {
-    "proteinSequenceDatabase": {},
+    "proteinSequenceDatabase": {
+
+    },
     "simplifyProteinGroups": true,
     "simplifyGroupsScore": true,
     "simplifyGroupsEvidence": true,
@@ -678,6 +564,8 @@
   },
   "fractionSettings": {
     "proteinConfidenceMwPlots": 95.0,
-    "fractionMolecularWeightRanges": {}
+    "fractionMolecularWeightRanges": {
+
+    }
   }
 }
