@@ -1,3 +1,3 @@
-PRIDE Metadata Project: "Incresing the amount of metadata in PRIDE Projects at different levels"
-================================================================================================
+PRIDE Metadata Project: "Increasing the amount of metadata in PRIDE Projects at different levels"
+=================================================================================================
 
