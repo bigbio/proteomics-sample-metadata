@@ -6,7 +6,7 @@ PRIDE Metadata Project: "Increasing the amount of metadata in PRIDE Projects at 
 The Current Project is run by PRIDE Team in collaboration with other external groups:
 
 - Timo Sachsenberg (OpenMS)
-- Harald Barnes (PeptideShaker, SearchGUI)
+- Harald Barsnes (PeptideShaker, SearchGUI)
 - Expression Atlas Team (EMBL-EBI)
 - Niels Hulstaert (Compomics)
 - Lennart Martens (Compomics)
