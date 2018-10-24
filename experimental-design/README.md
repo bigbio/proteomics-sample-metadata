@@ -30,7 +30,49 @@ Minimum information about Sample:
 |Individual	individual |X                 |	  X		                  |         |            | donor or animal ID
 |Cell line	           |                  |                           |         |            | name of commercial cell line |
 
+Annotation MSRun:
+-----------------
 
+MSRun: From each MSRun we need to capture:
+   - **unique identifier** : A unique identifier provided by PRIDE during the submission process.
+   - **filename**: The filename provided by the user during the submissions process.
+
+Relation between Sample, Fraction and MSRun:
+--------------------------------------------
+
+The relation between the Sample and MSRun will be given by two other Properties:
+
+- Label: Label represent the information of a Multiplex or label free experiments. It can be used to spot the type of the experiment. For each Label two major caracterities are mandatory:
+    - Label Identifier: An identifier of the lalbeling in the Experimental Design Table.
+    - Label Name: A CvTerm with the type of Laling apply:  **\["PRIDE", "PRIDE:0000312", "Label free", ]**
+
+- Fraction Id
+    - Fraction Idnetifier: A unique fraction identifier to classified the sample.
+
+**Additional**:
+
+Some search engines as MaxQuant use the Fraction Group to perform better statistical analysis:
+
+- Fraction Group
+    - Fraction Group Identifier: The fraction group identifier is use to classified multiple fractions.
+
+
+**Examples Label Free Experiment**:
+
+Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | Fraction_Group | Fraction    | Spectra_Filepath                            | Label                        | Sample                              | Note:                |
+|------|----------------------|--------------------|-------------------------|----------------|-------------|---------------------------------------------|------------------------------|-------------------------------------|----------------------|
+| 1    | sample_dog           | DOG                | Whole Organism          |1               |1            | SPECTRAFILE_DOG_F1_TR1.mzML                 | 1                            | 1                                   |                      |
+| 1    | sample_dog           | DOG                | Whole Organism          |1               |2            | SPECTRAFILE_DOG_F2_TR1.mzML                 | 1                            | 1                                   |                      |
+| 1    | sample_dog           | DOG                | Whole Organism          |1               |3            | SPECTRAFILE_DOG_F3_TR1.mzML                 | 1                            | 1                                   |                      |
+| 2    | sample_dog           | DOG                | Whole Organism          |2               |1            | SPECTRAFILE_DOG_F1_TR2.mzML                 | 1                            | 2                                   |                      |
+| 2    | sample_dog           | DOG                | Whole Organism          |2               |2            | SPECTRAFILE_DOG_F2_TR2.mzML                 | 1                            | 2                                   |                      |
+| 2    | sample_dog           | DOG                | Whole Organism          |2               |3            | SPECTRAFILE_DOG_F3_TR2.mzML                 | 1                            | 2                                   |                      |
+| 3    | sample_cat           | CAT                | Whole Organism          |3               |1            | SPECTRAFILE_CAT_F1_TR1.mzML                 | 1                            | 3                                   |                      |
+| 3    | sample_cat           | CAT                | Whole Organism          |3               |2            | SPECTRAFILE_CAT_F2_TR1.mzML                 | 1                            | 3                                   |                      |
+| 3    | sample_cat           | CAT                | Whole Organism          |3               |3            | SPECTRAFILE_CAT_F3_TR1.mzML                 | 1                            | 3                                   |                      |
+| 4    | sample_cat           | CAT                | Whole Organism          |4               |1            | SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 4                                   |                      |
+| 4    | sample_cat           | CAT                | Whole Organism          |4               |2            | SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 4                                   |                      |
+| 4    | sample_cat           | CAT                | Whole Organism          |4               |3            | SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 4                                   |                      |
 
 
 
