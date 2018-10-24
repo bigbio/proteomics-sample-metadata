@@ -16,19 +16,18 @@ Minimum information about Sample:
 **Required sample attributes**: Minimum sample attributes for primary cells from different species and cell lines
 
 
-|                      |Human          	  | Vertebrates               | Plants  | Cell lines | Comment |
-|----------------------|------------------|---------------------------|---------|------------|---------|
-|Organism              |X                 |	  X                       |	 X	    |   X        |         |
-|                      |strain or breed	  |cultivar or ecotype	   	  |         |            |         |
-|Age	               |X 	              |   X                       |    X    |            |         |
-|Developmental stage   |X		          |	  X	                      |    X    |   X        |         |
-|Sex	               |X                 |   X                       |         |   X        | 		   |
-|Disease	           |X                 |   X		                  |         |            |         |
-|Genotype	           |                  |   X                       |    X    |   X        |   genetic modification      |
-|Organism part	       |X                 |   X                       |         |   X        |         |
-|Cell type*	           |X                 |   X                       |         |            | * if known, see comment below        |
-|Individual	individual |X                 |	  X		                  |         |            | donor or animal ID
-|Cell line	           |                  |                           |         |            | name of commercial cell line |
+|                      |Human          	  | Vertebrates               | Non-vertebrates | Plants  | Cell lines | Comment |
+|----------------------|------------------|---------------------------|-----------------|---------|------------|---------|
+|Organism              |X                 |	  X                       |	 X	            |   X     |     X      |         |
+|Strain/breed          |O	              |   O	                   	  |  O              |   O     |     O      |         |
+|Age	               |O 	              |   O                       |                 |         |            |         |
+|Developmental stage   |X		          |	  O	                      |                 |         |            |         |
+|Sex	               |X                 |   O                       |                 |         |            |         |
+|Disease	           |X                 |   X		                  |  X              |  X      |     X      |         |
+|Organism part	       |X                 |   X                       |  X              |  X      |     X      |         |
+|Cell type*	           |X                 |   X                       |  X              |  X      |     X      | * if known, see comment below |
+|Individual	           |O                 |	  O		                  |  O              |  O      |            |donor or animal ID |
+|Cell line	           |                  |                           |                 |         |     X      |name of commercial cell line |
 
 Annotation MSRun:
 -----------------
@@ -80,7 +79,6 @@ Other annotations:
 ------------------
 
 Spike-in Samples:
-
 
 
 Single Cell Experiments (This is still exploratory):
