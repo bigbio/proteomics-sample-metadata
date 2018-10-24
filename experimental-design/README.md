@@ -8,6 +8,6 @@ The PRIDE Experimental Design project will handle and represent each PRIDE proje
 - The relation beetween the Sample and the MSRun
 - The Fraction and Fraction Group
 
-The following design is based on other efforts from [OpenMS](openms-experimental/OpenMS.md), [MaxQuant](maxquant/mqpar-jarnuczak-phospho.xml), [ArrayExpress](arrayexpress/ArrayExpress.md)
+The following design is based on other efforts from [OpenMS](external-examples/openms-experimental/OpenMS.md), [MaxQuant](external-examples/maxquant/mqpar-jarnuczak-phospho.xml), [ArrayExpress](external-examples/arrayexpress/ArrayExpress.md)
 
 
