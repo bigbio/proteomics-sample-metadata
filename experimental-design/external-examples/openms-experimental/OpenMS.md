@@ -44,8 +44,8 @@ Sample information:
 | 8              | sample_blanck | 243                                   | male                   | 1                             | 1                    |
 
 
-Label Free:
-===========
+Label Free Experiment:
+======================
 
 Fraction information:
 ---------------------
