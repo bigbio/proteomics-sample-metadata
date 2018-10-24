@@ -31,3 +31,23 @@ Minimum information about Sample:
 |Cell line	           |                  |                           |         |            | name of commercial cell line |
 
 
+
+
+
+Other annotations:
+------------------
+
+Spike-in Samples:
+
+
+
+Single Cell Experiments (This is still exploratory):
+
+
+|Example     |	single cell identifier (experimental variable) | inferred cell type | single cell well quality | post-analysis single cell quality |
+|------------|-------------------------------------------------|--------------------|--------------------------|-----------------------------------|
+|Sample 1	 |cell 1                                           | cell type A        |	OK                     |	pass                           |
+|Sample 2    |cell 2	                                       | cell type B	    |   OK	                   |    pass                           |
+|Sample 3	 |cell 3	                                       | not applicable	    |   OK	                   |    fail                           |
+
+
