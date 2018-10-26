@@ -13,7 +13,7 @@ The following design is based on other efforts from [OpenMS](external-examples/o
 Minimum information about Sample:
 ---------------------------------
 
-**Required sample attributes**: Minimum sample attributes for primary cells from different species and cell lines
+**Sample attributes**: Minimum sample attributes for primary cells from different species and cell lines
 
 
 |                      |Human          	  | Vertebrates               | Non-vertebrates | Plants  | Cell lines | Comment |
@@ -28,6 +28,10 @@ Minimum information about Sample:
 |Cell type*	           |X                 |   X                       |  X              |  X      |     X      | * if known, see comment below |
 |Individual	           |O                 |	  O		                  |  O              |  O      |            |donor or animal ID |
 |Cell line	           |                  |                           |                 |         |     X      |name of commercial cell line |
+
+- X : Required Attributes for each sample Type (e.g. Human, Vertebrates).
+- O : Optional Attributes.
+
 
 Annotation MSRun:
 -----------------
