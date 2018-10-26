@@ -27,7 +27,7 @@ Minimum information about Sample:
 |Organism part	       |X                 |   X                       |  X              |  X      |     X      |         |
 |Cell type*	           |X                 |   X                       |  X              |  X      |     X      | * if known, see comment below |
 |Individual	           |O                 |	  O		                  |  O              |  O      |            |donor or animal ID |
-|Cell line	           |                  |                           |                 |         |     X      |name of commercial cell line |
+|Cell line	Code           |                  |                           |                 |         |     X      |name of commercial cell line |
 
 - X : Required Attributes for each sample Type (e.g. Human, Vertebrates).
 - O : Optional Attributes.
@@ -76,22 +76,3 @@ Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | F
 | 4    | sample_cat           | CAT                | Whole Organism          |4               |1            | SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 4                                   |                      |
 | 4    | sample_cat           | CAT                | Whole Organism          |4               |2            | SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 4                                   |                      |
 | 4    | sample_cat           | CAT                | Whole Organism          |4               |3            | SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 4                                   |                      |
-
-
-
-Other annotations:
-------------------
-
-Spike-in Samples:
-
-
-Single Cell Experiments (This is still exploratory):
-
-
-|Example     |	single cell identifier (experimental variable) | inferred cell type | single cell well quality | post-analysis single cell quality |
-|------------|-------------------------------------------------|--------------------|--------------------------|-----------------------------------|
-|Sample 1	 |cell 1                                           | cell type A        |	OK                     |	pass                           |
-|Sample 2    |cell 2	                                       | cell type B	    |   OK	                   |    pass                           |
-|Sample 3	 |cell 3	                                       | not applicable	    |   OK	                   |    fail                           |
-
-
