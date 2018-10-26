@@ -10,6 +10,17 @@ The PRIDE Experimental Design project will handle and represent each PRIDE proje
 
 The following design is based on other efforts from [OpenMS](external-examples/openms-experimental/OpenMS.md), [MaxQuant](external-examples/maxquant/mqpar-jarnuczak-phospho.xml), [ArrayExpress](external-examples/arrayexpress/ArrayExpress.md)
 
+Ontologies Supported:
+---------------------
+
+The PRIDE metadata annotation system will be supported by four main ontologies:
+
+- PRIDE Ontology: Ontology to handle PRIDE metadata terms. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=pride
+- EFO: Experimental Factor Ontology. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=efo
+- PSI-MS: The HUPO-PSI standard intiative ontology https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=ms
+
+
+
 Minimum information about Sample:
 ---------------------------------
 
@@ -62,17 +73,17 @@ Some search engines as MaxQuant use the Fraction Group to perform better statist
 
 **Examples Label Free Experiment**:
 
-Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | Fraction_Group | Fraction    | Spectra_Filepath                            | Label                        | Sample                              | Note:                |
+Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | Fraction_Group | Fraction    | Spectra_Filepath                            | Label                        | Thecnical replicate                 | Note:                |
 |------|----------------------|--------------------|-------------------------|----------------|-------------|---------------------------------------------|------------------------------|-------------------------------------|----------------------|
 | 1    | sample_dog           | DOG                | Whole Organism          |1               |1            | SPECTRAFILE_DOG_F1_TR1.mzML                 | 1                            | 1                                   |                      |
 | 1    | sample_dog           | DOG                | Whole Organism          |1               |2            | SPECTRAFILE_DOG_F2_TR1.mzML                 | 1                            | 1                                   |                      |
 | 1    | sample_dog           | DOG                | Whole Organism          |1               |3            | SPECTRAFILE_DOG_F3_TR1.mzML                 | 1                            | 1                                   |                      |
-| 2    | sample_dog           | DOG                | Whole Organism          |2               |1            | SPECTRAFILE_DOG_F1_TR2.mzML                 | 1                            | 2                                   |                      |
-| 2    | sample_dog           | DOG                | Whole Organism          |2               |2            | SPECTRAFILE_DOG_F2_TR2.mzML                 | 1                            | 2                                   |                      |
-| 2    | sample_dog           | DOG                | Whole Organism          |2               |3            | SPECTRAFILE_DOG_F3_TR2.mzML                 | 1                            | 2                                   |                      |
-| 3    | sample_cat           | CAT                | Whole Organism          |3               |1            | SPECTRAFILE_CAT_F1_TR1.mzML                 | 1                            | 3                                   |                      |
-| 3    | sample_cat           | CAT                | Whole Organism          |3               |2            | SPECTRAFILE_CAT_F2_TR1.mzML                 | 1                            | 3                                   |                      |
-| 3    | sample_cat           | CAT                | Whole Organism          |3               |3            | SPECTRAFILE_CAT_F3_TR1.mzML                 | 1                            | 3                                   |                      |
-| 4    | sample_cat           | CAT                | Whole Organism          |4               |1            | SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 4                                   |                      |
-| 4    | sample_cat           | CAT                | Whole Organism          |4               |2            | SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 4                                   |                      |
-| 4    | sample_cat           | CAT                | Whole Organism          |4               |3            | SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 4                                   |                      |
+| 2    | sample_dog           | DOG                | Whole Organism          |2               |1            | SPECTRAFILE_DOG_F1_TR2.mzML                 | 1                            | 1                                   |                      |
+| 2    | sample_dog           | DOG                | Whole Organism          |2               |2            | SPECTRAFILE_DOG_F2_TR2.mzML                 | 1                            | 1                                   |                      |
+| 2    | sample_dog           | DOG                | Whole Organism          |2               |3            | SPECTRAFILE_DOG_F3_TR2.mzML                 | 1                            | 1                                   |                      |
+| 3    | sample_cat           | CAT                | Whole Organism          |3               |1            | SPECTRAFILE_CAT_F1_TR1.mzML                 | 1                            | 1                                   |                      |
+| 3    | sample_cat           | CAT                | Whole Organism          |3               |2            | SPECTRAFILE_CAT_F2_TR1.mzML                 | 1                            | 1                                   |                      |
+| 3    | sample_cat           | CAT                | Whole Organism          |3               |3            | SPECTRAFILE_CAT_F3_TR1.mzML                 | 1                            | 1                                   |                      |
+| 4    | sample_cat           | CAT                | Whole Organism          |4               |1            | SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 1                                   |                      |
+| 4    | sample_cat           | CAT                | Whole Organism          |4               |2            | SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 1                                   |                      |
+| 4    | sample_cat           | CAT                | Whole Organism          |4               |3            | SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 1                                   |                      |
