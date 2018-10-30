@@ -1,5 +1,5 @@
-RAW Metadata
-============
+MSRun Metadata
+==============
 
 The RAW metadata defines an structure to describe an MSRun (RAW file or MzML). The representation contains the minimum metadata needed to describe an MSRun, it also will help repositories such as PRIDE database to enable rapid query of RAW data.
 
