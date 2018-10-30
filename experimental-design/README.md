@@ -5,7 +5,7 @@ The PRIDE Experimental Design project will handle and represent each PRIDE proje
 
 - Sample Metadata.
 - MSRun Metadata.
-- The relation beetween the Sample and the MSRun
+- The relation between the Sample and the MSRun
 - The Fraction and Fraction Group
 
 The following design is based on other efforts from [OpenMS](external-examples/openms-experimental/OpenMS.md), [MaxQuant](external-examples/maxquant/mqpar-jarnuczak-phospho.xml), [ArrayExpress](external-examples/arrayexpress/ArrayExpress.md)
@@ -17,7 +17,7 @@ The PRIDE metadata annotation system will be supported by four main ontologies:
 
 - PRIDE Ontology: Ontology to handle PRIDE metadata terms. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=pride
 - EFO: Experimental Factor Ontology. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=efo
-- PSI-MS: The HUPO-PSI standard intiative ontology https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=ms
+- PSI-MS: The HUPO-PSI standard initiative ontology https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=ms
 
 
 
@@ -27,7 +27,7 @@ Minimum information about Sample:
 **Sample attributes**: Minimum sample attributes for primary cells from different species and cell lines
 
 
-|                      |Human          	  | Vertebrates               | Non-vertebrates | Plants  | Cell lines | Comment |
+|                      |Human                | Vertebrates               | Non-vertebrates | Plants  | Cell lines | Comment |
 |----------------------|------------------|---------------------------|-----------------|---------|------------|---------|
 |Organism              |X                 |	  X                       |	 X	            |   X     |     X      |         |
 |Strain/breed          |O	              |   O	                   	  |  O              |   O     |     O      |         |
@@ -60,19 +60,19 @@ Relation between Sample, Fraction and MSRun:
 
 The relation between the Sample and MSRun will be given by two other Properties:
 
-- Label: Label represent the information of a Multiplex or label free experiments. It can be used to spot the type of the experiment. For each Label two major caracterities are mandatory:
-    - Label Identifier: An identifier of the lalbeling in the Experimental Design Table.
-    - Label Name: A CvTerm with the type of Laling apply:  **\["PRIDE", "PRIDE:0000312", "Label free", ]**
+- Label: Label represents the information of a Multiplex or label free experiments. It can be used to spot the type of the experiment. For each Label two major characteristics are mandatory:
+    - Label Identifier: An identifier of the labelling in the Experimental Design Table.
+    - Label Name: A CvTerm with the type of Labeling apply:  **\["PRIDE", "PRIDE:0000312", "Label free", ]**
 
 - Fraction Id
-    - Fraction Idnetifier: A unique fraction identifier to classified the sample.
+    - Fraction Identifier: A unique fraction identifier to classified the sample.
 
 **Additional**:
 
 Some search engines as MaxQuant use the Fraction Group to perform better statistical analysis:
 
 - Fraction Group
-    - Fraction Group Identifier: The fraction group identifier is use to classified multiple fractions.
+    - Fraction Group Identifier: The fraction group identifier is used to classified multiple fractions.
 
 
 **Examples Label Free Experiment**:
@@ -91,3 +91,4 @@ Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | F
 | 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |1            | SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 1                                   |                      |
 | 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |2            | SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 1                                   |                      |
 | 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |3            | SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 1                                   |                      |
+
