@@ -20,6 +20,7 @@ Minimum information about Sample:
 |----------------------|------------------|---------------------------|-----------------|---------|------------|---------|
 |Organism              |X                 |	  X                       |	 X	            |   X     |     X      |         |
 |Strain/breed          |O	              |   O	                   	  |  O              |   O     |     O      |         |
+|Ethnicity             |X                 |	  O                       |	 O	            |   O     |     X      |         |
 |Age	               |O 	              |   O                       |                 |         |            |         |
 |Developmental stage   |X		          |	  O	                      |                 |         |            |         |
 |Sex	               |X                 |   O                       |                 |         |            |         |
@@ -28,6 +29,9 @@ Minimum information about Sample:
 |Cell type*	           |X                 |   X                       |  X              |  X      |     X      | * if known, see comment below |
 |Individual	           |O                 |	  O		                  |  O              |  O      |            |donor or animal ID |
 |Cell line	           |                  |                           |                 |         |     X      |name of commercial cell line |
+
+X: Required
+O: Not Required
 
 Annotation MSRun:
 -----------------
