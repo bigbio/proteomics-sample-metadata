@@ -15,10 +15,9 @@ The Current Project is run by PRIDE Team in collaboration with other external gr
 
 The current project is focus in three main topics:
 
+## Run metadata
  - [MSRun Metadata](technical-metadata/msrun-metadata)
- - [Peptide/Protein Idnetification Search Parameters](technical-metadata/search-metadata)
- - [Sample Metadata]()
+ - [Peptide/Protein Identification Search Parameters](technical-metadata/search-metadata)
 
-
-## MSRun Metadata
-
+## Experimental design
+ - [Experimental design](experimental-design)
