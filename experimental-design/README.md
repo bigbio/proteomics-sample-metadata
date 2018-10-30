@@ -69,26 +69,27 @@ The relation between the Sample and MSRun will be given by two other Properties:
 
 **Additional**:
 
-Some search engines as MaxQuant use the Fraction Group to perform better statistical analysis:
+Some search engines as MaxQuant use two more levels of grouping to perform better statistical analysis:
 
 - Fraction Group
     - Fraction Group Identifier: The fraction group identifier is used to classified multiple fractions.
-
+- Condition Group
+    - Condition Group Identifier: The 'treatment' group to which the sample/file does belong to (where treatment can be anything that changes the sample preparation protocol, e.g. the application of a treatment)
 
 **Examples Label Free Experiment**:
 
-Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | Fraction_Group | Fraction    | Spectra_Filepath                            | Label                        | Technical replicate                 | Note:                |
+Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] | Fraction_Group | Fraction    | Condition    | Spectra_Filepath                            | Label                        | Technical replicate                 | Note:                |
 |------|----------------------|--------------------|-------------------------|----------------|-------------|---------------------------------------------|------------------------------|-------------------------------------|----------------------|
-| 1    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |1               |1            | SPECTRAFILE_DOG_F1_TR1.mzML                 | 1                            | 1                                   |                      |
-| 1    | sample_dog           | [?NCBI:txid9615?]               | Whole Organism          |1               |2            | SPECTRAFILE_DOG_F2_TR1.mzML                 | 1                            | 1                                   |                      |
-| 1    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |1               |3            | SPECTRAFILE_DOG_F3_TR1.mzML                 | 1                            | 1                                   |                      |
-| 2    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |2               |1            | SPECTRAFILE_DOG_F1_TR2.mzML                 | 1                            | 1                                   |                      |
-| 2    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |2               |2            | SPECTRAFILE_DOG_F2_TR2.mzML                 | 1                            | 1                                   |                      |
-| 2    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |2               |3            | SPECTRAFILE_DOG_F3_TR2.mzML                 | 1                            | 1                                   |                      |
-| 3    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |3               |1            | SPECTRAFILE_CAT_F1_TR1.mzML                 | 1                            | 1                                   |                      |
-| 3    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |3               |2            | SPECTRAFILE_CAT_F2_TR1.mzML                 | 1                            | 1                                   |                      |
-| 3    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |3               |3            | SPECTRAFILE_CAT_F3_TR1.mzML                 | 1                            | 1                                   |                      |
-| 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |1            | SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 1                                   |                      |
-| 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |2            | SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 1                                   |                      |
-| 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |3            | SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 1                                   |                      |
+| 1    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |1               |1           |1| SPECTRAFILE_DOG_F1_TR1.mzML                 | 1                            | 1                                   |                      |
+| 1    | sample_dog           | [?NCBI:txid9615?]               | Whole Organism          |1               |2            |1| SPECTRAFILE_DOG_F2_TR1.mzML                 | 1                            | 1                                   |                      |
+| 1    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |1               |3           |1| SPECTRAFILE_DOG_F3_TR1.mzML                 | 1                            | 1                                   |                      |
+| 2    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |2               |1           |2| SPECTRAFILE_DOG_F1_TR2.mzML                 | 1                            | 1                                   |                      |
+| 2    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |2               |2           |2| SPECTRAFILE_DOG_F2_TR2.mzML                 | 1                            | 1                                   |                      |
+| 2    | sample_dog           | [?NCBI:txid9615?]                | Whole Organism          |2               |3           |2| SPECTRAFILE_DOG_F3_TR2.mzML                 | 1                            | 1                                   |                      |
+| 3    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |3               |1           |1| SPECTRAFILE_CAT_F1_TR1.mzML                 | 1                            | 1                                   |                      |
+| 3    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |3               |2           |1| SPECTRAFILE_CAT_F2_TR1.mzML                 | 1                            | 1                                   |                      |
+| 3    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |3               |3           |1| SPECTRAFILE_CAT_F3_TR1.mzML                 | 1                            | 1                                   |                      |
+| 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |1           |2| SPECTRAFILE_CAT_F1_TR2.mzML                 | 1                            | 1                                   |                      |
+| 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |2           |2| SPECTRAFILE_CAT_F2_TR2.mzML                 | 1                            | 1                                   |                      |
+| 4    | sample_cat           | [?NCBI:txid9685?]                | Whole Organism          |4               |3           |2| SPECTRAFILE_CAT_F3_TR2.mzML                 | 1                            | 1                                   |                      |
 
