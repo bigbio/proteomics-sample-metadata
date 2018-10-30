@@ -31,6 +31,7 @@ Minimum information about Sample:
 |----------------------|------------------|---------------------------|-----------------|---------|------------|---------|
 |Organism              |X                 |	  X                       |	 X	            |   X     |     X      |         |
 |Strain/breed          |O	              |   O	                   	  |  O              |   O     |     O      |         |
+|Ethnicity             |X                 |	  O                       |	 O	            |   O     |     X      |         |
 |Age	               |O 	              |   O                       |                 |         |            |         |
 |Developmental stage   |X		          |	  O	                      |                 |         |            |         |
 |Sex	               |X                 |   O                       |                 |         |            |         |
@@ -43,6 +44,9 @@ Minimum information about Sample:
 - X : Required Attributes for each sample Type (e.g. Human, Vertebrates).
 - O : Optional Attributes.
 
+
+X: Required
+O: Not Required
 
 Annotation MSRun:
 -----------------
