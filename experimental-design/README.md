@@ -3,9 +3,9 @@ Experimental Design:
 
 The PRIDE Experimental Design project will handle and represent each PRIDE project with the corresponding experiment design, including the annotation of:
 
-- Sample Metadata.
+- Biological sample Metadata.
 - MSRun Metadata.
-- The relation beetween the Sample and the MSRun
+- The relationship beetween the Sample and the MSRun
 - The Fraction and Fraction Group
 
 The following design is based on other efforts from [OpenMS](external-examples/openms-experimental/OpenMS.md), [MaxQuant](external-examples/maxquant/mqpar-jarnuczak-phospho.xml), [ArrayExpress](external-examples/arrayexpress/ArrayExpress.md)
@@ -13,9 +13,9 @@ The following design is based on other efforts from [OpenMS](external-examples/o
 Ontologies Supported:
 ---------------------
 
-The PRIDE metadata annotation system will be supported by four main ontologies:
+The PRIDE metadata annotation system will be supported by three main ontologies:
 
-- PRIDE Ontology: Ontology to handle PRIDE metadata terms. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=pride
+- PRIDE Ontology: Ontology to handle PRIDE related metadata terms. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=pride
 - EFO: Experimental Factor Ontology. https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=efo
 - PSI-MS: The HUPO-PSI standard intiative ontology https://www.ebi.ac.uk/ols/search?q=&groupField=iri&start=0&ontology=ms
 
@@ -24,7 +24,7 @@ The PRIDE metadata annotation system will be supported by four main ontologies:
 Minimum information about Sample:
 ---------------------------------
 
-**Sample attributes**: Minimum sample attributes for primary cells from different species and cell lines
+**Sample attributes**: Minimum sample attributes for primary cells from different species and cell lines.
 
 
 |                      |Human          	  | Vertebrates               | Non-vertebrates | Plants  | Cell lines | Comment |
@@ -53,31 +53,31 @@ Annotation MSRun:
 
 MSRun: From each MSRun we need to capture:
    - **unique identifier** : A unique identifier provided by PRIDE during the submission process.
-   - **filename**: The filename provided by the user during the submissions process.
+   - **filename**: The filename provided by the user during the submission process.
 
-Relation between Sample, Fraction and MSRun:
+Relationship between Sample, Fraction and MSRun:
 --------------------------------------------
 
-The relation between the Sample and MSRun will be given by two other Properties:
+The relationship between the Sample and MSRun will be given by two other Properties:
 
-- Label: Label represent the information of a Multiplex or label free experiments. It can be used to spot the type of the experiment. For each Label two major caracterities are mandatory:
-    - Label Identifier: An identifier of the lalbeling in the Experimental Design Table.
-    - Label Name: A CvTerm with the type of Laling apply:  **\["PRIDE", "PRIDE:0000312", "Label free", ]**
+- Label: It represents the information of a Multiplex or label-free experiment. It can be used to spot the type of experiment. For each Label two major characteristics are mandatory:
+    - Label Identifier: An identifier of the type of labeling in the Experimental Design Table.
+    - Label Name: A CvTerm with the type of Labeling applied:  **\["PRIDE", "PRIDE:0000312", "Label free", ]**
 
 - Fraction Id
-    - Fraction Idnetifier: A unique fraction identifier to classified the sample.
+    - Fraction Identifier: A unique fraction identifier to classify the sample.
 
 **Additional**:
 
 Some search engines as MaxQuant use the Fraction Group to perform better statistical analysis:
 
 - Fraction Group
-    - Fraction Group Identifier: The fraction group identifier is use to classified multiple fractions.
+    - Fraction Group Identifier: The fraction group identifier is used to classify multiple fractions.
 
 
 **Examples Label Free Experiment**:
 
-Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] |  Fraction    | Spectra_Filepath                            | Label                        | Thecnical replicate                 | Note:                |
+Sample |Sample \[Sample Name] | Sample \[Organism] | Sample \[Organism Part] |  Fraction    | Spectra_Filepath                            | Label                        | Technical replicate                 | Note:                |
 |------|----------------------|--------------------|-------------------------|--------------|---------------------------------------------|------------------------------|-------------------------------------|----------------------|
 | 1    | sample_dog           | DOG                | Whole Organism          |1            | SPECTRAFILE_DOG_F1_TR1.mzML                  | label free sample                            | 1                                   |                      |
 | 1    | sample_dog           | DOG                | Whole Organism          |2            | SPECTRAFILE_DOG_F2_TR1.mzML                  | label free sample                            | 1                                   |                      |
