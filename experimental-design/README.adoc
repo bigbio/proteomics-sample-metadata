@@ -39,7 +39,26 @@ The *Sample* metadata capture the steps in the chain of treatments applied to th
 
 TIP: The collaboration with the RNA-Seq community and the compatibility with the MAGE-TAB file format will enable the development of tools and bioinformatics workflows that can analyze all type of expression data (proteomics, transcriptomics).
 
+|===
+|Property | Mandatory/Optional | Cardinality
+|Sample Name     | Optional  | 1
+|Sample ID       | Mandatory | 1
+|Characteristics | Mandatory | 0..*
+|===
 
+Each Sample in the experiment MUST contains a _Sample ID_, and a collection of _Characteristics_. In addition, the a Sample Name can be provided. The _Sample ID_ MUST be unique for each sample.
+
+The following example presents a Human dataset:
+
+|===
+|Sample ID | Sample Name | Characteristics [Organism] | Characteristics [Organism Part]
+
+|1 |sample_treat   |Homo Sapiens |Whole Organism
+|2 |sample_control |Homo Sapiens |Whole Organism
+
+Each characteristics name in the column header SHOULD be a control vocabulary term from the https://www.ebi.ac.uk/ols/ontologies/efo[EFO ontology].
+
+|===
 
 [[experiment-templates]]
 == Experiment templates
@@ -104,18 +123,3 @@ Some search engines as MaxQuant use the Fraction Group to perform better statist
 
 *Examples Label Free Experiment*:
 
-|===
-|Sample |Sample [Sample Name] |Sample [Organism] |Sample [Organism Part] |Fraction |Spectra_Filepath |Label |Technical replicate |Note: 
-
-|1 |sample_dog |DOG |Whole Organism |1 |SPECTRAFILE_DOG_F1_TR1.mzML |label free sample |1 | 
-|1 |sample_dog |DOG |Whole Organism |2 |SPECTRAFILE_DOG_F2_TR1.mzML |label free sample |1 | 
-|1 |sample_dog |DOG |Whole Organism |3 |SPECTRAFILE_DOG_F3_TR1.mzML |label free sample |1 | 
-|2 |sample_dog |DOG |Whole Organism |1 |SPECTRAFILE_DOG_F1_TR2.mzML |label free sample |1 | 
-|2 |sample_dog |DOG |Whole Organism |2 |SPECTRAFILE_DOG_F2_TR2.mzML |label free sample |1 | 
-|2 |sample_dog |DOG |Whole Organism |3 |SPECTRAFILE_DOG_F3_TR2.mzML |label free sample |1 | 
-|3 |sample_cat |CAT |Whole Organism |1 |SPECTRAFILE_CAT_F1_TR1.mzML |label free sample |1 | 
-|3 |sample_cat |CAT |Whole Organism |2 |SPECTRAFILE_CAT_F2_TR1.mzML |label free sample |1 | 
-|3 |sample_cat |CAT |Whole Organism |3 |SPECTRAFILE_CAT_F3_TR1.mzML |label free sample |1 | 
-|4 |sample_cat |CAT |Whole Organism |1 |SPECTRAFILE_CAT_F1_TR2.mzML |label free sample |1 | 
-|4 |sample_cat |CAT |Whole Organism |2 |SPECTRAFILE_CAT_F2_TR2.mzML |label free sample |1 | 
-|===
