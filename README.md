@@ -26,5 +26,3 @@ The current project is focus in three main topics:
  - [Sample Metadata]()
 
 
-## MSRun Metadata
-
