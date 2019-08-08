@@ -39,30 +39,27 @@ The *Sample* metadata capture the steps in the chain of treatments applied to th
 
 TIP: The collaboration with the RNA-Seq community and the compatibility with the SDRF file format will enable the development of tools and bioinformatics workflows that can analyze all type of expression data (proteomics, transcriptomics).
 
-The Sample metadata has different *Categories/Headings*  to organize all the attributes of the Sample. These categories helps
+The Sample metadata has different *Categories/Headings*  to organize all the attributes / column headers of the Sample:
 
 |===
-|Property        | Mandatory/Optional | Cardinality | Description
+|Property        | Mandatory/Optional | Cardinality | Description | Example
 
-|Source  Name    | Optional           | 1           | The Sample name.
-|Sample ID       | Mandatory          | 1           | A sample identifier provided by the submitter.
-|Characteristics | Mandatory          | 0..*        | “Characteristics” column headings should contain an ontology property term in square brackets. The source database or file for ontology terms in these columns may be given in an adjacent “Term Source” column immediately to the right of the “Characteristics” column. In the absence of a “Term Source” column the value is assumed to be user defined. Multiple Characteristic columns of the same category (e.g., “Characteristics[Organism Part]”) are allowed. Typically the usage implies whole to part from left to right.
-|Factor Value    | Optional           | 0..*        | “Factor Value” columns should indicate which experimental factor / variable are use to perform the quantitative data analysis. The “Factor Value” columns should occur after all Characteristics and the attributes of the samples.
+|Source  Name    | Optional           | 1           | The Sample name. | Source Name
+|Characteristics | Mandatory          | 0..*        | “Characteristics” column headings should contain an ontology property term in square brackets. The source database or file for ontology terms in these columns may be given in an adjacent “Term Source” column immediately to the right of the “Characteristics” column. In the absence of a “Term Source” column the value is assumed to be user defined. Multiple Characteristic columns of the same category (e.g., “Characteristics[Organism Part]”) are allowed. Typically the usage implies whole to part from left to right. | Characteristics [Organism Part]
+|Factor Value    | Optional           | 0..*        | “Factor Value” columns should indicate which experimental factor / variable are use to perform the quantitative data analysis. The “Factor Value” columns should occur after all Characteristics and the attributes of the samples. | Factor Value [Organism Part]
 |===
 
-Each Sample in the experiment MUST contains a _Sample ID_, and a collection of _Characteristics_. In addition, the a Sample Name can be provided. The _Sample ID_ MUST be unique for each sample.
-
-The following example presents a Human dataset:
+Each Sample in the experiment MUST contains a _Source Name_, and a collection of _Characteristics_. A minimum example of a valid annotated dataset can be:
 
 |===
-|Sample ID | Sample Name | Characteristics [Organism] | Characteristics [Organism Part]
+| Source Name | Characteristics [Organism] | Characteristics [Organism Part]
 
-|1 |sample_treat   |Homo Sapiens |Whole Organism
-|2 |sample_control |Homo Sapiens |Whole Organism
+|sample_treat   |Homo Sapiens |Whole Organism
+|sample_control |Homo Sapiens |Whole Organism
 |===
+
 
 Each characteristics name in the column header SHOULD be a control vocabulary term from the https://www.ebi.ac.uk/ols/ontologies/efo[EFO ontology]. For example, the Header `Characteristics [Organism]` correspond to the ontology term http://www.ebi.ac.uk/efo/EFO_0000634[Organism].
-
 
 
 [[experiment-templates]]
