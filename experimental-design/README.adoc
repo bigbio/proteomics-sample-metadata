@@ -64,43 +64,40 @@ Some important notes:
 
  - Multiple values for the same Characteristics are allowed. In the previous example, the `Characteristics [phenotype]` attribute is used to capture two different phenotypes conditions of the sample.
 
-IMPORTANT: Each value in the row can be free-text or a control vocabulary term. In the previous example, the `Characteristics [phenotype]` value CAN BE the free-text _control_ or the corresponding ontology identifier in https://www.ebi.ac.uk/ols/ontologies/efo[EFO] _http://www.ebi.ac.uk/efo/EFO_0001461_
+TIP: Each value in the row can be free-text or a control vocabulary term. In the previous example, the `Characteristics [phenotype]` value CAN BE the free-text _control_ or the corresponding ontology identifier in https://www.ebi.ac.uk/ols/ontologies/efo[EFO] _http://www.ebi.ac.uk/efo/EFO_0001461_
 
 [[sample-templates]]
-== Sample metadata templates
+=== Sample metadata templates
 
-We have defined different experiment templates to organize the major submissions in public proteomics databases:
+The *sample metadata templates* are a set of guidelines to annotate different type of proteomics experiments to ensure that a Minimum Metadata and `Characteristics` are provided to understand the dataset. These templates respond to the distribution and frequency of expeirment types in public databases like http://www.ebi.ac.uk/pride/archive[PRIDE] and http://www.proteomexchange.org/[ProteomeXchange]:
 
 - Human: All tissue-based experiments that use Human samples.
 - Vertebrates: Vertebrate experiment.
 - Non-vertebrates: Non-vertebrate experiment.
 - Plants: Plant experiment.
 - Cell lines: Experiments using cell-lines.
-- Other
 
-*Sample attributes*: Minimum sample attributes for primary cells from different species and cell lines.
+
+*Sample attributes*: Minimum sample attributes for primary cells from different species and cell lines
 
 |===
-| |Human |Vertebrates |Non-vertebrates |Plants |Cell lines |Comment 
+|                                        | Human          | Vertebrates | Non-vertebrates | Plants | Cell lines | Comment
 
-|Organism            |X |X |X |X |X |
-|Strain/breed        | |O |O |O |O |
-|Ethnicity           |X |O |O |O |X |
-|Age |O |O | | | |
-|Developmental stage |X |O | | | | 
-|Sex |X |O | | | | 
-|Disease |X |X |X |X |X | 
-|Organism part |X |X |X |X |X | 
-|Cell type* |X |X |X |X |X |* if known, see comment below 
-|Individual |O |O |O |O | |donor or animal ID 
-|Cell line Code | | | | |X |name of commercial cell line 
+|Characteristics [Organism]              | M              |M            |M                |M       |M           |
+|Characteristics [Strain/breed]          |                |O            |O                |O       |O           |
+|Characteristics [Ethnicity]             | M              |O            |O                |O       |M           |
+|Characteristics [Age]                   | O              |O            |                 |        |            |
+|Characteristics [Developmental stage]   | M              |O            |                 |        |            |
+|Characteristics [Sex]                   | M              |O            |                 |        |            |
+|Characteristics [Disease]               | M              |M            |M                |M       |M           |
+|Characteristics [Organism part]         | M              |M            |M                |M       |M           |
+|Characteristics [Cell type] *           | M              |M            |M                |M       |M           |* if known, see comment below
+|Characteristics [Individual]            | O              |O            |O                |O       |            |donor or animal ID
+|Characteristics [Cell line Code]        |                |             |                 |        |M           |name of commercial cell line
 |===
 
-* X : Required Attributes for each sample Type (e.g. Human, Vertebrates).
+* M : Required Attributes for each sample Type (e.g. Human, Vertebrates).
 * O : Optional Attributes.
-
-X: Required
-O: Not Required
 
 == Annotation MSRun
 
