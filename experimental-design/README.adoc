@@ -37,7 +37,7 @@ The list of ontologies supported by this project can be found https://github.com
 
 The *Sample* metadata capture the steps in the chain of treatments applied to the original Source. The sample metadata structure is based on the MAGE-TAB SDRF file format developed by the https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html[RNA-Seq community].
 
-TIP: The collaboration with the RNA-Seq community and the compatibility with the SDRF file format will enable the development of tools and bioinformatics workflows that can analyze all type of expression data (proteomics, transcriptomics).
+NOTE: The collaboration with the RNA-Seq community and the compatibility with the SDRF file format will enable the development of tools and bioinformatics workflows that can analyze all type of expression data (proteomics, transcriptomics).
 
 The Sample metadata has different *Categories/Headings*  to organize all the attributes / column headers of the Sample:
 
@@ -64,7 +64,7 @@ Some important notes:
 
  - Multiple values for the same Characteristics are allowed. In the previous example, the `Characteristics [phenotype]` attribute is used to capture two different phenotypes conditions of the sample.
 
-TIP: Each value in the row can be free-text or a control vocabulary term. In the previous example, the `Characteristics [phenotype]` value CAN BE the free-text _control_ or the corresponding ontology identifier in https://www.ebi.ac.uk/ols/ontologies/efo[EFO] _http://www.ebi.ac.uk/efo/EFO_0001461_
+NOTE: Each value in the row can be free-text or a control vocabulary term. In the previous example, the `Characteristics [phenotype]` value CAN BE the free-text _control_ or the corresponding ontology identifier in https://www.ebi.ac.uk/ols/ontologies/efo[EFO] _http://www.ebi.ac.uk/efo/EFO_0001461_
 
 [[sample-templates]]
 === Sample metadata templates
@@ -99,11 +99,19 @@ The *sample metadata templates* are a set of guidelines to annotate different ty
 * M : Required Attributes for each sample Type (e.g. Human, Vertebrates).
 * O : Optional Attributes.
 
-== Annotation MSRun
+[[from-sample-scan]]
+== From Sample to MsRun
+
+The connection from the _Sample_ to the final _MSrun_ would be done by a series of properties and attributes. We RECOMMENDED the following properties to be present on each Sample Row:
 
 MSRun: From each MSRun we need to capture:
- - *unique identifier* : A unique identifier provided by PRIDE during the submission process.
- - *filename*: The filename provided by the user during the submission process.
+
+ - Label: The _label_ describe the labeling process applied to each Sample. In case of Multiplex Experiments such as TMT, SILAC, ITRAQ the corresponding Label should be added. For Label-free experiments the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002038[label free sample]
+
+ - Comment [Fraction Identifier]: The _fraction identifier_ allows to know the number of your fraction. The fraction identifier correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term].
+
+ - Comment [raw data file]: The _raw data file_ provides the name of the raw file from the instrument. The raw data file correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000577[ontology term].
+
 
 == Relationship between Sample, Fraction and MSRun
 
