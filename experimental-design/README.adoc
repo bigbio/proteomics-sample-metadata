@@ -46,20 +46,25 @@ The Sample metadata has different *Categories/Headings*  to organize all the att
 
 |Source  Name    | Optional           | 1           | The Sample name. | Source Name
 |Characteristics | Mandatory          | 0..*        | “Characteristics” column headings should contain an ontology property term in square brackets. The source database or file for ontology terms in these columns may be given in an adjacent “Term Source” column immediately to the right of the “Characteristics” column. In the absence of a “Term Source” column the value is assumed to be user defined. Multiple Characteristic columns of the same category (e.g., “Characteristics[Organism Part]”) are allowed. Typically the usage implies whole to part from left to right. | Characteristics [Organism Part]
-|Factor Value    | Optional           | 0..*        | “Factor Value” columns should indicate which experimental factor / variable are use to perform the quantitative data analysis. The “Factor Value” columns should occur after all Characteristics and the attributes of the samples. | Factor Value [Organism Part]
+|Factor Value    | Optional           | 0..*        | “Factor Value” columns should indicate which experimental factor / variable are use to perform the quantitative data analysis. The “Factor Value” columns should occur after all Characteristics and the attributes of the samples. | Factor Value [phenotype]
 |===
 
 Each Sample in the experiment MUST contains a _Source Name_, and a collection of _Characteristics_. A minimum example of a valid annotated dataset can be:
 
 |===
-| Source Name | Characteristics [Organism] | Characteristics [Organism Part]
+| Source Name | Characteristics [Organism] | Characteristics [Organism Part] | Characteristics [phenotype] | Characteristics [phenotype] | Factor Value [phenotype]
 
-|sample_treat   |Homo Sapiens |Whole Organism
-|sample_control |Homo Sapiens |Whole Organism
+|sample_treat   |Homo Sapiens |Whole Organism | necrotic tissue      | sample treated with drug A | necrotic tissue
+|sample_control |Homo Sapiens |Whole Organism | control              | control                    |     control
 |===
 
+Some important notes:
 
-Each characteristics name in the column header SHOULD be a control vocabulary term from the https://www.ebi.ac.uk/ols/ontologies/efo[EFO ontology]. For example, the Header `Characteristics [Organism]` correspond to the ontology term http://www.ebi.ac.uk/efo/EFO_0000634[Organism].
+ - Each characteristics name in the column header SHOULD be a control vocabulary term from the https://www.ebi.ac.uk/ols/ontologies/efo[EFO ontology]. For example, the Header `Characteristics [Organism]` correspond to the ontology term http://www.ebi.ac.uk/efo/EFO_0000634[Organism].
+
+ - Multiple values for the same Characteristics are allowed. In the previous example, the `Characteristics [phenotype]` attribute is used to capture two different phenotypes conditions of the sample.
+
+IMPORTANT: Each value in the row can be free-text or a control vocabulary term.
 
 [[sample-templates]]
 == Sample metadata templates
