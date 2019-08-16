@@ -141,5 +141,70 @@ Some search engines as MaxQuant use the Fraction Group to perform better statist
 - Comment [Fraction Group]: Some Quantitative tools use the Fraction Group to know which fractions belong together. In MaxQuant the Fraction Group is called "Experiment".
 
 
+[[encoding-MSRun-technical-details]]
+== MSRun technical details properties
+
+We RECOMMEND to encode some of the technical parameters of the mass spectrometry experiment as Comments (https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[Check what is a Comment in SDRF]) including the following parameters:
+
+- Protein Modifications <<encoding-protein-modifications>>
+- Precursor and Fragment mass tolerances <<encoding-tolerances>>
+- Enzyme <<encoding-enzymes>>
+
+[[encoding-protein-modifications]]
+=== Protein Modifications
+
+Sample modifications (PTMs) are originated from multiple sources: **technical modifications**, **isotope labeling** or the most **biologically relevant** the wide variety of chemical modifications after translation. The most common and widely studied post translational modifications include phosphorylation and glycosylation. Many of these post-translational modifications are critical to the protein's function.
+
+The current specification RECOMMEND to provide Sample modifications including the Amino acid affected, if is Variable or Static (Fixed) and other properties such as mass shift and position (e.g. anywhere in the sequence).
+
+The RECOMMENDED name of the column for sample modification parameters is:
+
+  Commet [modification parameters]
+
+.. NOTE: The `modification parameters` is the name of the ontology term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001055[MS:1001055]
+
+For each modification, we will capture different properties in a `key=value` pair structure including name, position, etc. All the possible features available for modification parameters:
 
 
+|===
+|Property |Key |Example | Required/Optional |Comment
+
+|Name of the modification| NM | NM=Acetylation | Required | Name of the modification, for custom modifications can be a name defined by the user.
+
+|Database Accession| AC | AC=UNIMOD:1 | Optional | Accession in an external database UNIMOD or PSI-MOD supported.
+
+|Chemical Formula  | CF | CF=H(2)C(2)O| Optional | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
+
+|Modification type | MT | MT=Fixed | Required | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Custom].
+
+|Position of the modification in the polypeptide |  PP | PP=Any N-term | Required | Choose from the following options: [Anywhere, Protein N-term, Any N-term]
+
+|Target Amino acid| TA | TA=N-term | Optional | The target amino acid letter. If the modification target multiple sites, it should be provided as Target Regular Expression (TR)
+
+|Monoisotopic mass| MM | MM=42.010565 | Optional | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This will override the monoisotopic mass described in the chemical formula because there are cases where the mass of the mod and the mass shift from the mod are different (e.g. trimethylation has mass of 43 but mass shift from trimethylation is 42).
+
+|Target regular expression | TR | Pending | Optional | For some softwares is more interesting to capture complex rules for modification sites. This use cases should be specified as regular expressions.
+|===
+
+
+
+Some examples of SDRF with sample modifications annotated:
+
+
+|===
+| |comment [modification parameters] | comment [modification parameters]
+
+|sample 1| NM=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E | NM=Oxidation; MT=Variable; TA=M
+|===
+
+
+
+[[encoding-tolerances]]
+=== Precursor and Fragment mass tolerances
+
+Pending
+
+[[encoding-enzymes]]
+=== Enzyme
+
+Pending
