@@ -161,7 +161,7 @@ The RECOMMENDED name of the column for sample modification parameters is:
 
   Comment [modification parameters]
 
-.. NOTE: The `modification parameters` is the name of the ontology term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001055[MS:1001055]
+NOTE: The `modification parameters` is the name of the ontology term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001055[MS:1001055]
 
 For each modification, we will capture different properties in a `key=value` pair structure including name, position, etc. All the possible features available for modification parameters:
 
@@ -175,7 +175,7 @@ For each modification, we will capture different properties in a `key=value` pai
 
 |Chemical Formula  | CF | CF=H(2)C(2)O| Optional | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
 
-|Modification type | MT | MT=Fixed | Required | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Custom, Annotated].
+|Modification type | MT | MT=Fixed | Required | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Custom, Annotated]. _Annotated_ is use to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEEF.
 
 |Position of the modification in the polypeptide |  PP | PP=Any N-term | Required | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]
 
@@ -189,15 +189,36 @@ For each modification, we will capture different properties in a `key=value` pai
 
 ..NOTE: We RECOMMEND for the modification name the UNIMOD interim name or PSI-MOD name if they are use. For custom modifications, we RECOMMEND an intuitive name.
 
-Some examples of **SDRF** with sample modifications annotated:
-
+An example of a **SDRF** with sample modifications annotated:
 
 |===
-| |comment [modification parameters] | comment [modification parameters]
+| |Comment [modification parameters] | Comment [modification parameters]
 
 |sample 1| NM=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E | NM=Oxidation; MT=Variable; TA=M
 |===
 
+[[encoding-enzymes]]
+=== Enzyme
+
+The `Comment [cleavage agent details]` property is used to capture the Enzyme information. Similar to protein modification <<encoding-protein-modifications>> we will use a key=value pair representation to encode the following properties for each enzyme:
+
+|===
+|Property |Key |Example | Required/Optional | Comment
+
+|Name of the Enzyme | NE | NM=Trypsin | Required | * Name of the Enzyme.
+
+|Database Accession| AC | AC=MS:1001251 | Optional | Accession in an external PSI-MS Ontology definition under the following category https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001045[Cleavage agent name].
+
+|Cleavage site regular expression | CS | CS=(?<=[KR]) | Optional | The cleavage site defined as a regular expression.
+|===
+
+An example of a **SDRF** with sample enzyme annotated:
+
+|===
+| |Comment [cleavage agent details]
+
+|sample 1| NE=Trypsin; AC=MS:1001251; CS=(?<=[KR])
+|===
 
 
 [[encoding-tolerances]]
@@ -205,7 +226,3 @@ Some examples of **SDRF** with sample modifications annotated:
 
 Pending
 
-[[encoding-enzymes]]
-=== Enzyme
-
-Pending
