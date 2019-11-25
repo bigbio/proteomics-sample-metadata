@@ -121,17 +121,33 @@ The connection from the _Sample_ to the final _MSrun_ would be done by a series 
 
 MSRun: From each MSRun we need to capture:
 
- - Label: The _label_ describe the labeling process applied to each Sample. In case of Multiplex Experiments such as TMT, SILAC, ITRAQ the corresponding Label should be added. For Label-free experiments the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002038[label free sample]
+ - Comment [Label]: The _label_ describe the labeling process applied to each Sample. In case of Multiplex Experiments such as TMT, SILAC, ITRAQ the corresponding Label should be added. For Label-free experiments the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002038[label free sample]
 
  - Comment [Fraction Identifier]: The _fraction identifier_ allows to know the number of your fraction. The fraction identifier correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term].
 
- - Comment [Raw Data File]: The _raw data file_ provides the name of the raw file from the instrument. The raw data file correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000577[ontology term].
+ - Comment [data file]: The _data file_ provides the name of the raw file from the instrument. The raw data file correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000577[ontology term].
+
+
+|===
+|   | Comment [data file] | Comment [Label] | Comment [Fraction Identifier]
+|sample 1| 000261_C05_P0001563_A00_B00K_R1.RAW | AC=MS:1002038;NM=label free sample | 1
+|sample 1| 000261_C05_P0001563_A00_B00K_R2.RAW | AC=MS:1002038;NM=label free sample | 2
+|===
 
 TIP: All the possible _Label_ values can be seen in the in the PSI-MS ontology under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002602[sample label] node.
 
-The “Comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square
-brackets in the column heading, and the value(s) entered in the body of the column. Comment columns could be used in various ways - to provide references to external files like
-raw files or protocols; to include identifiers of objects in external systems; to qualify the type of Protocol REF (e.g., growth protocol).
+The “Comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. Comment columns could be used in various ways - to provide references to external files like raw files or protocols; to include identifiers of objects in external systems; to qualify the type of Protocol REF (e.g., growth protocol).
+
+[[additional-raw-file]]
+=== Additional RAW file properties
+
+We RECOMMEND to include the public url of the file if is available. For example for PRIDE submissions the FTP url can be provided:
+
+|===
+|   |Comment [Associated file URI]
+
+|sample 1| ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/000261_C05_P0001563_A00_B00K_R1.RAW
+|===
 
 [[sample-scan-additional]]
 === MSRun additional properties
@@ -224,5 +240,14 @@ An example of a **SDRF** with sample enzyme annotated:
 [[encoding-tolerances]]
 === Precursor and Fragment mass tolerances
 
-Pending
+Encoding precursor and fragment tolerances, for proteomics experiments is important to encode different tolerances (Precursor and fragment).
+
+|===
+| |Comment[fragment mass tolerance]	| Comment[precursor mass tolerance]
+
+|sample 1| 0.6 Da |	20 ppm
+|===
+
+
+
 
