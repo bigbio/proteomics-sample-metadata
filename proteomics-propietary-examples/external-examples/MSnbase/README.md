@@ -18,7 +18,7 @@ The figure below illustrated this in the case for quantitative data
 for the [`MSnSet`
 class](http://lgatto.github.io/MSnbase/reference/MSnSet-class.html):
 
-[MSnSet class (simplified)](./msnset.png)
+![MSnSet class (simplified)](./msnset.png)
 
 - There's alse **processing log** slot that records all the processing
   steps. For example:
