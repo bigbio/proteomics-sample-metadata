@@ -14,4 +14,4 @@ script:
   - FILES_CHANGED="$(git diff --name-only $TRAVIS_COMMIT_RANGE)"
   - echo "${FILES_CHANGED}" > files.txt
   - echo "${FILES_CHANGED}"
-  - while read -r line; do  if [[ $line == *"sdrf.txt"* ]]; then  python ${VIRTUAL_ENV}/lib/python${TRAVIS_PYTHON_VERSION}/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
+  - while read -r line; do  if [[ $line == *"sdrf.txt"* ]]; then  echo `python ${VIRTUAL_ENV}/lib/python${TRAVIS_PYTHON_VERSION}/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line` ; fi; done < files.txt
