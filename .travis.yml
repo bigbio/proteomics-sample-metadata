@@ -10,5 +10,9 @@ install:
 
 script:
   - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}`
-  - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}` > files.txt
-  - while read -r line; do  if [[ $line == *".travis.yml"* ]]; then  python ${VIRTUAL_ENV}/lib/python${TRAVIS_PYTHON_VERSION}/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
+  - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}`
+  - FILES_CHANGED="$(git diff --name-only $TRAVIS_COMMIT_RANGE)"
+  - curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST -d "{\"body\": \"Errors found\"}" \ "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/issues/${TRAVIS_PULL_REQUEST}/comments"
+  - echo "${FILES_CHANGED}" > files.txt
+  - echo "${FILES_CHANGED}"
+  - while read -r line; do  if [[ $line == *"sdrf"* ]]; then python ${VIRTUAL_ENV}/lib/python${TRAVIS_PYTHON_VERSION}/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
