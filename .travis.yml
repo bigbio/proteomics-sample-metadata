@@ -11,5 +11,5 @@ install:
 script:
   - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}`
   - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}` > files.txt
-  - env
+  - ls -R
   - while read -r line; do  if [[ $line == *"sdrf.txt"* ]]; then  python ${VIRTUAL_ENV}/lib/python${TRAVIS_PYTHON_VERSION}/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
