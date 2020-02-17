@@ -1,9 +1,11 @@
 os: linux
 language: python
+
 install:
   - pip install sdrfcheck
 
 script:
   - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}`
   - echo `git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT}` > files.txt
+  - ls
   - while read -r line; do  if [[ $line == *".travis.yml"* ]]; then  python sdrfcheck/sdrfchecker.py -h ; fi; done < files.txt
