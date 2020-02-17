@@ -41,5 +41,5 @@ then
 fi
 
 echo "Running validation..."
-while read -r line; do  if [[ $line == *"sdrf"* ]]; then python ${VIRTUAL_ENV}/lib/python${TRAVIS_PYTHON_VERSION}/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
+while read -r line; do  if [[ $line == *"sdrf"* ]]; then python /usr/local/lib/python3.6/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
 
