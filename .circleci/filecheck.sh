@@ -8,6 +8,8 @@ else
 	echo "This is a pull request, continuing"
 fi
 
+echo $GITHUB_TOKEN
+
 if [[ -z $GITHUB_TOKEN ]];
 then
 	echo "GITHUB_TOKEN not set"
