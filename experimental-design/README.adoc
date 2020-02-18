@@ -56,10 +56,10 @@ The first column of the SDRF is the **Source Name** (a unique accession of the s
 The Sample metadata has different *Categories/Headings*  to organize all the attributes / column headers of the Sample:
 
 |===
-|Property        | Mandatory/Optional | Cardinality | Description | Example
+|Property        | Mandatory (:white_check_mark:)/Optional (:zero:) | Cardinality | Description | Example
 
-|Source  Name    | Optional           | 1           | The Sample name. | Sample 1
-|Characteristics | Mandatory          | 0..*        | “Characteristics” column headings should contain an ontology property term in square brackets.*
+|Source  Name    | :zero:             | 1           | The Sample name. | Sample 1
+|Characteristics | :white_check_mark: | 0..*        | “Characteristics” column headings should contain an ontology property term in square brackets.*
 
 Multiple Characteristic columns of the same category (e.g., “Characteristics[Organism Part]”) are allowed. Typically the usage implies whole to part from left to right. | Characteristics [Organism Part]
 |===
@@ -177,23 +177,16 @@ NOTE: The `modification parameters` is the name of the ontology term https://www
 For each modification, we will capture different properties in a `key=value` pair structure including name, position, etc. All the possible features available for modification parameters:
 
 |===
-|Property |Key |Example | Required/Optional |Comment
+|Property |Key |Example | Mandatory (:white_check_mark:)/Optional (:zero:) |Comment
 
-|Name of the modification| NM | NM=Acetylation | Required | * Name of the modification, for custom modifications can be a name defined by the user.
-
-|Database Accession| AC | AC=UNIMOD:1 | Optional | Accession in an external database UNIMOD or PSI-MOD supported.
-
-|Chemical Formula  | CF | CF=H(2)C(2)O| Optional | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
-
-|Modification type | MT | MT=Fixed | Required | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Custom, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
-
-|Position of the modification in the polypeptide |  PP | PP=Any N-term | Required | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]
-
-|Target Amino acid| TA | TA=S,T,Y | Optional | The target amino acid letter. If the modification target multiple sites, it can be separated by `,`.
-
-|Monoisotopic mass| MM | MM=42.010565 | Optional | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This will override the monoisotopic mass described in the chemical formula because there are cases where the mass of the mod and the mass shift from the mod are different (e.g. trimethylation has mass of 43 but mass shift from trimethylation is 42).
-
-|Target Site | TS | Pending | Optional | For some softwares is more interesting to capture complex rules for modification sites as regular expressions. This use cases should be specified as regular expressions.
+|Name of the modification| NM | NM=Acetylation | :white_check_mark: | * Name of the modification, for custom modifications can be a name defined by the user.
+|Database Accession      | AC | AC=UNIMOD:1    | :zero:             | Accession in an external database UNIMOD or PSI-MOD supported.
+|Chemical Formula        | CF | CF=H(2)C(2)O   | :zero:             | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
+|Modification type       | MT | MT=Fixed       | :white_check_mark: | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Custom, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
+|Position of the modification in the polypeptide |  PP | PP=Any N-term | :white_check_mark: | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]
+|Target Amino acid       | TA | TA=S,T,Y       | :zero: | The target amino acid letter. If the modification target multiple sites, it can be separated by `,`.
+|Monoisotopic mass       | MM | MM=42.010565   | :zero: | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This will override the monoisotopic mass described in the chemical formula because there are cases where the mass of the mod and the mass shift from the mod are different (e.g. trimethylation has mass of 43 but mass shift from trimethylation is 42).
+|Target Site             | TS | Pending        | :zero: | For some softwares is more interesting to capture complex rules for modification sites as regular expressions. This use cases should be specified as regular expressions.
 |===
 
 ..NOTE: We RECOMMEND for the modification name the UNIMOD interim name or PSI-MOD name if they are use. For custom modifications, we RECOMMEND an intuitive name.
