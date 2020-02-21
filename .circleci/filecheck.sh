@@ -6,6 +6,7 @@ then
 	ls -R annotated-projects/ | grep "srdf.txt" > files.txt
         more files.txt
 	while read -r line; do  if [[ $line == *"sdrf"* ]]; then python /usr/local/lib/python3.6/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
+        exit 0 
 else
 	echo "This is a pull request, continuing"
 fi
