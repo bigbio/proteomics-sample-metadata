@@ -3,7 +3,10 @@
 if [[ -z "${CIRCLE_PULL_REQUEST}" ]];
 then
 	echo "This is not a pull request, no PHPCS needed."
-	exit 0
+	git checkout $CIRCLE_BRANCH
+	ls -R annotated-projects/ | grep "srdf.txt" > files.txt
+    more filex.txt
+	while read -r line; do  if [[ $line == *"sdrf"* ]]; then python /usr/local/lib/python3.6/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
 else
 	echo "This is a pull request, continuing"
 fi
