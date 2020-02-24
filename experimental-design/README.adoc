@@ -133,6 +133,32 @@ The connection from the _Sample_ to the final _MSrun_ would be done by a series 
 
 TIP: All the possible _Label_ values can be seen in the in the PSI-MS ontology under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002602[sample label] node.
 
+In the case technical and/or biological replicates have been measured, this information is not sufficient anymore.
+To trace a quantitative value to the exact replicate one needs encode this information in the experimental design.
+In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicate.
+
+|===
+| source id  | comment[data file] | comment[label] | comment[fraction identifier] | comment[technical replicate]
+| 1 | 000261_C05_P0001563_A00_B00K_F1_TR1.RAW | label free sample | 1 | 1
+| 2 | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2
+| 3 | 000261_C05_P0001563_A00_B00K_F1_TR1.RAW | label free sample | 1 | 2
+| 4 | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2
+|===
+
+The same holds for the more complex case of technical and biological replication (here "patient 1" and "patient2":
+|===
+| source id  | comment[data file] | comment[label] | comment[fraction identifier] | comment[technical replicate] | comment[biological replicate]
+| 1 | 000261_C05_P0001563_A00_B00K_F1_TR1.RAW | label free sample | 1 | 1 | patient 1
+| 2 | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2 | patient 1
+| 3 | 000261_C05_P0001563_A00_B00K_F1_TR1.RAW | label free sample | 1 | 2 | patient 1
+| 4 | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2 | patient 1
+| 5 | 000261_C05_P9999999_A00_B00K_F1_TR1.RAW | label free sample | 1 | 1 | patient 2
+| 6 | 000261_C05_P9999999_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2 | patient 2
+| 7 | 000261_C05_P9999999_A00_B00K_F1_TR1.RAW | label free sample | 1 | 2 | patient 2
+| 8 | 000261_C05_P9999999_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2 | patient 2
+|===
+
+
 The “Comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. Comment columns could be used in various ways - to provide references to external files like raw files; to include identifiers of objects in external systems.
 
 [[additional-raw-file]]
