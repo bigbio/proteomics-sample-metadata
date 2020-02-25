@@ -18,44 +18,45 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-The Proteomics Experiment Design project will handle and represent each proteomics project with the corresponding experiment design, including the annotation of:
+The Proteomics Experimental Design project will handle and represent each proteomics dataset with the corresponding experimental design, including the annotation of:
 
 * Biological sample metadata.
-* The relationship between the Sample and the MSRun
-* MSRun Metadata.
+* The relationships between the Samples and the MSRuns
+* MSRun (technical) Metadata.
 
-The following design is based on other efforts from link:../old-discussions/proteomics-propietary-examples/external-examples/openms-experimental/OpenMS.md[OpenMS], link:../old-discussions/proteomics-propietary-examples/external-examples/maxquant/mqpar-jarnuczak-phospho.xml[MaxQuant], link:../old-discussions/proteomics-propietary-examples/external-examples/arrayexpress/ArrayExpress.md[ArrayExpress]
+The following design is based on other efforts from link:../old-discussions/proteomics-propietary-examples/external-examples/openms-experimental/OpenMS.md[OpenMS], link:../old-discussions/proteomics-propietary-examples/external-examples/maxquant/mqpar-jarnuczak-phospho.xml [MaxQuant], and link:../old-discussions/proteomics-propietary-examples/external-examples/arrayexpress/ArrayExpress.md[ArrayExpress]
 
 [[ontologies-supported]]
-== Ontologies Supported
+== Ontologies/Controlled Vocabularies Supported
 
-The list of ontologies supported by this project can be found https://github.com/PRIDE-Archive/pride-metadata-standard#3-ontologies[here].
+The list of ontologies/controlled vocabularies supported can be found https://github.com/PRIDE-Archive/pride-metadata-standard#3-ontologies[here].
 
 
 [[sdrf-file-format]]
 == The sample and data relationship format
 
-The https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[SDRF] (Sample and Data Relationship Format) describes the sample characteristics and the relationship between samples, and  data files etc. The information in the SDRF is organised so that it follows the natural flow of a functional genomics experiment. It begins with describing your samples and finishes with the names of the data files generated from the analysis of the experiment results. In the current project, we are introducing and adapting the SDRF file format to the proteomics community.
-The SDRF file is a tab-delimited format where each ROW correspond to a _Sample_ , each column correspond to an attribute/property of the _Sample_ and the value in each cell is the specific *value* of the property for a given Sample.
+The https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[SDRF] (Sample and Data Relationship Format) describes the sample characteristics and the relationships between samples and  data files, etc. The information in SDRF files is organised so that it follows the natural flow of a functional genomics experiment, since it was originally developed for this type of experiments. It begins by describing the samples and finishes with the names of the data files generated from the analyses of the experimental results. Here we are introducing and adapting the SDRF file format for the proteomics community.
 
-NOTE: The collaboration with the RNA-Seq community and the compatibility with the SDRF file format will enable the development of tools and bioinformatics workflows that can analyze all type of expression data (proteomics, transcriptomics).
+The SDRF file is a tab-delimited format where each ROW corresponds to a _Sample_ , each column corresponds to an attribute/property of the _Sample_ and the value in each cell is the specific *value* of the property for a given _Sample_.
 
-SDRF for proteomics in Nutshell
+NOTE: We expect that the collaboration with the transcriptomics (RNA-Seq) community and the compatibility with the existing SDRF file format will enable the development of tools and bioinformatics workflows that can analyze together different types of expression data (proteomics and transcriptomics).
+
+SDRF for proteomics in a Nutshell
 [#img-sunset]
 image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/experimental-design/images/sdrf-nutshell.png[SDRF for proteomics in Nutshell]
 
 [[sdrf-file-standarization]]
 === SDRF values
 
-- Unknown values: In some cases the the column is Mandatory (:white_check_mark:) but for some samples the value is unknown. In those cases the user should use **NA**.
-- Case sensitive: By specification the SDRF is case insensitive, but we RECOMMENDED to use lower cases for all the text (Column names, and values).
+- Unknown values: In some cases the the column is Mandatory (:white_check_mark:) but for some samples the value is unknown. In those cases users SHOULD use **NA**.
+- Case sensitive: By specification the SDRF is case insensitive, but we RECOMMEND to use lower cases throughout all the text (Column names and values).
 
 [[sample-metadata]]
-=== Minimum information about Sample
+=== Minimum information about Samples
 
-The first column of the SDRF is the **Source Name** (a unique accession of the sample, example - Sample 1). The *Sample* metadata capture the properties of the sample and they are defined as *Characteristics*. The sample metadata structure is based on the MAGE-TAB SDRF file format developed by the https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html[RNA-Seq community].
+The first column of the SDRF is the **Source Name** (a unique accession of the sample, example - Sample 1). The *Sample* metadata captures the properties of the sample and they are defined as *Characteristics*. The sample metadata structure is based on the MAGE-TAB SDRF file format developed by the https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html[RNA-Seq community].
 
-The Sample metadata has different *Categories/Headings*  to organize all the attributes / column headers of the Sample:
+The Sample metadata has different *Categories/Headings*  to organize all the attributes / column headers of a given Sample:
 
 |===
 |Property        | Mandatory(:white_check_mark:)/Optional(:zero:) | Cardinality | Description | Example
@@ -63,7 +64,7 @@ The Sample metadata has different *Categories/Headings*  to organize all the att
 |source  name    | :white_check_mark:             | 1           | The Sample name. | Sample 1
 |characteristics | :white_check_mark: | 0..*      | “Characteristics” column headings should contain an ontology property term in square brackets.*
 
-Multiple Characteristic columns of the same category (e.g., “characteristics[organism part]”) are allowed. Typically the usage implies whole to part from left to right. | Characteristics [Organism Part]
+Multiple _Characteristic_ columns of the same category (e.g., “characteristics[organism part]”) are allowed. Typically the usage implies whole to part from left to right. | Characteristics [Organism Part]
 |===
 
 NOTE: * The source database or file for ontology terms in these columns may be given in an adjacent “Term Source” column immediately to the right of the “Characteristics” column. In the absence of a “Term Source” column the value is assumed to be user defined.
@@ -79,18 +80,18 @@ Each Sample in the experiment MUST contains a _Source Name_, and a collection of
 
 Some important notes:
 
- - Each characteristics name in the column header SHOULD be a control vocabulary term from the https://www.ebi.ac.uk/ols/ontologies/efo[EFO ontology]. For example, the Header `characteristics[Organism]` correspond to the ontology term http://www.ebi.ac.uk/efo/EFO_0000634[Organism].
+ - Each _Characteristics_ name in the column header SHOULD be a control vocabulary (CV) term from the https://www.ebi.ac.uk/ols/ontologies/efo[EFO ontology]. For example, the Header `characteristics[Organism]` corresponds to the ontology term http://www.ebi.ac.uk/efo/EFO_0000634[Organism].
 
- - Multiple values for the same Characteristics are allowed. In the previous example, the `characteristics[phenotype]` attribute is used to capture two different phenotypes conditions of the sample.
+ - Multiple values (columns) for the same _Characteristics_ term are allowed. In the previous example, the `characteristics[phenotype]` attribute is used to capture two different phenotypes conditions of the sample.
 
 NOTE: Each value in the row can be free-text or a control vocabulary term. In the previous example, the `Characteristics [phenotype]` value CAN BE the free-text _control_ or the corresponding ontology identifier in https://www.ebi.ac.uk/ols/ontologies/efo[EFO] _http://www.ebi.ac.uk/efo/EFO_0001461_
 
 [[sdrf-values-properties]]
 === SDRF values for each property
 
-The value for each property (e.g. Characteristics, Comment) for each sample can be represented in multiple ways.
+The value for each property (e.g. _Characteristics_, _Comment_) corresponding to each sample can be represented in multiple ways.
 
-- Free Text (Human readable): In the free text representation, the value is provided as text without Ontology support (e.g. colon). This is only RECOMMENDED when the **text** is the _name_ of an ontology term in EFO.
+- Free Text (Human readable): In the free text representation, the value is provided as text without Ontology support (e.g. colon, or providing accession numbers). This is only RECOMMENDED when the **text** inserted in the table is the exact _name_ of an ontology/CV term in EFO.
 
 |===
 | source name | characteristics[organism]
@@ -99,7 +100,7 @@ The value for each property (e.g. Characteristics, Comment) for each sample can 
 | Sample 2 |homo sapiens
 |===
 
-- Ontology url (Computer readable): The user can provide the corresponding URI of the Ontology term as a value. This is recommended for enriched files where the client do not want to use intermediate tools to map from Free Text to Ontology terms.
+- Ontology url (Computer readable): Users can provide the corresponding URI of the ontology/CV term as a value. This is recommended for enriched files where the client does not want to use intermediate tools to map from Free Text to ontology/CV terms.
 
 |===
 | source name | characteristics[organism]
@@ -108,22 +109,22 @@ The value for each property (e.g. Characteristics, Comment) for each sample can 
 | Sample 2 |http://purl.obolibrary.org/obo/NCBITaxon_9606
 |===
 
-- Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the Ontology term including _Accession_, _Name_ and other additional properties (see example, <<encoding-protein-modifications>>).
+- Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including _Accession_, _Name_ and other additional properties (see example, <<encoding-protein-modifications>>).
 
-  In the key=value pair representation the Value of the property is represented as an Object with multiple properties where the key is one of the properties of the Object and the value is the corresponding value for the particular key. For example:
+  In the key=value pair representation the Value of the property is represented as an Object with multiple properties where the key is one of the properties of the object and the value is the corresponding value for the particular key. For example:
   NM=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E
 
 
 [[from-sample-scan]]
-== From Sample to MsRun
+== From Samples to MSRuns
 
-The connection from the _Sample_ to the final _MSrun_ would be done by a series of properties and attributes. All the properties to relate the Sample to the MSRun are annotated with the category *Comment*. The use of Comment is mainly to differentiate from Sample characteristics from the Sample/MSrun properties. The following properties should be provided for each Sample/MSRun:
+The connection between the _Sample_ to the final _MSrun_ is done by using a series of properties and attributes. All the properties needed to relate a given _Sample_ to the corresponding _MsRun_ are annotated with the category *Comment*. The use of _Comment_ is mainly aimed at differentiating Sample _Characteristics_ from the Sample/MSrun properties. The following properties SHOULD be provided for each Sample/MSRun:
 
-- Comment [data file]: The _data file_ provides the name of the raw file from the instrument. The raw data file correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000577[ontology term].
+- Comment [data file]: The _data file_ provides the name of the raw file from the instrument. The raw data file corresponds to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000577[ontology term].
 
-- Comment [Fraction Identifier]: The _fraction identifier_ allows to know the number of your fraction. The fraction identifier correspond to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term].
+- Comment [Fraction Identifier]: The _fraction identifier_ allows to record the number of a given fraction. The fraction identifier corresponds to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term].
 
-- Comment [Label]: The _label_ describe the labeling process applied to each Sample. In case of Multiplex Experiments such as TMT, SILAC, ITRAQ the corresponding Label should be added. For Label-free experiments the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002038[label free sample]
+- Comment [Label]: The _label_ describes the label applied to each Sample (if any). In case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding _label_ SHOULD be added. For Label-free experiments the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002038[label free sample] term MUST be added.
 
 |===
 |   | comment[data file] | comment[label] | comment[fraction identifier]
@@ -131,11 +132,12 @@ The connection from the _Sample_ to the final _MSrun_ would be done by a series 
 |sample 1| 000261_C05_P0001563_A00_B00K_R2.RAW | label free sample | 2
 |===
 
-TIP: All the possible _Label_ values can be seen in the in the PSI-MS ontology under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002602[sample label] node.
+TIP: All the possible _Label_ values can be seen in the in the PSI-MS CV under the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002602[sample label] node.
 
-In the case technical and/or biological replicates have been measured, this information is not sufficient anymore.
-To trace a quantitative value to the exact replicate one needs encode this information in the experimental design.
-In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicate.
+In the case that technical and/or biological replicates have been measured, this information is not sufficient anymore.
+To be able to trace a given quantitative value to the exact replicate one needs encode this information as part of the experimental design.
+
+In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicates.
 
 |===
 | source id  | comment[data file] | comment[label] | comment[fraction identifier] | comment[technical replicate]
@@ -145,7 +147,7 @@ In the following example, only if the technical replicate column is provided, on
 | 4 | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW | label free sample | 2 | 2
 |===
 
-The same holds for the more complex case of technical and biological replication (here "patient 1" and "patient2":
+The same holds for the more complex cases involving both technical and biological replication (here "patient 1" and "patient2" represent different biological replicates:
 |===
 | source id  | comment[data file] | comment[label] | comment[fraction identifier] | comment[technical replicate] | comment[biological replicate]
 | 1 | 000261_C05_P0001563_A00_B00K_F1_TR1.RAW | label free sample | 1 | 1 | patient 1
@@ -159,12 +161,12 @@ The same holds for the more complex case of technical and biological replication
 |===
 
 
-The “Comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. Comment columns could be used in various ways - to provide references to external files like raw files; to include identifiers of objects in external systems.
+The “Comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. Comment columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
 
 [[additional-raw-file]]
 === Additional RAW file properties
 
-We RECOMMEND to include the public url of the file if is available. For example for PRIDE submissions the FTP url can be provided:
+We RECOMMEND to include the public URI of the file if available. For example for PRIDE datasets the URI from the FTP can be provided:
 
 |===
 |   |comment[associated file uri]
@@ -175,26 +177,26 @@ We RECOMMEND to include the public url of the file if is available. For example 
 [[sample-scan-additional]]
 === MSRun additional properties
 
-Some search engines as MaxQuant use the Fraction Group to perform better statistical analysis:
+Some analysis software as MaxQuant use the 'Fraction Group' concept to perform better statistical analysis:
 
-- comment[fraction group]: Some Quantitative tools use the Fraction Group to know which fractions belong together. In MaxQuant the Fraction Group is called "Experiment".
+- comment[fraction group]: Some quantitative tools use the 'Fraction Group' to know which fractions belong together. In MaxQuant the 'Fraction Group' is called "Experiment".
 
 
 [[encoding-MSRun-technical-details]]
 == MSRun technical details properties
 
-We RECOMMEND to encode some of the technical parameters of the mass spectrometry experiment as Comments (https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[Check what is a Comment in SDRF]) including the following parameters:
+We RECOMMEND to encode some of the technical parameters of the MS experiment as _Comment_s (https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[Check what is a Comment in SDRF]) including the following parameters:
 
 - Protein Modifications <<encoding-protein-modifications>>
 - Precursor and Fragment mass tolerances <<encoding-tolerances>>
-- Enzyme <<encoding-enzymes>>
+- Digestion Enzyme <<encoding-enzymes>>
 
 [[encoding-protein-modifications]]
 === Protein Modifications
 
-Sample modifications (PTMs) are originated from multiple sources: **artifacts modifications**, **isotope labeling**, adducts that present as PTMs (e.g . sodium) or the most **biologically relevant** the wide variety of chemical modifications after translation. The most common and widely studied post translational modifications include phosphorylation and glycosylation. Many of these post-translational modifications are critical to the protein's function.
+Sample modifications (including both chemical modifications and post translational modifications, PTMs) are originated from multiple sources: **artifacts modifications**, **isotope labeling**, adducts that are encoded as PTMs (e.g . sodium) or the most **biologically relevant** PTMs. The most common and widely studied PTMs include phosphorylation and glycosylation, among many others. Many of these post-translational modifications are critical to a given protein's function.
 
-The current specification RECOMMEND to provide Sample modifications including the Amino acid affected, if is Variable or Static (Fixed) and other properties such as mass shift and position (e.g. anywhere in the sequence).
+The current specification RECOMMENDS to provide Sample modifications including the aminoacid affected, if is Variable or Static (Fixed) and other properties such as mass shift and position (e.g. anywhere in the sequence).
 
 The RECOMMENDED name of the column for sample modification parameters is:
 
