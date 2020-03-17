@@ -27,7 +27,7 @@ class](http://lgatto.github.io/MSnbase/reference/MSnSet-class.html):
 > processingData(e)
 - - - Processing information - - -
 Subset [771,4][483,4] Wed Nov 27 17:41:15 2019
-Removed features with more than 0 NAs: Wed Nov 27 17:41:15 2019
+Removed features with more than 0 not availables: Wed Nov 27 17:41:15 2019
 Dropped featureData's levels Wed Nov 27 17:41:15 2019
 Log transformed (base 2) Wed Nov 27 17:41:15 2019
 Normalised (quantiles): Wed Nov 27 17:41:34 2019
