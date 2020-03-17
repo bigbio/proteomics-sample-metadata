@@ -197,18 +197,18 @@ For each modification, we will capture different properties in a `key=value` pai
 |===
 |Property |Key |Example | Mandatory(:white_check_mark:)/Optional(:zero:) |comment
 
-|Name of the modification| NM | NM=Acetylation | :white_check_mark: | * Name of the modification, for custom modifications can be a name defined by the user.
-|Modification Accession      | AC | AC=UNIMOD:1    | :zero:             | Accession in an external database UNIMOD or PSI-MOD supported.
+|Name of the Modification| NM | NM=Acetylation | :white_check_mark: | * Name of the Modification, for custom modifications can be a name defined by the user.
+|Modification Accession  | AC | AC=UNIMOD:1    | :zero:             | Accession in an external database UNIMOD or PSI-MOD supported.
 |Chemical Formula        | CF | CF=H(2)C(2)O   | :zero:             | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
-|Modification type       | MT | MT=Fixed       | :zero: | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
-|Position of the modification in the polypeptide |  PP | PP=Any N-term | :white_check_mark: | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]
-|Target Amino acid       | TA | TA=S,T,Y       | :white_check_mark: | The target amino acid letter. If the modification target multiple sites, it can be separated by `,`.
-|Monoisotopic mass       | MM | MM=42.010565   | :zero: | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This will override the monoisotopic mass described in the chemical formula because there are cases where the mass of the mod and the mass shift from the mod are different (e.g. trimethylation has mass of 43 but mass shift from trimethylation is 42).
-|Target Site             | TS | Pending        | :zero: | For some softwares is more interesting to capture complex rules for modification sites as regular expressions. This use cases should be specified as regular expressions.
+|Modification Type       | MT | MT=Fixed       | :zero: | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
+|Position of the modification in the Polypeptide |  PP | PP=Any N-term | :white_check_mark: | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]
+|Target Amino acid       | TA | TA=S,T,Y       | :white_check_mark: | The target amino acid letter. If the modification targets multiple sites, it can be separated by `,`.
+|Monoisotopic Mass       | MM | MM=42.010565   | :zero: | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This should only be used if the chemical formula of the modification is not known. If the chemical formula is specified, the monoisotopic mass will be overwritten by the claculated monoisotopic mass.
+|Target Site             | TS | TS=N[^P][ST]   | :zero: | For some software, it is important to capture complex rules for modification sites as regular expressions. These use cases should be specified as regular expressions.
 |===
 
 
-NOTE: We RECOMMEND to use for the modification name the UNIMOD interim name or the PSI-MOD name. For custom modifications, we RECOMMEND to use an intuitive name. If the PTM is unknown (custom), the _Monoisotopic mass_ MUST be annotated.
+NOTE: We RECOMMEND to use for the modification name the UNIMOD interim name or the PSI-MOD name. For custom modifications, we RECOMMEND to use an intuitive name. If the PTM is unknown (custom), the _Chemical Formula_ or _Monoisotopic Mass_ MUST be annotated.
 
 An example of a **SDRF** file with sample modifications annotated:
 
