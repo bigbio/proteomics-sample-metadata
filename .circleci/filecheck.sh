@@ -6,7 +6,7 @@ then
 	find ./ -name "sdrf.txt" > files.txt
         more files.txt
 	while read -r line; do  if [[ $line == *"sdrf"* ]]; then echo "Fille analyzed --" $line; python /usr/local/lib/python3.6/site-packages/sdrfcheck/sdrfchecker.py validate-sdrf --sdrf_file $line ; fi; done < files.txt
-        exit 0 
+        exit 0
 else
 	echo "This is a pull request, continuing"
 fi
@@ -24,9 +24,7 @@ PR_NUMBER=`echo $CIRCLE_PULL_REQUEST | grep -o $regexp`
 
 url="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls/$PR_NUMBER"
 
-target_branch=$(curl -s -X GET -G \
-$url \
--d access_token=$GITHUB_TOKEN | jq '.base.ref' | tr -d '"')
+target_branch=$(curl -s -X GET -G $url -d access_token=$GITHUB_TOKEN | jq '.base.ref' | tr -d '"')
 
 echo "Resetting $target_branch to where the remote version is..."
 git checkout -q $target_branch
