@@ -50,7 +50,7 @@ image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/experim
 - Unknown values: In some cases the column is Mandatory (:white_check_mark:) but for some samples the value is unknown. In those cases users SHOULD use **not available**.
 - Not Applicable values: In some cases the column is Mandatory (:white_check_mark:) but for some samples the value is not applicable: In those cases users SHOULD use **not applicable**.
 - Case sensitive: By specification the SDRF is case insensitive, but we RECOMMEND to use lower cases throughout all the text (Column names and values).
-- Spaces: By specification the SDRF is insensitive to spaces (SourceName == source name). We RECOMMENDED to use the space representation because is more human readable (e.g source name).
+- Spaces: By specification the SDRF is insensitive to spaces (SourceName == source name). We RECOMMENDED to use the space representation because is more human readable (e.g. source name).
 
 [[sample-metadata]]
 === Minimum information about Samples
@@ -116,7 +116,7 @@ The value for each property (e.g. _characteristics_, _comment_) corresponding to
 [[from-sample-scan]]
 == From Samples to Assay (MSRun)
 
-The connection between the _Sample_ to the final Assay (_MSrun_) is done by using a series of properties and attributes. All the properties needed to relate a given _Sample_ to the corresponding _MsRun_ are annotated with the category *comment*. The use of _comment_ is mainly aimed at differentiating Sample _characteristics_ from the MSrun properties. The following properties SHOULD be provided for each Sample/MSRun:
+The connection between the _Sample_ to the final Assay (_MSrun_) is done by using a series of properties and attributes. All the properties needed to relate a given _Sample_ to the corresponding _MSRun_ are annotated with the category *comment*. The use of _comment_ is mainly aimed at differentiating Sample _characteristics_ from the MSrun properties. The following properties SHOULD be provided for each Sample/MSRun:
 
 - assay name: For SDRF compatibilities we can not use MSRun but _assay name_. Examples of assay name: run 1, run_fracion_1_2
 
@@ -182,7 +182,7 @@ We RECOMMEND to encode some of the technical parameters of the MS experiment as 
 [[encoding-protein-modifications]]
 === Protein Modifications
 
-Sample modifications (including both chemical modifications and post translational modifications, PTMs) are originated from multiple sources: **artifacts modifications**, **isotope labeling**, adducts that are encoded as PTMs (e.g . sodium) or the most **biologically relevant** PTMs. The most common and widely studied PTMs include phosphorylation and glycosylation, among many others. Many of these PTMs are critical to a given protein's function.
+Sample modifications (including both chemical modifications and post translational modifications, PTMs) are originated from multiple sources: **artifacts modifications**, **isotope labeling**, adducts that are encoded as PTMs (e.g. sodium) or the most **biologically relevant** PTMs. The most common and widely studied PTMs include phosphorylation and glycosylation, among many others. Many of these PTMs are critical to a given protein's function.
 
 The current specification RECOMMENDS to provide Sample modifications including the aminoacid affected, if is Variable or Fixed (also Custom and Annotated modifications are supported) and other properties such as mass shift/delta mass and the position (e.g. anywhere in the sequence).
 
@@ -197,7 +197,7 @@ For each modification, we will capture different properties in a `key=value` pai
 |===
 |Property |Key |Example | Mandatory(:white_check_mark:)/Optional(:zero:) |comment
 
-|Name of the Modification| NM | NM=Acetylation | :white_check_mark: | * Name of the Modification, for custom modifications can be a name defined by the user.
+|Name of the Modification| NT | NT=Acetylation | :white_check_mark: | * Name of the Term in this particular case Modification, for custom modifications can be a name defined by the user.
 |Modification Accession  | AC | AC=UNIMOD:1    | :zero:             | Accession in an external database UNIMOD or PSI-MOD supported.
 |Chemical Formula        | CF | CF=H(2)C(2)O   | :zero:             | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
 |Modification Type       | MT | MT=Fixed       | :zero: | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
@@ -215,7 +215,7 @@ An example of a **SDRF** file with sample modifications annotated:
 |===
 | |comment[modification parameters] | comment[modification parameters]
 
-|sample 1| NM=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E | NM=Oxidation; MT=Variable; TA=M
+|sample 1| NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E | NM=Oxidation; MT=Variable; TA=M
 |===
 
 [[encoding-enzymes]]
@@ -225,7 +225,7 @@ The `comment [cleavage agent details]` property is used to capture the Enzyme in
 
 |===
 |Property           |Key |Example     | Mandatory(:white_check_mark:)/Optional(:zero:) | comment
-|Name of the Enzyme | NE | NM=Trypsin | :white_check_mark:                             | * Name of the Enzyme.
+|Name of the Enzyme | NT | NT=Trypsin | :white_check_mark:                             | * Name of the Term in this particular case Name of the Enzyme.
 |Enzyme Accession | AC | AC=MS:1001251 | :zero:                                      | Accession in an external PSI-MS Ontology definition under the following category https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001045[Cleavage agent name].
 |Cleavage site regular expression | CS | CS=(?<=[KR])(?!P) | :zero: | The cleavage site defined as a regular expression.
 |===
@@ -235,7 +235,7 @@ An example of a **SDRF** with sample enzyme annotated:
 |===
 | |comment[cleavage agent details]
 
-|sample 1| NE=Trypsin; AC=MS:1001251; CS=(?<=[KR])(?!P)
+|sample 1| NT=Trypsin; AC=MS:1001251; CS=(?<=[KR])(?!P)
 |===
 
 
