@@ -23,6 +23,7 @@ regexp="[[:digit:]]\+$"
 PR_NUMBER=`echo $CIRCLE_PULL_REQUEST | grep -o $regexp`
 
 url="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls/$PR_NUMBER"
+echo $url
 
 target_branch=$(curl -s -X GET -G $url -d access_token=$GITHUB_TOKEN | jq '.base.ref' | tr -d '"')
 
