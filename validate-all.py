@@ -3,6 +3,7 @@
 import os
 import glob
 import sys
+import argparse
 from sdrf_pipelines.sdrf import sdrf, sdrf_schema
 DIR = 'annotated-projects'
 VALIDATE = ['parse_sdrf', 'validate-sdrf']
@@ -19,10 +20,11 @@ def get_template(df):
         return sdrf_schema.HUMAN_TEMPLATE
 
 
-def main():
+def main(args):
     status = []
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, '*.tsv'))
+        errors = []
         if sdrf_files:
             result = 'OK'
             for sdrf_file in sdrf_files:
@@ -41,6 +43,9 @@ def main():
         else:
             result = 'SDRF file not found'
         status.append(result)
+        if args.verbose:
+            for err in errors:
+                print(err)
         print(project, result, sep='\t')
     errors = 0
     print('Final results:')
@@ -52,5 +57,8 @@ def main():
 
 
 if __name__ == '__main__':
-    out = main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose', action='store_true', help='Print all errors.')
+    args = parser.parse_args()
+    out = main(args)
     sys.exit(out)
