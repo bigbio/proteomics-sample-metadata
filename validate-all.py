@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import os
 import glob
@@ -40,6 +40,10 @@ def main(args):
                         if errors:
                             result = 'Failed validation for {}'.format(template)
                             break
+                    errors = df.validate(sdrf_schema.MASS_SPECTROMETRY)
+                    if errors:
+                        result = 'Failed mass spectrometry validation'
+                        break
         else:
             result = 'SDRF file not found'
         status.append(result)
