@@ -13,11 +13,10 @@ projects = os.listdir(DIR)
 def get_template(df):
     """Extract organism information and pick a template for validation"""
     organisms = df['characteristics[organism]'].unique()
-    if organisms.size > 1:
-        return None
-    organism = organisms[0].lower()
-    if organism == 'homo sapiens':
-        return sdrf_schema.HUMAN_TEMPLATE
+    templates = []
+    if 'homo sapiens' in organisms:
+        templates.append(sdrf_schema.HUMAN_TEMPLATE)
+    return templates
 
 
 def main(args):
@@ -34,12 +33,15 @@ def main(args):
                     result = 'Failed basic validation'
                     break
                 else:
-                    template = get_template(df)
-                    if template:
-                        errors = df.validate(template)
-                        if errors:
-                            result = 'Failed validation for {}'.format(template)
-                            break
+                    templates = get_template(df)
+                    if templates:
+                        for t in templates:
+                            errors = df.validate(t)
+                            if errors:
+                                result = 'Failed validation for {}'.format(t)
+                                break
+                    if errors:
+                        break
                     errors = df.validate(sdrf_schema.MASS_SPECTROMETRY)
                     if errors:
                         result = 'Failed mass spectrometry validation'
