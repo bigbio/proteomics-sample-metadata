@@ -6,7 +6,6 @@ import sys
 import argparse
 from sdrf_pipelines.sdrf import sdrf, sdrf_schema
 DIR = 'annotated-projects'
-VALIDATE = ['parse_sdrf', 'validate-sdrf']
 projects = os.listdir(DIR)
 
 
