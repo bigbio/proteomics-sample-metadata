@@ -24,7 +24,7 @@ The Proteomics Experimental Design project will handle and represent each proteo
 * The relationships between the Samples and the MSRuns
 * MSRun (technical) Metadata.
 
-The following design is based on other efforts from link:../old-discussions/proteomics-propietary-examples/external-examples/openms-experimental/OpenMS.md[OpenMS], link:../old-discussions/proteomics-propietary-examples/external-examples/maxquant/mqpar-jarnuczak-phospho.xml [MaxQuant], and link:../old-discussions/proteomics-propietary-examples/external-examples/arrayexpress/ArrayExpress.md[ArrayExpress]
+The following design is based on other efforts from link:../old-discussions/proteomics-propietary-examples/external-examples/openms-experimental/OpenMS.md[OpenMS], link:../old-discussions/proteomics-propietary-examples/external-examples/maxquant/mqpar-jarnuczak-phospho.xml[MaxQuant], and link:../old-discussions/proteomics-propietary-examples/external-examples/arrayexpress/ArrayExpress.md[ArrayExpress]
 
 [[ontologies-supported]]
 == Ontologies/Controlled Vocabularies Supported
@@ -49,7 +49,7 @@ image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/experim
 
 - Unknown values: In some cases the column is Mandatory (:white_check_mark:) but for some samples the value is unknown. In those cases users SHOULD use **not available**.
 - Not Applicable values: In some cases the column is Mandatory (:white_check_mark:) but for some samples the value is not applicable: In those cases users SHOULD use **not applicable**.
-- Case sensitive: By specification the SDRF is case insensitive, but we RECOMMEND to use lower cases throughout all the text (Column names and values).
+- Case sensitivity: By specification the SDRF is **case insensitive**, but we RECOMMEND to use lower cases throughout all the text (Column names and values).
 - Spaces: By specification the SDRF is insensitive to spaces (SourceName == source name). We RECOMMENDED to use the space representation because is more human readable (e.g. source name).
 
 [[sample-metadata]]
@@ -68,13 +68,13 @@ The Sample metadata has different *Categories/Headings*  to organize all the att
 Multiple _Characteristic_ columns of the same category (e.g., “characteristics[organism part]”) are allowed. Typically the usage implies whole to part from left to right. | characteristics [Organism Part]
 |===
 
-Each Sample in the experiment MUST contains a _Source Name_, and a collection of _characteristics_:
+Each Sample in the experiment MUST contain a _Source Name_, and a collection of _characteristics_:
 
 |===
-| source name | characteristics[organism] | characteristics[organism part] | characteristics[compound] | characteristics[phenotype] | factor value[phenotype]
+| source name   | characteristics[organism] | characteristics[organism part] | characteristics[phenotype] | characteristics[compound] | factor value[phenotype]
 
-|sample_treat   |homo sapiens |Whole Organism | necrotic tissue      | compound: drug A | necrotic tissue
-|sample_control |homo sapiens |Whole Organism | normal               | compound: none   | normal
+|sample_treat   | homo sapiens              | Whole Organism                 | necrotic tissue            | drug A                    | necrotic tissue
+|sample_control | homo sapiens              | Whole Organism                 | normal                     | none                      | normal
 |===
 
 Some important notes:
@@ -146,6 +146,17 @@ The connection between the _Sample_ to the final Assay (_MSrun_) is done by usin
 
 - comment[data file]: The _data file_ provides the name of the raw file from the instrument.
 
+[[instrument]]
+=== Type and Model of Mass Spectrometer
+
+- The model of the mass spectrometer SHOULD be specified as `comment[instrument]`.
+  Possible values are listed under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000031&viewMode=All&siblings=false[instrument model] term.
+
+- Additionally, it is strongly RECOMMENDED to include `comment[MS2 analyzer type]`. This is important e.g. for Orbitrap models
+  where MS2 scans can be acquired either in the Orbitrap or in the ion trap. Setting this value allows to differentiate
+  high-resolution MS/MS data. Possible values of `comment[MS2 analyzer type]` are https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000443&viewMode=All&siblings=false[mass analyzer types].
+
+
 NOTE: the order of the columns are important, **assay name** SHOULD we always before the comments. We RECOMMENDED to put the last column as comment[data file]
 |===
 |        |  assay name      | comment[label]    | comment[fraction identifier] | comment[data file]
@@ -169,7 +180,7 @@ In the following example, only if the technical replicate column is provided, on
 |===
 
 
-The “comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. _comment_ columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
+The "comment" columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. _comment_ columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
 
 [[label-annotatations]]
 === Label annotations
@@ -208,9 +219,7 @@ We RECOMMEND to include the public URI of the file if available. For example for
 
 - comment[depletion]: The removal of specific components of a complex mixture of proteins or peptides on the basis of some specific property of those components. The values of the columns will be `no depletion` or `depletion`.
 
-- comment[MS1 mass analyzer type] and comment[MS2 mass analyzer type]: They can be use to provide information about the mass analyzer type. Values can be found under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000451[this term ontology]
-
-- comment[collision energy]: Collision energy can be added as non-normalize (10000 eV) or normalize (1000 NCE) value.
+- comment[collision energy]: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
 
 - comment[dissociation method]: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
 
