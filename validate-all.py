@@ -56,7 +56,7 @@ def main(args):
     errors = 0
     print('Final results:')
     for project, result in zip(projects, status):
-        if result != 'OK':
+        if result != 'OK' or result != 'SDRF file not found':
             errors += 1
     print('Total: {} projects checked, {} had validation errors.'.format(len(projects), errors))
     return errors
