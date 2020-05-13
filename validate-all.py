@@ -5,17 +5,52 @@ import glob
 import sys
 import argparse
 from sdrf_pipelines.sdrf import sdrf, sdrf_schema
+from sdrf_pipelines.zooma import ols
 DIR = 'annotated-projects'
 VALIDATE = ['parse_sdrf', 'validate-sdrf']
 projects = os.listdir(DIR)
+client = ols.OlsClient()
+
+
+def retry(func):
+    def wrapper(*args, **kwargs):
+        for i in range(5):
+            try:
+                return func(*args, **kwargs)
+            except KeyError:
+                pass
+    return wrapper
+
+
+@retry
+def get_ancestors(iri):
+    return client.get_ancestors('ncbitaxon', iri)
 
 
 def get_template(df):
     """Extract organism information and pick a template for validation"""
     organisms = df['characteristics[organism]'].unique()
     templates = []
-    if 'homo sapiens' in organisms:
-        templates.append(sdrf_schema.HUMAN_TEMPLATE)
+
+    for org in organisms:
+        org = org.lower()
+        if org == 'homo sapiens':
+            templates.append(sdrf_schema.HUMAN_TEMPLATE)
+        else:
+            hit = client.besthit(org, ontology='ncbitaxon')
+            if hit is not None:
+                iri = hit['iri']
+                ancestors = get_ancestors(iri)
+                if ancestors is None:
+                    print('Could not get ancestors for {}!'.format(org))
+                    ancestors = []
+                labels = {a['label'] for a in ancestors}
+                if 'Gnathostomata <vertebrates>' in labels:
+                    templates.append(sdrf_schema.VERTEBRATES_TEMPLATE)
+                elif 'Metazoa' in labels:
+                    templates.append(sdrf_schema.NON_VERTEBRATES_TEMPLATE)
+                elif 'Viridiplantae' in labels:
+                    templates.append(sdrf_schema.PLANTS_TEMPLATE)
     return templates
 
 
@@ -23,29 +58,26 @@ def main(args):
     status = []
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, '*.tsv'))
-        errors = []
+        error_types = set()
         if sdrf_files:
             result = 'OK'
             for sdrf_file in sdrf_files:
                 df = sdrf.SdrfDataFrame.parse(sdrf_file)
                 errors = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
                 if errors:
-                    result = 'Failed basic validation'
-                    break
+                    error_types.add('basic')
                 else:
                     templates = get_template(df)
                     if templates:
                         for t in templates:
                             errors = df.validate(t)
                             if errors:
-                                result = 'Failed validation for {}'.format(t)
-                                break
-                    if errors:
-                        break
+                                error_types.add('{} template'.format(t))
                     errors = df.validate(sdrf_schema.MASS_SPECTROMETRY)
                     if errors:
-                        result = 'Failed mass spectrometry validation'
-                        break
+                        error_types.add('mass spectrometry')
+            if error_types:
+                result = 'Failed ' + ', '.join(error_types) + ' validation'
         else:
             result = 'SDRF file not found'
         status.append(result)
