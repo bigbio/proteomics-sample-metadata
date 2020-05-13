@@ -112,19 +112,39 @@ The value for each property (e.g. _characteristics_, _comment_) corresponding to
   In the key=value pair representation the Value of the property is represented as an Object with multiple properties where the key is one of the properties of the object and the value is the corresponding value for the particular key. For example:
   NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E
 
+[[encoding-age]]
+=== How to encode age
+
+One of the characteristics about the sample is the age of an individual. This specification RECOMMENDED to provide the age in the following format: {X}Y{X}M{X}D . Some valid examples are:
+
+- 40Y (forty years)
+- 40Y5M (forty years and 5 months)
+- 40Y5M2D (forty years, 5 months and 2 days)
+
+[[enrichment-phsophorylation-experiment]]
+=== Phosphoproteomics and PTMs experiments
+
+In phopshoproteomics experiments the sample is enrich to detect phosphorylation sites. In those experiments the `characteristics[enrichment process]` should be provided.
+
+The different values already included in EFO are:
+
+- enrichment of phosphorylated Protein
+- enrichment of glycosylated Protein
+
+This characteristics can be used as `factor value[enrichment process]` can be used to differentiate the expression between proteins in the phosphoproteomics sample compare with control.
 
 [[from-sample-scan]]
 == From Samples to Assay (MSRun)
 
 The connection between the _Sample_ to the final Assay (_MSrun_) is done by using a series of properties and attributes. All the properties needed to relate a given _Sample_ to the corresponding _MSRun_ are annotated with the category *comment*. The use of _comment_ is mainly aimed at differentiating Sample _characteristics_ from the MSrun properties. The following properties SHOULD be provided for each Sample/MSRun:
 
-- assay name: For SDRF compatibilities we can not use MSRun but _assay name_. Examples of assay name: run 1, run_fracion_1_2
+- assay name: For SDRF compatibilities we can not use MSRun but _assay name_. Examples of assay name: run 1, run_fraction_1_2
 
 - comment[fraction identifier]: The _fraction identifier_ allows to record the number of a given fraction. The fraction identifier corresponds to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term]. If the experiment is not fractionated, the annotator MUST use **1** for each MSRun.
 
-- comment[label]: The _label_ describes the label applied to each Sample (if any). In case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding _label_ SHOULD be added. For Label-free experiments the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002038[label free sample] term MUST be added.
+- comment[label]: The _label_ describes the label applied to each Sample (if any). In case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding _label_ SHOULD be added. For Label-free experiments the [label free sample] term MUST be added.
 
-- comment[data file]: The _data file_ provides the name of the raw file from the instrument. The raw data file corresponds to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000577[ontology term].
+- comment[data file]: The _data file_ provides the name of the raw file from the instrument.
 
 NOTE: the order of the columns are important, **assay name** SHOULD we always before the comments. We RECOMMENDED to put the last column as comment[data file]
 |===
@@ -133,7 +153,7 @@ NOTE: the order of the columns are important, **assay name** SHOULD we always be
 |sample 1|  run 2           | label free sample | 2                            | 000261_C05_P0001563_A00_B00K_R2.RAW
 |===
 
-TIP: All the possible _label_ values can be seen in the in the PSI-MS CV under the https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1002602[sample label] node.
+TIP: All the possible _label_ values can be seen in the in the PRIDE CV under the https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label] node.
 
 In the case that technical and/or biological replicates have been measured, this information is not sufficient anymore.
 To be able to trace a given quantitative value to the exact replicate one needs encode this information as part of the experimental design.
@@ -143,13 +163,32 @@ In the following example, only if the technical replicate column is provided, on
 |===
 | source name       | assay name | comment[label]    | comment[fraction identifier] | comment[technical replicate] | comment[data file]
 | Sample 1          |    run 1   | label free sample | 1                            | 1                            | 000261_C05_P0001563_A00_B00K_F1_TR1.RAW
-| Sample 1          |    run 2   | label free sample | 2                            | 1                            |  000261_C05_P0001563_A00_B00K_F2_TR1.RAW
+| Sample 1          |    run 2   | label free sample | 2                            | 1                            | 000261_C05_P0001563_A00_B00K_F2_TR1.RAW
 | Sample 1          |    run 3   | label free sample | 1                            | 2                            | 000261_C05_P0001563_A00_B00K_F1_TR2.RAW
 | Sample 1          |    run 4   | label free sample | 2                            | 2                            | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW
 |===
 
 
 The “comment” columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. _comment_ columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
+
+[[label-annotatations]]
+=== Label annotations
+
+In order to annotate quantitative projects, the SDRF file format use tags for each channel associated with the sample in comment[label]. The label values are organized under the following ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label].
+
+Some of the most popular labels are:
+
+* For label-free experiments the value should be: label-free
+* For TMT experiments the SDRF uses the PRIDE ontology terms under sample label. Here some examples of TMT channels:
+** TMT126, TMT127, TMT127C , TMT127N, TMT128 , TMT128C, TMT128N, TMT129, TMT129C, TMT129N, TMT130, TMT130C, TMT130N, TMT131
+
+Please, if you need to add an additional label, create an https://github.com/PRIDE-Utilities/pride-ontology/issues[issue in the pride-ontology repository].
+
+Examples:
+
+- https://github.com/bigbio/proteomics-metadata-standard/blob/c69665600d5e0ddaf6099b4660cc70764ef6cddf/annotated-projects/PXD000612/sdrf.tsv[Label free experiment]
+- https://github.com/bigbio/proteomics-metadata-standard/blob/c69665600d5e0ddaf6099b4660cc70764ef6cddf/annotated-projects/PXD011799/sdrf.tsv[TMT experiment]
+- https://github.com/bigbio/proteomics-metadata-standard/blob/a141d6bc225e3df8d35e36f0035307f0c7fadf1d/annotated-projects/PXD017710/sdrf-silac.tsv[SILAC experiment]
 
 [[additional-raw-file]]
 === Additional RAW file properties
@@ -165,10 +204,15 @@ We RECOMMEND to include the public URI of the file if available. For example for
 [[sample-scan-additional]]
 === MSRun additional properties
 
-Some analysis software as MaxQuant use the 'Fraction Group' concept to perform better statistical analysis:
+- comment[fractionation method]: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. Example, Off-gel electrophoresis.
 
-- comment[fraction group]: Some quantitative tools use the 'Fraction Group' to know which fractions belong together. In MaxQuant the 'Fraction Group' is called "Experiment".
+- comment[depletion]: The removal of specific components of a complex mixture of proteins or peptides on the basis of some specific property of those components. The values of the columns will be `no depletion` or `depletion`.
 
+- comment[MS1 mass analyzer type] and comment[MS2 mass analyzer type]: They can be use to provide information about the mass analyzer type. Values can be found under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000451[this term ontology]
+
+- comment[collision energy]: Collision energy can be added as non-normalize (10000 eV) or normalize (1000 NCE) value.
+
+- comment[dissociation method]: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
 
 [[encoding-MSRun-technical-details]]
 == MSRun technical details properties
@@ -250,20 +294,6 @@ Encoding precursor and fragment tolerances, for proteomics experiments is import
 |sample 1| 0.6 Da |	20 ppm
 |===
 
-
-[[label-annotatations]]
-=== Label annotations
-
-In order to annotate quantitative projects, the SDRF file format use tags for each channel associated with the sample in comment[label].
-
-Some of the most popular labels are:
-
-* For label-free experiments the value should be: label-free
-* For TMT experiments the SDRF uses the PRIDE ontology terms under sample label. Here some examples of TMT channels:
-** TMT126, TMT127, TMT127C , TMT127N, TMT128 , TMT128C, TMT128N, TMT129, TMT129C, TMT129N, TMT130, TMT130C, TMT130N, TMT131
-
-
-
 [[sdrf-templates]]
 == Sample/MSRun templates
 
@@ -284,15 +314,15 @@ The *sample metadata templates* are a set of guidelines to annotate different ty
 |characteristics[organism]              | :white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark:
 |characteristics[strain/breed]          |                    |                   |                   |:zero:             |                   |:zero:
 |characteristics[ecotype/cultivar]      |                    |                   |                   |                   |:zero:             |
-|characteristics[ethnic group]             |                    |:white_check_mark: |                   |                   |                   |
+|characteristics[ancestry category]     |                    |:white_check_mark: |                   |                   |                   |
 |characteristics[age]                   |                    |:white_check_mark: |:zero:             |                   |:zero:             |
-|characteristics[developmental stage]   |                    |:white_check_mark: |:zero:             |                   |:zero:             |
+|characteristics[developmental stage]   |                    |:zero:             |:zero:             |                   |:zero:             |
 |characteristics[sex]                   |                    |:white_check_mark: |:zero:             |                   |                   |
 |characteristics[disease]               | :white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |                   |:white_check_mark:
 |characteristics[organism part]         | :white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark:
 |characteristics[cell type]             | :white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark:
 |characteristics[individual]            |                    |:zero:             |:zero:             |:zero:             |:zero:             |:zero:
-|characteristics[cultured cell]        |                    |                   |                   |                   |                   |:white_check_mark:
+|characteristics[cultured cell]         |                    |                   |                   |                   |                   |:white_check_mark:
 |                                       |                    |                   |                   |                   |                   |
 |comment[data file]                     | :white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark:
 |comment[fraction identifier]           | :white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark: |:white_check_mark:
@@ -312,7 +342,6 @@ The variable/property under study should be highlighted using the *factor value*
 |===
 |factor value    | :zero:           | 0..*        | “factor value” columns should indicate which experimental factor / variable are use to perform the quantitative data analysis. The “factor value” columns should occur after all characteristics and the attributes of the samples. | Factor Value [phenotype]
 |===
-
 
 NOTE: The factor value[_property_] is optional (:zero:) because it depend of the analysis that the user wants to perform with the sample. For example, the original submitter of the dataset probably studied the phenotype variable but the reanalysis is focus on cell line.
 
