@@ -59,6 +59,7 @@ def main(args):
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, '*.tsv'))
         error_types = set()
+        errors = []
         if sdrf_files:
             result = 'OK'
             for sdrf_file in sdrf_files:
@@ -70,10 +71,10 @@ def main(args):
                     templates = get_template(df)
                     if templates:
                         for t in templates:
-                            errors = df.validate(t)
+                            errors.extend(df.validate(t))
                             if errors:
                                 error_types.add('{} template'.format(t))
-                    errors = df.validate(sdrf_schema.MASS_SPECTROMETRY)
+                    errors.extend(df.validate(sdrf_schema.MASS_SPECTROMETRY))
                     if errors:
                         error_types.add('mass spectrometry')
             if error_types:
