@@ -63,18 +63,21 @@ def main(args):
             result = 'OK'
             for sdrf_file in sdrf_files:
                 df = sdrf.SdrfDataFrame.parse(sdrf_file)
-                errors = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
-                if errors:
+                err = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
+                errors.extend(err)
+                if err:
                     error_types.add('basic')
                 else:
                     templates = get_template(df)
                     if templates:
                         for t in templates:
-                            errors.extend(df.validate(t))
-                            if errors:
+                            err = df.validate(t)
+                            errors.extend(err)
+                            if err:
                                 error_types.add('{} template'.format(t))
-                    errors.extend(df.validate(sdrf_schema.MASS_SPECTROMETRY))
-                    if errors:
+                    err = df.validate(sdrf_schema.MASS_SPECTROMETRY)
+                    errors.extend(err)
+                    if err:
                         error_types.add('mass spectrometry')
             if error_types:
                 result = 'Failed ' + ', '.join(error_types) + ' validation'
