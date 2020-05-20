@@ -58,6 +58,7 @@ def main(args):
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
         error_types = set()
+        error_files = set()
         errors = []
         if sdrf_files:
             result = 'OK'
@@ -76,8 +77,10 @@ def main(args):
                     errors.extend(df.validate(sdrf_schema.MASS_SPECTROMETRY))
                     if errors:
                         error_types.add('mass spectrometry')
+                if errors:
+                    error_files.add(os.path.basename(sdrf_file))
             if error_types:
-                result = 'Failed ' + ', '.join(error_types) + ' validation'
+                result = 'Failed ' + ', '.join(error_types) + ' validation ({})'.format(', '.join(error_files))
         else:
             result = 'SDRF file not found'
         status.append(result)
