@@ -56,7 +56,7 @@ def get_template(df):
 def main(args):
     status = []
     for project in projects:
-        sdrf_files = glob.glob(os.path.join(DIR, project, '*.tsv'))
+        sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
         error_types = set()
         errors = []
         if sdrf_files:
@@ -88,7 +88,7 @@ def main(args):
     errors = 0
     print('Final results:')
     for project, result in zip(projects, status):
-        if result != 'OK' and result != 'SDRF file not found':
+        if result != 'OK':
             errors += 1
     print('Total: {} projects checked, {} had validation errors.'.format(len(projects), errors))
     return errors
