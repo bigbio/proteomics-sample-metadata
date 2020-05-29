@@ -79,7 +79,7 @@ def has_errors(errors):
 
 
 def has_warnings(errors):
-    return any(getattr(err, '_error_type', None) == logging.WARN for err in errors)
+    return any(is_warning(err) for err in errors)
 
 
 def collapse_warnings(errors):
