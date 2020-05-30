@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -31,8 +33,8 @@ jobs:
       id: getfiles
       run: |
         echo 'Changed files:'
-        git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
+        git diff-tree --no-commit-id --name-only ${{ github.event.before }} ${{ github.sha }}
+        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only ${{ github.event.before }} ${{ github.sha }} | xargs)"
     - name: Run validation
       run: |
         echo 'Changed files:'
