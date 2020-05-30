@@ -37,12 +37,12 @@ jobs:
       id: getfiles
       run: |
         export OUTFILE=$HOME/filelist.txt
-        if [ ${{ github.event_name }} == pull_request ]; then
+        if [ "${{ github.event_name }}" == pull_request ]; then
             echo 'Changed files:'
             git diff-tree --no-commit-id --name-only -r origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | tee "$OUTFILE"
         else
           # push
-          if [ ${{ github.event.before }} == "0000000000000000000000000000000000000000" ]; then
+          if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
             parent="origin/master" # compare with master as a last resort
           else
             parent="${{ github.event.before }}"
@@ -50,8 +50,6 @@ jobs:
           git diff-tree --no-commit-id --name-only -r "$parent" ${{ github.sha }} | tee "$OUTFILE"
         fi
     - name: Run validation
-      # env:
-        # FILELIST: ${{ steps.getfiles.outputs.files }}
       run: |
         export FILELIST=$HOME/filelist.txt
         cat "$FILELIST"
@@ -66,4 +64,3 @@ jobs:
           echo "Validating projects: $projects"
           python validate.py -v $projects
         fi
-
