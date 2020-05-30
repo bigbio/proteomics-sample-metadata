@@ -12,6 +12,8 @@ on:
     paths:
       - 'annotated-projects/**'
       - 'validate.py'
+  schedule:
+      - cron: '*/10 * * * *'
 
 jobs:
   build:
@@ -41,8 +43,8 @@ jobs:
       run: |
         echo 'Changed files:'
         echo $FILELIST
-        if echo "$FILELIST" | grep -q '^validate.py'; then
-          echo "Validating all projects (script changed)"
+        if [ ${{ github.event_name }} == "schedule" ] || echo "$FILELIST" | grep -q '^validate.py'; then
+          echo "Validating all projects"
           python validate.py -v
         else
           projects=$(echo "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
