@@ -9,8 +9,8 @@ import itertools
 from urllib.error import URLError
 
 from pandas_schema import ValidationWarning
-from sdrf_pipelines.sdrf import sdrf, sdrf_schema
 from sdrf_pipelines.zooma import ols
+from sdrf_pipelines.sdrf import sdrf, sdrf_schema
 
 DIR = 'annotated-projects'
 PROJECTS = os.listdir(DIR)
