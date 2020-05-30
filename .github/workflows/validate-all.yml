@@ -42,7 +42,7 @@ jobs:
             git diff-tree --no-commit-id --name-only -r origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | tee "$OUTFILE"
         else
           # push
-          if [-z ${{ github.event.before }} ]; then
+          if [ ${{ github.event.before }} == "0000000000000000000000000000000000000000" ]; then
             parent="origin/master" # compare with master as a last resort
           else
             parent="${{ github.event.before }}"
