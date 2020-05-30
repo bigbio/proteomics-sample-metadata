@@ -41,26 +41,27 @@ jobs:
             echo "Cannot get changed files without base ref. Will check all files."
           else
             echo 'Changed files:'
-            git diff-tree --no-commit-id --name-only -r origin/${{ github.base_ref }} ${{ github.sha }}
-            echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r origin/${{ github.base_ref }} ${{ github.sha }})"
+            git diff-tree --no-commit-id --name-only -r origin/${{ github.base_ref }} ${{ github.sha }} > $HOME/filelist.txt
+            # echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r origin/${{ github.base_ref }} ${{ github.sha }})"
           fi
         else
           # push
-          git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }}
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }})"
+          git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }} > $HOME/filelist.txt
+          # echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }})"
         fi
     - name: Run validation
-      env:
-        FILELIST: ${{ steps.getfiles.outputs.files }}
+      # env:
+        # FILELIST: ${{ steps.getfiles.outputs.files }}
       run: |
+        export FILELIST=$HOME/filelist.txt
         if [ ${{ github.event_name }} == "schedule" ]; then
           echo "Validating all projects (schedule)"
           python validate.py -v
-        elif echo "$FILELIST" | grep -q '^validate.py'; then
+        elif cat "$FILELIST" | grep -q '^validate.py'; then
           echo "Validating all projects (script changed)"
           python validate.py -v
         else
-          projects=$(echo "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
+          projects=$(cat "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
           echo "Validating projects: $projects"
           python validate.py -v $projects
         fi
