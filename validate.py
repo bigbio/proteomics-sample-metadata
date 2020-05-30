@@ -6,6 +6,7 @@ import sys
 import argparse
 import logging
 import itertools
+from urllib.error import URLError
 
 from pandas_schema import ValidationWarning
 from sdrf_pipelines.sdrf import sdrf, sdrf_schema
@@ -21,7 +22,7 @@ def retry(func):
         for i in range(5):
             try:
                 return func(*args, **kwargs)
-            except KeyError:
+            except (KeyError, URLError):
                 pass
     return wrapper
 
