@@ -13,7 +13,7 @@ on:
       - 'annotated-projects/**'
       - 'validate.py'
   schedule:
-      - cron: '*/10 * * * *'
+      - cron: '0 0 0 * *'
 
 jobs:
   build:
@@ -32,6 +32,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install git+https://github.com/bigbio/sdrf-pipelines
     - name: Get a list of changed files
+      if: github.event_name != 'schedule'
       id: getfiles
       run: |
         echo 'Changed files:'
@@ -41,8 +42,6 @@ jobs:
       env:
         FILELIST: ${{ steps.getfiles.outputs.files }}
       run: |
-        echo 'Changed files:'
-        echo $FILELIST
         if [ ${{ github.event_name }} == "schedule" ]; then
           echo "Validating all projects (schedule)"
           python validate.py -v
