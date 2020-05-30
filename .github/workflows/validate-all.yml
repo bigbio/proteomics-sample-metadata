@@ -36,11 +36,19 @@ jobs:
       if: github.event_name != 'schedule'
       id: getfiles
       run: |
-        echo 'Base ref:'
-        echo ${{ github.base_ref }}
-        echo 'Changed files:'
-        git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }}
-        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }})"
+        if [ ${{ github.event_name }} == pull_request ]; then
+          if [ -z ${{ github.base_ref }} ]; then
+            echo "Cannot get changed files without base ref. Will check all files."
+          else
+            echo 'Changed files:'
+            git diff-tree --no-commit-id --name-only -r ${{ github.base_ref }} ${{ github.sha }}
+            echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.base_ref }} ${{ github.sha }})"
+          fi
+        else
+          # push
+          git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }}
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }})"
+        fi
     - name: Run validation
       env:
         FILELIST: ${{ steps.getfiles.outputs.files }}
