@@ -6,13 +6,14 @@ import sys
 import argparse
 import logging
 import itertools
+from urllib.error import URLError
 
 from pandas_schema import ValidationWarning
-from sdrf_pipelines.sdrf import sdrf, sdrf_schema
 from sdrf_pipelines.zooma import ols
+from sdrf_pipelines.sdrf import sdrf, sdrf_schema
 
 DIR = 'annotated-projects'
-projects = os.listdir(DIR)
+PROJECTS = os.listdir(DIR)
 client = ols.OlsClient()
 
 
@@ -21,7 +22,7 @@ def retry(func):
         for i in range(5):
             try:
                 return func(*args, **kwargs)
-            except KeyError:
+            except (KeyError, URLError):
                 pass
     return wrapper
 
@@ -98,6 +99,10 @@ def collapse_warnings(errors):
 
 def main(args):
     status = []
+    if args.project:
+        projects = args.project
+    else:
+        projects = PROJECTS
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
         error_types = set()
@@ -159,6 +164,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='count', help='Print all errors. If specified twice, print all warnings.')
+    parser.add_argument('project', nargs='*')
     args = parser.parse_args()
     out = main(args)
     sys.exit(out)
