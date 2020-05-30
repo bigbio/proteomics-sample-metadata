@@ -33,10 +33,20 @@ jobs:
       id: getfiles
       run: |
         echo 'Changed files:'
-        git diff-tree --no-commit-id --name-only ${{ github.event.before }} ${{ github.sha }}
-        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only ${{ github.event.before }} ${{ github.sha }} | xargs)"
+        git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }}
+        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }} | xargs)"
     - name: Run validation
+      with:
+        filelist: ${{ steps.getfiles.outputs.files }}
       run: |
         echo 'Changed files:'
-        echo ${{ steps.getfiles.outputs.files }}
-        python validate-all.py -v
+        echo $ {{ filelist }}
+        if echo "$filelist" | grep -q '^validate.py'; then
+          echo "Validating all projects (script changed)"
+          python validate.py -v
+        else
+          projects=$(echo ${{ filelist }} | grep '^annotated-projects' | cut -d/ -f 2)
+          echo "Validating projects: $projects"
+          python validate.py -v $projects
+        fi
+
