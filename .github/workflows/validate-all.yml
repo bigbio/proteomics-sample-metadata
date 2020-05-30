@@ -40,7 +40,6 @@ jobs:
         if [ ${{ github.event_name }} == pull_request ]; then
             echo 'Changed files:'
             git diff-tree --no-commit-id --name-only -r origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | tee "$OUTFILE"
-          fi
         else
           # push
           git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }} | tee "$OUTFILE"
