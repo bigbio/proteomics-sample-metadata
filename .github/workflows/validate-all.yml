@@ -51,16 +51,17 @@ jobs:
         fi
     - name: Run validation
       run: |
-        export FILELIST=$HOME/filelist.txt
-        cat "$FILELIST"
         if [ ${{ github.event_name }} == "schedule" ]; then
           echo "Validating all projects (schedule)"
           python validate.py -v
-        elif grep -q '^validate.py' "$FILELIST"; then
-          echo "Validating all projects (script changed)"
-          python validate.py -v
         else
-          projects=$(cat "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
-          echo "Validating projects: $projects"
-          python validate.py -v $projects
-        fi
+          export FILELIST=$HOME/filelist.txt
+          cat "$FILELIST"
+          if grep -q '^validate.py' "$FILELIST"; then
+            echo "Validating all projects (script changed)"
+            python validate.py -v
+          else
+            projects=$(cat "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
+            echo "Validating projects:" $projects
+            python validate.py -v $projects
+          fi
