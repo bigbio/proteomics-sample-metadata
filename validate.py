@@ -6,11 +6,14 @@ import sys
 import argparse
 import logging
 import itertools
+from urllib.error import URLError
 
-from sdrf_pipelines.sdrf import sdrf, sdrf_schema
+from pandas_schema import ValidationWarning
 from sdrf_pipelines.zooma import ols
+from sdrf_pipelines.sdrf import sdrf, sdrf_schema
+
 DIR = 'annotated-projects'
-projects = os.listdir(DIR)
+PROJECTS = os.listdir(DIR)
 client = ols.OlsClient()
 
 
@@ -19,7 +22,7 @@ def retry(func):
         for i in range(5):
             try:
                 return func(*args, **kwargs)
-            except KeyError:
+            except (KeyError, URLError):
                 pass
     return wrapper
 
@@ -56,16 +59,32 @@ def get_template(df):
     return templates
 
 
-def count_errors(errors):
-    return sum(err._error_type == logging.ERROR for err in errors)
+def is_error(err):
+    if hasattr(err, '_error_type'):
+        return err._error_type == logging.ERROR
+    if not isinstance(err, ValidationWarning):
+        raise TypeError('Validation errors should be of type ValidationWarning, not {}'.format(type(err)))
+    return True
 
 
-def count_warnings(errors):
-    return sum(err._error_type == logging.WARN for err in errors)
+def is_warning(err):
+    if hasattr(err, '_error_type'):
+        return err._error_type == logging.WARN
+    if not isinstance(err, ValidationWarning):
+        raise TypeError('Validation errors should be of type ValidationWarning, not {}'.format(type(err)))
+    return False
+
+
+def has_errors(errors):
+    return any(is_error(err) for err in errors)
+
+
+def has_warnings(errors):
+    return any(is_warning(err) for err in errors)
 
 
 def collapse_warnings(errors):
-    warnings = [err for err in errors if err._error_type == logging.WARN]
+    warnings = [err for err in errors if is_warning(err)]
     messages = []
     if warnings:
         key = lambda w: (w.column, w.message)
@@ -80,6 +99,10 @@ def collapse_warnings(errors):
 
 def main(args):
     status = []
+    if args.project:
+        projects = args.project
+    else:
+        projects = PROJECTS
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
         error_types = set()
@@ -91,7 +114,7 @@ def main(args):
                 df = sdrf.SdrfDataFrame.parse(sdrf_file)
                 err = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
                 errors.extend(err)
-                if count_errors(err):
+                if has_errors(err):
                     error_types.add('basic')
                 else:
                     templates = get_template(df)
@@ -99,17 +122,17 @@ def main(args):
                         for t in templates:
                             err = df.validate(t)
                             errors.extend(err)
-                            if count_errors(err):
+                            if has_errors(err):
                                 error_types.add('{} template'.format(t))
                     err = df.validate(sdrf_schema.MASS_SPECTROMETRY)
                     errors.extend(err)
-                    if count_errors(err):
+                    if has_errors(err):
                         error_types.add('mass spectrometry')
-                if count_errors(errors):
+                if has_errors(errors):
                     error_files.add(os.path.basename(sdrf_file))
             if error_types:
                 result = 'Failed ' + ', '.join(error_types) + ' validation ({})'.format(', '.join(error_files))
-            elif count_warnings(errors):
+            elif has_warnings(errors):
                 result = 'OK (with warnings)'
         else:
             result = 'SDRF file not found'
@@ -121,7 +144,7 @@ def main(args):
             for w in collapse_warnings(errors):
                 print(w)
             for err in errors:
-                if err._error_type == logging.ERROR:
+                if is_error(err):
                     print(err)
         print(project, result, sep='\t')
     errors = 0
@@ -141,6 +164,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='count', help='Print all errors. If specified twice, print all warnings.')
+    parser.add_argument('project', nargs='*')
     args = parser.parse_args()
     out = main(args)
     sys.exit(out)
