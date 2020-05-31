@@ -24,18 +24,17 @@ The Proteomics Experimental Design project will handle and represent each proteo
 * The relationships between the Samples and the MSRuns
 * MSRun (technical) Metadata.
 
-The following design is based on other efforts from link:../old-discussions/proteomics-propietary-examples/external-examples/openms-experimental/OpenMS.md[OpenMS], link:../old-discussions/proteomics-propietary-examples/external-examples/maxquant/mqpar-jarnuczak-phospho.xml[MaxQuant], and link:../old-discussions/proteomics-propietary-examples/external-examples/arrayexpress/ArrayExpress.md[ArrayExpress]
+The following design is based on other efforts from link:../additional-documentation/proteomics-propietary-examples/external-examples/openms-experimental/OpenMS.md[OpenMS], link:../additional-documentation/proteomics-propietary-examples/external-examples/maxquant/mqpar-jarnuczak-phospho.xml[MaxQuant], and link:../additional-documentation/proteomics-propietary-examples/external-examples/arrayexpress/ArrayExpress.md[ArrayExpress]
 
 [[ontologies-supported]]
 == Ontologies/Controlled Vocabularies Supported
 
-The list of ontologies/controlled vocabularies supported can be found https://github.com/bigbio/pride-metadata-standard#3-ontologies[here].
+The list of ontologies/controlled vocabularies supported can be found https://github.com/bigbio/proteomics-metadata-standard#3-ontologies[here].
 
 [[sdrf-file-format]]
 == The sample and data relationship format
 
 The https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[SDRF] (Sample and Data Relationship Format) describes the sample characteristics and the relationships between samples and  data files, etc. The information in SDRF files is organised so that it follows the natural flow of a functional genomics experiment, since it was originally developed for this type of experiments. It begins by describing the samples and finishes with the names of the data files generated from the analyses of the experimental results. Here we are introducing and adapting the SDRF file format for the proteomics community.
-
 The SDRF file is a tab-delimited format where each ROW corresponds to a relation between a _Sample_ and a _Data_ file, each column corresponds to an attribute/property of the _Sample_ and the value in each cell is the specific *value* of the property for a given _Sample_.
 
 NOTE: We expect that the collaboration with the transcriptomics and functional genomics community through the existing SDRF file format will enable the development of tools and bioinformatics workflows that can analyze together different types of expression data (proteomics and transcriptomics).
@@ -211,7 +210,7 @@ Examples:
 [[additional-raw-file]]
 === Additional RAW file properties
 
-We RECOMMEND to include the public URI of the file if available. For example for PRIDE datasets the URI from the FTP can be provided:
+We RECOMMEND to include the public URI of the file if available. For example for ProteomeXchange datasets the URI from the FTP can be provided:
 
 |===
 |   |... |comment[associated file uri]
@@ -364,5 +363,20 @@ NOTE: The factor value[_property_] is optional (:zero:) because it depend of the
 [[compose-sdrf-files]]
 == Multiple projects into one annotation file
 
-PRIDE curators can decide to annotate multiple PRIDE Projects into one big sdrf for reanalysis purpose. If that is the case, we RECOMMENDED to use the __comment[proteomexchange accession number]__ to differentiate between projects.
+Curators can decide to annotate multiple ProteomXchange Projects into one big sdrf for reanalysis purpose. If that is the case, we RECOMMENDED to use the __comment[proteomexchange accession number]__ to differentiate between projects.
+
+[[additional-experimental-designs]]
+== Additional use cases and experimental designs
+
+=== Synthetic peptide libraries
+
+Proteomics and mass spectrometry use synthetic peptide libraries for multiple use cases including:
+
+- Benchmark of analytical and bioinformatics methods and algorithms.
+- Improve of peptide identification/quantification using spectral libraries.
+
+When describing synthetic peptide libraries most of the sample metadata can be declare as `not applicable`. However, some authors can annotate the organism for example because they know the library has been design from specific peptide species, see example https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD000759/sdrf.tsv[Synthetic Peptide experiment].
+
+It is important to annotate that the sample is a synthetic peptide library, this can be done by adding the `characteristics[synthetic peptide]` the possible values are: `synthetic` or `not synthetic`.
+
 

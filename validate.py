@@ -4,10 +4,16 @@ import os
 import glob
 import sys
 import argparse
-from sdrf_pipelines.sdrf import sdrf, sdrf_schema
+import logging
+import itertools
+from urllib.error import URLError
+
+from pandas_schema import ValidationWarning
 from sdrf_pipelines.zooma import ols
+from sdrf_pipelines.sdrf import sdrf, sdrf_schema
+
 DIR = 'annotated-projects'
-projects = os.listdir(DIR)
+PROJECTS = os.listdir(DIR)
 client = ols.OlsClient()
 
 
@@ -16,7 +22,7 @@ def retry(func):
         for i in range(5):
             try:
                 return func(*args, **kwargs)
-            except KeyError:
+            except (KeyError, URLError):
                 pass
     return wrapper
 
@@ -53,8 +59,50 @@ def get_template(df):
     return templates
 
 
+def is_error(err):
+    if hasattr(err, '_error_type'):
+        return err._error_type == logging.ERROR
+    if not isinstance(err, ValidationWarning):
+        raise TypeError('Validation errors should be of type ValidationWarning, not {}'.format(type(err)))
+    return True
+
+
+def is_warning(err):
+    if hasattr(err, '_error_type'):
+        return err._error_type == logging.WARN
+    if not isinstance(err, ValidationWarning):
+        raise TypeError('Validation errors should be of type ValidationWarning, not {}'.format(type(err)))
+    return False
+
+
+def has_errors(errors):
+    return any(is_error(err) for err in errors)
+
+
+def has_warnings(errors):
+    return any(is_warning(err) for err in errors)
+
+
+def collapse_warnings(errors):
+    warnings = [err for err in errors if is_warning(err)]
+    messages = []
+    if warnings:
+        key = lambda w: (w.column, w.message)
+        for keyv, group in itertools.groupby(sorted(warnings, key=key), key=key):
+            col, message = keyv
+            gr = list(group)
+            w = min(gr, key=lambda w: w.row)
+            messages.append('{} validation warnings collapsed on column {} (first row {}, value {}): {}'.format(
+                len(gr), col, w.row, w.value, message))
+    return messages
+
+
 def main(args):
     status = []
+    if args.project:
+        projects = args.project
+    else:
+        projects = PROJECTS
     for project in projects:
         sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
         error_types = set()
@@ -66,7 +114,7 @@ def main(args):
                 df = sdrf.SdrfDataFrame.parse(sdrf_file)
                 err = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
                 errors.extend(err)
-                if err:
+                if has_errors(err):
                     error_types.add('basic')
                 else:
                     templates = get_template(df)
@@ -74,35 +122,49 @@ def main(args):
                         for t in templates:
                             err = df.validate(t)
                             errors.extend(err)
-                            if err:
+                            if has_errors(err):
                                 error_types.add('{} template'.format(t))
                     err = df.validate(sdrf_schema.MASS_SPECTROMETRY)
                     errors.extend(err)
-                    if err:
+                    if has_errors(err):
                         error_types.add('mass spectrometry')
-                if errors:
+                if has_errors(errors):
                     error_files.add(os.path.basename(sdrf_file))
             if error_types:
                 result = 'Failed ' + ', '.join(error_types) + ' validation ({})'.format(', '.join(error_files))
+            elif has_warnings(errors):
+                result = 'OK (with warnings)'
         else:
             result = 'SDRF file not found'
         status.append(result)
-        if args.verbose:
+        if args.verbose == 2:
             for err in errors:
                 print(err)
+        elif args.verbose:
+            for w in collapse_warnings(errors):
+                print(w)
+            for err in errors:
+                if is_error(err):
+                    print(err)
         print(project, result, sep='\t')
     errors = 0
+    warnings = 0
     print('Final results:')
     for project, result in zip(projects, status):
         if result != 'OK' and result != 'SDRF file not found':
-            errors += 1
-    print('Total: {} projects checked, {} had validation errors.'.format(len(projects), errors))
+            if result[:2] == 'OK':
+                warnings += 1
+            else:
+                errors += 1
+    print('Total: {} projects checked, {} had validation errors, {} had validation warnings.'.format(
+        len(projects), errors, warnings))
     return errors
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', action='store_true', help='Print all errors.')
+    parser.add_argument('-v', '--verbose', action='count', help='Print all errors. If specified twice, print all warnings.')
+    parser.add_argument('project', nargs='*')
     args = parser.parse_args()
     out = main(args)
     sys.exit(out)
