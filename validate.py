@@ -34,8 +34,16 @@ def get_ancestors(iri):
 
 def get_template(df):
     """Extract organism information and pick a template for validation"""
-    organisms = df['characteristics[organism]'].unique()
     templates = []
+    cell = 'characteristics[cultured cell]'
+
+    if cell in df:
+        is_cell_line = ~df[cell].isin({'not applicable', 'not available'})
+        if is_cell_line.any():
+            templates.append(sdrf_schema.CELL_LINES_TEMPLATE)
+            df = df.loc[~is_cell_line]
+
+    organisms = df['characteristics[organism]'].unique()
 
     for org in organisms:
         org = org.lower()
@@ -134,6 +142,8 @@ def main(args):
                 result = 'Failed ' + ', '.join(error_types) + ' validation ({})'.format(', '.join(error_files))
             elif has_warnings(errors):
                 result = 'OK (with warnings)'
+            if result[:2] == 'OK':
+                result += '\t[{} template]'.format(', '.join(templates))
         else:
             result = 'SDRF file not found'
         status.append(result)
