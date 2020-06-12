@@ -1,34 +1,13 @@
-= Proteomics Experiment Design Project
-:sectnums:
-:toc: left
-:doctype: book
-//only works on some backends, not HTML
-:showcomments:
-//use style like Section 1 when referencing within the document.
-:xrefstyle: short
-:figure-caption: Figure
-:pdf-page-size: A4
+# Proteomics Experiment Design Project
 
-//GitHub specific settings
-ifdef::env-github[]
-:tip-caption: :bulb:
-:note-caption: :information_source:
-:important-caption: :heavy_exclamation_mark:
-:caution-caption: :fire:
-:warning-caption: :warning:
-endif::[]
+[![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
+[![Open Issues](https://flat.badgen.net/github/open-issues/HUPO-PSI/mzSpecLib)](https://github.com/bigbio/proteomics-metadata-standard/issues)
+[![Open PRs](https://flat.badgen.net/github/open-prs/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/pulls)
+![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
+![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
+![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard)
 
-image::https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard[link="https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE", float=left]
-image::https://flat.badgen.net/github/open-issues/bigbio/proteomics-metadata-standard[link="https://github.com/bigbio/proteomics-metadata-standard/issues", float=left]
-image::https://flat.badgen.net/github/open-prs/bigbio/proteomics-metadata-standard[link="https://github.com/bigbio/proteomics-metadata-standard/pulls", float=left]
-image::https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard[float=left]
-image::https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard[float=left]
-image::https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard[]
-
-
-[[introduction]]
-== Improving metadata annotation of Proteomics datasets
-
+## Improving metadata annotation of Proteomics datasets
 
 The *Proteomics Experimental Design* project aims to define a set of guidelines and file formats to support the annotation of the experimental design in Proteomics datasets in the public domain. The Proteomics Team advocates for open access and increasing the reuse of proteomics datasets and works towards providing concrete solutions to achieve this. Our goal with the *Experimental Design format* is to enssure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
 
@@ -40,14 +19,11 @@ The following _Use Cases_ should be considered to design the Proteomics Experime
 
 - The Experimental design format SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
 
-
-[[notational-conventions]]
-== Notational conventions
+## Notational conventions
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” are to be interpreted as described in https://www.rfc-archive.org/getrfc?rfc=2119[RFC-2119 (Bradner 1997)].
 
-[[ontologies]]
-== Ontologies
+## Ontologies
 
 The Experimental Design format should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the https://www.ebi.ac.uk/ols/index[Ontology Lockup Service]. The current ontologies supported in the format are:
 
@@ -71,13 +47,12 @@ The Experimental Design format should be based on ontology or controlled vocabul
 
 WARNING: If you you are contributing with the following guidelines and file format, and WOULD like to add another ontology; please modify the list with a Pull Request.
 
-[[format-structure]]
-== Sample experiment design structure (SDRF)
+
+## Sample experiment design structure (SDRF)
 
  - https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design[Experimental Design]
 
-[[How-to-contribute]]
-== How to contribute
+## How to contribute
 
 External contributors, researchers and the proteomics community are more than welcome to contribute to this project.
 
@@ -111,8 +86,7 @@ You can read more about the validator https://github.com/bigbio/sdrf-pipelines[h
 
 . Fork the current repository, add a folder with the ProteomeXchange accession and the annotated sdrf.tsv
 
-[[core-contributors]]
-== Core contributors and collaborators
+## Core contributors and collaborators
 
 The project is run by different groups:
 
@@ -139,14 +113,11 @@ The project is run by different groups:
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
-
-[[code-of-conduct]]
-== Code of Conduct
+## Code of Conduct
 
 As part of our efforts toward delivering open and inclusive science, we follow the https://www.contributor-covenant.org/version/2/0/code_of_conduct/[Contributor Convenant Code of Conduct for Open Source Projects].
 
-[[Copyright]]
-== Copyright notice
+## Copyright notice
 
 
     This information is free; you can redistribute it and/or modify it
