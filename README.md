@@ -75,13 +75,12 @@ In order to validate your SDRF, you can install the sdrf-pipelines tool in Pytho
 ```bash
 pip install sdrf-pipelines
 ```
-+
 validate the SDRF
-+
+
 ```bash
 parse_sdrf validate-sdrf --sdrf_file sdrf.tsv
 ```
-+
+
 You can read more about the validator [here](https://github.com/bigbio/sdrf-pipelines).
 
 . Fork the current repository, add a folder with the ProteomeXchange accession and the annotated sdrf.tsv
