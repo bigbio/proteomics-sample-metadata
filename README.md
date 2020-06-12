@@ -13,7 +13,7 @@ The *Proteomics Experimental Design* project aims to define a set of guidelines 
 
 The following _Use Cases_ should be considered to design the Proteomics Experimental design data format:
 
-- The experiment design file format will complement the http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd[proteomeXchange.xml] file format implemented by http://www.proteomexchange.org/[ProteomeXchange] to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed http://www.proteomexchange.org/docs/guidelines_px.pdf[here].
+- The experiment design file format will complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
 
 - The experimental design format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
 
@@ -21,50 +21,50 @@ The following _Use Cases_ should be considered to design the Proteomics Experime
 
 ## Notational conventions
 
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” are to be interpreted as described in https://www.rfc-archive.org/getrfc?rfc=2119[RFC-2119 (Bradner 1997)].
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” are to be interpreted as described in [RFC-2119 (Bradner 1997)](https://www.rfc-archive.org/getrfc?rfc=2119).
 
 ## Ontologies
 
-The Experimental Design format should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the https://www.ebi.ac.uk/ols/index[Ontology Lockup Service]. The current ontologies supported in the format are:
+The Experimental Design format should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the [Ontology Lockup Service](https://www.ebi.ac.uk/ols/index). The current ontologies supported in the format are:
 
-- https://www.ebi.ac.uk/ols/ontologies/pride[PRIDE Controlled Vocabulary (CV)]
-- https://www.ebi.ac.uk/ols/ontologies/ms[PSI Mass Spectrometry CV]
-- https://www.ebi.ac.uk/ols/ontologies/efo[Experimental Factor Ontology]
-- https://www.ebi.ac.uk/ols/ontologies/unimod[Unimod protein modification database for mass spectrometry]
-- https://www.ebi.ac.uk/ols/ontologies/mod[PSI-MOD CV]
-- https://www.ebi.ac.uk/ols/ontologies/clo[Cell line ontology]
-- https://www.ebi.ac.uk/ols/ontologies/FBbt[Drosophila anatomy ontology]
-- https://www.ebi.ac.uk/ols/ontologies/cl[Cell ontology]
-- https://www.ebi.ac.uk/ols/ontologies/po[Plant ontology]
-- https://www.ebi.ac.uk/ols/ontologies/uberon[Uber-anatomy ontology]
-- https://www.ebi.ac.uk/ols/ontologies/zfa[Zebrafish anatomy and development ontology]
-- https://www.ebi.ac.uk/ols/ontologies/zfs[Zebrafish developmental stages ontology]
-- https://www.ebi.ac.uk/ols/ontologies/eo[Plant Environment Ontology]
-- https://www.ebi.ac.uk/ols/ontologies/Fbdv[FlyBase Developmental Ontology]
-- https://www.ebi.ac.uk/ols/ontologies/RS[Rat Strain Ontology]
-- https://www.ebi.ac.uk/ols/ontologies/ChEBI[Chemical Entitities of Biological Interest Ontology]
-- https://www.ebi.ac.uk/ols/ontologies/NCBITAXON[NCBI organismal classification]
+- [PRIDE Controlled Vocabulary (CV)](https://www.ebi.ac.uk/ols/ontologies/pride)
+- [PSI Mass Spectrometry CV](https://www.ebi.ac.uk/ols/ontologies/ms)
+- [Experimental Factor Ontology](https://www.ebi.ac.uk/ols/ontologies/efo)
+- [Unimod protein modification database for mass spectrometry](https://www.ebi.ac.uk/ols/ontologies/unimod)
+- [PSI-MOD CV](https://www.ebi.ac.uk/ols/ontologies/mod)
+- [Cell line ontology](https://www.ebi.ac.uk/ols/ontologies/clo)
+- [Drosophila anatomy ontology](https://www.ebi.ac.uk/ols/ontologies/FBbt)
+- [Cell ontology](https://www.ebi.ac.uk/ols/ontologies/cl)
+- [Plant ontology](https://www.ebi.ac.uk/ols/ontologies/po)
+- [Uber-anatomy ontology](https://www.ebi.ac.uk/ols/ontologies/uberon)
+- [Zebrafish anatomy and development ontology](https://www.ebi.ac.uk/ols/ontologies/zfa)
+- [Zebrafish developmental stages ontology](https://www.ebi.ac.uk/ols/ontologies/zfs)
+- [Plant Environment Ontology](https://www.ebi.ac.uk/ols/ontologies/eo)
+- [FlyBase Developmental Ontology](https://www.ebi.ac.uk/ols/ontologies/Fbdv)
+- [Rat Strain Ontology](https://www.ebi.ac.uk/ols/ontologies/RS)
+- [Chemical Entitities of Biological Interest Ontology](https://www.ebi.ac.uk/ols/ontologies/ChEBI)
+- [NCBI organismal classification](https://www.ebi.ac.uk/ols/ontologies/NCBITAXON)
 
 WARNING: If you you are contributing with the following guidelines and file format, and WOULD like to add another ontology; please modify the list with a Pull Request.
 
 
 ## Sample experiment design structure (SDRF)
 
- - https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design[Experimental Design]
+ - [Experimental Design](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design)
 
 ## How to contribute
 
 External contributors, researchers and the proteomics community are more than welcome to contribute to this project.
 
-Contribute with the specification: you can contribute to the specification with ideas or refinements by adding an issue into the https://github.com/bigbio/proteomics-metadata-standard/issues[issue tracker] or performing a PR.
+Contribute with the specification: you can contribute to the specification with ideas or refinements by adding an issue into the [issue tracker](https://github.com/bigbio/proteomics-metadata-standard/issues) or performing a PR.
 
-In the https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[annotated projects] folder the user can see different public datasets that have been annotated so far by the contributors. If you would like to join these efforts, make a Fork of this repo and perform a pull request (PR) with your annotated project. If you don't have a project in mind, you can take one project from the https://github.com/bigbio/proteomics-metadata-standard/issues[issues] and perform the annotation.
+In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects) folder the user can see different public datasets that have been annotated so far by the contributors. If you would like to join these efforts, make a Fork of this repo and perform a pull request (PR) with your annotated project. If you don't have a project in mind, you can take one project from the [issues](https://github.com/bigbio/proteomics-metadata-standard/issues) and perform the annotation.
 
 Annotate a dataset in 5 steps:
 
-. Read the https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design[SDRF specification]
+. Read the [SDRF specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design)
 
-. Depending on the type of dataset, choose the appropriate https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design#sdrf-templates[sample template]
+. Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design#sdrf-templates)
 
 . Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
 
@@ -82,7 +82,7 @@ validate the SDRF
 parse_sdrf validate-sdrf --sdrf_file sdrf.tsv
 ```
 +
-You can read more about the validator https://github.com/bigbio/sdrf-pipelines[here].
+You can read more about the validator [here](https://github.com/bigbio/sdrf-pipelines).
 
 . Fork the current repository, add a folder with the ProteomeXchange accession and the annotated sdrf.tsv
 
@@ -115,7 +115,7 @@ IMPORTANT: If you contribute with the following specification, please make sure 
 
 ## Code of Conduct
 
-As part of our efforts toward delivering open and inclusive science, we follow the https://www.contributor-covenant.org/version/2/0/code_of_conduct/[Contributor Convenant Code of Conduct for Open Source Projects].
+As part of our efforts toward delivering open and inclusive science, we follow the [Contributor Convenant Code of Conduct for Open Source Projects](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
 
 ## Copyright notice
 
