@@ -6,7 +6,6 @@ import sys
 import argparse
 import logging
 import itertools
-from urllib.error import URLError
 
 from pandas_schema import ValidationWarning
 from sdrf_pipelines.zooma import ols
@@ -22,7 +21,7 @@ def retry(func):
         for i in range(5):
             try:
                 return func(*args, **kwargs)
-            except (KeyError, URLError):
+            except Exception:
                 pass
     return wrapper
 
@@ -115,10 +114,10 @@ def main(args):
         sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
         error_types = set()
         error_files = set()
-        errors = []
         if sdrf_files:
             result = 'OK'
             for sdrf_file in sdrf_files:
+                errors = []
                 df = sdrf.SdrfDataFrame.parse(sdrf_file)
                 err = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
                 errors.extend(err)
@@ -143,7 +142,7 @@ def main(args):
             elif has_warnings(errors):
                 result = 'OK (with warnings)'
             if result[:2] == 'OK':
-                result += '\t[{} template]'.format(', '.join(templates))
+                result = '[{} template]\t'.format(', '.join(templates)) + result
         else:
             result = 'SDRF file not found'
         status.append(result)
