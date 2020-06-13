@@ -148,7 +148,7 @@ def main(args):
                     result = 'OK (with warnings)'
                     status = 1
                 if status < 2:
-                    result = '[{} template]\t'.format(', '.join(templates)) + result
+                    result = '[{} template]\t'.format(', '.join(templates) if templates else 'default') + result
             else:
                 result = 'SDRF file not found'
             statuses.append(status)
