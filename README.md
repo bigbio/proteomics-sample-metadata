@@ -105,10 +105,12 @@ The project is run by different groups:
 - Expression Atlas Team (European Bioinformatics Institute - EMBL-EBI, U.K.)
 - Lev Levitsky (INEP team, INEPCP RAS, Moscow, Russia)
 - Elizaveta Solovyeva (INEP team, INEPCP RAS, Moscow, Russia)
+- Stefan Schulze (University of Pennsylvania, USA)
 - Veit Schwämmle (Protein Research Group, University of Southern Denmark, Denmark)
 - ProteomicsDB Team (Technical University of Munich, Germany)
 - David Bouyssié (ProFI/IPBS, University of Toulouse, CNRS, Toulouse, France)
 - Nicholas Carruthers (Wayne State University, USA)
+- Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
 - Enrique Audain (University Medical Center Schleswig-Holstein, Germany)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
