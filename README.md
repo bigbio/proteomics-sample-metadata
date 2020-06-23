@@ -110,8 +110,8 @@ The project is run by different groups:
 - ProteomicsDB Team (Technical University of Munich, Germany)
 - David Bouyssié (ProFI/IPBS, University of Toulouse, CNRS, Toulouse, France)
 - Nicholas Carruthers (Wayne State University, USA)
-- Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
 - Enrique Audain (University Medical Center Schleswig-Holstein, Germany)
+- Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
