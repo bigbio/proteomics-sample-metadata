@@ -1,4 +1,4 @@
-# Proteomics Experiment Design Project
+# Sample to Data file format (SDRF) for Proteomics
 
 [![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
 [![Open Issues](https://flat.badgen.net/github/open-issues/HUPO-PSI/mzSpecLib)](https://github.com/bigbio/proteomics-metadata-standard/issues)
@@ -9,15 +9,15 @@
 
 ## Improving metadata annotation of Proteomics datasets
 
-The *Proteomics Experimental Design* project aims to define a set of guidelines and file formats to support the annotation of the experimental design in Proteomics datasets in the public domain. The Proteomics Team advocates for open access and increasing the reuse of proteomics datasets and works towards providing concrete solutions to achieve this. Our goal with the *Experimental Design format* is to enssure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
+The *Sample to Data file format (SDRF) for Proteomics* project aims to define a set of guidelines to support the annotation of the sample metadata in in public proteomics experiments. Our goal with the *Sample to Data file format (SDRF) for Proteomics* is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
 
 The following _Use Cases_ should be considered to design the Proteomics Experimental design data format:
 
-- The experiment design file format will complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
+- The "Sample to Data file format (SDRF) for Proteomics" complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
 
-- The experimental design format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
+- It SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
 
-- The Experimental design format SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
+- It SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
 
 ## Notational conventions
 
@@ -25,7 +25,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 
 ## Ontologies
 
-The Experimental Design format should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the [Ontology Lockup Service](https://www.ebi.ac.uk/ols/index). The current ontologies supported in the format are:
+The *Sample to Data file format (SDRF) for Proteomics* should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the [Ontology Lockup Service](https://www.ebi.ac.uk/ols/index). The current ontologies supported in the format are:
 
 - [PRIDE Controlled Vocabulary (CV)](https://www.ebi.ac.uk/ols/ontologies/pride)
 - [PSI Mass Spectrometry CV](https://www.ebi.ac.uk/ols/ontologies/ms)
@@ -50,7 +50,7 @@ WARNING: If you you are contributing with the following guidelines and file form
 
 ## Sample experiment design structure (SDRF)
 
- - [Experimental Design](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design)
+ - [Experimental Design](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
 
 ## How to contribute
 
@@ -62,9 +62,9 @@ In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standa
 
 Annotate a dataset in 5 steps:
 
-. Read the [SDRF specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design)
+. Read the [SDRF specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
 
-. Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design#sdrf-templates)
+. Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata#sdrf-templates)
 
 . Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
 
@@ -111,13 +111,14 @@ The project is run by different groups:
 - David Bouyssié (ProFI/IPBS, University of Toulouse, CNRS, Toulouse, France)
 - Nicholas Carruthers (Wayne State University, USA)
 - Paul Rudnick (NCI, Proteomic Data Commons, USA)
+- Enrique Audain (University Medical Center Schleswig-Holstein, Germany)
 - Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
 ## Code of Conduct
 
-As part of our efforts toward delivering open and inclusive science, we follow the [Contributor Convenant Code of Conduct for Open Source Projects](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
+As part of our efforts toward delivering open and inclusive science, we follow the [Contributor Covenant Code of Conduct for Open Source Projects](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
 
 ## Copyright notice
 
