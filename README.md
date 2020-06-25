@@ -50,7 +50,7 @@ WARNING: If you you are contributing with the following guidelines and file form
 
 ## Sample experiment design structure (SDRF)
 
- - [Experimental Design](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design)
+ - [Experimental Design](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
 
 ## How to contribute
 
@@ -62,9 +62,9 @@ In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standa
 
 Annotate a dataset in 5 steps:
 
-. Read the [SDRF specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design)
+. Read the [SDRF specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
 
-. Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/experimental-design#sdrf-templates)
+. Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata#sdrf-templates)
 
 . Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
 
