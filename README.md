@@ -117,7 +117,7 @@ IMPORTANT: If you contribute with the following specification, please make sure 
 
 ## Code of Conduct
 
-As part of our efforts toward delivering open and inclusive science, we follow the [Contributor Convenant Code of Conduct for Open Source Projects](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
+As part of our efforts toward delivering open and inclusive science, we follow the [Contributor Covenant Code of Conduct for Open Source Projects](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
 
 ## Copyright notice
 
