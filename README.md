@@ -112,6 +112,7 @@ The project is run by different groups:
 - Nicholas Carruthers (Wayne State University, USA)
 - Enrique Audain (University Medical Center Schleswig-Holstein, Germany)
 - Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
+- Johannes Griss (Department of Dermatology, Medical University of Vienna, Austria)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
