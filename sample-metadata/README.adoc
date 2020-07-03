@@ -111,32 +111,6 @@ The value for each property (e.g. _characteristics_, _comment_) corresponding to
   In the key=value pair representation the Value of the property is represented as an Object with multiple properties where the key is one of the properties of the object and the value is the corresponding value for the particular key. For example:
   NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E
 
-[[encoding-age]]
-=== How to encode age
-
-One of the characteristics about the sample is the age of an individual. It is RECOMMENDED to provide the age in the following format: `{X}Y{X}M{X}D`. Some valid examples are:
-
-- 40Y (forty years)
-- 40Y5M (forty years and 5 months)
-- 40Y5M2D (forty years, 5 months and 2 days)
-
-When needed, weeks can also be used:
-
-- 8W (eight weeks)
-
-Other temporal information can be encoded in a similar way.
-
-[[enrichment-phsophorylation-experiment]]
-=== Phosphoproteomics and PTMs experiments
-
-In phopshoproteomics experiments the sample is enrich to detect phosphorylation sites. In those experiments the `characteristics[enrichment process]` should be provided.
-
-The different values already included in EFO are:
-
-- enrichment of phosphorylated Protein
-- enrichment of glycosylated Protein
-
-This characteristics can be used as `factor value[enrichment process]` can be used to differentiate the expression between proteins in the phosphoproteomics sample compare with control.
 
 [[from-sample-scan]]
 == From Samples to Assay (MSRun)
@@ -201,7 +175,7 @@ Some of the most popular labels are:
 
 Please, if you need to add an additional label, create an https://github.com/PRIDE-Utilities/pride-ontology/issues[issue in the pride-ontology repository].
 
-In order to achieve a clear relationship between the label and the sample condition, each channel of each sample (in multiplex experiments) should be defined in a separate row.
+In order to achieve a clear relationship between the label and the sample condition, each channel of each sample (in multiplex experiments) should be defined in a separate row: **one row per channel used (annotated with the corresponding `comment[label]` per file**.
 
 Examples:
 
@@ -310,6 +284,61 @@ Encoding precursor and fragment tolerances, for proteomics experiments is import
 
 |sample 1| 0.6 Da |	20 ppm
 |===
+
+[[use-cases]]
+== Specific use cases and conventions
+
+[[encoding-age]]
+=== How to encode age
+
+One of the characteristics about the sample is the age of an individual. It is RECOMMENDED to provide the age in the following format: `{X}Y{X}M{X}D`. Some valid examples are:
+
+- 40Y (forty years)
+- 40Y5M (forty years and 5 months)
+- 40Y5M2D (forty years, 5 months and 2 days)
+
+When needed, weeks can also be used:
+
+- 8W (eight weeks)
+
+Other temporal information can be encoded in a similar way.
+
+[[enrichment-phsophorylation-experiment]]
+=== Phosphoproteomics and PTMs experiments
+
+In phopshoproteomics experiments the sample is enrich to detect phosphorylation sites. In those experiments the `characteristics[enrichment process]` should be provided.
+
+The different values already included in EFO are:
+
+- enrichment of phosphorylated Protein
+- enrichment of glycosylated Protein
+
+This characteristic can be used as `factor value[enrichment process]` to differentiate the expression between proteins in the phosphoproteomics sample compare with control.
+
+[[pooled-samples]]
+=== Pooled samples
+
+When multiple samples are pooled into one, the general approach is to annotate them separately,
+abiding by the general rule: one row stands for one sample-to-file relationship. In this case,
+multiple rows are created for the corresponding data file, much like in <<label-annotatations>>.
+
+One possible exception is made for the case when one channel e.g. in a TMT/iTRAQ multiplexed experiment
+is used for a sample pooled from all other channels, typically for normalization purposes. In this case,
+it is not necessary to repeat all sample annotations. Instead, a special characteristic can be used:
+
+|===
+|source name |characteristics[pooled sample] | assay name | comment[label] | comment[data file]
+
+| sample 1   | not pooled |  run 1      | TMT131         | file01.raw
+| sample 2   | not pooled |  run 1      | TMT131C        | file01.raw
+| sample 10  | SN=sample 1,sample 2, ... sample 9|  run 1      | TMT128         | file01.raw
+|===
+
+`SN` stands for source names and lists `source name` fields of samples that are annotated in the same file
+and *used in the same experiment and same MS run*.
+
+Another possible value for `characteristics[pooled sample]` is a string `pooled` for cases when it is known
+that a sample is pooled but the individual samples cannot be annotated.
 
 [[sdrf-templates]]
 == Sample/MSRun templates
