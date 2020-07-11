@@ -110,6 +110,7 @@ The project is run by different groups:
 - ProteomicsDB Team (Technical University of Munich, Germany)
 - David Bouyssié (ProFI/IPBS, University of Toulouse, CNRS, Toulouse, France)
 - Nicholas Carruthers (Wayne State University, USA)
+- Paul Rudnick (NCI, Proteomic Data Commons, USA)
 - Enrique Audain (University Medical Center Schleswig-Holstein, Germany)
 - Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
 - Johannes Griss (Department of Dermatology, Medical University of Vienna, Austria)
