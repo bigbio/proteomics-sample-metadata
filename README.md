@@ -114,6 +114,7 @@ The project is run by different groups:
 - Enrique Audain (University Medical Center Schleswig-Holstein, Germany)
 - Marie Locard-Paulet (Novo Nordisk Foundation Center for Protein Research, University of Copenhagen, Denmark)
 - Johannes Griss (Department of Dermatology, Medical University of Vienna, Austria)
+- Chengxin Dai (Chongqing Key Laboratory on Big Data for Bio Intelligence, Chongqing University of Posts and telecommunications, Chongqing, China)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
