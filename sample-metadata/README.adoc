@@ -340,6 +340,21 @@ and *used in the same experiment and same MS run*.
 Another possible value for `characteristics[pooled sample]` is a string `pooled` for cases when it is known
 that a sample is pooled but the individual samples cannot be annotated.
 
+[[derived-samples]]
+=== Derived samples (such as PDX)
+
+In cancer research, patient-derived xenografts (PDX) are commonly used where the patient's tumour is transplanted into a, for example, mouse.
+
+In these cases, the metadata, such as age and sex MUST refer to the original patient and not the animal.
+
+PDX samples SHOULD be annotated by using the column `characteristics[xenograft]`. The value should then describe the growth condition, such as
+`pancreatic cancer cells grown in nude mouse`.
+
+For experiments where both, the PDX and the original tumour was measured, the PDX entry SHOULD reference the respective tumour sample's `source name`
+in the `characteristics[original source name]` column. Non-PDX samples shouild contain the `not applicable` value in the `Characteristics[xenograft]` and the `characteristics[original source name]` column.
+Both tumour and PDX samples SHOULD reference the patient using the `characteristics[individual]` column. This column should contain some sort of patient
+identifier.
+
 [[sdrf-templates]]
 == Sample/MSRun templates
 
