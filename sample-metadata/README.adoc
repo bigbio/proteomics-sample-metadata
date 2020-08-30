@@ -340,6 +340,89 @@ and *used in the same experiment and same MS run*.
 Another possible value for `characteristics[pooled sample]` is a string `pooled` for cases when it is known
 that a sample is pooled but the individual samples cannot be annotated.
 
+[[derived-samples]]
+=== Derived samples (such as PDX)
+
+In cancer research, patient-derived xenografts (PDX) are commonly used where the patient's tumour is transplanted into a, for example, mouse.
+
+In these cases, the metadata, such as age and sex MUST refer to the original patient and not the animal.
+
+PDX samples SHOULD be annotated by using the column `characteristics[xenograft]`. The value should then describe the growth condition, such as
+`pancreatic cancer cells grown in nude mouse`.
+
+For experiments where both, the PDX and the original tumour was measured, the PDX entry SHOULD reference the respective tumour sample's `source name`
+in the `characteristics[original source name]` column. Non-PDX samples shouild contain the `not applicable` value in the `Characteristics[xenograft]` and the `characteristics[original source name]` column.
+Both tumour and PDX samples SHOULD reference the patient using the `characteristics[individual]` column. This column should contain some sort of patient
+identifier.
+
+
+[[spiked-samples]]
+=== Spike-in samples
+
+There are multiple scenarios when a sample is spiked with additional compounds. Peptides, proteins or mixtures
+can be added to the sample in cotrolled amounts to provide a standard or ground truth for quantification,
+or for retention time alignment, etc.
+
+To include information on the spiked compounds, use `characteristics[spiked compound]`.
+The information is provided in key-value pairs. Here are the keys and values that should be provided:
+
+|===
+|Key | Meaning | Examples | Peptide | Protein | Mixture | Other
+
+|CT  | Compound type | protein, peptide, mixture, other | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:
+|QY  | Quantity (molar or mass) | 10 mg, 20 nmol | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:
+|PS  | Peptide sequence  | PEPTIDESEQ |:white_check_mark: |                    | |
+|AC  | Uniprot Accession | A9WZ33     |                   | :white_check_mark: | |
+|CN  | Compound name     | `iRT mixture`, `substance name` | | :zero: | :zero: | :zero:
+|CV  | Compound vendor   | `in-house` or vendor name | :zero: | :zero: | :white_check_mark: | :zero:
+|CS  | Compound specification URI | `http://vendor.web.site/specs/coomercial-kit.xlsx` | :zero: | :zero: | :zero: | :zero:
+|CF  | Compound formula  | `C2H2O` | | | | :zero:
+
+|===
+
+In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD
+be specified as `characteristics[mass]`.
+
+An example of SDRF for a sample spiked with a peptide would be:
+
+|===
+|characteristics[mass] | charateristics[spiked compound]
+
+|1 ug                  | CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
+
+|===
+
+For multiple spiked components, the column `characteristics[spiked compound]` may be repeated.
+
+If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample),
+then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have
+`characteristics[mass]` specified. Inclusion of `characteristics[spiked compound]` is optional in this case;
+if provided, it SHOULD be the string `spiked` for the spiked sample.
+
+[[synthetic-peptides]]
+=== Synthetic peptide libraries
+
+Proteomics and mass spectrometry use synthetic peptide libraries for multiple use cases including:
+
+- Benchmark of analytical and bioinformatics methods and algorithms.
+- Improve of peptide identification/quantification using spectral libraries.
+
+When describing synthetic peptide libraries most of the sample metadata can be declare as `not applicable`. However, some authors can annotate the organism for example because they know the library has been design from specific peptide species, see example https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD000759/sdrf.tsv[Synthetic Peptide experiment].
+
+It is important to annotate that the sample is a synthetic peptide library, this can be done by adding the `characteristics[synthetic peptide]` the possible values are: `synthetic` or `not synthetic`.
+
+[[normal-samples]]
+=== Normal, healthy samples
+
+Samples from healthy patients or individuals normally appear in manuscripts and annotations as `healthy or normal`. We RECOMMENDED to use the word `normal` mapped to term PATO_0000461 that is in EFO: https://www.ebi.ac.uk/ols/ontologies/efo/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPATO_0000461[normal PATO term]. Example:
+
+|===
+| source name   | characteristics[organism] | characteristics[organism part] | characteristics[phenotype] | characteristics[compound] | factor value[phenotype]
+
+|sample_treat   | homo sapiens              | Whole Organism                 | necrotic tissue            | drug A                    | necrotic tissue
+|sample_control | homo sapiens              | Whole Organism                 | normal                     | none                      | normal
+|===
+
 [[sdrf-templates]]
 == Sample/MSRun templates
 
@@ -398,18 +481,12 @@ NOTE: The factor value[_property_] is optional (:zero:) because it depend of the
 
 Curators can decide to annotate multiple ProteomXchange Projects into one big sdrf for reanalysis purpose. If that is the case, we RECOMMENDED to use the __comment[proteomexchange accession number]__ to differentiate between projects.
 
-[[additional-experimental-designs]]
-== Additional use cases and experimental designs
+[[example-annotated-datasets]]
+== Examples of annotated datasets
 
-=== Synthetic peptide libraries
+|===
+|Dataset Type  | ProteomeXchange / Pubmed Accession | SDRF URL
+|Label-free    | PXD008934                          | https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD008934/sdrf.tsv
+|TMT           | CPTAC PMID27251275                 | https://raw.githubusercontent.com/bigbio/proteomics-metadata-standard/master/annotated-projects/PMID27251275/sdrf.tsv
 
-Proteomics and mass spectrometry use synthetic peptide libraries for multiple use cases including:
-
-- Benchmark of analytical and bioinformatics methods and algorithms.
-- Improve of peptide identification/quantification using spectral libraries.
-
-When describing synthetic peptide libraries most of the sample metadata can be declare as `not applicable`. However, some authors can annotate the organism for example because they know the library has been design from specific peptide species, see example https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD000759/sdrf.tsv[Synthetic Peptide experiment].
-
-It is important to annotate that the sample is a synthetic peptide library, this can be done by adding the `characteristics[synthetic peptide]` the possible values are: `synthetic` or `not synthetic`.
-
-
+|===
