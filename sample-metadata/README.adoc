@@ -138,7 +138,7 @@ TIP: All the possible _label_ values can be seen in the in the PRIDE CV under th
 The "comment" columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. _comment_ columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
 
 [[technical-biological-replicates]]
-== Sample technical and biological replicates
+=== Sample technical and biological replicates
 
 Technical and biological replicates are important to understand the experimental design. Multiple definitions can be attributed to technical and biological replicates and it will depends on the researcher, annotator to define and consider what in the data analysis is each concept. A good starting point for the SDRF specification is the following:
 
@@ -156,13 +156,14 @@ In the following example, only if the technical replicate column is provided, on
 | Sample 1          |    run 4   | label free sample | 2                            | 2                            | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW
 |===
 
-**Biological replicate**: parallel measurements of biologically distinct samples that capture random biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed.
+NOTE: The comment[technical replicate] column is OPTIONAL and can be easily guess from the data structure if the column `comment[technical replicate]` is not provided. If the same sample has the fraction identifier repeated it can be interpreted as technical replicate. However, some submitters can make more clear that annotation.
 
-Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
+**Biological replicate**: parallel measurements of biologically distinct samples that capture random biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
 
-In SDRF proteomics biological replicates can be annotated using `characteristics[biological replicate]`.
+NOTE: In SDRF proteomics biological replicates can be annotated using `characteristics[biological replicate]` but is OPTIONAL. This information can be also guess using the `factor value`
+and the `source name`, if two different source names (samples) are provided for the same factor value (condition) in the experiment they can be considered as biological replicates.
 
-Some examples with biological replicates annotated can be found here:
+Some examples with explicitly annotation of the biological replicates can be found here:
 
 - https://github.com/bigbio/proteomics-metadata-standard/blob/c3a56b076ef381280dfcb0140d2520126ace53ff/annotated-projects/PXD006401/sdrf.tsv
 
