@@ -119,7 +119,7 @@ The connection between the _Sample_ to the final Assay (_MSrun_) is done by usin
 
 - assay name: For SDRF compatibilities we can not use MSRun but _assay name_. Examples of assay name: run 1, run_fraction_1_2
 
-- comment[fraction identifier]: The _fraction identifier_ allows to record the number of a given fraction. The fraction identifier corresponds to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term]. If the experiment is not fractionated, the annotator MUST use **1** for each MSRun.
+- comment[fraction identifier]: The _fraction identifier_ allows to record the number of a given fraction. The fraction identifier corresponds to this https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000858[ontology term]. The fraction identifier MUST start from **1** and if the experiment is not fractionated, the annotator MUST use **1** for each MSRun.
 
 - comment[label]: The _label_ describes the label applied to each Sample (if any). In case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding _label_ SHOULD be added. For Label-free experiments the [label free sample] term MUST be added.
 
@@ -135,8 +135,16 @@ NOTE: the order of the columns are important, **assay name** SHOULD we always be
 
 TIP: All the possible _label_ values can be seen in the in the PRIDE CV under the https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label] node.
 
-In the case that technical and/or biological replicates have been measured, this information is not sufficient anymore.
-To be able to trace a given quantitative value to the exact replicate one needs encode this information as part of the experimental design.
+The "comment" columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. _comment_ columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
+
+[[technical-biological-replicates]]
+=== Sample technical and biological replicates
+
+Different measurements are often categorized as (i) _Technical_ or (ii) _Biological_ replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation. For a given experiment, there are different levels to which samples can be matched - e.g. same sample, same sample same protocol, same sample same protocol same covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, _Technical vs. Biological_ considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the sdrf format. However, data providers are encouraged to provide any identifier - e.g. _Biological_replicate_1_, _Technical_replicate_2_ - that would help linking the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF specification is the following:
+
+**Technical replicate**: repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment.
+
+In MS-based proteomics a technical can be, for example, doing the full sample preparation from extraction to mass spectrometry multi times to control variability in the instrument, or sample preparation. Another valid example is run repeat, replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. Technical replicates indicate if your measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
 
 In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicates.
 
@@ -148,8 +156,17 @@ In the following example, only if the technical replicate column is provided, on
 | Sample 1          |    run 4   | label free sample | 2                            | 2                            | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW
 |===
 
+NOTE: The comment[technical replicate] column is OPTIONAL.
 
-The "comment" columns in *SDRF* are included as a basic extensibility mechanism for local implementations. The name associated with the comment is included in square brackets in the column heading, and the value(s) entered in the body of the column. _comment_ columns could be used in various ways - to provide references to external files like raw files, or to include identifiers of objects in external systems.
+**Biological replicate**: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
+
+NOTE: In SDRF proteomics biological replicates can be annotated using `characteristics[biological replicate]` but is OPTIONAL.
+
+Some examples with explicitly annotation of the biological replicates can be found here:
+
+- https://github.com/bigbio/proteomics-metadata-standard/blob/c3a56b076ef381280dfcb0140d2520126ace53ff/annotated-projects/PXD006401/sdrf.tsv
+
+TIP: Multiple tools like MaxQuant or MSstats recognize some of this technical and biological replicates as Groups. In MSstatsTMT for example: Technical replicate correspond to `TechRepMixture`, while biological replicates correspond to `BioReplicate`.
 
 [[instrument]]
 === Type and Model of Mass Spectrometer
@@ -189,7 +206,7 @@ Examples:
 We RECOMMEND to include the public URI of the file if available. For example for ProteomeXchange datasets the URI from the FTP can be provided:
 
 |===
-|   |... |comment[associated file uri]
+|   |... |comment[file uri]
 
 |sample 1| ... |ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/000261_C05_P0001563_A00_B00K_R1.RAW
 |===
