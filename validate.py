@@ -6,7 +6,7 @@ import sys
 import argparse
 import logging
 import itertools
-from urllib.error import URLError
+import re
 
 from pandas_schema import ValidationWarning
 from sdrf_pipelines.zooma import ols
@@ -22,7 +22,7 @@ def retry(func):
         for i in range(5):
             try:
                 return func(*args, **kwargs)
-            except (KeyError, URLError):
+            except Exception:
                 pass
     return wrapper
 
@@ -32,13 +32,30 @@ def get_ancestors(iri):
     return client.get_ancestors('ncbitaxon', iri)
 
 
+def organism_name(s):
+    m = re.search(r'nt=([^;]*)', s)
+    if m:
+        name = m.group(1)
+    else:
+        name = s
+    return name
+
+
 def get_template(df):
     """Extract organism information and pick a template for validation"""
-    organisms = df['characteristics[organism]'].unique()
     templates = []
+    cell = 'characteristics[cultured cell]'
+
+    if cell in df:
+        is_cell_line = ~df[cell].isin({'not applicable', 'not available'})
+        if is_cell_line.any():
+            templates.append(sdrf_schema.CELL_LINES_TEMPLATE)
+            df = df.loc[~is_cell_line]
+
+    organisms = df['characteristics[organism]'].unique()
 
     for org in organisms:
-        org = org.lower()
+        org = organism_name(org)
         if org == 'homo sapiens':
             templates.append(sdrf_schema.HUMAN_TEMPLATE)
         else:
@@ -98,66 +115,73 @@ def collapse_warnings(errors):
 
 
 def main(args):
-    status = []
+    statuses = []
+    messages = []
     if args.project:
         projects = args.project
     else:
         projects = PROJECTS
-    for project in projects:
-        sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
-        error_types = set()
-        error_files = set()
-        errors = []
-        if sdrf_files:
-            result = 'OK'
-            for sdrf_file in sdrf_files:
-                df = sdrf.SdrfDataFrame.parse(sdrf_file)
-                err = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
-                errors.extend(err)
-                if has_errors(err):
-                    error_types.add('basic')
-                else:
-                    templates = get_template(df)
-                    if templates:
-                        for t in templates:
-                            err = df.validate(t)
-                            errors.extend(err)
-                            if has_errors(err):
-                                error_types.add('{} template'.format(t))
-                    err = df.validate(sdrf_schema.MASS_SPECTROMETRY)
+    try:
+        i = 0
+        for project in projects:
+            sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
+            error_types = set()
+            error_files = set()
+            if sdrf_files:
+                result = 'OK'
+                status = 0
+                for sdrf_file in sdrf_files:
+                    errors = []
+                    df = sdrf.SdrfDataFrame.parse(sdrf_file)
+                    err = df.validate(sdrf_schema.DEFAULT_TEMPLATE)
                     errors.extend(err)
                     if has_errors(err):
-                        error_types.add('mass spectrometry')
-                if has_errors(errors):
-                    error_files.add(os.path.basename(sdrf_file))
-            if error_types:
-                result = 'Failed ' + ', '.join(error_types) + ' validation ({})'.format(', '.join(error_files))
-            elif has_warnings(errors):
-                result = 'OK (with warnings)'
-        else:
-            result = 'SDRF file not found'
-        status.append(result)
-        if args.verbose == 2:
-            for err in errors:
-                print(err)
-        elif args.verbose:
-            for w in collapse_warnings(errors):
-                print(w)
-            for err in errors:
-                if is_error(err):
-                    print(err)
-        print(project, result, sep='\t')
-    errors = 0
-    warnings = 0
-    print('Final results:')
-    for project, result in zip(projects, status):
-        if result != 'OK' and result != 'SDRF file not found':
-            if result[:2] == 'OK':
-                warnings += 1
+                        error_types.add('basic')
+                    else:
+                        templates = get_template(df)
+                        if templates:
+                            for t in templates:
+                                err = df.validate(t)
+                                errors.extend(err)
+                                if has_errors(err):
+                                    error_types.add('{} template'.format(t))
+                        err = df.validate(sdrf_schema.MASS_SPECTROMETRY)
+                        errors.extend(err)
+                        if has_errors(err):
+                            error_types.add('mass spectrometry')
+                    if has_errors(errors):
+                        error_files.add(os.path.basename(sdrf_file))
+                if error_types:
+                    result = 'Failed ' + ', '.join(error_types) + ' validation ({})'.format(', '.join(error_files))
+                    status = 2
+                elif has_warnings(errors):
+                    result = 'OK (with warnings)'
+                    status = 1
+                if status < 2:
+                    result = '[{} template]\t'.format(', '.join(templates) if templates else 'default') + result
             else:
-                errors += 1
-    print('Total: {} projects checked, {} had validation errors, {} had validation warnings.'.format(
-        len(projects), errors, warnings))
+                result = 'SDRF file not found'
+            statuses.append(status)
+            messages.append(result)
+            if args.verbose == 2:
+                for err in errors:
+                    print(err)
+            elif args.verbose:
+                for w in collapse_warnings(errors):
+                    print(w)
+                for err in errors:
+                    if is_error(err):
+                        print(err)
+            print(project, result, sep='\t')
+            i += 1
+    except KeyboardInterrupt:
+        pass
+    finally:
+        errors = sum(s == 2 for s in statuses)
+        warnings = sum(s == 1 for s in statuses)
+        print('Final results:')
+        print(f'Total: {i} of {len(projects)} projects checked, '
+              f'{errors} had validation errors, {warnings} had validation warnings.')
     return errors
 
 
