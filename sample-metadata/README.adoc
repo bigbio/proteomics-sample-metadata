@@ -290,7 +290,7 @@ An example of a **SDRF** with sample enzyme annotated:
 |sample 1| NT=Trypsin; AC=MS:1001251; CS=(?<=[KR])(?!P)
 |===
 
-Specific use cases without Enzyme should set `comment [cleavage agent details]` to `not applicable`, for example:
+Specific use cases without Enzyme should set `comment[cleavage agent details]` to `not applicable`, for example:
 
  - Top-down proteomics
  - Mass spectrometry imaging (of analytes other than digested peptides)
@@ -451,6 +451,22 @@ Samples from healthy patients or individuals normally appear in manuscripts and 
 |sample_treat   | homo sapiens              | Whole Organism                 | necrotic tissue            | drug A                    | necrotic tissue
 |sample_control | homo sapiens              | Whole Organism                 | normal                     | none                      | normal
 |===
+
+[[ms-imaging]]
+=== Mass spectrometry imaging
+
+In mass spectrometry imaging experiments a mass spectra are measured at different tissue locations to obtain spatial distribution maps. As those experiments are quite special, they need several distinct annotations:
+
+- Even if the file format consists of multiple subfiles, only one subfile should be referenced in `comment[data file]` and `comment[file uri]` (e.g. .imzML for imzML format and .hdr for Analyze7.5 format).
+- Set `comment[fraction identifier]` to `not applicable`.
+- Often multiple samples are measured together on the same plate/glass slide. Rules are similar as in <<pooled-samples>>. Each sample should be specified in a separate row, with the same `assay name`, `comment[data file]` and `comment[file uri]`. The most tricky step is to connect each sample to its position on the slide. This can be either achieved by providing one x and y position inside the sample as additional columns `comment[position x]` and `comment[position y]` or by using a sample ID, that is also specified on an additional overview image that is uploaded together with the raw data.
+- The ion polarity for each file should be indicated in `comment[scan polarity]` as either `positive` or `negative`.
+- For MALDI experiments, the name/chemical composition of the matrix should be specified in `comment[matrix]`.
+- Experiments without enzymatic digestion should set `comment[cleavage agent details]` to `not applicable`. Experiments that applied Enzymes, should set the species of origin in  `comment [cleavage agent species]`.
+- Special ionisation sources may be indicated in `comment[ionisation source]`.
+- Resolution of the mass spectrometer may be indicated in `comment[resolution]`.
+- Except for digested peptides, the analyte type should be specified in `comment[analyte]`.
+- Experiment type `comment[Experiment Type]` may be set to `mass spectrometry imaging`.
 
 [[sdrf-templates]]
 == Sample/MSRun templates
