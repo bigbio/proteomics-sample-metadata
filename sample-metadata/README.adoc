@@ -168,21 +168,44 @@ Some examples with explicitly annotation of the biological replicates can be fou
 
 TIP: Multiple tools like MaxQuant or MSstats recognize some of this technical and biological replicates as Groups. In MSstatsTMT for example: Technical replicate correspond to `TechRepMixture`, while biological replicates correspond to `BioReplicate`.
 
-[[instrument]]
-=== Type and Model of Mass Spectrometer
+[[sample-prep]]
+=== Sample preparation properties
 
-- The model of the mass spectrometer SHOULD be specified as `comment[instrument]`.
-  Possible values are listed under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000031&viewMode=All&siblings=false[instrument model] term.
+In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters. 
 
-- Additionally, it is strongly RECOMMENDED to include `comment[MS2 analyzer type]`. This is important e.g. for Orbitrap models
-  where MS2 scans can be acquired either in the Orbitrap or in the ion trap. Setting this value allows to differentiate
-  high-resolution MS/MS data. Possible values of `comment[MS2 analyzer type]` are https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000443&viewMode=All&siblings=false[mass analyzer types].
+- `comment [depletion]`: The removal of specific components of a complex mixture of proteins or peptides based on some specific property of those components. The values of the columns will be `no depletion` or `depletion`. In the case of depletion `depleted fraction` of `bound fraction` can be specified. 
+
+- `comment [reduction reagent]`: The chemical reagent that is used to break disulfide bonds in proteins. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607&viewMode=All&siblings=false[reduction reagent]. For example, DTT.
+
+- `comment [alkylation reagent]`: The alkylation reagent that is used to covalently modify cysteine SH-groups after reduction, preventing them from forming unwanted novel disulfide bonds. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598&viewMode=All&siblings=false[alkylation reagent]. For example, IAA.
+
+- `comment [fractionation method]`: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. For example, Off-gel electrophoresis.
+
+[[encoding-enzymes]]
+=== Enzyme
+
+The REQUIRED `comment [cleavage agent details]` property is used to capture the Enzyme information. We will use a key=value pair representation to encode the following properties for each enzyme:
+
+|===
+|Property           |Key |Example     | Mandatory(:white_check_mark:)/Optional(:zero:) | comment
+|Name of the Enzyme | NT | NT=Trypsin | :white_check_mark:                             | * Name of the Term in this particular case Name of the Enzyme.
+|Enzyme Accession | AC | AC=MS:1001251 | :zero:                                      | Accession in an external PSI-MS Ontology definition under the following category https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001045[Cleavage agent name].
+|Cleavage site regular expression | CS | CS=(?<=[KR])(?!P) | :zero: | The cleavage site defined as a regular expression.
+|===
+
+An example of a **SDRF** with sample enzyme annotated:
+
+|===
+| |comment[cleavage agent details]
+
+|sample 1| NT=Trypsin; AC=MS:1001251; CS=(?<=[KR])(?!P)
+|===
 
 
 [[label-annotatations]]
 === Label annotations
 
-In order to annotate quantitative projects, the SDRF file format use tags for each channel associated with the sample in comment[label]. The label values are organized under the following ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label].
+In order to annotate quantitative projects, the SDRF file format use tags for each channel associated with the sample in `comment[label]`. The label values are organized under the following ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label].
 
 Some of the most popular labels are:
 
@@ -200,8 +223,42 @@ Examples:
 - https://github.com/bigbio/proteomics-metadata-standard/blob/c69665600d5e0ddaf6099b4660cc70764ef6cddf/annotated-projects/PXD011799/sdrf.tsv[TMT experiment]
 - https://github.com/bigbio/proteomics-metadata-standard/blob/a141d6bc225e3df8d35e36f0035307f0c7fadf1d/annotated-projects/PXD017710/sdrf-silac.tsv[SILAC experiment]
 
-[[additional-raw-file]]
-=== Additional RAW file properties
+
+[[encoding-msrun-additional-details]]
+
+== Additional MSRun information
+
+We strongly RECOMMEND to encode some of the technical parameters of the MS experiment as _comments_ (https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[Check what is a comment in SDRF]) including the following parameters:
+
+- Type and Model of Mass Spectrometer <<instrument>>
+- MS/MS properties <<fragment-proper>>
+- RAW file URI <<raw-file-uri>>
+
+We also RECOMMENED to encode some of the search parameters including: 
+
+- Protein Modifications <<encoding-protein-modifications>>
+- Precursor and Fragment mass tolerances <<encoding-tolerances>>
+
+
+[[instrument]]
+=== Type and Model of Mass Spectrometer
+
+- The model of the mass spectrometer SHOULD be specified as `comment[instrument]`.
+  Possible values are listed under https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000031&viewMode=All&siblings=false[instrument model] term.
+
+- Additionally, it is strongly RECOMMENDED to include `comment[MS2 analyzer type]`. This is important e.g. for Orbitrap models
+  where MS2 scans can be acquired either in the Orbitrap or in the ion trap. Setting this value allows to differentiate
+  high-resolution MS/MS data. Possible values of `comment[MS2 analyzer type]` are https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000443&viewMode=All&siblings=false[mass analyzer types].
+  
+[[fragment-proper]]
+=== MS/MS properties
+
+- comment[collision energy]: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
+
+- comment[dissociation method]: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
+
+[[raw-file-uri]]
+=== RAW file URI
 
 We RECOMMEND to include the public URI of the file if available. For example for ProteomeXchange datasets the URI from the FTP can be provided:
 
@@ -211,25 +268,6 @@ We RECOMMEND to include the public URI of the file if available. For example for
 |sample 1| ... |ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/000261_C05_P0001563_A00_B00K_R1.RAW
 |===
 
-[[sample-scan-additional]]
-=== MSRun additional properties
-
-- comment[fractionation method]: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. Example, Off-gel electrophoresis.
-
-- comment[depletion]: The removal of specific components of a complex mixture of proteins or peptides on the basis of some specific property of those components. The values of the columns will be `no depletion` or `depletion`.
-
-- comment[collision energy]: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
-
-- comment[dissociation method]: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
-
-[[encoding-MSRun-technical-details]]
-== MSRun technical details properties
-
-We RECOMMEND to encode some of the technical parameters of the MS experiment as _comment_s (https://www.ebi.ac.uk/arrayexpress/help/creating_a_sdrf.html[Check what is a comment in SDRF]) including the following parameters:
-
-- Protein Modifications <<encoding-protein-modifications>>
-- Precursor and Fragment mass tolerances <<encoding-tolerances>>
-- Digestion Enzyme <<encoding-enzymes>>
 
 [[encoding-protein-modifications]]
 === Protein Modifications
@@ -269,27 +307,6 @@ An example of a **SDRF** file with sample modifications annotated:
 
 |sample 1| NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E | NT=Oxidation; MT=Variable; TA=M
 |===
-
-[[encoding-enzymes]]
-=== Enzyme
-
-The REQUIRED `comment [cleavage agent details]` property is used to capture the Enzyme information. Similar to protein modification <<encoding-protein-modifications>> we will use a key=value pair representation to encode the following properties for each enzyme:
-
-|===
-|Property           |Key |Example     | Mandatory(:white_check_mark:)/Optional(:zero:) | comment
-|Name of the Enzyme | NT | NT=Trypsin | :white_check_mark:                             | * Name of the Term in this particular case Name of the Enzyme.
-|Enzyme Accession | AC | AC=MS:1001251 | :zero:                                      | Accession in an external PSI-MS Ontology definition under the following category https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001045[Cleavage agent name].
-|Cleavage site regular expression | CS | CS=(?<=[KR])(?!P) | :zero: | The cleavage site defined as a regular expression.
-|===
-
-An example of a **SDRF** with sample enzyme annotated:
-
-|===
-| |comment[cleavage agent details]
-
-|sample 1| NT=Trypsin; AC=MS:1001251; CS=(?<=[KR])(?!P)
-|===
-
 
 [[encoding-tolerances]]
 === Precursor and Fragment mass tolerances
