@@ -1,4 +1,4 @@
-# Sample to Data file format (SDRF) for Proteomics
+# Sample and Data Relationship Format (SDRF) for Proteomics
 
 [![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
 [![Open Issues](https://flat.badgen.net/github/open-issues/HUPO-PSI/mzSpecLib)](https://github.com/bigbio/proteomics-metadata-standard/issues)
@@ -13,7 +13,7 @@ The *Sample and Data Relationship Format (SDRF) for Proteomics* project aims to 
 
 The following _Use Cases_ should be considered to design the Proteomics Experimental design data format:
 
-- The "Sample to Data file format (SDRF) for Proteomics" complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
+- The "Sample and Data Relationship Format (SDRF) for Proteomics" complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
 
 - It SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
 
@@ -25,7 +25,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 
 ## Ontologies
 
-The *Sample to Data file format (SDRF) for Proteomics* should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the [Ontology Lockup Service](https://www.ebi.ac.uk/ols/index). The current ontologies supported in the format are:
+The *Sample and Data Relationship Format (SDRF) for Proteomics* should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the [Ontology Lockup Service](https://www.ebi.ac.uk/ols/index). The current ontologies supported in the format are:
 
 - [PRIDE Controlled Vocabulary (CV)](https://www.ebi.ac.uk/ols/ontologies/pride)
 - [PSI Mass Spectrometry CV](https://www.ebi.ac.uk/ols/ontologies/ms)
