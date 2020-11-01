@@ -9,7 +9,7 @@
 
 ## Improving metadata annotation of Proteomics datasets
 
-The *Sample to Data file format (SDRF) for Proteomics* project aims to define a set of guidelines to support the annotation of the sample metadata in in public proteomics experiments. Our goal with the *Sample to Data file format (SDRF) for Proteomics* is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
+The *Sample and Data Relationship Format (SDRF) for Proteomics* project aims to define a set of guidelines to support the annotation of the sample metadata in in public proteomics experiments. Our goal with the *Sample to Data file format (SDRF) for Proteomics* is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
 
 The following _Use Cases_ should be considered to design the Proteomics Experimental design data format:
 
