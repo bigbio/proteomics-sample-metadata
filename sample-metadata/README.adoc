@@ -156,7 +156,7 @@ The value for each property (e.g. characteristics, comment) corresponding to eac
 
 == SDRF-Proteomics: Samples metadata
 
-The Sample metadata has different Categories/Headings to organize all the attributes/ column headers of a given sample.  Each Sample in the dataset MUST contain a source name, and a collection of characteristics:
+The Sample metadata has different Categories/Headings to organize all the attributes/ column headers of a given sample. Each Sample in the dataset MUST contain a source name, and a collection of characteristics:
 
 |===
 |Property        | Mandatory(:white_check_mark:)/Optional(:zero:) | Cardinality | Description | Example
@@ -170,27 +170,27 @@ Example:
 |===
 | source name   | characteristics[organism] | characteristics[organism part] | characteristics[phenotype] | characteristics[compound]
 
-|sample_treat   | homo sapiens              | Whole Organism                 | necrotic tissue            | drug A
-|sample_control | homo sapiens              | Whole Organism                 | normal                     | none
+|sample_treat   | homo sapiens              | whole organism                 | necrotic tissue            | drug A
+|sample_control | homo sapiens              | whole organism                 | normal                     | none
 |===
 
 Some important notes:
 
-- Each characteristics name in the column header SHOULD be a CV term from the EFO ontology. For example, the Header characteristics[organism] corresponds to the ontology term Organism.
+- Each characteristics name in the column header SHOULD be a CV term from the EFO ontology. For example, the header _characteristics[organism]_ corresponds to the ontology term Organism.
 
-- Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same SDRF. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g. "immunophenotype".
+- Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g. "immunophenotype".
 
 
-[[from-sample-scan]]
+[[from-sample-data]]
 == SDRF-Proteomics: Data files metadata
 
-The connection between the Samples to the Data files is done by using a series of properties and attributes. All the properties referring to the MS run (file) itself are annotated with the category **comment**. The use of comment is mainly aimed at differentiating sample properties from the data properties. It matches a given sample to the corresponding file(s). The order of the columns is important, assay name SHOULD always be located before the comments. It is RECOMMENDED to put the last column as _comment[data file]_.
+The connection between the Samples to the Data files is done by using a series of properties and attributes (comments). All the properties referring to the MS run (file) itself are annotated with the category **comment**. The use of comment is mainly aimed at differentiating sample properties from the data properties. It matches a given sample to the corresponding file(s). The order of the columns is important, _assay name_ SHOULD always be located before the comments. It is RECOMMENDED to put the last column as _comment[data file]_.
 
-The following properties SHOULD be provided for each data file (MSRun) file:
+The following properties MUST be provided for each data file (ms run) file:
 
 - **assay name**: For SDRF back-compatibility MSRun cannot be used. Instead _assay name_ is used. Examples of assay names are: “run 1”, “run_fraction_1_2”.
 - **comment[fraction identifier]**: The fraction identifier allows to record the number of a given fraction. The fraction identifier corresponds to this ontology term. It MUST start from 1 and if the experiment is not fractionated, 1 MUST be used for each MSRun (assay).
-- **comment[label]**: label describes the label applied to each Sample (if any). In case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label free sample term MUST be used.
+- **comment[label]**: label describes the label applied to each Sample (if any). In case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label free sample term MUST be used <<label-data>>.
 - **comment[data file]**: The data file provides the name of the raw file generated  by the instrument. The data files can be instrument raw files but also converted peak lists such as mzML, MGF or result files like mzIdentML.
 
 Example:
@@ -203,6 +203,7 @@ Example:
 
 TIP: All the possible _label_ values can be seen in the in the PRIDE CV under the https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label] node.
 
+[[label-data]]
 === Label annotations
 
 In order to annotate quantitative datasets, the SDRF file format use tags for each channel associated with the sample in _comment[label]_. The label values are organized under the following ontology term Label. Some of the most popular labels are:
