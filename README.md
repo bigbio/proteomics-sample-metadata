@@ -1,4 +1,4 @@
-# Sample and Data Relationship Format (SDRF) for Proteomics
+# Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)
 
 [![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
 [![Open Issues](https://flat.badgen.net/github/open-issues/HUPO-PSI/mzSpecLib)](https://github.com/bigbio/proteomics-metadata-standard/issues)
@@ -9,48 +9,19 @@
 
 ## Improving metadata annotation of Proteomics datasets
 
-The *Sample and Data Relationship Format (SDRF) for Proteomics* project aims to define a set of guidelines to support the annotation of the sample metadata in in public proteomics experiments. Our goal with the *Sample to Data file format (SDRF) for Proteomics* is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
+The *Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)* project aims to define a set of guidelines to support the annotation of the sample metadata in in public proteomics experiments. Our goal is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community.
 
 The following _Use Cases_ should be considered to design the Proteomics Experimental design data format:
 
-- The "Sample and Data Relationship Format (SDRF) for Proteomics" complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
+- The "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)" complement the [proteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) file format implemented by [ProteomeXchange](http://www.proteomexchange.org/) to capture the minimum metadata about a proteomics dataset. The ProteomeXchange submission XML file format is detailed [here](http://www.proteomexchange.org/docs/guidelines_px.pdf).
 
 - It SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
 
 - It SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
 
-## Notational conventions
+## SDRF-Proteomics
 
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” are to be interpreted as described in [RFC-2119 (Bradner 1997)](https://www.rfc-archive.org/getrfc?rfc=2119).
-
-## Ontologies
-
-The *Sample and Data Relationship Format (SDRF) for Proteomics* should be based on ontology or controlled vocabulary (CV) terms (e.g. UNIMOD-35). An _ontology_ encompasses a representation, formal naming and definition of the categories, properties and relationships between the concepts, data and entities that substantiate one, many or all domains of discourse. All Ontologies used in the Proteomics Experimental Design format MUST be indexed in the [Ontology Lockup Service](https://www.ebi.ac.uk/ols/index). The current ontologies supported in the format are:
-
-- [PRIDE Controlled Vocabulary (CV)](https://www.ebi.ac.uk/ols/ontologies/pride)
-- [PSI Mass Spectrometry CV](https://www.ebi.ac.uk/ols/ontologies/ms)
-- [Experimental Factor Ontology](https://www.ebi.ac.uk/ols/ontologies/efo)
-- [Unimod protein modification database for mass spectrometry](https://www.ebi.ac.uk/ols/ontologies/unimod)
-- [PSI-MOD CV](https://www.ebi.ac.uk/ols/ontologies/mod)
-- [Cell line ontology](https://www.ebi.ac.uk/ols/ontologies/clo)
-- [Drosophila anatomy ontology](https://www.ebi.ac.uk/ols/ontologies/FBbt)
-- [Cell ontology](https://www.ebi.ac.uk/ols/ontologies/cl)
-- [Plant ontology](https://www.ebi.ac.uk/ols/ontologies/po)
-- [Uber-anatomy ontology](https://www.ebi.ac.uk/ols/ontologies/uberon)
-- [Zebrafish anatomy and development ontology](https://www.ebi.ac.uk/ols/ontologies/zfa)
-- [Zebrafish developmental stages ontology](https://www.ebi.ac.uk/ols/ontologies/zfs)
-- [Plant Environment Ontology](https://www.ebi.ac.uk/ols/ontologies/eo)
-- [FlyBase Developmental Ontology](https://www.ebi.ac.uk/ols/ontologies/Fbdv)
-- [Rat Strain Ontology](https://www.ebi.ac.uk/ols/ontologies/RS)
-- [Chemical Entitities of Biological Interest Ontology](https://www.ebi.ac.uk/ols/ontologies/ChEBI)
-- [NCBI organismal classification](https://www.ebi.ac.uk/ols/ontologies/NCBITAXON)
-
-WARNING: If you you are contributing with the following guidelines and file format, and WOULD like to add another ontology; please modify the list with a Pull Request.
-
-
-## Sample experiment design structure (SDRF)
-
- - [Experimental Design](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
+ - [SDRF-Proteomics](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
 
 ## How to contribute
 
@@ -62,13 +33,13 @@ In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standa
 
 Annotate a dataset in 5 steps:
 
-. Read the [SDRF specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
+- Read the [SDRF-Proteomics specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
 
-. Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata#sdrf-templates)
+- Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata#sdrf-templates)
 
-. Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
+- Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
 
-. Validate your SDRF:
+- Validate your SDRF:
 +
 In order to validate your SDRF, you can install the sdrf-pipelines tool in Python
 +
