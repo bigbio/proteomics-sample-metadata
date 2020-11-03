@@ -340,6 +340,7 @@ Sometimes the sample does not have an exact age but a range of age. To annotate 
 
 This means that the subject (sample) is between 40 and 85 years old. Other temporal information can be encoded similarly.
 
+[[phos-pho]]
 === Phosphoproteomics and other post-translational modifications enriched studies
 
 In PTM-enriched experiments, the _characteristics[enrichment process]_ SHOULD be provided. The different values already included in EFO are:
@@ -352,7 +353,7 @@ This characteristic can be used as a _factor value[enrichment process]_ to diffe
 [[pooled-samples]]
 === Pooled samples
 
-When multiple samples are pooled into one, the general approach is to annotate them separately,  abiding by the general rule: one row stands for one sample-to-file relationship. In this case,  multiple rows are created for the corresponding data file, much like in <<label-annotations>>.
+When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case,  multiple rows are created for the corresponding data file, much like in <<label-data>>.
 
 One possible exception is made for the case when one channel e.g. in a TMT/iTRAQ multiplexed experiment  is used for a sample pooled from all other channels, typically for normalization purposes. In this case,  it is not necessary to repeat all sample annotations. Instead, a special characteristic can be used:
 
@@ -366,7 +367,7 @@ One possible exception is made for the case when one channel e.g. in a TMT/iTRAQ
 
 `SN` stands for source names and lists `source name` fields of samples that are annotated in the same file and *used in the same experiment and same MS run*.
 
-Another possible value for `characteristics[pooled sample]` is a string `pooled` for cases when it is known that a sample is pooled but the individual samples cannot be annotated.
+Another possible value for _characteristics[pooled sample]_ is a string `pooled` for cases when it is known that a sample is pooled but the individual samples cannot be annotated.
 
 === Derived samples (such as patient-derived xenografts)
 
@@ -374,13 +375,13 @@ In cancer research, patient-derived xenografts (PDX) are commonly used. In those
 
 PDX samples SHOULD be annotated by using the column name _characteristics[xenograft]_. The value should then describe the growth condition, such as ‘pancreatic cancer cells grown in nude mice’.
 
-For experiments where both, the PDX and the original tumor are measured, the PDX entry SHOULD reference the respective tumor sample’s source name in the characteristics[source name] column. Non-PDX samples SHOULD contain the “not applicable” value in the characteristics[xenograft] and the characteristics[source name] column. Both tumor and PDX samples SHOULD reference the patient using the characteristics[individual] column. This column SHOULD contain some sort of patient identifier.
+For experiments where both, the PDX and the original tumor are measured, the PDX entry SHOULD reference the respective tumor sample’s source name in the _characteristics[source name]_ column. Non-PDX samples SHOULD contain the “not applicable” value in the _characteristics[xenograft]_ and the characteristics[source name] column. Both tumor and PDX samples SHOULD reference the patient using the characteristics[individual] column. This column SHOULD contain some sort of patient identifier.
 
 === Spiked-in samples
 
 There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.
 
-To include information about the spiked compounds, use characteristics[spiked compound]. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:
+To include information about the spiked compounds, use _characteristics[spiked compound]_. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:
 
 |===
 |Key | Meaning | Examples | Peptide | Protein | Mixture | Other
@@ -395,7 +396,7 @@ To include information about the spiked compounds, use characteristics[spiked co
 |CF  | Compound formula  | `C2H2O` | | | | :zero:
 |===
 
-In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as characteristics[mass].
+In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as _characteristics[mass]_.
 
 An example of SDRF-Proteomics for a sample spiked with a peptide would be:
 
@@ -404,10 +405,9 @@ An example of SDRF-Proteomics for a sample spiked with a peptide would be:
 |1 ug                  | CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
 |===
 
-For multiple spiked components, the column `characteristics[spiked compound]` may be repeated.
+For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
 
-If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample),  then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of `characteristics[spiked compound]` is optional in this case;
-if provided, it SHOULD be the string `spiked` for the spiked sample.
+If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample),  then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of _characteristics[spiked compound]_ is optional in this case; if provided, it SHOULD be the string `spiked` for the spiked sample.
 
 === Synthetic peptide libraries
 
@@ -435,9 +435,9 @@ Samples from healthy patients or individuals normally appear in manuscripts and 
 
 Different measurements of the same biological sample are often categorized as (i) Technical or (ii) Biological replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo, in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation.
 
-For a given experiment, there are different levels to which samples can be matched - e.g. same sample, sample protocol, covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, Technical vs. Biological considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the SDRF-Proteomics format. However, data providers are encouraged to provide any identifier - e.g. Biological_replicate_1, Technical_replicate_2 - that would help linking the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF -Proteomics specification is the following:
+For a given experiment, there are different levels to which samples can be matched - e.g. same sample, sample protocol, covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, Technical vs. Biological considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the SDRF-Proteomics format. However, data providers are encouraged to provide any identifier - e.g. Biological_replicate_1, Technical_replicate_2 - that would help linking the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF-Proteomics specification is the following:
 
-Technical replicate: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].
+**Technical replicate**: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].
 
 In MS-based proteomics a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. Technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
 
@@ -451,11 +451,11 @@ In the following example, only if the technical replicate column is provided, on
 | Sample 1          |    run 4   | label free sample | 2                            | 2                            | 000261_C05_P0001563_A00_B00K_F2_TR2.RAW
 |===
 
-The comment[technical replicate] column is OPTIONAL if technical replicates are not performed in a study.
+The _comment[technical replicate]_ column is OPTIONAL if technical replicates are not performed in a study.
 
-Biological replicate: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
+**Biological replicate**: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
 
-In SDRF-Proteomics biological replicates can be annotated using characteristics[biological replicate] but it is OPTIONAL if biological replicates are not performed in a study.
+In SDRF-Proteomics biological replicates can be annotated using _characteristics[biological replicate]_ but it is OPTIONAL if biological replicates are not performed in a study.
 
 Some examples with explicit annotation of the biological replicates can be found here:
 
@@ -466,21 +466,20 @@ Some examples with explicit annotation of the biological replicates can be found
 
 In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters.
 
-- `comment [depletion]`: The removal of specific components of a complex mixture of proteins or peptides based on some specific property of those components. The values of the columns will be `no depletion` or `depletion`. In the case of depletion `depleted fraction` of `bound fraction` can be specified.
+- **comment [depletion]**: The removal of specific components of a complex mixture of proteins or peptides based on some specific property of those components. The values of the columns will be `no depletion` or `depletion`. In the case of depletion `depleted fraction` of `bound fraction` can be specified.
 
-- `comment [reduction reagent]`: The chemical reagent that is used to break disulfide bonds in proteins. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607&viewMode=All&siblings=false[reduction reagent]. For example, DTT.
+- **comment [reduction reagent]**: The chemical reagent that is used to break disulfide bonds in proteins. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607&viewMode=All&siblings=false[reduction reagent]. For example, DTT.
 
-- `comment [alkylation reagent]`: The alkylation reagent that is used to covalently modify cysteine SH-groups after reduction, preventing them from forming unwanted novel disulfide bonds. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598&viewMode=All&siblings=false[alkylation reagent]. For example, IAA.
+- **comment [alkylation reagent]**: The alkylation reagent that is used to covalently modify cysteine SH-groups after reduction, preventing them from forming unwanted novel disulfide bonds. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598&viewMode=All&siblings=false[alkylation reagent]. For example, IAA.
 
-- `comment [fractionation method]`: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. For example, Off-gel electrophoresis.
-
+- **comment [fractionation method]**: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. For example, Off-gel electrophoresis.
 
 [[fragment-proper]]
 === MS/MS properties
 
-- comment[collision energy]: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
+- **comment[collision energy]**: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
 
-- comment[dissociation method]: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
+- **comment[dissociation method]**: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
 
 [[raw-file-uri]]
 === RAW file URI
@@ -501,7 +500,7 @@ Curators can decide to annotate multiple ProteomeXchange datasets into one large
 [[use-cases]]
 == SDRF-Proteomics use cases representation (templates)
 
-The sample metadata templates are a set of guidelines to annotate the different types of proteomics experiments (use cases) to ensure that Minimum Metadata and characteristics are provided to understand the dataset. These templates respond to the distribution and frequency of experiment types in public databases like PRIDE and ProteomeXchange It is planned that, unlike in other PSI formats, regular updates will need to be done to be able to explain how new use cases for the format can be accommodated.
+The sample metadata templates are a set of guidelines to annotate the different types of proteomics experiments (use cases) to ensure that Minimum Metadata and characteristics are provided to understand the dataset. These templates respond to the distribution and frequency of experiment types in public databases like PRIDE and ProteomeXchange. It is planned that, unlike in other PSI formats, regular updates will need to be done to be able to explain how new use cases for the format can be accommodated.
 
 - Default: Minimum information for any proteomics experiment https://github.com/bigbio/proteomics-metadata-standard/blob/master/templates/sdrf-default.tsv[Template]
 - Human: All tissue-based experiments that use Human samples https://github.com/bigbio/proteomics-metadata-standard/blob/master/templates/sdrf-human.tsv[Template]
