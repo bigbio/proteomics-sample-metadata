@@ -40,12 +40,14 @@ Annotate a dataset in 5 steps:
 - Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
 
 - Validate your SDRF:
-+
+
 In order to validate your SDRF, you can install the sdrf-pipelines tool in Python
-+
+
+
 ```bash
 pip install sdrf-pipelines
 ```
+
 validate the SDRF
 
 ```bash
