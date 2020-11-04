@@ -156,31 +156,30 @@ The value for each property (e.g. characteristics, comment) corresponding to eac
 
 == SDRF-Proteomics: Samples metadata
 
-The Sample metadata has different Categories/Headings to organize all the attributes/ column headers of a given sample. Each Sample in the dataset MUST contain a source name, and a collection of characteristics:
+The Sample metadata has different Categories/Headings to organize all the attributes/ column headers of a given sample. Each Sample in the dataset MUST contain:
 
-|===
-|Property        | Mandatory(:white_check_mark:)/Optional(:zero:) | Cardinality | Description | Example
-
-|source  name    | :white_check_mark:             | 1           | Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset) | Sample 1
-|characteristics | :white_check_mark: | 0..*      | “characteristics” column headings SHOULD contain an ontology property term in square brackets. Multiple Characteristic columns of the same category (e.g., “characteristics[organism part]”) are allowed. Typically, the usage implies whole to part from left to right. | characteristics [Organism Part]
-|===
+- *source name*: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)
+- *characteristics[organism]*: The organism of the Sample.
+- *characteristics[disease]*: The disease under study in the Sample.
+- *characteristics[organism part]*: The part of organism's anatomy or substance arising from an organism from which the biomaterial was derived (e.g. liver)
+- *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell. Examples are epithelial, glial etc.
 
 Example:
 
 |===
-| source name   | characteristics[organism] | characteristics[organism part] | characteristics[phenotype] | characteristics[compound]
+| source name   | characteristics[organism] | characteristics[organism part] | characteristics[disease] | characteristics[cell type]
 
-|sample_treat   | homo sapiens              | whole organism                 | necrotic tissue            | drug A
-|sample_control | homo sapiens              | whole organism                 | normal                     | none
+|sample_treat   | homo sapiens              | liver                          | liver cancer             | not available
+|sample_control | homo sapiens              | liver                          | liver cancer             | not available
 |===
+
+NOTE: Additional characteristics cane be added depending of the type of the experiment and sample. The https://github.com/ypriverol/proteomics-metadata-standard/tree/master/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment.
 
 Some important notes:
 
 - Each characteristics name in the column header SHOULD be a CV term from the EFO ontology. For example, the header _characteristics[organism]_ corresponds to the ontology term Organism.
 
 - Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g. "immunophenotype".
-
-The https://github.com/ypriverol/proteomics-metadata-standard/tree/master/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment.
 
 [[from-sample-data]]
 == SDRF-Proteomics: Data files metadata
@@ -260,7 +259,7 @@ For each modification, different properties are captured using a key=value pair 
 |Modification Type       | MT | MT=Fixed       | :zero: | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
 |Position of the modification in the Polypeptide |  PP | PP=Any N-term | :zero: | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]. Default is *Anywhere*.
 |Target Amino acid       | TA | TA=S,T,Y       | :white_check_mark: | The target amino acid letter. If the modification targets multiple sites, it can be separated by `,`.
-|Monoisotopic Mass       | MM | MM=42.010565   | :zero: | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This should only be used if the chemical formula of the modification is not known. If the chemical formula is specified, the monoisotopic mass will be overwritten by the claculated monoisotopic mass.
+|Monoisotopic Mass       | MM | MM=42.010565   | :zero: | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This should only be used if the chemical formula of the modification is not known. If the chemical formula is specified, the monoisotopic mass will be overwritten by the calculated monoisotopic mass.
 |Target Site             | TS | TS=N[^P][ST]   | :zero: | For some software, it is important to capture complex rules for modification sites as regular expressions. These use cases should be specified as regular expressions.
 |===
 
