@@ -21,7 +21,7 @@ The following _Use Cases_ should be considered to design the Proteomics Experime
 
 ## SDRF-Proteomics
 
- - [SDRF-Proteomics](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
+ - [SDRF-Proteomics](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics)
 
 ## How to contribute
 
@@ -33,9 +33,9 @@ In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standa
 
 Annotate a dataset in 5 steps:
 
-- Read the [SDRF-Proteomics specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata)
+- Read the [SDRF-Proteomics specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics)
 
-- Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sample-metadata#sdrf-templates)
+- Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics#sdrf-templates)
 
 - Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines
 
