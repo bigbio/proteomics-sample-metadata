@@ -20,7 +20,7 @@ endif::[]
 
 == Status of this document
 
-This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample to Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
+This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
 
 Version Draft - this is a draft of version 1.0
 
@@ -32,15 +32,15 @@ Further detailed information, including any updates to this document, implementa
 
 == Introduction
 
-Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1]. Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example, the CPTAC consortium (https://cptac-data-portal.georgetown.edu/) provides for every dataset a set of excel files with the information on each sample (e.g. https://cptac-data-portal.georgetown.edu/study-summary/S048) including tumor size, origin, but also how every sample is related to a specific raw file (e.g. instrument configuration parameters). As a resource routinely re-analysing public datasets, ProteomicsDB, captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as tissue, digestion method and instrument (e.g. https://www.proteomicsdb.org/#projects/4267/6228). Such heterogeneity often prevents data interpretation, reproducibility, and integration of data from different resources. This is why we propose a homogenous standard for proteomics metadata annotation. For every proteomics dataset we propose to capture at least three levels of metadata: (i) dataset description, (ii) the sample to data files related information; and (iii) the technical/proteomics specific information in standard data file formats (e.g. the PSI formats mzIdentML, mzML, or mzTab, among others).
+Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1]. Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example, the CPTAC consortium (https://cptac-data-portal.georgetown.edu/) provides for every dataset a set of excel files with the information on each sample (e.g. https://cptac-data-portal.georgetown.edu/study-summary/S048) including tumor size, origin, but also how every sample is related to a specific raw file (e.g. instrument configuration parameters). As a resource routinely re-analysing public datasets, ProteomicsDB, captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as tissue, digestion method and instrument (e.g. https://www.proteomicsdb.org/#projects/4267/6228). Such heterogeneity often prevents data interpretation, reproducibility, and integration of data from different resources. This is why we propose a homogenous standard for proteomics metadata annotation. For every proteomics dataset we propose to capture at least three levels of metadata: (i) dataset description, (ii) the sample and data files related information; and (iii) the technical/proteomics specific information in standard data file formats (e.g. the PSI formats mzIdentML, mzML, or mzTab, among others).
 
 The general description includes minimum information to describe the study overall: title, description, date of publication, type of experiment (e.g. http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&outputMode=XML). The standard data files contain mostly the technical metadata associated with the dataset including search engine settings, scores, workflows, configuration files, but do not include information about the sample metadata and/or the experimental design. Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing [1].
 
-These three levels of metadata are combined in the well-established data formats ISA-TAB [2] (https://www.isacommons.org/) or MAGE-TAB [3], which are used in other omics fields such as metabolomics and transcriptomics. In both data formats, a tab-delimited file is used to annotate the sample metadata and link it to the corresponding data file(s) (sample to data relationship file format - SDRF). Both data formats encode the properties and sample attributes as columns, and each row represents a sample in the study. However, more important that the file-format itself, general guidelines about what information should be encoded to enable reproducibility of the proteomics results is needed. The lack of guidelines to annotate information such as disease stage, cell line code, or organism part, or the analytical information about labelling channels (e.g. TMT, SILAC) makes the data representation incomplete. The consequence is that it is not possible to understand the original experiment, and/or perform a re-analysis of the dataset having all the necessary information for reproducibility purposes. If the information about the fractions, labelling channels, or enrichment methods is not annotated, the reuse and reproduction of the original results will be challenging, if possible, at all.
+These three levels of metadata are combined in the well-established data formats ISA-TAB [2] (https://www.isacommons.org/) or MAGE-TAB [3], which are used in other omics fields such as metabolomics and transcriptomics. In both data formats, a tab-delimited file is used to annotate the sample metadata and link it to the corresponding data file(s) (sample and data relationship file format - SDRF). Both data formats encode the properties and sample attributes as columns, and each row represents a sample in the study. However, more important that the file-format itself, general guidelines about what information should be encoded to enable reproducibility of the proteomics results is needed. The lack of guidelines to annotate information such as disease stage, cell line code, or organism part, or the analytical information about labelling channels (e.g. TMT, SILAC) makes the data representation incomplete. The consequence is that it is not possible to understand the original experiment, and/or perform a re-analysis of the dataset having all the necessary information for reproducibility purposes. If the information about the fractions, labelling channels, or enrichment methods is not annotated, the reuse and reproduction of the original results will be challenging, if possible, at all.
 
 image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sample-metadata.png[]
 
-**Figure 1**: SDRF-Proteomics file format stores the information of the sample and it relation to the data files in the dataset. The file format includes not only information about the sample but also about how the data was acquired and process.
+**Figure 1**: SDRF-Proteomics file format stores the information of the sample and its relation to the data files in the dataset. The file format includes not only information about the sample but also about how the data was acquired and process.
 
 === Requirements
 
@@ -81,16 +81,17 @@ SDRF-Proteomics is fully compatible with the SDRF file format part of https://ww
 
 SDRF-Proteomics sample information can be embedded into mzTab metadata files. The sample metadata in mzTab contains properties as the columns in the SDRF-Proteomics and values as Sample cell values.
 
+The SDRF-Proteomics aims to capture the sample metadata and its relationship with the data files (e.g. raw files from mass spectrometers).  The SDRF-Proteomics do not aim to capture to the downstream analysis part of the experimental design including samples that are compare, how they are combined or parameters for the downstream analysis such as FDR or p-values thresholds. The HUPO-PSI community will work in the future to include this information is other file formats such as mzTab or a new type of file format.
+
 [[ontologies-supported]]
 == Ontologies/Controlled Vocabularies Supported
 
 The list of ontologies/controlled vocabularies (CV) supported are:
 
--	PRIDE Controlled Vocabulary (CV)
--	PSI Mass Spectrometry CV
+-	PSI Mass Spectrometry CV (PSI-MS)
 -	Experimental Factor Ontology (EFO).
 -	Unimod protein modification database for mass spectrometry
--	PSI-MOD CV
+-	PSI-MOD CV (PSI-MOD)
 -	Cell line ontology
 -	Drosophila anatomy ontology
 -	Cell ontology
@@ -104,6 +105,7 @@ The list of ontologies/controlled vocabularies (CV) supported are:
 -	Chemical Entities of Biological Interest Ontology
 -	NCBI organismal classification
 -	PATO - the Phenotype and Trait Ontology
+-	PRIDE Controlled Vocabulary (CV)
 
 [[sdrf-file-format]]
 == SDRF-Proteomics file format
@@ -122,7 +124,7 @@ There are general scenarios/use cases that are addressed by the following rules:
 - **Unknown values**: In some cases, the column is mandatory in the format but for some samples the corresponding value is unknown. In those cases, users SHOULD use ‘not available’.
 - **Not Applicable values**: In some cases, the column is mandatory but for some samples the corresponding value is not applicable. In those cases, users SHOULD use ‘not applicable’.
 - **Case sensitivity**: By specification the SDRF is case insensitive, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
-- **Spaces**: By specification the SDRF is insensitive to spaces (sourcename == source name). We RECOMMEND using the space representation because is more human readable (e.g. source name).
+- **Spaces**: By specification the SDRF is case sensitive to spaces (sourcename != source name).
 - **Column order**: The SDRF MUST start with the source name column (accession/name of the sample), then all the sample characteristics; followed by the assay name. Finally, after the assay name all the comments (properties of the data file generated)
 - **Extension**: The extension of the SDRF should be .tsv or .txt.
 
@@ -184,9 +186,9 @@ Some important notes:
 [[from-sample-data]]
 == SDRF-Proteomics: Data files metadata
 
-The connection between the Samples to the Data files is done by using a series of properties and attributes (comments - for backward compatibility with SDRF in transcriptomics comment MUST be use). All the properties referring to the MS run (file) itself are annotated with the category **comment**. The use of comment is mainly aimed at differentiating sample properties from the data properties. It matches a given sample to the corresponding file(s). The order of the columns is important, _assay name_ SHOULD always be located before the comments. It is RECOMMENDED to put the last column as _comment[data file]_.
+The connection between the Samples to the Data files is done by using a series of properties and attributes (comments - for backward compatibility with SDRF in transcriptomics comment MUST be use). All the properties referring to the MS run (file) itself are annotated with the category **comment**. The use of comment is mainly aimed at differentiating sample properties from the data properties. It matches a given sample to the corresponding file(s). The word comment is used for backwards-compatibility with gene expression experiments (RNA-Seq and Microarrays experiments).
 
-The following properties MUST be provided for each data file (ms run) file:
+The order of the columns is important, _assay name_ SHOULD always be located before the comments. It is RECOMMENDED to put the last column as _comment[data file]_. The following properties MUST be provided for each data file (ms run) file:
 
 - **assay name**: For SDRF back-compatibility MSRun cannot be used. Instead _assay name_ is used. Examples of assay names are: “run 1”, “run_fraction_1_2”.
 - **comment[fraction identifier]**: The fraction identifier allows to record the number of a given fraction. The fraction identifier corresponds to this ontology term. It MUST start from 1 and if the experiment is not fractionated, 1 MUST be used for each MSRun (assay).
