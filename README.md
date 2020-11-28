@@ -90,6 +90,8 @@ The project is run by different groups:
 - Chengxin Dai (Chongqing Key Laboratory on Big Data for Bio Intelligence, Chongqing University of Posts and telecommunications, Chongqing, China)
 - Julian Uszkoreit ( Medical Faculty, Medizinisches Proteom-Center and Center for Protein Diagnostics (PRODI), Medical Proteome Analysis, Ruhr-University Bochum, Germany)
 - Dirk Winkelhardt ( Medical Faculty, Medizinisches Proteom-Center and Center for Protein Diagnostics (PRODI), Medical Proteome Analysis, Ruhr-University Bochum, Germany)
+- Kanami Arima (Toyama University of International Studies, Toyama Japan)
+- Shin Kawano (Toyama University of International Studies, Toyama Japan)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
