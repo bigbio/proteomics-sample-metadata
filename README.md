@@ -92,6 +92,7 @@ The project is run by different groups:
 - Dirk Winkelhardt ( Medical Faculty, Medizinisches Proteom-Center and Center for Protein Diagnostics (PRODI), Medical Proteome Analysis, Ruhr-University Bochum, Germany)
 - Kanami Arima (Toyama University of International Studies, Toyama Japan)
 - Shin Kawano (Toyama University of International Studies, Toyama Japan)
+- Ruri Okamoto (Toyama University of International Studies, Toyama Japan)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
