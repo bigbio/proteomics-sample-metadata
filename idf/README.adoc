@@ -1,0 +1,70 @@
+= Investigation description format for Protemics
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Status of this document
+
+This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
+
+Version Draft - this is a draft of version 1.0
+
+== Abstract
+
+The MAGE-TAB is composed by two main files SDRF and IDF. The IDF (https://www.ebi.ac.uk/arrayexpress/help/creating_an_idf.html[investigation description format]) aims to capture the general description of the experiment and dataset. Similar to the exiting [ProteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd) the IDF capture information about title of the experiment, a general description, or the submitter information.
+
+The IDF describes the project and experiment general characteristics. :
+
+-	The IDF should be compatible with the existing [ProteomeXchange.xml](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd).
+-	The IDF is a Tab-delimited and key-value pair.
+
+=== IDF Tags
+
+The IDF component of a MAGE-TAB document consists of a set of unique tags attached to their corresponding values in a simple tab-delimited text format. For example, "Experiment Description" should be followed by a free-text description of the experiment. Most of the following fields can be used with more than one value, so that (for example - multiple experimental factors etc) multiple values can be defined in a single IDF file. In such cases the multiple values should be separated by semicolons (";")
+
+== Translation/Conversion between ProteomeXchange XML and IDF
+
+|===
+|ProteomeXchange XML Property|IDF Field|comment
+
+|Title                | Investigation Title    | Dataset Title
+|Description          | Experiment Description | A general description of the dataset
+|Submitter Name       | Person First Name      | Name of the Submitter
+|Submitter Name*      | Person Last Name       | Last Name of the Submitter
+|Submitter Email      | Person Email           | Submitter Email
+|Submitter Affiliation| Person Affiliation	   | Submitter Affiliation
+| -----------         | Person Roles           | Submitter
+| -----------         | Person Roles Term Source REF |
+| -----------         | Person Roles Term Accession Number |
+|Lab Head Name        | Person First Name      | Name of the Submitter
+|Lab Head Name*       | Person Last Name       | Last Name of the Submitter
+|Lab Head Email       | Person Email           | Submitter Email
+|Lab Head Affiliation | Person Affiliation	   | Submitter Affiliation
+| -----------         | Person Roles           | Submitter
+| -----------         | Person Roles Term Source REF |
+| -----------         | Person Roles Term Accession Number |
+
+|===
+
+NOTE: *Submitter and Lab Head names are witten in ProteomeXchange as a unique Name. The automatic conversion will try to split into Person First Name and Last Name for IDF.
+
+
+Example of Contact person in IDF:
+
+image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/contact.png[]
+

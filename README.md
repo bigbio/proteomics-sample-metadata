@@ -15,7 +15,7 @@ The Proteomics Sample Metadata Project aims to standarize the way ProteomeXchang
 
 Our goal is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community. The following _Use Cases_ should be considered to design the Proteomics Sample Metadata Format:
 
-- The MAGE-TAB for proteomics should be compatible with MAGE-TAB version 1.1 that is used to represent transcriptomics data.
+- The MAGE-TAB for proteomics should be compatible with MAGE-TAB version v1.1 that is used to represent transcriptomics data.
 - The IDF part of the MAGE-TAB should be compatible with the current [proteomeXchange.xml file format](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd).
 - The "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)" based on the SDRF part of MAGE-TAB should capture the Sample to Data relationship.
 - The resulted file format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
