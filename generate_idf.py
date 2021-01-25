@@ -103,6 +103,12 @@ def print_idf(id_px, sdrf_file_path, sdrf):
   :param sdrf: sdrf to extract the experimental factors
   :return:
   """
+  selected_columns = [e for e in sdrf.columns if 'factor value' in e]
+  factor_values = []
+  for column in selected_columns:
+    m = re.search(r"\[.*?]",column)
+    factor_values.append(m.group(0).replace("[","").replace("]",""))
+
   path_id = sdrf_file_path.split("/");
   folder = path_id[0]
   project = path_id[1]
@@ -156,6 +162,12 @@ def print_idf(id_px, sdrf_file_path, sdrf):
     writer.write('Person Roles' + roles + '\n')
     writer.write('Person Roles Term Source REF\n')
     writer.write('Person Roles Term Accession Number\n')
+    writer.write('\n')
+
+    if len(factor_values)>0:
+      writer.write("Experimental Factor Name\t" + "\t".join(factor_values) + "\n")
+    else:
+      writer.write("Experimental Factor Name\n")
     writer.write('\n')
 
     writer.write('SDRF File\t' + sdrf_name + '\n')
