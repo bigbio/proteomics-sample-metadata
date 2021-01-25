@@ -14,6 +14,9 @@ PROJECTS = os.listdir(DIR)
 
 
 class ProjectIDF:
+  """
+  Class for IDF project information
+  """
 
   def __init__(self, title, description, submission_date, publication_date, data_protocol, sample_protocol, submitters, lab_heads, instruments_str, softwares_str):
     self.description = description.replace('\t', ' ').replace("\n", " ")
