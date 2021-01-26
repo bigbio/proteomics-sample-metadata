@@ -113,7 +113,7 @@ def print_idf(id_px, sdrf_file_path, sdrf):
   folder = path_id[0]
   project = path_id[1]
   sdrf_name = path_id[2]
-  idf_path = folder + "/" + project + "/" + project + "-MTAB.idf.tsv"
+  idf_path = folder + "/" + project + "/" + project + ".idf.tsv"
   with open(idf_path, 'w') as writer:
     writer.write("MAGE-TAB Version\t1.1\n")
     writer.write("Investigation Title\t" + id_px.title +'\n')
@@ -207,7 +207,7 @@ def main(args):
   try:
     i = 0
     for project in projects:
-      sdrf_files = glob.glob(os.path.join(DIR, project, '*sdrf.tsv'))
+      sdrf_files = glob.glob(os.path.join(DIR, project, '*.sdrf.tsv'))
       if sdrf_files:
         result = 'OK'
         status = 0

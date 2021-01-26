@@ -124,7 +124,7 @@ def main(args):
     i = 0
     try:
         for project in projects:
-            sdrf_files = glob.glob(os.path.join(DIR, project, '*sdrf*'))
+            sdrf_files = glob.glob(os.path.join(DIR, project, '*.sdrf.tsv'))
             error_types = set()
             error_files = set()
             status = 0
