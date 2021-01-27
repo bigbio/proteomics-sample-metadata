@@ -13,7 +13,7 @@ use Atlas::Magetab4Atlas;
 
 my $magetab4atlas = Atlas::Magetab4Atlas->new( "idf_filename" => $ARGV[0] );
 
-print "Accession:".$magetab4atlas;
+print "Accession:".$magetab4atlas->get_experiment_accession;
 
 foreach my $assay4atlas (@{ $magetab4atlas->get_assays }) {
   # Get assay name
