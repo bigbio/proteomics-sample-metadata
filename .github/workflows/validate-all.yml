@@ -16,8 +16,24 @@ on:
       - cron: '0 0 * * *'
 
 jobs:
+  perl_validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup conda
+        uses: s-weigand/setup-conda@v1
+        with:
+          update-conda: true
+          conda-channels: anaconda, conda-forge
+      - name: Install perl-atlas-modules
+        run: conda create -n perl-atlas perl-atlas-modules
+      - name: Run validation script
+        run: |
+          conda activate perl-atlas
+          for idf_file in $(ls path/to/idfs); do
+            perl validate_magetab.pl $idf_file
+          done
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
