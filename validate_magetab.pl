@@ -8,14 +8,10 @@ use strict;
 use warnings;
 use 5.10.0;
 
-# MAGE-TAB parsing.
-use Atlas::Magetab4Atlas;
-
-my $magetab4atlas = Atlas::Magetab4Atlas->new( "idf_filename" => $ARGV[0] );
-
-print "Accession:".$magetab4atlas->get_experiment_accession;
-
-foreach my $assay4atlas (@{ $magetab4atlas->get_assays }) {
-  # Get assay name
-  print "Assay:".$assay4atlas->get_name;
-}
+use Bio::MAGETAB::Util::Reader;
+my $reader = Bio::MAGETAB::Util::Reader->new({
+   idf            => $ARGV[0],
+   relaxed_parser => 0,
+});
+ 
+my $magetab = $reader->parse();
