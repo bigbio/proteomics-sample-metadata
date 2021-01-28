@@ -27,9 +27,10 @@ jobs:
           conda-channels: anaconda, bioconda, conda-forge
       - name: Install perl-atlas-modules
         run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
+      - name: Conda init bash
+        run: conda init bash
       - name: Run validation script
         run: |
-           conda init bash
            conda activate perl-atlas
            perl validate_magetab.pl annotated-projects/PXD000288/PXD000288.idf.tsv
   build:
