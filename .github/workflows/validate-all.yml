@@ -16,8 +16,28 @@ on:
       - cron: '0 0 * * *'
 
 jobs:
+  perl_validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup conda
+        uses: s-weigand/setup-conda@v1
+        with:
+          update-conda: true
+          conda-channels: anaconda, bioconda, conda-forge
+      - name: Install perl-atlas-modules
+        run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
+      - name: Conda init bash
+        run: conda init bash
+      - name: Validate MAGE-TAB
+        run: |
+            . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
+            perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c
+      - name: Validate MAGE-TAB for EA
+        run: |
+           . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
+           perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv –c -x -v
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

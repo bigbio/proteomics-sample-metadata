@@ -121,15 +121,17 @@ def main(args):
         projects = args.project
     else:
         projects = PROJECTS
+    i = 0
     try:
-        i = 0
         for project in projects:
-            sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
+            sdrf_files = glob.glob(os.path.join(DIR, project, '*.sdrf.tsv'))
             error_types = set()
             error_files = set()
+            status = 0
+            errors = []
+            templates = []
             if sdrf_files:
                 result = 'OK'
-                status = 0
                 for sdrf_file in sdrf_files:
                     errors = []
                     df = sdrf.SdrfDataFrame.parse(sdrf_file)
