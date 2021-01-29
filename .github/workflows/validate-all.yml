@@ -16,6 +16,55 @@ on:
       - cron: '0 0 * * *'
 
 jobs:
+  sdrf_proteomics_validations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+          pip install git+https://github.com/bigbio/sdrf-pipelines
+      - name: Get a list of changed files
+        if: github.event_name != 'schedule'
+        id: getfiles
+        run: |
+          export OUTFILE=$HOME/filelist.txt
+          if [ "${{ github.event_name }}" == pull_request ]; then
+              echo 'Changed files:'
+              git diff-tree --no-commit-id --name-only -r origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | tee "$OUTFILE"
+          else
+            # push
+            if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
+              parent="origin/master" # compare with master as a last resort
+            else
+              parent="${{ github.event.before }}"
+            fi
+            git diff-tree --no-commit-id --name-only -r "$parent" ${{ github.sha }} | tee "$OUTFILE"
+          fi
+      - name: Run validation
+        run: |
+          if [ ${{ github.event_name }} == "schedule" ]; then
+            echo "Validating all projects (schedule)"
+            python validate.py -v
+          else
+            export FILELIST=$HOME/filelist.txt
+            cat "$FILELIST"
+            if grep -q '^validate.py' "$FILELIST"; then
+              echo "Validating all projects (script changed)"
+              python validate.py -v
+            else
+              projects=$(cat "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
+              echo "Validating projects:" $projects
+              python validate.py -v $projects
+            fi
+          fi
   mage_tab_validation:
     runs-on: ubuntu-latest
     steps:
@@ -37,56 +86,6 @@ jobs:
           name: sdrf-picture
           path: graph_file_sdrf.png
           retention-days: 5
-  sdrf_proteomics_validations:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install wheel
-        pip install git+https://github.com/bigbio/sdrf-pipelines
-    - name: Get a list of changed files
-      if: github.event_name != 'schedule'
-      id: getfiles
-      run: |
-        export OUTFILE=$HOME/filelist.txt
-        if [ "${{ github.event_name }}" == pull_request ]; then
-            echo 'Changed files:'
-            git diff-tree --no-commit-id --name-only -r origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | tee "$OUTFILE"
-        else
-          # push
-          if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-            parent="origin/master" # compare with master as a last resort
-          else
-            parent="${{ github.event.before }}"
-          fi
-          git diff-tree --no-commit-id --name-only -r "$parent" ${{ github.sha }} | tee "$OUTFILE"
-        fi
-    - name: Run validation
-      run: |
-        if [ ${{ github.event_name }} == "schedule" ]; then
-          echo "Validating all projects (schedule)"
-          python validate.py -v
-        else
-          export FILELIST=$HOME/filelist.txt
-          cat "$FILELIST"
-          if grep -q '^validate.py' "$FILELIST"; then
-            echo "Validating all projects (script changed)"
-            python validate.py -v
-          else
-            projects=$(cat "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
-            echo "Validating projects:" $projects
-            python validate.py -v $projects
-          fi
-        fi
-
   mage_tab_expression_atlas_validations:
     runs-on: ubuntu-latest
     steps:
