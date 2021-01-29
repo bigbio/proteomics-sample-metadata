@@ -16,7 +16,7 @@ on:
       - cron: '0 0 * * *'
 
 jobs:
-  mage_tab_validations:
+  mage_tab_validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,7 +30,6 @@ jobs:
       - name: Validate Expression Atlas MAGE-TAB
         run: |
             . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
-            # perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c -v
             perl simple_validate_magetab.pl annotated-projects/PXD000288/PXD000288.idf.tsv
   sdrf_proteomics_validations:
     runs-on: ubuntu-latest
@@ -81,3 +80,19 @@ jobs:
             python validate.py -v $projects
           fi
         fi
+
+  mage_tab_expression_atlas_validations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup conda
+        uses: s-weigand/setup-conda@v1
+        with:
+          update-conda: true
+          conda-channels: anaconda, bioconda, conda-forge
+      - name: Install perl-atlas-modules
+        run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
+      - name: Validate Expression Atlas MAGE-TAB
+        run: |
+          . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
+          perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c -v
