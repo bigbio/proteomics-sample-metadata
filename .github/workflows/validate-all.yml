@@ -98,6 +98,11 @@ jobs:
       - name: Install perl-atlas-modules
         run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
       - name: Validate Expression Atlas MAGE-TAB
+        id: atlas
         run: |
           . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
           perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c -v
+      - name: after_failure
+        run: exit 0
+        if: steps.atlas.outputs.status == 'failure'
+
