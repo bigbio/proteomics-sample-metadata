@@ -29,14 +29,10 @@ jobs:
         run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
       - name: Conda init bash
         run: conda init bash
-      - name: Validate MAGE-TAB
+      - name: Validate Expression Atlass MAGE-TAB
         run: |
             . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
-            perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c
-      - name: Validate MAGE-TAB for EA
-        run: |
-           . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
-           perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv –c -x -v
+            perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c -v
   build:
     runs-on: ubuntu-latest
     steps:
