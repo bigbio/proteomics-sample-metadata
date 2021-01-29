@@ -86,22 +86,22 @@ jobs:
           name: sdrf-picture
           path: graph_file_sdrf.png
           retention-days: 5
-  mage_tab_expression_atlas_validations:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup conda
-        uses: s-weigand/setup-conda@v1
-        with:
-          update-conda: true
-          conda-channels: anaconda, bioconda, conda-forge
-      - name: Install perl-atlas-modules
-        run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
-      - name: Validate Expression Atlas MAGE-TAB
-        id: atlas
-        run: |
-          . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
-          perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c -v
-          RSPEC_RESULT=$?
-          exit 0
+#  mage_tab_expression_atlas_validations:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Setup conda
+#        uses: s-weigand/setup-conda@v1
+#        with:
+#          update-conda: true
+#          conda-channels: anaconda, bioconda, conda-forge
+#      - name: Install perl-atlas-modules
+#        run: conda create -n perl-atlas -c ebi-gene-expression-group perl-atlas-modules
+#      - name: Validate Expression Atlas MAGE-TAB
+#        id: atlas
+#        run: |
+#          . /usr/share/miniconda/bin/activate /usr/share/miniconda/envs/perl-atlas
+#          perl validate_magetab.pl -i annotated-projects/PXD000288/PXD000288.idf.tsv -x -c -v
+#          RSPEC_RESULT=$?
+#          exit 0
 
