@@ -23,7 +23,7 @@ Our goal is to ensure maximum reusability of the deposited data. Our work aims t
 
 ### IDF
 
-The IDF (investigation description format) contains fields describing the study, authors/submitters, protocols, publications ([Read Section](https://github.com/bigbio/proteomics-metadata-standard/tree/master/idf)). The proteomics community has developed a file format called submission.px which capture the same information that the MAGE-TAB IDF. We have developed a set of tools to automatically translate from submission.px to IDF.
+The IDF (investigation description format) contains fields describing the study, authors/submitters, protocols, publications ([Read Section](idf/README.adoc)). The proteomics community has developed a file format called submission.px which capture the same information that the MAGE-TAB IDF. We have developed a set of tools to automatically translate from submission.px to IDF.
 
 ### SDRF (SDRF-Proteomics)
 
