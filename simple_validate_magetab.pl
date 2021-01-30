@@ -60,7 +60,7 @@ foreach (@files){
     open( my $filehandler, ">", "new_path/file_idf.idf.tsv" )
       or die("Error: Unable to open output file: $!");
 
-    my $writer = Bio::MAGETAB::Util::Writer->new({
+    $writer = Bio::MAGETAB::Util::Writer->new({
       magetab => $magetab,
       filehandle => $filehandler,
     });
