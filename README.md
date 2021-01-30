@@ -27,7 +27,7 @@ The IDF (investigation description format) contains fields describing the study,
 
 ### SDRF (SDRF-Proteomics)
 
-While the experiment general description is captured for all the PX submissions and experiments, the Sample to Data information is missing (or not standardized) for all PX datasets. The standardization of the SDRF (within MAGE-TAB) for proteomics is the main objective of this project ([Read more about SDRF-Proteomics](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics))
+While the experiment general description is captured for all the PX submissions and experiments, the Sample to Data information is missing (or not standardized) for all PX datasets. The standardization of the SDRF (within MAGE-TAB) for proteomics is the main objective of this project ([Read more about SDRF-Proteomics](sdrf-proteomics/README.adoc))
 
 ## How to contribute
 
