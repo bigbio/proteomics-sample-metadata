@@ -11,23 +11,23 @@
 
 Metadata is essential in proteomics data repositories and is crucial to interpret and reanalyze the deposited data sets. While the dataset general description and standard data file formats are supported and captured for every dataset in ProteomeXchange partners, the information regarding the sample to data files is mostly missing. Recently, members of the European Bioinformatics Community for Mass Spectrometry (EuBIC - https://eubic-ms.org/) have created this open-source project to enable the standardization of sample metadata of public proteomics data sets.
 
-The Proteomics Sample Metadata Project aims to standarize the way ProteomeXchange partners and the proteomics community capture the relation between the Samples and the Data generated within a PX submission. We have adapted the [MAGE-TAB v1.1 format](http://fged.org/projects/mage-tab/) to capture necessary metadata for Proteomics experiments to allow automated re-processing. The MAGE-TAB is the file format to storage the metadata and sample information on transcriptomics experiments. By repurposing and extending the MAGE-TAB for Proteomics, we aim to provide a format for future submissions of multiomics experiments to ProteomeXchange partners and better integration with other omics data. The MAGE-TAB is divided in two main files IDF and SDRF, we will describe how this files are adapted for for Proteomics.
+The Proteomics Sample Metadata Project aims to standardize the way ProteomeXchange partners and the proteomics community capture the relation between the Samples and the Data generated within a PX submission. We have adapted the [MAGE-TAB v1.1 format](http://fged.org/projects/mage-tab/) to capture necessary metadata for Proteomics experiments to allow automated re-processing. The MAGE-TAB is the file format to storage the metadata and sample information on transcriptomics experiments. By repurposing and extending the MAGE-TAB for Proteomics, we aim to provide a format for future submissions of multiomics experiments to ProteomeXchange partners and better integration with other omics data. The MAGE-TAB is divided in two main files IDF and SDRF, we will describe how this files are adapted for for Proteomics.
 
 Our goal is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community. The following _Use Cases_ should be considered to design the Proteomics Sample Metadata Format:
 
 - The MAGE-TAB for proteomics should be compatible with MAGE-TAB version v1.1 that is used to represent transcriptomics data.
-- The IDF part of the MAGE-TAB should be compatible with the current [proteomeXchange.xml file format](http://ftp.pride.ebi.ac.uk/pride/resources/schema/proteomexchange/proteomeXchange-1.4.0.xsd).
+- The IDF part of the MAGE-TAB should be compatible with the current [proteomeXchange.xml file format](additional-documentation/proteomeXchange-1.4.0.xsd).
 - The "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)" based on the SDRF part of MAGE-TAB should capture the Sample to Data relationship.
 - The resulted file format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
 - The resulted file format SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
 
 ### IDF
 
-The IDF (investigation description format) contains fields describing the study, authors/submitters, protocols, publications ([Read Section](https://github.com/bigbio/proteomics-metadata-standard/tree/master/idf)). The proteomics community has developed a file format called submission.px which capture the same information that the MAGE-TAB IDF. We have developed a set of tools to automatically translate from submission.px to IDF.
+The IDF (investigation description format) contains fields describing the study, authors/submitters, protocols, publications ([Read Section](idf/README.adoc)). The proteomics community has developed a file format called submission.px which capture the same information that the MAGE-TAB IDF. We have developed a set of tools to automatically translate from submission.px to IDF.
 
 ### SDRF (SDRF-Proteomics)
 
-While the experiment general description is captured for all the PX submissions and experiments, the Sample to Data information is missing (or not standardized) for all PX datasets. The standardization of the SDRF (within MAGE-TAB) for proteomics is the main objective of this project ([Read more about SDRF-Proteomics](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics))
+While the experiment general description is captured for all the PX submissions and experiments, the Sample to Data information is missing (or not standardized) for all PX datasets. The standardization of the SDRF (within MAGE-TAB) for proteomics is the main objective of this project ([Read more about SDRF-Proteomics](sdrf-proteomics/README.adoc))
 
 ## How to contribute
 
@@ -45,7 +45,6 @@ Annotate a dataset in 5 steps:
 - Validate your SDRF:
 
 In order to validate your SDRF, you can install the sdrf-pipelines tool in Python
-
 
 ```bash
 pip install sdrf-pipelines
