@@ -2,7 +2,9 @@
 #
 # This script parsed MAGE-TAB for a given experiment idf
 #
-# It requires the conda perl-atlas-modules package to be installed
+# It requires the conda perl-atlas-modules package to be installed.
+# Description:
+#     The script takes one parameter project accession if the idf wants to be generated for only one accession.
 
 use strict;
 use warnings;
