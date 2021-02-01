@@ -19,7 +19,7 @@ Our goal is to ensure maximum reusability of the deposited data. Our work aims t
 - The IDF part of the MAGE-TAB should be compatible with the current [proteomeXchange.xml file format](additional-documentation/proteomeXchange-1.4.0.xsd).
 - The "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)" based on the SDRF part of MAGE-TAB should capture the Sample to Data relationship.
 - The resulting file format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
-- The resulted file format SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
+- The resulting file format SHOULD facilitate the automatic reanalysis of public proteomics datasets, by providing a better representation of quantitative data in public repositories.
 
 ### IDF
 
