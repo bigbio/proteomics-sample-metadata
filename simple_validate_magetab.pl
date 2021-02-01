@@ -82,7 +82,7 @@ foreach (@files){
 
   }catch {
     warn "caught error: $_"; # not $@
-    $count_errors = $count_errors + 1
+    $count_errors = $count_errors + 1;
   };
 }
 
