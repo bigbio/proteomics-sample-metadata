@@ -56,7 +56,7 @@ def clean_whitespaces_return(original_str: str):
   :param original_str: original string
   :return: clean string
   """
-  original_str = re.sub(r"[\n\t\s]*", "", original_str)
+  original_str = original_str.replace("\n", " ").replace("\t", " ")
   return original_str
 
 
