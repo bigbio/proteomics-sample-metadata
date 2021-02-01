@@ -18,13 +18,14 @@ class ProjectIDF:
   Class for IDF project information
   """
 
-  def __init__(self, title, description, submission_date, publication_date, data_protocol, sample_protocol, submitters, lab_heads, instruments_str, softwares_str):
-    self.description = description.replace('\t', ' ').replace("\n", " ")
-    self.title = title.replace('\t', ' ').replace("\n", " ")
+  def __init__(self, title, description, submission_date, publication_date, data_protocol, sample_protocol, submitters,
+               lab_heads, instruments_str, softwares_str):
+    self.description = clean_whitespaces_return(description)
+    self.title = clean_whitespaces_return(title)
     self.submission_date = submission_date
     self.publication_date = publication_date
-    self.data_protocol = data_protocol.replace('\t', ' ').replace("\n", " ")
-    self.sample_protocol = sample_protocol.replace('\t', ' ').replace("\n", " ")
+    self.data_protocol = clean_whitespaces_return(data_protocol)
+    self.sample_protocol = clean_whitespaces_return(sample_protocol)
     self.submitter = submitters
     self.lab_head = lab_heads
     self.instruments = instruments_str
@@ -46,6 +47,17 @@ class ProjectIDF:
     project_str = 'Title --- {title}'.format(title=self.title)
     return project_str
 
+
+def clean_whitespaces_return(original_str: str):
+  """
+  Clean white spcaes and tabs, replace with whitespaces.
+  :param original_str: original string
+  :return: clean string
+  """
+  original_str = re.sub(r"[\n\t\s]*", "", original_str)
+  return original_str
+
+
 def parse_persons(person_list, role):
   """
   Parse person from PRIDE API into submitter or PI
@@ -55,7 +67,7 @@ def parse_persons(person_list, role):
   persons = []
   for person_pride in person_list:
     person = {}
-    person['affiliation'] = person_pride['affiliation'].replace('\t', ' ').replace("\n", " ")
+    person['affiliation'] = clean_whitespaces_return(person_pride['affiliation'])
     person['email'] = person_pride['email']
     p = re.compile(r'^(\s+)?(Mr(\.)?|Mrs(\.)?)?(?P<FIRST_NAME>.+)(\s+)(?P<LAST_NAME>.+)$', re.IGNORECASE)
     m = p.match(person_pride['name'])
@@ -80,7 +92,7 @@ def read_from_pride(px_accession):
     project_json = r.json()
 
     submitters = parse_persons(project_json['submitters'], 'submitter')
-    lab_heads  = parse_persons(project_json['labPIs'], 'principal investigator')
+    lab_heads = parse_persons(project_json['labPIs'], 'principal investigator')
     instruments = []
     for instrument in project_json['instruments']:
       instruments.append(instrument['name'])
@@ -90,7 +102,8 @@ def read_from_pride(px_accession):
 
     return ProjectIDF(project_json['title'], project_json['projectDescription'], project_json['submissionDate'],
                       project_json['publicationDate'], project_json['dataProcessingProtocol'],
-                      project_json['sampleProcessingProtocol'], submitters, lab_heads, ';'.join(instruments), ';'.join(softwares))
+                      project_json['sampleProcessingProtocol'], submitters, lab_heads, ';'.join(instruments),
+                      ';'.join(softwares))
   except:
     raise RuntimeError('Project error when retrieving PX: ' + px_accession)
 
@@ -106,8 +119,8 @@ def print_idf(id_px, sdrf_file_path, sdrf):
   selected_columns = [e for e in sdrf.columns if 'factor value' in e]
   factor_values = []
   for column in selected_columns:
-    m = re.search(r"\[.*?]",column)
-    factor_values.append(m.group(0).replace("[","").replace("]",""))
+    m = re.search(r"\[.*?]", column)
+    factor_values.append(m.group(0).replace("[", "").replace("]", ""))
 
   path_id = sdrf_file_path.split("/");
   folder = path_id[0]
@@ -116,7 +129,7 @@ def print_idf(id_px, sdrf_file_path, sdrf):
   idf_path = folder + "/" + project + "/" + project + ".idf.tsv"
   with open(idf_path, 'w') as writer:
     writer.write("MAGE-TAB Version\t1.1\n")
-    writer.write("Investigation Title\t" + id_px.title +'\n')
+    writer.write("Investigation Title\t" + id_px.title + '\n')
     writer.write("Experiment Description\t" + id_px.description + '\n')
     writer.write('\n')
 
@@ -164,7 +177,7 @@ def print_idf(id_px, sdrf_file_path, sdrf):
     writer.write('Person Roles Term Accession Number\n')
     writer.write('\n')
 
-    if len(factor_values)>0:
+    if len(factor_values) > 0:
       writer.write("Experimental Factor Name\t" + "\t".join(factor_values) + "\n")
     else:
       writer.write("Experimental Factor Name\n")
