@@ -21,11 +21,23 @@ use Bio::MAGETAB::Util::Writer::SDRF;
 
 use File::Basename;
 
+my $project = '';
+if (@ARGV){
+  $project = $ARGV[0];
+}
+
 
 my $includeFiles = File::Find::Rule->file()->name('*.idf.tsv'); # search by file extensions
+if ($project ne ''){
+   $includeFiles = File::Find::Rule->file()
+     ->name($project . '*idf.tsv'); # search by file extensions
+
+}
 my $count_errors = 0;
 my $count_projects = 0;
 my @files = File::Find::Rule->or($includeFiles)->in('annotated-projects/');
+
+
 
 foreach (@files){
 
