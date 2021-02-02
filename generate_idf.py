@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # The following script generates the IDF for all the SDRF projects annotated.
-# TODO:  One open problem in the script is that when the factor value in the sdrf is annotated with UpperCase its annotate the Factor value in the IDF in lowercase which thown an error in the validation script simple_validate_magetab.pl
+# TODO:  One open problem in the script is that when the factor value in the sdrf is annotated with UpperCase its annotate the Factor value in the IDF in lowercase which throws an error in the validation script simple_validate_magetab.pl
 
 import argparse
 import glob
