@@ -1,0 +1,209 @@
+= Investigation description format for Protemics
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Status of this document
+
+This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
+
+Version Draft - this is a draft of version 1.0
+
+== Abstract
+
+The MAGE-TAB is composed by two main files SDRF and IDF. The IDF (https://www.ebi.ac.uk/arrayexpress/help/creating_an_idf.html[investigation description format]) aims to capture the general description of the experiment and dataset. Similar to the exiting [ProteomeXchange.xml](additional-documentation/proteomeXchange-1.4.0.xsd) the IDF capture information about title of the experiment, a general description, or the submitter information.
+
+The IDF describes the project and experiment general characteristics. :
+
+-	The IDF should be compatible with the existing [ProteomeXchange.xml](additional-documentation/proteomeXchange-1.4.0.xsd).
+-	The IDF is a Tab-delimited and key-value pair.
+
+=== IDF Tags
+
+The IDF component of a MAGE-TAB document consists of a set of unique tags attached to their corresponding values in a simple tab-delimited text format. For example, "Experiment Description" should be followed by a free-text description of the experiment. Most of the following fields can be used with more than one value, so that (for example - multiple experimental factors etc) multiple values can be defined in a single IDF file. In such cases the multiple values should be separated by semicolons (";")
+
+== IDF proteomics Tags
+
+=== Investigation Title
+The overall title of the investigation. This tag can only have one value.
+
+NOTE: Corresponding field in proteomeXchange.xml: **Title**
+
+=== Experiment Description
+A short paragraph describing the experiment as free-text. This tag can only have one value. The text should clearly explain what you did in your experiment - this will help the curation team to check and process your MAGE-TAB document.
+
+NOTE: Corresponding field in proteomeXchange.xml: **Description**
+
+=== Date of Experiment
+The date on which the experiment was performed. This tag can only have one value.
+
+NOTE: Some databases like PRIDE provides the Submission data which can be consider as the Date of the Experiment.
+
+=== Public Release Date
+The date on which the experimental data will be/was released. You can ask us to change this later. This tag can only have one value.
+
+NOTE: Corresponding field in proteomeXchange.xml: **announceDate**
+
+=== Person details
+
+The proteomics community captures Person details differently than the IDF MAGE-TAB specification. The Person information is captured in ProteomeXchange as a list of contacts where each contact is a list of CvTerms. The name of the CVterm is the name of the attribute, value of the CvTerm is the value of the attribute. For example, in `<cvParam cvRef="MS" accession="MS:1000586" name="contact name" value="Christoph Krisp"/>` the name of the CVTerm is the contact name, the value is the name of the person.
+
+In the IDF, a Contact is a Person with different properties, for example:
+
+image::sdrf-proteomics/images/contact.png[]
+
+In Proteomics the following information is capture: Name, email, affiliation and role of the contact.
+
+==== Person Last Name
+The last name of each person associated with the experiment.
+
+NOTE: NOTE: *Submitter and Lab Head names are witten in ProteomeXchange as a unique Name. The automatic conversion will try to split into Person First Name and Last Name for IDF.
+
+==== Person First Name
+The first name of each person associated with the experiment.
+
+NOTE: NOTE: *Submitter and Lab Head names are witten in ProteomeXchange as a unique Name. The automatic conversion will try to split into Person First Name and Last Name for IDF.
+
+==== Person Email
+The email address of each person associated with the experiment.
+
+==== Person Affiliation
+The organization affiliation for each person associated with the experiment. This tag is mandatory for sequencing submissions.
+
+==== Person Roles
+The role(s) performed by each person. Typically, these terms should come from the Experimental Factor Ontology. See for example the list of organization role terms. If more than one role is needed per person, the roles should be given as a semicolon (;) delimited list.
+
+NOTE: The roles defined by ProteomeXchange are two: dataset submitter; or lab head
+
+==== Person Roles Term Source REF
+The source of the Person Roles terms; his must reference one of the Term Source Names defined in the IDF file.
+
+==== Person Roles Term Accession Number
+The accession number for this term, taken from the indicated Term Source.
+
+=== Publication Details
+
+==== PubMed ID
+The PubMed IDs of the publication(s) associated with this investigation (where available).
+
+==== Publication DOI
+A Digital Object Identifier (DOI) for each publication (where available).
+
+==== Publication Author List
+The list of authors associated with each publication.
+
+==== Publication Title
+The title of each publication.
+
+==== Publication Status
+A term describing the status of each publication (e.g. submitted, in preparation, published).
+
+==== Publication Status Term Source REF
+The source of the Publication Status terms; his must reference one of the Term Source Names defined in the IDF file.
+
+==== Publication Status Term Accession Number
+The accession number for this term, taken from the indicated Term Source.
+
+=== Sample and Data Protocols
+
+The sample and data protocols in transciptomics are captured with a low-level details, while in proteomics is a summary of multiple protocols within two categories: Sample and Data Protocols. For that reason, we recommend writing the sample and data protocols in the following standard
+
+==== Sample Protocol
+
+===== Protocol Name
+The names of the protocols used within the MAGE-TAB document.
+
+NOTE: The sample protocol name for PX submissions will be: P-MTAB-Sample-PXID. The protocol name will be the combination of Sample and the Submission PX in ProteomeXchange
+
+==== Protocol Type
+The type of the protocol, taken from a controlled vocabulary. Typically, this term should come from the Experimental Factor Ontology . See for example the list of protocol terms.
+
+NOTE: The protocol type for PX submissions will be: *sample collection protocol*
+
+==== Protocol Description
+A free-text description of the protocol. This text is included in a single tab-delimited field.
+
+NOTE: The Protocol Description is the present Sample Description in ProteomeXchange.
+
+==== Protocol Parameters
+A semicolon-delimited list of parameter names.
+
+==== Protocol Hardware
+
+The protocol hardware is the instrument that was use to capture the sample.
+
+NOTE: If multiple instruments are used, they should be separated by (;)
+
+==== Data Protocol
+
+The Data protocol is a generic wy in proteomics to capture all the metadata about the data analysis steps.
+
+===== Protocol Name
+The names of the protocols used within the MAGE-TAB document.
+
+NOTE: The sample protocol name for PX submissions will be: P-MTAB-Data-PXID. The protocol name will be the combination of Sample and the Submission PX in ProteomeXchange
+
+==== Protocol Type
+The type of the protocol, taken from a controlled vocabulary. Typically, this term should come from the Experimental Factor Ontology . See for example the list of protocol terms.
+
+NOTE: The protocol type for PX submissions will be: *data analysis protocol*
+
+==== Protocol Description
+A free-text description of the protocol. This text is included in a single tab-delimited field.
+
+NOTE: The Protocol Description is the present Data Description in ProteomeXchange.
+
+==== Protocol Parameters
+A semicolon-delimited list of parameter names.
+
+==== Protocol Software
+The software used by the protocol.
+
+==== Protocol Term Source REF
+The source of the Protocol Type terms; this must reference one of the Term Source Names defined elsewhere in the IDF file.
+
+==== Protocol Term Accession Number
+The accession number for this term, taken from the indicated Term Source.
+
+=== Experimental Factors
+
+==== Experimental Factor Name
+A user-defined name for each experimental factor studied by the experiment. These experimental factors represent the variables within the investigation (e.g. growth condition, genotype, organism part). The actual values of these variables will be listed in the SDRF file, in "Factor Value [<factor name>]" columns.
+
+==== Experimental Factor Type
+A term describing the type of each experimental factor. These terms will usually come from the Experimental Factor Ontology.
+
+==== Experimental Factor Term Source REF
+The source of the Experimental Factor Type terms; this must reference one of the Term Source Names defined in the IDF file.
+
+==== Experimental Factor Term Accession Number
+The accession number for this term, taken from the indicated Term Source.
+
+
+=== SDRF File
+The name(s) of the SDRF file(s) accompanying this IDF file.
+
+=== Additional Properties
+
+==== ProteomeXchange accession number
+
+Main identifier of a ProteomeXchange dataset.
+
+=== Examples
+
+- PXD000612 - https://github.com/ypriverol/proteomics-metadata-standard/blob/master/annotated-projects/PXD000612/PXD000612.idf.tsv
