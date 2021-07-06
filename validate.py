@@ -6,6 +6,7 @@ import sys
 import argparse
 import logging
 import itertools
+import re
 
 from pandas_schema import ValidationWarning
 from sdrf_pipelines.zooma import ols
@@ -31,6 +32,15 @@ def get_ancestors(iri):
     return client.get_ancestors('ncbitaxon', iri)
 
 
+def organism_name(s):
+    m = re.search(r'nt=([^;]*)', s)
+    if m:
+        name = m.group(1)
+    else:
+        name = s
+    return name
+
+
 def get_template(df):
     """Extract organism information and pick a template for validation"""
     templates = []
@@ -45,7 +55,7 @@ def get_template(df):
     organisms = df['characteristics[organism]'].unique()
 
     for org in organisms:
-        org = org.lower()
+        org = organism_name(org)
         if org == 'homo sapiens':
             templates.append(sdrf_schema.HUMAN_TEMPLATE)
         else:
@@ -111,15 +121,17 @@ def main(args):
         projects = args.project
     else:
         projects = PROJECTS
+    i = 0
     try:
-        i = 0
         for project in projects:
-            sdrf_files = glob.glob(os.path.join(DIR, project, 'sdrf*'))
+            sdrf_files = glob.glob(os.path.join(DIR, project, '*.sdrf.tsv'))
             error_types = set()
             error_files = set()
+            status = 0
+            errors = []
+            templates = []
             if sdrf_files:
                 result = 'OK'
-                status = 0
                 for sdrf_file in sdrf_files:
                     errors = []
                     df = sdrf.SdrfDataFrame.parse(sdrf_file)
