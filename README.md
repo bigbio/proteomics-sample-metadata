@@ -111,7 +111,8 @@ As part of our efforts toward delivering open and inclusive science, we follow t
 
 ## How to cite
 
-Perez-Riverol, Yasset, European Bioinformatics Community for Mass Spectrometry. "Towards a sample metadata standard in public proteomics repositories." Journal of Proteome Research (2020) [Manuscript](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376).
+- Perez-Riverol, Yasset, European Bioinformatics Community for Mass Spectrometry. "Towards a sample metadata standard in public proteomics repositories." Journal of Proteome Research (2020) [Manuscript](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376).
+- Chengxin Dai, et. al. "A proteomics sample metadata representation for multiomics integration, and big data analysis", bioRxiv (2021) [Manuscript](https://www.biorxiv.org/content/10.1101/2021.05.21.445143v1)
 
 ## Copyright notice
 
