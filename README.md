@@ -60,6 +60,13 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 - Fork the current repository, add a folder with the ProteomeXchange accession and the annotated sdrf.tsv
 
+## 30 Minutes Guide to MAGE-TAB for Proteomics 
+
+We have created a 30 minutes Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionallly the following materials are relevant for new users: 
+
+- [Introduction to MAGE-TAB proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
+- [Introduction to MAGE-TAB proteomics - Youtube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
+
 ## Core contributors and collaborators
 
 The project is run by different groups:
@@ -104,7 +111,8 @@ As part of our efforts toward delivering open and inclusive science, we follow t
 
 ## How to cite
 
-Perez-Riverol, Yasset, European Bioinformatics Community for Mass Spectrometry. "Towards a sample metadata standard in public proteomics repositories." Journal of Proteome Research (2020) [Manuscript](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376).
+- Perez-Riverol, Yasset, European Bioinformatics Community for Mass Spectrometry. "Towards a sample metadata standard in public proteomics repositories." Journal of Proteome Research (2020) [Manuscript](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376).
+- Chengxin Dai, et. al. "A proteomics sample metadata representation for multiomics integration, and big data analysis", bioRxiv (2021) [Manuscript](https://www.biorxiv.org/content/10.1101/2021.05.21.445143v1)
 
 ## Copyright notice
 

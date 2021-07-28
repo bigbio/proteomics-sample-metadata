@@ -44,7 +44,7 @@ def organism_name(s):
 def get_template(df):
     """Extract organism information and pick a template for validation"""
     templates = []
-    cell = 'characteristics[cultured cell]'
+    cell = 'characteristics[cell line]'
 
     if cell in df:
         is_cell_line = ~df[cell].isin({'not applicable', 'not available'})
