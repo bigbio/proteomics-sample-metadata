@@ -6,6 +6,7 @@
 ![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
 ![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
 ![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard)
+[![Read the Docs](https://readthedocs.org/projects/proteomics-sample-metadata/badge/?version=latest)](https://proteomics-sample-metadata.readthedocs.io/en/latest/)
 
 ## Improving metadata annotation of Proteomics datasets
 
