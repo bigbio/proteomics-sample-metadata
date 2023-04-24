@@ -16,7 +16,7 @@ The Proteomics Sample Metadata Project aims to standardize the way ProteomeXchan
 
 Our goal is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community. The following _Use Cases_ should be considered to design the Proteomics Sample Metadata Format:
 
-- The MAGE-TAB for proteomics should be fully compatible with MAGE-TAB version v1.1 that is used to represent transcriptomics data.
+- The SDRF for Proteomics should be fully compatible with MAGE-TAB version v1.1 that is used to represent transcriptomics data.
 - The IDF part of the MAGE-TAB should be compatible with the current [proteomeXchange.xml file format](additional-documentation/proteomeXchange-1.4.0.xsd).
 - The "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)" based on the SDRF part of MAGE-TAB should capture the Sample to Data relationships.
 - The resulting file format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
@@ -42,7 +42,7 @@ Annotate a dataset in 5 steps:
 
 - Read the [SDRF-Proteomics specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics).
 - Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics#sdrf-templates).
-- Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines.
+- Annotate the corresponding ProteomeXchange PXD dataset following the guidelines.
 - Validate your SDRF file:
 
 In order to validate your SDRF, you can install the sdrf-pipelines tool in Python
