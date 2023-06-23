@@ -24,11 +24,15 @@ Our goal is to ensure maximum reusability of the deposited data. Our work aims t
 
 ### IDF
 
-The IDF (Investigation Description Format) file contains fields describing the study, authors/submitters, protocols, publications ([Read Section](idf/README.adoc)). ProteomerXchange resources developed a file format called `submission.px` which captures the same information as the `MAGE-TAB IDF`. We have developed a set of tools to automatically translate from `submission.px` to `IDF`.
+ProteomeXchange resources developed a file format called `submission.px` which captures the same information as the `MAGE-TAB IDF`. We have developed a set of tools to automatically translate from `submission.px` to `IDF`.
 
 ### SDRF (SDRF-Proteomics)
 
 While the experiment general description is captured for all the PX submissions and experiments, the Sample to Data information is missing (or not standardized) for all PX datasets. The standardization of the SDRF (within MAGE-TAB) for proteomics is the main objective of this project ([Read more about SDRF-Proteomics](sdrf-proteomics/README.adoc))
+
+## Final PSI specification
+
+The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_Final.pdf)
 
 ## How to contribute
 
@@ -65,7 +69,7 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 Documentation page (https://proteomics-sample-metadata.readthedocs.io/en/latest/)
 
-We have created a 30 minutes Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionallly the following materials are relevant for new users: 
+We have created a 30 minutes Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally the following materials are relevant for new users: 
 
 - [Introduction to MAGE-TAB proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
 - [Introduction to MAGE-TAB proteomics - Youtube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
