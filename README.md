@@ -6,16 +6,17 @@
 ![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
 ![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
 ![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard)
+[![Read the Docs](https://readthedocs.org/projects/proteomics-sample-metadata/badge/?version=latest)](https://proteomics-sample-metadata.readthedocs.io/en/latest/)
 
 ## Improving metadata annotation of Proteomics datasets
 
 Metadata is essential in proteomics data repositories and is crucial to interpret and reanalyze the deposited data sets. While the dataset general description and standard data file formats are supported and captured for every dataset by ProteomeXchange partners, the information regarding the sample to data files is mostly missing. Recently, members of the European Bioinformatics Community for Mass Spectrometry (EuBIC - https://eubic-ms.org/) have created this open-source project to enable the standardization of sample metadata of public proteomics data sets.
 
-The Proteomics Sample Metadata Project aims to standardize the way ProteomeXchange partners and the proteomics community capture the relation between the _samples_ and the _data_ generated within a PX submission. We have adapted the [MAGE-TAB v1.1 format](http://fged.org/projects/mage-tab/) to capture necessary metadata for Proteomics experiments to allow automated re-processing. The MAGE-TAB (MicroArray Gene Expression Tabular) is the file format to store the metadata and sample information on transcriptomics experiments. By repurposing and extending the MAGE-TAB for Proteomics, we aim to provide a format for future submissions of multiomics experiments to ProteomeXchange partners and better integration with other omics data. The MAGE-TAB is divided in two main files: IDF (Investigation Description Format) and SDRF (Sample and Data Relationship Format). We will describe how these two files are adapted for Proteomics.
+The Proteomics Sample Metadata Project aims to standardize the way ProteomeXchange partners and the proteomics community capture the relation between the _samples_ and the _data_ generated within a PX submission. We have adapted the [MAGE-TAB v1.1 format](https://www.fged.org/projects/mage-tab/) to capture necessary metadata for Proteomics experiments to allow automated re-processing. The MAGE-TAB (MicroArray Gene Expression Tabular) is the file format to store the metadata and sample information on transcriptomics experiments. By repurposing and extending the MAGE-TAB for Proteomics, we aim to provide a format for future submissions of multiomics experiments to ProteomeXchange partners and better integration with other omics data. The MAGE-TAB is divided in two main files: IDF (Investigation Description Format) and SDRF (Sample and Data Relationship Format). We will describe how these two files are adapted for Proteomics.
 
 Our goal is to ensure maximum reusability of the deposited data. Our work aims to define the minimum information required to report the experimental design of proteomics experiments, enabling the use and reuse of the deposited data by the proteomics community. The following _Use Cases_ should be considered to design the Proteomics Sample Metadata Format:
 
-- The MAGE-TAB for proteomics should be fully compatible with MAGE-TAB version v1.1 that is used to represent transcriptomics data.
+- The SDRF for Proteomics should be fully compatible with MAGE-TAB version v1.1 that is used to represent transcriptomics data.
 - The IDF part of the MAGE-TAB should be compatible with the current [proteomeXchange.xml file format](additional-documentation/proteomeXchange-1.4.0.xsd).
 - The "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)" based on the SDRF part of MAGE-TAB should capture the Sample to Data relationships.
 - The resulting file format SHOULD enable data submitters and curators to annotate a proteomics dataset at different levels, including the sample metadata (e.g. organism and tissues), technical metadata (e.g. instrument model) and the experimental design.
@@ -23,11 +24,15 @@ Our goal is to ensure maximum reusability of the deposited data. Our work aims t
 
 ### IDF
 
-The IDF (Investigation Description Format) file contains fields describing the study, authors/submitters, protocols, publications ([Read Section](idf/README.adoc)). ProteomerXchange resources developed a file format called `submission.px` which captures the same information as the `MAGE-TAB IDF`. We have developed a set of tools to automatically translate from `submission.px` to `IDF`.
+ProteomeXchange resources developed a file format called `submission.px` which captures the same information as the `MAGE-TAB IDF`. We have developed a set of tools to automatically translate from `submission.px` to `IDF`.
 
 ### SDRF (SDRF-Proteomics)
 
 While the experiment general description is captured for all the PX submissions and experiments, the Sample to Data information is missing (or not standardized) for all PX datasets. The standardization of the SDRF (within MAGE-TAB) for proteomics is the main objective of this project ([Read more about SDRF-Proteomics](sdrf-proteomics/README.adoc))
+
+## Final PSI specification
+
+The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_Final.pdf)
 
 ## How to contribute
 
@@ -41,7 +46,7 @@ Annotate a dataset in 5 steps:
 
 - Read the [SDRF-Proteomics specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics).
 - Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics#sdrf-templates).
-- Annotate the the corresponding ProteomeXchange PXD dataset following the guidelines.
+- Annotate the corresponding ProteomeXchange PXD dataset following the guidelines.
 - Validate your SDRF file:
 
 In order to validate your SDRF, you can install the sdrf-pipelines tool in Python
@@ -62,10 +67,13 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 ## 30 Minutes Guide to MAGE-TAB for Proteomics 
 
-We have created a 30 minutes Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionallly the following materials are relevant for new users: 
+Documentation page (https://proteomics-sample-metadata.readthedocs.io/en/latest/)
+
+We have created a 30 minutes Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally the following materials are relevant for new users: 
 
 - [Introduction to MAGE-TAB proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
 - [Introduction to MAGE-TAB proteomics - Youtube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
+
 
 ## Core contributors and collaborators
 
@@ -111,8 +119,9 @@ As part of our efforts toward delivering open and inclusive science, we follow t
 
 ## How to cite
 
+- Dai C, Füllgrabe A, Pfeuffer J, Solovyeva EM, Deng J, Moreno P, Kamatchinathan S, Kundu DJ, George N, Fexova S, Grüning B, Föll MC, Griss J, Vaudel M, Audain E, Locard-Paulet M, Turewicz M, Eisenacher M, Uszkoreit J, Van Den Bossche T, Schwämmle V, Webel H, Schulze S, Bouyssié D, Jayaram S, Duggineni VK, Samaras P, Wilhelm M, Choi M, Wang M, Kohlbacher O, Brazma A, Papatheodorou I, Bandeira N, Deutsch EW, Vizcaíno JA, Bai M, Sachsenberg T, Levitsky LI, Perez-Riverol Y. A proteomics sample metadata representation for multiomics integration and big data analysis. Nat Commun. 2021 Oct 6;12(1):5854. doi: 10.1038/s41467-021-26111-3. PMID: 34615866; PMCID: PMC8494749. [Manuscript](https://www.nature.com/articles/s41467-021-26111-3)
 - Perez-Riverol, Yasset, European Bioinformatics Community for Mass Spectrometry. "Towards a sample metadata standard in public proteomics repositories." Journal of Proteome Research (2020) [Manuscript](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376).
-- Chengxin Dai, et. al. "A proteomics sample metadata representation for multiomics integration, and big data analysis", bioRxiv (2021) [Manuscript](https://www.biorxiv.org/content/10.1101/2021.05.21.445143v1)
+
 
 ## Copyright notice
 
