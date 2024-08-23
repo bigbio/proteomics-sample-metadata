@@ -40,7 +40,7 @@ External contributors, researchers and the proteomics community are more than we
 
 Contribute with the specification: you can contribute to the specification with ideas or refinements by adding an issue into the [issue tracker](https://github.com/bigbio/proteomics-metadata-standard/issues) or performing a PR.
 
-In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects) folder users can see different public datasets that have been annotated so far by the contributors. If you would like to join these efforts, make a Fork of this repo and perform a pull request (PR) with your annotated project. If you don't have a project in mind, you can take one project from the [issues](https://github.com/bigbio/proteomics-metadata-standard/issues) and perform the annotation.
+In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects) folder, users can see different public datasets that have been annotated so far by the contributors. If you would like to join these efforts, make a Fork of this repo and perform a pull request (PR) with your annotated project. If you don't have a project in mind, you can take one project from the [issues](https://github.com/bigbio/proteomics-metadata-standard/issues) and perform the annotation.
 
 Annotate a dataset in 5 steps:
 
@@ -69,7 +69,7 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 Documentation page (https://proteomics-sample-metadata.readthedocs.io/en/latest/)
 
-We have created a 30 minutes Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally the following materials are relevant for new users: 
+We have created a 30-minute Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally, the following materials are relevant for new users: 
 
 - [Introduction to MAGE-TAB proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
 - [Introduction to MAGE-TAB proteomics - Youtube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
