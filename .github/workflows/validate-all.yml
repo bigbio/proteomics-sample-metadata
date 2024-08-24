@@ -55,14 +55,6 @@ jobs:
             python validate.py -v
           else
             export FILELIST=$HOME/filelist.txt
-            cat "$FILELIST"
-            if grep -q '^validate.py' "$FILELIST"; then
-              echo "Validating all projects (script changed)"
-              python validate.py -v
-            else
-              projects=$(cat "$FILELIST" | grep '^annotated-projects' | cut -d/ -f 2)
-              echo "Validating projects:" $projects
-              python validate.py -v $projects
-            fi
+            cat "$FILELIST" | while read line; do echo "Changed file: $line"; parse_sdrf validate-sdrf --sdrf_file $line --skip_factor_validation --skip_experimental_design_validation --use_ols_cache_only; done
           fi
 
