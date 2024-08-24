@@ -55,7 +55,7 @@ The value for each property (e.g. characteristics, comment) corresponding to eac
 
 - Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see :ref:`ptms`)
 
-`NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere; AC=Unimod:27; TA=E`
+`NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere;AC=Unimod:27; TA=E`
 
 Samples metadata
 ***********************************
@@ -200,7 +200,7 @@ Sample modifications (including both chemical modifications and post translation
      - Name of the Term in this particular case Modification, for custom modifications can be a name defined by the user.
    * - Modification Accession
      - AC
-     - AC=UNIMOD:1
+     -AC=UNIMOD:1
      - Yes
      - Accession in an external database UNIMOD or PSI-MOD supported.
    * - Chemical Formula
@@ -272,7 +272,7 @@ The REQUIRED :guilabel:`comment[cleavage agent details]` property is used to cap
      - Name of the Term in this particular case Name of the Enzyme.
    * - Enzyme Accession
      - AC
-     - AC=MS:1001251
+     -AC=MS:1001251
      - required
      - Accession in an external PSI-MS Ontology definition under the following category `cleavage agent name <https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001045>`_
    * - Cleavage site regular expression
