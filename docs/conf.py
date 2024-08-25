@@ -1,7 +1,7 @@
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    'sphinxcontrib.asciidoc',
+    'sphinx_asciidoc',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
