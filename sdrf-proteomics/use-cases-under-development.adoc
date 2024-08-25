@@ -20,7 +20,7 @@ endif::[]
 
 == Use cases under discussion by SDRF for Proteomics
 
-In this section we describe and list all the uses cases that are actively under discussion  by this initiative. In cases where some ongoing discussion is still happening about how to handle a particular analytical method or type of dataset. The link to the issue/issues in GitHub is provided. Please, if you want to discuss a particular use case you can create an https://github.com/bigbio/proteomics-metadata-standard/issues[issue in github] and explain the problem or use case to be discussed.
+In this section, we describe and list all the uses cases that are actively under discussion  by this initiative. In cases where some ongoing discussion is still happening about how to handle a particular analytical method or type of dataset. The link to the issue/issues in GitHub is provided. Please, if you want to discuss a particular use case you can create an https://github.com/bigbio/proteomics-metadata-standard/issues[issue in github] and explain the problem or use case to be discussed.
 
 === MS-Imaging datasets
 
@@ -28,35 +28,35 @@ Discussions about MS-Imaging representation can be found in the https://github.c
 
 *Metadata that does not apply to MSI*:
 
-- Reduction and Alkylation: Was suggested to be mandatory. In that case for most MSI studies it would be “not applicable”
+- Reduction and Alkylation: Was suggested to be mandatory. In that case, for most MSI studies it would be “not applicable”
 - Fraction identifier: this is never done in MSI → Therefore, I would prefer “not applicable” in contrast to classical unfractionated proteomics experiments, where one would set all fractions to “1”
-- MS2/Database search related terms are not mandatory currently, therefore they could just be ignored for MSI data.
+- MS2/Database search related terms are not mandatory currently; therefore, they could just be ignored for MSI data.
 
 *MSI specific things*
 
 - File type: The open standard format imzML is a composite file type consisting of two files: imzML + ibd → In the current annotation I only used one line and referenced only the imzML subfile but not ibd. This makes it easier to annotate and understand the metadata but might be problematic for some (automated) applications?
 
 - Multiple samples per run: Multiple tissues can be placed onto one slide As the technique is label-free and spatially resolved the samples can be distinguished by their position on the slide/plate. This might require an additional graphic that shows an ID of each sample or the center of the sample in x and y coordinates.
-All files in PXD011104 have multiple samples, I have picked only one of the files to annotate a first simple example. I just numbered the 4 tissue sections (largest image shown here: https://ftp.ebi.ac.uk/pride-archive/2020/08/PXD011104/Information-gastricmousemodel-MALDI-TOF.docx) from left to right as “position on slide”: 1,2,3,4. This would require an additional image that shows the position IDs.
+All files in PXD011104 have multiple samples, I have picked only one of the files to annotate a first simple example. I just numbered the 4 tissue sections (largest image shown here: https://ftp.pride.ebi.ac.uk/pride/data/archive/2020/08/PXD011104/Information-gastricmousemodel-MALDI-TOF.docx) from left to right as “position on slide”: 1,2,3,4. This would require an additional image that shows the position IDs.
 
 *(Potential) additional MSI metadata columns*
 
 - Origin of cleavage agent: Autolysis peptides of proteases are important for calibration/QC/contaminant removal in MSI, as they differ e.g. bovine vs. porcine it would be helpful to include this information
-- Matrix: For MALDI experiments the name/chemical composition of the matrix is helpful to remove the corresponding peaks during analysis.
+- Matrix: For MALDI experiments, the name/chemical composition of the matrix is helpful to remove the corresponding peaks during analysis.
 - Ionization source: It is quite common to customize ionization sources, then the available “instrument” terms do not reflect the truth anymore. Adding the Ionization source as separate column might be necessary.
 - Analyte: One of the MSI datasets I annotated measured phospholipids, another measured N-glycans.
 
 === Metaproteomics datasets
 
-Metaproteomics experiments are a special use case for the organism inside under study because multiple species/organism would be in the sample. In those cases the _characteristics[organism]_ will not be unique. Transcriptomics resources use the value `mixed, but it is an ambiguous term that make the sample metadata unreadable.
+Metaproteomics experiments are a special use case for the organism inside understudy because multiple species/organism would be in the sample. In those cases the _characteristics[organism]_ will not be unique. Transcriptomics resources use the value `mixed, but it is an ambiguous term that make the sample metadata unreadable.
 
 === Derived samples (such as patient-derived xenografts)
 
 While a first prototype of the use case specification is now https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics#derived-samples-such-as-patient-derived-xenografts[formalized in the specification] still some issues are pending:
 
-- Full examples with multiple species, type of mixtures etc are needed.
-- Relation between the samples should be captured. In a xenograft dataset the description of the sample 1 and sample 2 should be provided. It is not clear how to perform that (repeated columns) or different SDRF.
+- Full examples with multiple species, type of mixtures etc are necessary.
+- Relation between the samples should be captured. In a xenograft dataset, the description of the sample 1 and sample 2 should be provided. It is not clear how to perform that (repeated columns) or different SDRF.
 
 === Turnover and TMT dataset
 
-- Turnover experiments can contains multiple label for example TMT (for quantification) and SiLaC for turnover differential expression. An exiting project https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710[was originally annotated as two independent datasets], however an ongoing discussion is defining what is the best way to define this type of experiments.
+- Turnover experiments can contain multiple label, for example, TMT (for quantification) and SiLaC for turnover differential expression. An exiting project https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710[was originally annotated as two independent datasets], however an ongoing discussion is defining what is the best way to define this type of experiments.

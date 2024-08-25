@@ -58,7 +58,7 @@ pip install sdrf-pipelines
 validate the SDRF file
 
 ```bash
-parse_sdrf validate-sdrf --sdrf_file sdrf.tsv
+parse_sdrf validate-sdrf --sdrf_file PXD020294.sdrf.tsv
 ```
 
 You can read more about the validator [here](https://github.com/bigbio/sdrf-pipelines).
