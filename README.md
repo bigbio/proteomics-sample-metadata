@@ -33,7 +33,7 @@ While the experiment general description is captured for all the PX submissions 
 
 ## Final PSI specification
 
-The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_20230524_Final.pdf)
+The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_v1.0.0.pdf)
 
 ## How to contribute
 
