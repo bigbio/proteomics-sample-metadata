@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Small changes in typos and grammar in the SDRF specification document (sdrf-proteomics/README.adoc).
 - Update of the enzyme.tsv file in the SDRF specification document (sdrf-proteomics/enzymes.tsv).
+- Remove enzyme regular expression as recommended in the SDRF specification document (sdrf-proteomics/README.adoc).
 
 ### Removed
 
