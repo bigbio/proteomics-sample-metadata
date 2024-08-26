@@ -68,12 +68,10 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 ## 30 Minutes Guide to MAGE-TAB for Proteomics 
 
-Documentation page (https://proteomics-sample-metadata.readthedocs.io/en/latest/)
-
 We have created a 30-minute Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally, the following materials are relevant for new users: 
 
 - [Introduction to MAGE-TAB proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
-- [Introduction to MAGE-TAB proteomics - Youtube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
+- [Introduction to MAGE-TAB proteomics - YouTube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
 
 
 ## Core contributors and collaborators
