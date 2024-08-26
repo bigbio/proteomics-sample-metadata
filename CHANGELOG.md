@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Outdated readthedocs link, main documentation is the SDRF specification document (sdrf-proteomics/README.adoc).
 
-## [1.0] - 2023-05-24
+## [1.0.0] - 2023-05-24
 
 ### Added
 
