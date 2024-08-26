@@ -1,5 +1,6 @@
 # Proteomics Sample Metadata Format
 
+[![Version](https://flat.badgen.net/static/sdrf-proteomics/1.0.0/orange)](CHANGELOG.md)
 [![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
 [![Open Issues](https://flat.badgen.net/github/open-issues/HUPO-PSI/mzSpecLib)](https://github.com/bigbio/proteomics-metadata-standard/issues)
 [![Open PRs](https://flat.badgen.net/github/open-prs/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/pulls)
@@ -32,7 +33,7 @@ While the experiment general description is captured for all the PX submissions 
 
 ## Final PSI specification
 
-The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_20230524_Final.pdf)
+The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_v1.0.0.pdf)
 
 ## How to contribute
 
@@ -67,12 +68,10 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 ## 30 Minutes Guide to MAGE-TAB for Proteomics 
 
-Documentation page (https://proteomics-sample-metadata.readthedocs.io/en/latest/)
-
 We have created a 30-minute Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally, the following materials are relevant for new users: 
 
 - [Introduction to MAGE-TAB proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
-- [Introduction to MAGE-TAB proteomics - Youtube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
+- [Introduction to MAGE-TAB proteomics - YouTube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
 
 
 ## Core contributors and collaborators
