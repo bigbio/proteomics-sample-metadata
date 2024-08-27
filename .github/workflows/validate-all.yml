@@ -52,6 +52,6 @@ jobs:
             python validate.py -v
           else
             export FILELIST=$HOME/filelist.txt
-            cat "$FILELIST" | while read line; do echo "Changed file: $line"; parse_sdrf validate-sdrf --sdrf_file $line --skip_factor_validation --skip_experimental_design_validation --use_ols_cache_only; done
+            cat "$FILELIST" | grep "*sdrf.tsv" | while read line; do echo "Changed file: $line"; parse_sdrf validate-sdrf --sdrf_file $line --skip_factor_validation --skip_experimental_design_validation --use_ols_cache_only; done
           fi
 
