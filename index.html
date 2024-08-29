@@ -16,46 +16,48 @@
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_status_of_this_document">1. Status of this document</a></li>
-<li><a href="#_abstract">2. Abstract</a></li>
-<li><a href="#_introduction">3. Introduction</a>
+<li><a href="#status">1. Status of this document</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#introduction">3. Introduction</a>
 <ul class="sectlevel2">
-<li><a href="#_requirements">3.1. Requirements</a></li>
-<li><a href="#_issues_to_be_addressed">3.2. Issues to be addressed</a></li>
+<li><a href="#requirements">3.1. Requirements</a></li>
+<li><a href="#issues-addressed">3.2. Issues to be addressed</a></li>
 </ul>
 </li>
-<li><a href="#_notational_conventions">4. Notational Conventions</a></li>
-<li><a href="#_documentation">5. Documentation</a></li>
-<li><a href="#_relationship_to_other_specifications">6. Relationship to other specifications</a></li>
+<li><a href="#notation-conventions">4. Notational Conventions</a></li>
+<li><a href="#document-structure">5. Documentation</a></li>
+<li><a href="#relationship-specifications">6. Relationship to other specifications</a></li>
 <li><a href="#ontologies-supported">7. Ontologies/Controlled Vocabularies Supported</a></li>
 <li><a href="#sdrf-file-format">8. SDRF-Proteomics file format</a>
 <ul class="sectlevel2">
-<li><a href="#_sdrf_proteomics_format_rules">8.1. SDRF-Proteomics format rules</a></li>
+<li><a href="#sdrf-file-rules">8.1. SDRF-Proteomics format rules</a></li>
 <li><a href="#sdrf-file-standarization">8.2. SDRF-Proteomics values</a></li>
 </ul>
 </li>
-<li><a href="#_sdrf_proteomics_samples_metadata">9. SDRF-Proteomics: Samples metadata</a></li>
+<li><a href="#from-sample-metadata">9. SDRF-Proteomics: Samples metadata</a></li>
 <li><a href="#from-sample-data">10. SDRF-Proteomics: Data files metadata</a>
 <ul class="sectlevel2">
 <li><a href="#label-data">10.1. Label annotations</a></li>
-<li><a href="#_additional_data_files_technical_properties">10.2. Additional Data files technical properties</a></li>
+<li><a href="#instrument">10.2. Type and Model of Mass Spectrometer</a></li>
+<li><a href="#additional-data-files">10.3. Additional Data files technical properties</a></li>
 </ul>
 </li>
-<li><a href="#_sdrf_proteomics_study_variables">11. SDRF-Proteomics study variables</a></li>
+<li><a href="#study-variables">11. SDRF-Proteomics study variables</a></li>
 <li><a href="#conventions">12. SDRF-Proteomics conventions</a>
 <ul class="sectlevel2">
-<li><a href="#_how_to_encode_age">12.1. How to encode age</a></li>
+<li><a href="#age-encoding">12.1. How to encode age</a></li>
 <li><a href="#phos-pho">12.2. Phosphoproteomics and other post-translational modifications enriched studies</a></li>
 <li><a href="#pooled-samples">12.3. Pooled samples</a></li>
-<li><a href="#_derived_samples_such_as_patient_derived_xenografts">12.4. Derived samples (such as patient-derived xenografts)</a></li>
-<li><a href="#_spiked_in_samples">12.5. Spiked-in samples</a></li>
-<li><a href="#_synthetic_peptide_libraries">12.6. Synthetic peptide libraries</a></li>
-<li><a href="#_normal_and_healthy_samples">12.7. Normal and healthy samples</a></li>
-<li><a href="#_encoding_sample_technical_and_biological_replicates">12.8. Encoding sample technical and biological replicates</a></li>
+<li><a href="#derived-samples">12.4. Derived samples (such as patient-derived xenografts)</a></li>
+<li><a href="#spiked-in">12.5. Spiked-in samples</a></li>
+<li><a href="#synthetic-peptide">12.6. Synthetic peptide libraries</a></li>
+<li><a href="#normal-healthy">12.7. Normal and healthy samples</a></li>
+<li><a href="#sample-technical-biological-replicates">12.8. Encoding sample technical and biological replicates</a></li>
 <li><a href="#sample-prep">12.9. Sample preparation properties</a></li>
 <li><a href="#fragment-proper">12.10. MS/MS properties</a></li>
 <li><a href="#raw-file-uri">12.11. RAW file URI</a></li>
 <li><a href="#multiple-projects">12.12. Multiple projects into one annotation file</a></li>
+<li><a href="#data-acquisition-method">12.13. Data acquisition method: DDA and DIA and others</a></li>
 </ul>
 </li>
 <li><a href="#use-cases">13. SDRF-Proteomics use-cases representation (templates)</a></li>
@@ -70,18 +72,18 @@
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_status_of_this_document">1. Status of this document</h2>
+<h2 id="status">1. Status of this document</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.</p>
 </div>
 <div class="paragraph">
-<p><strong>Version 1.0.0</strong> - 2023-05-24</p>
+<p><strong>Version 1.0.1</strong> - 2023-05-24</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_abstract">2. Abstract</h2>
+<h2 id="abstract">2. Abstract</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for a sample metadata annotation of proteomics experiments.</p>
@@ -92,7 +94,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">3. Introduction</h2>
+<h2 id="introduction">3. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1]. Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example, the CPTAC consortium (<a href="https://cptac-data-portal.georgetown.edu/" class="bare">https://cptac-data-portal.georgetown.edu/</a>) provides for every dataset a set of Excel files with the information on each sample (e.g. <a href="https://cptac-data-portal.georgetown.edu/study-summary/S048" class="bare">https://cptac-data-portal.georgetown.edu/study-summary/S048</a>) including tumor size, origin, but also how every sample is related to a specific raw file (e.g. instrument configuration parameters). As a resource routinely re-analysing public datasets, ProteomicsDB, captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as tissue, digestion method and instrument (e.g. <a href="https://www.proteomicsdb.org/#projects/4267/6228" class="bare">https://www.proteomicsdb.org/#projects/4267/6228</a>). Such heterogeneity often prevents data interpretation, reproducibility, and integration of data from different resources. This is why we propose a homogenous standard for proteomics metadata annotation. For every proteomics dataset we propose to capture at least three levels of metadata: (i) dataset description, (ii) the sample and data files related information; and (iii) the technical/proteomics specific information in standard data file formats (e.g. the PSI formats mzIdentML, mzML, or mzTab, among others).</p>
@@ -112,7 +114,7 @@
 <p><strong>Figure 1</strong>: SDRF-Proteomics file format stores the information of the sample and its relation to the data files in the dataset. The file format includes not only information about the sample but also about how the data was acquired and processed.</p>
 </div>
 <div class="sect2">
-<h3 id="_requirements">3.1. Requirements</h3>
+<h3 id="requirements">3.1. Requirements</h3>
 <div class="paragraph">
 <p>The SDRF-Proteomics format describes the sample characteristics and the relationships between samples and data files included in a dataset. The information in SDRF files is organised so that it follows the natural flow of a proteomics experiment. The main requirements to be fulfilled for SDRF-Proteomics format are:</p>
 </div>
@@ -137,7 +139,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_issues_to_be_addressed">3.2. Issues to be addressed</h3>
+<h3 id="issues-addressed">3.2. Issues to be addressed</h3>
 <div class="paragraph">
 <p>The main issues to be addressed by the SDRF are:</p>
 </div>
@@ -155,7 +157,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_notational_conventions">4. Notational Conventions</h2>
+<h2 id="notation-conventions">4. Notational Conventions</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMEND/RECOMMENDED”, “MAY”, “COULD BE”, and “OPTIONAL” are to be interpreted as described in RFC 2119 (2).</p>
@@ -163,7 +165,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_documentation">5. Documentation</h2>
+<h2 id="document-structure">5. Documentation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - <a href="https://lab.github.com/githubtraining/introduction-to-github" class="bare">https://lab.github.com/githubtraining/introduction-to-github</a>).</p>
@@ -187,7 +189,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_relationship_to_other_specifications">6. Relationship to other specifications</h2>
+<h2 id="relationship-specifications">6. Relationship to other specifications</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>SDRF-Proteomics is fully compatible with the SDRF file format part of <a href="https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html">MAGE-TAB</a>. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the proteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.</p>
@@ -281,7 +283,7 @@
 <p><strong>Figure 2</strong>: SDRF-Proteomics in a nutshell. The file format is a tab-delimited one where columns are properties of the sample, the data file or the variables under study. The rows are the samples of origin and the cells are the values for one property in a specific sample.</p>
 </div>
 <div class="sect2">
-<h3 id="_sdrf_proteomics_format_rules">8.1. SDRF-Proteomics format rules</h3>
+<h3 id="sdrf-file-rules">8.1. SDRF-Proteomics format rules</h3>
 <div class="paragraph">
 <p>There are general scenarios/use cases that are addressed by the following rules:</p>
 </div>
@@ -374,7 +376,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification <a href="#ptms">Section 10.2.1</a></p>
+<p>Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification <a href="#ptms">Section 10.3.1</a></p>
 <div class="literalblock">
 <div class="content">
 <pre>NT=Glu-&gt;pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E</pre>
@@ -387,7 +389,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sdrf_proteomics_samples_metadata">9. SDRF-Proteomics: Samples metadata</h2>
+<h2 id="from-sample-metadata">9. SDRF-Proteomics: Samples metadata</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Sample metadata has different Categories/Headings to organize all the attributes/ column headers of a given sample. Each Sample contains a <em>source name</em> (accession) and a set of <em>characteristics</em>. Any proteomics sample MUST contain the following characteristics:</p>
@@ -499,7 +501,7 @@ Additional characteristics can be added depending on the type of the experiment 
 <p><strong>comment[data file]</strong>: The data file provides the name of the raw file generated  by the instrument. The data files can be instrument raw files but also converted peak lists such as mzML, MGF or result files like mzIdentML.</p>
 </li>
 <li>
-<p><strong>comment[instrument]</strong>: Instrument model used to capture the sample <a href="#instrument">Section 10.1.1</a>.</p>
+<p><strong>comment[instrument]</strong>: Instrument model used to capture the sample <a href="#instrument">Section 10.2</a>.</p>
 </li>
 </ul>
 </div>
@@ -583,18 +585,19 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/c69665600d5e0ddaf6099b4660cc70764ef6cddf/annotated-projects/PXD000612/sdrf.tsv">Label free</a></p>
+<p><a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD000612/PXD000612.sdrf.tsv">Label free</a></p>
 </li>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/c69665600d5e0ddaf6099b4660cc70764ef6cddf/annotated-projects/PXD011799/sdrf.tsv">TMT</a></p>
+<p><a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD011799/PXD011799.sdrf.tsv">TMT</a></p>
 </li>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/a141d6bc225e3df8d35e36f0035307f0c7fadf1d/annotated-projects/PXD017710/sdrf-silac.tsv">SILAC</a></p>
+<p><a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD017710/PXD017710-silac.sdrf.tsv">SILAC</a></p>
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="instrument">10.1.1. Type and Model of Mass Spectrometer</h4>
+</div>
+<div class="sect2">
+<h3 id="instrument">10.2. Type and Model of Mass Spectrometer</h3>
 <div class="paragraph">
 <p>The model of the mass spectrometer SHOULD be specified as <em>comment[instrument]</em>. Possible values are listed under <a href="https://www.ebi.ac.uk/ols/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000031&amp;viewMode=All&amp;siblings=false">instrument model term</a>.</p>
 </div>
@@ -602,9 +605,8 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 <p>Additionally, it is strongly RECOMMENDED to include comment[MS2 analyzer type]. This is important, e.g., for Orbitrap models where MS2 scans can be acquired either in the Orbitrap or in the ion trap. Setting this value allows differentiating high-resolution MS/MS data. Possible values of <em>comment[MS2 analyzer type]</em> are mass analyzer types.</p>
 </div>
 </div>
-</div>
 <div class="sect2">
-<h3 id="_additional_data_files_technical_properties">10.2. Additional Data files technical properties</h3>
+<h3 id="additional-data-files">10.3. Additional Data files technical properties</h3>
 <div class="paragraph">
 <p>It is RECOMMENDED to encode some of the technical parameters of the MS experiment as comments, including the following parameters:</p>
 </div>
@@ -622,9 +624,9 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 </ul>
 </div>
 <div class="sect3">
-<h4 id="ptms">10.2.1. Protein Modifications</h4>
+<h4 id="ptms">10.3.1. Protein Modifications</h4>
 <div class="paragraph">
-<p>Sample modifications, (including both chemical modifications and post-translational modifications, PTMs) are originated from multiple sources: artifactual modifications, isotope labeling, adducts that are encoded as PTMs (e.g. sodium) or the most biologically relevant PTMs.</p>
+<p>Sample modifications, (including both chemical modifications and post-translational modifications, PTMs) are originated from multiple sources: artifact modifications, isotope labeling, adducts that are encoded as PTMs (e.g. sodium) or the most biologically relevant PTMs.</p>
 </div>
 <div class="paragraph">
 <p>It is RECOMMENDED to provide the modifications expected in the sample including the amino acid affected, whether it is Variable or Fixed (also Custom and Annotated modifications are supported) and included other properties such as mass shift/delta mass and the position (e.g. anywhere in the sequence).</p>
@@ -743,7 +745,7 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 </table>
 </div>
 <div class="sect3">
-<h4 id="cleavage-agents">10.2.2. Cleavage agents</h4>
+<h4 id="cleavage-agents">10.3.2. Cleavage agents</h4>
 <div class="paragraph">
 <p>The REQUIRED <em>comment [cleavage agent details]</em> property is used to capture the enzyme information. Similar to protein modification, a key=value pair representation is used to encode the following properties for each enzyme:</p>
 </div>
@@ -824,7 +826,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect3">
-<h4 id="_precursor_and_fragment_mass_tolerances">10.2.3. Precursor and Fragment mass tolerances</h4>
+<h4 id="mass-tolerances">10.3.3. Precursor and Fragment mass tolerances</h4>
 <div class="paragraph">
 <p>For proteomics experiments, it is important to encode different mass tolerances (for precursor and fragment ions).</p>
 </div>
@@ -857,7 +859,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sdrf_proteomics_study_variables">11. SDRF-Proteomics study variables</h2>
+<h2 id="study-variables">11. SDRF-Proteomics study variables</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The variable/property under study SHOULD be highlighted using the factor value category. For example, the <em>factor value[tissue]</em> is used when the user wants to compare expression across different tissues. You can add Multiple variables under study by providing multiple factor values.</p>
@@ -892,7 +894,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 <p>In the convention section <a href="#conventions">Chapter 12</a>, the columns are described and defined, while in the section use cases and templates <a href="#use-cases">Chapter 13</a> the columns needed to describe a use case are specified.</p>
 </div>
 <div class="sect2">
-<h3 id="_how_to_encode_age">12.1. How to encode age</h3>
+<h3 id="age-encoding">12.1. How to encode age</h3>
 <div class="paragraph">
 <p>One of the characteristics of a patient sample can be the age of an individual. It is RECOMMENDED to provide the age in the following format: {X}Y{X}M{X}D. Some valid examples are:</p>
 </div>
@@ -1003,7 +1005,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect2">
-<h3 id="_derived_samples_such_as_patient_derived_xenografts">12.4. Derived samples (such as patient-derived xenografts)</h3>
+<h3 id="derived-samples">12.4. Derived samples (such as patient-derived xenografts)</h3>
 <div class="paragraph">
 <p>In cancer research, patient-derived xenografts (PDX) are commonly used. In those, the patient’s tumor is transplanted into another organism, usually a mouse. In these cases, the metadata, such as age and sex, MUST refer to the original patient and not the mouse.</p>
 </div>
@@ -1015,7 +1017,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect2">
-<h3 id="_spiked_in_samples">12.5. Spiked-in samples</h3>
+<h3 id="spiked-in">12.5. Spiked-in samples</h3>
 <div class="paragraph">
 <p>There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.</p>
 </div>
@@ -1157,7 +1159,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect2">
-<h3 id="_synthetic_peptide_libraries">12.6. Synthetic peptide libraries</h3>
+<h3 id="synthetic-peptide">12.6. Synthetic peptide libraries</h3>
 <div class="paragraph">
 <p>It is common to use synthetic peptide libraries for proteomics, and MS use cases include:</p>
 </div>
@@ -1179,7 +1181,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect2">
-<h3 id="_normal_and_healthy_samples">12.7. Normal and healthy samples</h3>
+<h3 id="normal-healthy">12.7. Normal and healthy samples</h3>
 <div class="paragraph">
 <p>Samples from healthy patients or individuals normally appear in manuscripts and annotations as healthy or normal. We RECOMMEND using the word “normal” mapped to term PATO_0000461 that is in EFO: normal PATO term. Example:</p>
 </div>
@@ -1223,7 +1225,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </table>
 </div>
 <div class="sect2">
-<h3 id="_encoding_sample_technical_and_biological_replicates">12.8. Encoding sample technical and biological replicates</h3>
+<h3 id="sample-technical-biological-replicates">12.8. Encoding sample technical and biological replicates</h3>
 <div class="paragraph">
 <p>Different measurements of the same biological sample are often categorized as (i) Technical or (ii) Biological replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo, in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation.</p>
 </div>
@@ -1263,7 +1265,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">000261_C05_P0001563_A00_B00K_F1_TR1.RAW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">F1_TR1.RAW</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample 1</p></td>
@@ -1271,7 +1273,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">000261_C05_P0001563_A00_B00K_F2_TR1.RAW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">F2_TR1.RAW</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample 1</p></td>
@@ -1279,7 +1281,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">000261_C05_P0001563_A00_B00K_F1_TR2.RAW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">F1_TR2.RAW</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample 1</p></td>
@@ -1287,7 +1289,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">000261_C05_P0001563_A00_B00K_F2_TR2.RAW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">F2_TR2.RAW</p></td>
 </tr>
 </tbody>
 </table>
@@ -1377,6 +1379,105 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 <h3 id="multiple-projects">12.12. Multiple projects into one annotation file</h3>
 <div class="paragraph">
 <p>Curators can decide to annotate multiple ProteomeXchange datasets into one large SDRF-Proteomics file for reanalysis purposes. If that is the case, it is RECOMMENDED to use the comment[proteomexchange accession number] to differentiate between different datasets.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-acquisition-method">12.13. Data acquisition method: DDA and DIA and others</h3>
+<div class="paragraph">
+<p>Proteomics data acquisition method can happen in two ways: Data Dependent Acquisition (DDA) or Data Independent Acquisition (DIA). The SDRF-Proteomics file format allows to capture the method used for the data acquisition in the <em>comment[proteomics data acquisition method]</em> column. The following values are RECOMMENDED for DDA and DIA:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000627">data-dependent acquisition</a></p>
+</li>
+<li>
+<p><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450">data-independent acquisition</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000650?lang=en">diaPASEF</a></p>
+</li>
+<li>
+<p><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000447">SWATH MS</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000629">parallel reaction monitoring</a></p>
+</li>
+<li>
+<p><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000630">selected reaction monitoring</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+If the SDRF do not specified the proteomics data acquisition method as <em>comment[proteomics data acquisition method]</em>, it is assumed that the method used is DDA which is the most common method used in proteomics.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can find an example of a DIA experiment in the following link: <a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv">DIA example</a></p>
+</div>
+<div class="sect3">
+<h4 id="dia-ms1-scan">12.13.1. Data Independent Acquisition - Scan window limits</h4>
+<div class="paragraph">
+<p>Additionally to the general <em>comment[proteomics data acquisition method]</em> column, the SDRF-Proteomics file format allows to capture other properties for the DIA method. The following properties are RECOMMENDED for DIA:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>comment[MS1 scan range]</em>: The MS1 scan range is the m/z range used for the DIA acquisition. The values are expressed in m/z units.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">assay name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[MS1 scan range]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[data file]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">run 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400m/z - 1200m/z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FILE_R1.RAW</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">run 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400m/z - 1200m/z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FILE_R2.RAW</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+While the specification recommend to write the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to write the MS1 scan range as a single value (e.g. 400m/z) using two columns for the lower and upper limits. In those cases you can write the lower limit in the <em>comment[scan window lower limit]</em> and the uper limit in <em>comment[scan window upper limit]</em>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -1489,7 +1590,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-08-27 12:48:36 UTC
+Last updated 2024-08-29 08:25:42 UTC
 </div>
 </div>
 </body>
