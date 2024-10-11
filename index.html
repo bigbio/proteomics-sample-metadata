@@ -39,7 +39,8 @@
 <ul class="sectlevel2">
 <li><a href="#label-data">10.1. Label annotations</a></li>
 <li><a href="#instrument">10.2. Type and Model of Mass Spectrometer</a></li>
-<li><a href="#additional-data-files">10.3. Additional Data files technical properties</a></li>
+<li><a href="#technology-type">10.3. Technology type</a></li>
+<li><a href="#additional-data-files">10.4. Additional Data files technical properties</a></li>
 </ul>
 </li>
 <li><a href="#study-variables">11. SDRF-Proteomics study variables</a></li>
@@ -264,6 +265,9 @@
 <li>
 <p>PRIDE Controlled Vocabulary (CV)</p>
 </li>
+<li>
+<p>Mondo Disease Ontology (MONDO): A unified disease ontology integrating multiple disease resources.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -376,7 +380,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification <a href="#ptms">Section 10.3.1</a></p>
+<p>Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification <a href="#ptms">Section 10.4.1</a></p>
 <div class="literalblock">
 <div class="content">
 <pre>NT=Glu-&gt;pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E</pre>
@@ -468,7 +472,7 @@ Additional characteristics can be added depending on the type of the experiment 
 <div class="ulist">
 <ul>
 <li>
-<p>Each characteristic name in the column header SHOULD be a CV term from the EFO ontology. For example, the header <em>characteristics[organism]</em> corresponds to the ontology term Organism.</p>
+<p>Each characteristic name in the column header SHOULD be a CV term from the EFO ontology. For example, the header <em>characteristics[organism]</em> corresponds to the ontology term Organism. However the values could be from EFO or other ontologies. For example, we RECOMMEND to use MONDO for diseases because it has better coverage than EFO.</p>
 </li>
 <li>
 <p>Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g., "immunophenotype".</p>
@@ -606,7 +610,57 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 </div>
 </div>
 <div class="sect2">
-<h3 id="additional-data-files">10.3. Additional Data files technical properties</h3>
+<h3 id="technology-type">10.3. Technology type</h3>
+<div class="paragraph">
+<p>Technology type is used in SDRF and MAGE-TAB formats to specify the technology applied in the study to capture the data. For transcriptomics, common values include technologies such as microarray, RNA-seq, and ChIP-seq (as seen in <a href="https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-13567">ArrayExpress Example</a>). In SDRF-Proteomics, the technology type field is REQUIRED to describe the experimental approach used to generate the data. We RECOMMEND including the technology type column immediately after the <code>assay name`</code> column in the SDRF file, clearly indicating which technology was used to produce the data files.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">assay name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">technology type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">run 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+While we RECOMMEND positioning the technology type column after the assay name, in some original templates, this column was placed before the assay name. We will allow the technology type column to appear either directly before or after the assay name column but RECOMMEND placing it after the assay name for consistency.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For proteomics experiments the possible values for technology types can be obtained from PRIDE Ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000663">technology type</a>.</p>
+</div>
+<div class="paragraph">
+<p>Here, the list of valid values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>proteomic profiling by mass spectrometry</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="additional-data-files">10.4. Additional Data files technical properties</h3>
 <div class="paragraph">
 <p>It is RECOMMENDED to encode some of the technical parameters of the MS experiment as comments, including the following parameters:</p>
 </div>
@@ -624,7 +678,7 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 </ul>
 </div>
 <div class="sect3">
-<h4 id="ptms">10.3.1. Protein Modifications</h4>
+<h4 id="ptms">10.4.1. Protein Modifications</h4>
 <div class="paragraph">
 <p>Sample modifications, (including both chemical modifications and post-translational modifications, PTMs) are originated from multiple sources: artifact modifications, isotope labeling, adducts that are encoded as PTMs (e.g. sodium) or the most biologically relevant PTMs.</p>
 </div>
@@ -745,7 +799,7 @@ All the possible <em>label</em> values can be seen in the in the PRIDE CV under 
 </table>
 </div>
 <div class="sect3">
-<h4 id="cleavage-agents">10.3.2. Cleavage agents</h4>
+<h4 id="cleavage-agents">10.4.2. Cleavage agents</h4>
 <div class="paragraph">
 <p>The REQUIRED <em>comment [cleavage agent details]</em> property is used to capture the enzyme information. Similar to protein modification, a key=value pair representation is used to encode the following properties for each enzyme:</p>
 </div>
@@ -826,7 +880,7 @@ If no endopeptidase is used, for example, in the case of Top-down/intact protein
 </div>
 </div>
 <div class="sect3">
-<h4 id="mass-tolerances">10.3.3. Precursor and Fragment mass tolerances</h4>
+<h4 id="mass-tolerances">10.4.3. Precursor and Fragment mass tolerances</h4>
 <div class="paragraph">
 <p>For proteomics experiments, it is important to encode different mass tolerances (for precursor and fragment ions).</p>
 </div>
@@ -1590,7 +1644,7 @@ While the specification recommend to write the MS1 scan range as an interval (e.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-09-25 05:58:36 UTC
+Last updated 2024-10-11 15:08:29 UTC
 </div>
 </div>
 </body>
