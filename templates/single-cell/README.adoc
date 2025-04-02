@@ -1,0 +1,46 @@
+= SDRF-Proteomics: Single Cell Proteomics Guidelines
+:sectnums:
+:toc: left
+:doctype: book
+
+== Introduction to Single Cell Proteomics
+
+Single cell proteomics (SCP) is an emerging field that aims to characterize the proteome at the level of individual cells. This approach provides insights into cellular heterogeneity that are not accessible through bulk proteomics methods. SCP presents unique challenges for data annotation due to the need to track individual cells and their characteristics.
+
+== Additional Required Columns for Single Cell Proteomics
+
+In addition to the standard SDRF-Proteomics columns, single cell proteomics experiments require the following specific columns:
+
+=== Sample Characteristics
+
+* *characteristics[single cell isolation method]*: This column is MANDATORY for single cell proteomics experiments. It describes the method used to isolate individual cells. Common values include:
+** FACS (Fluorescence-Activated Cell Sorting)
+** Microfluidics
+** Laser capture microdissection
+** Manual picking
+** Nanodroplet processing in one pot for trace samples (nanoPOTS)
+
+* *characteristics[cell identifier]*: This column is MANDATORY for single cell proteomics experiments. It provides a unique identifier for each individual cell analyzed. This is crucial for tracking and correlating data from the same cell across different analyses.
+
+=== Optional Recommended Columns
+
+* *characteristics[cell viability]*: This column is RECOMMENDED to specify the viability status of the cell prior to analysis. Common values include "viable" or "fixed".
+
+* *characteristics[cell cycle phase]*: This column is RECOMMENDED to specify the cell cycle phase of the cell, if known. Common values include G0, G1, S, G2, M.
+
+* *comment[protein quantification method]*: This column is RECOMMENDED to specify the method used for protein quantification in single cell analysis. Common values include label-free quantification, TMT, or isobaric labeling.
+
+* *comment[single cell sample preparation method]*: This column is RECOMMENDED to specify the specialized sample preparation method used for single cell proteomics. This might include miniaturized processing methods or carrier proteome approaches.
+
+== Example SDRF-Single Cell File
+
+The example file `sdrf-single-cell.sdrf.tsv` provides a template for annotating single cell proteomics experiments. It includes the minimum required columns as well as the additional columns specific to single cell proteomics.
+
+== Best Practices for Single Cell Proteomics Annotation
+
+1. Always provide a unique cell identifier for each individual cell.
+2. Specify the method used to isolate individual cells.
+3. When possible, include information about cell viability and cell cycle phase.
+4. For studies involving multiple cells from the same sample, ensure that the relationship between cells and their origin is clearly documented.
+5. Include details about specialized sample preparation methods used for single cell analysis.
+6. If carrier proteomes or boosting strategies are used, document these in the sample preparation method.

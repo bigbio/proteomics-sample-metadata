@@ -29,22 +29,67 @@ This document provides information to the proteomics community about a proposed 
 [[abstract]]
 == Abstract
 
-The Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for a sample metadata annotation of proteomics experiments.
+The Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).
 
-Further detailed information, including any updates to this document, implementations, and examples is available at https://github.com/bigbio/proteomics-metadata-standard. The official PSI web page for the document is the following: http://psidev.info/sdrf.
+Further detailed information, including any updates to this document, implementations, and examples is available at https://github.com/bigbio/proteomics-sample-metadata[SDRF GitHub Repository]. The official PSI web page for the document is the following: http://psidev.info/sdrf.
 
-[[introduction]]
-== Introduction
+[[motivation]]
+== Motivation
 
-Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1]. Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example, the CPTAC consortium (https://cptac-data-portal.georgetown.edu/) provides for every dataset a set of Excel files with the information on each sample (e.g. https://cptac-data-portal.georgetown.edu/study-summary/S048) including tumor size, origin, but also how every sample is related to a specific raw file (e.g. instrument configuration parameters). As a resource routinely re-analysing public datasets, ProteomicsDB, captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as tissue, digestion method and instrument (e.g. https://www.proteomicsdb.org/#projects/4267/6228). Such heterogeneity often prevents data interpretation, reproducibility, and integration of data from different resources. This is why we propose a homogenous standard for proteomics metadata annotation. For every proteomics dataset we propose to capture at least three levels of metadata: (i) dataset description, (ii) the sample and data files related information; and (iii) the technical/proteomics specific information in standard data file formats (e.g. the PSI formats mzIdentML, mzML, or mzTab, among others).
+Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1].
 
-The general description includes minimum information to describe the study overall: title, description, date of publication, type of experiment (e.g. http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&outputMode=XML). The standard data files contain mostly the technical metadata associated with the dataset including search engine settings, scores, workflows, configuration files, but do not include information about the sample metadata and/or the experimental design. Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing [1].
+Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example:
 
-These three levels of metadata are combined in the well-established data formats ISA-TAB [2] (https://www.isacommons.org/) or MAGE-TAB [3], which are used in other omics fields such as metabolomics and transcriptomics. In both data formats, a tab-delimited file is used to annotate the sample metadata and link it to the corresponding data file(s) (sample and data relationship file format—SDRF). Both data formats encode the properties and sample attributes as columns, and each row represents a sample in the study. However, more important that the file-format itself, general guidelines about what information should be encoded to enable reproducibility of the proteomics results are needed. The lack of guidelines to annotate information such as disease stage, cell line code, or organism part, or the analytical information about labelling channels (e.g. TMT, SILAC) makes the data representation incomplete. The consequence is that it is not possible to understand the original experiment, and/or perform a re-analysis of the dataset having all the necessary information for reproducibility purposes. If the information about the fractions, labelling channels, or enrichment methods is not annotated, the reuse and reproduction of the original results will be challenging, if possible, at all.
+- The https://cptac-data-portal.georgetown.edu/[CPTAC Consortium] provides for every dataset a set of Excel files with the information on https://cptac-data-portal.georgetown.edu/study-summary/S048[each sample] including tumor size, origin, but also how every sample is related to a specific raw file (e.g. instrument configuration parameters).
+
+- As a resource routinely re-analysing public datasets, ProteomicsDB, captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as https://www.proteomicsdb.org/#projects/4267/6228[tissue, digestion method and instrument].
+
+Such heterogeneity often prevents data interpretation, reproducibility, and integration of data from different resources. For every proteomics dataset we propose to capture at least three levels of metadata:
+
+- (i) dataset description
+- (ii) the sample metadata and data files acquisition metadata.
+- (iii) The relation between the sample and the data files. The experimental design.
+
+The general description includes minimum information to describe the study overall: http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&outputMode=XML[title, description, date of publication, type of experiment]. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing [1].
 
 image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sample-metadata.png[]
 
 **Figure 1**: SDRF-Proteomics file format stores the information of the sample and its relation to the data files in the dataset. The file format includes not only information about the sample but also about how the data was acquired and processed.
+
+Here, we introduced the Sample and Data Relationship Format (SDRF-Proteomics) to capture the sample metadata and its relation to the data files for proteomics experiments. The SDRF-Proteomics format is a tab-delimited file format that describes the sample characteristics and the relationships between samples and data files included in a dataset.
+
+This specification, which is a community effort, aims to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files.
+
+== SDRF-Proteomics specification structure
+
+This document describe the main specification of SDRF-Proteomics, the structure of the specification [Figure 2], how to contribute, and extend the specification. These are the major components of the SDRF-Proteomics specification:
+
+* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics Core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
+* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates[SDRF-Proteomics Core Templates]: A set of templates for the most common proteomics experiments. These templates are used to validate the SDRF-Proteomics files. You can read about the concept of templates in the <<core-templates>> of this document.
+* Use case guidelines: These are the guidelines for specific proteomics experiments (e.g inmunopeptidomics). Each use case has its own directory containing:
+- A detailed specification document of the Use case guidelines; including links to examples in GitHub.
+- A set of templates for the most common experiments for the use case.
+* Metadata guidelines: These are the guidelines for specific metadata annotations (e.g. patient pre-existing condition).
+
+image::images/sdrf-guidelines-structure.png[Logo]
+
+**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by specific use case guidelines and sample annotation guidelines. Each guideline type has associated templates.
+
+== SDRF-Proteomics specification versioning
+
+The SDRF-Proteomics specification is versioned using the Semantic Versioning 1.0.0 (https://semver.org/) scheme. The version number is in the format of MAJOR.MINOR.PATCH, where:
+
+* MAJOR version is incremented for incompatible changes to the specification, when major changes are done to the specification.
+
+* MINOR version is incremented for new features that are backward compatible with the previous version. Guidelines and templates are added or modified.
+
+* PATCH version is incremented for bug fixes and minor changes that do not affect the specification or the templates. This includes typos, formatting changes, and other minor updates.
+
+Every change in the specification should be done in GitHub using pull requests into dev branch. The pull request should include a description of the changes and the reason for the changes. The pull request will be reviewed by the community and merged into the main branch when approved. After the merge, the version number will be updated according to the changes made, and the release will be performance and Zenodo object will be updated.
+
+== SDRF-Proteomics specification
+
+The SDRF-Proteomics specification is a community effort to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files. The specification is based on the MAGE-TAB format, which is widely used in transcriptomics and genomics. The SDRF-Proteomics format is designed to be flexible and extensible, allowing for the inclusion of new features and use cases as they arise.
 
 [[requirements]]
 === Requirements
@@ -66,14 +111,14 @@ The main issues to be addressed by the SDRF are:
 -	It MUST be able to represent the experimental design including the way samples and data have been collected.
 
 [[notation-conventions]]
-== Notational Conventions
+=== Notational Conventions
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMEND/RECOMMENDED”, “MAY”, “COULD BE”, and “OPTIONAL” are to be interpreted as described in RFC 2119 (2).
 
 [[document-structure]]
-== Documentation
+=== Documentation
 
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-sample-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
 
 A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
 
@@ -84,7 +129,7 @@ Multiple tools have been implemented to validate SDRF-Proteomics files for users
 - jsdrf (Java - https://github.com/bigbio/jsdrf ): These Java library and tool allow validating SDRF-Proteomics files. It also includes a generic data model that can be used by Java applications.
 
 [[relationship-specifications]]
-== Relationship to other specifications
+=== Relationship to other specifications
 
 SDRF-Proteomics is fully compatible with the SDRF file format part of https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html[MAGE-TAB]. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the proteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.
 
@@ -93,7 +138,7 @@ SDRF-Proteomics sample information can be embedded into mzTab metadata files. Th
 The SDRF-Proteomics aims to capture the sample metadata and its relationship with the data files (e.g. raw files from mass spectrometers). The SDRF-Proteomics do not aim to capture the downstream analysis part of the experimental design such as what samples should be compared, how they can be combined or parameters for the downstream analysis (FDR or p-values thresholds). The HUPO-PSI community will work in the future to include this information in other file formats such as mzTab or a new type of file format.
 
 [[ontologies-supported]]
-== Ontologies/Controlled Vocabularies Supported
+=== Ontologies/Controlled Vocabularies Supported
 
 The list of ontologies/controlled vocabularies (CV) supported are:
 
@@ -118,7 +163,7 @@ The list of ontologies/controlled vocabularies (CV) supported are:
 -   Mondo Disease Ontology (MONDO): A unified disease ontology integrating multiple disease resources.
 
 [[sdrf-file-format]]
-== SDRF-Proteomics file format
+=== SDRF-Proteomics in nutshell
 
 The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each ROW corresponds to a relationship between a Sample and a Data file (and MS signal corresponding to labelling in the context of multiplexed experiments), each column corresponds to an attribute/property of the Sample, and the value in each cell is the specific value of the property for a given Sample (**Figure 2**).
 
@@ -573,7 +618,7 @@ Example:
 
 TIP: While the specification recommends writing the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to specify the range using two separate columns. In those cases, you can write the lower limit in the _comment[scan window lower limit]_ and the upper limit in the _comment[scan window upper limit]_ columns.
 
-[[use-cases]]
+[[core-templates]]
 == SDRF-Proteomics use cases representation (templates)
 
 Please visit the following document to read about SDRF-Proteomics use cases, templates, and checklists: https://github.com/bigbio/proteomics-metadata-standard/blob/master/templates/README.adoc[Templates].
@@ -616,7 +661,6 @@ Dai C, Füllgrabe A, Pfeuffer J, Solovyeva EM, Deng J, Moreno P, Kamatchinathan 
 
 
 == References
-
 
 - [1] Y. Perez-Riverol, S. European Bioinformatics Community for Mass, Toward a Sample Metadata Standard in Public Proteomics Repositories, J Proteome Res 19(10) (2020) 3906-3909.
 - [2] A. Gonzalez-Beltran, E. Maguire, S.A. Sansone, P. Rocca-Serra, linkedISA: semantic representation of ISA-Tab experimental metadata, BMC Bioinformatics 15 Suppl 14 (2014) S4.
