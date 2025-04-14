@@ -387,6 +387,28 @@ In PTM-enriched experiments, the _characteristics[enrichment process]_ SHOULD be
 
 This characteristic can be used as a _factor value[enrichment process]_ to differentiate the expression between proteins in the phospho-enriched sample compared with the control.
 
+[[crosslinking]]
+=== Cross-linking experiments
+
+MS-based cross-linking experiments are used to study protein-protein interactions and protein structures. Currently, multiple MS-based cross-linking methods are available including: hydrogen−deuterium exchange  (HDX-MS), cross-linking mass spectrometry (XL-MS), and ion-mobility MS (IM-MS).
+
+In the case of cross-linking experiments the first thing that needs to be annotated in the SDRF-proteomics in the sample metadata is the enrichment process. The enrichment process SHOULD be provided:
+
+- _characteristics[enrichment process]_: The enrichment process is a characteristic that describes the enrichment process of the sample. In the case of cross-linking experiments, the value SHOULD be one of the following: `enrichment of cross-linked Protein`. This will help the users to understand that the samples are enriched in cross-linked proteins.
+
+In the data side, multiple columns SHOULD be added to the SDRF-proteomics to describe the cross-linking experiment. The following columns are SHOULD be provided:
+
+- _comment[cross-linking method]_: The method used for the cross-linking experiment. The value SHOULD be one of the following: `hydrogen−deuterium exchange`, `cross-linking mass spectrometry`, `ion-mobility mass spectrometry`. All these terms are added to PRIDE ontology.
+- _comment[cross-linker]_: The cross-linker is a compound that can link to two or more polymer chains (https://www.ebi.ac.uk/ols4/ontologies/xlmod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FXLMOD_00004?lang=en[see reference]). The value SHOULD be the accession of the cross-linker in the XL-MS ontology or PRIDE ontology. Additional to the cross-linker accession provided as `NT=DSSO;AC=XLMOD:02126` the user can provide additional information about the linker:
+
+|===
+|Property |Key |Example | Mandatory(:white_check_mark:)/Optional(:zero:) |comment
+
+|Cross-linker Accession | AC | AC=XLMOD:02126 | :white_check_mark: | Accession in XL-MS or PRIDE ontologies.
+|Cross-linker Name      | NT | NT=DSSO        | :white_check_mark: | Name of the cross-linker term.
+|Cross-linker Target    | TA | TA=K           | :zero:             | Target aminoacid
+|===
+
 [[pooled-samples]]
 === Pooled samples
 
