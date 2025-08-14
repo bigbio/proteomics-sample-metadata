@@ -115,7 +115,7 @@ The list of ontologies/controlled vocabularies (CV) supported are:
 -	NCBI organismal classification
 -	PATO - the Phenotype and Trait Ontology
 -	PRIDE Controlled Vocabulary (CV)
-- Mondo Disease Ontology (MONDO): A unified disease ontology integrating multiple disease resources.
+-   Mondo Disease Ontology (MONDO): A unified disease ontology integrating multiple disease resources.
 
 [[sdrf-file-format]]
 == SDRF-Proteomics file format
@@ -134,10 +134,10 @@ There are general scenarios/use cases that are addressed by the following rules:
 
 - **Unknown values**: In some cases, the column is mandatory in the format, but for some samples the corresponding value is unknown. In those cases, users SHOULD use ‘not available’.
 - **Not Applicable values**: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use ‘not applicable’.
-- **Case sensitivity**: By specification the SDRF is case-insensitive, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
-- **Spaces**: By specification the SDRF is case-sensitive to spaces (sourcename != source name).
+- **Case sensitivity**: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
+- **Space sensitivity**: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).
 - **Column order**: The SDRF MUST start with the source name column (accession/name of the sample of origin), then all the sample characteristics; followed by the assay name corresponding to the MS run. Finally, after the assay name all the comments (properties of the data file generated).
-- **Extension**: The extension of the SDRF should be .tsv or .txt.
+- **Extension**: The extension of the SDRF file SHOULD be .tsv (preferred) or .txt.
 
 
 [[sdrf-file-standarization]]
@@ -232,9 +232,9 @@ In order to achieve a clear relationship between the label and the sample charac
 
 Examples:
 
-•	https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD000612/PXD000612.sdrf.tsv[Label free]
-•	https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD011799/PXD011799.sdrf.tsv[TMT]
-•	https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD017710/PXD017710-silac.sdrf.tsv[SILAC]
+•	https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD000612/PXD000612.sdrf.tsv[Label free]
+•	https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD011799/PXD011799.sdrf.tsv[TMT]
+•	https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD017710/PXD017710-silac.sdrf.tsv[SILAC]
 
 [[instrument]]
 === Type and Model of Mass Spectrometer
@@ -249,15 +249,15 @@ Additionally, it is strongly RECOMMENDED to include comment[MS2 analyzer type]. 
 Technology type is used in SDRF and MAGE-TAB formats to specify the technology applied in the study to capture the data. For transcriptomics, common values include technologies such as microarray, RNA-seq, and ChIP-seq (as seen in https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-13567[ArrayExpress Example]). In SDRF-Proteomics, the technology type field is REQUIRED to describe the experimental approach used to generate the data. We RECOMMEND including the technology type column immediately after the `assay name`` column in the SDRF file, clearly indicating which technology was used to produce the data files.
 
 |===
-|        |  assay name      | technology type     
-|sample 1|  run 1           | proteomic profiling by mass spectrometry                   
+|        |  assay name      | technology type
+|sample 1|  run 1           | proteomic profiling by mass spectrometry
 |===
 
-NOTE: While we RECOMMEND positioning the technology type column after the assay name, in some original templates, this column was placed before the assay name. We will allow the technology type column to appear either directly before or after the assay name column but RECOMMEND placing it after the assay name for consistency. 
+NOTE: While we RECOMMEND positioning the technology type column after the assay name, in some original templates, this column was placed before the assay name. We will allow the technology type column to appear either directly before or after the assay name column but RECOMMEND placing it after the assay name for consistency.
 
 For proteomics experiments the possible values for technology types can be obtained from PRIDE Ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000663[technology type].
 
-Here, the list of valid values: 
+Here, the list of valid values:
 
 - proteomic profiling by mass spectrometry
 
@@ -482,7 +482,7 @@ For a given experiment, there are different levels to which samples can be match
 
 **technical replicate**: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].
 
-In MS-based proteomics, a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
+In MS-based proteomics, a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. Technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
 
 In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicates.
 
@@ -502,7 +502,7 @@ In SDRF-Proteomics, biological replicates can be annotated using _characteristic
 
 Some examples with explicit annotation of the biological replicates can be found here:
 
-- https://github.com/bigbio/proteomics-metadata-standard/blob/c3a56b076ef381280dfcb0140d2520126ace53ff/annotated-projects/PXD006401/sdrf.tsv
+- https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD006401/sdrf.tsv
 
 [[sample-prep]]
 === Sample preparation properties
@@ -552,9 +552,9 @@ Proteomics data acquisition method can happen in two ways: Data Dependent Acquis
 * https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000629[parallel reaction monitoring]
 * https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000630[selected reaction monitoring]
 
-TIP: If the SDRF do not specified the proteomics data acquisition method as _comment[proteomics data acquisition method]_, it is assumed that the method used is DDA which is the most common method used in proteomics.
+TIP: If the SDRF does not specify the proteomics data acquisition method as _comment[proteomics data acquisition method]_, it is assumed that the method used is DDA (data-dependent acquisition), which is the most common method used in proteomics.
 
-You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
+You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
 
 [[dia-ms1-scan]]
 ==== Data Independent Acquisition - Scan window limits
@@ -571,12 +571,12 @@ Example:
 |run 2       | 400m/z - 1200m/z | FILE_R2.RAW
 |===
 
-TIP: While the specification recommend to write the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to write the MS1 scan range as a single value (e.g. 400m/z) using two columns for the lower and upper limits. In those cases you can write the lower limit in the _comment[scan window lower limit]_ and the uper limit in _comment[scan window upper limit]_
+TIP: While the specification recommends writing the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to specify the range using two separate columns. In those cases, you can write the lower limit in the _comment[scan window lower limit]_ and the upper limit in the _comment[scan window upper limit]_ columns.
 
 [[use-cases]]
-== SDRF-Proteomics use-cases representation (templates)
+== SDRF-Proteomics use cases representation (templates)
 
-Please visit the following document to read about SDRF-Proteomics use cases, templates, and https://github.com/bigbio/proteomics-metadata-standard/blob/master/templates/README.adoc[checklists].
+Please visit the following document to read about SDRF-Proteomics use cases, templates, and checklists: https://github.com/bigbio/proteomics-metadata-standard/blob/master/templates/README.adoc[Templates].
 
 [[example-annotated-datasets]]
 == Examples of annotated datasets
@@ -622,4 +622,3 @@ Dai C, Füllgrabe A, Pfeuffer J, Solovyeva EM, Deng J, Moreno P, Kamatchinathan 
 - [2] A. Gonzalez-Beltran, E. Maguire, S.A. Sansone, P. Rocca-Serra, linkedISA: semantic representation of ISA-Tab experimental metadata, BMC Bioinformatics 15 Suppl 14 (2014) S4.
 - [3] T.F. Rayner, P. Rocca-Serra, P.T. Spellman, H.C. Causton, A. Farne, E. Holloway, R.A. Irizarry, J. Liu, D.S. Maier, M. Miller, K. Petersen, J. Quackenbush, G. Sherlock, C.J. Stoeckert, Jr., J. White, P.L. Whetzel, F. Wymore, H. Parkinson, U. Sarkans, C.A. Ball, A. Brazma, A simple spreadsheet-based, MIAME-supportive format for microarray data: MAGE-TAB, BMC Bioinformatics 7 (2006) 489.
 - [4] P. Blainey, M. Krzywinski, N. Altman, Points of significance: replication, Nat Methods 11(9) (2014) 879-80.
-
