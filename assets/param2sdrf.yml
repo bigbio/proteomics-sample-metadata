@@ -1,0 +1,228 @@
+name: param2sdrf
+
+description: Mapping of parameters to run workflows with sdrf headers, including default values
+
+parameters:
+- name: fixed_mods
+  type: ontology
+  sdrf: modification parameters
+  default: NT=Carbamidomethyl;TA=C;MT=fixed;AC=UNIMOD:4
+  comment: only as unimod names with residue(s) separate via comma
+
+- name: variable_mods
+  type: ontology
+  sdrf: modification parameters
+  default: NT=oxidation;MT=variable;TA=M;AC=UNIMOD:35
+  comment: only as unimod names with residue(s)
+
+- name: precursor_mass_tolerance
+  type: string
+  sdrf: precursor mass tolerance
+  default: 30 ppm
+
+- name: fragment_mass_tolerance
+  type: string
+  sdrf: fragment mass tolerance
+  default: 0.05 Da
+
+- name: enzyme
+  type: ontology
+  sdrf: cleavage agent details
+  default: Trypsin
+
+#- name: type_cleavage
+#  type: class
+#  sdrf: type of cleavage
+#  default: 
+
+- name: fions
+  type: class
+  sdrf: forward ions
+  default: b
+  value:
+     - a
+     - a1
+     - b
+     - c
+     - c1
+
+- name: rions
+  type: class
+  sdrf: reverse ions
+  default: y
+  value:
+     - x
+     - y
+     - z
+     - z1
+     - z2
+
+- name: isotope_error_range
+  type: integer
+  sdrf: isotope error range
+  default: 0
+
+- name: add_decoys
+  type: boolean
+  sdrf: add decoys
+  default: true
+
+- name: num_hits
+  type: integer
+  sdrf: num peptide hits
+  default: 1
+
+- name: allowed_miscleavages
+  type: integer
+  sdrf: allowed miscleavages
+  default: 1
+
+- name: min_precursor_charge
+  type: integer
+  sdrf: minimum precursor charge
+  default: 2
+
+- name: max_precursor_charge
+  type: integer
+  sdrf: maximum precursor charge
+  default: 3
+
+- name: min_peptide_length
+  type: integer
+  sdrf: minimum peptide length
+  default: 8
+
+- name: max_peptide_length
+  type: integer
+  sdrf: maximum peptide length
+  default: 12
+
+- name: max_mods
+  type: integer
+  sdrf: maximum allowed modification
+  default: 4
+
+- name: ident_fdr_psm
+  type: float
+  sdrf: fdr on psm level
+  default: 0.01
+
+- name: ident_fdr_peptide
+  type: float
+  sdrf: fdr on peptide level
+  default: 0.01
+
+- name: ident_fdr_protein
+  type: float
+  sdrf: fdr on protein level
+  default: 0.01
+
+#- name: match_between_runs_rt_tol
+#- type: float
+#- sdrf: retention time tolerance match between runs
+#- default: # DBO: I would put 45 seconds by default
+
+#- name: match_between_runs_mz_tol
+#- type: float
+#- sdrf: m over z tolerance match between runs 
+#- default: # DBO: I would put 10 ppm by default
+
+- name: enable_match_between_runs
+  type: boolean
+  sdrf: run match between runs
+  default: true
+
+- name: protein_inference
+  type: class
+  sdrf: protein inference method
+  default: unique
+  value:
+    - unique
+    - shared
+    - parsimonious
+    - other
+
+- name: quantification_method
+  type: class
+  sdrf: quantification method
+  default: precursor
+  value:
+    - precursor
+    - ms2
+    - isobaric
+    - isotopic
+    - data-independent
+    - other
+
+- name: summarization_proteins
+  type: class
+  sdrf: summarization to proteins method
+  default: sum_abs
+  value:
+   - sum_abs
+   - mean
+   - median
+   - lfq
+   - top3
+   - other
+  comment: sum_abs is the only one on non-transformed data
+
+- name: min_num_peptides
+  type: integer
+  sdrf: minimum number of peptides per protein
+  default: 2
+
+- name: summarization_peptides
+  type: class
+  sdrf: summarization to peptides method
+  default: sum_abs
+  value:
+    - sum_abs
+    - mean
+    - median
+    - other
+
+- name: quant_transformation
+  type: class
+  sdrf: transformation of quantitative values
+  default: log
+  value:
+    - log
+    - rlog
+    - none
+    - other
+
+- name: normalization_method
+  type: class
+  sdrf: normalization method
+  default: median
+  value:
+    - mean
+    - median
+    - quantile
+    - linear
+    - non-linear
+    - probabilistic-quotient 
+    - other
+  comment: More to be added?
+
+- name: run_statistics
+  type: boolean
+  sdrf: run statistical tests
+  default: true
+
+- name: quant_fdr_method
+  type: class
+  sdrf: method for correction of multiple testing
+  default: benjamini-hochberg
+  value:
+    - benjamini-hochberg
+    - bonferroni
+    - qvalue
+    - other
+
+- name: quant_fdr_threshold
+  type: float
+  sdrf: threshold for statistical test fdr
+  default: 0.01
+
