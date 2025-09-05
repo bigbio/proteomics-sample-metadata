@@ -647,6 +647,8 @@ BioSamples databases are reference databases that store information about biolog
 
 To integrate with a BioSamples database, use the _characteristics[biosample accession number]_ column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry.
 
+It is RECOMMENDED to place the _characteristics[biosample accession number]_ column immediately after the _source name_ column in the SDRF file. Additionally, each unique _source name_ should have a unique biosample accession number, meaning that two different source names cannot share the same biosample accession number.
+
 |===
 |Property           |Column Name                            |Example Value     |Description
 |BioSample Accession|characteristics[biosample accession number]|SAMN12345678     |The unique BioSamples database accession number for the sample (NCBI format)
@@ -656,10 +658,10 @@ To integrate with a BioSamples database, use the _characteristics[biosample acce
 Example usage:
 
 |===
-| source name   | characteristics[organism] | characteristics[biosample accession number] | characteristics[organism part] | characteristics[disease]
-|sample_001     | homo sapiens              | SAMN12345678                                 | liver                          | liver cancer
-|sample_002     | homo sapiens              | SAMN12345679                                 | liver                          | normal
-|sample_003     | mus musculus              | SAMEA12345680                                | brain                          | normal
+| source name   | characteristics[biosample accession number] | characteristics[organism] | characteristics[organism part] | characteristics[disease]
+|sample_001     | SAMN12345678                                 | homo sapiens              | liver                          | liver cancer
+|sample_002     | SAMN12345679                                 | homo sapiens              | liver                          | normal
+|sample_003     | SAMEA12345680                                | mus musculus              | brain                          | normal
 |===
 
 The BioSamples accession number enables:
