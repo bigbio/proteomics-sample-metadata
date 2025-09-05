@@ -267,6 +267,18 @@ TIP: To ensure assay name uniqueness when multiple samples have similar experime
 
 NOTE: In multiplexed experiments (TMT, iTRAQ, SILAC) where multiple samples are analyzed together in a single MS run, the assay name is still unique to the data file. What occurs in these cases is that multiple rows in the SDRF file may reference the same unique assay name, with each row representing a different sample or channel within that multiplexed analysis. The combination of source name (sample identifier) and assay name creates the unique relationship between samples and data files.
 
+TMT Multiplexed Experiment Example:
+
+|===
+|source name | assay name        | comment[label] | comment[data file]
+|sample_A    | TMT_batch1_run1   | TMT126         | batch1_run1.raw
+|sample_B    | TMT_batch1_run1   | TMT127N        | batch1_run1.raw  
+|sample_C    | TMT_batch1_run1   | TMT127C        | batch1_run1.raw
+|sample_D    | TMT_batch1_run1   | TMT128N        | batch1_run1.raw
+|===
+
+In this example, the assay name "TMT_batch1_run1" is unique to the data file "batch1_run1.raw", but multiple samples (sample_A, sample_B, sample_C, sample_D) are analyzed together in the same MS run using different TMT labels.
+
 - **technology type**: The technology type is used to describe the technology used to capture the data. It is RECOMMENDED to use the technology type column immediately after the assay name column in the SDRF file.
 - **comment[fraction identifier]**: The fraction identifier allows recording the number of a given fraction. The fraction identifier corresponds to this ontology term. It MUST start from 1, and if the experiment is not fractionated, 1 MUST be used for each MSRun (assay).
 - **comment[label]**: label describes the label applied to each Sample (if any). In the case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label-free sample term MUST be used <<label-data>>.
