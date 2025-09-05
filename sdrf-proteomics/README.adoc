@@ -261,7 +261,12 @@ The connection between the Samples to the Data files is done by using a series o
 
 The order of the columns is important, _assay name_ SHOULD always be located before the comments. It is RECOMMENDED to put the last column as _comment[data file]_. The following properties MUST be provided for each data file (ms run) file:
 
-- **assay name**: Assay name is a unique identifier for the data file. Examples of assay names are: "run 1", "run_fraction_1_2".
+- **assay name**: Assay name is a unique identifier for the data file. All assay names within an SDRF file MUST be unique to ensure unambiguous identification of each MS run or data file, except in multiplexed experiments (TMT, iTRAQ, SILAC) where multiple samples are analyzed in a single MS run. Examples of assay names are: "run 1", "run_fraction_1_2", "sample1_run1", "batch1_fraction2_rep3".
+
+TIP: To ensure assay name uniqueness when multiple samples have similar experimental conditions, consider incorporating sample-specific information (e.g., sample ID, biological replicate number) or sequential numbering across all runs in the assay name. For example, use "sample1_run1", "sample1_run2", "sample2_run1", "sample2_run2" instead of repeating "run 1", "run 2" for each sample.
+
+NOTE: An exception to the uniqueness requirement applies to multiplexed experiments (TMT, iTRAQ, SILAC) where multiple samples are analyzed together in a single MS run. In such cases, multiple rows may share the same assay name when they represent different samples or channels within the same multiplexed analysis. This is the only scenario where assay name duplication is acceptable.
+
 - **technology type**: The technology type is used to describe the technology used to capture the data. It is RECOMMENDED to use the technology type column immediately after the assay name column in the SDRF file.
 - **comment[fraction identifier]**: The fraction identifier allows recording the number of a given fraction. The fraction identifier corresponds to this ontology term. It MUST start from 1, and if the experiment is not fractionated, 1 MUST be used for each MSRun (assay).
 - **comment[label]**: label describes the label applied to each Sample (if any). In the case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label-free sample term MUST be used <<label-data>>.
@@ -272,9 +277,9 @@ The order of the columns is important, _assay name_ SHOULD always be located bef
 Example:
 
 |===
-|        | ..|..|assay name      | comment[label]    | comment[fraction identifier] | comment[instrument]| comment[data file]
-|sample 1| ..|..|run 1           | label free sample | 1                            | NT=LTQ Orbitrap XL | 000261_C05_P0001563_A00_B00K_R1.RAW
-|sample 1| ..|..|run 2           | label free sample | 2                            | NT=LTQ Orbitrap XL | 000261_C05_P0001563_A00_B00K_R2.RAW
+|        | ..|..|assay name          | comment[label]    | comment[fraction identifier] | comment[instrument]| comment[data file]
+|sample 1| ..|..|sample1_fraction1   | label free sample | 1                            | NT=LTQ Orbitrap XL | 000261_C05_P0001563_A00_B00K_R1.RAW
+|sample 1| ..|..|sample1_fraction2   | label free sample | 2                            | NT=LTQ Orbitrap XL | 000261_C05_P0001563_A00_B00K_R2.RAW
 |===
 
 CAUTION: SDRF-Proteomics is designed to model and describe mainly MS-based proteomics experiments. Then, the assay name is used to identify the MS run file. However, extensions of the SDRF have been made to support other proteomics technologies, including affinity proteomics experiments such as Olink and SomaScan, where no MS run is used. In those cases, the assay name is used to identify the data file. Please read the guidelines for affinity proteomics experiments in https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/use-cases/affinity-proteomics.md[affinity-proteomics.md].
@@ -312,7 +317,7 @@ Technology type is used in SDRF and MAGE-TAB formats to specify the technology a
 
 |===
 |        |  assay name      | technology type
-|sample 1|  run 1           | proteomic profiling by mass spectrometry
+|sample 1|  sample1_run1    | proteomic profiling by mass spectrometry
 |===
 
 NOTE: While we RECOMMEND positioning the technology type column after the assay name, in some original templates, this column was placed before the assay name. We will allow the technology type column to appear either directly before or after the assay name column but RECOMMEND placing it after the assay name for consistency.
@@ -549,11 +554,11 @@ In MS-based proteomics, a technical replicate can be, for example, doing the ful
 In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicates.
 
 |===
-| source name       | assay name | comment[label]    | comment[fraction identifier] | comment[technical replicate] | comment[data file]
-| Sample 1          |    run 1   | label free sample | 1                            | 1                            | F1_TR1.RAW
-| Sample 1          |    run 2   | label free sample | 2                            | 1                            | F2_TR1.RAW
-| Sample 1          |    run 3   | label free sample | 1                            | 2                            | F1_TR2.RAW
-| Sample 1          |    run 4   | label free sample | 2                            | 2                            | F2_TR2.RAW
+| source name       | assay name     | comment[label]    | comment[fraction identifier] | comment[technical replicate] | comment[data file]
+| Sample 1          | sample1_run1   | label free sample | 1                            | 1                            | F1_TR1.RAW
+| Sample 1          | sample1_run2   | label free sample | 2                            | 1                            | F2_TR1.RAW
+| Sample 1          | sample1_run3   | label free sample | 1                            | 2                            | F1_TR2.RAW
+| Sample 1          | sample1_run4   | label free sample | 2                            | 2                            | F2_TR2.RAW
 |===
 
 The _comment[technical replicate]_ column is MANDATORY. Please fill it with 1 if technical replicates are not performed in a study.
@@ -628,9 +633,9 @@ Additionally to the general _comment[proteomics data acquisition method]_ column
 Example:
 
 |===
-|assay name  | comment[MS1 scan range] | comment[data file]
-|run 1       | 400m/z - 1200m/z | FILE_R1.RAW
-|run 2       | 400m/z - 1200m/z | FILE_R2.RAW
+|assay name     | comment[MS1 scan range] | comment[data file]
+|sample1_run1   | 400m/z - 1200m/z | FILE_R1.RAW
+|sample1_run2   | 400m/z - 1200m/z | FILE_R2.RAW
 |===
 
 TIP: While the specification recommends writing the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to specify the range using two separate columns. In those cases, you can write the lower limit in the _comment[scan window lower limit]_ and the upper limit in the _comment[scan window upper limit]_ columns.
