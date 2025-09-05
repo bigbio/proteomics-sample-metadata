@@ -635,6 +635,42 @@ Example:
 
 TIP: While the specification recommends writing the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to specify the range using two separate columns. In those cases, you can write the lower limit in the _comment[scan window lower limit]_ and the upper limit in the _comment[scan window upper limit]_ columns.
 
+[[integration-external-systems]]
+== Integration with External Systems and Databases
+
+The SDRF-Proteomics format supports integration with external databases and systems to enhance sample metadata annotation and enable cross-database linking. This integration facilitates data reuse, reproducibility, and meta-analyses by providing standardized identifiers and references to external resources.
+
+[[biosamples-integration]]
+=== BioSamples Database Integration
+
+The BioSamples database (https://www.ebi.ac.uk/biosamples/) is a reference database that stores information about biological samples used in research. It provides persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries through the use of BioSample accession numbers.
+
+To integrate with the BioSamples database, use the _characteristics[BioSample Accession Number]_ column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry.
+
+|===
+|Property           |Column Name                            |Example Value     |Description
+|BioSample Accession|characteristics[BioSample Accession Number]|SAMN12345678     |The unique BioSamples database accession number for the sample
+|===
+
+Example usage:
+
+|===
+| source name   | characteristics[organism] | characteristics[BioSample Accession Number] | characteristics[organism part] | characteristics[disease]
+|sample_001     | homo sapiens              | SAMN12345678                                 | liver                          | liver cancer
+|sample_002     | homo sapiens              | SAMN12345679                                 | liver                          | normal
+|===
+
+The BioSamples accession number enables:
+
+- **Cross-database linking**: Connect proteomics datasets with genomics, transcriptomics, and other omics data that reference the same biological samples
+- **Enhanced metadata**: Access additional sample metadata stored in the BioSamples database
+- **Data provenance**: Trace the origin and history of biological samples across multiple studies
+- **Improved findability**: Enable discovery of related datasets through shared sample identifiers
+
+When a BioSample accession number is provided, the full sample metadata from the BioSamples database becomes available and can complement the information provided in the SDRF-Proteomics file. If there are discrepancies between the SDRF-Proteomics metadata and the BioSamples metadata, the SDRF-Proteomics values take precedence for the specific proteomics experiment context.
+
+NOTE: BioSample accession numbers follow the format SAMN############ (for NCBI) or SAMEA########## (for EBI), where # represents digits. When available, providing BioSample accession numbers is RECOMMENDED to enhance data integration and reusability.
+
 [[core-templates]]
 == SDRF-Proteomics use cases representation (templates)
 
