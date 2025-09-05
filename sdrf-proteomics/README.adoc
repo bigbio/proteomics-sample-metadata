@@ -643,21 +643,23 @@ The SDRF-Proteomics format supports integration with external databases and syst
 [[biosamples-integration]]
 === BioSamples Database Integration
 
-The BioSamples database (https://www.ebi.ac.uk/biosamples/) is a reference database that stores information about biological samples used in research. It provides persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries through the use of BioSample accession numbers.
+BioSamples databases are reference databases that store information about biological samples used in research. There are two main BioSamples services: the EBI BioSamples (https://www.ebi.ac.uk/biosamples/) and the NCBI BioSample (https://www.ncbi.nlm.nih.gov/biosample). Both provide persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries from either service through the use of BioSample accession numbers.
 
-To integrate with the BioSamples database, use the _characteristics[BioSample Accession Number]_ column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry.
+To integrate with a BioSamples database, use the _characteristics[biosample accession number]_ column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry.
 
 |===
 |Property           |Column Name                            |Example Value     |Description
-|BioSample Accession|characteristics[BioSample Accession Number]|SAMN12345678     |The unique BioSamples database accession number for the sample
+|BioSample Accession|characteristics[biosample accession number]|SAMN12345678     |The unique BioSamples database accession number for the sample (NCBI format)
+|BioSample Accession|characteristics[biosample accession number]|SAMEA12345678    |The unique BioSamples database accession number for the sample (EBI format)
 |===
 
 Example usage:
 
 |===
-| source name   | characteristics[organism] | characteristics[BioSample Accession Number] | characteristics[organism part] | characteristics[disease]
+| source name   | characteristics[organism] | characteristics[biosample accession number] | characteristics[organism part] | characteristics[disease]
 |sample_001     | homo sapiens              | SAMN12345678                                 | liver                          | liver cancer
 |sample_002     | homo sapiens              | SAMN12345679                                 | liver                          | normal
+|sample_003     | mus musculus              | SAMEA12345680                                | brain                          | normal
 |===
 
 The BioSamples accession number enables:
@@ -667,9 +669,9 @@ The BioSamples accession number enables:
 - **Data provenance**: Trace the origin and history of biological samples across multiple studies
 - **Improved findability**: Enable discovery of related datasets through shared sample identifiers
 
-When a BioSample accession number is provided, the full sample metadata from the BioSamples database becomes available and can complement the information provided in the SDRF-Proteomics file. If there are discrepancies between the SDRF-Proteomics metadata and the BioSamples metadata, the SDRF-Proteomics values take precedence for the specific proteomics experiment context.
+When a BioSample accession number is provided, the full sample metadata from the corresponding BioSamples database becomes available and can complement the information provided in the SDRF-Proteomics file. If there are discrepancies between the SDRF-Proteomics metadata and the BioSamples metadata, the SDRF-Proteomics values take precedence for the specific proteomics experiment context.
 
-NOTE: BioSample accession numbers follow the format SAMN############ (for NCBI) or SAMEA########## (for EBI), where # represents digits. When available, providing BioSample accession numbers is RECOMMENDED to enhance data integration and reusability.
+NOTE: BioSample accession numbers from NCBI follow the format SAMN############ and from EBI follow the format SAMEA##########, where # represents digits. Either NCBI or EBI BioSample accession numbers can be used depending on where the sample is registered. When available, providing BioSample accession numbers is RECOMMENDED to enhance data integration and reusability.
 
 [[core-templates]]
 == SDRF-Proteomics use cases representation (templates)
