@@ -635,6 +635,46 @@ Example:
 
 TIP: While the specification recommends writing the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to specify the range using two separate columns. In those cases, you can write the lower limit in the _comment[scan window lower limit]_ and the upper limit in the _comment[scan window upper limit]_ columns.
 
+[[integration-external-systems]]
+== Integration with External Systems and Databases
+
+The SDRF-Proteomics format supports integration with external databases and systems to enhance sample metadata annotation and enable cross-database linking. This integration facilitates data reuse, reproducibility, and meta-analyses by providing standardized identifiers and references to external resources.
+
+[[biosamples-integration]]
+=== BioSamples Database Integration
+
+BioSamples databases are reference databases that store information about biological samples used in research. There are two main BioSamples services: the EBI BioSamples (https://www.ebi.ac.uk/biosamples/) and the NCBI BioSample (https://www.ncbi.nlm.nih.gov/biosample). Both provide persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries from either service through the use of BioSample accession numbers.
+
+To integrate with a BioSamples database, use the optional _characteristics[biosample accession number]_ column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry. Note that BioSample accession numbers must be requested from one of the BioSamples services (NCBI or EBI) before they can be used, and this can be done by users directly or by proteomics services like PRIDE on behalf of users.
+
+It is RECOMMENDED to place the _characteristics[biosample accession number]_ column immediately after the _source name_ column in the SDRF file. Additionally, each unique _source name_ should have a unique biosample accession number. It's important to note that _source name_ is unique to the individual sample/data file, not to the entire SDRF file, as a sample may be repeated in the file. The combination of _source name_ and _assay name_ is unique to the SDRF file.
+
+|===
+|Property           |Column Name                            |Example Value     |Description
+|BioSample Accession|characteristics[biosample accession number]|SAMN12345678     |The unique BioSamples database accession number for the sample (NCBI format)
+|BioSample Accession|characteristics[biosample accession number]|SAMEA12345678    |The unique BioSamples database accession number for the sample (EBI format)
+|===
+
+Example usage:
+
+|===
+| source name   | characteristics[biosample accession number] | characteristics[organism] | characteristics[organism part] | characteristics[disease]
+|sample_001     | SAMN12345678                                 | homo sapiens              | liver                          | liver cancer
+|sample_002     | SAMN12345679                                 | homo sapiens              | liver                          | normal
+|sample_003     | SAMEA12345680                                | mus musculus              | brain                          | normal
+|===
+
+The BioSamples accession number enables:
+
+- **Cross-database linking**: Connect proteomics datasets with genomics, transcriptomics, and other omics data that reference the same biological samples
+- **Enhanced metadata**: Access additional sample metadata stored in the BioSamples database
+- **Data provenance**: Trace the origin and history of biological samples across multiple studies
+- **Improved findability**: Enable discovery of related datasets through shared sample identifiers
+
+When a BioSample accession number is provided, the full sample metadata from the corresponding BioSamples database becomes available and can complement the information provided in the SDRF-Proteomics file. If there are discrepancies between the SDRF-Proteomics metadata and the BioSamples metadata, the SDRF-Proteomics values take precedence for the specific proteomics experiment context.
+
+NOTE: BioSample accession numbers from NCBI follow the format SAMN############ and from EBI follow the format SAMEA##########, where # represents digits. Either NCBI or EBI BioSample accession numbers can be used depending on where the sample is registered. The _characteristics[biosample accession number]_ column is optional, but when available, providing BioSample accession numbers is RECOMMENDED to enhance data integration and reusability. Users must first request BioSample accession numbers from the appropriate service (NCBI or EBI) before including them in their SDRF files.
+
 [[core-templates]]
 == SDRF-Proteomics use cases representation (templates)
 
