@@ -263,9 +263,11 @@ The order of the columns is important, _assay name_ SHOULD always be located bef
 
 - **assay name**: Assay name is a unique identifier for an MS run (data file). Each distinct MS run/data file MUST have exactly one globally unique assay name, and no two different data files may share an assay name. The same assay name MAY appear on multiple rows only when all such rows refer to that same data file (e.g., multiplexed experiments). Examples of assay names are: "sample1_run1", "run_fraction_1_2", "batch1_fraction2_rep3".
 
+IMPORTANT: The combination of source name + assay name + comment[label] MUST be unique within the SDRF file. Additionally, the combination of source name + assay name is RECOMMENDED to be unique (validators will issue a warning if this combination is not unique).
+
 TIP: To ensure assay name uniqueness when multiple samples have similar experimental conditions, consider incorporating sample-specific information (e.g., sample ID, biological replicate number) or sequential numbering across all runs in the assay name. For example, use "sample1_run1", "sample1_run2", "sample2_run1", "sample2_run2" instead of repeating generic names for each sample.
 
-NOTE: In multiplexed experiments (TMT, iTRAQ, SILAC) where multiple samples are analyzed together in a single MS run, the assay name is still unique to the data file. What occurs in these cases is that multiple rows in the SDRF file may reference the same unique assay name, with each row representing a different sample or channel within that multiplexed analysis. The combination of source name (sample identifier) and assay name creates the unique relationship between samples and data files.
+NOTE: In multiplexed experiments (TMT, iTRAQ, SILAC) where multiple samples are analyzed together in a single MS run, the assay name is still unique to the data file. What occurs in these cases is that multiple rows in the SDRF file may reference the same unique assay name, with each row representing a different sample or channel within that multiplexed analysis. The combination of source name (sample identifier) and assay name creates the unique relationship between samples and data files. In multiplexed experiments, the combination of source name + assay name + comment[label] ensures uniqueness across all rows, as each sample-channel combination will have a unique label value.
 
 TMT Multiplexed Experiment Example:
 
@@ -277,11 +279,11 @@ TMT Multiplexed Experiment Example:
 |sample_D    | TMT_batch1_run1   | TMT128N        | batch1_run1.raw
 |===
 
-In this example, the assay name "TMT_batch1_run1" is unique to the data file "batch1_run1.raw", but multiple samples (sample_A, sample_B, sample_C, sample_D) are analyzed together in the same MS run using different TMT labels.
+In this example, the assay name "TMT_batch1_run1" is unique to the data file "batch1_run1.raw", but multiple samples (sample_A, sample_B, sample_C, sample_D) are analyzed together in the same MS run using different TMT labels. Each row has a unique combination of source name + assay name + comment[label], ensuring the required uniqueness constraint is met.
 
 - **technology type**: The technology type is used to describe the technology used to capture the data. It is RECOMMENDED to use the technology type column immediately after the assay name column in the SDRF file.
 - **comment[fraction identifier]**: The fraction identifier allows recording the number of a given fraction. The fraction identifier corresponds to this ontology term. It MUST start from 1, and if the experiment is not fractionated, 1 MUST be used for each MSRun (assay).
-- **comment[label]**: label describes the label applied to each Sample (if any). In the case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label-free sample term MUST be used <<label-data>>.
+- **comment[label]**: label describes the label applied to each Sample (if any). In the case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label-free sample term MUST be used <<label-data>>. The comment[label] value is part of the required unique combination of source name + assay name + comment[label].
 - **comment[technical replicate]**: Technical replicates are used to describe the technical replicates of the data file. It is RECOMMENDED to use the technical replicates column immediately after the assay name column in the SDRF file.
 - **comment[data file]**: The data file provides the name of the raw file generated  by the instrument. The data files can be instrument raw files but also converted peak lists such as mzML, MGF or result files like mzIdentML.
 - **comment[instrument]**: Instrument model used to capture the sample <<instrument>>.
@@ -307,7 +309,7 @@ In order to annotate quantitative datasets, the SDRF file format uses tags for e
 
   TMT126, TMT127, TMT127C, TMT127N, TMT128 , TMT128C, TMT128N, TMT129, TMT129C, TMT129N, TMT130, TMT130C, TMT130N, TMT131
 
-In order to achieve a clear relationship between the label and the sample characteristics, each channel of each sample (in multiplex experiments) SHOULD be defined in a separate row: one row per channel used (annotated with the corresponding _comment[label]_ per file.
+In order to achieve a clear relationship between the label and the sample characteristics, each channel of each sample (in multiplex experiments) SHOULD be defined in a separate row: one row per channel used (annotated with the corresponding _comment[label]_ per file). This approach ensures that the combination of source name + assay name + comment[label] remains unique across all rows in the SDRF file.
 
 Examples:
 
@@ -696,6 +698,242 @@ NOTE: BioSample accession numbers from NCBI follow the format SAMN############ a
 == SDRF-Proteomics use cases representation (templates)
 
 Please visit the following document to read about SDRF-Proteomics use cases, templates, and checklists: https://github.com/bigbio/proteomics-sample-metadata/blob/master/templates/README.adoc[Templates].
+
+[[core-experiments-guidelines]]
+== SDRF-Proteomics core experiments guidelines
+
+=== Introduction
+
+Core experiments guidelines are specialized extensions of the SDRF-Proteomics format that define additional metadata requirements for specific types of proteomics experiments. These guidelines extend the base SDRF-Proteomics specification with experiment-specific metadata fields while maintaining full compatibility with the core format.
+
+A **core experiment** refers to a well-established, specialized proteomics experimental approach that has gained significant adoption in the research community and requires specific metadata beyond what the standard SDRF-Proteomics specification provides. Each core experiment guideline ensures that the unique characteristics and technical parameters of these specialized techniques are adequately captured, enabling proper data interpretation, reproducibility, and reuse.
+
+The core experiments guidelines cover emerging and established proteomics sub-disciplines that require domain-specific metadata to fully describe the experimental conditions, sample preparation methods, and analytical parameters that are critical for understanding and reproducing the results.
+
+=== Immunopeptidomics
+
+Immunopeptidomics is the study of peptides presented by major histocompatibility complex (MHC) molecules on the cell surface. This specialized field focuses on identifying and characterizing the immunopeptidome to understand antigen presentation, immune responses, and potential therapeutic targets.
+
+==== Immunopeptidomics Specification Table
+
+|===
+|Term |Description |Cardinality |Range |Preferred unit |Example
+
+|characteristics[immunopeptidome enrichment method]
+|Method used to enrich for MHC-bound peptides
+|1
+|Controlled vocabulary term (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0002091[EFO:0002091])
+|Not applicable
+|immunoaffinity enrichment, mild acid elution, anti-MHC class I antibody
+
+|characteristics[HLA typing]
+|HLA allelic composition of the sample when known
+|0..1
+|HLA nomenclature format
+|Not applicable
+|HLA-A*02:01, HLA-B*07:02, HLA-C*07:02
+
+|characteristics[MHC class]
+|Class of MHC molecules being studied
+|1
+|Controlled vocabulary term
+|Not applicable
+|MHC class I, MHC class II
+
+|comment[cell number]
+|Number of cells used for immunopeptidome extraction
+|0..1
+|Numeric value
+|cells
+|1e8, 5e7, 2e9
+
+|comment[elution conditions]
+|Conditions used for peptide elution from MHC molecules
+|0..1
+|Free text description
+|Not applicable
+|1% TFA at room temperature, mild acid elution pH 2.5
+|===
+
+=== Single Cell Proteomics
+
+Single cell proteomics (SCP) aims to characterize the proteome at the level of individual cells, providing insights into cellular heterogeneity that are not accessible through bulk proteomics methods. This field enables the study of cell-to-cell variability and rare cell populations.
+
+==== Single Cell Proteomics Specification Table
+
+|===
+|Term |Description |Cardinality |Range |Preferred unit |Example
+
+|characteristics[single cell isolation method]
+|Technique used to isolate individual cells
+|1
+|Controlled vocabulary term (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0009088[EFO:0009088])
+|Not applicable
+|FACS, micromanipulation, laser capture microdissection, droplet microfluidics
+
+|characteristics[cell identifier]
+|Unique identifier for individual cells
+|1
+|Alphanumeric identifier
+|Not applicable
+|cell_001, SC_A1, barcode_ATCGATCG
+
+|characteristics[cell viability]
+|Viability status of the isolated cell
+|0..1
+|Percentage or qualitative measure
+|%
+|viable, 95%, live
+
+|characteristics[cell diameter]
+|Physical diameter of the isolated cell
+|0..1
+|Numeric value
+|micrometers (μm)
+|15, 20.5, 12
+
+|comment[carrier proteome]
+|Information about carrier proteome used for signal boosting
+|0..1
+|Free text description
+|Not applicable
+|HeLa cell lysate 200 ng, bovine serum albumin 500 ng
+|===
+
+=== Crosslinking Proteomics
+
+Crosslinking mass spectrometry (XL-MS) is a technique for studying protein-protein interactions and protein structures using chemical reagents to covalently link amino acid residues that are in close proximity. This approach provides structural constraints for protein complexes and interaction networks.
+
+==== Crosslinking Proteomics Specification Table
+
+|===
+|Term |Description |Cardinality |Range |Preferred unit |Example
+
+|characteristics[crosslinking reagent]
+|Chemical crosslinking agent used
+|1+
+|Chemical name or identifier (https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1002494[MS:1002494])
+|Not applicable
+|DSS, BS3, EDC, formaldehyde, photo-leucine
+
+|characteristics[crosslink distance]
+|Maximum distance between crosslinked residues
+|0..1
+|Numeric value
+|Angstroms (Å)
+|11.4, 24.0, 30.0
+
+|characteristics[crosslinking reaction time]
+|Duration of the crosslinking reaction
+|0..1
+|Time value
+|minutes
+|30, 60, 120
+
+|characteristics[crosslinking temperature]
+|Temperature at which crosslinking was performed
+|0..1
+|Numeric value
+|Celsius (°C)
+|25, 37, 4
+
+|comment[crosslinker concentration]
+|Concentration of crosslinking reagent used
+|0..1
+|Concentration value
+|mM or μM
+|2 mM, 500 μM, 1 mM
+|===
+
+=== Affinity Proteomics
+
+Affinity proteomics encompasses experimental approaches that use affinity-based capture methods to study specific protein subsets or interactions. This includes proximity extension assays, aptamer-based assays, and antibody-based capture methods.
+
+==== Affinity Proteomics Specification Table
+
+|===
+|Term |Description |Cardinality |Range |Preferred unit |Example
+
+|characteristics[affinity reagent]
+|Specific reagent used for affinity-based capture
+|1
+|Reagent name or identifier
+|Not applicable
+|Olink proximity extension assays, SOMAscan aptamers, antibody panel
+
+|characteristics[target protein class]
+|Class or category of proteins being targeted
+|0..1
+|Controlled vocabulary term
+|Not applicable
+|cytokines, kinases, transcription factors, membrane proteins
+
+|characteristics[affinity method]
+|General method used for affinity capture
+|1
+|Controlled vocabulary term
+|Not applicable
+|proximity extension assay, aptamer-based assay, immunoaffinity capture
+
+|comment[panel composition]
+|Description of the protein panel or targets included
+|0..1
+|Free text description
+|Not applicable
+|Olink Inflammation panel 92 proteins, custom antibody panel 50 targets
+
+|comment[detection sensitivity]
+|Sensitivity or detection limit of the assay
+|0..1
+|Concentration or relative measure
+|pg/mL or relative units
+|1 pg/mL, 0.1 pg/mL, LOD 5 pg/mL
+|===
+
+=== Metaproteomics
+
+Metaproteomics is the study of proteins expressed by microbial communities, providing insights into the functional potential and activity of microbiomes. This field requires specific metadata to capture the complexity of multi-organism samples and environmental contexts.
+
+==== Metaproteomics Specification Table
+
+|===
+|Term |Description |Cardinality |Range |Preferred unit |Example
+
+|characteristics[environmental sample type]
+|Type of environmental sample being analyzed
+|1
+|Controlled vocabulary term
+|Not applicable
+|soil, marine sediment, gut microbiome, wastewater, rhizosphere
+
+|characteristics[sample collection method]
+|Method used to collect the environmental sample
+|1
+|Controlled vocabulary term
+|Not applicable
+|sterile collection, filtration, swab collection, core sampling
+
+|characteristics[DNA extraction method]
+|Method used for metagenomic DNA extraction when performed
+|0..1
+|Controlled vocabulary term
+|Not applicable
+|phenol-chloroform extraction, commercial kit extraction, bead beating
+
+|characteristics[microbial diversity index]
+|Measure of microbial diversity in the sample
+|0..1
+|Numeric value
+|Shannon index or Simpson index
+|3.2, 0.85, 2.8
+
+|comment[database search strategy]
+|Strategy used for protein identification from metagenomic databases
+|0..1
+|Free text description
+|Not applicable
+|custom metagenome database, RefSeq bacterial proteins, sample-specific database
+|===
 
 [[example-annotated-datasets]]
 == Examples of annotated datasets
