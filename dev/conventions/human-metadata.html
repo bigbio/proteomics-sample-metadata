@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>Human Sample Metadata Convention</title>
+<link rel="stylesheet" href="./../css/style.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>Human Sample Metadata Convention</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Convention</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#disease-staging">3. Disease Staging and Grading</a>
+<ul class="sectlevel2">
+<li><a href="#_disease_stage">3.1. Disease Stage</a>
+<ul class="sectlevel3">
+<li><a href="#_column">3.1.1. Column</a></li>
+<li><a href="#_ontology">3.1.2. Ontology</a></li>
+<li><a href="#_standard_values">3.1.3. Standard Values</a></li>
+</ul>
+</li>
+<li><a href="#_cancer_specific_staging">3.2. Cancer-Specific Staging</a>
+<ul class="sectlevel3">
+<li><a href="#_tnm_staging">3.2.1. TNM Staging</a></li>
+<li><a href="#_tumor_grade">3.2.2. Tumor Grade</a></li>
+<li><a href="#_cancer_specific_classifications">3.2.3. Cancer-Specific Classifications</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#comorbidities">4. Pre-existing Conditions and Comorbidities</a>
+<ul class="sectlevel2">
+<li><a href="#_pre_existing_conditions">4.1. Pre-existing Conditions</a>
+<ul class="sectlevel3">
+<li><a href="#_column_4">4.1.1. Column</a></li>
+<li><a href="#_ontology_4">4.1.2. Ontology</a></li>
+<li><a href="#_common_values">4.1.3. Common Values</a></li>
+</ul>
+</li>
+<li><a href="#_multiple_conditions">4.2. Multiple Conditions</a></li>
+<li><a href="#_secondary_conditions">4.3. Secondary Conditions</a>
+<ul class="sectlevel3">
+<li><a href="#_column_5">4.3.1. Column</a></li>
+<li><a href="#_description">4.3.2. Description</a></li>
+<li><a href="#_example_values">4.3.3. Example Values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#treatment-annotation">5. Treatment and Medication Annotation</a>
+<ul class="sectlevel2">
+<li><a href="#_current_treatment">5.1. Current Treatment</a>
+<ul class="sectlevel3">
+<li><a href="#_columns_and_ontologies">5.1.1. Columns and Ontologies</a></li>
+<li><a href="#_treatment_values">5.1.2. Treatment Values</a></li>
+<li><a href="#_compound_examples">5.1.3. Compound Examples</a></li>
+<li><a href="#_dose_format">5.1.4. Dose Format</a></li>
+</ul>
+</li>
+<li><a href="#_treatment_history">5.2. Treatment History</a>
+<ul class="sectlevel3">
+<li><a href="#_columns">5.2.1. Columns</a></li>
+</ul>
+</li>
+<li><a href="#_treatment_status_and_timing">5.3. Treatment Status and Timing</a>
+<ul class="sectlevel3">
+<li><a href="#_columns_and_values">5.3.1. Columns and Values</a></li>
+<li><a href="#_treatment_response_values">5.3.2. Treatment Response Values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#individual-annotation">6. Individual/Patient Identifiers</a>
+<ul class="sectlevel2">
+<li><a href="#_column_6">6.1. Column</a></li>
+<li><a href="#_format_2">6.2. Format</a></li>
+<li><a href="#_examples_2">6.3. Examples</a></li>
+<li><a href="#_linking_multiple_samples_from_same_patient">6.4. Linking Multiple Samples from Same Patient</a></li>
+</ul>
+</li>
+<li><a href="#clinical-metadata">7. Additional Clinical Metadata</a>
+<ul class="sectlevel2">
+<li><a href="#_body_measurements">7.1. Body Measurements</a>
+<ul class="sectlevel3">
+<li><a href="#_columns_and_format">7.1.1. Columns and Format</a></li>
+</ul>
+</li>
+<li><a href="#_ancestry_and_ethnicity">7.2. Ancestry and Ethnicity</a>
+<ul class="sectlevel3">
+<li><a href="#_columns_and_ontologies_2">7.2.1. Columns and Ontologies</a></li>
+<li><a href="#_ancestry_values">7.2.2. Ancestry Values</a></li>
+</ul>
+</li>
+<li><a href="#_lifestyle_factors">7.3. Lifestyle Factors</a>
+<ul class="sectlevel3">
+<li><a href="#_smoking_status">7.3.1. Smoking Status</a></li>
+<li><a href="#_alcohol_consumption">7.3.2. Alcohol Consumption</a></li>
+<li><a href="#_diet">7.3.3. Diet</a></li>
+</ul>
+</li>
+<li><a href="#_reproductive_status">7.4. Reproductive Status</a>
+<ul class="sectlevel3">
+<li><a href="#_menopausal_status">7.4.1. Menopausal Status</a></li>
+<li><a href="#_pregnancy_status">7.4.2. Pregnancy Status</a></li>
+<li><a href="#_gestational_age">7.4.3. Gestational Age</a></li>
+</ul>
+</li>
+<li><a href="#_sampling_time_point">7.5. Sampling Time Point</a>
+<ul class="sectlevel3">
+<li><a href="#_column_7">7.5.1. Column</a></li>
+<li><a href="#_description_2">7.5.2. Description</a></li>
+<li><a href="#_example_values_2">7.5.3. Example Values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#example-sdrf">8. Example SDRF with Patient Metadata</a></li>
+<li><a href="#best-practices">9. Best Practices</a></li>
+<li><a href="#references">10. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Convention</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides guidelines for annotating human-specific metadata in SDRF-Proteomics format. These conventions apply to all human samples, including both clinical studies and healthy individuals.</p>
+</div>
+<div class="paragraph">
+<p><strong>Version 1.0.0</strong> - 2025-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Human-specific metadata is crucial for interpreting proteomics data from human samples, enabling stratification by clinical and demographic characteristics and integration with other biomedical datasets. This convention defines standardized approaches for annotating human-specific metadata:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Disease staging and grading</p>
+</li>
+<li>
+<p>Pre-existing conditions and comorbidities</p>
+</li>
+<li>
+<p>Treatment and medication history</p>
+</li>
+<li>
+<p>Individual/patient identifiers</p>
+</li>
+<li>
+<p>Additional clinical metadata (BMI, lifestyle factors, reproductive status)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For general sample metadata conventions (age, biological sex, basic disease annotation) that apply to all organisms, see <a href="sample-metadata-conventions.adoc">Sample Metadata Conventions</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="disease-staging"><a class="anchor" href="#disease-staging"></a><a class="link" href="#disease-staging">3. Disease Staging and Grading</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Disease staging and grading are primarily used for human cancers and other progressive diseases.</p>
+</div>
+<div class="sect2">
+<h3 id="_disease_stage"><a class="anchor" href="#_disease_stage"></a><a class="link" href="#_disease_stage">3.1. Disease Stage</a></h3>
+<div class="sect3">
+<h4 id="_column"><a class="anchor" href="#_column"></a><a class="link" href="#_column">3.1.1. Column</a></h4>
+<div class="paragraph">
+<p><code>characteristics[disease stage]</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ontology"><a class="anchor" href="#_ontology"></a><a class="link" href="#_ontology">3.1.2. Ontology</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Primary</strong>: <a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCI Thesaurus (NCIT)</a></p>
+</li>
+<li>
+<p><strong>Alternative</strong>: <a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_standard_values"><a class="anchor" href="#_standard_values"></a><a class="link" href="#_standard_values">3.1.3. Standard Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">NCIT ID</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage I</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C27966</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Early localized disease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage II</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C28054</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Locally advanced</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage III</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C27970</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Regional spread</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage IV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C27971</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Distant metastasis</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">early</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">General early stage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">advanced</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">General advanced stage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">localized</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C68804</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Confined to primary site</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metastatic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C14174</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Has spread to distant sites</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stage unknown</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Staging not relevant (non-cancer)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cancer_specific_staging"><a class="anchor" href="#_cancer_specific_staging"></a><a class="link" href="#_cancer_specific_staging">3.2. Cancer-Specific Staging</a></h3>
+<div class="sect3">
+<h4 id="_tnm_staging"><a class="anchor" href="#_tnm_staging"></a><a class="link" href="#_tnm_staging">3.2.1. TNM Staging</a></h4>
+<div class="sect4">
+<h5 id="_column_2"><a class="anchor" href="#_column_2"></a><a class="link" href="#_column_2">Column</a></h5>
+<div class="paragraph">
+<p><code>characteristics[TNM staging]</code></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_ontology_2"><a class="anchor" href="#_ontology_2"></a><a class="link" href="#_ontology_2">Ontology</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Primary</strong>: <a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCI Thesaurus (NCIT)</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_format"><a class="anchor" href="#_format"></a><a class="link" href="#_format">Format</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>T{0-4}N{0-3}M{0-1}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>T</strong>: Primary tumor size/extent (T0-T4, Tis for in situ)</p>
+</li>
+<li>
+<p><strong>N</strong>: Regional lymph node involvement (N0-N3)</p>
+</li>
+<li>
+<p><strong>M</strong>: Distant metastasis (M0, M1)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Prefix <code>p</code> indicates pathological staging (e.g., <code>pT2pN1M0</code>).</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_examples"><a class="anchor" href="#_examples"></a><a class="link" href="#_examples">Examples</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">T1N0M0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Small tumor, no nodes, no metastasis</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">T2N1M0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Larger tumor, limited node involvement</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">T3N2M1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Large tumor, extensive nodes, metastatic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pT2pN1M0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pathological staging after surgery</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carcinoma in situ</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tumor_grade"><a class="anchor" href="#_tumor_grade"></a><a class="link" href="#_tumor_grade">3.2.2. Tumor Grade</a></h4>
+<div class="sect4">
+<h5 id="_column_3"><a class="anchor" href="#_column_3"></a><a class="link" href="#_column_3">Column</a></h5>
+<div class="paragraph">
+<p><code>characteristics[tumor grade]</code></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_ontology_3"><a class="anchor" href="#_ontology_3"></a><a class="link" href="#_ontology_3">Ontology</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Primary</strong>: <a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCI Thesaurus (NCIT)</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_standard_values_2"><a class="anchor" href="#_standard_values_2"></a><a class="link" href="#_standard_values_2">Standard Values</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">NCIT ID</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grade 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C28076</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Well differentiated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grade 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C28077</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Moderately differentiated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grade 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C28078</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Poorly differentiated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grade 4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C28079</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Undifferentiated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">well differentiated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C14167</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Low grade</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">moderately differentiated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C14168</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Intermediate grade</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">poorly differentiated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C14169</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High grade</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grade unknown</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grading not relevant</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cancer_specific_classifications"><a class="anchor" href="#_cancer_specific_classifications"></a><a class="link" href="#_cancer_specific_classifications">3.2.3. Cancer-Specific Classifications</a></h4>
+<div class="sect4">
+<h5 id="_breast_cancer"><a class="anchor" href="#_breast_cancer"></a><a class="link" href="#_breast_cancer">Breast Cancer</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[breast cancer subtype]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luminal A, luminal B, HER2-enriched, triple-negative, basal-like</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">NCIT ID</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luminal A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C53554</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ER+/PR+, HER2-, low Ki67</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luminal B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C53555</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ER+/PR+, HER2- or HER2+, high Ki67</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HER2-enriched</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C53556</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ER-/PR-, HER2+</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">triple-negative</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C71732</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ER-/PR-/HER2-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">basal-like</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C53553</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to basal epithelial cells</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_colorectal_cancer"><a class="anchor" href="#_colorectal_cancer"></a><a class="link" href="#_colorectal_cancer">Colorectal Cancer</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[Dukes stage]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dukes A, Dukes B, Dukes C, Dukes D</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_lymphoma"><a class="anchor" href="#_lymphoma"></a><a class="link" href="#_lymphoma">Lymphoma</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[Ann Arbor stage]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage I, stage II, stage III, stage IV</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="comorbidities"><a class="anchor" href="#comorbidities"></a><a class="link" href="#comorbidities">4. Pre-existing Conditions and Comorbidities</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_pre_existing_conditions"><a class="anchor" href="#_pre_existing_conditions"></a><a class="link" href="#_pre_existing_conditions">4.1. Pre-existing Conditions</a></h3>
+<div class="sect3">
+<h4 id="_column_4"><a class="anchor" href="#_column_4"></a><a class="link" href="#_column_4">4.1.1. Column</a></h4>
+<div class="paragraph">
+<p><code>characteristics[pre-existing condition]</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ontology_4"><a class="anchor" href="#_ontology_4"></a><a class="link" href="#_ontology_4">4.1.2. Ontology</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Primary</strong>: <a href="https://mondo.monarchinitiative.org/">MONDO Disease Ontology</a></p>
+</li>
+<li>
+<p><strong>Alternative</strong>: <a href="https://www.ebi.ac.uk/efo/">EFO</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_common_values"><a class="anchor" href="#_common_values"></a><a class="link" href="#_common_values">4.1.3. Common Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Condition</th>
+<th class="tableblock halign-left valign-top">SDRF Value</th>
+<th class="tableblock halign-left valign-top">MONDO ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High blood pressure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hypertension</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0005044</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diabetes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0005148</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Obesity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">obesity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0011122</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chronic kidney disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">chronic kidney disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0005300</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cardiovascular disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cardiovascular disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0004995</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asthma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">asthma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0004979</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Depression</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">depression</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0002050</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None known</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_multiple_conditions"><a class="anchor" href="#_multiple_conditions"></a><a class="link" href="#_multiple_conditions">4.2. Multiple Conditions</a></h3>
+<div class="paragraph">
+<p>Multiple pre-existing conditions can be captured by:</p>
+</div>
+<div class="paragraph">
+<p><strong>Option 1</strong>: Multiple columns (PREFERRED)</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">characteristics[pre-existing condition]</th>
+<th class="tableblock halign-left valign-top">characteristics[pre-existing condition]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hypertension</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Option 2</strong>: Semicolon-separated values</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">characteristics[pre-existing condition]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hypertension;type 2 diabetes mellitus;obesity</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Option 1 (multiple columns) is PREFERRED for clarity and parsing.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_secondary_conditions"><a class="anchor" href="#_secondary_conditions"></a><a class="link" href="#_secondary_conditions">4.3. Secondary Conditions</a></h3>
+<div class="sect3">
+<h4 id="_column_5"><a class="anchor" href="#_column_5"></a><a class="link" href="#_column_5">4.3.1. Column</a></h4>
+<div class="paragraph">
+<p><code>characteristics[secondary condition]</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description"><a class="anchor" href="#_description"></a><a class="link" href="#_description">4.3.2. Description</a></h4>
+<div class="paragraph">
+<p>Conditions that are secondary to or result from the primary disease.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_values"><a class="anchor" href="#_example_values"></a><a class="link" href="#_example_values">4.3.3. Example Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metastasis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cancer spread to distant sites</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">infection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Secondary infection</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organ failure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organ function loss</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">treatment-related adverse event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Side effect of treatment</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="treatment-annotation"><a class="anchor" href="#treatment-annotation"></a><a class="link" href="#treatment-annotation">5. Treatment and Medication Annotation</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_current_treatment"><a class="anchor" href="#_current_treatment"></a><a class="link" href="#_current_treatment">5.1. Current Treatment</a></h3>
+<div class="sect3">
+<h4 id="_columns_and_ontologies"><a class="anchor" href="#_columns_and_ontologies"></a><a class="link" href="#_columns_and_ontologies">5.1.1. Columns and Ontologies</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[treatment]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT, EFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Primary treatment/intervention</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[compound]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ChEBI, NCIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific drug/compound</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[dose]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UO (Units Ontology)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dosage administered</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_treatment_values"><a class="anchor" href="#_treatment_values"></a><a class="link" href="#_treatment_values">5.1.2. Treatment Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">NCIT ID</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">chemotherapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C15632</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical drug treatment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">immunotherapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C15262</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Immune-based treatment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">radiation therapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C15313</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Radiotherapy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">surgical resection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C15329</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Surgical removal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">targeted therapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C62723</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Molecularly targeted drugs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hormone therapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C15445</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hormonal treatment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">untreated</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No treatment administered</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Treatment unknown</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_compound_examples"><a class="anchor" href="#_compound_examples"></a><a class="link" href="#_compound_examples">5.1.3. Compound Examples</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Compound</th>
+<th class="tableblock halign-left valign-top">ChEBI ID</th>
+<th class="tableblock halign-left valign-top">Drug Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">doxorubicin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CHEBI:28748</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Anthracycline chemotherapy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pembrolizumab</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PD-1 inhibitor immunotherapy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metformin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CHEBI:6801</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Antidiabetic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cisplatin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CHEBI:27899</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Platinum chemotherapy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tamoxifen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CHEBI:41774</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hormone therapy</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_dose_format"><a class="anchor" href="#_dose_format"></a><a class="link" href="#_dose_format">5.1.4. Dose Format</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{value} {unit}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100 mg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standard dose</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{value} {unit}/{weight}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5 mg/kg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Weight-based dose</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{value} {unit} {frequency}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 mg daily</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dose with frequency</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{concentration}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 uM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In vitro concentration</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_treatment_history"><a class="anchor" href="#_treatment_history"></a><a class="link" href="#_treatment_history">5.2. Treatment History</a></h3>
+<div class="sect3">
+<h4 id="_columns"><a class="anchor" href="#_columns"></a><a class="link" href="#_columns">5.2.1. Columns</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[medication history]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Previous or concurrent medications</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">aspirin, statins, ACE inhibitors, metformin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[prior treatment]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Previous treatments for same condition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">prior chemotherapy, radiation therapy naive, surgery only</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_treatment_status_and_timing"><a class="anchor" href="#_treatment_status_and_timing"></a><a class="link" href="#_treatment_status_and_timing">5.3. Treatment Status and Timing</a></h3>
+<div class="sect3">
+<h4 id="_columns_and_values"><a class="anchor" href="#_columns_and_values"></a><a class="link" href="#_columns_and_values">5.3.1. Columns and Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[treatment status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-treatment, on treatment, post-treatment, treatment naive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current treatment phase</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[time post treatment]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24h, 7d, 2W, 3M, 1Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time since treatment (use standard time format)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[treatment response]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">complete response, partial response, stable disease, progressive disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response to treatment</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_treatment_response_values"><a class="anchor" href="#_treatment_response_values"></a><a class="link" href="#_treatment_response_values">5.3.2. Treatment Response Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">NCIT ID</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">complete response</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C4870</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No detectable disease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">partial response</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C18058</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;50% reduction</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stable disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C18213</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No significant change</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">progressive disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C18206</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease progression</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="individual-annotation"><a class="anchor" href="#individual-annotation"></a><a class="link" href="#individual-annotation">6. Individual/Patient Identifiers</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_column_6"><a class="anchor" href="#_column_6"></a><a class="link" href="#_column_6">6.1. Column</a></h3>
+<div class="paragraph">
+<p><code>characteristics[individual]</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_format_2"><a class="anchor" href="#_format_2"></a><a class="link" href="#_format_2">6.2. Format</a></h3>
+<div class="paragraph">
+<p>Alphanumeric pseudonymized identifier.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_examples_2"><a class="anchor" href="#_examples_2"></a><a class="link" href="#_examples_2">6.3. Examples</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_{number}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sequential numbering</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P{number}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P023455</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compact format</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">donor_{letter}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">donor_A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Letter-based</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{study}_{subject}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCGA_BRCA_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Study-prefixed</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Privacy requirements
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Never use actual patient names or identifiable information</p>
+</li>
+<li>
+<p>Use pseudonymized identifiers only</p>
+</li>
+<li>
+<p>Consider data protection regulations (GDPR, HIPAA)</p>
+</li>
+<li>
+<p>Do not include dates of birth, social security numbers, or medical record numbers</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_linking_multiple_samples_from_same_patient"><a class="anchor" href="#_linking_multiple_samples_from_same_patient"></a><a class="link" href="#_linking_multiple_samples_from_same_patient">6.4. Linking Multiple Samples from Same Patient</a></h3>
+<div class="paragraph">
+<p>When multiple samples come from the same individual, use consistent individual identifier:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[individual]</th>
+<th class="tableblock halign-left valign-top">characteristics[organism part]</th>
+<th class="tableblock halign-left valign-top">characteristics[sampling time point]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">baseline</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adjacent normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">baseline</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-treatment</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="clinical-metadata"><a class="anchor" href="#clinical-metadata"></a><a class="link" href="#clinical-metadata">7. Additional Clinical Metadata</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_body_measurements"><a class="anchor" href="#_body_measurements"></a><a class="link" href="#_body_measurements">7.1. Body Measurements</a></h3>
+<div class="sect3">
+<h4 id="_columns_and_format"><a class="anchor" href="#_columns_and_format"></a><a class="link" href="#_columns_and_format">7.1.1. Columns and Format</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[body mass index]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C16358</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric (kg/m²)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[weight]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C81328</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{value} kg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">70 kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[height]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C81327</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{value} cm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">175 cm</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ancestry_and_ethnicity"><a class="anchor" href="#_ancestry_and_ethnicity"></a><a class="link" href="#_ancestry_and_ethnicity">7.2. Ancestry and Ethnicity</a></h3>
+<div class="sect3">
+<h4 id="_columns_and_ontologies_2"><a class="anchor" href="#_columns_and_ontologies_2"></a><a class="link" href="#_columns_and_ontologies_2">7.2.1. Columns and Ontologies</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[ancestry category]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANCESTRO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genetic ancestry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[ethnicity]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Self-reported ethnicity</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_ancestry_values"><a class="anchor" href="#_ancestry_values"></a><a class="link" href="#_ancestry_values">7.2.2. Ancestry Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">HANCESTRO ID</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANCESTRO:0005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European ancestry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">East Asian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANCESTRO:0009</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">East Asian ancestry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">African</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANCESTRO:0010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">African ancestry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">South Asian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANCESTRO:0006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">South Asian ancestry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">admixed</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mixed ancestry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry unknown</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lifestyle_factors"><a class="anchor" href="#_lifestyle_factors"></a><a class="link" href="#_lifestyle_factors">7.3. Lifestyle Factors</a></h3>
+<div class="sect3">
+<h4 id="_smoking_status"><a class="anchor" href="#_smoking_status"></a><a class="link" href="#_smoking_status">7.3.1. Smoking Status</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">NCIT IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[smoking status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">never smoker, former smoker, current smoker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C65108, NCIT:C65107, NCIT:C65106</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_alcohol_consumption"><a class="anchor" href="#_alcohol_consumption"></a><a class="link" href="#_alcohol_consumption">7.3.2. Alcohol Consumption</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[alcohol consumption]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none, moderate, heavy, social, not available</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_diet"><a class="anchor" href="#_diet"></a><a class="link" href="#_diet">7.3.3. Diet</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[diet]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">omnivore, vegetarian, vegan, western diet, mediterranean diet</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reproductive_status"><a class="anchor" href="#_reproductive_status"></a><a class="link" href="#_reproductive_status">7.4. Reproductive Status</a></h3>
+<div class="sect3">
+<h4 id="_menopausal_status"><a class="anchor" href="#_menopausal_status"></a><a class="link" href="#_menopausal_status">7.4.1. Menopausal Status</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[menopausal status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-menopausal, peri-menopausal, post-menopausal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For female subjects</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_pregnancy_status"><a class="anchor" href="#_pregnancy_status"></a><a class="link" href="#_pregnancy_status">7.4.2. Pregnancy Status</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[pregnancy status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pregnant, not pregnant, postpartum, not applicable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_gestational_age"><a class="anchor" href="#_gestational_age"></a><a class="link" href="#_gestational_age">7.4.3. Gestational Age</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[gestational age]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{weeks}W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12W, 28W, term</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sampling_time_point"><a class="anchor" href="#_sampling_time_point"></a><a class="link" href="#_sampling_time_point">7.5. Sampling Time Point</a></h3>
+<div class="sect3">
+<h4 id="_column_7"><a class="anchor" href="#_column_7"></a><a class="link" href="#_column_7">7.5.1. Column</a></h4>
+<div class="paragraph">
+<p><code>characteristics[sampling time point]</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_2"><a class="anchor" href="#_description_2"></a><a class="link" href="#_description_2">7.5.2. Description</a></h4>
+<div class="paragraph">
+<p>For longitudinal studies, indicates when sample was collected relative to a reference point.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_values_2"><a class="anchor" href="#_example_values_2"></a><a class="link" href="#_example_values_2">7.5.3. Example Values</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">baseline</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before intervention/treatment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">week 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">One week after baseline</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">month 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Three months after baseline</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-treatment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After treatment completion</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">follow-up</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Long-term follow-up visit</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">8. Example SDRF with Patient Metadata</a></h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.091%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[individual]</th>
+<th class="tableblock halign-left valign-top">characteristics[sex]</th>
+<th class="tableblock halign-left valign-top">characteristics[age]</th>
+<th class="tableblock halign-left valign-top">characteristics[ancestry category]</th>
+<th class="tableblock halign-left valign-top">characteristics[disease]</th>
+<th class="tableblock halign-left valign-top">characteristics[disease stage]</th>
+<th class="tableblock halign-left valign-top">characteristics[pre-existing condition]</th>
+<th class="tableblock halign-left valign-top">characteristics[treatment]</th>
+<th class="tableblock halign-left valign-top">characteristics[treatment status]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_pt001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">female</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">52Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage II</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hypertension</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">chemotherapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-treatment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal_pt001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">female</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">52Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hypertension</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">chemotherapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-treatment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_pt002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">female</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">67Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">East Asian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage III</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">immunotherapy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">on treatment</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">9. Best Practices</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Protect privacy</strong>: Never include identifiable patient information.</p>
+</li>
+<li>
+<p><strong>Use ontology terms</strong>: Prefer MONDO for diseases, NCIT for staging and treatments.</p>
+</li>
+<li>
+<p><strong>Be consistent</strong>: Use the same format for all samples in a dataset.</p>
+</li>
+<li>
+<p><strong>Document unknowns</strong>: Use <code>not available</code> rather than leaving cells empty.</p>
+</li>
+<li>
+<p><strong>Distinguish primary from secondary</strong>: Clearly separate the disease under study from comorbidities.</p>
+</li>
+<li>
+<p><strong>Include temporal context</strong>: Specify when measurements were taken relative to treatment.</p>
+</li>
+<li>
+<p><strong>Use standard staging</strong>: Prefer TNM staging for solid tumors when available.</p>
+</li>
+<li>
+<p><strong>Consider regulatory requirements</strong>: Ensure compliance with GDPR, HIPAA, and other data protection regulations.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">10. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>MONDO Disease Ontology: <a href="https://mondo.monarchinitiative.org/" class="bare">https://mondo.monarchinitiative.org/</a></p>
+</li>
+<li>
+<p>NCI Thesaurus (NCIT): <a href="https://ncithesaurus.nci.nih.gov/" class="bare">https://ncithesaurus.nci.nih.gov/</a></p>
+</li>
+<li>
+<p>Human Ancestry Ontology (HANCESTRO): <a href="https://www.ebi.ac.uk/ols4/ontologies/hancestro" class="bare">https://www.ebi.ac.uk/ols4/ontologies/hancestro</a></p>
+</li>
+<li>
+<p>ChEBI Chemical Entities: <a href="https://www.ebi.ac.uk/chebi/" class="bare">https://www.ebi.ac.uk/chebi/</a></p>
+</li>
+<li>
+<p>Units Ontology (UO): <a href="https://www.ebi.ac.uk/ols4/ontologies/uo" class="bare">https://www.ebi.ac.uk/ols4/ontologies/uo</a></p>
+</li>
+<li>
+<p>TNM Classification: AJCC Cancer Staging Manual</p>
+</li>
+<li>
+<p>GA4GH data standards: <a href="https://www.ga4gh.org/" class="bare">https://www.ga4gh.org/</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-01-13 19:27:34 UTC
+</div>
+</div>
+</body>
+</html>

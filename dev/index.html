@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDRF-Proteomics - Sample and Data Relationship Format</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="search-index.js"></script>
+    <script src="js/search.js" defer></script>
+</head>
+<body><div class="dev-banner">⚠️ Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="/">View stable version</a></div>
+    <header class="site-header">
+        <div class="header-content">
+            <h1>SDRF-Proteomics</h1>
+            <p class="tagline">Sample and Data Relationship Format for Proteomics</p>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Loading search..." disabled>
+            <span class="search-shortcut">Ctrl+K</span>
+            <div id="search-results"></div>
+        </div>
+        <nav class="main-nav">
+            <a href="./specification.html">Specification</a>
+            <a href="#conventions">Conventions</a>
+            <a href="#templates">Templates</a>
+            <a href="./dev/" class="version-link">Dev Version</a>
+            <a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Standardizing Proteomics Sample Metadata</h2>
+            <p>SDRF-Proteomics is a community-driven standard for describing sample metadata and its relationship to data files in proteomics experiments. It enables data sharing, reproducibility, and integration across studies.</p>
+            <div class="cta-buttons">
+                <a href="./specification.html" class="btn btn-primary">Read the Specification</a>
+                <a href="https://github.com/bigbio/sdrf-pipelines" class="btn btn-secondary" target="_blank">Get the Validator</a>
+            </div>
+        </section>
+
+        <section class="quick-links">
+            <div class="card">
+                <h3>Quick Start</h3>
+                <p>New to SDRF-Proteomics? Start here to learn the basics and create your first SDRF file.</p>
+                <a href="./specification.html#quick-start">Get Started</a>
+            </div>
+            <div class="card">
+                <h3>Validation</h3>
+                <p>Validate your SDRF files using sdrf-pipelines, the official Python validator.</p>
+                <a href="./specification.html#validation">Learn More</a>
+            </div>
+            <div class="card">
+                <h3>Examples</h3>
+                <p>Browse annotated datasets from ProteomeXchange as reference examples.</p>
+                <a href="./specification.html#example-annotated-datasets">View Examples</a>
+            </div>
+        </section>
+
+        <section id="conventions" class="section">
+            <h2>Metadata Conventions</h2>
+            <p>Detailed guidelines for annotating specific types of metadata fields.</p>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Sample Metadata</h4>
+                    <p>Guidelines for age, sex, disease, organism part, cell type, and developmental stage.</p>
+                    <a href="./conventions/sample-metadata.html">View Convention</a>
+                </div>
+                <div class="card">
+                    <h4>Human Metadata</h4>
+                    <p>Human-specific metadata including disease staging, treatment, demographics, and lifestyle factors.</p>
+                    <a href="./conventions/human-metadata.html">View Convention</a>
+                </div>
+                <div class="card">
+                    <h4>Data File Metadata</h4>
+                    <p>Guidelines for labels, instruments, modifications, cleavage agents, and mass tolerances.</p>
+                    <a href="./conventions/data-file-metadata.html">View Convention</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="templates" class="section">
+            <h2>Templates</h2>
+
+            <h3>Core Templates</h3>
+            <p>Organism-based templates for common proteomics experiments.</p>
+            <div class="template-list">
+                <a href="./specification.html#the-default-template">Default</a>
+                <a href="./specification.html#template-human">Human</a>
+                <a href="./specification.html#template-vertebrates">Vertebrates</a>
+                <a href="./specification.html#template-invertebrates">Invertebrates</a>
+                <a href="./specification.html#template-plants">Plants</a>
+            </div>
+
+            <h3>Experiment-specific Templates</h3>
+            <p>Specialized templates for specific experiment types.</p>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Affinity Proteomics</h4>
+                    <p>Olink, SomaScan, Luminex, and other affinity-based methods.</p>
+                    <a href="./templates/affinity-proteomics.html">View Template</a>
+                </div>
+                <div class="card">
+                    <h4>Cell Lines</h4>
+                    <p>Standardized cell line annotation using Cellosaurus.</p>
+                    <a href="./templates/cell-lines.html">View Template</a>
+                </div>
+                <div class="card">
+                    <h4>Crosslinking</h4>
+                    <p>XL-MS structural proteomics experiments.</p>
+                    <a href="./templates/crosslinking.html">View Template</a>
+                </div>
+                <div class="card">
+                    <h4>Immunopeptidomics</h4>
+                    <p>MHC-bound peptide identification.</p>
+                    <a href="./templates/immunopeptidomics.html">View Template</a>
+                </div>
+                <div class="card">
+                    <h4>Metaproteomics</h4>
+                    <p>Microbial community proteomics.</p>
+                    <a href="./templates/metaproteomics.html">View Template</a>
+                </div>
+                <div class="card">
+                    <h4>Single Cell</h4>
+                    <p>Single cell proteomics experiments.</p>
+                    <a href="./templates/single-cell.html">View Template</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Resources</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>sdrf-pipelines</h4>
+                    <p>Official Python validator and converter for SDRF files.</p>
+                    <a href="https://github.com/bigbio/sdrf-pipelines" target="_blank">GitHub Repository</a>
+                </div>
+                <div class="card">
+                    <h4>Annotated Projects</h4>
+                    <p>Collection of SDRF files from ProteomeXchange datasets.</p>
+                    <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects" target="_blank">Browse Projects</a>
+                </div>
+                <div class="card">
+                    <h4>Publication</h4>
+                    <p>Read the original SDRF-Proteomics publication in Nature Communications.</p>
+                    <a href="https://www.nature.com/articles/s41467-021-26111-3" target="_blank">Read Paper</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>SDRF-Proteomics is developed by the <a href="https://psidev.info/" target="_blank">HUPO-PSI</a> community.</p>
+            <p>Copyright &copy; Proteomics Standards Initiative. Licensed under <a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/LICENSE" target="_blank">Apache 2.0</a>.</p>
+            <p class="version">Specification Version 1.1.0</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Affinity Proteomics Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>SDRF-Proteomics: Affinity Proteomics Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#motivation">3. Motivation</a></li>
+<li><a href="#scope">4. Scope</a></li>
+<li><a href="#technology-type">5. Technology Type Annotation</a></li>
+<li><a href="#checklist">6. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_columns">6.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">6.2. Recommended Columns</a></li>
+</ul>
+</li>
+<li><a href="#olink-specific">7. Olink-Specific Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_for_olink">7.1. Required for Olink</a></li>
+<li><a href="#_recommended_for_olink">7.2. Recommended for Olink</a></li>
+</ul>
+</li>
+<li><a href="#somascan-specific">8. SomaScan-Specific Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_for_somascan">8.1. Required for SomaScan</a></li>
+<li><a href="#_recommended_for_somascan">8.2. Recommended for SomaScan</a></li>
+</ul>
+</li>
+<li><a href="#immunoassay-specific">9. Immunoassay Array Checklist</a></li>
+<li><a href="#immunoaffinity-ms">10. Immunoaffinity-MS Checklist</a></li>
+<li><a href="#data-file-formats">11. Data File Formats</a></li>
+<li><a href="#example-sdrf">12. Example SDRF Files</a>
+<ul class="sectlevel2">
+<li><a href="#_olink_example">12.1. Olink Example</a></li>
+<li><a href="#_somascan_example">12.2. SomaScan Example</a></li>
+</ul>
+</li>
+<li><a href="#best-practices">13. Best Practices for Affinity Proteomics Annotation</a></li>
+<li><a href="#cross-platform">14. Cross-Platform Data Integration</a></li>
+<li><a href="#template-file">15. Template File</a></li>
+<li><a href="#validation">16. Validation</a></li>
+<li><a href="#authors">17. Authors and Maintainers</a></li>
+<li><a href="#references">18. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides guidelines for annotating affinity-based proteomics experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with affinity proteomics-specific metadata fields.</p>
+</div>
+<div class="paragraph">
+<p><strong>Version 1.0.0</strong> - 2025-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Affinity proteomics encompasses experimental approaches that use affinity-based capture methods to study specific protein subsets or interactions. Unlike mass spectrometry-based proteomics, these methods typically use antibodies, aptamers, or other affinity reagents to detect and quantify proteins. Major platforms include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Proximity Extension Assay (PEA)</strong>: Olink platform using antibody pairs and DNA barcoding</p>
+</li>
+<li>
+<p><strong>Aptamer-based assays</strong>: SomaScan platform using modified aptamers (SOMAmer reagents)</p>
+</li>
+<li>
+<p><strong>Antibody arrays</strong>: Various bead-based and planar array platforms</p>
+</li>
+<li>
+<p><strong>Immunoaffinity-MS</strong>: Hybrid approaches combining affinity capture with MS detection</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This template defines metadata requirements for annotating these diverse affinity-based proteomics experiments, enabling data integration across platforms and with mass spectrometry data.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="motivation"><a class="anchor" href="#motivation"></a><a class="link" href="#motivation">3. Motivation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Affinity proteomics experiments have characteristics that differ significantly from mass spectrometry proteomics:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Pre-defined protein panels</strong>: Target proteins are determined by the reagent panel, not by detection</p>
+</li>
+<li>
+<p><strong>No mass spectrometry (typically)</strong>: Detection is often via sequencing, fluorescence, or electrochemiluminescence</p>
+</li>
+<li>
+<p><strong>High throughput</strong>: Many samples can be processed in parallel</p>
+</li>
+<li>
+<p><strong>Different quantification scales</strong>: Relative units (NPX, RFU) rather than intensity or spectral counts</p>
+</li>
+<li>
+<p><strong>Platform-specific considerations</strong>: Each technology has unique metadata requirements</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>These aspects require specific metadata to enable proper data interpretation and cross-platform comparison.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="scope"><a class="anchor" href="#scope"></a><a class="link" href="#scope">4. Scope</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template covers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Proximity Extension Assays (Olink)</p>
+</li>
+<li>
+<p>Aptamer-based protein profiling (SomaScan)</p>
+</li>
+<li>
+<p>Antibody/bead arrays (Luminex, MSD)</p>
+</li>
+<li>
+<p>Reverse phase protein arrays (RPPA)</p>
+</li>
+<li>
+<p>Immunoaffinity enrichment followed by MS detection</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+While affinity proteomics extends SDRF-Proteomics, many of these technologies do not use mass spectrometry. The <code>technology type</code> and <code>assay name</code> columns are adapted accordingly.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="technology-type"><a class="anchor" href="#technology-type"></a><a class="link" href="#technology-type">5. Technology Type Annotation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For affinity proteomics, the <code>technology type</code> column MUST reflect the actual detection technology:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Platform</th>
+<th class="tableblock halign-left valign-top">Technology Type Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink PEA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by proximity extension assay</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by aptamer-based assay</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Luminex/MSD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by immunoassay</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RPPA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by reverse phase protein array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Immunoaffinity-MS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">6. Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section defines the metadata columns required and recommended for affinity proteomics experiments.</p>
+</div>
+<div class="sect2">
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">6.1. Required Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are REQUIRED for affinity proteomics experiments in addition to the core SDRF-Proteomics requirements:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[affinity reagent]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Primary reagent type or platform used for affinity-based capture</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink proximity extension assay, SOMAscan aptamer panel, antibody array, immunoaffinity beads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[affinity method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">General method category for affinity-based detection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proximity extension assay, aptamer-based assay, immunoaffinity capture, sandwich immunoassay, reverse phase protein array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.2. Recommended Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are RECOMMENDED for affinity proteomics experiments:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[target protein class]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class or category of proteins being targeted by the panel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary or free text</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cytokines, inflammation markers, cardiovascular biomarkers, oncology panel, kinases</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[panel name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Commercial name or identifier of the protein panel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Target 96 Inflammation, SomaScan 7K, Olink Explore 3072, custom panel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[panel composition]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number and description of targets in the panel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">92 proteins, 7000 protein targets, 48 cytokines</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[panel version]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the panel if applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v3.0, 2023-01, lot ABC123</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[detection sensitivity]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sensitivity or detection limit of the assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Concentration with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 pg/mL, 0.1 pg/mL, LOD 5 pg/mL, femtomolar range</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[quantification unit]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unit of measurement for quantitative values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unit identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NPX (Normalized Protein eXpression), RFU (Relative Fluorescence Units), pg/mL, MFI</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample volume]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Volume of sample used for the assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 uL, 10 uL, 50 uL, 100 uL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological sample material</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serum, plasma (EDTA), plasma (citrate), CSF, urine, tissue lysate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[dilution factor]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample dilution if applied</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ratio or factor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1:4, 1:100, undiluted, 10x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="olink-specific"><a class="anchor" href="#olink-specific"></a><a class="link" href="#olink-specific">7. Olink-Specific Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For Olink Proximity Extension Assay experiments:</p>
+</div>
+<div class="sect2">
+<h3 id="_required_for_olink"><a class="anchor" href="#_required_for_olink"></a><a class="link" href="#_required_for_olink">7.1. Required for Olink</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[olink panel]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the Olink panel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target 96 Inflammation, Target 96 Cardiovascular II, Explore 384 Inflammation</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[olink platform]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink instrument/platform version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Target 96, Olink Explore 384, Olink Explore HT</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_for_olink"><a class="anchor" href="#_recommended_for_olink"></a><a class="link" href="#_recommended_for_olink">7.2. Recommended for Olink</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[NPX normalization]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalization method applied to NPX values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate control normalized, intensity normalized, bridge normalized</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[QC warning]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quality control warnings if any</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QC pass, below LOD, plate effect warning</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[olink lot number]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent lot number for traceability</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lot_2023_001, B12345</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="somascan-specific"><a class="anchor" href="#somascan-specific"></a><a class="link" href="#somascan-specific">8. SomaScan-Specific Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For SomaScan aptamer-based experiments:</p>
+</div>
+<div class="sect2">
+<h3 id="_required_for_somascan"><a class="anchor" href="#_required_for_somascan"></a><a class="link" href="#_required_for_somascan">8.1. Required for SomaScan</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[somascan menu]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan assay menu version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan 1.1K, SomaScan 5K, SomaScan 7K, SomaScan 11K</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[somascan platform]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Platform/instrument version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan Assay v4.0, SomaScan Assay v4.1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_for_somascan"><a class="anchor" href="#_recommended_for_somascan"></a><a class="link" href="#_recommended_for_somascan">8.2. Recommended for SomaScan</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[normalization method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalization applied to RFU values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">median normalization, calibrator normalization, hybridization control normalization</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample matrix]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample matrix type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serum, plasma EDTA, plasma citrate</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="immunoassay-specific"><a class="anchor" href="#immunoassay-specific"></a><a class="link" href="#immunoassay-specific">9. Immunoassay Array Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For Luminex, MSD, and similar bead/plate-based immunoassays:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[assay platform]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Immunoassay platform used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Luminex xMAP, MSD MULTI-ARRAY, ELLA, Simoa</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[antibody source]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source of capture/detection antibodies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R&amp;D Systems, Bio-Rad, custom antibodies, Millipore</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[standard curve]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether standard curve was included</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes, no, included in kit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[detection method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Detection methodology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fluorescence, electrochemiluminescence, enzyme-linked</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="immunoaffinity-ms"><a class="anchor" href="#immunoaffinity-ms"></a><a class="link" href="#immunoaffinity-ms">10. Immunoaffinity-MS Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For experiments combining immunoaffinity capture with mass spectrometry:</p>
+</div>
+<div class="paragraph">
+<p>These experiments use affinity enrichment followed by MS detection. They should include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Standard MS-related columns from core SDRF-Proteomics</p>
+</li>
+<li>
+<p>Affinity-specific columns for the capture step</p>
+</li>
+</ol>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[enrichment method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Immunoaffinity enrichment approach</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anti-FLAG IP, anti-HA IP, SISCAPA, immuno-MRM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[capture antibody]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Antibody used for enrichment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anti-FLAG M2, anti-GFP nanobody, custom polyclonal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[bead type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of beads used for capture</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protein A/G agarose, magnetic beads, NHS-sepharose</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="data-file-formats"><a class="anchor" href="#data-file-formats"></a><a class="link" href="#data-file-formats">11. Data File Formats</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Affinity proteomics platforms produce various output formats:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Platform</th>
+<th class="tableblock halign-left valign-top">Typical File Format</th>
+<th class="tableblock halign-left valign-top">File Extension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Excel or CSV with NPX values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.xlsx, .csv</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ADAT format (proprietary) or CSV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.adat, .csv</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Luminex</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CSV or xPONENT format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.csv, .xml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MSD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Discovery Workbench format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.xlsx, .csv</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Immunoaffinity-MS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standard MS formats</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.raw, .mzML</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For <code>comment[data file]</code>, use the actual file name regardless of format.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">12. Example SDRF Files</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_olink_example"><a class="anchor" href="#_olink_example"></a><a class="link" href="#_olink_example">12.1. Olink Example</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3337%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[disease]</th>
+<th class="tableblock halign-left valign-top">characteristics[affinity reagent]</th>
+<th class="tableblock halign-left valign-top">characteristics[affinity method]</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">technology type</th>
+<th class="tableblock halign-left valign-top">comment[olink panel]</th>
+<th class="tableblock halign-left valign-top">comment[olink platform]</th>
+<th class="tableblock halign-left valign-top">comment[sample volume]</th>
+<th class="tableblock halign-left valign-top">comment[quantification unit]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001_plasma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rheumatoid arthritis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink proximity extension assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proximity extension assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">olink_plate1_A01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by proximity extension assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target 96 Inflammation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Target 96</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 uL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NPX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate1_results.xlsx</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_002_plasma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink proximity extension assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proximity extension assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">olink_plate1_A02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by proximity extension assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target 96 Inflammation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Target 96</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 uL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NPX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate1_results.xlsx</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_somascan_example"><a class="anchor" href="#_somascan_example"></a><a class="link" href="#_somascan_example">12.2. SomaScan Example</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3333%;">
+<col style="width: 8.3337%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[disease]</th>
+<th class="tableblock halign-left valign-top">characteristics[affinity reagent]</th>
+<th class="tableblock halign-left valign-top">characteristics[affinity method]</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">technology type</th>
+<th class="tableblock halign-left valign-top">comment[somascan menu]</th>
+<th class="tableblock halign-left valign-top">comment[somascan platform]</th>
+<th class="tableblock halign-left valign-top">comment[sample volume]</th>
+<th class="tableblock halign-left valign-top">comment[quantification unit]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subject_A_serum</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOMAscan aptamer panel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">aptamer-based assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">somascan_batch1_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by aptamer-based assay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan 7K</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan Assay v4.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">55 uL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">somascan_batch1.adat</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">13. Best Practices for Affinity Proteomics Annotation</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Specify the platform clearly</strong>: Always identify the specific technology platform used.</p>
+</li>
+<li>
+<p><strong>Document panel information</strong>: Include panel name, version, and composition for reproducibility.</p>
+</li>
+<li>
+<p><strong>Report quantification units</strong>: Different platforms use different scales (NPX, RFU, pg/mL) - always specify.</p>
+</li>
+<li>
+<p><strong>Note sample requirements</strong>: Document sample type, volume, and any dilutions applied.</p>
+</li>
+<li>
+<p><strong>Include QC information</strong>: When available, note quality control status or warnings.</p>
+</li>
+<li>
+<p><strong>Use appropriate technology type</strong>: Do not use MS-specific technology types for non-MS platforms.</p>
+</li>
+<li>
+<p><strong>Link to panel documentation</strong>: When possible, reference manufacturer documentation for panel contents.</p>
+</li>
+<li>
+<p><strong>Consider cross-platform studies</strong>: When combining affinity and MS data, clearly distinguish samples and methods.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cross-platform"><a class="anchor" href="#cross-platform"></a><a class="link" href="#cross-platform">14. Cross-Platform Data Integration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When combining affinity proteomics with mass spectrometry data:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use consistent <code>source name</code> values for the same biological samples</p>
+</li>
+<li>
+<p>Clearly distinguish technology types in the SDRF</p>
+</li>
+<li>
+<p>Consider using <code>characteristics[biosample accession number]</code> to link related samples</p>
+</li>
+<li>
+<p>Document any batch effects or platform-specific normalizations</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">15. Template File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The affinity proteomics SDRF template file is available in this directory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="affinity-proteomics-template.sdrf.tsv">affinity-proteomics-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">16. Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Affinity proteomics SDRF files should be validated using the sdrf-pipelines tool:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template affinity-proteomics</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Some MS-specific validations may not apply to non-MS affinity platforms.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">17. Authors and Maintainers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template was developed by the SDRF-Proteomics community with contributions from affinity proteomics researchers.</p>
+</div>
+<div class="paragraph">
+<p>For questions or suggestions, please open an issue on the <a href="https://github.com/bigbio/proteomics-sample-metadata">GitHub repository</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">18. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Assarsson E, et al. (2014) Homogenous 96-plex PEA immunoassay exhibiting high sensitivity, specificity, and excellent scalability. PLoS ONE.</p>
+</li>
+<li>
+<p>Gold L, et al. (2010) Aptamer-based multiplexed proteomic technology for biomarker discovery. PLoS ONE.</p>
+</li>
+<li>
+<p>Olink Proteomics: <a href="https://www.olink.com/" class="bare">https://www.olink.com/</a></p>
+</li>
+<li>
+<p>SomaLogic: <a href="https://somalogic.com/" class="bare">https://somalogic.com/</a></p>
+</li>
+<li>
+<p>Schwenk JM, et al. (2017) The Human Protein Atlas as a proteomic resource for biomarker discovery. Journal of Internal Medicine.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-01-13 19:27:34 UTC
+</div>
+</div>
+</body>
+</html>
