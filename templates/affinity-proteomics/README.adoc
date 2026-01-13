@@ -1,0 +1,446 @@
+= SDRF-Proteomics: Affinity Proteomics Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides guidelines for annotating affinity-based proteomics experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with affinity proteomics-specific metadata fields.
+
+**Version 1.0.0** - 2025-01
+
+[[abstract]]
+== Abstract
+
+Affinity proteomics encompasses experimental approaches that use affinity-based capture methods to study specific protein subsets or interactions. Unlike mass spectrometry-based proteomics, these methods typically use antibodies, aptamers, or other affinity reagents to detect and quantify proteins. Major platforms include:
+
+- **Proximity Extension Assay (PEA)**: Olink platform using antibody pairs and DNA barcoding
+- **Aptamer-based assays**: SomaScan platform using modified aptamers (SOMAmer reagents)
+- **Antibody arrays**: Various bead-based and planar array platforms
+- **Immunoaffinity-MS**: Hybrid approaches combining affinity capture with MS detection
+
+This template defines metadata requirements for annotating these diverse affinity-based proteomics experiments, enabling data integration across platforms and with mass spectrometry data.
+
+[[motivation]]
+== Motivation
+
+Affinity proteomics experiments have characteristics that differ significantly from mass spectrometry proteomics:
+
+1. **Pre-defined protein panels**: Target proteins are determined by the reagent panel, not by detection
+2. **No mass spectrometry (typically)**: Detection is often via sequencing, fluorescence, or electrochemiluminescence
+3. **High throughput**: Many samples can be processed in parallel
+4. **Different quantification scales**: Relative units (NPX, RFU) rather than intensity or spectral counts
+5. **Platform-specific considerations**: Each technology has unique metadata requirements
+
+These aspects require specific metadata to enable proper data interpretation and cross-platform comparison.
+
+[[scope]]
+== Scope
+
+This template covers:
+
+- Proximity Extension Assays (Olink)
+- Aptamer-based protein profiling (SomaScan)
+- Antibody/bead arrays (Luminex, MSD)
+- Reverse phase protein arrays (RPPA)
+- Immunoaffinity enrichment followed by MS detection
+
+IMPORTANT: While affinity proteomics extends SDRF-Proteomics, many of these technologies do not use mass spectrometry. The `technology type` and `assay name` columns are adapted accordingly.
+
+[[technology-type]]
+== Technology Type Annotation
+
+For affinity proteomics, the `technology type` column MUST reflect the actual detection technology:
+
+|===
+|Platform |Technology Type Value
+
+|Olink PEA
+|protein profiling by proximity extension assay
+
+|SomaScan
+|protein profiling by aptamer-based assay
+
+|Luminex/MSD
+|protein profiling by immunoassay
+
+|RPPA
+|protein profiling by reverse phase protein array
+
+|Immunoaffinity-MS
+|proteomic profiling by mass spectrometry
+|===
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for affinity proteomics experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for affinity proteomics experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[affinity reagent]
+|Primary reagent type or platform used for affinity-based capture
+|1
+|Controlled vocabulary
+|Olink proximity extension assay, SOMAscan aptamer panel, antibody array, immunoaffinity beads
+
+|characteristics[affinity method]
+|General method category for affinity-based detection
+|1
+|Controlled vocabulary
+|proximity extension assay, aptamer-based assay, immunoaffinity capture, sandwich immunoassay, reverse phase protein array
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for affinity proteomics experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[target protein class]
+|Class or category of proteins being targeted by the panel
+|0..*
+|Controlled vocabulary or free text
+|cytokines, inflammation markers, cardiovascular biomarkers, oncology panel, kinases
+
+|comment[panel name]
+|Commercial name or identifier of the protein panel
+|0..1
+|Free text
+|Olink Target 96 Inflammation, SomaScan 7K, Olink Explore 3072, custom panel
+
+|comment[panel composition]
+|Number and description of targets in the panel
+|0..1
+|Free text description
+|92 proteins, 7000 protein targets, 48 cytokines
+
+|comment[panel version]
+|Version of the panel if applicable
+|0..1
+|Version identifier
+|v3.0, 2023-01, lot ABC123
+
+|comment[detection sensitivity]
+|Sensitivity or detection limit of the assay
+|0..1
+|Concentration with unit
+|1 pg/mL, 0.1 pg/mL, LOD 5 pg/mL, femtomolar range
+
+|comment[quantification unit]
+|Unit of measurement for quantitative values
+|0..1
+|Unit identifier
+|NPX (Normalized Protein eXpression), RFU (Relative Fluorescence Units), pg/mL, MFI
+
+|comment[sample volume]
+|Volume of sample used for the assay
+|0..1
+|Numeric value with unit
+|1 uL, 10 uL, 50 uL, 100 uL
+
+|comment[sample type]
+|Type of biological sample material
+|0..1
+|Controlled vocabulary
+|serum, plasma (EDTA), plasma (citrate), CSF, urine, tissue lysate
+
+|comment[dilution factor]
+|Sample dilution if applied
+|0..1
+|Ratio or factor
+|1:4, 1:100, undiluted, 10x
+|===
+
+[[olink-specific]]
+== Olink-Specific Checklist
+
+For Olink Proximity Extension Assay experiments:
+
+=== Required for Olink
+
+|===
+|Column Name |Description |Example Values
+
+|comment[olink panel]
+|Name of the Olink panel
+|Target 96 Inflammation, Target 96 Cardiovascular II, Explore 384 Inflammation
+
+|comment[olink platform]
+|Olink instrument/platform version
+|Olink Target 96, Olink Explore 384, Olink Explore HT
+|===
+
+=== Recommended for Olink
+
+|===
+|Column Name |Description |Example Values
+
+|comment[NPX normalization]
+|Normalization method applied to NPX values
+|plate control normalized, intensity normalized, bridge normalized
+
+|comment[QC warning]
+|Quality control warnings if any
+|QC pass, below LOD, plate effect warning
+
+|comment[olink lot number]
+|Reagent lot number for traceability
+|lot_2023_001, B12345
+|===
+
+[[somascan-specific]]
+== SomaScan-Specific Checklist
+
+For SomaScan aptamer-based experiments:
+
+=== Required for SomaScan
+
+|===
+|Column Name |Description |Example Values
+
+|comment[somascan menu]
+|SomaScan assay menu version
+|SomaScan 1.1K, SomaScan 5K, SomaScan 7K, SomaScan 11K
+
+|comment[somascan platform]
+|Platform/instrument version
+|SomaScan Assay v4.0, SomaScan Assay v4.1
+|===
+
+=== Recommended for SomaScan
+
+|===
+|Column Name |Description |Example Values
+
+|comment[normalization method]
+|Normalization applied to RFU values
+|median normalization, calibrator normalization, hybridization control normalization
+
+|comment[sample matrix]
+|Sample matrix type
+|serum, plasma EDTA, plasma citrate
+|===
+
+[[immunoassay-specific]]
+== Immunoassay Array Checklist
+
+For Luminex, MSD, and similar bead/plate-based immunoassays:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[assay platform]
+|Immunoassay platform used
+|Luminex xMAP, MSD MULTI-ARRAY, ELLA, Simoa
+
+|comment[antibody source]
+|Source of capture/detection antibodies
+|R&D Systems, Bio-Rad, custom antibodies, Millipore
+
+|comment[standard curve]
+|Whether standard curve was included
+|yes, no, included in kit
+
+|comment[detection method]
+|Detection methodology
+|fluorescence, electrochemiluminescence, enzyme-linked
+|===
+
+[[immunoaffinity-ms]]
+== Immunoaffinity-MS Checklist
+
+For experiments combining immunoaffinity capture with mass spectrometry:
+
+These experiments use affinity enrichment followed by MS detection. They should include:
+
+1. Standard MS-related columns from core SDRF-Proteomics
+2. Affinity-specific columns for the capture step
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[enrichment method]
+|Immunoaffinity enrichment approach
+|anti-FLAG IP, anti-HA IP, SISCAPA, immuno-MRM
+
+|comment[capture antibody]
+|Antibody used for enrichment
+|anti-FLAG M2, anti-GFP nanobody, custom polyclonal
+
+|comment[bead type]
+|Type of beads used for capture
+|Protein A/G agarose, magnetic beads, NHS-sepharose
+|===
+
+[[data-file-formats]]
+== Data File Formats
+
+Affinity proteomics platforms produce various output formats:
+
+|===
+|Platform |Typical File Format |File Extension
+
+|Olink
+|Excel or CSV with NPX values
+|.xlsx, .csv
+
+|SomaScan
+|ADAT format (proprietary) or CSV
+|.adat, .csv
+
+|Luminex
+|CSV or xPONENT format
+|.csv, .xml
+
+|MSD
+|Discovery Workbench format
+|.xlsx, .csv
+
+|Immunoaffinity-MS
+|Standard MS formats
+|.raw, .mzML
+|===
+
+For `comment[data file]`, use the actual file name regardless of format.
+
+[[example-sdrf]]
+== Example SDRF Files
+
+=== Olink Example
+
+|===
+|source name |characteristics[organism] |characteristics[disease] |characteristics[affinity reagent] |characteristics[affinity method] |assay name |technology type |comment[olink panel] |comment[olink platform] |comment[sample volume] |comment[quantification unit] |comment[data file]
+
+|patient_001_plasma
+|homo sapiens
+|rheumatoid arthritis
+|Olink proximity extension assay
+|proximity extension assay
+|olink_plate1_A01
+|protein profiling by proximity extension assay
+|Target 96 Inflammation
+|Olink Target 96
+|1 uL
+|NPX
+|plate1_results.xlsx
+
+|patient_002_plasma
+|homo sapiens
+|normal
+|Olink proximity extension assay
+|proximity extension assay
+|olink_plate1_A02
+|protein profiling by proximity extension assay
+|Target 96 Inflammation
+|Olink Target 96
+|1 uL
+|NPX
+|plate1_results.xlsx
+|===
+
+=== SomaScan Example
+
+|===
+|source name |characteristics[organism] |characteristics[disease] |characteristics[affinity reagent] |characteristics[affinity method] |assay name |technology type |comment[somascan menu] |comment[somascan platform] |comment[sample volume] |comment[quantification unit] |comment[data file]
+
+|subject_A_serum
+|homo sapiens
+|type 2 diabetes mellitus
+|SOMAscan aptamer panel
+|aptamer-based assay
+|somascan_batch1_001
+|protein profiling by aptamer-based assay
+|SomaScan 7K
+|SomaScan Assay v4.1
+|55 uL
+|RFU
+|somascan_batch1.adat
+|===
+
+[[best-practices]]
+== Best Practices for Affinity Proteomics Annotation
+
+1. **Specify the platform clearly**: Always identify the specific technology platform used.
+
+2. **Document panel information**: Include panel name, version, and composition for reproducibility.
+
+3. **Report quantification units**: Different platforms use different scales (NPX, RFU, pg/mL) - always specify.
+
+4. **Note sample requirements**: Document sample type, volume, and any dilutions applied.
+
+5. **Include QC information**: When available, note quality control status or warnings.
+
+6. **Use appropriate technology type**: Do not use MS-specific technology types for non-MS platforms.
+
+7. **Link to panel documentation**: When possible, reference manufacturer documentation for panel contents.
+
+8. **Consider cross-platform studies**: When combining affinity and MS data, clearly distinguish samples and methods.
+
+[[cross-platform]]
+== Cross-Platform Data Integration
+
+When combining affinity proteomics with mass spectrometry data:
+
+- Use consistent `source name` values for the same biological samples
+- Clearly distinguish technology types in the SDRF
+- Consider using `characteristics[biosample accession number]` to link related samples
+- Document any batch effects or platform-specific normalizations
+
+[[template-file]]
+== Template File
+
+The affinity proteomics SDRF template file is available in this directory:
+
+- link:affinity-proteomics-template.sdrf.tsv[affinity-proteomics-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+Affinity proteomics SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template affinity-proteomics
+----
+
+NOTE: Some MS-specific validations may not apply to non-MS affinity platforms.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from affinity proteomics researchers.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-sample-metadata[GitHub repository].
+
+[[references]]
+== References
+
+- Assarsson E, et al. (2014) Homogenous 96-plex PEA immunoassay exhibiting high sensitivity, specificity, and excellent scalability. PLoS ONE.
+- Gold L, et al. (2010) Aptamer-based multiplexed proteomic technology for biomarker discovery. PLoS ONE.
+- Olink Proteomics: https://www.olink.com/
+- SomaLogic: https://somalogic.com/
+- Schwenk JM, et al. (2017) The Human Protein Atlas as a proteomic resource for biomarker discovery. Journal of Internal Medicine.

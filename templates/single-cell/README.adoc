@@ -1,0 +1,429 @@
+= SDRF-Proteomics: Single Cell Proteomics Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides guidelines for annotating single cell proteomics (SCP) experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with single-cell-specific metadata fields.
+
+**Version 1.0.0** - 2025-01
+
+[[abstract]]
+== Abstract
+
+Single cell proteomics (SCP) aims to characterize the proteome at the level of individual cells, providing insights into cellular heterogeneity that are not accessible through bulk proteomics methods. SCP enables the study of:
+
+- Cell-to-cell variability within populations
+- Rare cell populations and their unique protein signatures
+- Cellular state transitions and differentiation trajectories
+- Protein expression dynamics at single-cell resolution
+
+This template defines the additional metadata requirements for properly annotating single cell proteomics datasets in SDRF-Proteomics format, supporting data integration, reproducibility, and cross-study comparisons.
+
+[[motivation]]
+== Motivation
+
+Single cell proteomics experiments have unique characteristics that distinguish them from bulk proteomics:
+
+1. **Cell isolation methods**: Individual cells must be isolated using techniques like FACS, micromanipulation, or microfluidic platforms
+2. **Ultra-low sample input**: Working with picogram to low nanogram amounts of protein requires specialized sample preparation
+3. **Carrier proteome strategies**: Many SCP methods use carrier channels or carrier proteome to boost signal
+4. **Cell-level metadata**: Each cell requires individual annotation including cell identifiers and potentially spatial coordinates
+5. **High-throughput multiplexing**: Methods like SCoPE-MS and similar use TMT labeling to multiplex many cells per run
+
+These aspects require additional metadata beyond standard SDRF-Proteomics fields.
+
+[[connections]]
+== Connections to Other Omics Fields
+
+Single cell proteomics data is often integrated with:
+
+- **Single-cell RNA sequencing (scRNA-seq)**: For multi-omic cellular characterization
+- **Single-cell ATAC-seq**: For chromatin accessibility correlation
+- **Spatial transcriptomics**: When cells have spatial context
+- **Flow cytometry data**: For pre-sorting characterization
+
+When available, linking to related single-cell omics datasets through BioSamples accession numbers or shared cell identifiers is highly RECOMMENDED.
+
+[[additional-ontologies]]
+== Additional Ontologies
+
+In addition to the ontologies supported by the core SDRF-Proteomics specification, single cell proteomics templates utilize:
+
+- **Cell Ontology (CL)**: For cell type classification (https://obofoundry.org/ontology/cl.html)
+- **Human Cell Atlas ontologies**: For standardized cell annotations
+- **EDAM ontology**: For bioinformatics data types and operations
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for single cell proteomics experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for single cell proteomics experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[single cell isolation method]
+|Technique used to isolate individual cells
+|1
+|EFO, PRIDE CV
+|FACS, micromanipulation, laser capture microdissection, droplet microfluidics, nanoPOTS, cellenONE
+
+|characteristics[cell identifier]
+|Unique identifier for individual cells within the experiment
+|1
+|Alphanumeric identifier
+|cell_001, SC_A1, barcode_ATCGATCG, well_A01
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for single cell proteomics experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[cell viability]
+|Viability status of the isolated cell at time of collection
+|0..1
+|Percentage or qualitative measure
+|viable, 95%, live, dead
+
+|characteristics[cell diameter]
+|Physical diameter of the isolated cell if measured
+|0..1
+|Numeric value with unit (micrometers)
+|15 um, 20.5 um, 12 um
+
+|characteristics[cell cycle phase]
+|Cell cycle phase if determined (e.g., by FACS)
+|0..1
+|Controlled vocabulary
+|G1, S, G2/M, G0, not determined
+
+|characteristics[sorting marker]
+|Markers used for cell sorting/selection
+|0..*
+|Free text or controlled vocabulary
+|CD45+, GFP+, CD3+CD4+, PI-
+
+|comment[carrier proteome]
+|Information about carrier proteome used for signal boosting
+|0..1
+|Free text description
+|200x HeLa carrier, 100 ng bovine serum albumin, no carrier
+
+|comment[carrier channel]
+|TMT channel used for carrier when applicable
+|0..1
+|TMT label identifier
+|TMT131C, TMT134, not applicable
+
+|comment[reference channel]
+|TMT channel used as reference for normalization
+|0..1
+|TMT label identifier
+|TMT126, TMT127N, not applicable
+
+|comment[cells per well]
+|Number of cells isolated per well/container
+|0..1
+|Numeric value
+|1, single cell, 10 cells
+
+|comment[cell collection method]
+|Specific collection approach used
+|0..1
+|Free text description
+|mouth pipetting, automated dispensing, acoustic droplet ejection
+
+|comment[spatial coordinates]
+|X,Y coordinates if cells were isolated from a spatial context
+|0..1
+|Coordinate format
+|X=100;Y=250, not applicable
+|===
+
+[[cell-identifier]]
+== Cell Identifier Annotation
+
+Each cell in a single cell proteomics experiment MUST have a unique identifier. The `characteristics[cell identifier]` serves as the primary cell-level identifier within the dataset.
+
+=== Naming Conventions
+
+Recommended naming conventions for cell identifiers:
+
+- **Well-based**: `well_A01`, `plate1_A01`, `96wp_A01`
+- **Sequential**: `cell_001`, `cell_002`, `SC_0001`
+- **Barcode-based**: `barcode_ATCGATCG` (for methods using molecular barcodes)
+- **Combined**: `plate1_well_A01_cell1`
+
+=== Uniqueness Requirements
+
+- Cell identifiers MUST be unique within the SDRF file
+- When combining multiple plates/batches, include batch information in the identifier
+- The combination of `source name` + `assay name` + `comment[label]` + `characteristics[cell identifier]` should uniquely identify each row
+
+[[multiplexed-scp]]
+== Multiplexed Single Cell Proteomics Checklist
+
+Many SCP methods use TMT or similar labeling to multiplex multiple cells in a single MS run. For these experiments:
+
+=== SCoPE-MS and Similar Methods
+
+|===
+|source name |characteristics[cell identifier] |characteristics[cell type] |assay name |comment[label] |comment[carrier channel] |comment[data file]
+
+|single_cell_sample
+|cell_001
+|T cell
+|SCP_run_001
+|TMT127N
+|TMT131C
+|run001.raw
+
+|single_cell_sample
+|cell_002
+|B cell
+|SCP_run_001
+|TMT127C
+|TMT131C
+|run001.raw
+
+|single_cell_sample
+|cell_003
+|monocyte
+|SCP_run_001
+|TMT128N
+|TMT131C
+|run001.raw
+
+|carrier_reference
+|carrier
+|mixed
+|SCP_run_001
+|TMT131C
+|TMT131C
+|run001.raw
+|===
+
+=== Carrier and Reference Channels
+
+When using carrier proteome strategies:
+
+- Annotate the carrier channel with `comment[carrier channel]`
+- Use `characteristics[cell identifier]` = `carrier` or `reference` for non-single-cell channels
+- Set `characteristics[cell type]` to `mixed` or specify the carrier source
+
+[[label-free-scp]]
+== Label-Free Single Cell Proteomics Checklist
+
+For label-free SCP methods (nanoPOTS, SCoPE2 without TMT, etc.):
+
+- Set `comment[label]` to `label free sample`
+- Each cell corresponds to one MS run
+- Cell identifier still required for tracking
+
+Example:
+
+|===
+|source name |characteristics[cell identifier] |characteristics[cell type] |assay name |comment[label] |comment[data file]
+
+|tissue_section_1
+|cell_LCM_001
+|epithelial cell
+|LCM_cell_001_run
+|label free sample
+|cell001.raw
+
+|tissue_section_1
+|cell_LCM_002
+|stromal cell
+|LCM_cell_002_run
+|label free sample
+|cell002.raw
+|===
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a TMT-based single cell proteomics experiment:
+
+|===
+|source name |characteristics[organism] |characteristics[cell type] |characteristics[disease] |characteristics[single cell isolation method] |characteristics[cell identifier] |characteristics[cell viability] |characteristics[biological replicate] |assay name |technology type |comment[label] |comment[carrier proteome] |comment[carrier channel] |comment[cells per well] |comment[data file] |comment[fraction identifier] |comment[cleavage agent details] |comment[instrument]
+
+|PBMC_donor1
+|homo sapiens
+|T cell
+|normal
+|FACS
+|cell_T001
+|viable
+|1
+|SCP_batch1_set1
+|proteomic profiling by mass spectrometry
+|TMT127N
+|200x HeLa carrier
+|TMT131C
+|1
+|batch1_set1.raw
+|1
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Eclipse
+
+|PBMC_donor1
+|homo sapiens
+|B cell
+|normal
+|FACS
+|cell_B001
+|viable
+|1
+|SCP_batch1_set1
+|proteomic profiling by mass spectrometry
+|TMT127C
+|200x HeLa carrier
+|TMT131C
+|1
+|batch1_set1.raw
+|1
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Eclipse
+
+|PBMC_donor1
+|homo sapiens
+|monocyte
+|normal
+|FACS
+|cell_M001
+|viable
+|1
+|SCP_batch1_set1
+|proteomic profiling by mass spectrometry
+|TMT128N
+|200x HeLa carrier
+|TMT131C
+|1
+|batch1_set1.raw
+|1
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Eclipse
+
+|carrier_HeLa
+|homo sapiens
+|epithelial cell
+|cervical adenocarcinoma
+|not applicable
+|carrier
+|not applicable
+|1
+|SCP_batch1_set1
+|proteomic profiling by mass spectrometry
+|TMT131C
+|200x HeLa carrier
+|TMT131C
+|not applicable
+|batch1_set1.raw
+|1
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Eclipse
+|===
+
+[[quality-metrics]]
+== Quality Control Annotations
+
+For single cell proteomics, the following quality-related annotations are RECOMMENDED:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[proteins identified]
+|Number of proteins identified per cell (post-analysis)
+|500, 1200, 2500
+
+|comment[peptides identified]
+|Number of peptides identified per cell (post-analysis)
+|1500, 3500, 8000
+
+|comment[MS2 identification rate]
+|Percentage of MS2 spectra resulting in identifications
+|25%, 40%, 55%
+
+|comment[missing value percentage]
+|Percentage of missing values for this cell
+|30%, 45%, 60%
+|===
+
+NOTE: These columns may be added after data analysis and are not required at submission time.
+
+[[best-practices]]
+== Best Practices for Single Cell Proteomics Annotation
+
+1. **Always provide cell identifiers**: Each cell MUST have a unique identifier enabling tracking through analysis.
+
+2. **Document isolation method**: Specify the exact technique used for cell isolation (FACS, LCM, microfluidics, etc.).
+
+3. **Annotate carrier channels**: When using carrier proteome, clearly identify which channels contain carrier vs. single cells.
+
+4. **Include cell type information**: Annotate cell types using Cell Ontology terms when possible.
+
+5. **Report cell numbers**: Use `comment[cells per well]` to indicate whether measurements are truly single cells or small pools.
+
+6. **Link sorting parameters**: Document any sorting markers or gates used for cell selection.
+
+7. **Consider batch effects**: Include batch/plate information in annotations for proper batch correction.
+
+8. **Use factor values**: Use `factor value` columns to indicate experimental variables (treatment, time point, cell type comparisons).
+
+[[template-file]]
+== Template File
+
+The single cell proteomics SDRF template file is available in this directory:
+
+- link:single-cell-template.sdrf.tsv[single-cell-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+Single cell proteomics SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template single-cell
+----
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from single cell proteomics researchers.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-sample-metadata[GitHub repository].
+
+[[references]]
+== References
+
+- Slavov N. (2021) Single-cell protein analysis by mass spectrometry. Current Opinion in Chemical Biology.
+- Specht H, et al. (2021) Single-cell proteomic and transcriptomic analysis of macrophage heterogeneity using SCoPE2. Genome Biology.
+- Kelly RT. (2020) Single-cell Proteomics: Progress and Prospects. Molecular & Cellular Proteomics.
+- Budnik B, et al. (2018) SCoPE-MS: mass spectrometry of single mammalian cells quantifies proteome heterogeneity during cell differentiation. Genome Biology.

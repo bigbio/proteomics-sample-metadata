@@ -24,7 +24,7 @@ endif::[]
 
 This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
 
-**Version 1.1.0** - 2025-08-13
+**Version v1.1.0** - 2025-08-13
 
 [[abstract]]
 == Abstract
@@ -60,24 +60,109 @@ Here, we introduced the Sample and Data Relationship Format (SDRF-Proteomics) to
 
 This specification, which is a community effort, aims to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files.
 
-== SDRF-Proteomics specification structure
+[[quick-start]]
+== Quick Start
 
-This document describes the main specification of SDRF-Proteomics, the structure of the specification [**Figure 2**], how to contribute, and extend the specification. These are the major components of the SDRF-Proteomics specification:
+If you're new to SDRF-Proteomics, here's a minimal example to get you started. An SDRF file is a tab-separated file where each row represents a sample-to-data-file relationship.
 
-* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics Core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
-* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates[SDRF-Proteomics Core Templates]: A set of templates for the most common proteomics experiments. These templates are used to validate the SDRF-Proteomics files. You can read about the concept of templates in the <<core-templates>> of this document.
-* Use case guidelines: These are the guidelines for specific proteomics experiments (e.g inmunopeptidomics). Each use case has its own directory containing:
-- A detailed specification document of the Use case guidelines; including links to examples in GitHub.
-- A set of templates for the most common experiments for the use case.
-* Metadata guidelines: These are the guidelines for specific metadata annotations (e.g. patient pre-existing condition).
+=== Minimal Example
+
+[source,tsv]
+----
+source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	technology type	comment[label]	comment[instrument]	comment[cleavage agent details]	comment[fraction identifier]	comment[technical replicate]	comment[data file]
+sample_1	homo sapiens	liver	normal	run_1	proteomic profiling by mass spectrometry	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_1.raw
+sample_2	homo sapiens	liver	hepatocellular carcinoma	run_2	proteomic profiling by mass spectrometry	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_2.raw
+----
+
+=== Key Concepts
+
+1. **Sample metadata** uses `characteristics[...]` columns (e.g., organism, disease)
+2. **Data file metadata** uses `comment[...]` columns (e.g., instrument, label)
+3. **Factor values** use `factor value[...]` columns to indicate variables under study
+4. Each row links one sample to one data file
+
+=== Getting Started Steps
+
+1. Choose a <<core-templates,core template>> (Human, Vertebrates, Plants, etc.)
+2. Fill in sample metadata (characteristics columns)
+3. Fill in data file metadata (comment columns)
+4. Add factor values for your experimental variables
+5. Validate your file using https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines]
+
+For detailed guidance, continue reading the full specification below.
+
+[[validation]]
+== Validating SDRF Files
+
+The official validator for SDRF-Proteomics files is **sdrf-pipelines**, a Python tool that checks your SDRF file for errors and compliance with the specification.
+
+=== Installation
+
+[source,bash]
+----
+pip install sdrf-pipelines
+----
+
+=== Basic Validation
+
+[source,bash]
+----
+# Validate an SDRF file
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+
+# Validate with a specific template
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
+----
+
+=== Available Templates for Validation
+
+- `default` - Basic validation
+- `human` - Human samples with clinical metadata
+- `vertebrates` - Non-human vertebrates
+- `nonvertebrates` - Invertebrates
+- `plants` - Plant samples
+- `cell_lines` - Cell line experiments
+
+=== Additional Features
+
+sdrf-pipelines can also convert SDRF files to configuration files for popular analysis tools:
+
+[source,bash]
+----
+# Convert to MaxQuant parameters
+parse_sdrf convert-maxquant --sdrf_file your_file.sdrf.tsv --output_folder ./
+
+# Convert to OpenMS parameters
+parse_sdrf convert-openms --sdrf_file your_file.sdrf.tsv --output_folder ./
+----
+
+For more information, visit: https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines on GitHub]
+
+== Specification structure
+
+This document describes the main specification of SDRF-Proteomics, the structure of the specification (**Figure 2**), how to contribute, and extend the specification. These are the major components of the SDRF-Proteomics specification:
+
+* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
+* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates[SDRF-Proteomics core templates]: A set of templates for the most common proteomics experiments based on the sample organism. These templates are used to validate the SDRF-Proteomics files. You can read about the concept of templates in the <<core-templates,Core Templates>> section of this document.
+* https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[Templates]: These are the templates and checklists for specific proteomics experiments (e.g immunopeptidomics). Each template has its own directory containing:
+- A detailed README.adoc with guidelines, checklists, and examples.
+- A template file ({name}-template.sdrf.tsv) with column headers.
+* https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/metadata-conventions[Metadata guidelines]: These are the guidelines for specific metadata annotations (e.g., patient pre-existing condition).  
 
 image::../images/sdrf-guidelines-structure.png[Logo]
 
 **Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by specific use case guidelines and sample annotation guidelines. Each guideline type has associated templates.
 
-NOTE: The main specification is in the `sdrf-proteomics` directory. The use case guidelines are in the `use-cases` subdirectory within the `sdrf-proteomics` directory. Use case guidelines are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a use case rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict. 
+NOTE: The main specification is in the `sdrf-proteomics` directory. The templates are in the `templates` directory at the root of the repository. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict. 
 
-== SDRF-Proteomics specification versioning
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-sample-metadata. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
+
+A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
+
+Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files for users from users. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
+
+[[versioning]]
+=== Versioning
 
 The SDRF-Proteomics specification is versioned using the Semantic Versioning 2.0.0 (https://semver.org/) scheme. The version number is in the format MAJOR.MINOR.PATCH, where:
 
@@ -89,58 +174,12 @@ The SDRF-Proteomics specification is versioned using the Semantic Versioning 2.0
 
 Every change in the specification should be done in GitHub using pull requests into the dev branch. The pull request should include a description of the changes and the reason for the changes. The pull request will be reviewed by the community and merged into the main branch when approved. After the merge, the version number will be updated according to the changes made, the release will be performed, and the Zenodo record will be updated.
 
-=== Adding the specification version to the file
-
-From version 1.1.0, the specification version MUST be added to each file as a column after factor values. The prefix of the column MUST be `sdrf-format`. The column name MUST be sdrf format version. The value of the column MUST be the version of the specification that was used to create the file.
-
-Example:
-
-|===
-| source name | characteristics[organism] | sdrf-format[sdrf format version] |
-
-| sample 1 | homo sapiens | 1.1.0 |
-|===
-
-== SDRF-Proteomics specification
-
-The SDRF-Proteomics specification is a community effort to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files. The specification is based on the MAGE-TAB format, which is widely used in transcriptomics and genomics. The SDRF-Proteomics format is designed to be flexible and extensible, allowing for the inclusion of new features and use cases as they arise.
-
-[[requirements]]
-=== Requirements
-
-The SDRF-Proteomics format describes the sample characteristics and the relationships between samples and data files included in a dataset. The information in SDRF files is organised so that it follows the natural flow of a proteomics experiment. The main requirements to be fulfilled for SDRF-Proteomics format are:
-
--	The SDRF file is a tab-delimited format where each ROW corresponds to a relationship between a Sample and a Data file (and MS signal corresponding to labelling in the context of multiplexed experiments).
--	Each column MUST correspond to an attribute/property of the Sample or the Data file.
--	Each value in each cell MUST be the property for a given Sample or Data file.
--	The file MUST begin with columns describing the samples of origin and continue with the data files generated from their MS analyses.
--	Support for handling unknown values/characteristics.
-
-[[issues-addressed]]
-=== Issues to be addressed
-
-The main issues to be addressed by the SDRF are:
-
--	It MUST be able to represent the sample metadata and the data files generated by the instruments or the analyses.
--	It MUST be able to represent the experimental design, including data acquisition workflows, and the relationships between samples and their corresponding data files.
+NOTE: We added the prefix v to the version number to indicate that it is the version of the specification that was used to create the file. Examples: v1.1.0, v2.0.0, v3.0.0.
 
 [[notation-conventions]]
 === Notational Conventions
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMEND/RECOMMENDED”, “MAY”, “COULD BE”, and “OPTIONAL” are to be interpreted as described in RFC 2119 (https://www.rfc-editor.org/rfc/rfc2119).
-
-[[document-structure]]
-=== Documentation
-
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-sample-metadata. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
-
-A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
-
-Multiple tools have been implemented to validate SDRF-Proteomics files for users familiar with Python and Java:
-
-- sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines): This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
-
-- jsdrf (Java - https://github.com/bigbio/jsdrf ): These Java library and tool allow validating SDRF-Proteomics files. It also includes a generic data model that can be used by Java applications.
 
 [[relationship-specifications]]
 === Relationship to other specifications
@@ -151,56 +190,48 @@ SDRF-Proteomics sample information can be embedded into mzTab metadata files. Th
 
 The SDRF-Proteomics aims to capture the sample metadata and its relationship with the data files (e.g. raw files from mass spectrometers). The SDRF-Proteomics do not aim to capture the downstream analysis part of the experimental design such as what samples should be compared, how they can be combined or parameters for the downstream analysis (FDR or p-values thresholds). The HUPO-PSI community will work in the future to include this information in other file formats such as mzTab or a new type of file format.
 
-[[ontologies-supported]]
-=== Ontologies/Controlled Vocabularies Supported
+== SDRF-Proteomics specification
 
-The list of ontologies/controlled vocabularies (CV) supported are:
-
--	PSI Mass Spectrometry CV (PSI-MS)
--	Experimental Factor Ontology (EFO).
--	Unimod protein modification database for mass spectrometry
--	PSI-MOD CV (PSI-MOD)
--	Cell line ontology
--	Drosophila anatomy ontology
--	Cell ontology
--	Plant ontology
--	Uber-anatomy ontology
--	Zebrafish anatomy and development ontology
--	Zebrafish developmental stages ontology
--	Plant Environment Ontology
--	FlyBase Developmental Ontology
--	Rat Strain Ontology
--	Chemical Entities of Biological Interest Ontology
--	NCBI organismal classification
--	PATO - the Phenotype and Trait Ontology
--	PRIDE Controlled Vocabulary (CV)
--	Mondo Disease Ontology (MONDO): A unified disease ontology integrating multiple disease resources.
-
-[[sdrf-file-format]]
-=== SDRF-Proteomics in nutshell
-
-The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each ROW corresponds to a relationship between a Sample and a Data file (and MS signal corresponding to labelling in the context of multiplexed experiments), each column corresponds to an attribute/property of the Sample, and the value in each cell is the specific value of the property for a given Sample (**Figure 3**).
+The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each *ROW* corresponds to a relationship between a Sample and a Data file (in an ms proteomics experiment the data file containing the mass spectra), each *COLUMN* corresponds to an attribute/property of the Sample, the Data file, or the Factor values; and the value in each **CELL** is the specific value of the property for a given Sample/Data file/Factor value (**Figure 3**).
 
 [#img-sunset]
 image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sdrf-nutshell.png[]
 
 **Figure 3**: SDRF-Proteomics in a nutshell. The file format is a tab-delimited one where columns are properties of the sample, the data file or the variables under study. The rows are the samples of origin and the cells are the values for one property in a specific sample.
 
+The SDRF-Proteomics format contains three main sections:
+
+- The first section contains the <<from-sample-metadata,sample metadata>>.
+- The second section contains the <<from-sample-data,data file metadata>>.
+- The third section contains the <<study-variables,factor values>> properties.
+
 [[sdrf-file-rules]]
-=== SDRF-Proteomics format rules
+=== Format rules
 
 There are general scenarios/use cases that are addressed by the following rules:
 
-- **Unknown values**: In some cases, the column is mandatory in the format, but for some samples the corresponding value is unknown. In those cases, users SHOULD use ‘not available’.
-- **Not Applicable values**: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use ‘not applicable’.
+- **Unknown values**: In some cases, the column is mandatory in the format, but for some samples the corresponding value is unknown. In those cases, users SHOULD use *not available*.
+- **Not Applicable values**: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use *not applicable*.
 - **Case sensitivity**: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
 - **Space sensitivity**: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).
-- **Column order**: The SDRF MUST start with the source name column (accession/name of the sample of origin), then all the sample characteristics; followed by the assay name corresponding to the MS run. Finally, after the assay name all the comments (properties of the data file generated).
+- **Column order**: The SDRF columns follows some structure; first the sample metadata columns in <<sample-metadata>>; then the data file metadata columns in <<data-file-metadata>>; followed by the factor values columns in <<factor-values>>. 
 - **Extension**: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.
 
+[[column-headers]]
+=== Column headers
+
+Depending on each section the column headers (property names) will be prefixed with the following prefixes: 
+
+- `characteristics`: Sample metadata (e.g. _characteristics[organism]_)
+- `comment`: Data file metadata (e.g. _comment[data file]_) 
+- `factor value`: Factor values properties (e.g. _factor value[disease]_)
+
+Each property name MUST be a valid ontology term or a valid controlled vocabulary term. Each search will have some specific order for columns headers. 
+
+NOTE: A list of all controlled vocabularies and ontologies supported are in the <<ontologies-supported>> section. On each section we also provide a list of properties that are supported.
 
 [[sdrf-file-standarization]]
-=== SDRF-Proteomics values
+=== Cell values
 
 The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.
 
@@ -222,19 +253,152 @@ The value for each property, (e.g. characteristics, comment, factor value) corre
 | Sample 2 |http://purl.obolibrary.org/obo/NCBITaxon_9606
 |===
 
-- Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification <<ptms>>
+- Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:metadata-conventions/data-file-metadata-conventions.adoc#protein-modifications[Protein Modifications]):
 
   NT=Glu->pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E
+
+[[ontologies-supported]]
+== Ontologies and Controlled Vocabularies
+
+SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize metadata values. The following ontologies are supported:
+
+|===
+|Category |Ontology/CV |Description |Notes
+
+4+^|*General Purpose*
+
+|General
+|Experimental Factor Ontology (EFO)
+|General experimental metadata
+|
+
+|General
+|PATO
+|Phenotype and Trait Ontology
+|
+
+4+^|*Organism and Taxonomy*
+
+|Taxonomy
+|NCBI Taxonomy (NCBITaxon)
+|Organism classification
+|
+
+|Taxonomy
+|Rat Strain Ontology
+|Rat strains and breeds
+|
+
+4+^|*Anatomy and Cell Types*
+
+|Anatomy
+|UBERON
+|Cross-species anatomy ontology
+|
+
+|Cell Type
+|Cell Ontology (CL)
+|Cell type classification
+|
+
+|Anatomy
+|BRENDA Tissue Ontology (BTO)
+|Tissues and cell lines
+|
+
+|Anatomy
+|Plant Ontology (PO)
+|Plant anatomy and development
+|For plant samples
+
+|Anatomy
+|FlyBase Anatomy (FBbt)
+|Drosophila anatomy
+|For Drosophila samples
+
+|Anatomy
+|WormBase Anatomy (WBbt)
+|C. elegans anatomy
+|For C. elegans samples
+
+|Anatomy
+|Zebrafish Anatomy (ZFA)
+|Zebrafish anatomy and development
+|For zebrafish samples
+
+4+^|*Disease*
+
+|Disease
+|Mondo Disease Ontology (MONDO)
+|Unified disease ontology
+|RECOMMENDED
+
+|Disease
+|Human Disease Ontology (DOID)
+|Human diseases
+|
+
+4+^|*Cell Lines*
+
+|Cell Lines
+|https://www.cellosaurus.org/[Cellosaurus]
+|Cell line knowledge resource
+|RECOMMENDED
+
+|Cell Lines
+|Cell Line Ontology (CLO)
+|Cell line ontology
+|Legacy support only
+
+4+^|*Mass Spectrometry and Proteomics*
+
+|MS/Proteomics
+|PSI Mass Spectrometry CV (PSI-MS)
+|Instruments, methods, parameters
+|
+
+|MS/Proteomics
+|PRIDE Controlled Vocabulary
+|Proteomics-specific terms
+|
+
+|Modifications
+|Unimod
+|Protein modifications database
+|
+
+|Modifications
+|PSI-MOD CV
+|Protein modifications ontology
+|
+
+4+^|*Other*
+
+|Chemistry
+|ChEBI
+|Chemical Entities of Biological Interest
+|
+
+|Environment
+|Environment Ontology (ENVO)
+|Environmental sample classification
+|For metaproteomics
+
+|Ancestry
+|Human Ancestry Ontology (HANCESTRO)
+|Human ancestry categories
+|For human samples
+|===
 
 [[from-sample-metadata]]
 == SDRF-Proteomics: Samples metadata
 
-The Sample metadata has different Categories/Headings to organize all the attributes/ column headers of a given sample. Each Sample contains a _source name_ (accession) and a set of _characteristics_. Any proteomics sample MUST contain the following characteristics:
+The Sample metadata section provides information about the samples of origin and their characteristics. Each sample contains a _source name_ (unique identifier) and a set of _characteristics_ columns. The first column of the file should be the _source name_ and the following columns should be the characteristics of the sample. For example, for any proteomics experiment (human, vertebrate, cell line), the following characteristics should be provided:
 
 - *source name*: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)
 - *characteristics[organism]*: The organism of the Sample of origin.
-- *characteristics[disease]*: The disease under study in the Sample.
 - *characteristics[organism part]*: The part of organism's anatomy or substance arising from an organism from which the biomaterial was derived, (e.g., liver)
+- *characteristics[disease]*: The disease under study in the Sample.
 - *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell. Examples are epithelial, glial etc.
 
 Example:
@@ -246,7 +410,7 @@ Example:
 |sample_control | homo sapiens              | liver                          | liver cancer             | not available
 |===
 
-NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment.
+NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
 
 Some important notes:
 
@@ -254,413 +418,8 @@ Some important notes:
 
 - Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g., "immunophenotype".
 
-[[from-sample-data]]
-== SDRF-Proteomics: Data files metadata
-
-The connection between the Samples to the Data files is done by using a series of properties and attributes (comments - for backward compatibility with SDRF in transcriptomics comment MUST be used). All the properties referring to a data file (e.g MS run file) are annotated with the category **comment**. The use of comment is mainly aimed at differentiating sample properties from the data properties. It matches a given sample to the corresponding file(s). The word comment is used for backwards-compatibility with gene expression experiments (RNA-Seq and Microarrays experiments).
-
-The order of the columns is important, _assay name_ SHOULD always be located before the comments. It is RECOMMENDED to put the last column as _comment[data file]_. The following properties MUST be provided for each data file (ms run) file:
-
-- **assay name**: Assay name is a unique identifier for an MS run (data file). Each distinct MS run/data file MUST have exactly one globally unique assay name, and no two different data files may share an assay name. The same assay name MAY appear on multiple rows only when all such rows refer to that same data file (e.g., multiplexed experiments). Examples of assay names are: "sample1_run1", "run_fraction_1_2", "batch1_fraction2_rep3".
-
-IMPORTANT: The combination of source name + assay name + comment[label] MUST be unique within the SDRF file. Additionally, the combination of source name + assay name is RECOMMENDED to be unique (validators will issue a warning if this combination is not unique).
-
-TIP: To ensure assay name uniqueness when multiple samples have similar experimental conditions, consider incorporating sample-specific information (e.g., sample ID, biological replicate number) or sequential numbering across all runs in the assay name. For example, use "sample1_run1", "sample1_run2", "sample2_run1", "sample2_run2" instead of repeating generic names for each sample.
-
-NOTE: In multiplexed experiments (TMT, iTRAQ, SILAC) where multiple samples are analyzed together in a single MS run, the assay name is still unique to the data file. What occurs in these cases is that multiple rows in the SDRF file may reference the same unique assay name, with each row representing a different sample or channel within that multiplexed analysis. The combination of source name (sample identifier) and assay name creates the unique relationship between samples and data files. In multiplexed experiments, the combination of source name + assay name + comment[label] ensures uniqueness across all rows, as each sample-channel combination will have a unique label value.
-
-TMT Multiplexed Experiment Example:
-
-|===
-|source name | assay name        | comment[label] | comment[data file]
-|sample_A    | TMT_batch1_run1   | TMT126         | batch1_run1.raw
-|sample_B    | TMT_batch1_run1   | TMT127N        | batch1_run1.raw  
-|sample_C    | TMT_batch1_run1   | TMT127C        | batch1_run1.raw
-|sample_D    | TMT_batch1_run1   | TMT128N        | batch1_run1.raw
-|===
-
-In this example, the assay name "TMT_batch1_run1" is unique to the data file "batch1_run1.raw", but multiple samples (sample_A, sample_B, sample_C, sample_D) are analyzed together in the same MS run using different TMT labels. Each row has a unique combination of source name + assay name + comment[label], ensuring the required uniqueness constraint is met.
-
-- **technology type**: The technology type is used to describe the technology used to capture the data. It is RECOMMENDED to use the technology type column immediately after the assay name column in the SDRF file.
-- **comment[fraction identifier]**: The fraction identifier allows recording the number of a given fraction. The fraction identifier corresponds to this ontology term. It MUST start from 1, and if the experiment is not fractionated, 1 MUST be used for each MSRun (assay).
-- **comment[label]**: label describes the label applied to each Sample (if any). In the case of multiplex experiments such as TMT, SILAC, and/or ITRAQ the corresponding label SHOULD be added. For Label-free experiments the label-free sample term MUST be used <<label-data>>. The comment[label] value is part of the required unique combination of source name + assay name + comment[label].
-- **comment[technical replicate]**: Technical replicates are used to describe the technical replicates of the data file. It is RECOMMENDED to use the technical replicates column immediately after the assay name column in the SDRF file.
-- **comment[data file]**: The data file provides the name of the raw file generated  by the instrument. The data files can be instrument raw files but also converted peak lists such as mzML, MGF or result files like mzIdentML.
-- **comment[instrument]**: Instrument model used to capture the sample <<instrument>>.
-
-Example:
-
-|===
-|        | ..|..|assay name          | comment[label]    | comment[fraction identifier] | comment[instrument]| comment[data file]
-|sample 1| ..|..|sample1_fraction1   | label free sample | 1                            | NT=LTQ Orbitrap XL | 000261_C05_P0001563_A00_B00K_R1.RAW
-|sample 1| ..|..|sample1_fraction2   | label free sample | 2                            | NT=LTQ Orbitrap XL | 000261_C05_P0001563_A00_B00K_R2.RAW
-|===
-
-CAUTION: SDRF-Proteomics is designed to model and describe mainly MS-based proteomics experiments. Then, the assay name is used to identify the MS run file. However, extensions of the SDRF have been made to support other proteomics technologies, including affinity proteomics experiments such as Olink and SomaScan, where no MS run is used. In those cases, the assay name is used to identify the data file. Please read the guidelines for affinity proteomics experiments in https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/use-cases/affinity-proteomics.md[affinity-proteomics.md].
-TIP: All the possible _label_ values can be seen in the PRIDE CV under the https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[Label] node.
-
-[[label-data]]
-=== Label annotations
-
-In order to annotate quantitative datasets, the SDRF file format uses tags for each channel associated with the sample in _comment[label]_. The label values are organized under the following ontology term Label. Some of the most popular labels are:
-
-- For label-free experiments the value SHOULD be: label free sample
-- For TMT experiments, the SDRF uses the PRIDE ontology terms under sample label. Here are some examples of TMT channels:
-
-  TMT126, TMT127, TMT127C, TMT127N, TMT128 , TMT128C, TMT128N, TMT129, TMT129C, TMT129N, TMT130, TMT130C, TMT130N, TMT131
-
-In order to achieve a clear relationship between the label and the sample characteristics, each channel of each sample (in multiplex experiments) SHOULD be defined in a separate row: one row per channel used (annotated with the corresponding _comment[label]_ per file). This approach ensures that the combination of source name + assay name + comment[label] remains unique across all rows in the SDRF file.
-
-Examples:
-
-•	https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD000612/PXD000612.sdrf.tsv[Label free]
-•	https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD011799/PXD011799.sdrf.tsv[TMT]
-•	https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD017710/PXD017710-silac.sdrf.tsv[SILAC]
-
-[[instrument]]
-=== Type and Model of Mass Spectrometer
-
-The model of the mass spectrometer SHOULD be specified as _comment[instrument]_. Possible values are listed under https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000031&viewMode=All&siblings=false[instrument model term].
-
-Additionally, it is strongly RECOMMENDED to include comment[MS2 analyzer type]. This is important, e.g., for Orbitrap models where MS2 scans can be acquired either in the Orbitrap or in the ion trap. Setting this value allows differentiating high-resolution MS/MS data. Possible values of _comment[MS2 analyzer type]_ are mass analyzer types.
-
-[[technology-type]]
-=== Technology type
-
-Technology type is used in SDRF and MAGE-TAB formats to specify the technology applied in the study to capture the data. For transcriptomics, common values include technologies such as microarray, RNA-seq, and ChIP-seq (as seen in https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-13567[ArrayExpress Example]). In SDRF-Proteomics, the technology type field is REQUIRED to describe the experimental approach used to generate the data. We RECOMMEND including the technology type column immediately after the `assay name`` column in the SDRF file, clearly indicating which technology was used to produce the data files.
-
-|===
-|        |  assay name      | technology type
-|sample 1|  sample1_run1    | proteomic profiling by mass spectrometry
-|===
-
-NOTE: While we RECOMMEND positioning the technology type column after the assay name, in some original templates, this column was placed before the assay name. We will allow the technology type column to appear either directly before or after the assay name column but RECOMMEND placing it after the assay name for consistency.
-
-For proteomics experiments the possible values for technology types can be obtained from PRIDE Ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000663[technology type].
-
-Here, the list of valid values:
-
-- proteomic profiling by mass spectrometry
-
-[[additional-data-files]]
-=== Additional Data files technical properties
-
-It is RECOMMENDED to encode some of the technical parameters of the MS experiment as comments, including the following parameters:
-
-- Protein Modifications
-- Precursor and Fragment ion mass tolerances
-- Digestion Enzymes
-
-
-[[ptms]]
-==== Protein Modifications
-
-Sample modifications, (including both chemical modifications and post-translational modifications, PTMs) are originated from multiple sources: artifact modifications, isotope labeling, adducts that are encoded as PTMs (e.g. sodium) or the most biologically relevant PTMs.
-
-It is RECOMMENDED to provide the modifications expected in the sample including the amino acid affected, whether it is Variable or Fixed (also Custom and Annotated modifications are supported) and included other properties such as mass shift/delta mass and the position (e.g. anywhere in the sequence).
-
-The RECOMMENDED name of the column for sample modification parameters is: comment[modification parameters].
-
-The modification parameters are the name of the ontology term MS:1001055.
-
-For each modification, different properties are captured using a key=value pair structure including name, position, etc. All the possible (optional) features available for modification parameters are:
-
-|===
-|Property |Key |Example | Mandatory(:white_check_mark:)/Optional(:zero:) |comment
-
-|Name of the Modification| NT | NT=Acetylation | :white_check_mark: | * Name of the Term in this particular case Modification, for custom modifications can be a name defined by the user.
-|Modification Accession  | AC |AC=UNIMOD:1    | :zero:             | Accession in an external database UNIMOD or PSI-MOD supported.
-|Chemical Formula        | CF | CF=H(2)C(2)O   | :zero:             | This is the chemical formula of the added or removed atoms. For the formula composition please follow the guidelines from http://www.unimod.org/names.html[UNIMOD]
-|Modification Type       | MT | MT=Fixed       | :zero: | This specifies which modification group the modification should be included with. Choose from the following options: [Fixed, Variable, Annotated]. _Annotated_ is used to search for all the occurrences of the modification into an annotated protein database file like UNIPROT XML or PEFF.
-|Position of the modification in the Polypeptide |  PP | PP=Any N-term | :zero: | Choose from the following options: [Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term]. Default is *Anywhere*.
-|Target Amino acid       | TA | TA=S,T,Y       | :white_check_mark: | The target amino acid letter. If the modification targets multiple sites, it can be separated by `,`.
-|Monoisotopic Mass       | MM | MM=42.010565   | :zero: | The exact atomic mass shift produced by the modification. Please use at least 5 decimal places of accuracy. This should only be used if the chemical formula of the modification is not known. If the chemical formula is specified, the monoisotopic mass will be overwritten by the calculated monoisotopic mass.
-|Target Site             | TS | TS=N[^P][ST]   | :zero: | For some software, it is important to capture complex rules for modification sites as regular expressions. These use cases should be specified as regular expressions.
-|===
-
-We RECOMMEND for indicating the modification name, to use the UNIMOD interim name or the PSI-MOD name. For custom modifications, we RECOMMEND using an intuitive name. If the PTM is unknown (custom), the Chemical Formula or Monoisotopic Mass MUST be annotated.
-
-An example of an SDRF-Proteomics file with sample modifications annotated, where each modification needs an extra column:
-
-|===
-| |comment[modification parameters] | comment[modification parameters]
-
-|sample 1| NT=Glu->pyro-Glu; MT=fixed; PP=Anywhere;AC=Unimod:27; TA=E | NT=Oxidation; MT=Variable; TA=M
-|===
-
-[[cleavage-agents]]
-==== Cleavage agents
-
-The REQUIRED _comment [cleavage agent details]_ property is used to capture the enzyme information. Similar to protein modification, a key=value pair representation is used to encode the following properties for each enzyme:
-
-|===
-|Property           |Key |Example     | Mandatory(:white_check_mark:)/Optional(:zero:) | comment
-|Name of the Enzyme | NT | NT=Trypsin | :white_check_mark:                             | * Name of the Term in this particular case Name of the Enzyme.
-|Enzyme Accession | AC |AC=MS:1001251 | :zero:                                      | Accession in an external PSI-MS Ontology definition under the following category https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1001045[Cleavage agent name].
-|Cleavage site regular expression | CS | CS=(?<=[KR])(?!P) | :zero: | The cleavage site defined as a regular expression.
-|===
-
-An example of an SDRF-Proteomics with annotated endopeptidase:
-
-|===
-| source name |...|comment[cleavage agent details]
-
-|sample 1| ....|NT=Trypsin;AC=MS:1001251
-|===
-
-NOTE: If no endopeptidase is used, for example, in the case of Top-down/intact protein experiments, the value SHOULD be ‘not applicable’.
-
-[[mass-tolerances]]
-==== Precursor and Fragment mass tolerances
-
-For proteomics experiments, it is important to encode different mass tolerances (for precursor and fragment ions).
-
-|===
-| |comment[fragment mass tolerance]	| comment[precursor mass tolerance]
-
-|sample 1| 0.6 Da |	20 ppm
-|===
-
-Units for the mass tolerances (either Da or ppm) MUST be provided.
-
-[[study-variables]]
-== SDRF-Proteomics study variables
-
-The variable/property under study SHOULD be highlighted using the factor value category. For example, the _factor value[tissue]_ is used when the user wants to compare expression across different tissues. You can add Multiple variables under study by providing multiple factor values.
-
-|===
-|factor value    | :zero:           | 0..*        | “factor value” columns SHOULD indicate which experimental factor/variable is used as the hypothesis to perform the  data analysis. The “factor value” columns SHOULD occur after all characteristics and the attributes of the samples. | factor value[phenotype]
-|===
-
-[[conventions]]
-== SDRF-Proteomics conventions
-
-Conventions define how to encode some particular information in the file format for the core SDRF-Proteomics format. Conventions define a set of new columns that are needed to represent a particular use case or experiment type (e.g. phosphorylation dataset). In addition, conventions define how some specific free-text columns (value that is not defined as ontology terms) should be written. Conventions are compiled from the proteomics community using https://github.com/bigbio/proteomics-sample-metadata/issues or pull-request and will be added to updated versions of this specification document in the future.
-
-IMPORTANT: In the convention section <<conventions>>, the columns are described and defined, while in the section use cases and templates <<use-cases>> the columns needed to describe a use case are specified. In the main/core specification we define a set of the most common conventions used in the core SDRF-Proteomics format and templates. In addition, we in the folder https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/metadata-conventions[metadata-conventions] we collect a group of guidelines and conventions for metadata columns and fields for specific columns in specific experiments, for example, how to write additional diseases different to the main disease column (e.g pre-existing condition)
-
-[[age-encoding]]
-=== How to encode age
-
-One of the characteristics of a patient sample can be the age of an individual. It is RECOMMENDED to provide the age in the following format: {X}Y{X}M{X}D. Some valid examples are:
-
-- 40Y (forty years)
-- 40Y5M (forty years and 5 months)
-- 40Y5M2D (forty years, 5 months, and 2 days)
-
-When needed, weeks can also be used: 8W (eight weeks)
-
-Age interval:
-
-Sometimes the sample does not have an exact age but a range of age. To annotate an age range the following standard is RECOMMENDED:
-
-    40Y-85Y
-
-This means that the subject (sample) is between 40 and 85 years old. Other temporal information can be encoded similarly.
-
-[[phos-pho]]
-=== Phosphoproteomics and other post-translational modifications enriched studies
-
-In PTM-enriched experiments, the _characteristics[enrichment process]_ SHOULD be provided. The different values already included in EFO are:
-
-- enrichment of phosphorylated Protein
-- enrichment of glycosylated Protein
-
-This characteristic can be used as a _factor value[enrichment process]_ to differentiate the expression between proteins in the phospho-enriched sample compared with the control.
-
-[[pooled-samples]]
-=== Pooled samples
-
-When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case,  multiple rows are created for the corresponding data file, much like in <<label-data>>.
-
-One possible exception is made for the case when one channel e.g., in a TMT/iTRAQ multiplexed experiment  is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, a special characteristic can be used:
-
-|===
-|source name |characteristics[pooled sample] | assay name | comment[label] | comment[data file]
-
-| sample 1   | not pooled |  run 1      | TMT131         | file01.raw
-| sample 2   | not pooled |  run 1      | TMT131C        | file01.raw
-| sample 10  | SN=sample 1,sample 2, ... sample 9|  run 1      | TMT128         | file01.raw
-|===
-
-`SN` stands for source names and lists `source name` fields of samples that are annotated in the same file and *used in the same experiment and same MS run*.
-
-Another possible value for _characteristics[pooled sample]_ is a string `pooled` for cases when it is known that a sample is pooled but the individual samples cannot be annotated.
-
-[[derived-samples]]
-=== Derived samples (such as patient-derived xenografts)
-
-In cancer research, patient-derived xenografts (PDX) are commonly used. In those, the patient’s tumor is transplanted into another organism, usually a mouse. In these cases, the metadata, such as age and sex, MUST refer to the original patient and not the mouse.
-
-PDX samples SHOULD be annotated by using the column name _characteristics[xenograft]_. The value should then describe the growth condition, such as ‘pancreatic cancer cells grown in nude mice’.
-
-For experiments where both the PDX and the original tumor are measured, the PDX entry SHOULD reference the respective tumor sample’s source name in the _characteristics[source name]_ column. Non-PDX samples SHOULD contain the “not applicable” value in the _characteristics[xenograft]_ and the characteristics[source name] column. Both tumor and PDX samples SHOULD reference the patient using the characteristics[individual] column. This column SHOULD contain some sort of patient identifier.
-
-[[spiked-in]]
-=== Spiked-in samples
-
-There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.
-
-To include information about the spiked compounds, use _characteristics[spiked compound]_. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:
-
-|===
-|Key | Meaning | Examples | Peptide | Protein | Mixture | Other
-
-|SP  | Species | Escherichia coli K-12 | :zero: | :zero: | :zero: | :zero:
-|CT  | Compound type | protein, peptide, mixture, other | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:
-|QY  | Quantity (molar or mass) | 10 mg, 20 nmol | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:
-|PS  | Peptide sequence  | PEPTIDESEQ |:white_check_mark: |                    | |
-|AC  | Uniprot Accession | A9WZ33     |                   | :white_check_mark: | |
-|CN  | Compound name     | `iRT mixture`, `substance name` | | :zero: | :zero: | :zero:
-|CV  | Compound vendor   | `in-house` or vendor name | :zero: | :zero: | :white_check_mark: | :zero:
-|CS  | Compound specification URI | `http://vendor.web.site/specs/coomercial-kit.xlsx` | :zero: | :zero: | :zero: | :zero:
-|CF  | Compound formula  | `C2H2O` | | | | :zero:
-|===
-
-In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as _characteristics[mass]_.
-
-An example of SDRF-Proteomics for a sample spiked with a peptide would be:
-
-|===
-|characteristics[mass] | characteristics[spiked compound]
-|1 ug                  | CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
-|===
-
-For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
-
-If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample),  then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of _characteristics[spiked compound]_ is optional in this case; if provided, it SHOULD be the string `spiked` for the spiked sample.
-
-[[synthetic-peptide]]
-=== Synthetic peptide libraries
-
-It is common to use synthetic peptide libraries for proteomics, and MS use cases include:
-
-•	Benchmark of analytical and bioinformatics methods and algorithms.
-•	Improvement of peptide identification/quantification using spectral libraries.
-
-When describing synthetic peptide libraries, most of the sample metadata can be declared as “not applicable”. However, some authors can annotate the organism for example because they know the library has been designed from specific peptide species, see example Synthetic Peptide experiment (https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD000759/PXD000759.sdrf.tsv).
-
-It is important to annotate that the sample is a synthetic peptide library, this can be done by adding the characteristics[synthetic peptide]. The possible values are “synthetic” or “not synthetic”.
-
-[[normal-healthy]]
-=== Normal and healthy samples
-
-Samples from healthy patients or individuals normally appear in manuscripts and annotations as healthy or normal. We RECOMMEND using the word “normal” mapped to term PATO_0000461 that is in EFO: normal PATO term. Example:
-
-|===
-| source name   | characteristics[organism] | characteristics[organism part] | characteristics[phenotype] | characteristics[compound] | factor value[phenotype]
-
-|sample_treat   | homo sapiens              | Whole Organism                 | necrotic tissue            | drug A                    | necrotic tissue
-|sample_control | homo sapiens              | Whole Organism                 | normal                     | none                      | normal
-|===
-
-[[sample-technical-biological-replicates]]
-=== Encoding sample technical and biological replicates
-
-Different measurements of the same biological sample are often categorized as (i) Technical or (ii) Biological replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo, in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation.
-
-For a given experiment, there are different levels to which samples can be matched - e.g., same sample, sample protocol, covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, Technical vs. Biological considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the SDRF-Proteomics format. However, data providers are encouraged to provide any identifier - e.g. Biological_replicate_1, Technical_replicate_2 - that would help link the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF-Proteomics specification is the following:
-
-**technical replicate**: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].
-
-In MS-based proteomics, a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. Technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
-
-In the following example, only if the technical replicate column is provided, one can distinguish quantitative values of the same fraction but different technical replicates.
-
-|===
-| source name       | assay name     | comment[label]    | comment[fraction identifier] | comment[technical replicate] | comment[data file]
-| Sample 1          | sample1_run1   | label free sample | 1                            | 1                            | F1_TR1.RAW
-| Sample 1          | sample1_run2   | label free sample | 2                            | 1                            | F2_TR1.RAW
-| Sample 1          | sample1_run3   | label free sample | 1                            | 2                            | F1_TR2.RAW
-| Sample 1          | sample1_run4   | label free sample | 2                            | 2                            | F2_TR2.RAW
-|===
-
-The _comment[technical replicate]_ column is MANDATORY. Please fill it with 1 if technical replicates are not performed in a study.
-
-**Biological replicate**: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
-
-In SDRF-Proteomics, biological replicates can be annotated using _characteristics[biological replicate]_ and it is MANDATORY. Please fill it with 1 if biological replicates are not performed in a study.
-
-Some examples with explicit annotation of the biological replicates can be found here:
-
-- https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD006401/PXD006401.sdrf.tsv
-
-[[sample-prep]]
-=== Sample preparation properties
-
-In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters.
-
-- **comment [depletion]**: The removal of specific components of a complex mixture of proteins or peptides based on some specific property of those components. The values of the columns will be `no depletion` or `depletion`. In the case of depletion `depleted fraction` of `bound fraction` can be specified.
-
-- **comment [reduction reagent]**: The chemical reagent that is used to break disulfide bonds in proteins. The values of the column are under the term https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607&viewMode=All&siblings=false[reduction reagent]. For example, DTT.
-
-- **comment [alkylation reagent]**: The alkylation reagent that is used to covalently modify cysteine SH-groups after reduction, preventing them from forming unwanted novel disulfide bonds. The values of the column are under the term https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598&viewMode=All&siblings=false[alkylation reagent]. For example, IAA.
-
-- **comment [fractionation method]**: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. For example, Off-gel electrophoresis.
-
-[[fragment-proper]]
-=== MS/MS properties
-
-- **comment[collision energy]**: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
-
-- **comment[dissociation method]**: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
-
-[[raw-file-uri]]
-=== RAW file URI
-
-We RECOMMEND including the public URI of the file if available. For example, for ProteomeXchange datasets, the URI from the FTP can be provided:
-
-|===
-|   |... |comment[file uri]
-
-|sample 1| ... |https://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/000261_C05_P0001563_A00_B00K_R1.RAW
-|===
-
-[[multiple-projects]]
-=== Multiple projects into one annotation file
-
-Curators can decide to annotate multiple ProteomeXchange datasets into one large SDRF-Proteomics file for reanalysis purposes. If that is the case, it is RECOMMENDED to use the comment[proteomexchange accession number] to differentiate between different datasets.
-
-[[data-acquisition-method]]
-=== Data acquisition method: DDA and DIA and others
-
-Proteomics data acquisition method can happen in two ways: Data Dependent Acquisition (DDA) or Data Independent Acquisition (DIA). The SDRF-Proteomics file format allows to capture the method used for the data acquisition in the _comment[proteomics data acquisition method]_ column. The following values are RECOMMENDED for DDA and DIA:
-
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000627[data-dependent acquisition]
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450[data-independent acquisition]
-  - https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000650?lang=en[diaPASEF]
-  - https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000447[SWATH MS]
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000629[parallel reaction monitoring]
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000630[selected reaction monitoring]
-
-TIP: If the SDRF does not specify the proteomics data acquisition method as _comment[proteomics data acquisition method]_, it is assumed that the method used is DDA (data-dependent acquisition), which is the most common method used in proteomics.
-
-You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
-
-[[dia-ms1-scan]]
-==== Data Independent Acquisition - Scan window limits
-
-Additionally to the general _comment[proteomics data acquisition method]_ column, the SDRF-Proteomics file format allows to capture other properties for the DIA method. The following properties are RECOMMENDED for DIA:
-
-- _comment[MS1 scan range]_: The MS1 scan range is the m/z range used for the DIA acquisition. The values are expressed in m/z units.
-
-Example:
-
-|===
-|assay name     | comment[MS1 scan range] | comment[data file]
-|sample1_run1   | 400m/z - 1200m/z | FILE_R1.RAW
-|sample1_run2   | 400m/z - 1200m/z | FILE_R2.RAW
-|===
-
-TIP: While the specification recommends writing the MS1 scan range as an interval (e.g. 400m/z - 1200m/z), it is also possible to specify the range using two separate columns. In those cases, you can write the lower limit in the _comment[scan window lower limit]_ and the upper limit in the _comment[scan window upper limit]_ columns.
-
-[[integration-external-systems]]
-== Integration with External Systems and Databases
-
-The SDRF-Proteomics format supports integration with external databases and systems to enhance sample metadata annotation and enable cross-database linking. This integration facilitates data reuse, reproducibility, and meta-analyses by providing standardized identifiers and references to external resources.
-
 [[biosamples-integration]]
-=== BioSamples Database Integration
+=== BioSamples database integration
 
 BioSamples databases are reference databases that store information about biological samples used in research. There are two main BioSamples services: the EBI BioSamples (https://www.ebi.ac.uk/biosamples/) and the NCBI BioSample (https://www.ncbi.nlm.nih.gov/biosample). Both provide persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries from either service through the use of BioSample accession numbers.
 
@@ -692,262 +451,688 @@ The BioSamples accession number enables:
 
 When a BioSample accession number is provided, the full sample metadata from the corresponding BioSamples database becomes available and can complement the information provided in the SDRF-Proteomics file. If there are discrepancies between the SDRF-Proteomics metadata and the BioSamples metadata, the SDRF-Proteomics values take precedence for the specific proteomics experiment context.
 
-NOTE: BioSample accession numbers from NCBI follow the format SAMN############ and from EBI follow the format SAMEA##########, where # represents digits. Either NCBI or EBI BioSample accession numbers can be used depending on where the sample is registered. The _characteristics[biosample accession number]_ column is optional, but when available, providing BioSample accession numbers is RECOMMENDED to enhance data integration and reusability. Users must first request BioSample accession numbers from the appropriate service (NCBI or EBI) before including them in their SDRF files.
+NOTE: BioSample accession numbers from NCBI follow the format `SAMNxxxxxxxxxx` and from EBI follow the format `SAMEAxxxxxxxxx`, where `x` represents digits. Either NCBI or EBI BioSample accession numbers can be used depending on where the sample is registered. The _characteristics[biosample accession number]_ column is optional, but when available, providing BioSample accession numbers is RECOMMENDED to enhance data integration and reusability. Users must first request BioSample accession numbers from the appropriate service (NCBI or EBI) before including them in their SDRF files.
+
+[[sample-technical-biological-replicates]]
+=== Encoding sample technical and biological replicates
+
+Different measurements of the same biological sample are often categorized as (i) Technical or (ii) Biological replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo, in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation.
+
+For a given experiment, there are different levels to which samples can be matched - e.g., same sample, sample protocol, covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, Technical vs. Biological considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the SDRF-Proteomics format. However, data providers are encouraged to provide any identifier - e.g. Biological_replicate_1, Technical_replicate_2 - that would help link the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF-Proteomics specification is the following:
+
+**technical replicate**: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].
+
+In MS-based proteomics, a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
+
+**Biological replicate**: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
+
+The following example shows an experiment with 2 biological replicates (different samples from 2 patients), each with 2 fractions and 2 technical replicates:
+
+|===
+|source name |characteristics[biological replicate] |assay name |comment[label] |comment[fraction identifier] |comment[technical replicate] |comment[data file]
+
+|patient_001_sample
+|1
+|run_01
+|label free sample
+|1
+|1
+|P001_F1_TR1.raw
+
+|patient_001_sample
+|1
+|run_02
+|label free sample
+|2
+|1
+|P001_F2_TR1.raw
+
+|patient_001_sample
+|1
+|run_03
+|label free sample
+|1
+|2
+|P001_F1_TR2.raw
+
+|patient_001_sample
+|1
+|run_04
+|label free sample
+|2
+|2
+|P001_F2_TR2.raw
+
+|patient_002_sample
+|2
+|run_05
+|label free sample
+|1
+|1
+|P002_F1_TR1.raw
+
+|patient_002_sample
+|2
+|run_06
+|label free sample
+|2
+|1
+|P002_F2_TR1.raw
+
+|patient_002_sample
+|2
+|run_07
+|label free sample
+|1
+|2
+|P002_F1_TR2.raw
+
+|patient_002_sample
+|2
+|run_08
+|label free sample
+|2
+|2
+|P002_F2_TR2.raw
+|===
+
+In this example:
+
+- **Biological replicates**: `patient_001_sample` and `patient_002_sample` are different biological samples (different source names), annotated with `characteristics[biological replicate]` values 1 and 2
+- **Technical replicates**: Each biological sample is measured twice (`comment[technical replicate]` = 1 and 2)
+- **Fractions**: Each technical replicate has 2 fractions (`comment[fraction identifier]` = 1 and 2)
+
+IMPORTANT: Both _characteristics[biological replicate]_ and _comment[technical replicate]_ columns are MANDATORY. Fill with 1 if replicates are not performed in a study.
+
+Some examples with explicit annotation of the biological replicates can be found here:
+
+- https://github.com/bigbio/proteomics-metadata-standard/blob/c3a56b076ef381280dfcb0140d2520126ace53ff/annotated-projects/PXD006401/sdrf.tsv
+
+[[pooled-samples]]
+=== Pooled samples
+
+When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see link:metadata-conventions/data-file-metadata-conventions.adoc#label-annotations[Label Annotations]).
+
+One possible exception is made for the case when one channel (e.g., in a TMT/iTRAQ multiplexed experiment) is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, the _characteristics[pooled sample]_ column SHOULD be used.
+
+==== Allowed values for characteristics[pooled sample]
+
+The _characteristics[pooled sample]_ column accepts the following values:
+
+|===
+|Value |Description |When to Use
+
+|not pooled
+|Sample is not pooled, represents a single biological sample
+|Regular individual samples
+
+|pooled
+|Sample is pooled but individual source samples cannot be annotated
+|When pooling details are unknown or samples are from external sources
+
+|SN=sample1;SN=sample2;...
+|Structured format listing source names of pooled samples
+|When individual samples are known and annotated in the same SDRF file
+|===
+
+NOTE: The `SN` key stands for "source name" and lists the `source name` values of samples that are annotated in the same file and used in the same experiment and same MS run. Use semicolons to separate multiple entries.
+
+==== Example with pooled reference channel
+
+|===
+|source name |characteristics[pooled sample] |characteristics[organism] |characteristics[age] |characteristics[sex] | assay name | comment[label] | comment[data file]
+
+| sample_1   | not pooled | homo sapiens | 45Y | male |  run_1      | TMT126         | file01.raw
+| sample_2   | not pooled | homo sapiens | 52Y | female |  run_1      | TMT127N        | file01.raw
+| sample_3   | not pooled | homo sapiens | 38Y | male |  run_1      | TMT127C        | file01.raw
+| pooled_ref | SN=sample_1;SN=sample_2;SN=sample_3 | homo sapiens | not applicable | not applicable |  run_1      | TMT131C         | file01.raw
+|===
+
+==== Metadata handling for pooled samples
+
+When a sample is pooled from multiple individuals, certain sample-specific metadata fields are no longer meaningful at the individual level. For pooled samples, the following metadata handling rules apply:
+
+**Fields that SHOULD use "not applicable" for pooled samples:**
+
+- `characteristics[age]` - Age is not applicable when samples from multiple individuals of different ages are pooled
+- `characteristics[sex]` - Sex is not applicable when samples from individuals of different sexes are pooled
+- `characteristics[individual]` - Individual identifier is not applicable for pooled samples
+- `characteristics[ancestry category]` - Ancestry is not applicable when samples from individuals of different ancestries are pooled
+
+**Fields that SHOULD still be annotated for pooled samples:**
+
+- `characteristics[organism]` - The organism SHOULD still be specified (all pooled samples should be from the same organism)
+- `characteristics[organism part]` - The tissue/organ SHOULD be specified if consistent across pooled samples
+- `characteristics[disease]` - Disease status SHOULD be specified if consistent across pooled samples, otherwise use "not applicable"
+- `characteristics[cell type]` - Cell type SHOULD be specified if consistent across pooled samples
+
+IMPORTANT: When `characteristics[pooled sample]` contains "pooled" or an "SN=..." value, validators SHOULD accept "not applicable" for individual-specific metadata fields (age, sex, individual, ancestry category). This enables proper annotation of reference/normalization channels in multiplexed experiments.
+
+TIP: If all pooled samples share the same value for a characteristic (e.g., all from females, or all age 40-50Y), that shared value MAY be used instead of "not applicable".
+
+[[spiked-in]]
+=== Spiked-in samples
+
+There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.
+
+To include information about the spiked compounds, use _characteristics[spiked compound]_. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:
+
+|===
+|Key |Meaning |Examples |Peptide |Protein |Mixture |Other
+
+|CT
+|Compound type
+|protein, peptide, mixture, other
+|Required
+|Required
+|Required
+|Required
+
+|QY
+|Quantity (molar or mass)
+|10 mg, 20 nmol
+|Required
+|Required
+|Required
+|Required
+
+|PS
+|Peptide sequence
+|PEPTIDESEQ
+|Required
+|-
+|-
+|-
+
+|AC
+|Uniprot Accession
+|A9WZ33
+|-
+|Required
+|-
+|-
+
+|CN
+|Compound name
+|iRT mixture, substance name
+|Optional
+|Optional
+|Optional
+|Optional
+
+|SP
+|Species
+|Escherichia coli K-12
+|Optional
+|Optional
+|Optional
+|Optional
+
+|CV
+|Compound vendor
+|in-house or vendor name
+|Optional
+|Optional
+|Required
+|Optional
+
+|CS
+|Compound specification URI
+|http://vendor.web.site/specs/kit.xlsx
+|Optional
+|Optional
+|Optional
+|Optional
+
+|CF
+|Compound formula
+|C2H2O
+|-
+|-
+|-
+|Optional
+|===
+
+In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as _characteristics[mass]_.
+
+An example of SDRF-Proteomics for a sample spiked with a peptide would be:
+
+|===
+|characteristics[mass] | characteristics[spiked compound]
+|1 ug                  | CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
+|===
+
+For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
+
+If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample),  then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of _characteristics[spiked compound]_ is optional in this case; if provided, it SHOULD be the string `spiked` for the spiked sample.
+
+=== Sample Metadata Conventions
+
+For detailed guidance on annotating sample metadata, refer to the following conventions documents:
+
+* link:metadata-conventions/sample-metadata-conventions.adoc[Sample Metadata Conventions] - Detailed guidelines for age, sex, disease, organism part, cell type, developmental stage, and other sample characteristics
+* link:metadata-conventions/human-sample-metadata.adoc[Human Sample Metadata Convention] - Human-specific metadata including disease staging, treatment history, demographics, and lifestyle factors
+
+[[from-sample-data]]
+== SDRF-Proteomics: data files metadata
+
+The connection between samples and data files is done using properties annotated with the **comment** prefix. All properties referring to a data file (e.g., MS run file) are annotated with the category `comment`. This differentiates data file properties from sample properties (characteristics).
+
+The following properties MUST be provided for each data file:
+
+|===
+|Column |Requirement |Description
+
+|assay name
+|REQUIRED
+|Unique identifier for an MS run/data file
+
+|technology type
+|REQUIRED
+|Technology used to capture the data
+
+|comment[proteomics data acquisition method]
+|REQUIRED
+|DDA, DIA, PRM, SRM
+
+|comment[label]
+|REQUIRED
+|Label applied to sample (or "label free sample")
+
+|comment[instrument]
+|REQUIRED
+|Mass spectrometer model
+
+|comment[cleavage agent details]
+|REQUIRED
+|Enzyme information
+
+|comment[fraction identifier]
+|REQUIRED
+|Fraction number (1 if not fractionated)
+
+|comment[technical replicate]
+|REQUIRED
+|Technical replicate number (1 if none)
+
+|comment[data file]
+|REQUIRED
+|Name of the raw file
+|===
+
+IMPORTANT: The combination of source name + assay name + comment[label] MUST be unique within the SDRF file.
+
+Example:
+
+|===
+|source name |assay name |technology type |comment[label] |comment[instrument] |comment[data file]
+
+|sample_1
+|sample1_run1
+|proteomic profiling by mass spectrometry
+|label free sample
+|Q Exactive HF
+|sample1.raw
+|===
+
+[[sample-prep]]
+=== Sample preparation properties
+
+In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters:
+
+- **comment[depletion]**: The removal of specific components of a complex mixture of proteins or peptides based on some specific property of those components. The values of the columns will be `no depletion` or `depletion`. In the case of depletion `depleted fraction` or `bound fraction` can be specified.
+
+- **comment[reduction reagent]**: The chemical reagent that is used to break disulfide bonds in proteins. The values of the column are under the term https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607&viewMode=All&siblings=false[reduction reagent]. For example, DTT.
+
+- **comment[alkylation reagent]**: The alkylation reagent that is used to covalently modify cysteine SH-groups after reduction, preventing them from forming unwanted novel disulfide bonds. The values of the column are under the term https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598&viewMode=All&siblings=false[alkylation reagent]. For example, IAA.
+
+- **comment[fractionation method]**: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[Fractionation method]. For example, Off-gel electrophoresis.
+
+[[fragment-proper]]
+=== MS/MS properties
+
+- **comment[collision energy]**: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.
+
+- **comment[dissociation method]**: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&viewMode=All&siblings=false[dissociation method].
+
+[[data-acquisition-method]]
+=== Data acquisition
+
+Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the _comment[proteomics data acquisition method]_ column. The values MUST be children of the PRIDE ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659[proteomics data acquisition method (PRIDE:0000659)]. The following values are commonly used:
+
+* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000627[data-dependent acquisition]
+* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450[data-independent acquisition]
+  - https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000650?lang=en[diaPASEF]
+  - https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000447[SWATH MS]
+* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000629[parallel reaction monitoring]
+* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000630[selected reaction monitoring]
+
+IMPORTANT: The _comment[proteomics data acquisition method]_ column is REQUIRED for all mass spectrometry-based SDRF files. This field must be explicitly specified and cannot be omitted or assumed.
+
+You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
+
+TIP: For DIA experiments, additional properties like MS1 scan range can be captured. See link:metadata-conventions/data-file-metadata-conventions.adoc#dia-scan-window[DIA Scan Window Limits] in the Data File Metadata Conventions.
+
+=== Data File Metadata Conventions
+
+For detailed guidance on data file metadata, refer to the conventions document:
+
+* link:metadata-conventions/data-file-metadata-conventions.adoc[Data File Metadata Conventions] - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties
 
 [[core-templates]]
-== SDRF-Proteomics use cases representation (templates)
+== Core Templates
 
-Please visit the following document to read about SDRF-Proteomics use cases, templates, and checklists: https://github.com/bigbio/proteomics-sample-metadata/blob/master/templates/README.adoc[Templates].
+SDRF-Proteomics provides core templates that define the required and recommended metadata columns based on the sample organism. Each template includes both **sample metadata** (characteristics) and **data file metadata** (comments) - everything needed to create a complete SDRF file.
 
-[[core-experiments-guidelines]]
-== SDRF-Proteomics core experiments guidelines
+Choose the appropriate template based on your sample organism:
 
-=== Introduction
+- <<the-default-template,Default template>>: Basic template for any proteomics experiment
+- <<template-human,Human template>>: For human samples with additional clinical metadata (age, sex, ancestry)
+- <<template-vertebrates,Vertebrates template>>: For non-human vertebrate species (mouse, rat, zebrafish)
+- <<template-invertebrates,Invertebrates template>>: For insects (Drosophila), nematodes (C. elegans), and other invertebrates
+- <<template-plants,Plants template>>: For plant species (Arabidopsis, crops)
 
-Core experiments guidelines are specialized extensions of the SDRF-Proteomics format that define additional metadata requirements for specific types of proteomics experiments. These guidelines extend the base SDRF-Proteomics specification with experiment-specific metadata fields while maintaining full compatibility with the core format.
+For detailed explanations of each column, see <<from-sample-metadata,sample metadata>> for sample properties and <<from-sample-data,data file metadata>> for data file properties.
 
-A **core experiment** refers to a well-established, specialized proteomics experimental approach that has gained significant adoption in the research community and requires specific metadata beyond what the standard SDRF-Proteomics specification provides. Each core experiment guideline ensures that the unique characteristics and technical parameters of these specialized techniques are adequately captured, enabling proper data interpretation, reproducibility, and reuse.
+[[the-default-template]]
+=== Default Template
 
-The core experiments guidelines cover emerging and established proteomics sub-disciplines that require domain-specific metadata to fully describe the experimental conditions, sample preparation methods, and analytical parameters that are critical for understanding and reproducing the results.
+The default template is the most basic template that can be used for any proteomics experiment. Use this when no other template is applicable.
 
-=== Immunopeptidomics
-
-Immunopeptidomics is the study of peptides presented by major histocompatibility complex (MHC) molecules on the cell surface. This specialized field focuses on identifying and characterizing the immunopeptidome to understand antigen presentation, immune responses, and potential therapeutic targets.
-
-==== Immunopeptidomics Specification Table
-
-|===
-|Term |Description |Cardinality |Range |Preferred unit |Example
-
-|characteristics[immunopeptidome enrichment method]
-|Method used to enrich for MHC-bound peptides
-|1
-|Controlled vocabulary term (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0002091[EFO:0002091])
-|Not applicable
-|immunoaffinity enrichment, mild acid elution, anti-MHC class I antibody
-
-|characteristics[HLA typing]
-|HLA allelic composition of the sample when known
-|0..1
-|HLA nomenclature format
-|Not applicable
-|HLA-A*02:01, HLA-B*07:02, HLA-C*07:02
-
-|characteristics[MHC class]
-|Class of MHC molecules being studied
-|1
-|Controlled vocabulary term
-|Not applicable
-|MHC class I, MHC class II
-
-|comment[cell number]
-|Number of cells used for immunopeptidome extraction
-|0..1
-|Numeric value
-|cells
-|1e8, 5e7, 2e9
-
-|comment[elution conditions]
-|Conditions used for peptide elution from MHC molecules
-|0..1
-|Free text description
-|Not applicable
-|1% TFA at room temperature, mild acid elution pH 2.5
-|===
-
-=== Single Cell Proteomics
-
-Single cell proteomics (SCP) aims to characterize the proteome at the level of individual cells, providing insights into cellular heterogeneity that are not accessible through bulk proteomics methods. This field enables the study of cell-to-cell variability and rare cell populations.
-
-==== Single Cell Proteomics Specification Table
+**Checklist:**
 
 |===
-|Term |Description |Cardinality |Range |Preferred unit |Example
+| Column | Category | Requirement | Example
 
-|characteristics[single cell isolation method]
-|Technique used to isolate individual cells
-|1
-|Controlled vocabulary term (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0009088[EFO:0009088])
-|Not applicable
-|FACS, micromanipulation, laser capture microdissection, droplet microfluidics
+4+^| *Sample Metadata*
+| source name | Sample | Required | sample_1
+| characteristics[organism] | Sample | Required | homo sapiens
+| characteristics[organism part] | Sample | Required | liver
+| characteristics[disease] | Sample | Required | normal
+| characteristics[biological replicate] | Sample | Required | 1
 
-|characteristics[cell identifier]
-|Unique identifier for individual cells
-|1
-|Alphanumeric identifier
-|Not applicable
-|cell_001, SC_A1, barcode_ATCGATCG
-
-|characteristics[cell viability]
-|Viability status of the isolated cell
-|0..1
-|Percentage or qualitative measure
-|%
-|viable, 95%, live
-
-|characteristics[cell diameter]
-|Physical diameter of the isolated cell
-|0..1
-|Numeric value
-|micrometers (μm)
-|15, 20.5, 12
-
-|comment[carrier proteome]
-|Information about carrier proteome used for signal boosting
-|0..1
-|Free text description
-|Not applicable
-|HeLa cell lysate 200 ng, bovine serum albumin 500 ng
+4+^| *Data File Metadata*
+| assay name | Data | Required | run_1
+| technology type | Data | Required | proteomic profiling by mass spectrometry
+| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
+| comment[label] | Data | Required | label free sample
+| comment[instrument] | Data | Required | Q Exactive HF
+| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
+| comment[fraction identifier] | Data | Required | 1
+| comment[technical replicate] | Data | Required | 1
+| comment[data file] | Data | Required | sample_1.raw
 |===
 
-=== Crosslinking Proteomics
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
 
-Crosslinking mass spectrometry (XL-MS) is a technique for studying protein-protein interactions and protein structures using chemical reagents to covalently link amino acid residues that are in close proximity. This approach provides structural constraints for protein complexes and interaction networks.
+NOTE: The `characteristics[cell type]` column is optional in the default template but RECOMMENDED when the cell type is known. Use `not available` if the cell type cannot be determined.
 
-==== Crosslinking Proteomics Specification Table
+[[template-human]]
+=== Human Template
 
-|===
-|Term |Description |Cardinality |Range |Preferred unit |Example
+The human template extends the default template with clinical and demographic metadata required for human samples.
 
-|characteristics[crosslinking reagent]
-|Chemical crosslinking agent used
-|1+
-|Chemical name or identifier (https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1002494[MS:1002494])
-|Not applicable
-|DSS, BS3, EDC, formaldehyde, photo-leucine
-
-|characteristics[crosslink distance]
-|Maximum distance between crosslinked residues
-|0..1
-|Numeric value
-|Angstroms (Å)
-|11.4, 24.0, 30.0
-
-|characteristics[crosslinking reaction time]
-|Duration of the crosslinking reaction
-|0..1
-|Time value
-|minutes
-|30, 60, 120
-
-|characteristics[crosslinking temperature]
-|Temperature at which crosslinking was performed
-|0..1
-|Numeric value
-|Celsius (°C)
-|25, 37, 4
-
-|comment[crosslinker concentration]
-|Concentration of crosslinking reagent used
-|0..1
-|Concentration value
-|mM or μM
-|2 mM, 500 μM, 1 mM
-|===
-
-=== Affinity Proteomics
-
-Affinity proteomics encompasses experimental approaches that use affinity-based capture methods to study specific protein subsets or interactions. This includes proximity extension assays, aptamer-based assays, and antibody-based capture methods.
-
-==== Affinity Proteomics Specification Table
+**Checklist:**
 
 |===
-|Term |Description |Cardinality |Range |Preferred unit |Example
+| Column | Category | Requirement | Example
 
-|characteristics[affinity reagent]
-|Specific reagent used for affinity-based capture
-|1
-|Reagent name or identifier
-|Not applicable
-|Olink proximity extension assays, SOMAscan aptamers, antibody panel
+4+^| *Sample Metadata*
+| source name | Sample | Required | patient_001
+| characteristics[organism] | Sample | Required | homo sapiens
+| characteristics[organism part] | Sample | Required | liver
+| characteristics[disease] | Sample | Required | hepatocellular carcinoma
+| characteristics[cell type] | Sample | Required | hepatocyte
+| characteristics[biological replicate] | Sample | Required | 1
+| characteristics[age] | Sample | Required | 45Y
+| characteristics[sex] | Sample | Required | male
+| characteristics[ancestry category] | Sample | Recommended | European
+| characteristics[individual] | Sample | Recommended | P001
 
-|characteristics[target protein class]
-|Class or category of proteins being targeted
-|0..1
-|Controlled vocabulary term
-|Not applicable
-|cytokines, kinases, transcription factors, membrane proteins
-
-|characteristics[affinity method]
-|General method used for affinity capture
-|1
-|Controlled vocabulary term
-|Not applicable
-|proximity extension assay, aptamer-based assay, immunoaffinity capture
-
-|comment[panel composition]
-|Description of the protein panel or targets included
-|0..1
-|Free text description
-|Not applicable
-|Olink Inflammation panel 92 proteins, custom antibody panel 50 targets
-
-|comment[detection sensitivity]
-|Sensitivity or detection limit of the assay
-|0..1
-|Concentration or relative measure
-|pg/mL or relative units
-|1 pg/mL, 0.1 pg/mL, LOD 5 pg/mL
+4+^| *Data File Metadata*
+| assay name | Data | Required | patient_001_run1
+| technology type | Data | Required | proteomic profiling by mass spectrometry
+| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
+| comment[label] | Data | Required | label free sample
+| comment[instrument] | Data | Required | Orbitrap Exploris 480
+| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
+| comment[fraction identifier] | Data | Required | 1
+| comment[technical replicate] | Data | Required | 1
+| comment[data file] | Data | Required | patient_001.raw
 |===
 
-=== Metaproteomics
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
 
-Metaproteomics is the study of proteins expressed by microbial communities, providing insights into the functional potential and activity of microbiomes. This field requires specific metadata to capture the complexity of multi-organism samples and environmental contexts.
+NOTE: The characteristics[individual] column is optional and is only used when a code for the individual is available; if not, use **not available**. For age encoding format, see link:metadata-conventions/sample-metadata-conventions.adoc[Sample Metadata Conventions].
 
-==== Metaproteomics Specification Table
+[[template-vertebrates]]
+=== Vertebrates Template
+
+The vertebrates template is used for non-human vertebrate species such as mouse, rat, zebrafish, and other model organisms.
+
+**Checklist:**
 
 |===
-|Term |Description |Cardinality |Range |Preferred unit |Example
+| Column | Category | Requirement | Example
 
-|characteristics[environmental sample type]
-|Type of environmental sample being analyzed
-|1
-|Controlled vocabulary term
-|Not applicable
-|soil, marine sediment, gut microbiome, wastewater, rhizosphere
+4+^| *Sample Metadata*
+| source name | Sample | Required | mouse_001
+| characteristics[organism] | Sample | Required | mus musculus
+| characteristics[organism part] | Sample | Required | brain
+| characteristics[disease] | Sample | Required | normal
+| characteristics[cell type] | Sample | Required | neuron
+| characteristics[biological replicate] | Sample | Required | 1
+| characteristics[developmental stage] | Sample | Recommended | adult
 
-|characteristics[sample collection method]
-|Method used to collect the environmental sample
-|1
-|Controlled vocabulary term
-|Not applicable
-|sterile collection, filtration, swab collection, core sampling
-
-|characteristics[DNA extraction method]
-|Method used for metagenomic DNA extraction when performed
-|0..1
-|Controlled vocabulary term
-|Not applicable
-|phenol-chloroform extraction, commercial kit extraction, bead beating
-
-|characteristics[microbial diversity index]
-|Measure of microbial diversity in the sample
-|0..1
-|Numeric value
-|Shannon index or Simpson index
-|3.2, 0.85, 2.8
-
-|comment[database search strategy]
-|Strategy used for protein identification from metagenomic databases
-|0..1
-|Free text description
-|Not applicable
-|custom metagenome database, RefSeq bacterial proteins, sample-specific database
+4+^| *Data File Metadata*
+| assay name | Data | Required | mouse_001_run1
+| technology type | Data | Required | proteomic profiling by mass spectrometry
+| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
+| comment[label] | Data | Required | label free sample
+| comment[instrument] | Data | Required | timsTOF Pro
+| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
+| comment[fraction identifier] | Data | Required | 1
+| comment[technical replicate] | Data | Required | 1
+| comment[data file] | Data | Required | mouse_001.raw
 |===
+
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
+
+[[template-invertebrates]]
+=== Invertebrates Template
+
+The invertebrates template is used for non-vertebrate animal species such as insects (Drosophila), nematodes (C. elegans), and other invertebrate model organisms.
+
+**Checklist:**
+
+|===
+| Column | Category | Requirement | Example
+
+4+^| *Sample Metadata*
+| source name | Sample | Required | fly_sample_1
+| characteristics[organism] | Sample | Required | drosophila melanogaster
+| characteristics[organism part] | Sample | Required | head
+| characteristics[disease] | Sample | Required | normal
+| characteristics[cell type] | Sample | Required | neuron
+| characteristics[biological replicate] | Sample | Required | 1
+
+4+^| *Data File Metadata*
+| assay name | Data | Required | fly_sample_1_run1
+| technology type | Data | Required | proteomic profiling by mass spectrometry
+| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
+| comment[label] | Data | Required | label free sample
+| comment[instrument] | Data | Required | Q Exactive Plus
+| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
+| comment[fraction identifier] | Data | Required | 1
+| comment[technical replicate] | Data | Required | 1
+| comment[data file] | Data | Required | fly_sample_1.raw
+|===
+
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
+
+NOTE: For Drosophila samples, use https://www.ebi.ac.uk/ols4/ontologies/fbbt[FBbt] (FlyBase anatomy ontology) for organism part. For C. elegans, use https://www.ebi.ac.uk/ols4/ontologies/wbbt[WBbt] (WormBase anatomy ontology).
+
+[[template-plants]]
+=== Plants Template
+
+The plants template is used for plant species including model organisms like Arabidopsis thaliana and crop species.
+
+**Checklist:**
+
+|===
+| Column | Category | Requirement | Example
+
+4+^| *Sample Metadata*
+| source name | Sample | Required | arabidopsis_col0_1
+| characteristics[organism] | Sample | Required | arabidopsis thaliana
+| characteristics[organism part] | Sample | Required | leaf
+| characteristics[disease] | Sample | Required | normal
+| characteristics[cell type] | Sample | Recommended | guard cell
+| characteristics[biological replicate] | Sample | Required | 1
+
+4+^| *Data File Metadata*
+| assay name | Data | Required | arabidopsis_col0_run1
+| technology type | Data | Required | proteomic profiling by mass spectrometry
+| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
+| comment[label] | Data | Required | label free sample
+| comment[instrument] | Data | Required | Orbitrap Fusion Lumos
+| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
+| comment[fraction identifier] | Data | Required | 1
+| comment[technical replicate] | Data | Required | 1
+| comment[data file] | Data | Required | arabidopsis_col0.raw
+|===
+
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
+
+NOTE: For plant samples, use https://www.ebi.ac.uk/ols4/ontologies/po[PO] (Plant Ontology) for organism part and cell type annotations.
+
+[[template-cardinality]]
+=== Column Cardinality
+
+Some columns can appear multiple times for the same sample. The cardinality rules are:
+
+- **Single (1)**: Column appears exactly once per sample (e.g., biological replicate)
+- **Multiple (*)**: Column can appear multiple times (e.g., organism part can specify both "heart" and "heart left ventricle")
+
+Example of multiple organism part columns:
+|===
+| source name | characteristics[organism part] | characteristics[organism part]
+| sample-1    | heart | heart left ventricle
+|===
+
+The template files can be downloaded from the https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates[core-templates] folder.
+
+[[study-variables]]
+== Factor Values (Study Variables)
+
+Factor values identify the experimental variables being studied - the conditions you want to compare in your analysis. They highlight which sample characteristics are the focus of your experiment.
+
+=== Column Format
+
+`factor value[{variable name}]`
+
+=== When to Use Factor Values
+
+Use factor values to indicate:
+
+- The primary variable(s) under investigation
+- Conditions being compared (e.g., disease vs. control, treated vs. untreated)
+- Variables that define experimental groups
+
+=== Rules
+
+- Factor value columns SHOULD appear after all characteristics and comment columns
+- Multiple factor values can be used when studying multiple variables
+- The value in a factor value column typically mirrors a characteristics column value
+
+=== Example
+
+In an experiment comparing tumor vs. normal tissue across different cancer stages:
+
+|===
+|source name |characteristics[disease] |characteristics[disease stage] |factor value[disease] |factor value[disease stage]
+
+|tumor_sample_1
+|breast carcinoma
+|stage II
+|breast carcinoma
+|stage II
+
+|normal_sample_1
+|normal
+|not applicable
+|normal
+|not applicable
+
+|tumor_sample_2
+|breast carcinoma
+|stage III
+|breast carcinoma
+|stage III
+|===
+
+In this example, both `disease` and `disease stage` are factor values because the experiment aims to compare expression differences between disease states and across cancer stages.
+
+[[extended-templates]]
+== Experiment-specific Templates
+
+For specialized proteomics experiments that require additional metadata beyond the core templates, experiment-specific templates provide detailed guidelines and checklists. These templates define experiment-specific metadata fields while maintaining full compatibility with the core SDRF-Proteomics format.
+
+Choose the appropriate template based on your experiment type:
+
+* **Affinity Proteomics**: Olink, SomaScan, Luminex, and other affinity-based methods
+* **Cell Lines**: Standardized cell line annotation using Cellosaurus
+* **Crosslinking**: XL-MS structural proteomics experiments
+* **Immunopeptidomics**: MHC-bound peptide identification
+* **Metaproteomics**: Microbial community proteomics
+* **Single Cell**: Single cell proteomics experiments
+
+For detailed specifications and examples, visit the https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[Experiment-specific Templates] documentation.
 
 [[example-annotated-datasets]]
-== Examples of annotated datasets
+== Examples of Annotated Datasets
+
+The following table provides links to example SDRF files for different experiment types. These can serve as references when creating your own SDRF files.
 
 |===
-|Dataset Type  | ProteomeXchange / Pubmed Accession | SDRF URL
-|Label-free    | PXD008934                          | https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD008934
-|TMT           | PXD017710                          | https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD017710
+|Experiment Type |Dataset |Description |SDRF URL
 
+|Label-free
+|PXD008934
+|Human proteome label-free quantification
+|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD008934[View SDRF]
+
+|TMT
+|PXD017710
+|TMT-labeled quantitative proteomics
+|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD017710[View SDRF]
+
+|SILAC
+|PXD000612
+|SILAC-based quantification
+|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD000612[View SDRF]
+
+|DIA
+|PXD018830
+|Data-independent acquisition
+|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD018830[View SDRF]
+
+|Phosphoproteomics
+|PXD000759
+|PTM enrichment study
+|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD000759[View SDRF]
+
+|Cell lines
+|PXD001819
+|Cell line proteomics
+|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD001819[View SDRF]
 |===
 
-== Ongoing use case discussions
+A comprehensive collection of annotated projects is available at: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects Repository]
 
-We have created a file in GitHub https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/use-cases-under-development.adoc[Ongoing use case discussions] where we aggregate all the ongoing discussions about the format.
+== Ongoing template discussions
+
+We have created a file in GitHub https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates-under-development.adoc[Ongoing template discussions] where we aggregate all the ongoing discussions about the format and new templates.
 
 == Intellectual Property Statement
 

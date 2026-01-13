@@ -1,24 +1,198 @@
-name: build adocs
+name: Build and Deploy Documentation
 
 on:
   push:
     branches:
-    - master
+      - master
+      - dev
+  workflow_dispatch:
+
 jobs:
-  adoc_build:
+  build-docs:
     runs-on: ubuntu-latest
-    name: Asciidoctoring the docs to pretty HTML!
+    name: Build AsciiDoc documentation site
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Get build container
-      id: adocbuild
-      uses: tonynv/asciidoctor-action@master
-      with:
-          program: "asciidoctor -D docs -a stylesheet=style.css --backend=html5 -o index.html sdrf-proteomics/README.adoc && echo 'proteomics-sample-metadata.bigbio.io' > docs/CNAME"
-    - name: Deploy docs to ghpages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: ./docs/
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install Asciidoctor
+        run: |
+          gem install asciidoctor
+          gem install asciidoctor-diagram
+
+      - name: Set output directory based on branch
+        id: set-output-dir
+        run: |
+          if [ "${{ github.ref_name }}" == "master" ]; then
+            echo "output_dir=docs" >> $GITHUB_OUTPUT
+            echo "base_url=" >> $GITHUB_OUTPUT
+          else
+            echo "output_dir=docs/dev" >> $GITHUB_OUTPUT
+            echo "base_url=/dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create output directory
+        run: mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Build main specification
+        run: |
+          asciidoctor \
+            -D ${{ steps.set-output-dir.outputs.output_dir }} \
+            -a stylesheet=css/style.css \
+            -a linkcss \
+            -a toc=left \
+            -a toclevels=3 \
+            -a sectanchors \
+            -a sectlinks \
+            -a source-highlighter=highlight.js \
+            --backend=html5 \
+            -o specification.html \
+            sdrf-proteomics/README.adoc
+
+      - name: Build metadata conventions
+        run: |
+          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/conventions
+
+          # Sample metadata conventions
+          asciidoctor \
+            -D ${{ steps.set-output-dir.outputs.output_dir }}/conventions \
+            -a stylesheet=../css/style.css \
+            -a linkcss \
+            -a toc=left \
+            -a toclevels=3 \
+            -a sectanchors \
+            -a sectlinks \
+            --backend=html5 \
+            -o sample-metadata.html \
+            sdrf-proteomics/metadata-conventions/sample-metadata-conventions.adoc
+
+          # Human sample metadata conventions
+          asciidoctor \
+            -D ${{ steps.set-output-dir.outputs.output_dir }}/conventions \
+            -a stylesheet=../css/style.css \
+            -a linkcss \
+            -a toc=left \
+            -a toclevels=3 \
+            -a sectanchors \
+            -a sectlinks \
+            --backend=html5 \
+            -o human-metadata.html \
+            sdrf-proteomics/metadata-conventions/human-sample-metadata.adoc
+
+          # Data file metadata conventions
+          asciidoctor \
+            -D ${{ steps.set-output-dir.outputs.output_dir }}/conventions \
+            -a stylesheet=../css/style.css \
+            -a linkcss \
+            -a toc=left \
+            -a toclevels=3 \
+            -a sectanchors \
+            -a sectlinks \
+            --backend=html5 \
+            -o data-file-metadata.html \
+            sdrf-proteomics/metadata-conventions/data-file-metadata-conventions.adoc
+
+      - name: Build templates documentation
+        run: |
+          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/templates
+
+          # Find and build all README.adoc files in templates directory
+          for dir in templates/*/; do
+            if [ -f "${dir}README.adoc" ]; then
+              template_name=$(basename "$dir")
+              asciidoctor \
+                -D ${{ steps.set-output-dir.outputs.output_dir }}/templates \
+                -a stylesheet=../css/style.css \
+                -a linkcss \
+                -a toc=left \
+                -a toclevels=3 \
+                -a sectanchors \
+                -a sectlinks \
+                --backend=html5 \
+                -o "${template_name}.html" \
+                "${dir}README.adoc"
+            fi
+          done
+
+      - name: Copy assets
+        run: |
+          # Copy images
+          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/images
+          cp -r sdrf-proteomics/images/* ${{ steps.set-output-dir.outputs.output_dir }}/images/ 2>/dev/null || true
+          cp -r images/* ${{ steps.set-output-dir.outputs.output_dir }}/images/ 2>/dev/null || true
+
+          # Copy CSS
+          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/css
+          cp site/css/style.css ${{ steps.set-output-dir.outputs.output_dir }}/css/
+
+      - name: Copy index, navigation, and JavaScript
+        run: |
+          cp site/index.html ${{ steps.set-output-dir.outputs.output_dir }}/
+          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/js
+          cp site/js/search.js ${{ steps.set-output-dir.outputs.output_dir }}/js/
+
+      - name: Build search index
+        run: |
+          python3 site/build-search-index.py . ${{ steps.set-output-dir.outputs.output_dir }}/search-index.json
+
+      - name: Add version banner for dev branch
+        if: github.ref_name == 'dev'
+        run: |
+          # Add a banner to index.html indicating this is the dev version
+          sed -i 's/<body>/<body><div class="dev-banner">⚠️ Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="\/">View stable version<\/a><\/div>/' ${{ steps.set-output-dir.outputs.output_dir }}/index.html
+
+      - name: Add dev banner styles
+        if: github.ref_name == 'dev'
+        run: |
+          echo '
+          /* Dev banner */
+          .dev-banner {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #fcd34d;
+          }
+          .dev-banner a {
+            color: #92400e;
+            font-weight: 600;
+          }
+          ' >> ${{ steps.set-output-dir.outputs.output_dir }}/css/style.css
+
+      - name: Checkout gh-pages branch for merging
+        if: github.ref_name == 'dev'
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages-existing
+
+      - name: Merge dev docs into existing gh-pages
+        if: github.ref_name == 'dev'
+        run: |
+          # Copy existing gh-pages content (master version)
+          mkdir -p final-docs
+          cp -r gh-pages-existing/* final-docs/ 2>/dev/null || true
+          # Remove old dev folder if exists
+          rm -rf final-docs/dev
+          # Copy new dev docs
+          cp -r docs/dev final-docs/dev
+          # Move final-docs to docs for deployment
+          rm -rf docs
+          mv final-docs docs
+
+      - name: Add CNAME for custom domain
+        run: echo 'sdrf.quantms.org' > docs/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/

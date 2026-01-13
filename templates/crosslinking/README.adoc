@@ -1,0 +1,449 @@
+= SDRF-Proteomics: Crosslinking Mass Spectrometry Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides guidelines for annotating crosslinking mass spectrometry (XL-MS) experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with crosslinking-specific metadata fields.
+
+**Version 1.0.0** - 2025-01
+
+[[abstract]]
+== Abstract
+
+Crosslinking mass spectrometry (XL-MS) is a powerful structural proteomics technique that uses chemical reagents to covalently link amino acid residues in close spatial proximity. This approach provides valuable information for:
+
+- Protein structure determination and validation
+- Protein-protein interaction mapping
+- Characterization of protein complexes
+- Integrative structural biology pipelines
+- In vivo and in situ structural studies
+
+This template defines the additional metadata requirements for properly annotating crosslinking mass spectrometry datasets in SDRF-Proteomics format, enabling proper interpretation of structural constraints and data reproducibility.
+
+[[motivation]]
+== Motivation
+
+Crosslinking mass spectrometry experiments have unique characteristics that distinguish them from standard proteomics:
+
+1. **Crosslinking chemistry**: Various reagents with different specificities and spacer arm lengths are used
+2. **Distance constraints**: The crosslinker spacer arm defines the maximum distance between linked residues
+3. **Reaction conditions**: Crosslinking efficiency depends on concentration, time, and temperature
+4. **Specialized data analysis**: XL-MS requires dedicated search engines that identify crosslinked peptide pairs
+5. **Enrichment strategies**: Crosslinked peptides are often enriched using specific strategies (SEC, SCX, affinity)
+
+These aspects require additional metadata beyond standard SDRF-Proteomics fields.
+
+[[connections]]
+== Connections to Structural Biology
+
+Crosslinking mass spectrometry data is typically integrated with:
+
+- **Cryo-EM structures**: As distance restraints for modeling
+- **X-ray crystallography**: For structure validation
+- **AlphaFold predictions**: For model assessment
+- **Integrative modeling platforms**: IMP, HADDOCK, Rosetta
+- **Protein Data Bank (PDB)**: For structure deposition
+
+When structures are available, linking to PDB identifiers is RECOMMENDED.
+
+[[additional-ontologies]]
+== Additional Ontologies
+
+In addition to the ontologies supported by the core SDRF-Proteomics specification, crosslinking templates utilize:
+
+- **PSI-MS CV**: Contains crosslinker-specific terms (MS:1002494 - crosslink donor, etc.)
+- **ChEBI**: For chemical compound identification
+- **XLMOD**: Crosslinking modification database (https://www.ebi.ac.uk/ols4/ontologies/xlmod)
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for crosslinking experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for crosslinking experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[crosslinking reagent]
+|Chemical crosslinking agent(s) used in the experiment
+|1..*
+|PSI-MS CV, ChEBI, XLMOD
+|DSS, BS3, EDC, DSSO, DSBU, formaldehyde, photo-leucine, disuccinimidyl sulfoxide
+
+|characteristics[crosslink type]
+|Type of crosslinks being studied
+|1
+|Controlled vocabulary
+|homo-bifunctional, hetero-bifunctional, zero-length, photo-reactive, cleavable
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for crosslinking experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[crosslink distance]
+|Maximum Ca-Ca distance constraint provided by the crosslinker
+|0..1
+|Numeric value with unit (Angstroms)
+|11.4 A, 24.0 A, 30.0 A, 26.4 A
+
+|characteristics[crosslinker spacer arm length]
+|Length of the crosslinker spacer arm
+|0..1
+|Numeric value with unit (Angstroms)
+|11.4 A, 7.7 A, 12.0 A
+
+|characteristics[crosslinking reaction time]
+|Duration of the crosslinking reaction
+|0..1
+|Numeric value with unit
+|30 min, 60 min, 2 h
+
+|characteristics[crosslinking temperature]
+|Temperature at which crosslinking was performed
+|0..1
+|Numeric value with unit (Celsius)
+|25 C, 37 C, 4 C, room temperature
+
+|comment[crosslinker concentration]
+|Concentration of crosslinking reagent used
+|0..1
+|Numeric value with unit
+|2 mM, 500 uM, 1 mM, 1:50 protein ratio
+
+|comment[crosslinker to protein ratio]
+|Molar ratio of crosslinker to protein
+|0..1
+|Ratio format
+|50:1, 100:1, 1:1 w/w
+
+|comment[quenching reagent]
+|Reagent used to quench the crosslinking reaction
+|0..1
+|Chemical name
+|Tris-HCl, ammonium bicarbonate, glycine, hydroxylamine
+
+|comment[crosslink enrichment method]
+|Method used to enrich crosslinked peptides
+|0..1
+|Controlled vocabulary or free text
+|size exclusion chromatography, strong cation exchange, affinity enrichment, peptide SEC
+
+|comment[crosslink target residues]
+|Amino acid residues targeted by the crosslinker
+|0..1
+|Amino acid codes
+|K-K, K-S-T-Y, D-E to K, C-C
+|===
+
+[[crosslinker-annotation]]
+== Crosslinker Annotation
+
+=== Common Crosslinkers
+
+The following table lists commonly used crosslinkers and their properties:
+
+|===
+|Crosslinker |Full Name |Type |Target Residues |Spacer Arm |Max Ca-Ca Distance
+
+|DSS
+|Disuccinimidyl suberate
+|Homo-bifunctional, NHS ester
+|K, protein N-term
+|11.4 A
+|~30 A
+
+|BS3
+|Bis(sulfosuccinimidyl)suberate
+|Homo-bifunctional, NHS ester (water-soluble)
+|K, protein N-term
+|11.4 A
+|~30 A
+
+|DSSO
+|Disuccinimidyl sulfoxide
+|Homo-bifunctional, MS-cleavable
+|K, protein N-term
+|10.3 A
+|~26 A
+
+|DSBU
+|Disuccinimidyl dibutyric urea
+|Homo-bifunctional, MS-cleavable
+|K, protein N-term
+|12.5 A
+|~30 A
+
+|EDC
+|1-Ethyl-3-(3-dimethylaminopropyl)carbodiimide
+|Zero-length
+|D,E to K
+|0 A
+|~15 A
+
+|SDA
+|Succinimidyl 4,4'-azipentanoate
+|Photo-reactive
+|K + any
+|3.9 A
+|~20 A
+
+|formaldehyde
+|Formaldehyde
+|Non-specific
+|Multiple
+|2 A
+|~7 A
+|===
+
+=== Key-Value Annotation Format
+
+For detailed crosslinker annotation, use the key-value format similar to modification parameters:
+
+[source]
+----
+NT=DSS;AC=XLMOD:02001;TG=K;SA=11.4
+----
+
+Where:
+- `NT`: Name of crosslinker
+- `AC`: Accession (XLMOD or ChEBI)
+- `TG`: Target residues
+- `SA`: Spacer arm length in Angstroms
+
+[[cleavable-crosslinkers]]
+== MS-Cleavable Crosslinkers Checklist
+
+For MS-cleavable crosslinkers (DSSO, DSBU, PIR, etc.), additional annotation is RECOMMENDED:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[cleavable crosslinker]
+|Whether the crosslinker is MS-cleavable
+|yes, no
+
+|comment[cleavage reporter ions]
+|Characteristic reporter ions from crosslinker cleavage
+|m/z 54.02, m/z 85.05, m/z 104.05
+
+|comment[fragmentation method for cleavage]
+|Fragmentation method used to cleave crosslinker
+|CID, HCD, ETD
+|===
+
+[[enrichment-strategies]]
+== Crosslink Enrichment Strategies
+
+Crosslinked peptides are typically low abundance. Document enrichment approaches:
+
+|===
+|Enrichment Method |Description |Typical Use Case
+
+|Size exclusion chromatography (SEC)
+|Separates crosslinked peptides by size
+|General XL-MS workflows
+
+|Strong cation exchange (SCX)
+|Crosslinked peptides have higher charge states
+|General XL-MS workflows
+
+|Affinity enrichment
+|Uses specific tags on cleavable crosslinkers
+|PIR, azide-alkyne click chemistry
+
+|High-pH reversed phase
+|Orthogonal separation to standard RP
+|Fractionation strategies
+
+|FAIMS/ion mobility
+|Gas-phase separation of crosslinked peptides
+|Advanced instrument methods
+|===
+
+[[in-vivo-xlms]]
+== In Vivo and In Situ Crosslinking Checklist
+
+For crosslinking performed in living cells or tissues, additional annotations are RECOMMENDED:
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[crosslinking context]
+|Where crosslinking was performed
+|in vitro, in vivo, in situ, in cell
+
+|comment[cell permeability]
+|Whether crosslinker is cell-permeable
+|cell-permeable, membrane-impermeable
+
+|comment[crosslinking target]
+|Specific complex or structure targeted
+|whole cell lysate, isolated complex, intact cells
+|===
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a crosslinking mass spectrometry experiment:
+
+|===
+|source name |characteristics[organism] |characteristics[cell type] |characteristics[disease] |characteristics[crosslinking reagent] |characteristics[crosslink type] |characteristics[crosslink distance] |characteristics[crosslinking reaction time] |characteristics[crosslinking temperature] |characteristics[biological replicate] |assay name |technology type |comment[crosslinker concentration] |comment[crosslink enrichment method] |comment[data file] |comment[fraction identifier] |comment[label] |comment[cleavage agent details] |comment[instrument]
+
+|ribosome_prep_1
+|saccharomyces cerevisiae
+|not applicable
+|normal
+|DSS
+|homo-bifunctional
+|30 A
+|30 min
+|25 C
+|1
+|ribosome_XL_run1
+|proteomic profiling by mass spectrometry
+|2 mM
+|size exclusion chromatography
+|ribosome_xl_frac01.raw
+|1
+|label free sample
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Fusion Lumos
+
+|ribosome_prep_1
+|saccharomyces cerevisiae
+|not applicable
+|normal
+|DSS
+|homo-bifunctional
+|30 A
+|30 min
+|25 C
+|1
+|ribosome_XL_run1
+|proteomic profiling by mass spectrometry
+|2 mM
+|size exclusion chromatography
+|ribosome_xl_frac02.raw
+|2
+|label free sample
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Fusion Lumos
+
+|complex_IP_1
+|homo sapiens
+|HEK293
+|normal
+|DSSO
+|homo-bifunctional
+|26 A
+|45 min
+|4 C
+|1
+|complex_XL_run1
+|proteomic profiling by mass spectrometry
+|1 mM
+|strong cation exchange
+|complex_xl_scx01.raw
+|1
+|label free sample
+|NT=Trypsin;AC=MS:1001251
+|Orbitrap Eclipse
+|===
+
+[[data-analysis-considerations]]
+== Data Analysis Annotations
+
+For completeness, consider adding post-analysis annotations:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[crosslink search engine]
+|Software used for crosslink identification
+|pLink2, XlinkX, MeroX, Xi, Kojak
+
+|comment[crosslink FDR]
+|False discovery rate for crosslink identification
+|1%, 5%, 0.01
+
+|comment[crosslinks identified]
+|Number of unique crosslinks identified
+|500, 1200, 3500
+|===
+
+[[best-practices]]
+== Best Practices for Crosslinking Annotation
+
+1. **Always specify crosslinker**: Document the exact crosslinking reagent used, including manufacturer if relevant.
+
+2. **Report distance constraints**: Include spacer arm length and maximum Ca-Ca distance for structural interpretation.
+
+3. **Document reaction conditions**: Time, temperature, and concentration affect crosslinking efficiency and reproducibility.
+
+4. **Specify enrichment method**: Crosslink enrichment is critical for data quality and should be documented.
+
+5. **Note cleavability**: For MS-cleavable crosslinkers, indicate this property as it affects data analysis strategy.
+
+6. **Use controlled vocabularies**: Prefer XLMOD or PSI-MS CV terms for crosslinker identification.
+
+7. **Include quenching information**: Document how the reaction was stopped.
+
+8. **Link to structures**: When available, reference related PDB entries for structural context.
+
+[[template-file]]
+== Template File
+
+The crosslinking proteomics SDRF template file is available in this directory:
+
+- link:crosslinking-template.sdrf.tsv[crosslinking-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+Crosslinking SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template crosslinking
+----
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from structural proteomics researchers.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-sample-metadata[GitHub repository].
+
+[[references]]
+== References
+
+- Leitner A, et al. (2016) Crosslinking and Mass Spectrometry: An Integrated Technology to Understand the Structure and Function of Molecular Machines. Trends in Biochemical Sciences.
+- O'Reilly FJ, Rappsilber J. (2018) Cross-linking mass spectrometry: methods and applications in structural, molecular and systems biology. Nature Structural & Molecular Biology.
+- Iacobucci C, et al. (2019) A cross-linking/mass spectrometry workflow based on MS-cleavable cross-linkers and the MeroX software for studying protein structures and protein-protein interactions. Nature Protocols.
+- XLMOD database: https://www.ebi.ac.uk/ols4/ontologies/xlmod

@@ -1,0 +1,152 @@
+= SDRF-Proteomics: Templates
+:sectnums:
+:toc: left
+:doctype: book
+
+== Introduction
+
+This directory contains SDRF templates for specific types of proteomics experiments. Each template extends the core SDRF-Proteomics specification with specialized metadata fields for particular experiment types.
+
+Templates provide:
+
+1. **Documentation**: Detailed guidelines explaining when and why to use each template
+2. **Checklists**: Required and recommended metadata columns for each experiment type
+3. **Template files**: Pre-formatted TSV files with appropriate column headers
+4. **Examples**: Sample SDRF entries showing proper annotation
+
+== Template Structure
+
+Each template directory contains:
+
+- `README.adoc` - Complete documentation including:
+  * Abstract and motivation for the template
+  * Checklist of required and recommended columns
+  * Examples and best practices
+  * Validation instructions
+- `{template-name}-template.sdrf.tsv` - Template file with column headers
+
+== Available Templates
+
+=== Specialized Experiment Templates
+
+==== Affinity Proteomics
+
+Affinity proteomics encompasses approaches using affinity-based capture methods including Olink (PEA), SomaScan, Luminex, RPPA, and immunoaffinity-MS.
+
+* link:affinity-proteomics/README.adoc[Affinity Proteomics Template Documentation]
+* link:affinity-proteomics/affinity-proteomics-template.sdrf.tsv[Template File]
+
+==== Cell Lines
+
+Comprehensive guidance on cell line annotation using Cellosaurus as the primary resource for standardized cell line identification and metadata.
+
+* link:cell-lines/README.adoc[Cell Lines Template Documentation]
+* link:cell-lines/cell-lines-template.sdrf.tsv[Template File]
+
+==== Crosslinking Mass Spectrometry
+
+Crosslinking mass spectrometry (XL-MS) for structural proteomics, protein-protein interaction mapping, and integrative structural biology.
+
+* link:crosslinking/README.adoc[Crosslinking Template Documentation]
+* link:crosslinking/crosslinking-template.sdrf.tsv[Template File]
+
+==== Immunopeptidomics
+
+Immunopeptidomics for MHC-bound peptide identification, including HLA typing annotation and specialized sample preparation metadata.
+
+* link:immunopeptidomics/README.adoc[Immunopeptidomics Template Documentation]
+* link:immunopeptidomics/immunopeptidomics-template.sdrf.tsv[Template File]
+
+==== Metaproteomics
+
+Metaproteomics for microbial community analysis, including environmental context, database search strategies, and multi-organism annotation.
+
+* link:metaproteomics/README.adoc[Metaproteomics Template Documentation]
+* link:metaproteomics/metaproteomics-template.sdrf.tsv[Template File]
+
+==== Single Cell Proteomics
+
+Single cell proteomics (SCP) for characterizing individual cell proteomes, including cell identifiers, carrier proteome strategies, and multiplexing.
+
+* link:single-cell/README.adoc[Single Cell Proteomics Template Documentation]
+* link:single-cell/single-cell-template.sdrf.tsv[Template File]
+
+=== Core Templates
+
+Basic SDRF templates for common organism types:
+
+|===
+|Template |Description |Link
+
+|Default
+|Basic template for any proteomics experiment
+|link:core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
+
+|Human
+|Template with human-specific metadata fields
+|link:core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
+
+|Vertebrates
+|Template for vertebrate organisms
+|link:core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
+
+|Invertebrates
+|Template for invertebrate organisms
+|link:core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
+
+|Plants
+|Template for plant organisms
+|link:core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
+|===
+
+== How to Use Templates
+
+=== Choosing a Template
+
+1. **Identify your experiment type**: Determine which specialized template matches your experiment (e.g., single-cell, immunopeptidomics)
+2. **Read the documentation**: Review the template's README.adoc to understand requirements
+3. **Check the checklist**: Ensure you can provide the required metadata columns
+4. **Download the template file**: Use the TSV file as a starting point
+
+=== Using a Template
+
+1. **Copy the template file**: Create a copy of the template TSV for your project
+2. **Fill in required columns**: Populate all required columns as documented in the checklist
+3. **Add recommended columns**: Include recommended columns where applicable
+4. **Validate your SDRF**: Use sdrf-pipelines to validate against the template
+
+=== Validation
+
+All templates can be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template <template-name>
+----
+
+Where `<template-name>` is one of: `default`, `human`, `cell-line`, `vertebrates`, `invertebrates`, `plants`, `single-cell`, `immunopeptidomics`, `crosslinking`, `affinity-proteomics`, `metaproteomics`.
+
+== Adding New Templates
+
+To propose a new template:
+
+1. Create an issue on the GitHub repository describing the experiment type and its specific metadata requirements
+2. Develop a draft template following the established structure:
+   * README.adoc with all standard sections (Status, Abstract, Motivation, Checklist, Examples, Best Practices, etc.)
+   * Template TSV file with column headers
+3. Create a pull request against the `dev` branch
+
+== Versioning
+
+Following the versioning proposal:
+
+* **Major release** (X.0.0 -> Y.0.0): Changes to the Main SDRF-Proteomics Specification
+* **Minor release** (X.Y.0 -> X.Y+1.0): New templates or significant template updates
+* **Patch release** (X.Y.Z -> X.Y.Z+1): Refinements to existing templates
+
+== Related Resources
+
+* link:../sdrf-proteomics/README.adoc[Main SDRF-Proteomics Specification]
+* link:../sdrf-proteomics/metadata-conventions/[Metadata Conventions]
+* https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines Validation Tool]
