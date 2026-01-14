@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Validation of 256 annotated projects. 
+- Validation of 256 annotated projects.
 - Introduction of the ChangeLog file to the project.
+- File-level metadata support using header comments (##key=value format) for capturing SDRF version, template, and provenance information (Issue #758).
 
 ### Changed
 

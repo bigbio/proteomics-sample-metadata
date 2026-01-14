@@ -217,6 +217,68 @@ There are general scenarios/use cases that are addressed by the following rules:
 - **Column order**: The SDRF columns follows some structure; first the sample metadata columns in <<sample-metadata>>; then the data file metadata columns in <<data-file-metadata>>; followed by the factor values columns in <<factor-values>>. 
 - **Extension**: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.
 
+[[file-level-metadata]]
+=== File-level metadata (Header comments)
+
+SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.
+
+Header comments MUST:
+
+- Start with `##` (double hash) followed by a key-value pair
+- Appear at the very beginning of the file, before the column header row
+- Use the format `##key=value`
+
+The following header fields are supported:
+
+|===
+|Key |Description |Example |Requirement
+
+|fileformat
+|Identifier for the file format
+|SDRF
+|RECOMMENDED
+
+|version
+|SDRF-Proteomics specification version used
+|v1.1.0
+|RECOMMENDED
+
+|template
+|Name of the template used
+|human, cell_lines, default
+|OPTIONAL
+
+|template_version
+|Version of the template
+|v1.0.0
+|OPTIONAL
+
+|source
+|Origin or creator of the file
+|PRIDE, user-generated
+|OPTIONAL
+
+|validation_hash
+|Hash from validator certification
+|sha256:abc123...
+|OPTIONAL
+|===
+
+Example of an SDRF file with header comments:
+
+[source,tsv]
+----
+##fileformat=SDRF
+##version=v1.1.0
+##template=human
+##template_version=v1.0.0
+##source=PRIDE
+source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
+sample_1	homo sapiens	liver	normal	run_1	sample_1.raw
+----
+
+NOTE: Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately.
+
 [[column-headers]]
 === Column headers
 
