@@ -24,14 +24,14 @@ endif::[]
 
 This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
 
-**Version v1.1.0** - 2025-08-13
+**Version v1.1.0** - 2025-01
 
 [[abstract]]
 == Abstract
 
 The Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).
 
-Further detailed information, including any updates to this document, implementations, and examples is available at https://github.com/bigbio/proteomics-sample-metadata[SDRF GitHub Repository]. The official PSI web page for the document is the following: http://psidev.info/sdrf.
+Further detailed information, including any updates to this document, implementations, and examples is available at https://github.com/bigbio/proteomics-metadata-standard[SDRF GitHub Repository]. The official PSI web page for the document is the following: http://psidev.info/sdrf.
 
 [[motivation]]
 == Motivation
@@ -119,7 +119,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
 - `default` - Basic validation
 - `human` - Human samples with clinical metadata
 - `vertebrates` - Non-human vertebrates
-- `nonvertebrates` - Invertebrates
+- `invertebrates` - Invertebrates
 - `plants` - Plant samples
 - `cell_lines` - Cell line experiments
 
@@ -142,27 +142,27 @@ For more information, visit: https://github.com/bigbio/sdrf-pipelines[sdrf-pipel
 
 This document describes the main specification of SDRF-Proteomics, the structure of the specification (**Figure 2**), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:
 
-* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
+* https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
 
-* https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/core-templates[Core templates]: Organism-based templates (human, vertebrates, plants, etc.) that define base schemas for common proteomics experiments. See the <<core-templates,Core Templates>> section.
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[Core templates]: Organism-based templates (human, vertebrates, plants, etc.) that define base schemas for common proteomics experiments. See the <<core-templates,Core Templates>> section.
 
-* https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates[Specialized templates]: Complete schemas for specific experiment types (cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Specialized templates]: Complete schemas for specific experiment types (cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:
 - A detailed README.adoc with checklists, and examples.
 - A template file ({name}-template.sdrf.tsv) with column headers.
 
-* https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/metadata-guidelines[Annotation guidelines]: Detailed documentation for specific metadata annotations (e.g., patient pre-existing condition, sample metadata, data file metadata).
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/metadata-guidelines[Annotation guidelines]: Detailed documentation for specific metadata annotations (e.g., patient pre-existing condition, sample metadata, data file metadata).
 
 image::../images/sdrf-guidelines-structure.png[Logo]
 
 **Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by specific experiment templates and annotation guidelines.
 
-NOTE: The main specification is in the `sdrf-proteomics` directory. The templates are in the `templates` directory at the root of the repository. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict. 
+NOTE: The main specification is in the `sdrf-proteomics` directory. Core templates (organism-based) are in `sdrf-proteomics/core-templates/` and specialized templates (experiment-type-specific) are in `sdrf-proteomics/templates/`. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict. 
 
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-sample-metadata. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
 
 A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
 
-Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files for users from users. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
+Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
 
 [[versioning]]
 === Versioning
@@ -187,7 +187,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 [[relationship-specifications]]
 === Relationship to other specifications
 
-SDRF-Proteomics is fully compatible with the SDRF file format part of https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html[MAGE-TAB]. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the proteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.
+SDRF-Proteomics is fully compatible with the SDRF file format part of https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html[MAGE-TAB]. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the ProteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.
 
 SDRF-Proteomics sample information can be embedded into mzTab metadata files. The sample metadata in mzTab contains properties as the columns in the SDRF-Proteomics and values as Sample cell values.
 
@@ -215,9 +215,35 @@ There are general scenarios/use cases that are addressed by the following rules:
 
 - **Unknown values**: In some cases, the column is mandatory in the format, but for some samples the corresponding value is unknown. In those cases, users SHOULD use *not available*.
 - **Not Applicable values**: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use *not applicable*.
+
+.When to use "not available" vs "not applicable"
+|===
+|Term |Meaning |Example Scenario |Example
+
+|not available
+|Value exists but is unknown
+|Patient age was not recorded in the clinical data
+|characteristics[age] = not available
+
+|not applicable
+|Value does not apply to this sample
+|Cell line sample has no meaningful "age"
+|characteristics[age] = not applicable
+
+|not available
+|Information could not be determined
+|Disease status could not be confirmed
+|characteristics[disease] = not available
+
+|not applicable
+|Concept does not apply
+|Asking for "cell type" of a whole tissue homogenate
+|characteristics[cell type] = not applicable
+|===
+
 - **Case sensitivity**: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
 - **Space sensitivity**: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).
-- **Column order**: The SDRF columns follows some structure; first the sample metadata columns in <<sample-metadata>>; then the data file metadata columns in <<data-file-metadata>>; followed by the factor values columns in <<factor-values>>. 
+- **Column order**: The SDRF columns follows some structure; first the sample metadata columns in <<from-sample-metadata>>; then the data file metadata columns in <<from-sample-data>>; followed by the factor values columns in <<study-variables>>. 
 - **Extension**: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.
 
 [[file-level-metadata]]
@@ -267,7 +293,7 @@ The following header fields are supported:
 |OPTIONAL
 |===
 
-Example of an SDRF file with header comments:
+Example of an SDRF file with header comments (simplified example showing only select columns; see <<core-templates>> for complete required columns):
 
 [source,tsv]
 ----
@@ -295,7 +321,7 @@ Each property name MUST be a valid ontology term or a valid controlled vocabular
 
 NOTE: A list of all controlled vocabularies and ontologies supported are in the <<ontologies-supported>> section. On each section we also provide a list of properties that are supported.
 
-[[sdrf-file-standarization]]
+[[sdrf-file-standardization]]
 === Cell values
 
 The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.
@@ -475,7 +501,7 @@ Example:
 |sample_control | homo sapiens              | liver                          | liver cancer             | not available
 |===
 
-NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
+NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
 
 Some important notes:
 
@@ -607,7 +633,7 @@ In this example:
 - **Technical replicates**: Each biological sample is measured twice (`comment[technical replicate]` = 1 and 2)
 - **Fractions**: Each technical replicate has 2 fractions (`comment[fraction identifier]` = 1 and 2)
 
-IMPORTANT: Both _characteristics[biological replicate]_ and _comment[technical replicate]_ columns are MANDATORY. Fill with 1 if replicates are not performed in a study.
+IMPORTANT: Both _characteristics[biological replicate]_ and _comment[technical replicate]_ columns are REQUIRED. When no replicates are performed in a study, set both columns to 1 (i.e., each sample is biological replicate 1 and technical replicate 1).
 
 Some examples with explicit annotation of the biological replicates can be found here:
 
@@ -776,7 +802,7 @@ If the spiked component is another biological sample (e.g. __E. coli__ lysate sp
 For detailed guidance on annotating sample metadata, refer to the following conventions documents:
 
 * link:metadata-guidelines/sample-metadata.adoc[Sample Metadata Guidelines] - Detailed guidelines for age, sex, disease, organism part, cell type, developmental stage, and other sample characteristics
-* link:metadata-guidelines/human-metadata.adoc[Human Sample Metadata Guidelines] - Human-specific metadata including disease staging, treatment history, demographics, and lifestyle factors
+* link:metadata-guidelines/human-sample-metadata.adoc[Human Sample Metadata Guidelines] - Human-specific metadata including disease staging, treatment history, demographics, and lifestyle factors
 
 [[from-sample-data]]
 == SDRF-Proteomics: data files metadata
@@ -875,7 +901,7 @@ Proteomics data acquisition method can happen in multiple ways: Data Dependent A
 
 IMPORTANT: The _comment[proteomics data acquisition method]_ column is REQUIRED for all mass spectrometry-based SDRF files. This field must be explicitly specified and cannot be omitted or assumed.
 
-You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
+You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
 
 TIP: For DIA experiments, additional properties like MS1 scan range can be captured. See link:metadata-guidelines/data-file-metadata.adoc#dia-scan-window[DIA Scan Window Limits] in the Data File Metadata Guidelines.
 
@@ -929,9 +955,9 @@ The default template is the most basic template that can be used for any proteom
 | link:metadata-guidelines/data-file-metadata.adoc#data-file[comment[data file]] | Data | Required | sample_1.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
 
-NOTE: The link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] column is optional in the default template but RECOMMENDED when the cell type is known. Use `not available` if the cell type cannot be determined.
+NOTE: The link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] column is RECOMMENDED across all templates when the cell type is known or can be determined. Use `not available` if the cell type cannot be determined (e.g., whole tissue samples, mixed cell populations). For cell line experiments, use the cell-lines template which provides more specific guidance.
 
 [[template-human]]
 === Human Template
@@ -948,12 +974,12 @@ The human template extends the default template with clinical and demographic me
 | link:metadata-guidelines/sample-metadata.adoc#organism-annotation[characteristics[organism]] | Sample | Required | homo sapiens
 | link:metadata-guidelines/sample-metadata.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | liver
 | link:metadata-guidelines/sample-metadata.adoc#disease-annotation[characteristics[disease]] | Sample | Required | hepatocellular carcinoma
-| link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Required | hepatocyte
+| link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Recommended | hepatocyte
 | characteristics[biological replicate] | Sample | Required | 1
 | link:metadata-guidelines/sample-metadata.adoc#age-annotation[characteristics[age]] | Sample | Required | 45Y
 | link:metadata-guidelines/sample-metadata.adoc#sex-annotation[characteristics[sex]] | Sample | Required | male
-| link:metadata-guidelines/human-metadata.adoc#clinical-metadata[characteristics[ancestry category]] | Sample | Recommended | European
-| link:metadata-guidelines/human-metadata.adoc#individual-annotation[characteristics[individual]] | Sample | Recommended | P001
+| link:metadata-guidelines/human-sample-metadata.adoc#clinical-metadata[characteristics[ancestry category]] | Sample | Recommended | European
+| link:metadata-guidelines/human-sample-metadata.adoc#individual-annotation[characteristics[individual]] | Sample | Recommended | P001
 
 4+^| *Data File Metadata*
 | link:metadata-guidelines/data-file-metadata.adoc#assay-name[assay name] | Data | Required | patient_001_run1
@@ -967,7 +993,7 @@ The human template extends the default template with clinical and demographic me
 | link:metadata-guidelines/data-file-metadata.adoc#data-file[comment[data file]] | Data | Required | patient_001.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
 
 NOTE: The characteristics[individual] column is optional and is only used when a code for the individual is available; if not, use **not available**. For age encoding format, see link:metadata-guidelines/sample-metadata.adoc[Sample Metadata Guidelines].
 
@@ -986,7 +1012,7 @@ The vertebrates template is used for non-human vertebrate species such as mouse,
 | link:metadata-guidelines/sample-metadata.adoc#organism-annotation[characteristics[organism]] | Sample | Required | mus musculus
 | link:metadata-guidelines/sample-metadata.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | brain
 | link:metadata-guidelines/sample-metadata.adoc#disease-annotation[characteristics[disease]] | Sample | Required | normal
-| link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Required | neuron
+| link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Recommended | neuron
 | characteristics[biological replicate] | Sample | Required | 1
 | link:metadata-guidelines/sample-metadata.adoc#developmental-stage[characteristics[developmental stage]] | Sample | Recommended | adult
 
@@ -1002,7 +1028,7 @@ The vertebrates template is used for non-human vertebrate species such as mouse,
 | link:metadata-guidelines/data-file-metadata.adoc#data-file[comment[data file]] | Data | Required | mouse_001.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
 
 [[template-invertebrates]]
 === Invertebrates Template
@@ -1019,7 +1045,7 @@ The invertebrates template is used for non-vertebrate animal species such as ins
 | link:metadata-guidelines/sample-metadata.adoc#organism-annotation[characteristics[organism]] | Sample | Required | drosophila melanogaster
 | link:metadata-guidelines/sample-metadata.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | head
 | link:metadata-guidelines/sample-metadata.adoc#disease-annotation[characteristics[disease]] | Sample | Required | normal
-| link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Required | neuron
+| link:metadata-guidelines/sample-metadata.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Recommended | neuron
 | characteristics[biological replicate] | Sample | Required | 1
 
 4+^| *Data File Metadata*
@@ -1034,7 +1060,7 @@ The invertebrates template is used for non-vertebrate animal species such as ins
 | link:metadata-guidelines/data-file-metadata.adoc#data-file[comment[data file]] | Data | Required | fly_sample_1.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
 
 NOTE: For Drosophila samples, use https://www.ebi.ac.uk/ols4/ontologies/fbbt[FBbt] (FlyBase anatomy ontology) for organism part. For C. elegans, use https://www.ebi.ac.uk/ols4/ontologies/wbbt[WBbt] (WormBase anatomy ontology).
 
@@ -1068,7 +1094,7 @@ The plants template is used for plant species including model organisms like Ara
 | link:metadata-guidelines/data-file-metadata.adoc#data-file[comment[data file]] | Data | Required | arabidopsis_col0.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
 
 NOTE: For plant samples, use https://www.ebi.ac.uk/ols4/ontologies/po[PO] (Plant Ontology) for organism part and cell type annotations.
 
@@ -1086,7 +1112,7 @@ Example of multiple organism part columns:
 | sample-1    | heart | heart left ventricle
 |===
 
-The template files can be downloaded from the https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/core-templates[core-templates] folder.
+The template files can be downloaded from the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[core-templates] folder.
 
 [[study-variables]]
 == Factor Values (Study Variables)
@@ -1153,7 +1179,7 @@ Choose the appropriate template based on your experiment type:
 * **Metaproteomics**: Microbial community proteomics
 * **Single Cell**: Single cell proteomics experiments
 
-For detailed specifications and examples, visit the https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates[Experiment-specific Templates] documentation.
+For detailed specifications and examples, visit the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Experiment-specific Templates] documentation.
 
 [[example-annotated-datasets]]
 == Examples of Annotated Datasets
@@ -1166,39 +1192,39 @@ The following table provides links to example SDRF files for different experimen
 |Label-free
 |PXD008934
 |Human proteome label-free quantification
-|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD008934[View SDRF]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD008934[View SDRF]
 
 |TMT
 |PXD017710
 |TMT-labeled quantitative proteomics
-|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD017710[View SDRF]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710[View SDRF]
 
 |SILAC
 |PXD000612
 |SILAC-based quantification
-|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD000612[View SDRF]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000612[View SDRF]
 
 |DIA
 |PXD018830
 |Data-independent acquisition
-|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD018830[View SDRF]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD018830[View SDRF]
 
 |Phosphoproteomics
 |PXD000759
 |PTM enrichment study
-|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD000759[View SDRF]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000759[View SDRF]
 
 |Cell lines
 |PXD001819
 |Cell line proteomics
-|https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD001819[View SDRF]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD001819[View SDRF]
 |===
 
 A comprehensive collection of annotated projects is available at: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects Repository]
 
 == Ongoing template discussions
 
-We have created a file in GitHub https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates-under-development.adoc[Ongoing template discussions] where we aggregate all the ongoing discussions about the format and new templates.
+We have created a file in GitHub https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/templates-under-development.adoc[Ongoing template discussions] where we aggregate all the ongoing discussions about the format and new templates.
 
 == Intellectual Property Statement
 
