@@ -82,18 +82,24 @@ In addition to the ontologies supported by the core SDRF-Proteomics specificatio
 
 This section defines the metadata columns required and recommended for crosslinking experiments.
 
-=== Required Columns
+=== Sample-Level Columns (characteristics)
 
-The following columns are REQUIRED for crosslinking experiments in addition to the core SDRF-Proteomics requirements:
+These columns describe the sample itself and allow identification of crosslinking samples when querying sample metadata:
 
 |===
 |Column Name |Description |Cardinality |Ontology/CV |Example Values
 
 |characteristics[crosslinking reagent]
-|Chemical crosslinking agent(s) used in the experiment
-|1..*
-|PSI-MS CV, ChEBI, XLMOD
-|DSS, BS3, EDC, DSSO, DSBU, formaldehyde, photo-leucine, disuccinimidyl sulfoxide
+|Name of the cross-linking reagent used (identifies this as a crosslinking sample)
+|1
+|XLMOD, ChEBI
+|DSSO, DSS, BS3, EDC, DSBU
+
+|characteristics[enrichment process]
+|Indicates if the sample was enriched for cross-linked peptides
+|1
+|Controlled vocabulary
+|enrichment of cross-linked peptides, not applicable
 
 |characteristics[crosslink type]
 |Type of crosslinks being studied
@@ -101,6 +107,28 @@ The following columns are REQUIRED for crosslinking experiments in addition to t
 |Controlled vocabulary
 |homo-bifunctional, hetero-bifunctional, zero-length, photo-reactive, cleavable
 |===
+
+=== Data-Level Columns (comment)
+
+These columns contain technical details about the cross-linking experiment:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[cross-linking method]
+|MS-based cross-linking methodology used
+|1
+|Controlled vocabulary
+|cross-linking mass spectrometry, hydrogen-deuterium exchange, ion-mobility mass spectrometry
+
+|comment[cross-linker]
+|Cross-linker compound with structured properties (see <<crosslinker-annotation>>)
+|1
+|XLMOD, ChEBI, PRIDE
+|NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05
+|===
+
+NOTE: The `characteristics[crosslinking reagent]` provides a simple identifier for sample-level queries, while `comment[cross-linker]` contains the detailed structured annotation with all cross-linker properties.
 
 === Recommended Columns
 
@@ -226,18 +254,79 @@ The following table lists commonly used crosslinkers and their properties:
 
 === Key-Value Annotation Format
 
-For detailed crosslinker annotation, use the key-value format similar to modification parameters:
+For detailed crosslinker annotation, use the key-value format in the `comment[cross-linker]` column:
 
 [source]
 ----
-NT=DSS;AC=XLMOD:02001;TG=K;SA=11.4
+NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05
 ----
 
-Where:
-- `NT`: Name of crosslinker
-- `AC`: Accession (XLMOD or ChEBI)
-- `TG`: Target residues
-- `SA`: Spacer arm length in Angstroms
+The following properties are supported:
+
+|===
+|Property |Key |Description |Status |Example
+
+|Cross-linker Name
+|NT
+|Name of the cross-linking reagent
+|REQUIRED
+|NT=DSSO
+
+|Cross-linker Accession
+|AC
+|Ontology accession (XLMOD, ChEBI, or PRIDE)
+|REQUIRED
+|AC=XLMOD:02126
+
+|Target Amino Acid
+|TA
+|Target residue(s) for the cross-linker
+|RECOMMENDED
+|TA=K
+
+|Cleavable
+|CL
+|Whether the cross-linker is MS-cleavable
+|RECOMMENDED
+|CL=yes, CL=no
+
+|Mass Heavy Fragment
+|MH
+|Mass of heavy fragment for cleavable cross-linkers (Da)
+|RECOMMENDED (if cleavable)
+|MH=54.01
+
+|Mass Light Fragment
+|ML
+|Mass of light fragment for cleavable cross-linkers (Da)
+|RECOMMENDED (if cleavable)
+|ML=85.05
+
+|Hydrolyzed Mass
+|HM
+|Hydrolyzed mass for non-cleavable cross-linkers (Da)
+|RECOMMENDED (if non-cleavable)
+|HM=156.08
+
+|Spacer Arm Length
+|SA
+|Spacer arm length in Angstroms
+|RECOMMENDED
+|SA=10.3
+|===
+
+.Examples
+[source]
+----
+# MS-cleavable cross-linker (DSSO)
+NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05;SA=10.3
+
+# Non-cleavable cross-linker (DSS)
+NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4
+
+# Zero-length cross-linker (EDC)
+NT=EDC;AC=XLMOD:02009;TA=D,E-K;CL=no;SA=0
+----
 
 [[cleavable-crosslinkers]]
 == MS-Cleavable Crosslinkers Checklist
@@ -316,13 +405,14 @@ For crosslinking performed in living cells or tissues, additional annotations ar
 A complete example for a crosslinking mass spectrometry experiment:
 
 |===
-|source name |characteristics[organism] |characteristics[cell type] |characteristics[disease] |characteristics[crosslinking reagent] |characteristics[crosslink type] |characteristics[crosslink distance] |characteristics[crosslinking reaction time] |characteristics[crosslinking temperature] |characteristics[biological replicate] |assay name |technology type |comment[crosslinker concentration] |comment[crosslink enrichment method] |comment[data file] |comment[fraction identifier] |comment[label] |comment[cleavage agent details] |comment[instrument]
+|source name |characteristics[organism] |characteristics[cell type] |characteristics[disease] |characteristics[crosslinking reagent] |characteristics[enrichment process] |characteristics[crosslink type] |characteristics[crosslink distance] |characteristics[crosslinking reaction time] |characteristics[crosslinking temperature] |characteristics[biological replicate] |assay name |technology type |comment[cross-linking method] |comment[cross-linker] |comment[crosslinker concentration] |comment[crosslink enrichment method] |comment[data file] |comment[fraction identifier] |comment[label] |comment[cleavage agent details] |comment[instrument]
 
 |ribosome_prep_1
 |saccharomyces cerevisiae
 |not applicable
 |normal
 |DSS
+|enrichment of cross-linked peptides
 |homo-bifunctional
 |30 A
 |30 min
@@ -330,6 +420,8 @@ A complete example for a crosslinking mass spectrometry experiment:
 |1
 |ribosome_XL_run1
 |proteomic profiling by mass spectrometry
+|cross-linking mass spectrometry
+|NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4
 |2 mM
 |size exclusion chromatography
 |ribosome_xl_frac01.raw
@@ -343,6 +435,7 @@ A complete example for a crosslinking mass spectrometry experiment:
 |not applicable
 |normal
 |DSS
+|enrichment of cross-linked peptides
 |homo-bifunctional
 |30 A
 |30 min
@@ -350,6 +443,8 @@ A complete example for a crosslinking mass spectrometry experiment:
 |1
 |ribosome_XL_run1
 |proteomic profiling by mass spectrometry
+|cross-linking mass spectrometry
+|NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4
 |2 mM
 |size exclusion chromatography
 |ribosome_xl_frac02.raw
@@ -363,6 +458,7 @@ A complete example for a crosslinking mass spectrometry experiment:
 |HEK293
 |normal
 |DSSO
+|enrichment of cross-linked peptides
 |homo-bifunctional
 |26 A
 |45 min
@@ -370,6 +466,8 @@ A complete example for a crosslinking mass spectrometry experiment:
 |1
 |complex_XL_run1
 |proteomic profiling by mass spectrometry
+|cross-linking mass spectrometry
+|NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05;SA=10.3
 |1 mM
 |strong cation exchange
 |complex_xl_scx01.raw
