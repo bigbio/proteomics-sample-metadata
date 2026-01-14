@@ -43,8 +43,9 @@
 <li><a href="#_sdrf_proteomics_specification">7. SDRF-Proteomics specification</a>
 <ul class="sectlevel2">
 <li><a href="#sdrf-file-rules">7.1. Format rules</a></li>
-<li><a href="#column-headers">7.2. Column headers</a></li>
-<li><a href="#sdrf-file-standarization">7.3. Cell values</a></li>
+<li><a href="#file-level-metadata">7.2. File-level metadata (Header comments)</a></li>
+<li><a href="#column-headers">7.3. Column headers</a></li>
+<li><a href="#sdrf-file-standarization">7.4. Cell values</a></li>
 </ul>
 </li>
 <li><a href="#ontologies-supported">8. Ontologies and Controlled Vocabularies</a></li>
@@ -483,7 +484,112 @@ We added the prefix v to the version number to indicate that it is the version o
 </div>
 </div>
 <div class="sect2">
-<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">7.2. Column headers</a></h3>
+<h3 id="file-level-metadata"><a class="anchor" href="#file-level-metadata"></a><a class="link" href="#file-level-metadata">7.2. File-level metadata (Header comments)</a></h3>
+<div class="paragraph">
+<p>SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.</p>
+</div>
+<div class="paragraph">
+<p>Header comments MUST:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Start with <code>##</code> (double hash) followed by a key-value pair</p>
+</li>
+<li>
+<p>Appear at the very beginning of the file, before the column header row</p>
+</li>
+<li>
+<p>Use the format <code>##key=value</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following header fields are supported:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fileformat</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier for the file format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SDRF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SDRF-Proteomics specification version used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the template used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human, cell_lines, default</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">template_version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.0.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Origin or creator of the file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE, user-generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">validation_hash</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hash from validator certification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sha256:abc123&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Example of an SDRF file with header comments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">##fileformat=SDRF
+##version=v1.1.0
+##template=human
+##template_version=v1.0.0
+##source=PRIDE
+source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
+sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">7.3. Column headers</a></h3>
 <div class="paragraph">
 <p>Depending on each section the column headers (property names) will be prefixed with the following prefixes:</p>
 </div>
@@ -517,7 +623,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </div>
 </div>
 <div class="sect2">
-<h3 id="sdrf-file-standarization"><a class="anchor" href="#sdrf-file-standarization"></a><a class="link" href="#sdrf-file-standarization">7.3. Cell values</a></h3>
+<h3 id="sdrf-file-standarization"><a class="anchor" href="#sdrf-file-standarization"></a><a class="link" href="#sdrf-file-standarization">7.4. Cell values</a></h3>
 <div class="paragraph">
 <p>The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.</p>
 </div>
@@ -2757,7 +2863,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-14 09:24:52 UTC
+Last updated 2026-01-14 10:54:52 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
