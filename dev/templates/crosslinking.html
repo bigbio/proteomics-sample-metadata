@@ -21,8 +21,9 @@
 <li><a href="#additional-ontologies">5. Additional Ontologies</a></li>
 <li><a href="#checklist">6. Checklist</a>
 <ul class="sectlevel2">
-<li><a href="#_required_columns">6.1. Required Columns</a></li>
-<li><a href="#_recommended_columns">6.2. Recommended Columns</a></li>
+<li><a href="#_sample_level_columns_characteristics">6.1. Sample-Level Columns (characteristics)</a></li>
+<li><a href="#_data_level_columns_comment">6.2. Data-Level Columns (comment)</a></li>
+<li><a href="#_recommended_columns">6.3. Recommended Columns</a></li>
 </ul>
 </li>
 <li><a href="#crosslinker-annotation">7. Crosslinker Annotation</a>
@@ -180,9 +181,9 @@
 <p>This section defines the metadata columns required and recommended for crosslinking experiments.</p>
 </div>
 <div class="sect2">
-<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">6.1. Required Columns</a></h3>
+<h3 id="_sample_level_columns_characteristics"><a class="anchor" href="#_sample_level_columns_characteristics"></a><a class="link" href="#_sample_level_columns_characteristics">6.1. Sample-Level Columns (characteristics)</a></h3>
 <div class="paragraph">
-<p>The following columns are REQUIRED for crosslinking experiments in addition to the core SDRF-Proteomics requirements:</p>
+<p>These columns describe the sample itself and allow identification of crosslinking samples when querying sample metadata:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -204,10 +205,17 @@
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[crosslinking reagent]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical crosslinking agent(s) used in the experiment</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1..*</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MS CV, ChEBI, XLMOD</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DSS, BS3, EDC, DSSO, DSBU, formaldehyde, photo-leucine, disuccinimidyl sulfoxide</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the cross-linking reagent used (identifies this as a crosslinking sample)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XLMOD, ChEBI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DSSO, DSS, BS3, EDC, DSBU</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[enrichment process]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates if the sample was enriched for cross-linked peptides</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enrichment of cross-linked peptides, not applicable</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[crosslink type]</p></td>
@@ -220,7 +228,59 @@
 </table>
 </div>
 <div class="sect2">
-<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.2. Recommended Columns</a></h3>
+<h3 id="_data_level_columns_comment"><a class="anchor" href="#_data_level_columns_comment"></a><a class="link" href="#_data_level_columns_comment">6.2. Data-Level Columns (comment)</a></h3>
+<div class="paragraph">
+<p>These columns contain technical details about the cross-linking experiment:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cross-linking method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS-based cross-linking methodology used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cross-linking mass spectrometry, hydrogen-deuterium exchange, ion-mobility mass spectrometry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cross-linker]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-linker compound with structured properties (see <a href="#crosslinker-annotation">Chapter 7</a>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XLMOD, ChEBI, PRIDE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>characteristics[crosslinking reagent]</code> provides a simple identifier for sample-level queries, while <code>comment[cross-linker]</code> contains the detailed structured annotation with all cross-linker properties.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.3. Recommended Columns</a></h3>
 <div class="paragraph">
 <p>The following columns are RECOMMENDED for crosslinking experiments:</p>
 </div>
@@ -400,19 +460,104 @@
 <div class="sect2">
 <h3 id="_key_value_annotation_format"><a class="anchor" href="#_key_value_annotation_format"></a><a class="link" href="#_key_value_annotation_format">7.2. Key-Value Annotation Format</a></h3>
 <div class="paragraph">
-<p>For detailed crosslinker annotation, use the key-value format similar to modification parameters:</p>
+<p>For detailed crosslinker annotation, use the key-value format in the <code>comment[cross-linker]</code> column:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>NT=DSS;AC=XLMOD:02001;TG=K;SA=11.4</code></pre>
+<pre class="highlight"><code>NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Where:
-- <code>NT</code>: Name of crosslinker
-- <code>AC</code>: Accession (XLMOD or ChEBI)
-- <code>TG</code>: Target residues
-- <code>SA</code>: Spacer arm length in Angstroms</p>
+<p>The following properties are supported:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-linker Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the cross-linking reagent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=DSSO</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-linker Accession</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ontology accession (XLMOD, ChEBI, or PRIDE)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC=XLMOD:02126</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target Amino Acid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target residue(s) for the cross-linker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TA=K</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cleavable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the cross-linker is MS-cleavable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CL=yes, CL=no</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass Heavy Fragment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass of heavy fragment for cleavable cross-linkers (Da)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED (if cleavable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MH=54.01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass Light Fragment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ML</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass of light fragment for cleavable cross-linkers (Da)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED (if cleavable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ML=85.05</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hydrolyzed Mass</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hydrolyzed mass for non-cleavable cross-linkers (Da)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED (if non-cleavable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HM=156.08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spacer Arm Length</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spacer arm length in Angstroms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SA=10.3</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">Examples</div>
+<div class="content">
+<pre class="highlight"><code># MS-cleavable cross-linker (DSSO)
+NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05;SA=10.3
+
+# Non-cleavable cross-linker (DSS)
+NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4
+
+# Zero-length cross-linker (EDC)
+NT=EDC;AC=XLMOD:02009;TA=D,E-K;CL=no;SA=0</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -552,25 +697,28 @@
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2642%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5454%;">
+<col style="width: 4.5466%;">
 </colgroup>
 <thead>
 <tr>
@@ -579,6 +727,7 @@
 <th class="tableblock halign-left valign-top">characteristics[cell type]</th>
 <th class="tableblock halign-left valign-top">characteristics[disease]</th>
 <th class="tableblock halign-left valign-top">characteristics[crosslinking reagent]</th>
+<th class="tableblock halign-left valign-top">characteristics[enrichment process]</th>
 <th class="tableblock halign-left valign-top">characteristics[crosslink type]</th>
 <th class="tableblock halign-left valign-top">characteristics[crosslink distance]</th>
 <th class="tableblock halign-left valign-top">characteristics[crosslinking reaction time]</th>
@@ -586,6 +735,8 @@
 <th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
 <th class="tableblock halign-left valign-top">assay name</th>
 <th class="tableblock halign-left valign-top">technology type</th>
+<th class="tableblock halign-left valign-top">comment[cross-linking method]</th>
+<th class="tableblock halign-left valign-top">comment[cross-linker]</th>
 <th class="tableblock halign-left valign-top">comment[crosslinker concentration]</th>
 <th class="tableblock halign-left valign-top">comment[crosslink enrichment method]</th>
 <th class="tableblock halign-left valign-top">comment[data file]</th>
@@ -602,6 +753,7 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DSS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enrichment of cross-linked peptides</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo-bifunctional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">30 A</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">30 min</p></td>
@@ -609,6 +761,8 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ribosome_XL_run1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cross-linking mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2 mM</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">size exclusion chromatography</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ribosome_xl_frac01.raw</p></td>
@@ -623,6 +777,7 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DSS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enrichment of cross-linked peptides</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo-bifunctional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">30 A</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">30 min</p></td>
@@ -630,6 +785,8 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ribosome_XL_run1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cross-linking mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2 mM</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">size exclusion chromatography</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ribosome_xl_frac02.raw</p></td>
@@ -644,6 +801,7 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">HEK293</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DSSO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enrichment of cross-linked peptides</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo-bifunctional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">26 A</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">45 min</p></td>
@@ -651,6 +809,8 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">complex_XL_run1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cross-linking mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05;SA=10.3</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1 mM</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">strong cation exchange</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">complex_xl_scx01.raw</p></td>
@@ -799,7 +959,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template crosslinking<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-14 16:41:50 UTC
+Last updated 2026-01-14 17:00:32 UTC
 </div>
 </div>
 </body>
