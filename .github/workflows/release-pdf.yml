@@ -6,9 +6,6 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - 'sdrf-proteomics/**'
-      - 'site/pdf-theme/**'
   workflow_dispatch:
     inputs:
       version:
@@ -26,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.release.tag_name || github.ref }}
+          fetch-depth: 0
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -92,19 +90,24 @@ jobs:
             echo "branch=master" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit PDF to repository
+      - name: Commit and push PDF to repository
         run: |
           VERSION="${{ steps.version.outputs.version }}"
+          TARGET_BRANCH="${{ steps.target-branch.outputs.branch }}"
+
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add "psi-document/sdrf-proteomics-specification-v${VERSION}.pdf"
-          git commit -m "Add PDF specification v${VERSION}" || echo "No changes to commit"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.target-branch.outputs.branch }}
+          # Check if PDF was generated
+          if [ -f "psi-document/sdrf-proteomics-specification-v${VERSION}.pdf" ]; then
+            echo "PDF generated successfully: psi-document/sdrf-proteomics-specification-v${VERSION}.pdf"
+            git add "psi-document/sdrf-proteomics-specification-v${VERSION}.pdf"
+            git commit -m "Add PDF specification v${VERSION}" || echo "No changes to commit"
+            git push origin HEAD:${TARGET_BRANCH}
+          else
+            echo "ERROR: PDF was not generated!"
+            exit 1
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
