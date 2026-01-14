@@ -10,7 +10,7 @@
 
 ## Improving metadata annotation of Proteomics datasets
 
-Metadata is essential in proteomics data repositories and is crucial to interpret and reanalyze the deposited data sets. While the dataset general description and standard data file formats are supported and captured for every dataset by ProteomeXchange partners, the information regarding the sample to data files is mostly missing. Members of the European Bioinformatics Community for Mass Spectrometry (EuBIC - https://eubic-ms.org/) have created this open-source project to enable the standardization of sample metadata of public proteomics data sets.
+Metadata is essential in proteomics data repositories and is crucial to interpret and reanalyze the deposited data sets. While the dataset general description and standard data file formats are supported and captured for every dataset by ProteomeXchange partners, the information regarding the sample to data files is mostly missing. Members of the European Bioinformatics Community for Mass Spectrometry (EuBIC - <https://eubic-ms.org/>) have created this open-source project to enable the standardization of sample metadata of public proteomics data sets.
 
 The **SDRF-Proteomics** (Sample and Data Relationship Format for Proteomics) is a tab-delimited file format that captures the relationship between samples and data files in proteomics experiments. It defines the minimum information required to report the experimental design of proteomics experiments, enabling automated re-processing and reuse of deposited data by the proteomics community.
 
