@@ -1,0 +1,488 @@
+= SDRF-Proteomics: Data-Dependent Acquisition (DDA) Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating Data-Dependent Acquisition (DDA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DDA-specific metadata.
+
+**Type:** Specialized Template (used in combination with core templates)
+
+**Status:** Draft - This template is under active development and may change significantly.
+
+**Version:** 1.0.0-dev - 2025-01
+
+[[abstract]]
+== Abstract
+
+Data-Dependent Acquisition (DDA) is the traditional and most widely used mass spectrometry acquisition strategy for proteomics. In DDA mode, the mass spectrometer:
+
+- Performs a survey scan (MS1) to detect precursor ions
+- Selects the most intense precursors (top-N) for fragmentation
+- Acquires MS2 spectra for selected precursors
+- Uses dynamic exclusion to avoid resampling the same ions
+
+DDA remains the gold standard for discovery proteomics, peptide identification, and building spectral libraries. This template captures the acquisition parameters essential for DDA data analysis and reproducibility.
+
+[[motivation]]
+== Motivation
+
+DDA experiments have specific parameters that affect data quality and reproducibility:
+
+1. **Top-N selection**: Number of precursors selected per cycle
+2. **Dynamic exclusion**: Duration and settings to avoid resampling
+3. **Isolation width**: Width of the precursor isolation window
+4. **Intensity threshold**: Minimum intensity for precursor selection
+5. **Fractionation**: DDA experiments often use extensive fractionation for deep proteome coverage
+6. **Charge state filtering**: Which charge states are selected for fragmentation
+
+These aspects require documentation beyond standard SDRF-Proteomics fields.
+
+[[connections]]
+== Connections to Analysis Pipelines
+
+DDA data is typically analyzed using:
+
+- **MaxQuant**: Widely used for label-free and labeling quantification
+- **Proteome Discoverer**: Thermo Fisher's commercial platform
+- **MSFragger/FragPipe**: High-speed database searching
+- **Comet/Percolator**: Open-source search and validation
+- **Mascot**: Commercial database search engine
+- **PEAKS**: De novo sequencing and database search
+- **OpenMS**: Open-source proteomics pipeline
+
+[[additional-ontologies]]
+== Additional Ontologies
+
+In addition to the ontologies supported by the core SDRF-Proteomics specification, DDA templates utilize:
+
+- **PSI-MS CV**: For mass spectrometry acquisition terms
+- **PRIDE CV**: For proteomics data acquisition methods and fractionation
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for DDA experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for DDA experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[proteomics data acquisition method]
+|Must indicate DDA acquisition
+|1
+|PRIDE CV
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+
+|comment[precursor mass tolerance]
+|Mass tolerance for precursor ions in database search
+|1
+|Numeric value with unit
+|10 ppm, 20 ppm, 0.02 Da
+
+|comment[fragment mass tolerance]
+|Mass tolerance for fragment ions in database search
+|1
+|Numeric value with unit
+|0.02 Da, 0.05 Da, 0.5 Da, 20 ppm
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for DDA experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[fractionation method]
+|Method used to fractionate the sample before MS
+|0..1
+|PRIDE CV
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564, NT=Strong cation exchange;AC=PRIDE:0000565, no fractionation
+
+|comment[collision energy]
+|Collision energy used for fragmentation
+|0..1
+|Numeric value with unit
+|30 NCE, 27 eV, 35 NCE
+
+|comment[dissociation method]
+|Fragmentation method used
+|0..1
+|PSI-MS CV
+|NT=beam-type collision-induced dissociation;AC=MS:1000422, NT=electron-transfer dissociation;AC=MS:1000598
+
+|comment[MS2 mass analyzer]
+|Mass analyzer used for MS2 acquisition
+|0..1
+|PSI-MS CV
+|NT=Orbitrap;AC=MS:1000484, NT=linear ion trap;AC=MS:1000291
+
+|comment[top N]
+|Number of precursors selected per MS1 scan
+|0..1
+|Numeric value
+|10, 15, 20, 40
+
+|comment[isolation window]
+|Width of precursor isolation window
+|0..1
+|Numeric value with unit
+|1.6 Th, 2.0 m/z, 1.2 Th
+
+|comment[dynamic exclusion duration]
+|Time for dynamic exclusion
+|0..1
+|Numeric value with unit
+|30 s, 60 s, 45 s
+
+|comment[intensity threshold]
+|Minimum intensity for precursor selection
+|0..1
+|Numeric value
+|1e4, 5000, 1e5
+
+|comment[charge state]
+|Charge states selected for fragmentation
+|0..1
+|Range or list
+|2-6, 2-7, 2+;3+;4+
+|===
+
+[[fractionation-methods]]
+== Fractionation Methods
+
+DDA experiments often employ fractionation to increase proteome coverage. Common methods:
+
+|===
+|Method |PRIDE CV Term |Description |Typical Use
+
+|High-pH reversed-phase
+|PRIDE:0000564
+|Orthogonal to low-pH RP-LC
+|Deep proteome profiling
+
+|Strong cation exchange (SCX)
+|PRIDE:0000565
+|Charge-based separation
+|Complex samples, PTM enrichment
+
+|Strong anion exchange (SAX)
+|PRIDE:0000566
+|Charge-based separation
+|Phosphopeptide fractionation
+
+|Basic reversed-phase
+|PRIDE:0000567
+|High pH reversed-phase
+|General fractionation
+
+|Size exclusion chromatography
+|PRIDE:0000568
+|Size-based separation
+|Protein complex analysis
+
+|Isoelectric focusing (OFFGEL)
+|PRIDE:0000569
+|pI-based separation
+|Complex samples
+
+|No fractionation
+|not applicable
+|Single-shot analysis
+|High-throughput, clinical samples
+|===
+
+Document fractionation using `comment[fractionation method]` and indicate fraction numbers with `comment[fraction identifier]`.
+
+[[dda-parameters]]
+== DDA Acquisition Parameters
+
+=== Top-N Selection
+
+The number of precursors selected per MS1 scan significantly affects:
+
+- Proteome depth
+- Quantification accuracy
+- Duty cycle/cycle time
+
+|===
+|Top-N Value |Typical Use Case |Trade-offs
+
+|10-15
+|Standard discovery
+|Good depth and quantification
+
+|20-40
+|Deep profiling, fractionated samples
+|Maximum identifications, longer cycle
+
+|5-10
+|Short gradients, targeted
+|Fast cycles, lower depth
+|===
+
+=== Dynamic Exclusion
+
+Dynamic exclusion settings prevent repeated sampling of abundant peptides:
+
+|===
+|Parameter |Description |Typical Values
+
+|Duration
+|Time a precursor is excluded after selection
+|30-90 s
+
+|Mass tolerance
+|Mass window for exclusion matching
+|10 ppm
+
+|Repeat count
+|Times a precursor can be selected before exclusion
+|1-2
+|===
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a fractionated DDA proteomics experiment:
+
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate] |assay name |technology type |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[fractionation method] |comment[technical replicate] |comment[top N] |comment[isolation window] |comment[collision energy] |comment[dynamic exclusion duration] |comment[precursor mass tolerance] |comment[fragment mass tolerance] |comment[dissociation method] |comment[MS2 mass analyzer] |comment[data file]
+
+|liver_sample_001
+|homo sapiens
+|liver
+|normal
+|1
+|DDA_liver001_F01
+|proteomic profiling by mass spectrometry
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|AC=MS:1002038;NT=label free sample
+|NT=Q Exactive HF;AC=MS:1002523
+|NT=Trypsin;AC=MS:1001251
+|1
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|1
+|15
+|1.6 Th
+|30 NCE
+|45 s
+|10 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=Orbitrap;AC=MS:1000484
+|liver001_F01.raw
+
+|liver_sample_001
+|homo sapiens
+|liver
+|normal
+|1
+|DDA_liver001_F02
+|proteomic profiling by mass spectrometry
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|AC=MS:1002038;NT=label free sample
+|NT=Q Exactive HF;AC=MS:1002523
+|NT=Trypsin;AC=MS:1001251
+|2
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|1
+|15
+|1.6 Th
+|30 NCE
+|45 s
+|10 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=Orbitrap;AC=MS:1000484
+|liver001_F02.raw
+
+|liver_sample_001
+|homo sapiens
+|liver
+|normal
+|1
+|DDA_liver001_F03
+|proteomic profiling by mass spectrometry
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|AC=MS:1002038;NT=label free sample
+|NT=Q Exactive HF;AC=MS:1002523
+|NT=Trypsin;AC=MS:1001251
+|3
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|1
+|15
+|1.6 Th
+|30 NCE
+|45 s
+|10 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=Orbitrap;AC=MS:1000484
+|liver001_F03.raw
+
+|liver_sample_002
+|homo sapiens
+|liver
+|hepatocellular carcinoma
+|1
+|DDA_liver002_F01
+|proteomic profiling by mass spectrometry
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|AC=MS:1002038;NT=label free sample
+|NT=Q Exactive HF;AC=MS:1002523
+|NT=Trypsin;AC=MS:1001251
+|1
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|1
+|15
+|1.6 Th
+|30 NCE
+|45 s
+|10 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=Orbitrap;AC=MS:1000484
+|liver002_F01.raw
+|===
+
+[[single-shot-example]]
+== Single-Shot DDA Example
+
+For high-throughput or clinical samples without fractionation:
+
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate] |assay name |technology type |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[fractionation method] |comment[technical replicate] |comment[top N] |comment[collision energy] |comment[precursor mass tolerance] |comment[fragment mass tolerance] |comment[data file]
+
+|plasma_001
+|homo sapiens
+|blood plasma
+|normal
+|1
+|plasma001_run1
+|proteomic profiling by mass spectrometry
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|AC=MS:1002038;NT=label free sample
+|NT=Orbitrap Exploris 480;AC=MS:1003028
+|NT=Trypsin;AC=MS:1001251
+|1
+|no fractionation
+|1
+|20
+|30 NCE
+|10 ppm
+|0.02 Da
+|plasma_001.raw
+|===
+
+[[tmt-dda-example]]
+== TMT-Labeled DDA Example
+
+For isobaric labeling experiments (TMT, iTRAQ):
+
+|===
+|source name |characteristics[organism] |characteristics[disease] |characteristics[biological replicate] |assay name |comment[proteomics data acquisition method] |comment[label] |comment[fraction identifier] |comment[fractionation method] |comment[top N] |comment[MS2 mass analyzer] |comment[data file]
+
+|sample_A_rep1
+|homo sapiens
+|normal
+|1
+|TMT_set1_F01
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|TMT126
+|1
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|20
+|NT=Orbitrap;AC=MS:1000484
+|TMT_set1_F01.raw
+
+|sample_B_rep1
+|homo sapiens
+|cancer
+|1
+|TMT_set1_F01
+|NT=Data-dependent acquisition;AC=PRIDE:0000627
+|TMT127N
+|1
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|20
+|NT=Orbitrap;AC=MS:1000484
+|TMT_set1_F01.raw
+|===
+
+NOTE: For TMT experiments, multiple samples share the same raw file. Use `comment[label]` to distinguish channels.
+
+[[best-practices]]
+== Best Practices for DDA Annotation
+
+1. **Always specify acquisition method**: Use `comment[proteomics data acquisition method]` with the PRIDE CV term for DDA.
+
+2. **Document fractionation**: Include `comment[fractionation method]` and properly number fractions with `comment[fraction identifier]`.
+
+3. **Report mass tolerances**: Precursor and fragment mass tolerances are essential for data reanalysis.
+
+4. **Include key acquisition parameters**: Top-N, isolation window, and collision energy significantly affect results.
+
+5. **Note dynamic exclusion**: This parameter affects reproducibility between technical replicates.
+
+6. **Specify MS2 analyzer**: Important for understanding resolution and mass accuracy of fragment spectra.
+
+7. **Document fragmentation method**: HCD, CID, ETD, and EThcD produce different fragmentation patterns.
+
+8. **Consider instrument-specific settings**: Different platforms may have unique parameters worth documenting.
+
+[[template-file]]
+== Template File
+
+The DDA SDRF template file is available in this directory:
+
+- link:dda-acquisition-template.sdrf.tsv[dda-acquisition-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+DDA SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+NOTE: DDA-specific validation rules are under development.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+
+[[references]]
+== References
+
+- Michalski A, et al. (2011) More than 100,000 detectable peptide species elute in single shotgun proteomics runs but the majority is inaccessible to data-dependent LC-MS/MS. Journal of Proteome Research.
+- Hebert AS, et al. (2014) The one hour yeast proteome. Molecular & Cellular Proteomics.
+- Kelstrup CD, et al. (2018) Performance evaluation of the Q Exactive HF-X for shotgun proteomics. Journal of Proteome Research.
+- Bekker-Jensen DB, et al. (2017) An optimized shotgun strategy for the rapid generation of comprehensive human proteomes. Cell Systems.

@@ -1,0 +1,432 @@
+= SDRF-Proteomics: Data-Independent Acquisition (DIA) Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating Data-Independent Acquisition (DIA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DIA-specific metadata.
+
+**Type:** Specialized Template (used in combination with core templates)
+
+**Status:** Draft - This template is under active development and may change significantly.
+
+**Version:** 1.0.0-dev - 2025-01
+
+[[abstract]]
+== Abstract
+
+Data-Independent Acquisition (DIA) is a mass spectrometry acquisition strategy where all precursor ions within a specified m/z range are fragmented systematically, regardless of their intensity. Unlike Data-Dependent Acquisition (DDA), DIA provides:
+
+- Comprehensive and reproducible proteome coverage
+- Reduced missing values across samples
+- Better quantitative accuracy and precision
+- Systematic sampling of all detectable peptides
+
+Popular DIA methods include SWATH-MS, MSE, All-Ion Fragmentation (AIF), and various windowed DIA approaches. This template captures the acquisition parameters essential for DIA data analysis and reproducibility.
+
+[[motivation]]
+== Motivation
+
+DIA experiments have unique characteristics that distinguish them from DDA proteomics:
+
+1. **Isolation window schemes**: DIA uses predefined m/z windows that must be documented
+2. **Scan window ranges**: The precursor mass range covered by the acquisition
+3. **Stepped collision energies**: Many DIA methods use multiple collision energies per scan
+4. **Spectral library requirements**: DIA analysis often requires spectral libraries for peptide identification
+5. **Cycle time considerations**: The time to complete one full DIA cycle affects quantification
+
+These aspects require additional metadata beyond standard SDRF-Proteomics fields.
+
+[[connections]]
+== Connections to Analysis Pipelines
+
+DIA data is typically analyzed using specialized software:
+
+- **DIA-NN**: Deep learning-based DIA analysis
+- **Spectronaut**: Commercial DIA analysis platform
+- **OpenSWATH**: Open-source targeted analysis
+- **MaxDIA**: MaxQuant's DIA module
+- **EncyclopeDIA**: Chromatogram library search
+- **Skyline**: Targeted quantification
+
+When documenting DIA experiments, noting the intended or used analysis software is RECOMMENDED.
+
+[[additional-ontologies]]
+== Additional Ontologies
+
+In addition to the ontologies supported by the core SDRF-Proteomics specification, DIA templates utilize:
+
+- **PSI-MS CV**: For mass spectrometry acquisition terms
+- **PRIDE CV**: For proteomics data acquisition methods
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for DIA experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for DIA experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[proteomics data acquisition method]
+|Must indicate DIA acquisition
+|1
+|PRIDE CV
+|NT=Data-independent acquisition;AC=PRIDE:0000450
+
+|comment[precursor mass tolerance]
+|Mass tolerance for precursor ions
+|1
+|Numeric value with unit
+|20 ppm, 10 ppm, 0.02 Da
+
+|comment[fragment mass tolerance]
+|Mass tolerance for fragment ions
+|1
+|Numeric value with unit
+|0.02 Da, 0.05 Da, 20 ppm
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for DIA experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[scan window lower limit]
+|Lower m/z limit of the DIA scan range
+|0..1
+|Numeric value with unit (Th or m/z)
+|350 Th, 400 m/z, 380 Th
+
+|comment[scan window upper limit]
+|Upper m/z limit of the DIA scan range
+|0..1
+|Numeric value with unit (Th or m/z)
+|1650 Th, 1200 m/z, 1800 Th
+
+|comment[isolation window width]
+|Width of DIA isolation windows
+|0..1
+|Numeric value with unit
+|25 Th, 8 m/z, variable
+
+|comment[number of isolation windows]
+|Total number of DIA windows per cycle
+|0..1
+|Numeric value
+|32, 64, 100
+
+|comment[collision energy]
+|Collision energy used for fragmentation (can have multiple for stepped CE)
+|0..*
+|Numeric value with unit
+|27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE
+
+|comment[dissociation method]
+|Fragmentation method used
+|0..1
+|PSI-MS CV
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+
+|comment[MS2 mass analyzer]
+|Mass analyzer used for MS2 acquisition
+|0..1
+|PSI-MS CV
+|NT=Orbitrap;AC=MS:1000484, NT=quadrupole;AC=MS:1000081
+
+|comment[cycle time]
+|Time to complete one DIA cycle
+|0..1
+|Numeric value with unit
+|3.2 s, 2.8 s
+
+|comment[spectral library]
+|Spectral library used for analysis
+|0..1
+|Free text or accession
+|project-specific library, Pan-Human library, PRIDE:PXD000001
+
+|comment[DIA method]
+|Specific DIA method variant (child of PRIDE:0000450)
+|0..1
+|PRIDE CV
+|NT=SWATH-MS;AC=PRIDE:0000451, NT=MSE;AC=PRIDE:0000452, NT=All ion fragmentation;AC=PRIDE:0000453, diaPASEF, scanning SWATH
+|===
+
+NOTE: The parent term for all DIA methods is `Data-independent acquisition` (PRIDE:0000450). Use `comment[DIA method]` to specify the specific variant when known. Check the https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Controlled Vocabulary] for available terms.
+
+[[stepped-collision-energy]]
+== Stepped Collision Energy
+
+Many DIA methods use stepped or ramped collision energies to improve fragmentation coverage. Document this using multiple `comment[collision energy]` columns or semicolon-separated values:
+
+=== Multiple Columns Approach
+
+|===
+|comment[collision energy] |comment[collision energy] |comment[collision energy]
+
+|22 NCE
+|26 NCE
+|30 NCE
+|===
+
+=== Semicolon-Separated Approach
+
+|===
+|comment[collision energy]
+
+|22 NCE;26 NCE;30 NCE
+|===
+
+Both approaches are valid. Use the approach that best fits your workflow.
+
+[[isolation-window-schemes]]
+== Isolation Window Schemes
+
+DIA methods vary in their isolation window strategies:
+
+|===
+|Scheme |Description |How to Document
+
+|Fixed windows
+|Equal-width windows across mass range
+|comment[isolation window width] = 25 Th
+
+|Variable windows
+|Windows optimized for ion density
+|comment[isolation window width] = variable; provide method file reference
+
+|Overlapping windows
+|Windows with m/z overlap
+|Note in comment[DIA method] or separate documentation
+
+|Scanning/sliding windows
+|Continuous scanning approach
+|comment[DIA method] = scanning SWATH
+|===
+
+For complex schemes, reference the instrument method file in `comment[method file]` if available.
+
+[[dia-variants]]
+== DIA Method Variants
+
+Common DIA acquisition methods and their characteristics:
+
+|===
+|Method |PRIDE CV |Vendor/Origin |Key Features |Example Annotation
+
+|SWATH-MS
+|PRIDE:0000451
+|SCIEX
+|Fixed or variable windows, typically 25-100 windows
+|NT=SWATH-MS;AC=PRIDE:0000451
+
+|MSE
+|PRIDE:0000452
+|Waters
+|All-ion fragmentation, alternating low/high energy
+|NT=MSE;AC=PRIDE:0000452
+
+|All ion fragmentation (AIF)
+|PRIDE:0000453
+|Thermo
+|All-ion fragmentation approach
+|NT=All ion fragmentation;AC=PRIDE:0000453
+
+|diaPASEF
+|(pending)
+|Bruker
+|Ion mobility-enhanced DIA
+|diaPASEF
+
+|boxcar DIA
+|(pending)
+|Various
+|Multiplexed acquisition with notched windows
+|boxcar DIA
+
+|Scanning SWATH
+|(pending)
+|SCIEX
+|Continuously scanning isolation window
+|scanning SWATH
+|===
+
+NOTE: Methods marked as "(pending)" do not yet have PRIDE CV accessions. Use the free text name until official terms are available.
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a DIA proteomics experiment:
+
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate] |assay name |technology type |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[technical replicate] |comment[scan window lower limit] |comment[scan window upper limit] |comment[isolation window width] |comment[collision energy] |comment[collision energy] |comment[collision energy] |comment[precursor mass tolerance] |comment[fragment mass tolerance] |comment[dissociation method] |comment[DIA method] |comment[data file]
+
+|plasma_sample_001
+|homo sapiens
+|blood plasma
+|normal
+|1
+|DIA_sample001_run1
+|proteomic profiling by mass spectrometry
+|NT=Data-independent acquisition;AC=PRIDE:0000450
+|AC=MS:1002038;NT=label free sample
+|NT=Orbitrap Exploris 480;AC=MS:1003028
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|350 Th
+|1650 Th
+|25 Th
+|22 NCE
+|26 NCE
+|30 NCE
+|20 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=SWATH-MS;AC=PRIDE:0000451
+|plasma_001.raw
+
+|plasma_sample_002
+|homo sapiens
+|blood plasma
+|normal
+|2
+|DIA_sample002_run1
+|proteomic profiling by mass spectrometry
+|NT=Data-independent acquisition;AC=PRIDE:0000450
+|AC=MS:1002038;NT=label free sample
+|NT=Orbitrap Exploris 480;AC=MS:1003028
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|350 Th
+|1650 Th
+|25 Th
+|22 NCE
+|26 NCE
+|30 NCE
+|20 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=SWATH-MS;AC=PRIDE:0000451
+|plasma_002.raw
+
+|plasma_sample_003
+|homo sapiens
+|blood plasma
+|type 2 diabetes mellitus
+|1
+|DIA_sample003_run1
+|proteomic profiling by mass spectrometry
+|NT=Data-independent acquisition;AC=PRIDE:0000450
+|AC=MS:1002038;NT=label free sample
+|NT=Orbitrap Exploris 480;AC=MS:1003028
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|350 Th
+|1650 Th
+|25 Th
+|22 NCE
+|26 NCE
+|30 NCE
+|20 ppm
+|0.02 Da
+|NT=beam-type collision-induced dissociation;AC=MS:1000422
+|NT=SWATH-MS;AC=PRIDE:0000451
+|plasma_003.raw
+|===
+
+[[diaPASEF-example]]
+== diaPASEF Example
+
+For ion mobility-enhanced DIA (diaPASEF), additional columns may be relevant:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[ion mobility]
+|Ion mobility separation used
+|TIMS, FAIMS, not applicable
+
+|comment[1/K0 range]
+|Ion mobility range
+|0.6-1.6 1/K0
+|===
+
+[[best-practices]]
+== Best Practices for DIA Annotation
+
+1. **Always specify acquisition method**: Use `comment[proteomics data acquisition method]` with the PRIDE CV term for DIA.
+
+2. **Document scan range**: Include `comment[scan window lower limit]` and `comment[scan window upper limit]` for reproducibility.
+
+3. **Report isolation window details**: Document window width and number of windows when known.
+
+4. **Include collision energy**: Document all collision energies used, especially for stepped CE methods.
+
+5. **Note the DIA variant**: Use `comment[DIA method]` to specify SWATH-MS, diaPASEF, MSE, etc.
+
+6. **Reference spectral libraries**: If using a spectral library, document it in `comment[spectral library]`.
+
+7. **Report mass tolerances**: These are essential for data reanalysis.
+
+8. **Consider instrument-specific parameters**: Different platforms may have unique parameters worth documenting.
+
+[[template-file]]
+== Template File
+
+The DIA SDRF template file is available in this directory:
+
+- link:dia-acquisition-template.sdrf.tsv[dia-acquisition-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+DIA SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+NOTE: DIA-specific validation rules are under development.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from DIA proteomics researchers.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+
+[[references]]
+== References
+
+- Gillet LC, et al. (2012) Targeted data extraction of the MS/MS spectra generated by data-independent acquisition: a new concept for consistent and accurate proteome analysis. Molecular & Cellular Proteomics.
+- Ludwig C, et al. (2018) Data-independent acquisition-based SWATH-MS for quantitative proteomics: a tutorial. Molecular Systems Biology.
+- Demichev V, et al. (2020) DIA-NN: neural networks and interference correction enable deep proteome coverage in high throughput. Nature Methods.
+- Meier F, et al. (2020) diaPASEF: parallel accumulation-serial fragmentation combined with data-independent acquisition. Nature Methods.
