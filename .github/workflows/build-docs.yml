@@ -70,13 +70,13 @@ jobs:
             -o tool-support.html \
             sdrf-proteomics/tool-support.adoc
 
-      - name: Build metadata conventions
+      - name: Build annotation guidelines
         run: |
-          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/conventions
+          mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/metadata-guidelines
 
-          # Sample metadata conventions
+          # Sample metadata rules
           asciidoctor \
-            -D ${{ steps.set-output-dir.outputs.output_dir }}/conventions \
+            -D ${{ steps.set-output-dir.outputs.output_dir }}/metadata-guidelines \
             -a stylesheet=../css/style.css \
             -a linkcss \
             -a toc=left \
@@ -85,11 +85,11 @@ jobs:
             -a sectlinks \
             --backend=html5 \
             -o sample-metadata.html \
-            sdrf-proteomics/metadata-conventions/sample-metadata-conventions.adoc
+            sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
 
-          # Human sample metadata conventions
+          # Human sample metadata rules
           asciidoctor \
-            -D ${{ steps.set-output-dir.outputs.output_dir }}/conventions \
+            -D ${{ steps.set-output-dir.outputs.output_dir }}/metadata-guidelines \
             -a stylesheet=../css/style.css \
             -a linkcss \
             -a toc=left \
@@ -98,11 +98,11 @@ jobs:
             -a sectlinks \
             --backend=html5 \
             -o human-metadata.html \
-            sdrf-proteomics/metadata-conventions/human-sample-metadata.adoc
+            sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc
 
-          # Data file metadata conventions
+          # Data file metadata rules
           asciidoctor \
-            -D ${{ steps.set-output-dir.outputs.output_dir }}/conventions \
+            -D ${{ steps.set-output-dir.outputs.output_dir }}/metadata-guidelines \
             -a stylesheet=../css/style.css \
             -a linkcss \
             -a toc=left \
@@ -111,7 +111,7 @@ jobs:
             -a sectlinks \
             --backend=html5 \
             -o data-file-metadata.html \
-            sdrf-proteomics/metadata-conventions/data-file-metadata-conventions.adoc
+            sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc
 
       - name: Build templates documentation
         run: |
@@ -162,8 +162,8 @@ jobs:
           # Header for tool support page
           TOOLS_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./tool-support.html" class="nav-current">Tools</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
 
-          # Header for convention pages
-          CONV_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#conventions" class="nav-current">Conventions</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+          # Header for annotation guidelines pages
+          GUIDELINES_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#metadata-guidelines" class="nav-current">Metadata Guidelines</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
 
           # Header for template pages
           TMPL_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
@@ -184,12 +184,12 @@ jobs:
             sed -i 's|<div style="display:none" |<|g' "$OUTPUT_DIR/tool-support.html"
           fi
 
-          # Add header to convention pages
-          for file in "$OUTPUT_DIR"/conventions/*.html; do
+          # Add header to annotation guidelines pages
+          for file in "$OUTPUT_DIR"/metadata-guidelines/*.html; do
             if [ -f "$file" ]; then
               sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$file"
               sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$file"
-              sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$CONV_HEADER<div style=\"display:none\"|g" "$file"
+              sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$GUIDELINES_HEADER<div style=\"display:none\"|g" "$file"
               sed -i 's|<div style="display:none" |<|g' "$file"
             fi
           done

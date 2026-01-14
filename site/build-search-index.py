@@ -108,19 +108,19 @@ def build_index(docs_dir, output_file):
             'section': 'Core Specification'
         },
         {
-            'file': 'sdrf-proteomics/metadata-conventions/sample-metadata-conventions.adoc',
-            'url': './conventions/sample-metadata.html',
-            'section': 'Sample Metadata Convention'
+            'file': 'sdrf-proteomics/metadata-guidelines/sample-metadata.adoc',
+            'url': './metadata-guidelines/sample-metadata.html',
+            'section': 'Sample Metadata Guidelines'
         },
         {
-            'file': 'sdrf-proteomics/metadata-conventions/human-sample-metadata.adoc',
-            'url': './conventions/human-metadata.html',
-            'section': 'Human Metadata Convention'
+            'file': 'sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc',
+            'url': './metadata-guidelines/human-metadata.html',
+            'section': 'Human Metadata Guidelines'
         },
         {
-            'file': 'sdrf-proteomics/metadata-conventions/data-file-metadata-conventions.adoc',
-            'url': './conventions/data-file-metadata.html',
-            'section': 'Data File Metadata Convention'
+            'file': 'sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc',
+            'url': './metadata-guidelines/data-file-metadata.html',
+            'section': 'Data File Metadata Guidelines'
         },
     ]
 

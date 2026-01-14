@@ -5,14 +5,14 @@
 
 == Introduction
 
-This directory contains SDRF templates for specific types of proteomics experiments. Each template extends the core SDRF-Proteomics specification with specialized metadata fields for particular experiment types.
+This directory contains SDRF templates for specific types of proteomics experiments. Templates are complete schemas that define columns needed for a specific type of experiment.
 
-Templates provide:
+SDRF-Proteomics uses a two-tier system for organizing templates:
 
-1. **Documentation**: Detailed guidelines explaining when and why to use each template
-2. **Checklists**: Required and recommended metadata columns for each experiment type
-3. **Template files**: Pre-formatted TSV files with appropriate column headers
-4. **Examples**: Sample SDRF entries showing proper annotation
+1. **Core Templates**: Organism-based base schemas (human, vertebrates, plants, etc.)
+2. **Specialized Templates**: Complete schemas for specific experiment types (cell-lines, single-cell, crosslinking, etc.)
+
+Templates can be combined to capture the full metadata requirements of an experiment.
 
 == Template Structure
 
@@ -23,11 +23,41 @@ Each template directory contains:
   * Checklist of required and recommended columns
   * Examples and best practices
   * Validation instructions
-- `{template-name}-template.sdrf.tsv` - Template file with column headers
+- `{template-name}.sdrf.tsv` - Template file with column headers
+
+== Declaring Templates in SDRF Files
+
+Templates are declared in the file-level metadata header:
+
+[source]
+----
+#fileformat=SDRF; version=v1.0.0
+#template=human; version=v1.1.0
+----
+
+Multiple templates can be combined:
+
+[source]
+----
+#fileformat=SDRF; version=v1.0.0
+#template=human; version=v1.1.0
+#template=cell-lines; version=v1.0.0
+----
+
+Specialized templates can be combined with core templates:
+
+[source]
+----
+#fileformat=SDRF; version=v1.0.0
+#template=human; version=v1.1.0
+#template=crosslinking; version=v1.0.0-dev
+----
 
 == Available Templates
 
 === Core Templates (Organism-based)
+
+Core templates provide organism-specific metadata columns. Choose the core template that matches your sample's organism.
 
 |===
 |Template |Status |Version |Description |Files
@@ -36,34 +66,36 @@ Each template directory contains:
 |Released
 |1.1.0
 |Basic template for any proteomics experiment
-|link:core-templates/sdrf-default.sdrf.tsv[TSV]
+|link:../core-templates/sdrf-default.sdrf.tsv[TSV]
 
 |Human
 |Released
 |1.1.0
 |Human samples with clinical metadata
-|link:core-templates/sdrf-human.sdrf.tsv[TSV]
+|link:../core-templates/sdrf-human.sdrf.tsv[TSV]
 
 |Vertebrates
 |Released
 |1.1.0
 |Non-human vertebrate organisms
-|link:core-templates/sdrf-vertebrates.sdrf.tsv[TSV]
+|link:../core-templates/sdrf-vertebrates.sdrf.tsv[TSV]
 
 |Invertebrates
 |Released
 |1.1.0
 |Invertebrate organisms (Drosophila, C. elegans)
-|link:core-templates/sdrf-invertebrates.sdrf.tsv[TSV]
+|link:../core-templates/sdrf-invertebrates.sdrf.tsv[TSV]
 
 |Plants
 |Released
 |1.1.0
 |Plant organisms (Arabidopsis, crops)
-|link:core-templates/sdrf-plants.sdrf.tsv[TSV]
+|link:../core-templates/sdrf-plants.sdrf.tsv[TSV]
 |===
 
-=== Experiment-specific Templates
+=== Specialized Templates
+
+Specialized templates provide complete schemas for specific experiment types. These can be combined with core templates.
 
 |===
 |Template |Status |Version |Description |Documentation |Template
@@ -81,13 +113,6 @@ Each template directory contains:
 |Olink, SomaScan, Luminex, RPPA
 |link:affinity-proteomics/README.adoc[Docs]
 |link:affinity-proteomics/affinity-proteomics-template.sdrf.tsv[TSV]
-
-|Single Cell
-|Draft
-|1.0.0-dev
-|Single cell proteomics (SCP)
-|link:single-cell/README.adoc[Docs]
-|link:single-cell/single-cell-template.sdrf.tsv[TSV]
 
 |Crosslinking
 |Draft
@@ -109,29 +134,63 @@ Each template directory contains:
 |Microbial community proteomics
 |link:metaproteomics/README.adoc[Docs]
 |link:metaproteomics/metaproteomics-template.sdrf.tsv[TSV]
+
+|Single Cell
+|Draft
+|1.0.0-dev
+|Single cell proteomics (SCP)
+|link:single-cell/README.adoc[Docs]
+|link:single-cell/single-cell-template.sdrf.tsv[TSV]
 |===
 
 TIP: **Released** templates are production-ready. **Draft** templates (version ending in `-dev`) are under active development and may change significantly.
 
 == How to Use Templates
 
-=== Choosing a Template
+=== Choosing Templates
 
-1. **Identify your experiment type**: Determine which specialized template matches your experiment (e.g., single-cell, immunopeptidomics)
-2. **Read the documentation**: Review the template's README.adoc to understand requirements
-3. **Check the checklist**: Ensure you can provide the required metadata columns
-4. **Download the template file**: Use the TSV file as a starting point
+1. **Start with a core template**: Choose the organism-based template that matches your samples (human, vertebrates, plants, etc.)
+2. **Add specialized templates**: If your experiment type has a specialized template (cell-lines, single-cell, crosslinking), add it
 
-=== Using a Template
+=== Example Combinations
 
-1. **Copy the template file**: Create a copy of the template TSV for your project
-2. **Fill in required columns**: Populate all required columns as documented in the checklist
-3. **Add recommended columns**: Include recommended columns where applicable
-4. **Validate your SDRF**: Use sdrf-pipelines to validate against the template
+**Human tissue proteomics:**
+[source]
+----
+#template=human; version=v1.1.0
+----
+
+**Human cell line proteomics:**
+[source]
+----
+#template=human; version=v1.1.0
+#template=cell-lines; version=v1.0.0
+----
+
+**Mouse single-cell proteomics:**
+[source]
+----
+#template=vertebrates; version=v1.1.0
+#template=single-cell; version=v1.0.0-dev
+----
+
+**Human crosslinking mass spectrometry:**
+[source]
+----
+#template=human; version=v1.1.0
+#template=crosslinking; version=v1.0.0-dev
+----
+
+**Human immunopeptidomics:**
+[source]
+----
+#template=human; version=v1.1.0
+#template=immunopeptidomics; version=v1.0.0-dev
+----
 
 === Validation
 
-All templates can be validated using the sdrf-pipelines tool:
+Templates can be validated using the sdrf-pipelines tool:
 
 [source,bash]
 ----
@@ -139,17 +198,7 @@ pip install sdrf-pipelines
 parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template <template-name>
 ----
 
-Where `<template-name>` is one of: `default`, `human`, `cell-line`, `vertebrates`, `invertebrates`, `plants`, `single-cell`, `immunopeptidomics`, `crosslinking`, `affinity-proteomics`, `metaproteomics`.
-
-== Adding New Templates
-
-To propose a new template:
-
-1. Create an issue on the GitHub repository describing the experiment type and its specific metadata requirements
-2. Develop a draft template following the established structure:
-   * README.adoc with all standard sections (Status, Abstract, Motivation, Checklist, Examples, Best Practices, etc.)
-   * Template TSV file with column headers
-3. Create a pull request against the `dev` branch
+Where `<template-name>` is one of: `default`, `human`, `cell-line`, `vertebrates`, `invertebrates`, `plants`, `single-cell`, `affinity-proteomics`, `crosslinking`, `immunopeptidomics`, `metaproteomics`.
 
 == Template Versioning
 
@@ -171,17 +220,6 @@ Templates follow an independent versioning scheme from the main specification, a
 |Experimentation only, feedback welcome
 |===
 
-=== Development Versions
-
-Templates under active development use the `-dev` suffix (e.g., `1.0.0-dev`) following semantic versioning pre-release conventions. This indicates:
-
-* The template is targeting a specific release version (e.g., 1.0.0)
-* The template is not yet finalized and may change significantly
-* Community feedback is welcome and encouraged
-* The template should not be used for production submissions without coordination
-
-Once a draft template has been discussed and approved by the community, the `-dev` suffix is removed and the template becomes a Released version.
-
 === Semantic Versioning
 
 * **MAJOR** (1.0 → 2.0): Breaking changes to required columns
@@ -190,8 +228,18 @@ Once a draft template has been discussed and approved by the community, the `-de
 
 TIP: When submitting to repositories like PRIDE, use Released templates. Draft templates (with `-dev` suffix) require coordination with curators.
 
+== Adding New Templates
+
+To propose a new template:
+
+1. Create an issue on the GitHub repository describing the experiment type and its specific metadata requirements
+2. Develop a draft template following the established structure:
+   * README.adoc with all standard sections (Status, Abstract, Motivation, Checklist, Examples, Best Practices, etc.)
+   * Template TSV file with column headers
+3. Create a pull request against the `dev` branch
+
 == Related Resources
 
 * link:../README.adoc[Main SDRF-Proteomics Specification]
-* link:../metadata-conventions/[Metadata Conventions]
+* link:../metadata-guidelines/[Annotation Guidelines]
 * https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines Validation Tool]
