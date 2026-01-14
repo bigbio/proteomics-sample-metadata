@@ -108,6 +108,9 @@ The project is run by different groups:
 - Kanami Arima (Toyama University of International Studies, Toyama Japan)
 - Shin Kawano (Toyama University of International Studies, Toyama Japan)
 - Ruri Okamoto (Toyama University of International Studies, Toyama Japan)
+- Alexandra Naba (Department of Physiology and Biophysics, University of Illinois Chicago, USA)
+- Jonas Scheid (Department of Peptide-based Immunotherapy, University of Tübingen, Germany)
+- Joshua Klein (Program for Computational Biology, Boston University, USA)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
