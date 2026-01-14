@@ -1,0 +1,95 @@
+name: Generate PDF on Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.1.0)'
+        required: true
+        default: '1.1.0'
+
+jobs:
+  generate-pdf:
+    runs-on: ubuntu-latest
+    name: Generate PDF specification
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install Asciidoctor PDF
+        run: |
+          gem install asciidoctor
+          gem install asciidoctor-pdf
+          gem install rouge
+
+      - name: Get version number
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            # Extract version from tag (remove 'v' prefix if present)
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Generate PDF
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+
+          asciidoctor-pdf \
+            -a pdf-themesdir=site/pdf-theme \
+            -a pdf-theme=sdrf-theme \
+            -a pdf-fontsdir=GEM_FONTS_DIR \
+            -a allow-uri-read \
+            -a source-highlighter=rouge \
+            -a toc \
+            -a toclevels=3 \
+            -a sectnums \
+            -a revnumber=$VERSION \
+            -a revdate=$(date +%Y-%m-%d) \
+            -o "psi-document/sdrf-proteomics-specification-v${VERSION}.pdf" \
+            sdrf-proteomics/README.adoc
+
+      - name: Upload PDF as release asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: psi-document/sdrf-proteomics-specification-v${{ steps.version.outputs.version }}.pdf
+          asset_name: sdrf-proteomics-specification-v${{ steps.version.outputs.version }}.pdf
+          asset_content_type: application/pdf
+
+      - name: Commit PDF to repository
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add "psi-document/sdrf-proteomics-specification-v${VERSION}.pdf"
+          git commit -m "Add PDF specification v${VERSION}" || echo "No changes to commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: specification-pdf
+          path: psi-document/sdrf-proteomics-specification-v${{ steps.version.outputs.version }}.pdf

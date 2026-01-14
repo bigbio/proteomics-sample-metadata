@@ -27,77 +27,91 @@ Each template directory contains:
 
 == Available Templates
 
-=== Specialized Experiment Templates
-
-==== Affinity Proteomics
-
-Affinity proteomics encompasses approaches using affinity-based capture methods including Olink (PEA), SomaScan, Luminex, RPPA, and immunoaffinity-MS.
-
-* link:affinity-proteomics/README.adoc[Affinity Proteomics Template Documentation]
-* link:affinity-proteomics/affinity-proteomics-template.sdrf.tsv[Template File]
-
-==== Cell Lines
-
-Comprehensive guidance on cell line annotation using Cellosaurus as the primary resource for standardized cell line identification and metadata.
-
-* link:cell-lines/README.adoc[Cell Lines Template Documentation]
-* link:cell-lines/cell-lines-template.sdrf.tsv[Template File]
-
-==== Crosslinking Mass Spectrometry
-
-Crosslinking mass spectrometry (XL-MS) for structural proteomics, protein-protein interaction mapping, and integrative structural biology.
-
-* link:crosslinking/README.adoc[Crosslinking Template Documentation]
-* link:crosslinking/crosslinking-template.sdrf.tsv[Template File]
-
-==== Immunopeptidomics
-
-Immunopeptidomics for MHC-bound peptide identification, including HLA typing annotation and specialized sample preparation metadata.
-
-* link:immunopeptidomics/README.adoc[Immunopeptidomics Template Documentation]
-* link:immunopeptidomics/immunopeptidomics-template.sdrf.tsv[Template File]
-
-==== Metaproteomics
-
-Metaproteomics for microbial community analysis, including environmental context, database search strategies, and multi-organism annotation.
-
-* link:metaproteomics/README.adoc[Metaproteomics Template Documentation]
-* link:metaproteomics/metaproteomics-template.sdrf.tsv[Template File]
-
-==== Single Cell Proteomics
-
-Single cell proteomics (SCP) for characterizing individual cell proteomes, including cell identifiers, carrier proteome strategies, and multiplexing.
-
-* link:single-cell/README.adoc[Single Cell Proteomics Template Documentation]
-* link:single-cell/single-cell-template.sdrf.tsv[Template File]
-
-=== Core Templates
-
-Basic SDRF templates for common organism types:
+=== Core Templates (Organism-based)
 
 |===
-|Template |Description |Link
+|Template |Status |Version |Description |Files
 
 |Default
+|Released
+|1.1.0
 |Basic template for any proteomics experiment
-|link:core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
+|link:core-templates/sdrf-default.sdrf.tsv[TSV]
 
 |Human
-|Template with human-specific metadata fields
-|link:core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
+|Released
+|1.1.0
+|Human samples with clinical metadata
+|link:core-templates/sdrf-human.sdrf.tsv[TSV]
 
 |Vertebrates
-|Template for vertebrate organisms
-|link:core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
+|Released
+|1.1.0
+|Non-human vertebrate organisms
+|link:core-templates/sdrf-vertebrates.sdrf.tsv[TSV]
 
 |Invertebrates
-|Template for invertebrate organisms
-|link:core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
+|Released
+|1.1.0
+|Invertebrate organisms (Drosophila, C. elegans)
+|link:core-templates/sdrf-invertebrates.sdrf.tsv[TSV]
 
 |Plants
-|Template for plant organisms
-|link:core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
+|Released
+|1.1.0
+|Plant organisms (Arabidopsis, crops)
+|link:core-templates/sdrf-plants.sdrf.tsv[TSV]
 |===
+
+=== Experiment-specific Templates
+
+|===
+|Template |Status |Version |Description |Documentation |Template
+
+|Cell Lines
+|Released
+|1.0.0
+|Cellosaurus-based cell line annotation
+|link:cell-lines/README.adoc[Docs]
+|link:cell-lines/cell-lines-template.sdrf.tsv[TSV]
+
+|Affinity Proteomics
+|Beta
+|0.9.0
+|Olink, SomaScan, Luminex, RPPA
+|link:affinity-proteomics/README.adoc[Docs]
+|link:affinity-proteomics/affinity-proteomics-template.sdrf.tsv[TSV]
+
+|Single Cell
+|Beta
+|0.9.0
+|Single cell proteomics (SCP)
+|link:single-cell/README.adoc[Docs]
+|link:single-cell/single-cell-template.sdrf.tsv[TSV]
+
+|Crosslinking
+|Draft
+|0.5.0
+|XL-MS structural proteomics
+|link:crosslinking/README.adoc[Docs]
+|link:crosslinking/crosslinking-template.sdrf.tsv[TSV]
+
+|Immunopeptidomics
+|Draft
+|0.5.0
+|MHC-bound peptide identification
+|link:immunopeptidomics/README.adoc[Docs]
+|link:immunopeptidomics/immunopeptidomics-template.sdrf.tsv[TSV]
+
+|Metaproteomics
+|Draft
+|0.5.0
+|Microbial community proteomics
+|link:metaproteomics/README.adoc[Docs]
+|link:metaproteomics/metaproteomics-template.sdrf.tsv[TSV]
+|===
+
+TIP: **Released** templates are production-ready. **Beta** templates are feature-complete but under review. **Draft** templates are under active development.
 
 == How to Use Templates
 
@@ -137,16 +151,41 @@ To propose a new template:
    * Template TSV file with column headers
 3. Create a pull request against the `dev` branch
 
-== Versioning
+== Template Versioning
 
-Following the versioning proposal:
+Templates follow an independent versioning scheme from the main specification, allowing them to evolve at different rates.
 
-* **Major release** (X.0.0 -> Y.0.0): Changes to the Main SDRF-Proteomics Specification
-* **Minor release** (X.Y.0 -> X.Y+1.0): New templates or significant template updates
-* **Patch release** (X.Y.Z -> X.Y.Z+1): Refinements to existing templates
+=== Status and Version Numbering
+
+|===
+|Status |Version Range |Stability |Recommended Use
+
+|Released
+|≥ 1.0.0
+|Stable API, backward-compatible only
+|Production, repository submissions
+
+|Beta
+|0.9.x
+|Minor changes possible
+|Early adoption, feedback welcome
+
+|Draft
+|< 0.9.0
+|May change significantly
+|Experimentation only
+|===
+
+=== Semantic Versioning
+
+* **MAJOR** (1.0 → 2.0): Breaking changes to required columns
+* **MINOR** (1.0 → 1.1): New optional columns, non-breaking changes
+* **PATCH** (1.0.0 → 1.0.1): Documentation fixes, clarifications
+
+TIP: When submitting to repositories like PRIDE, use Released or Beta templates. Draft templates require coordination with curators.
 
 == Related Resources
 
-* link:../sdrf-proteomics/README.adoc[Main SDRF-Proteomics Specification]
-* link:../sdrf-proteomics/metadata-conventions/[Metadata Conventions]
+* link:../README.adoc[Main SDRF-Proteomics Specification]
+* link:../metadata-conventions/[Metadata Conventions]
 * https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines Validation Tool]
