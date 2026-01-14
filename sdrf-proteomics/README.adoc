@@ -144,7 +144,7 @@ This document describes the main specification of SDRF-Proteomics, the structure
 
 * https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
 * https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates[SDRF-Proteomics core templates]: A set of templates for the most common proteomics experiments based on the sample organism. These templates are used to validate the SDRF-Proteomics files. You can read about the concept of templates in the <<core-templates,Core Templates>> section of this document.
-* https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[Templates]: These are the templates and checklists for specific proteomics experiments (e.g immunopeptidomics). Each template has its own directory containing:
+* https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates[Templates]: These are the templates and checklists for specific proteomics experiments (e.g immunopeptidomics). Each template has its own directory containing:
 - A detailed README.adoc with guidelines, checklists, and examples.
 - A template file ({name}-template.sdrf.tsv) with column headers.
 * https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/metadata-conventions[Metadata guidelines]: These are the guidelines for specific metadata annotations (e.g., patient pre-existing condition).  
@@ -410,7 +410,7 @@ Example:
 |sample_control | homo sapiens              | liver                          | liver cancer             | not available
 |===
 
-NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
+NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
 
 Some important notes:
 
@@ -846,26 +846,26 @@ The default template is the most basic template that can be used for any proteom
 
 4+^| *Sample Metadata*
 | source name | Sample | Required | sample_1
-| characteristics[organism] | Sample | Required | homo sapiens
-| characteristics[organism part] | Sample | Required | liver
-| characteristics[disease] | Sample | Required | normal
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-annotation[characteristics[organism]] | Sample | Required | homo sapiens
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | liver
+| link:metadata-conventions/sample-metadata-conventions.adoc#disease-annotation[characteristics[disease]] | Sample | Required | normal
 | characteristics[biological replicate] | Sample | Required | 1
 
 4+^| *Data File Metadata*
-| assay name | Data | Required | run_1
-| technology type | Data | Required | proteomic profiling by mass spectrometry
-| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
-| comment[label] | Data | Required | label free sample
-| comment[instrument] | Data | Required | Q Exactive HF
-| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
-| comment[fraction identifier] | Data | Required | 1
-| comment[technical replicate] | Data | Required | 1
-| comment[data file] | Data | Required | sample_1.raw
+| link:metadata-conventions/data-file-metadata-conventions.adoc#assay-name[assay name] | Data | Required | run_1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technology-type[technology type] | Data | Required | proteomic profiling by mass spectrometry
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method[comment[proteomics data acquisition method]] | Data | Required | data-dependent acquisition
+| link:metadata-conventions/data-file-metadata-conventions.adoc#label-annotations[comment[label]] | Data | Required | label free sample
+| link:metadata-conventions/data-file-metadata-conventions.adoc#instrument[comment[instrument]] | Data | Required | Q Exactive HF
+| link:metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents[comment[cleavage agent details]] | Data | Required | NT=Trypsin;AC=MS:1001251
+| link:metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier[comment[fraction identifier]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate[comment[technical replicate]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-file[comment[data file]] | Data | Required | sample_1.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-default.sdrf.tsv[sdrf-default.sdrf.tsv]
 
-NOTE: The `characteristics[cell type]` column is optional in the default template but RECOMMENDED when the cell type is known. Use `not available` if the cell type cannot be determined.
+NOTE: The link:metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation[characteristics[cell type]] column is optional in the default template but RECOMMENDED when the cell type is known. Use `not available` if the cell type cannot be determined.
 
 [[template-human]]
 === Human Template
@@ -879,29 +879,29 @@ The human template extends the default template with clinical and demographic me
 
 4+^| *Sample Metadata*
 | source name | Sample | Required | patient_001
-| characteristics[organism] | Sample | Required | homo sapiens
-| characteristics[organism part] | Sample | Required | liver
-| characteristics[disease] | Sample | Required | hepatocellular carcinoma
-| characteristics[cell type] | Sample | Required | hepatocyte
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-annotation[characteristics[organism]] | Sample | Required | homo sapiens
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | liver
+| link:metadata-conventions/sample-metadata-conventions.adoc#disease-annotation[characteristics[disease]] | Sample | Required | hepatocellular carcinoma
+| link:metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Required | hepatocyte
 | characteristics[biological replicate] | Sample | Required | 1
-| characteristics[age] | Sample | Required | 45Y
-| characteristics[sex] | Sample | Required | male
-| characteristics[ancestry category] | Sample | Recommended | European
-| characteristics[individual] | Sample | Recommended | P001
+| link:metadata-conventions/sample-metadata-conventions.adoc#age-annotation[characteristics[age]] | Sample | Required | 45Y
+| link:metadata-conventions/sample-metadata-conventions.adoc#sex-annotation[characteristics[sex]] | Sample | Required | male
+| link:metadata-conventions/human-sample-metadata.adoc#clinical-metadata[characteristics[ancestry category]] | Sample | Recommended | European
+| link:metadata-conventions/human-sample-metadata.adoc#individual-annotation[characteristics[individual]] | Sample | Recommended | P001
 
 4+^| *Data File Metadata*
-| assay name | Data | Required | patient_001_run1
-| technology type | Data | Required | proteomic profiling by mass spectrometry
-| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
-| comment[label] | Data | Required | label free sample
-| comment[instrument] | Data | Required | Orbitrap Exploris 480
-| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
-| comment[fraction identifier] | Data | Required | 1
-| comment[technical replicate] | Data | Required | 1
-| comment[data file] | Data | Required | patient_001.raw
+| link:metadata-conventions/data-file-metadata-conventions.adoc#assay-name[assay name] | Data | Required | patient_001_run1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technology-type[technology type] | Data | Required | proteomic profiling by mass spectrometry
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method[comment[proteomics data acquisition method]] | Data | Required | data-dependent acquisition
+| link:metadata-conventions/data-file-metadata-conventions.adoc#label-annotations[comment[label]] | Data | Required | label free sample
+| link:metadata-conventions/data-file-metadata-conventions.adoc#instrument[comment[instrument]] | Data | Required | Orbitrap Exploris 480
+| link:metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents[comment[cleavage agent details]] | Data | Required | NT=Trypsin;AC=MS:1001251
+| link:metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier[comment[fraction identifier]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate[comment[technical replicate]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-file[comment[data file]] | Data | Required | patient_001.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-human.sdrf.tsv[sdrf-human.sdrf.tsv]
 
 NOTE: The characteristics[individual] column is optional and is only used when a code for the individual is available; if not, use **not available**. For age encoding format, see link:metadata-conventions/sample-metadata-conventions.adoc[Sample Metadata Conventions].
 
@@ -917,26 +917,26 @@ The vertebrates template is used for non-human vertebrate species such as mouse,
 
 4+^| *Sample Metadata*
 | source name | Sample | Required | mouse_001
-| characteristics[organism] | Sample | Required | mus musculus
-| characteristics[organism part] | Sample | Required | brain
-| characteristics[disease] | Sample | Required | normal
-| characteristics[cell type] | Sample | Required | neuron
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-annotation[characteristics[organism]] | Sample | Required | mus musculus
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | brain
+| link:metadata-conventions/sample-metadata-conventions.adoc#disease-annotation[characteristics[disease]] | Sample | Required | normal
+| link:metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Required | neuron
 | characteristics[biological replicate] | Sample | Required | 1
-| characteristics[developmental stage] | Sample | Recommended | adult
+| link:metadata-conventions/sample-metadata-conventions.adoc#developmental-stage[characteristics[developmental stage]] | Sample | Recommended | adult
 
 4+^| *Data File Metadata*
-| assay name | Data | Required | mouse_001_run1
-| technology type | Data | Required | proteomic profiling by mass spectrometry
-| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
-| comment[label] | Data | Required | label free sample
-| comment[instrument] | Data | Required | timsTOF Pro
-| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
-| comment[fraction identifier] | Data | Required | 1
-| comment[technical replicate] | Data | Required | 1
-| comment[data file] | Data | Required | mouse_001.raw
+| link:metadata-conventions/data-file-metadata-conventions.adoc#assay-name[assay name] | Data | Required | mouse_001_run1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technology-type[technology type] | Data | Required | proteomic profiling by mass spectrometry
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method[comment[proteomics data acquisition method]] | Data | Required | data-dependent acquisition
+| link:metadata-conventions/data-file-metadata-conventions.adoc#label-annotations[comment[label]] | Data | Required | label free sample
+| link:metadata-conventions/data-file-metadata-conventions.adoc#instrument[comment[instrument]] | Data | Required | timsTOF Pro
+| link:metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents[comment[cleavage agent details]] | Data | Required | NT=Trypsin;AC=MS:1001251
+| link:metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier[comment[fraction identifier]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate[comment[technical replicate]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-file[comment[data file]] | Data | Required | mouse_001.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-vertebrates.sdrf.tsv[sdrf-vertebrates.sdrf.tsv]
 
 [[template-invertebrates]]
 === Invertebrates Template
@@ -950,25 +950,25 @@ The invertebrates template is used for non-vertebrate animal species such as ins
 
 4+^| *Sample Metadata*
 | source name | Sample | Required | fly_sample_1
-| characteristics[organism] | Sample | Required | drosophila melanogaster
-| characteristics[organism part] | Sample | Required | head
-| characteristics[disease] | Sample | Required | normal
-| characteristics[cell type] | Sample | Required | neuron
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-annotation[characteristics[organism]] | Sample | Required | drosophila melanogaster
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | head
+| link:metadata-conventions/sample-metadata-conventions.adoc#disease-annotation[characteristics[disease]] | Sample | Required | normal
+| link:metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Required | neuron
 | characteristics[biological replicate] | Sample | Required | 1
 
 4+^| *Data File Metadata*
-| assay name | Data | Required | fly_sample_1_run1
-| technology type | Data | Required | proteomic profiling by mass spectrometry
-| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
-| comment[label] | Data | Required | label free sample
-| comment[instrument] | Data | Required | Q Exactive Plus
-| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
-| comment[fraction identifier] | Data | Required | 1
-| comment[technical replicate] | Data | Required | 1
-| comment[data file] | Data | Required | fly_sample_1.raw
+| link:metadata-conventions/data-file-metadata-conventions.adoc#assay-name[assay name] | Data | Required | fly_sample_1_run1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technology-type[technology type] | Data | Required | proteomic profiling by mass spectrometry
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method[comment[proteomics data acquisition method]] | Data | Required | data-dependent acquisition
+| link:metadata-conventions/data-file-metadata-conventions.adoc#label-annotations[comment[label]] | Data | Required | label free sample
+| link:metadata-conventions/data-file-metadata-conventions.adoc#instrument[comment[instrument]] | Data | Required | Q Exactive Plus
+| link:metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents[comment[cleavage agent details]] | Data | Required | NT=Trypsin;AC=MS:1001251
+| link:metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier[comment[fraction identifier]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate[comment[technical replicate]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-file[comment[data file]] | Data | Required | fly_sample_1.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-invertebrates.sdrf.tsv[sdrf-invertebrates.sdrf.tsv]
 
 NOTE: For Drosophila samples, use https://www.ebi.ac.uk/ols4/ontologies/fbbt[FBbt] (FlyBase anatomy ontology) for organism part. For C. elegans, use https://www.ebi.ac.uk/ols4/ontologies/wbbt[WBbt] (WormBase anatomy ontology).
 
@@ -984,25 +984,25 @@ The plants template is used for plant species including model organisms like Ara
 
 4+^| *Sample Metadata*
 | source name | Sample | Required | arabidopsis_col0_1
-| characteristics[organism] | Sample | Required | arabidopsis thaliana
-| characteristics[organism part] | Sample | Required | leaf
-| characteristics[disease] | Sample | Required | normal
-| characteristics[cell type] | Sample | Recommended | guard cell
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-annotation[characteristics[organism]] | Sample | Required | arabidopsis thaliana
+| link:metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation[characteristics[organism part]] | Sample | Required | leaf
+| link:metadata-conventions/sample-metadata-conventions.adoc#disease-annotation[characteristics[disease]] | Sample | Required | normal
+| link:metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation[characteristics[cell type]] | Sample | Recommended | guard cell
 | characteristics[biological replicate] | Sample | Required | 1
 
 4+^| *Data File Metadata*
-| assay name | Data | Required | arabidopsis_col0_run1
-| technology type | Data | Required | proteomic profiling by mass spectrometry
-| comment[proteomics data acquisition method] | Data | Required | data-dependent acquisition
-| comment[label] | Data | Required | label free sample
-| comment[instrument] | Data | Required | Orbitrap Fusion Lumos
-| comment[cleavage agent details] | Data | Required | NT=Trypsin;AC=MS:1001251
-| comment[fraction identifier] | Data | Required | 1
-| comment[technical replicate] | Data | Required | 1
-| comment[data file] | Data | Required | arabidopsis_col0.raw
+| link:metadata-conventions/data-file-metadata-conventions.adoc#assay-name[assay name] | Data | Required | arabidopsis_col0_run1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technology-type[technology type] | Data | Required | proteomic profiling by mass spectrometry
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method[comment[proteomics data acquisition method]] | Data | Required | data-dependent acquisition
+| link:metadata-conventions/data-file-metadata-conventions.adoc#label-annotations[comment[label]] | Data | Required | label free sample
+| link:metadata-conventions/data-file-metadata-conventions.adoc#instrument[comment[instrument]] | Data | Required | Orbitrap Fusion Lumos
+| link:metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents[comment[cleavage agent details]] | Data | Required | NT=Trypsin;AC=MS:1001251
+| link:metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier[comment[fraction identifier]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate[comment[technical replicate]] | Data | Required | 1
+| link:metadata-conventions/data-file-metadata-conventions.adoc#data-file[comment[data file]] | Data | Required | arabidopsis_col0.raw
 |===
 
-Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
+Template file: https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
 
 NOTE: For plant samples, use https://www.ebi.ac.uk/ols4/ontologies/po[PO] (Plant Ontology) for organism part and cell type annotations.
 
@@ -1020,7 +1020,7 @@ Example of multiple organism part columns:
 | sample-1    | heart | heart left ventricle
 |===
 
-The template files can be downloaded from the https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates/core-templates[core-templates] folder.
+The template files can be downloaded from the https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates[core-templates] folder.
 
 [[study-variables]]
 == Factor Values (Study Variables)
@@ -1087,7 +1087,7 @@ Choose the appropriate template based on your experiment type:
 * **Metaproteomics**: Microbial community proteomics
 * **Single Cell**: Single cell proteomics experiments
 
-For detailed specifications and examples, visit the https://github.com/bigbio/proteomics-sample-metadata/tree/master/templates[Experiment-specific Templates] documentation.
+For detailed specifications and examples, visit the https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates[Experiment-specific Templates] documentation.
 
 [[example-annotated-datasets]]
 == Examples of Annotated Datasets

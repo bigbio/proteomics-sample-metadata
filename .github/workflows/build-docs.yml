@@ -103,7 +103,7 @@ jobs:
           mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/templates
 
           # Find and build all README.adoc files in templates directory
-          for dir in templates/*/; do
+          for dir in sdrf-proteomics/templates/*/; do
             if [ -f "${dir}README.adoc" ]; then
               template_name=$(basename "$dir")
               asciidoctor \
@@ -136,6 +136,47 @@ jobs:
           cp site/index.html ${{ steps.set-output-dir.outputs.output_dir }}/
           mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/js
           cp site/js/search.js ${{ steps.set-output-dir.outputs.output_dir }}/js/
+
+      - name: Add navigation header to documentation pages
+        run: |
+          OUTPUT_DIR="${{ steps.set-output-dir.outputs.output_dir }}"
+
+          # Header for root-level pages (specification.html)
+          ROOT_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+
+          # Header for convention pages
+          CONV_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#conventions" class="nav-current">Conventions</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+
+          # Header for template pages
+          TMPL_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+
+          # Add header to specification.html
+          if [ -f "$OUTPUT_DIR/specification.html" ]; then
+            sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$OUTPUT_DIR/specification.html"
+            sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$OUTPUT_DIR/specification.html"
+            sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$ROOT_HEADER<div style=\"display:none\"|g" "$OUTPUT_DIR/specification.html"
+            sed -i 's|<div style="display:none" |<|g' "$OUTPUT_DIR/specification.html"
+          fi
+
+          # Add header to convention pages
+          for file in "$OUTPUT_DIR"/conventions/*.html; do
+            if [ -f "$file" ]; then
+              sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$file"
+              sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$file"
+              sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$CONV_HEADER<div style=\"display:none\"|g" "$file"
+              sed -i 's|<div style="display:none" |<|g' "$file"
+            fi
+          done
+
+          # Add header to template pages
+          for file in "$OUTPUT_DIR"/templates/*.html; do
+            if [ -f "$file" ]; then
+              sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$file"
+              sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$file"
+              sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$TMPL_HEADER<div style=\"display:none\"|g" "$file"
+              sed -i 's|<div style="display:none" |<|g' "$file"
+            fi
+          done
 
       - name: Build search index
         run: |
