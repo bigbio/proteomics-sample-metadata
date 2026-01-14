@@ -658,9 +658,162 @@ img {
     }
 
     .site-header,
-    .site-footer {
+    .site-footer,
+    .doc-header {
         display: none;
     }
+}
+
+/* Documentation Page Header */
+.doc-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.doc-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.doc-header-brand a {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.doc-header-brand a:hover {
+    text-decoration: none;
+    opacity: 0.9;
+}
+
+.doc-header-nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.doc-header-nav a {
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.doc-header-nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+}
+
+.doc-header-nav .nav-current {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Adjust body padding when doc-header is present */
+body.has-doc-header {
+    padding-top: 52px;
+}
+
+body.has-doc-header.toc2 #toc {
+    top: 52px;
+    height: calc(100vh - 52px);
+}
+
+/* Mobile responsiveness for doc header */
+@media (max-width: 768px) {
+    .doc-header {
+        padding: 0.5rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .doc-header-nav {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .doc-header-nav a {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Contributors Section */
+.contributors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.contributor-group {
+    background: var(--background-alt);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.contributor-group h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.contributor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contributor-list li {
+    font-size: 0.875rem;
+    padding: 0.3rem 0;
+    color: var(--text-color);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.team-tag {
+    font-size: 0.7rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.affiliation {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.contributors-note {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.contributors-note a {
+    color: var(--primary-color);
 }
 
 /* Dev banner */
