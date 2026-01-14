@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="./css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
 </head>
-<body class="has-doc-header"><header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="./tool-support.html">Tools</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header><book toc2 toc-left">
+<body class="has-doc-header"><header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="./tool-support.html">Tools</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header><book toc2 toc-left">
 <div id="header">
 <h1>Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)</h1>
 <div id="toc" class="toc2">
@@ -45,7 +45,7 @@
 <li><a href="#sdrf-file-rules">7.1. Format rules</a></li>
 <li><a href="#file-level-metadata">7.2. File-level metadata (Header comments)</a></li>
 <li><a href="#column-headers">7.3. Column headers</a></li>
-<li><a href="#sdrf-file-standarization">7.4. Cell values</a></li>
+<li><a href="#sdrf-file-standardization">7.4. Cell values</a></li>
 </ul>
 </li>
 <li><a href="#ontologies-supported">8. Ontologies and Controlled Vocabularies</a></li>
@@ -61,7 +61,7 @@
 </ul>
 </li>
 <li><a href="#spiked-in">9.4. Spiked-in samples</a></li>
-<li><a href="#_sample_metadata_conventions">9.5. Sample Metadata Conventions</a></li>
+<li><a href="#_sample_metadata_guidelines">9.5. Sample Metadata Guidelines</a></li>
 </ul>
 </li>
 <li><a href="#from-sample-data">10. SDRF-Proteomics: data files metadata</a>
@@ -69,7 +69,7 @@
 <li><a href="#sample-prep">10.1. Sample preparation properties</a></li>
 <li><a href="#fragment-proper">10.2. MS/MS properties</a></li>
 <li><a href="#data-acquisition-method">10.3. Data acquisition</a></li>
-<li><a href="#_data_file_metadata_conventions">10.4. Data File Metadata Conventions</a></li>
+<li><a href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></li>
 </ul>
 </li>
 <li><a href="#core-templates">11. Core Templates</a>
@@ -108,7 +108,7 @@
 <p>This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.</p>
 </div>
 <div class="paragraph">
-<p><strong>Version v1.1.0</strong> - 2025-08-13</p>
+<p><strong>Version v1.1.0</strong> - 2025-01</p>
 </div>
 </div>
 </div>
@@ -119,7 +119,7 @@
 <p>The Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).</p>
 </div>
 <div class="paragraph">
-<p>Further detailed information, including any updates to this document, implementations, and examples is available at <a href="https://github.com/bigbio/proteomics-sample-metadata">SDRF GitHub Repository</a>. The official PSI web page for the document is the following: <a href="http://psidev.info/sdrf" class="bare">http://psidev.info/sdrf</a>.</p>
+<p>Further detailed information, including any updates to this document, implementations, and examples is available at <a href="https://github.com/bigbio/proteomics-metadata-standard">SDRF GitHub Repository</a>. The official PSI web page for the document is the following: <a href="http://psidev.info/sdrf" class="bare">http://psidev.info/sdrf</a>.</p>
 </div>
 </div>
 </div>
@@ -187,9 +187,9 @@
 <h3 id="_minimal_example"><a class="anchor" href="#_minimal_example"></a><a class="link" href="#_minimal_example">4.1. Minimal Example</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	technology type	comment[label]	comment[instrument]	comment[cleavage agent details]	comment[fraction identifier]	comment[technical replicate]	comment[data file]
-sample_1	homo sapiens	liver	normal	run_1	proteomic profiling by mass spectrometry	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_1.raw
-sample_2	homo sapiens	liver	hepatocellular carcinoma	run_2	proteomic profiling by mass spectrometry	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_2.raw</code></pre>
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	characteristics[biological replicate]	assay name	technology type	comment[proteomics data acquisition method]	comment[label]	comment[instrument]	comment[cleavage agent details]	comment[fraction identifier]	comment[technical replicate]	comment[data file]
+sample_1	homo sapiens	liver	normal	1	run_1	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_1.raw
+sample_2	homo sapiens	liver	hepatocellular carcinoma	1	run_2	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_2.raw</code></pre>
 </div>
 </div>
 </div>
@@ -279,7 +279,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 <p><code>vertebrates</code> - Non-human vertebrates</p>
 </li>
 <li>
-<p><code>nonvertebrates</code> - Invertebrates</p>
+<p><code>invertebrates</code> - Invertebrates</p>
 </li>
 <li>
 <p><code>plants</code> - Plant samples</p>
@@ -314,22 +314,22 @@ parse_sdrf convert-openms --sdrf_file your_file.sdrf.tsv --output_folder ./</cod
 <h2 id="_specification_structure"><a class="anchor" href="#_specification_structure"></a><a class="link" href="#_specification_structure">6. Specification structure</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This document describes the main specification of SDRF-Proteomics, the structure of the specification (<strong>Figure 2</strong>), how to contribute, and extend the specification. These are the major components of the SDRF-Proteomics specification:</p>
+<p>This document describes the main specification of SDRF-Proteomics, the structure of the specification (<strong>Figure 2</strong>), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/README.adoc">The SDRF-Proteomics core specification</a>: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.</p>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.adoc">The SDRF-Proteomics core specification</a>: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.</p>
 </li>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates">SDRF-Proteomics core templates</a>: A set of templates for the most common proteomics experiments based on the sample organism. These templates are used to validate the SDRF-Proteomics files. You can read about the concept of templates in the <a href="#core-templates">Core Templates</a> section of this document.</p>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates">Core templates</a>: Organism-based templates (human, vertebrates, plants, etc.) that define base schemas for common proteomics experiments. See the <a href="#core-templates">Core Templates</a> section.</p>
 </li>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates">Templates</a>: These are the templates and checklists for specific proteomics experiments (e.g immunopeptidomics). Each template has its own directory containing:</p>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Specialized templates</a>: Complete schemas for specific experiment types (cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>A detailed README.adoc with guidelines, checklists, and examples.</p>
+<p>A detailed README.adoc with checklists, and examples.</p>
 </li>
 <li>
 <p>A template file ({name}-template.sdrf.tsv) with column headers.</p>
@@ -338,7 +338,7 @@ parse_sdrf convert-openms --sdrf_file your_file.sdrf.tsv --output_folder ./</cod
 </div>
 </li>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/metadata-conventions">Metadata guidelines</a>: These are the guidelines for specific metadata annotations (e.g., patient pre-existing condition).</p>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/metadata-guidelines">Annotation guidelines</a>: Detailed documentation for specific metadata annotations (e.g., patient pre-existing condition, sample metadata, data file metadata).</p>
 </li>
 </ul>
 </div>
@@ -348,7 +348,7 @@ parse_sdrf convert-openms --sdrf_file your_file.sdrf.tsv --output_folder ./</cod
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by specific use case guidelines and sample annotation guidelines. Each guideline type has associated templates.</p>
+<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by specific experiment templates and annotation guidelines.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -357,19 +357,19 @@ parse_sdrf convert-openms --sdrf_file your_file.sdrf.tsv --output_folder ./</cod
 <div class="title">Note</div>
 </td>
 <td class="content">
-The main specification is in the <code>sdrf-proteomics</code> directory. The templates are in the <code>templates</code> directory at the root of the repository. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict.
+The main specification is in the <code>sdrf-proteomics</code> directory. Core templates (organism-based) are in <code>sdrf-proteomics/core-templates/</code> and specialized templates (experiment-type-specific) are in <code>sdrf-proteomics/templates/</code>. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-sample-metadata" class="bare">https://github.com/bigbio/proteomics-sample-metadata</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - <a href="https://lab.github.com/githubtraining/introduction-to-github" class="bare">https://lab.github.com/githubtraining/introduction-to-github</a>).</p>
+<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - <a href="https://lab.github.com/githubtraining/introduction-to-github" class="bare">https://lab.github.com/githubtraining/introduction-to-github</a>).</p>
 </div>
 <div class="paragraph">
 <p>A set of examples and annotated projects from ProteomeXchange can be found here: <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects" class="bare">https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects</a></p>
 </div>
 <div class="paragraph">
-<p>Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files for users from users. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - <a href="https://github.com/bigbio/sdrf-pipelines" class="bare">https://github.com/bigbio/sdrf-pipelines</a>). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.</p>
+<p>Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - <a href="https://github.com/bigbio/sdrf-pipelines" class="bare">https://github.com/bigbio/sdrf-pipelines</a>). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.</p>
 </div>
 <div class="sect2">
 <h3 id="versioning"><a class="anchor" href="#versioning"></a><a class="link" href="#versioning">6.1. Versioning</a></h3>
@@ -414,7 +414,7 @@ We added the prefix v to the version number to indicate that it is the version o
 <div class="sect2">
 <h3 id="relationship-specifications"><a class="anchor" href="#relationship-specifications"></a><a class="link" href="#relationship-specifications">6.3. Relationship to other specifications</a></h3>
 <div class="paragraph">
-<p>SDRF-Proteomics is fully compatible with the SDRF file format part of <a href="https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html">MAGE-TAB</a>. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the proteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.</p>
+<p>SDRF-Proteomics is fully compatible with the SDRF file format part of <a href="https://www.ebi.ac.uk/arrayexpress/help/magetab_spec.html">MAGE-TAB</a>. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the ProteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.</p>
 </div>
 <div class="paragraph">
 <p>SDRF-Proteomics sample information can be embedded into mzTab metadata files. The sample metadata in mzTab contains properties as the columns in the SDRF-Proteomics and values as Sample cell values.</p>
@@ -468,6 +468,53 @@ We added the prefix v to the version number to indicate that it is the version o
 <li>
 <p><strong>Not Applicable values</strong>: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use <strong>not applicable</strong>.</p>
 </li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. When to use "not available" vs "not applicable"</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Term</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+<th class="tableblock halign-left valign-top">Example Scenario</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value exists but is unknown</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Patient age was not recorded in the clinical data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age] = not available</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value does not apply to this sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cell line sample has no meaningful "age"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age] = not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Information could not be determined</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease status could not be confirmed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease] = not available</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Concept does not apply</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asking for "cell type" of a whole tissue homogenate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell type] = not applicable</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
 <li>
 <p><strong>Case sensitivity</strong>: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).</p>
 </li>
@@ -475,7 +522,7 @@ We added the prefix v to the version number to indicate that it is the version o
 <p><strong>Space sensitivity</strong>: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).</p>
 </li>
 <li>
-<p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#sample-metadata">[sample-metadata]</a>; then the data file metadata columns in <a href="#data-file-metadata">[data-file-metadata]</a>; followed by the factor values columns in <a href="#factor-values">[factor-values]</a>.</p>
+<p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#from-sample-metadata">Chapter 9</a>; then the data file metadata columns in <a href="#from-sample-data">Chapter 10</a>; followed by the factor values columns in <a href="#study-variables">Chapter 12</a>.</p>
 </li>
 <li>
 <p><strong>Extension</strong>: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.</p>
@@ -562,7 +609,7 @@ We added the prefix v to the version number to indicate that it is the version o
 </tbody>
 </table>
 <div class="paragraph">
-<p>Example of an SDRF file with header comments:</p>
+<p>Example of an SDRF file with header comments (simplified example showing only select columns; see <a href="#core-templates">Chapter 11</a> for complete required columns):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -607,7 +654,7 @@ Header comments are OPTIONAL. SDRF files without header comments are still valid
 </ul>
 </div>
 <div class="paragraph">
-<p>Each property name MUST be a valid ontology term or a valid controlled vocabulary term. Each search will have some specific order for columns headers.</p>
+<p>Each property name MUST be a valid ontology term or a valid controlled vocabulary term. Each section will have some specific order for column headers.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -623,7 +670,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </div>
 </div>
 <div class="sect2">
-<h3 id="sdrf-file-standarization"><a class="anchor" href="#sdrf-file-standarization"></a><a class="link" href="#sdrf-file-standarization">7.4. Cell values</a></h3>
+<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">7.4. Cell values</a></h3>
 <div class="paragraph">
 <p>The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.</p>
 </div>
@@ -688,7 +735,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <div class="ulist">
 <ul>
 <li>
-<p>Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="metadata-conventions/data-file-metadata-conventions.adoc#protein-modifications">Protein Modifications</a>):</p>
+<p>Key=value representation (Human and Computer readable): The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="metadata-guidelines/data-file-metadata.adoc#protein-modifications">Protein Modifications</a>):</p>
 <div class="literalblock">
 <div class="content">
 <pre>NT=Glu-&gt;pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E</pre>
@@ -948,7 +995,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <div class="title">Note</div>
 </td>
 <td class="content">
-Additional characteristics can be added depending on the type of the experiment and sample. The <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates">SDRF-Proteomics templates</a> defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
+Additional characteristics can be added depending on the type of the experiment and sample. The <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">SDRF-Proteomics templates</a> defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
 </td>
 </tr>
 </table>
@@ -1221,7 +1268,7 @@ BioSample accession numbers from NCBI follow the format <code>SAMNxxxxxxxxxx</co
 <div class="title">Important</div>
 </td>
 <td class="content">
-Both <em>characteristics[biological replicate]</em> and <em>comment[technical replicate]</em> columns are MANDATORY. Fill with 1 if replicates are not performed in a study.
+Both <em>characteristics[biological replicate]</em> and <em>comment[technical replicate]</em> columns are REQUIRED. When no replicates are performed in a study, set both columns to 1 (i.e., each sample is biological replicate 1 and technical replicate 1).
 </td>
 </tr>
 </table>
@@ -1240,7 +1287,7 @@ Both <em>characteristics[biological replicate]</em> and <em>comment[technical re
 <div class="sect2">
 <h3 id="pooled-samples"><a class="anchor" href="#pooled-samples"></a><a class="link" href="#pooled-samples">9.3. Pooled samples</a></h3>
 <div class="paragraph">
-<p>When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see <a href="metadata-conventions/data-file-metadata-conventions.adoc#label-annotations">Label Annotations</a>).</p>
+<p>When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see <a href="metadata-guidelines/data-file-metadata.adoc#label-annotations">Label Annotations</a>).</p>
 </div>
 <div class="paragraph">
 <p>One possible exception is made for the case when one channel (e.g., in a TMT/iTRAQ multiplexed experiment) is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, the <em>characteristics[pooled sample]</em> column SHOULD be used.</p>
@@ -1575,17 +1622,17 @@ If all pooled samples share the same value for a characteristic (e.g., all from 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sample_metadata_conventions"><a class="anchor" href="#_sample_metadata_conventions"></a><a class="link" href="#_sample_metadata_conventions">9.5. Sample Metadata Conventions</a></h3>
+<h3 id="_sample_metadata_guidelines"><a class="anchor" href="#_sample_metadata_guidelines"></a><a class="link" href="#_sample_metadata_guidelines">9.5. Sample Metadata Guidelines</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on annotating sample metadata, refer to the following conventions documents:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="metadata-conventions/sample-metadata-conventions.adoc">Sample Metadata Conventions</a> - Detailed guidelines for age, sex, disease, organism part, cell type, developmental stage, and other sample characteristics</p>
+<p><a href="metadata-guidelines/sample-metadata.adoc">Sample Metadata Guidelines</a> - Detailed guidelines for age, sex, disease, organism part, cell type, developmental stage, and other sample characteristics</p>
 </li>
 <li>
-<p><a href="metadata-conventions/human-sample-metadata.adoc">Human Sample Metadata Convention</a> - Human-specific metadata including disease staging, treatment history, demographics, and lifestyle factors</p>
+<p><a href="metadata-guidelines/human-sample-metadata.adoc">Human Sample Metadata Guidelines</a> - Human-specific metadata including disease staging, treatment history, demographics, and lifestyle factors</p>
 </li>
 </ul>
 </div>
@@ -1679,18 +1726,20 @@ The combination of source name + assay name + comment[label] MUST be unique with
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.667%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2858%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">source name</th>
 <th class="tableblock halign-left valign-top">assay name</th>
 <th class="tableblock halign-left valign-top">technology type</th>
+<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
 <th class="tableblock halign-left valign-top">comment[label]</th>
 <th class="tableblock halign-left valign-top">comment[instrument]</th>
 <th class="tableblock halign-left valign-top">comment[data file]</th>
@@ -1701,6 +1750,7 @@ The combination of source name + assay name + comment[label] MUST be unique with
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample1_run1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample1.raw</p></td>
@@ -1786,7 +1836,7 @@ The <em>comment[proteomics data acquisition method]</em> column is REQUIRED for 
 </table>
 </div>
 <div class="paragraph">
-<p>You can find an example of a DIA experiment in the following link: <a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv">DIA example</a></p>
+<p>You can find an example of a DIA experiment in the following link: <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv">DIA example</a></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1795,21 +1845,21 @@ The <em>comment[proteomics data acquisition method]</em> column is REQUIRED for 
 <div class="title">Tip</div>
 </td>
 <td class="content">
-For DIA experiments, additional properties like MS1 scan range can be captured. See <a href="metadata-conventions/data-file-metadata-conventions.adoc#dia-scan-window">DIA Scan Window Limits</a> in the Data File Metadata Conventions.
+For DIA experiments, additional properties like MS1 scan range can be captured. See <a href="metadata-guidelines/data-file-metadata.adoc#dia-scan-window">DIA Scan Window Limits</a> in the Data File Metadata Guidelines.
 </td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_file_metadata_conventions"><a class="anchor" href="#_data_file_metadata_conventions"></a><a class="link" href="#_data_file_metadata_conventions">10.4. Data File Metadata Conventions</a></h3>
+<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="metadata-conventions/data-file-metadata-conventions.adoc">Data File Metadata Conventions</a> - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties</p>
+<p><a href="metadata-guidelines/data-file-metadata.adoc">Data File Metadata Guidelines</a> - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties</p>
 </li>
 </ul>
 </div>
@@ -1881,19 +1931,19 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-annotation">characteristics[organism</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-annotation">characteristics[organism</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#disease-annotation">characteristics[disease</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">characteristics[disease</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
@@ -1908,55 +1958,55 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 <td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Data File Metadata</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#assay-name">assay name</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#assay-name">assay name</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">run_1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technology-type">technology type</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technology-type">technology type</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#label-annotations">comment[label</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#label-annotations">comment[label</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#instrument">comment[instrument</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#instrument">comment[instrument</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-file">comment[data file</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-file">comment[data file</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample_1.raw</p></td>
@@ -1964,7 +2014,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </tbody>
 </table>
 <div class="paragraph">
-<p>Template file: <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-default.sdrf.tsv">sdrf-default.sdrf.tsv</a></p>
+<p>Template file: <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-default.sdrf.tsv">sdrf-default.sdrf.tsv</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1973,7 +2023,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 <div class="title">Note</div>
 </td>
 <td class="content">
-The <a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation">characteristics[cell type</a>] column is optional in the default template but RECOMMENDED when the cell type is known. Use <code>not available</code> if the cell type cannot be determined.
+The <a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">characteristics[cell type</a>] column is RECOMMENDED across all templates when the cell type is known or can be determined. Use <code>not available</code> if the cell type cannot be determined (e.g., whole tissue samples, mixed cell populations). For cell line experiments, use the cell-lines template which provides more specific guidance.
 </td>
 </tr>
 </table>
@@ -2013,27 +2063,27 @@ The <a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-ann
 <td class="tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-annotation">characteristics[organism</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-annotation">characteristics[organism</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#disease-annotation">characteristics[disease</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">characteristics[disease</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">hepatocellular carcinoma</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">hepatocyte</p></td>
 </tr>
 <tr>
@@ -2043,25 +2093,25 @@ The <a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-ann
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#age-annotation">characteristics[age</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#age-annotation">characteristics[age</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">45Y</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#sex-annotation">characteristics[sex</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#sex-annotation">characteristics[sex</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">male</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/human-sample-metadata.adoc#clinical-metadata">characteristics[ancestry category</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/human-sample-metadata.adoc#clinical-metadata">characteristics[ancestry category</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">European</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/human-sample-metadata.adoc#individual-annotation">characteristics[individual</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/human-sample-metadata.adoc#individual-annotation">characteristics[individual</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">P001</p></td>
@@ -2070,55 +2120,55 @@ The <a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-ann
 <td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Data File Metadata</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#assay-name">assay name</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#assay-name">assay name</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">patient_001_run1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technology-type">technology type</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technology-type">technology type</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#label-annotations">comment[label</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#label-annotations">comment[label</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#instrument">comment[instrument</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#instrument">comment[instrument</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Orbitrap Exploris 480</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-file">comment[data file</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-file">comment[data file</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">patient_001.raw</p></td>
@@ -2126,7 +2176,7 @@ The <a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-ann
 </tbody>
 </table>
 <div class="paragraph">
-<p>Template file: <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-human.sdrf.tsv">sdrf-human.sdrf.tsv</a></p>
+<p>Template file: <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-human.sdrf.tsv">sdrf-human.sdrf.tsv</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2135,7 +2185,7 @@ The <a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-ann
 <div class="title">Note</div>
 </td>
 <td class="content">
-The characteristics[individual] column is optional and is only used when a code for the individual is available; if not, use <strong>not available</strong>. For age encoding format, see <a href="metadata-conventions/sample-metadata-conventions.adoc">Sample Metadata Conventions</a>.
+The characteristics[individual] column is optional and is only used when a code for the individual is available; if not, use <strong>not available</strong>. For age encoding format, see <a href="metadata-guidelines/sample-metadata.adoc">Sample Metadata Guidelines</a>.
 </td>
 </tr>
 </table>
@@ -2175,27 +2225,27 @@ The characteristics[individual] column is optional and is only used when a code 
 <td class="tableblock halign-left valign-top"><p class="tableblock">mouse_001</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-annotation">characteristics[organism</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-annotation">characteristics[organism</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">brain</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#disease-annotation">characteristics[disease</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">characteristics[disease</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">neuron</p></td>
 </tr>
 <tr>
@@ -2205,7 +2255,7 @@ The characteristics[individual] column is optional and is only used when a code 
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#developmental-stage">characteristics[developmental stage</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#developmental-stage">characteristics[developmental stage</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">adult</p></td>
@@ -2214,55 +2264,55 @@ The characteristics[individual] column is optional and is only used when a code 
 <td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Data File Metadata</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#assay-name">assay name</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#assay-name">assay name</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mouse_001_run1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technology-type">technology type</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technology-type">technology type</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#label-annotations">comment[label</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#label-annotations">comment[label</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#instrument">comment[instrument</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#instrument">comment[instrument</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">timsTOF Pro</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-file">comment[data file</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-file">comment[data file</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mouse_001.raw</p></td>
@@ -2270,7 +2320,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </tbody>
 </table>
 <div class="paragraph">
-<p>Template file: <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-vertebrates.sdrf.tsv">sdrf-vertebrates.sdrf.tsv</a></p>
+<p>Template file: <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-vertebrates.sdrf.tsv">sdrf-vertebrates.sdrf.tsv</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -2307,27 +2357,27 @@ The characteristics[individual] column is optional and is only used when a code 
 <td class="tableblock halign-left valign-top"><p class="tableblock">fly_sample_1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-annotation">characteristics[organism</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-annotation">characteristics[organism</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">drosophila melanogaster</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">head</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#disease-annotation">characteristics[disease</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">characteristics[disease</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">neuron</p></td>
 </tr>
 <tr>
@@ -2340,55 +2390,55 @@ The characteristics[individual] column is optional and is only used when a code 
 <td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Data File Metadata</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#assay-name">assay name</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#assay-name">assay name</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">fly_sample_1_run1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technology-type">technology type</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technology-type">technology type</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#label-annotations">comment[label</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#label-annotations">comment[label</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#instrument">comment[instrument</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#instrument">comment[instrument</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive Plus</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-file">comment[data file</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-file">comment[data file</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">fly_sample_1.raw</p></td>
@@ -2396,7 +2446,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </tbody>
 </table>
 <div class="paragraph">
-<p>Template file: <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-invertebrates.sdrf.tsv">sdrf-invertebrates.sdrf.tsv</a></p>
+<p>Template file: <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-invertebrates.sdrf.tsv">sdrf-invertebrates.sdrf.tsv</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2445,25 +2495,25 @@ For Drosophila samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt"
 <td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis_col0_1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-annotation">characteristics[organism</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-annotation">characteristics[organism</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis thaliana</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#organism-part-annotation">characteristics[organism part</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">leaf</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#disease-annotation">characteristics[disease</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">characteristics[disease</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/sample-metadata-conventions.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">characteristics[cell type</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">guard cell</p></td>
@@ -2478,55 +2528,55 @@ For Drosophila samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt"
 <td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Data File Metadata</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#assay-name">assay name</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#assay-name">assay name</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis_col0_run1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technology-type">technology type</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technology-type">technology type</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-acquisition-method">comment[proteomics data acquisition method</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#label-annotations">comment[label</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#label-annotations">comment[label</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#instrument">comment[instrument</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#instrument">comment[instrument</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Orbitrap Fusion Lumos</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#cleavage-agents">comment[cleavage agent details</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#fraction-identifier">comment[fraction identifier</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#technical-replicate">comment[technical replicate</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-conventions/data-file-metadata-conventions.adoc#data-file">comment[data file</a>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="metadata-guidelines/data-file-metadata.adoc#data-file">comment[data file</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis_col0.raw</p></td>
@@ -2534,7 +2584,7 @@ For Drosophila samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt"
 </tbody>
 </table>
 <div class="paragraph">
-<p>Template file: <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates/sdrf-plants.sdrf.tsv">sdrf-plants.sdrf.tsv</a></p>
+<p>Template file: <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-plants.sdrf.tsv">sdrf-plants.sdrf.tsv</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2587,7 +2637,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </tbody>
 </table>
 <div class="paragraph">
-<p>The template files can be downloaded from the <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates/core-templates">core-templates</a> folder.</p>
+<p>The template files can be downloaded from the <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates">core-templates</a> folder.</p>
 </div>
 </div>
 </div>
@@ -2723,7 +2773,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </ul>
 </div>
 <div class="paragraph">
-<p>For detailed specifications and examples, visit the <a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics/templates">Experiment-specific Templates</a> documentation.</p>
+<p>For detailed specifications and examples, visit the <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Experiment-specific Templates</a> documentation.</p>
 </div>
 </div>
 </div>
@@ -2753,37 +2803,37 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Label-free</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PXD008934</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human proteome label-free quantification</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD008934">View SDRF</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD008934">View SDRF</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PXD017710</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT-labeled quantitative proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD017710">View SDRF</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710">View SDRF</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SILAC</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PXD000612</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SILAC-based quantification</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD000612">View SDRF</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000612">View SDRF</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DIA</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PXD018830</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data-independent acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD018830">View SDRF</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD018830">View SDRF</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Phosphoproteomics</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PXD000759</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PTM enrichment study</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD000759">View SDRF</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000759">View SDRF</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cell lines</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PXD001819</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cell line proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-sample-metadata/tree/master/annotated-projects/PXD001819">View SDRF</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD001819">View SDRF</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -2796,7 +2846,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <h2 id="_ongoing_template_discussions"><a class="anchor" href="#_ongoing_template_discussions"></a><a class="link" href="#_ongoing_template_discussions">15. Ongoing template discussions</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We have created a file in GitHub <a href="https://github.com/bigbio/proteomics-sample-metadata/blob/master/sdrf-proteomics/templates-under-development.adoc">Ongoing template discussions</a> where we aggregate all the ongoing discussions about the format and new templates.</p>
+<p>We have created a file in GitHub <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/templates-under-development.adoc">Ongoing template discussions</a> where we aggregate all the ongoing discussions about the format and new templates.</p>
 </div>
 </div>
 </div>
@@ -2863,7 +2913,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-14 14:10:24 UTC
+Last updated 2026-01-14 16:18:59 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
