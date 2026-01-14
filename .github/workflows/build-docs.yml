@@ -55,6 +55,21 @@ jobs:
             -o specification.html \
             sdrf-proteomics/README.adoc
 
+      - name: Build tool support page
+        run: |
+          asciidoctor \
+            -D ${{ steps.set-output-dir.outputs.output_dir }} \
+            -a stylesheet=css/style.css \
+            -a linkcss \
+            -a toc=left \
+            -a toclevels=3 \
+            -a sectanchors \
+            -a sectlinks \
+            -a source-highlighter=highlight.js \
+            --backend=html5 \
+            -o tool-support.html \
+            sdrf-proteomics/tool-support.adoc
+
       - name: Build metadata conventions
         run: |
           mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}/conventions
@@ -142,13 +157,16 @@ jobs:
           OUTPUT_DIR="${{ steps.set-output-dir.outputs.output_dir }}"
 
           # Header for root-level pages (specification.html)
-          ROOT_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+          ROOT_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="./tool-support.html">Tools</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+
+          # Header for tool support page
+          TOOLS_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./tool-support.html" class="nav-current">Tools</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
 
           # Header for convention pages
-          CONV_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#conventions" class="nav-current">Conventions</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+          CONV_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#conventions" class="nav-current">Conventions</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
 
           # Header for template pages
-          TMPL_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
+          TMPL_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="https://github.com/bigbio/proteomics-sample-metadata" target="_blank">GitHub</a></nav></header>'
 
           # Add header to specification.html
           if [ -f "$OUTPUT_DIR/specification.html" ]; then
@@ -156,6 +174,14 @@ jobs:
             sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$OUTPUT_DIR/specification.html"
             sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$ROOT_HEADER<div style=\"display:none\"|g" "$OUTPUT_DIR/specification.html"
             sed -i 's|<div style="display:none" |<|g' "$OUTPUT_DIR/specification.html"
+          fi
+
+          # Add header to tool-support.html
+          if [ -f "$OUTPUT_DIR/tool-support.html" ]; then
+            sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$OUTPUT_DIR/tool-support.html"
+            sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$OUTPUT_DIR/tool-support.html"
+            sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$TOOLS_HEADER<div style=\"display:none\"|g" "$OUTPUT_DIR/tool-support.html"
+            sed -i 's|<div style="display:none" |<|g' "$OUTPUT_DIR/tool-support.html"
           fi
 
           # Add header to convention pages
