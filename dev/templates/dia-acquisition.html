@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Data-Independent Acquisition (DIA) Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+</head>
+<body class="has-doc-header"><header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header><book toc2 toc-left">
+<div id="header">
+<h1>SDRF-Proteomics: Data-Independent Acquisition (DIA) Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#motivation">3. Motivation</a></li>
+<li><a href="#connections">4. Connections to Analysis Pipelines</a></li>
+<li><a href="#additional-ontologies">5. Additional Ontologies</a></li>
+<li><a href="#checklist">6. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_columns">6.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">6.2. Recommended Columns</a></li>
+</ul>
+</li>
+<li><a href="#stepped-collision-energy">7. Stepped Collision Energy</a>
+<ul class="sectlevel2">
+<li><a href="#_multiple_columns_approach">7.1. Multiple Columns Approach</a></li>
+<li><a href="#_semicolon_separated_approach">7.2. Semicolon-Separated Approach</a></li>
+</ul>
+</li>
+<li><a href="#isolation-window-schemes">8. Isolation Window Schemes</a></li>
+<li><a href="#dia-variants">9. DIA Method Variants</a></li>
+<li><a href="#example-sdrf">10. Example SDRF File</a></li>
+<li><a href="#diaPASEF-example">11. diaPASEF Example</a></li>
+<li><a href="#best-practices">12. Best Practices for DIA Annotation</a></li>
+<li><a href="#template-file">13. Template File</a></li>
+<li><a href="#validation">14. Validation</a></li>
+<li><a href="#authors">15. Authors and Maintainers</a></li>
+<li><a href="#references">16. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides a template for annotating Data-Independent Acquisition (DIA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DIA-specific metadata.</p>
+</div>
+<div class="paragraph">
+<p><strong>Type:</strong> Specialized Template (used in combination with core templates)</p>
+</div>
+<div class="paragraph">
+<p><strong>Status:</strong> Draft - This template is under active development and may change significantly.</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0-dev - 2025-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Data-Independent Acquisition (DIA) is a mass spectrometry acquisition strategy where all precursor ions within a specified m/z range are fragmented systematically, regardless of their intensity. Unlike Data-Dependent Acquisition (DDA), DIA provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Comprehensive and reproducible proteome coverage</p>
+</li>
+<li>
+<p>Reduced missing values across samples</p>
+</li>
+<li>
+<p>Better quantitative accuracy and precision</p>
+</li>
+<li>
+<p>Systematic sampling of all detectable peptides</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Popular DIA methods include SWATH-MS, MSE, All-Ion Fragmentation (AIF), and various windowed DIA approaches. This template captures the acquisition parameters essential for DIA data analysis and reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="motivation"><a class="anchor" href="#motivation"></a><a class="link" href="#motivation">3. Motivation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>DIA experiments have unique characteristics that distinguish them from DDA proteomics:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Isolation window schemes</strong>: DIA uses predefined m/z windows that must be documented</p>
+</li>
+<li>
+<p><strong>Scan window ranges</strong>: The precursor mass range covered by the acquisition</p>
+</li>
+<li>
+<p><strong>Stepped collision energies</strong>: Many DIA methods use multiple collision energies per scan</p>
+</li>
+<li>
+<p><strong>Spectral library requirements</strong>: DIA analysis often requires spectral libraries for peptide identification</p>
+</li>
+<li>
+<p><strong>Cycle time considerations</strong>: The time to complete one full DIA cycle affects quantification</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>These aspects require additional metadata beyond standard SDRF-Proteomics fields.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="connections"><a class="anchor" href="#connections"></a><a class="link" href="#connections">4. Connections to Analysis Pipelines</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>DIA data is typically analyzed using specialized software:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>DIA-NN</strong>: Deep learning-based DIA analysis</p>
+</li>
+<li>
+<p><strong>Spectronaut</strong>: Commercial DIA analysis platform</p>
+</li>
+<li>
+<p><strong>OpenSWATH</strong>: Open-source targeted analysis</p>
+</li>
+<li>
+<p><strong>MaxDIA</strong>: MaxQuant&#8217;s DIA module</p>
+</li>
+<li>
+<p><strong>EncyclopeDIA</strong>: Chromatogram library search</p>
+</li>
+<li>
+<p><strong>Skyline</strong>: Targeted quantification</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When documenting DIA experiments, noting the intended or used analysis software is RECOMMENDED.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">5. Additional Ontologies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the ontologies supported by the core SDRF-Proteomics specification, DIA templates utilize:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>PSI-MS CV</strong>: For mass spectrometry acquisition terms</p>
+</li>
+<li>
+<p><strong>PRIDE CV</strong>: For proteomics data acquisition methods</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">6. Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section defines the metadata columns required and recommended for DIA experiments.</p>
+</div>
+<div class="sect2">
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">6.1. Required Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are REQUIRED for DIA experiments in addition to the core SDRF-Proteomics requirements:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[proteomics data acquisition method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must indicate DIA acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-independent acquisition;AC=PRIDE:0000450</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[precursor mass tolerance]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for precursor ions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20 ppm, 10 ppm, 0.02 Da</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[fragment mass tolerance]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for fragment ions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da, 0.05 Da, 20 ppm</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.2. Recommended Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are RECOMMENDED for DIA experiments:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[scan window lower limit]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lower m/z limit of the DIA scan range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit (Th or m/z)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">350 Th, 400 m/z, 380 Th</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[scan window upper limit]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Upper m/z limit of the DIA scan range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit (Th or m/z)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1650 Th, 1200 m/z, 1800 Th</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[isolation window width]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of DIA isolation windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 Th, 8 m/z, variable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[number of isolation windows]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total number of DIA windows per cycle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32, 64, 100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[collision energy]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collision energy used for fragmentation (can have multiple for stepped CE)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[dissociation method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fragmentation method used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MS CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[MS2 mass analyzer]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass analyzer used for MS2 acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MS CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484, NT=quadrupole;AC=MS:1000081</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cycle time]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time to complete one DIA cycle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.2 s, 2.8 s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[spectral library]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spectral library used for analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text or accession</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">project-specific library, Pan-Human library, PRIDE:PXD000001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[DIA method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific DIA method variant (child of PRIDE:0000450)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=SWATH-MS;AC=PRIDE:0000451, NT=MSE;AC=PRIDE:0000452, NT=All ion fragmentation;AC=PRIDE:0000453, diaPASEF, scanning SWATH</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The parent term for all DIA methods is <code>Data-independent acquisition</code> (PRIDE:0000450). Use <code>comment[DIA method]</code> to specify the specific variant when known. Check the <a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE Controlled Vocabulary</a> for available terms.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="stepped-collision-energy"><a class="anchor" href="#stepped-collision-energy"></a><a class="link" href="#stepped-collision-energy">7. Stepped Collision Energy</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Many DIA methods use stepped or ramped collision energies to improve fragmentation coverage. Document this using multiple <code>comment[collision energy]</code> columns or semicolon-separated values:</p>
+</div>
+<div class="sect2">
+<h3 id="_multiple_columns_approach"><a class="anchor" href="#_multiple_columns_approach"></a><a class="link" href="#_multiple_columns_approach">7.1. Multiple Columns Approach</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_semicolon_separated_approach"><a class="anchor" href="#_semicolon_separated_approach"></a><a class="link" href="#_semicolon_separated_approach">7.2. Semicolon-Separated Approach</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22 NCE;26 NCE;30 NCE</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Both approaches are valid. Use the approach that best fits your workflow.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="isolation-window-schemes"><a class="anchor" href="#isolation-window-schemes"></a><a class="link" href="#isolation-window-schemes">8. Isolation Window Schemes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>DIA methods vary in their isolation window strategies:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Scheme</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">How to Document</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fixed windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Equal-width windows across mass range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[isolation window width] = 25 Th</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Variable windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Windows optimized for ion density</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[isolation window width] = variable; provide method file reference</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overlapping windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Windows with m/z overlap</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Note in comment[DIA method] or separate documentation</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scanning/sliding windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Continuous scanning approach</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[DIA method] = scanning SWATH</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For complex schemes, reference the instrument method file in <code>comment[method file]</code> if available.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dia-variants"><a class="anchor" href="#dia-variants"></a><a class="link" href="#dia-variants">9. DIA Method Variants</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Common DIA acquisition methods and their characteristics:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">PRIDE CV</th>
+<th class="tableblock halign-left valign-top">Vendor/Origin</th>
+<th class="tableblock halign-left valign-top">Key Features</th>
+<th class="tableblock halign-left valign-top">Example Annotation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SWATH-MS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000451</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCIEX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fixed or variable windows, typically 25-100 windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=SWATH-MS;AC=PRIDE:0000451</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000452</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Waters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All-ion fragmentation, alternating low/high energy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=MSE;AC=PRIDE:0000452</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All ion fragmentation (AIF)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000453</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thermo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All-ion fragmentation approach</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=All ion fragmentation;AC=PRIDE:0000453</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">diaPASEF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(pending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bruker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ion mobility-enhanced DIA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">diaPASEF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boxcar DIA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(pending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Various</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Multiplexed acquisition with notched windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boxcar DIA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scanning SWATH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(pending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCIEX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Continuously scanning isolation window</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scanning SWATH</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Methods marked as "(pending)" do not yet have PRIDE CV accessions. Use the free text name until official terms are available.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">10. Example SDRF File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A complete example for a DIA proteomics experiment:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1666%;">
+<col style="width: 4.1682%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[organism part]</th>
+<th class="tableblock halign-left valign-top">characteristics[disease]</th>
+<th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">technology type</th>
+<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
+<th class="tableblock halign-left valign-top">comment[label]</th>
+<th class="tableblock halign-left valign-top">comment[instrument]</th>
+<th class="tableblock halign-left valign-top">comment[cleavage agent details]</th>
+<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
+<th class="tableblock halign-left valign-top">comment[technical replicate]</th>
+<th class="tableblock halign-left valign-top">comment[scan window lower limit]</th>
+<th class="tableblock halign-left valign-top">comment[scan window upper limit]</th>
+<th class="tableblock halign-left valign-top">comment[isolation window width]</th>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+<th class="tableblock halign-left valign-top">comment[collision energy]</th>
+<th class="tableblock halign-left valign-top">comment[precursor mass tolerance]</th>
+<th class="tableblock halign-left valign-top">comment[fragment mass tolerance]</th>
+<th class="tableblock halign-left valign-top">comment[dissociation method]</th>
+<th class="tableblock halign-left valign-top">comment[DIA method]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_sample_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">blood plasma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIA_sample001_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-independent acquisition;AC=PRIDE:0000450</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap Exploris 480;AC=MS:1003028</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">350 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1650 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20 ppm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=SWATH-MS;AC=PRIDE:0000451</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_001.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_sample_002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">blood plasma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIA_sample002_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-independent acquisition;AC=PRIDE:0000450</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap Exploris 480;AC=MS:1003028</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">350 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1650 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20 ppm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=SWATH-MS;AC=PRIDE:0000451</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_002.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_sample_003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">blood plasma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIA_sample003_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-independent acquisition;AC=PRIDE:0000450</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap Exploris 480;AC=MS:1003028</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">350 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1650 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 Th</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20 ppm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=SWATH-MS;AC=PRIDE:0000451</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_003.raw</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="diaPASEF-example"><a class="anchor" href="#diaPASEF-example"></a><a class="link" href="#diaPASEF-example">11. diaPASEF Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For ion mobility-enhanced DIA (diaPASEF), additional columns may be relevant:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[ion mobility]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ion mobility separation used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TIMS, FAIMS, not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[1/K0 range]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ion mobility range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6-1.6 1/K0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">12. Best Practices for DIA Annotation</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Always specify acquisition method</strong>: Use <code>comment[proteomics data acquisition method]</code> with the PRIDE CV term for DIA.</p>
+</li>
+<li>
+<p><strong>Document scan range</strong>: Include <code>comment[scan window lower limit]</code> and <code>comment[scan window upper limit]</code> for reproducibility.</p>
+</li>
+<li>
+<p><strong>Report isolation window details</strong>: Document window width and number of windows when known.</p>
+</li>
+<li>
+<p><strong>Include collision energy</strong>: Document all collision energies used, especially for stepped CE methods.</p>
+</li>
+<li>
+<p><strong>Note the DIA variant</strong>: Use <code>comment[DIA method]</code> to specify SWATH-MS, diaPASEF, MSE, etc.</p>
+</li>
+<li>
+<p><strong>Reference spectral libraries</strong>: If using a spectral library, document it in <code>comment[spectral library]</code>.</p>
+</li>
+<li>
+<p><strong>Report mass tolerances</strong>: These are essential for data reanalysis.</p>
+</li>
+<li>
+<p><strong>Consider instrument-specific parameters</strong>: Different platforms may have unique parameters worth documenting.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">13. Template File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The DIA SDRF template file is available in this directory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="dia-acquisition-template.sdrf.tsv">dia-acquisition-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">14. Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>DIA SDRF files should be validated using the sdrf-pipelines tool:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+DIA-specific validation rules are under development.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">15. Authors and Maintainers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template was developed by the SDRF-Proteomics community with contributions from DIA proteomics researchers.</p>
+</div>
+<div class="paragraph">
+<p>For questions or suggestions, please open an issue on the <a href="https://github.com/bigbio/proteomics-metadata-standard">GitHub repository</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">16. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Gillet LC, et al. (2012) Targeted data extraction of the MS/MS spectra generated by data-independent acquisition: a new concept for consistent and accurate proteome analysis. Molecular &amp; Cellular Proteomics.</p>
+</li>
+<li>
+<p>Ludwig C, et al. (2018) Data-independent acquisition-based SWATH-MS for quantitative proteomics: a tutorial. Molecular Systems Biology.</p>
+</li>
+<li>
+<p>Demichev V, et al. (2020) DIA-NN: neural networks and interference correction enable deep proteome coverage in high throughput. Nature Methods.</p>
+</li>
+<li>
+<p>Meier F, et al. (2020) diaPASEF: parallel accumulation-serial fragmentation combined with data-independent acquisition. Nature Methods.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-01-14 16:36:52 UTC
+</div>
+</div>
+</body>
+</html>
