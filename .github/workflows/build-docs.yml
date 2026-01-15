@@ -157,6 +157,12 @@ jobs:
           cp site/sdrf-terms.html ${{ steps.set-output-dir.outputs.output_dir }}/
           cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv ${{ steps.set-output-dir.outputs.output_dir }}/
 
+      - name: Build SDRF Explorer index
+        run: |
+          python3 site/build-sdrf-index.py
+          cp site/sdrf-data.json ${{ steps.set-output-dir.outputs.output_dir }}/
+          cp site/sdrf-explorer.html ${{ steps.set-output-dir.outputs.output_dir }}/
+
       - name: Add navigation header to documentation pages
         run: |
           OUTPUT_DIR="${{ steps.set-output-dir.outputs.output_dir }}"
