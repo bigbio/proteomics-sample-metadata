@@ -225,6 +225,28 @@ jobs:
             fi
           done
 
+      - name: Transform SDRF links to use viewer
+        run: |
+          # Replace GitHub links to annotated-projects with SDRF Explorer viewer links
+          # Pattern: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD... -> ./sdrf-explorer.html?view=PXD...
+          python3 << 'EOF'
+          import re
+
+          filepath = "${{ steps.set-output-dir.outputs.output_dir }}/specification.html"
+          with open(filepath, 'r') as f:
+              content = f.read()
+
+          # Replace GitHub annotated-projects links with SDRF Explorer viewer links
+          pattern = r'href="https://github\.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/(PXD\d+)"'
+          replacement = r'href="./sdrf-explorer.html?view=\1"'
+          content = re.sub(pattern, replacement, content)
+
+          with open(filepath, 'w') as f:
+              f.write(content)
+
+          print("Transformed SDRF links to use viewer in specification.html")
+          EOF
+
       - name: Build search index
         run: |
           python3 site/build-search-index.py . ${{ steps.set-output-dir.outputs.output_dir }}/search-index.json
