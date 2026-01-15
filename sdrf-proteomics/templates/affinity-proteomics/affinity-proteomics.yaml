@@ -1,0 +1,157 @@
+name: affinity-proteomics
+description: SDRF template for affinity-based proteomics experiments (Olink, SomaScan, Luminex, RPPA)
+version: 1.0.0-dev
+extends: minimum
+columns:
+  - name: characteristics[affinity reagent]
+    description: Type of affinity reagent used for protein detection
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - antibody
+            - aptamer
+            - nanobody
+            - affimer
+            - not applicable
+          error_level: error
+          description: Type of affinity reagent
+
+  - name: characteristics[affinity method]
+    description: Affinity-based proteomics platform/method used
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - Olink
+            - SomaScan
+            - Luminex
+            - RPPA
+            - MSD
+            - Simoa
+            - ELISA
+            - Western blot
+            - not applicable
+          error_level: error
+          description: Affinity proteomics platform
+
+  - name: characteristics[target protein class]
+    description: Class of proteins targeted by the assay
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Protein class targeted
+          examples:
+            - cytokines
+            - cardiovascular markers
+            - inflammation panel
+            - oncology panel
+
+  - name: comment[panel name]
+    description: Name of the commercial panel used
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Panel name
+          examples:
+            - Olink Explore 3072
+            - Olink Target 96 Inflammation
+            - SomaScan 7K
+            - Luminex Human Cytokine Panel
+
+  - name: comment[panel version]
+    description: Version of the assay panel
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Panel version
+          examples:
+            - v2.0
+            - 2023-01
+            - 7K v4.1
+
+  - name: comment[quantification unit]
+    description: Unit of quantification for the assay
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - NPX
+            - RFU
+            - pg/mL
+            - ng/mL
+            - arbitrary units
+            - signal intensity
+            - not applicable
+          error_level: warning
+          description: Quantification unit
+
+  - name: comment[sample volume]
+    description: Volume of sample used for the assay
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(uL|µL|mL)$
+          description: Sample volume with unit
+          examples:
+            - 1 uL
+            - 50 uL
+            - 100 µL
+
+  - name: comment[sample type]
+    description: Type of sample analyzed
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - serum
+            - plasma
+            - CSF
+            - urine
+            - cell lysate
+            - tissue lysate
+            - not applicable
+          error_level: warning
+          description: Sample type
+
+  - name: comment[dilution factor]
+    description: Dilution factor applied to the sample
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^1:\d+$|^undiluted$
+          description: Dilution factor
+          examples:
+            - 1:10
+            - 1:100
+            - undiluted

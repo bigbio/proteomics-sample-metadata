@@ -1,0 +1,150 @@
+name: single-cell
+description: SDRF template for single-cell proteomics (SCP) experiments
+version: 1.0.0-dev
+extends: default
+columns:
+  - name: characteristics[single cell isolation method]
+    description: Method used to isolate single cells
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - FACS
+            - microfluidics
+            - laser capture microdissection
+            - manual picking
+            - CellenONE
+            - cellenONE
+            - nanoPOTS
+            - not applicable
+          error_level: warning
+          description: Single cell isolation method
+
+  - name: characteristics[cell identifier]
+    description: Unique identifier for the single cell
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[A-Za-z0-9_-]+$
+          description: Cell identifier
+          examples:
+            - cell_001
+            - A1
+            - well_B3
+
+  - name: characteristics[cell viability]
+    description: Viability status of the cell at isolation
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - live
+            - dead
+            - unknown
+            - not applicable
+          error_level: warning
+          description: Cell viability status
+
+  - name: characteristics[cell cycle phase]
+    description: Cell cycle phase of the isolated cell
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - G1
+            - S
+            - G2
+            - M
+            - G0
+            - not available
+            - not applicable
+          error_level: warning
+          description: Cell cycle phase
+
+  - name: characteristics[sorting marker]
+    description: Markers used for cell sorting/selection
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Sorting marker(s)
+          examples:
+            - CD45+
+            - GFP+
+            - CD3+CD4+
+
+  - name: comment[carrier proteome]
+    description: Carrier proteome used in carrier-assisted SCP methods
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - yes
+            - no
+            - not applicable
+          error_level: warning
+          description: Whether carrier proteome was used
+
+  - name: comment[carrier channel]
+    description: TMT channel used for carrier proteome
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^TMT\d+[NC]?$|^not applicable$
+          description: TMT channel for carrier
+          examples:
+            - TMT131C
+            - TMT126
+            - not applicable
+
+  - name: comment[reference channel]
+    description: TMT channel used for reference/booster
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^TMT\d+[NC]?$|^not applicable$
+          description: TMT channel for reference
+          examples:
+            - TMT127N
+            - TMT134N
+            - not applicable
+
+  - name: comment[cells per well]
+    description: Number of cells per well/reaction
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+$
+          description: Number of cells
+          examples:
+            - 1
+            - 5
+            - 10
+            - 100

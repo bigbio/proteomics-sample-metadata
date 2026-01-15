@@ -1,0 +1,110 @@
+name: cell-lines
+description: SDRF template for cell line samples with Cellosaurus-based annotation
+version: 1.0.0
+extends: human
+columns:
+  - name: characteristics[cell line]
+    description: Name of the cell line
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - clo
+            - bto
+            - efo
+          error_level: warning
+          description: The cell line should be a valid Cell Line Ontology (CLO), BTO, or EFO term
+          examples:
+            - HeLa
+            - HEK293
+            - MCF7
+            - A549
+
+  - name: characteristics[cellosaurus accession]
+    description: Cellosaurus accession number for the cell line
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^CVCL_[A-Z0-9]+$
+          error_level: error
+          description: Cellosaurus accession should follow the format CVCL_XXXX
+          examples:
+            - CVCL_0030
+            - CVCL_0045
+            - CVCL_0062
+
+  - name: characteristics[cellosaurus name]
+    description: Official Cellosaurus name for the cell line
+    requirement: recommended
+    allow_not_applicable: false
+    allow_not_available: false
+
+  - name: characteristics[sampling site]
+    description: Tissue or organ from which the cell line was derived
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - uberon
+            - bto
+          error_level: warning
+          description: The sampling site should be a valid UBERON or BTO term
+          examples:
+            - cervix
+            - kidney
+            - breast
+
+  - name: comment[passage number]
+    description: Passage number of the cell line used in the experiment
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(-\d+)?$
+          description: Passage number should be an integer or range
+          examples:
+            - 10
+            - 15-20
+            - 5
+
+  - name: comment[cell line source]
+    description: Repository or source from which the cell line was obtained
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Source of the cell line
+          examples:
+            - ATCC
+            - DSMZ
+            - ECACC
+            - Sigma-Aldrich
+
+  - name: comment[authentication method]
+    description: Method used to authenticate the cell line identity
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Authentication method used
+          examples:
+            - STR profiling
+            - SNP fingerprinting
+            - cytogenetic analysis

@@ -1,0 +1,196 @@
+name: crosslinking
+description: SDRF template for crosslinking mass spectrometry (XL-MS) experiments
+version: 1.0.0-dev
+extends: default
+columns:
+  # Sample-level columns (characteristics)
+  - name: characteristics[crosslinking reagent]
+    description: Name of the cross-linking reagent used (identifies this as a crosslinking sample)
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - xlmod
+            - chebi
+          error_level: warning
+          description: The crosslinking reagent should be a valid XLMOD or ChEBI term
+          examples:
+            - DSSO
+            - DSS
+            - BS3
+            - EDC
+            - DSBU
+
+  - name: characteristics[enrichment process]
+    description: Indicates if the sample was enriched for cross-linked peptides
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - enrichment of cross-linked peptides
+            - not applicable
+          error_level: error
+          description: Should indicate enrichment status
+
+  - name: characteristics[crosslink type]
+    description: Type of crosslinks being studied
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - homo-bifunctional
+            - hetero-bifunctional
+            - zero-length
+            - photo-reactive
+            - cleavable
+          error_level: error
+          description: Type of crosslinker chemistry
+
+  - name: characteristics[crosslink distance]
+    description: Maximum Cα-Cα distance constraint provided by the crosslinker
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*[AÅ]$
+          description: Distance should be a number followed by unit (A or Å)
+          examples:
+            - 30 A
+            - 26.4 A
+            - 11.4 A
+
+  - name: characteristics[crosslinking reaction time]
+    description: Duration of the crosslinking reaction
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(min|h|s)$
+          description: Time should be a number followed by unit
+          examples:
+            - 30 min
+            - 1 h
+            - 45 min
+
+  - name: characteristics[crosslinking temperature]
+    description: Temperature at which crosslinking was performed
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*[Cc]$|^room temperature$
+          description: Temperature should be a number followed by C
+          examples:
+            - 25 C
+            - 4 C
+            - 37 C
+            - room temperature
+
+  # Data-level columns (comment)
+  - name: comment[cross-linking method]
+    description: MS-based cross-linking methodology used
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - cross-linking mass spectrometry
+            - hydrogen-deuterium exchange
+            - ion-mobility mass spectrometry
+          error_level: error
+          description: The cross-linking method type
+
+  - name: comment[cross-linker]
+    description: Cross-linker compound with structured properties
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^NT=.+;AC=.+
+          description: Should follow key-value format with at least NT and AC
+          examples:
+            - NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05
+            - NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4
+
+  - name: comment[crosslinker concentration]
+    description: Concentration of crosslinking reagent used
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(mM|uM|µM)$
+          description: Concentration with unit
+          examples:
+            - 2 mM
+            - 500 uM
+            - 1 mM
+
+  - name: comment[crosslinker to protein ratio]
+    description: Molar ratio of crosslinker to protein
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+:\d+
+          description: Ratio format
+          examples:
+            - 50:1
+            - 100:1
+            - 1:1 w/w
+
+  - name: comment[quenching reagent]
+    description: Reagent used to quench the crosslinking reaction
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Chemical name of quenching reagent
+          examples:
+            - Tris-HCl
+            - ammonium bicarbonate
+            - glycine
+
+  - name: comment[crosslink enrichment method]
+    description: Method used to enrich crosslinked peptides
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - size exclusion chromatography
+            - strong cation exchange
+            - affinity enrichment
+            - peptide SEC
+            - high-pH reversed phase
+            - FAIMS
+            - not applicable
+          error_level: warning
+          description: Enrichment method used

@@ -1,0 +1,147 @@
+name: immunopeptidomics
+description: SDRF template for immunopeptidomics experiments (MHC-bound peptide identification)
+version: 1.0.0-dev
+extends: default
+columns:
+  - name: characteristics[cell line]
+    description: Cell line used for immunopeptidome analysis
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - clo
+            - bto
+          error_level: warning
+          description: The cell line should be a valid CLO or BTO term
+          examples:
+            - HeLa
+            - JY
+            - C1R
+
+  - name: characteristics[MHC class]
+    description: MHC class targeted for immunopeptidome enrichment
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - MHC class I
+            - MHC class II
+            - MHC class I and II
+            - not applicable
+          error_level: error
+          description: MHC class should be specified
+
+  - name: characteristics[immunopeptidome enrichment method]
+    description: Method used to enrich MHC-bound peptides
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - immunoaffinity purification
+            - mild acid elution
+            - detergent lysis
+            - not applicable
+          error_level: warning
+          description: Enrichment method for immunopeptidome
+
+  - name: characteristics[HLA typing]
+    description: HLA alleles expressed by the sample
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^HLA-[A-Z]+\*?\d+:\d+
+          description: HLA allele notation
+          examples:
+            - HLA-A*02:01
+            - HLA-B*07:02
+            - HLA-DRB1*01:01
+
+  - name: characteristics[HLA typing method]
+    description: Method used for HLA typing
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - NGS-based typing
+            - SSO typing
+            - SSP typing
+            - SBT typing
+            - predicted from RNA-seq
+            - not available
+          error_level: warning
+          description: HLA typing method used
+
+  - name: comment[cell number]
+    description: Number of cells used for immunopeptidome extraction
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(x\s*10\^?\d+)?$
+          description: Cell count
+          examples:
+            - 1e8
+            - 5 x 10^7
+            - 100000000
+
+  - name: comment[tissue mass]
+    description: Mass of tissue used for immunopeptidome extraction
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(mg|g)$
+          description: Mass with unit
+          examples:
+            - 100 mg
+            - 1 g
+            - 500 mg
+
+  - name: comment[antibody used]
+    description: Antibody clone used for MHC immunoprecipitation
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Antibody clone name
+          examples:
+            - W6/32
+            - BB7.2
+            - L243
+
+  - name: comment[elution conditions]
+    description: Conditions used for peptide elution from MHC complexes
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Elution conditions
+          examples:
+            - 0.1% TFA
+            - 10% acetic acid
+            - citrate buffer pH 3.3

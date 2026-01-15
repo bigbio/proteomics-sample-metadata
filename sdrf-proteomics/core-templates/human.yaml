@@ -1,0 +1,91 @@
+name: human
+description: Human SDRF template with human-specific metadata fields
+version: 1.1.0
+extends: default
+columns:
+  - name: characteristics[ancestry category]
+    description: Ancestry or ethnic background of the donor
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - hancestro
+            - efo
+          error_level: warning
+          description: The ancestry category should be a valid HANCESTRO or EFO ontology term
+          examples:
+            - European
+            - African
+            - Asian
+            - Hispanic or Latin American
+
+  - name: characteristics[age]
+    description: Age of the donor at sample collection
+    requirement: recommended
+    allow_not_applicable: false
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^(?:(?:\d+[yY])(?:\d+[mM])?(?:\d+[dD])?|(?:\d+[yY])?(?:\d+[mM])(?:\d+[dD])?|(?:\d+[yY])?(?:\d+[mM])?(?:\d+[dD])|(?:(?:\d+[yY])(?:\d+[mM])?(?:\d+[dD])?-(?:\d+[yY])(?:\d+[mM])?(?:\d+[dD])?)|(?:(?:\d+[yY])?(?:\d+[mM])(?:\d+[dD])?-(?:\d+[yY])?(?:\d+[mM])(?:\d+[dD])?)|(?:(?:\d+[yY])?(?:\d+[mM])?(?:\d+[dD])-(?:\d+[yY])?(?:\d+[mM])?(?:\d+[dD]))|(?:not available)|(?:not applicable))$
+          case_sensitive: false
+          description: Age should be in format like 45Y, 6M, 30Y6M, or ranges like 40Y-50Y
+          examples:
+            - 45Y
+            - 6M
+            - 30Y6M
+            - 40Y-50Y
+
+  - name: characteristics[sex]
+    description: Biological sex of the donor
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - male
+            - female
+            - intersex
+            - not available
+            - not applicable
+          error_level: error
+          description: Sex should be one of the allowed values
+
+  - name: characteristics[developmental stage]
+    description: Developmental stage of the donor
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - hsapdv
+            - efo
+          error_level: warning
+          description: The developmental stage should be a valid HsapDv or EFO ontology term
+          examples:
+            - adult
+            - embryonic stage
+            - fetal stage
+            - infant stage
+
+  - name: characteristics[individual]
+    description: Unique identifier for the donor individual
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[A-Za-z0-9_-]+$
+          description: Individual ID should be alphanumeric with underscores or hyphens
+          examples:
+            - patient_001
+            - donor-A1
+            - subject_12

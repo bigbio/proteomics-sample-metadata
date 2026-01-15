@@ -1,0 +1,58 @@
+name: invertebrates
+description: SDRF template for invertebrate samples (Drosophila, C. elegans, insects, etc.)
+version: 1.1.0
+extends: default
+columns:
+  - name: characteristics[developmental stage]
+    description: Developmental stage of the organism
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - fbdv
+            - wbls
+            - efo
+            - uberon
+          error_level: warning
+          description: The developmental stage should be a valid ontology term (FBdv for Drosophila, WBls for C. elegans)
+          examples:
+            - adult stage
+            - larval stage
+            - pupal stage
+            - embryonic stage
+
+  - name: characteristics[strain/breed]
+    description: Strain of the organism
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ncbitaxon
+          error_level: warning
+          description: The strain should be documented
+          examples:
+            - Oregon-R
+            - w1118
+            - N2
+            - Canton-S
+
+  - name: characteristics[genotype]
+    description: Genotype of the organism
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Genotype notation following standard conventions
+          examples:
+            - wild type
+            - daf-2(e1370)
+            - w[*]; P{GAL4}

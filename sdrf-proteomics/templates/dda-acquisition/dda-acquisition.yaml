@@ -1,0 +1,146 @@
+name: dda-acquisition
+description: SDRF template for Data-Dependent Acquisition (DDA) experiments
+version: 1.0.0-dev
+extends: default
+columns:
+  - name: comment[top N]
+    description: Number of most intense precursors selected for fragmentation per cycle
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+$
+          description: Integer value
+          examples:
+            - 10
+            - 15
+            - 20
+
+  - name: comment[isolation window]
+    description: Width of the precursor isolation window in m/z
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(m/z|Da)?$
+          description: Width value with optional unit
+          examples:
+            - 1.6
+            - 2.0 m/z
+            - 1.4
+
+  - name: comment[collision energy]
+    description: Collision energy used for fragmentation
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?(%|eV)?$|^normalized\s+\d+(\.\d+)?%?$
+          description: Energy value with optional unit
+          examples:
+            - 27
+            - 30%
+            - normalized 27%
+
+  - name: comment[dynamic exclusion duration]
+    description: Duration for which a precursor is excluded after selection
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(s|ms)$
+          description: Duration with unit
+          examples:
+            - 30 s
+            - 60 s
+            - 45 s
+
+  - name: comment[fractionation method]
+    description: Peptide fractionation method used before MS analysis
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - high-pH reversed phase
+            - strong cation exchange
+            - strong anion exchange
+            - isoelectric focusing
+            - size exclusion chromatography
+            - basic reversed phase
+            - not applicable
+          error_level: warning
+          description: Fractionation method used
+
+  - name: comment[precursor mass tolerance]
+    description: Precursor mass tolerance for database search
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(ppm|Da)$
+          description: Mass tolerance with unit
+          examples:
+            - 10 ppm
+            - 20 ppm
+
+  - name: comment[fragment mass tolerance]
+    description: Fragment mass tolerance for database search
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(ppm|Da)$
+          description: Mass tolerance with unit
+          examples:
+            - 0.02 Da
+            - 20 ppm
+
+  - name: comment[dissociation method]
+    description: Fragmentation method used
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+          error_level: warning
+          description: Should be a valid MS ontology term for dissociation
+          examples:
+            - HCD
+            - CID
+            - ETD
+            - EThcD
+
+  - name: comment[MS2 mass analyzer]
+    description: Mass analyzer used for MS2 acquisition
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+          error_level: warning
+          description: Should be a valid MS ontology term
+          examples:
+            - orbitrap
+            - ion trap
+            - TOF
