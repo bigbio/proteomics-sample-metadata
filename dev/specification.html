@@ -72,14 +72,7 @@
 <li><a href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></li>
 </ul>
 </li>
-<li><a href="#row-uniqueness">11. Row Uniqueness Requirements</a>
-<ul class="sectlevel2">
-<li><a href="#_error_level_constraint_validation_fails">11.1. Error-level constraint (validation fails)</a></li>
-<li><a href="#_warning_level_constraint_validation_warns">11.2. Warning-level constraint (validation warns)</a></li>
-<li><a href="#_assay_name_uniqueness">11.3. Assay name uniqueness</a></li>
-<li><a href="#_example_of_valid_multiplexed_experiment">11.4. Example of valid multiplexed experiment</a></li>
-</ul>
-</li>
+<li><a href="#row-uniqueness">11. Row Uniqueness Requirements</a></li>
 <li><a href="#core-templates">12. Core Templates</a>
 <ul class="sectlevel2">
 <li><a href="#the-default-template">12.1. Default Template</a></li>
@@ -1868,22 +1861,14 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 <div class="paragraph">
 <p>SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.</p>
 </div>
-<div class="sect2">
-<h3 id="_error_level_constraint_validation_fails"><a class="anchor" href="#_error_level_constraint_validation_fails"></a><a class="link" href="#_error_level_constraint_validation_fails">11.1. Error-level constraint (validation fails)</a></h3>
 <div class="paragraph">
-<p>The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.</p>
+<p><strong>Error-level constraint (validation fails):</strong> The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_warning_level_constraint_validation_warns"><a class="anchor" href="#_warning_level_constraint_validation_warns"></a><a class="link" href="#_warning_level_constraint_validation_warns">11.2. Warning-level constraint (validation warns)</a></h3>
 <div class="paragraph">
-<p>The combination of <code>source name</code> + <code>assay name</code> SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.</p>
+<p><strong>Warning-level constraint (validation warns):</strong> The combination of <code>source name</code> + <code>assay name</code> SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_assay_name_uniqueness"><a class="anchor" href="#_assay_name_uniqueness"></a><a class="link" href="#_assay_name_uniqueness">11.3. Assay name uniqueness</a></h3>
 <div class="paragraph">
-<p>Each distinct MS run/data file MUST have exactly one globally unique <code>assay name</code>, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").</p>
+<p><strong>Assay name uniqueness:</strong> Each distinct MS run/data file MUST have exactly one globally unique <code>assay name</code>, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1897,9 +1882,9 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Example of valid multiplexed experiment:</p>
 </div>
-<div class="sect2">
-<h3 id="_example_of_valid_multiplexed_experiment"><a class="anchor" href="#_example_of_valid_multiplexed_experiment"></a><a class="link" href="#_example_of_valid_multiplexed_experiment">11.4. Example of valid multiplexed experiment</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1944,7 +1929,6 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </table>
 <div class="paragraph">
 <p>In this example, all four rows share the same <code>assay name</code> and <code>comment[data file]</code> because they represent different samples multiplexed in a single MS run. The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> is unique for each row.</p>
-</div>
 </div>
 </div>
 </div>
@@ -2995,7 +2979,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-15 12:48:12 UTC
+Last updated 2026-01-15 12:57:35 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
