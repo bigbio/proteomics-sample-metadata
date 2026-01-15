@@ -167,51 +167,61 @@ jobs:
         run: |
           OUTPUT_DIR="${{ steps.set-output-dir.outputs.output_dir }}"
 
+          # Create Python script to inject headers
+          cat > /tmp/inject_header.py << 'PYEOF'
+          import sys
+          import re
+
+          filepath = sys.argv[1]
+          header_html = sys.argv[2]
+
+          with open(filepath, 'r') as f:
+              content = f.read()
+
+          # Add has-doc-header class to body
+          content = re.sub(r'<body class="([^"]*)"', r'<body class="has-doc-header \1"', content)
+          content = re.sub(r'<body>', '<body class="has-doc-header">', content)
+
+          # Insert header after opening body tag
+          content = re.sub(r'(<body[^>]*>)', r'\1\n' + header_html, content)
+
+          with open(filepath, 'w') as f:
+              f.write(content)
+          PYEOF
+
           # Header for root-level pages (specification.html)
-          ROOT_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="./tool-support.html">Tools</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
+          ROOT_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html" class="nav-current">Specification</a><a href="./index.html#metadata-guidelines">Metadata Guidelines</a><a href="./index.html#templates">Templates</a><a href="./index.html#tools">Tools</a><a href="./sdrf-explorer.html">Explorer</a><a href="./index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
 
           # Header for tool support page
-          TOOLS_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./tool-support.html" class="nav-current">Tools</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
+          TOOLS_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./index.html#metadata-guidelines">Metadata Guidelines</a><a href="./index.html#templates">Templates</a><a href="./index.html#tools" class="nav-current">Tools</a><a href="./sdrf-explorer.html">Explorer</a><a href="./index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
 
           # Header for annotation guidelines pages
-          GUIDELINES_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#metadata-guidelines" class="nav-current">Metadata Guidelines</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
+          GUIDELINES_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines" class="nav-current">Metadata Guidelines</a><a href="../index.html#templates">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
 
           # Header for template pages
-          TMPL_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../tool-support.html">Tools</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
+          TMPL_HEADER='<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'
 
           # Add header to specification.html
           if [ -f "$OUTPUT_DIR/specification.html" ]; then
-            sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$OUTPUT_DIR/specification.html"
-            sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$OUTPUT_DIR/specification.html"
-            sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$ROOT_HEADER<div style=\"display:none\"|g" "$OUTPUT_DIR/specification.html"
-            sed -i 's|<div style="display:none" |<|g' "$OUTPUT_DIR/specification.html"
+            python3 /tmp/inject_header.py "$OUTPUT_DIR/specification.html" "$ROOT_HEADER"
           fi
 
           # Add header to tool-support.html
           if [ -f "$OUTPUT_DIR/tool-support.html" ]; then
-            sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$OUTPUT_DIR/tool-support.html"
-            sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$OUTPUT_DIR/tool-support.html"
-            sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$TOOLS_HEADER<div style=\"display:none\"|g" "$OUTPUT_DIR/tool-support.html"
-            sed -i 's|<div style="display:none" |<|g' "$OUTPUT_DIR/tool-support.html"
+            python3 /tmp/inject_header.py "$OUTPUT_DIR/tool-support.html" "$TOOLS_HEADER"
           fi
 
           # Add header to annotation guidelines pages
           for file in "$OUTPUT_DIR"/metadata-guidelines/*.html; do
             if [ -f "$file" ]; then
-              sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$file"
-              sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$file"
-              sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$GUIDELINES_HEADER<div style=\"display:none\"|g" "$file"
-              sed -i 's|<div style="display:none" |<|g' "$file"
+              python3 /tmp/inject_header.py "$file" "$GUIDELINES_HEADER"
             fi
           done
 
           # Add header to template pages
           for file in "$OUTPUT_DIR"/templates/*.html; do
             if [ -f "$file" ]; then
-              sed -i "s/<body class=\"/<body class=\"has-doc-header /g" "$file"
-              sed -i "s/<body>/<body class=\"has-doc-header\">/g" "$file"
-              sed -i "s|<body class=\"has-doc-header|<body class=\"has-doc-header\">$TMPL_HEADER<div style=\"display:none\"|g" "$file"
-              sed -i 's|<div style="display:none" |<|g' "$file"
+              python3 /tmp/inject_header.py "$file" "$TMPL_HEADER"
             fi
           done
 
