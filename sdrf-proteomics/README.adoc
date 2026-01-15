@@ -851,38 +851,6 @@ The following properties MUST be provided for each data file:
 |Name of the raw file
 |===
 
-[[row-uniqueness]]
-=== Row Uniqueness Requirements
-
-SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.
-
-**Error-level constraint (validation fails):**
-
-The combination of `source name` + `assay name` + `comment[label]` MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.
-
-**Warning-level constraint (validation warns):**
-
-The combination of `source name` + `assay name` SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.
-
-**Assay name uniqueness:**
-
-Each distinct MS run/data file MUST have exactly one globally unique `assay name`, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").
-
-NOTE: For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share the same `assay name` because multiple samples are analyzed in a single MS run. In these cases, the `comment[label]` column distinguishes between different samples within the same run, and the combination of `source name` + `assay name` + `comment[label]` remains unique.
-
-Example of valid multiplexed experiment:
-
-|===
-|source name |assay name |comment[label] |comment[data file]
-
-|sample_A |TMT_batch1_run1 |TMT126 |batch1_run1.raw
-|sample_B |TMT_batch1_run1 |TMT127N |batch1_run1.raw
-|sample_C |TMT_batch1_run1 |TMT127C |batch1_run1.raw
-|sample_D |TMT_batch1_run1 |TMT128N |batch1_run1.raw
-|===
-
-In this example, all four rows share the same `assay name` and `comment[data file]` because they represent different samples multiplexed in a single MS run. The combination of `source name` + `assay name` + `comment[label]` is unique for each row.
-
 Example:
 
 |===
@@ -940,6 +908,38 @@ TIP: For DIA experiments, additional properties like MS1 scan range can be captu
 For detailed guidance on data file metadata, refer to the conventions document:
 
 * link:metadata-guidelines/data-file-metadata.adoc[Data File Metadata Guidelines] - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties
+
+[[row-uniqueness]]
+== Row Uniqueness Requirements
+
+SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.
+
+=== Error-level constraint (validation fails)
+
+The combination of `source name` + `assay name` + `comment[label]` MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.
+
+=== Warning-level constraint (validation warns)
+
+The combination of `source name` + `assay name` SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.
+
+=== Assay name uniqueness
+
+Each distinct MS run/data file MUST have exactly one globally unique `assay name`, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").
+
+NOTE: For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share the same `assay name` because multiple samples are analyzed in a single MS run. In these cases, the `comment[label]` column distinguishes between different samples within the same run, and the combination of `source name` + `assay name` + `comment[label]` remains unique.
+
+=== Example of valid multiplexed experiment
+
+|===
+|source name |assay name |comment[label] |comment[data file]
+
+|sample_A |TMT_batch1_run1 |TMT126 |batch1_run1.raw
+|sample_B |TMT_batch1_run1 |TMT127N |batch1_run1.raw
+|sample_C |TMT_batch1_run1 |TMT127C |batch1_run1.raw
+|sample_D |TMT_batch1_run1 |TMT128N |batch1_run1.raw
+|===
+
+In this example, all four rows share the same `assay name` and `comment[data file]` because they represent different samples multiplexed in a single MS run. The combination of `source name` + `assay name` + `comment[label]` is unique for each row.
 
 [[core-templates]]
 == Core Templates
