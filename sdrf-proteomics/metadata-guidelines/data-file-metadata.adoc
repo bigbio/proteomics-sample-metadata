@@ -15,797 +15,210 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-[[status]]
-== Status of this Guideline
+== Introduction
 
-This document provides guidelines for annotating data file metadata in SDRF-Proteomics format. These guidelines define standardized approaches for describing MS run files, instrument settings, and analysis parameters.
+This document provides guidelines for annotating data file metadata in SDRF-Proteomics format, describing the relationship between samples and MS run files, instrument configurations, and analysis parameters.
+
+Data file properties use the **comment** prefix to differentiate from sample properties (characteristics).
+
+For sample metadata guidelines, see link:sample-metadata.adoc[Sample Metadata Guidelines].
 
 **Version 1.0.0** - 2025-01
 
-[[abstract]]
-== Abstract
+== Assay Name
 
-Data file metadata guidelines define standardized formats for properties that describe the relationship between samples and data files, instrument configurations, and analysis parameters. This guideline covers:
+**Column:** `assay name`
 
-- Assay name and data file identification
-- Label annotations for multiplexed experiments
-- Instrument type and model
-- Technology type
-- Protein modifications
-- Cleavage agents
-- Mass tolerances
+Unique identifier for an MS run (data file). Each distinct MS run MUST have exactly one globally unique assay name.
 
-For sample metadata guidelines (organism, age, sex, disease), see link:sample-metadata.adoc[Sample Metadata Guidelines].
+**Uniqueness rules:**
 
-[[core-columns]]
-== Core Data File Columns
-
-The connection between samples and data files is done using properties annotated with the **comment** prefix. The use of `comment` differentiates data file properties from sample properties (characteristics).
-
-=== Column Order
-
-The order of columns is important:
-
-1. `assay name` SHOULD always be located before the comments
-2. `technology type` SHOULD be placed immediately after `assay name`
-3. `comment[data file]` is RECOMMENDED as the last column
-
-[[assay-name]]
-=== Assay Name
-
-==== Column
-
-`assay name`
-
-==== Description
-
-Assay name is a unique identifier for an MS run (data file). Each distinct MS run/data file MUST have exactly one globally unique assay name, and no two different data files may share an assay name.
-
-==== Uniqueness Rules
-
-IMPORTANT: The combination of source name + assay name + comment[label] MUST be unique within the SDRF file.
+- `source name` + `assay name` + `comment[label]` MUST be unique (error if not)
+- `source name` + `assay name` SHOULD be unique (warning if not)
 
 |===
-|Rule |Requirement |Description
+|Format |Example
 
-|assay name uniqueness
-|MUST
-|Each data file has exactly one unique assay name
-
-|source name + assay name
-|RECOMMENDED
-|Should be unique (warning if not)
-
-|source name + assay name + comment[label]
-|MUST
-|Required unique combination
+|sample_run |sample1_run1
+|sample_fraction_replicate |sample1_F1_R1
 |===
 
-==== Examples
+For multiplexed experiments (TMT, iTRAQ, SILAC), multiple rows may reference the same assay name with different labels.
+
+== Technology Type
+
+**Column:** `technology type`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Ontology (PRIDE:0000663)]
+
+REQUIRED for all MS-based SDRF files. Should be placed immediately after `assay name`.
 
 |===
-|Format |Example |Use Case
+|Value |Use Case
 
-|sample_run
-|sample1_run1
-|Simple naming
-
-|sample_fraction_replicate
-|sample1_F1_R1
-|Fractionated with replicates
-
-|batch_sample_run
-|batch1_sample2_run1
-|Batch processing
+|proteomic profiling by mass spectrometry |DDA, DIA, PRM, SRM experiments
+|protein profiling by proximity extension assay |Olink panels
 |===
 
-TIP: To ensure uniqueness, incorporate sample-specific information (sample ID, replicate number) or sequential numbering.
+== Data Acquisition Method
 
-==== Multiplexed Experiments
+**Column:** `comment[proteomics data acquisition method]`
 
-In multiplexed experiments (TMT, iTRAQ, SILAC), multiple rows may reference the same assay name, with each row representing a different sample or channel.
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Ontology]
 
-|===
-|source name |assay name |comment[label] |comment[data file]
-
-|sample_A
-|TMT_batch1_run1
-|TMT126
-|batch1_run1.raw
-
-|sample_B
-|TMT_batch1_run1
-|TMT127N
-|batch1_run1.raw
-
-|sample_C
-|TMT_batch1_run1
-|TMT127C
-|batch1_run1.raw
-
-|sample_D
-|TMT_batch1_run1
-|TMT128N
-|batch1_run1.raw
-|===
-
-[[technology-type]]
-=== Technology Type
-
-==== Column
-
-`technology type`
-
-==== Requirement
-
-REQUIRED for all mass spectrometry-based SDRF files.
-
-==== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000663[PRIDE Ontology (PRIDE:0000663)]
-
-==== Standard Values
-
-|===
-|Value |Description |Use Case
-
-|proteomic profiling by mass spectrometry
-|Standard mass spectrometry-based proteomics
-|DDA, DIA, PRM, SRM experiments
-
-|protein profiling by proximity extension assay
-|Proximity Extension Assay (e.g., Olink)
-|Olink panels
-
-|protein profiling by aptamer-based assay
-|Aptamer-based protein detection (e.g., SomaScan)
-|SomaScan assays
-
-|protein profiling by immunoassay
-|Antibody-based detection methods
-|Luminex, MSD, ELISA arrays
-
-|protein profiling by reverse phase protein array
-|Reverse phase protein arrays (RPPA)
-|RPPA experiments
-|===
-
-==== Column Placement
-
-|===
-|source name |assay name |technology type |comment[data file]
-
-|sample 1
-|sample1_run1
-|proteomic profiling by mass spectrometry
-|sample1.raw
-|===
-
-[[fraction-identifier]]
-=== Fraction Identifier
-
-==== Column
-
-`comment[fraction identifier]`
-
-==== Description
-
-Records the number of a given fraction in fractionated experiments.
-
-==== Rules
-
-- MUST start from 1
-- If the experiment is not fractionated, use `1` for each MS run
-
-==== Example
-
-|===
-|assay name |comment[fraction identifier] |comment[data file]
-
-|sample1_F1
-|1
-|sample1_fraction1.raw
-
-|sample1_F2
-|2
-|sample1_fraction2.raw
-
-|sample1_F3
-|3
-|sample1_fraction3.raw
-|===
-
-[[technical-replicate]]
-=== Technical Replicate
-
-==== Column
-
-`comment[technical replicate]`
-
-==== Description
-
-Identifies technical replicates of the same sample preparation.
-
-==== Rules
-
-- MUST start from 1
-- If no technical replicates, use `1`
-
-[[data-acquisition-method]]
-=== Data Acquisition Method
-
-==== Column
-
-`comment[proteomics data acquisition method]`
-
-==== Requirement
-
-REQUIRED for all mass spectrometry-based SDRF files.
-
-==== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659[PRIDE Ontology]
-
-==== Standard Values
+REQUIRED for all MS-based SDRF files.
 
 |===
 |Value |Description
 
-|data-dependent acquisition
-|DDA - precursors selected based on intensity
-
-|data-independent acquisition
-|DIA - systematic fragmentation of all precursors
-
-|parallel reaction monitoring
-|PRM - targeted acquisition
-
-|selected reaction monitoring
-|SRM/MRM - targeted acquisition
+|data-dependent acquisition |DDA - precursors selected based on intensity
+|data-independent acquisition |DIA - systematic fragmentation of all precursors
 |===
 
-[[dia-scan-window]]
-=== DIA Scan Window Limits
+== Label
 
-For Data Independent Acquisition (DIA) experiments, additional properties can be captured to describe the acquisition windows.
+**Column:** `comment[label]`
 
-==== MS1 Scan Range
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Ontology - Label]
 
-===== Column
+Describes the isotopic label applied to each sample.
 
-`comment[MS1 scan range]`
+**Label-free:** Use `label free sample`.
 
-===== Description
+**TMT labels:** TMT126, TMT127N, TMT127C, TMT128N, TMT128C, TMT129N, TMT129C, TMT130N, TMT130C, TMT131N, TMT131C, TMT132N, TMT132C, TMT133N, TMT133C, TMT134N, TMT134C, TMT135N
 
-The m/z range used for the DIA acquisition.
+**iTRAQ labels:** iTRAQ113, iTRAQ114, iTRAQ115, iTRAQ116, iTRAQ117, iTRAQ118, iTRAQ119, iTRAQ121
 
-===== Format
+**SILAC labels:** `SILAC light`, `SILAC medium`, `SILAC heavy`
 
-`{lower}m/z - {upper}m/z`
+== Fraction Identifier
 
-===== Example
+**Column:** `comment[fraction identifier]`
 
-|===
-|assay name |comment[MS1 scan range] |comment[data file]
+Records the fraction number in fractionated experiments. MUST start from 1. If not fractionated, use `1`.
 
-|sample1_run1
-|400m/z - 1200m/z
-|FILE_R1.RAW
+== Technical Replicate
 
-|sample1_run2
-|400m/z - 1200m/z
-|FILE_R2.RAW
-|===
+**Column:** `comment[technical replicate]`
 
-==== Alternative: Separate Columns
+Identifies technical replicates of the same sample preparation. MUST start from 1. If no replicates, use `1`.
 
-Instead of a single range column, you can specify the limits using two separate columns:
-
-|===
-|Column |Description |Example
-
-|comment[scan window lower limit]
-|Lower m/z limit
-|400m/z
-
-|comment[scan window upper limit]
-|Upper m/z limit
-|1200m/z
-|===
-
-[[data-file]]
-=== Data File
-
-==== Column
-
-`comment[data file]`
-
-==== Description
-
-The name of the raw file generated by the instrument.
-
-==== Supported File Types
-
-- Instrument raw files (.raw, .d, .wiff)
-- Converted peak lists (mzML, MGF)
-- Result files (mzIdentML)
-
-[[label-annotations]]
-== Label Annotations
-
-=== Column
-
-`comment[label]`
-
-=== Description
-
-Describes the label applied to each sample. For multiplexed experiments (TMT, SILAC, iTRAQ), the corresponding label SHOULD be added.
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000514&viewMode=All&siblings=false[PRIDE Ontology - Label]
-
-=== Standard Values
-
-==== Label-Free
-
-|===
-|Value |Description
-
-|label free sample
-|No isotopic labeling applied
-|===
-
-==== TMT Labels
-
-|===
-|TMT Plex |Available Channels
-
-|TMT 6-plex
-|TMT126, TMT127, TMT128, TMT129, TMT130, TMT131
-
-|TMT 10-plex
-|TMT126, TMT127N, TMT127C, TMT128N, TMT128C, TMT129N, TMT129C, TMT130N, TMT130C, TMT131
-
-|TMT 11-plex
-|Above + TMT131C
-
-|TMT 16-plex
-|TMT126, TMT127N, TMT127C, TMT128N, TMT128C, TMT129N, TMT129C, TMT130N, TMT130C, TMT131N, TMT131C, TMT132N, TMT132C, TMT133N, TMT133C, TMT134N
-
-|TMT 18-plex
-|Above + TMT134C, TMT135N
-|===
-
-==== iTRAQ Labels
-
-|===
-|iTRAQ Plex |Available Channels
-
-|iTRAQ 4-plex
-|iTRAQ114, iTRAQ115, iTRAQ116, iTRAQ117
-
-|iTRAQ 8-plex
-|iTRAQ113, iTRAQ114, iTRAQ115, iTRAQ116, iTRAQ117, iTRAQ118, iTRAQ119, iTRAQ121
-|===
-
-==== SILAC Labels
-
-|===
-|Value |Description
-
-|SILAC light
-|No isotopic labeling (light channel)
-
-|SILAC medium
-|Medium isotope labeling
-
-|SILAC heavy
-|Heavy isotope labeling
-|===
-
-=== Examples
-
-- https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD000612/PXD000612.sdrf.tsv[Label free example]
-- https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD011799/PXD011799.sdrf.tsv[TMT example]
-- https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD017710/PXD017710-silac.sdrf.tsv[SILAC example]
-
-[[instrument]]
 == Instrument
 
-=== Column
+**Column:** `comment[instrument]`
 
-`comment[instrument]`
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000031&viewMode=All&siblings=false[PSI-MS Ontology - instrument model]
-
-=== Common Values
-
-|===
-|Instrument |Description
-
-|Q Exactive HF
-|Thermo Q Exactive HF
-
-|Orbitrap Exploris 480
-|Thermo Orbitrap Exploris 480
-
-|Orbitrap Fusion Lumos
-|Thermo Orbitrap Fusion Lumos
-
-|timsTOF Pro
-|Bruker timsTOF Pro
-
-|TripleTOF 6600
-|SCIEX TripleTOF 6600
-
-|LTQ Orbitrap XL
-|Thermo LTQ Orbitrap XL
-|===
-
-=== MS2 Analyzer Type
-
-==== Column
-
-`comment[MS2 analyzer type]`
-
-==== Description
-
-Specifies the analyzer used for MS2 scans. Important for Orbitrap instruments where MS2 can be acquired in the Orbitrap or ion trap.
-
-==== Standard Values
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ms[PSI-MS Ontology - instrument model]
 
 |===
 |Value |Description
 
-|orbitrap
-|High-resolution MS2 in Orbitrap
-
-|ion trap
-|Low-resolution MS2 in ion trap
-
-|quadrupole
-|MS2 in quadrupole
+|Q Exactive HF |Thermo Q Exactive HF
+|timsTOF Pro |Bruker timsTOF Pro
 |===
 
-[[protein-modifications]]
+== MS2 Analyzer Type
+
+**Column:** `comment[MS2 analyzer type]`
+
+Specifies the analyzer used for MS2 scans. Important for hybrid instruments.
+
+Values: `orbitrap`, `ion trap`, `quadrupole`.
+
+== DIA Scan Window
+
+**Column:** `comment[MS1 scan range]`
+
+**Format:** `{lower}m/z - {upper}m/z` (e.g., `400m/z - 1200m/z`)
+
+Alternative: Use `comment[scan window lower limit]` and `comment[scan window upper limit]` as separate columns.
+
 == Protein Modifications
 
-=== Column
+**Column:** `comment[modification parameters]`
 
-`comment[modification parameters]`
-
-=== Description
-
-Describes sample modifications including chemical modifications and post-translational modifications (PTMs).
-
-=== Format
-
-Key=value pair structure:
-
-[source]
-----
-NT=ModificationName;AC=Accession;MT=Type;TA=AminoAcid;PP=Position
-----
-
-=== Properties
+**Format:** Key=value pairs: `NT=ModificationName;AC=Accession;MT=Type;TA=AminoAcid;PP=Position`
 
 |===
-|Property |Key |Example |Required |Description
+|Property |Key |Description
 
-|Name
-|NT
-|NT=Acetylation
-|Yes
-|Modification name (UNIMOD or PSI-MOD recommended)
-
-|Accession
-|AC
-|AC=UNIMOD:1
-|No
-|UNIMOD or PSI-MOD accession
-
-|Chemical Formula
-|CF
-|CF=H(2)C(2)O
-|No
-|Added/removed atoms (UNIMOD format)
-
-|Modification Type
-|MT
-|MT=Fixed
-|No
-|Fixed, Variable, or Annotated
-
-|Position
-|PP
-|PP=Any N-term
-|No
-|Anywhere, Protein N-term, Protein C-term, Any N-term, Any C-term
-
-|Target Amino Acid
-|TA
-|TA=S,T,Y
-|Yes
-|Target residue(s), comma-separated if multiple
-
-|Monoisotopic Mass
-|MM
-|MM=42.010565
-|No
-|Mass shift (use 5+ decimal places)
-
-|Target Site
-|TS
-|TS=N[^P][ST]
-|No
-|Regular expression for complex rules
+|Name |NT |Modification name (UNIMOD or PSI-MOD)
+|Accession |AC |UNIMOD or PSI-MOD accession
 |===
 
-=== Common Modifications
+**Common modifications:**
 
 |===
-|Modification |Example Value
+|Modification |Value
 
-|Carbamidomethyl (fixed)
-|NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C
-
-|Oxidation (variable)
-|NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M
-
-|Acetylation (protein N-term)
-|NT=Acetyl;AC=UNIMOD:1;MT=Variable;PP=Protein N-term;TA=X
-
-|Phosphorylation
-|NT=Phospho;AC=UNIMOD:21;MT=Variable;TA=S,T,Y
-
-|TMT 6-plex
-|NT=TMT6plex;AC=UNIMOD:737;MT=Fixed;TA=K;PP=Any N-term
+|Carbamidomethyl (fixed) |NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C
+|Oxidation (variable) |NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M
 |===
 
-=== Example
-
-|===
-|comment[modification parameters] |comment[modification parameters]
-
-|NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C
-|NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M
-|===
-
-[[cleavage-agents]]
 == Cleavage Agents
 
-=== Column
+**Column:** `comment[cleavage agent details]`
 
-`comment[cleavage agent details]`
+REQUIRED.
 
-=== Requirement
-
-REQUIRED
-
-=== Format
-
-Key=value pair structure:
-
-[source]
-----
-NT=EnzymeName;AC=Accession;CS=RegexPattern
-----
-
-=== Properties
+**Format:** `NT=EnzymeName;AC=Accession`
 
 |===
-|Property |Key |Example |Required |Description
+|Enzyme |Value
 
-|Name
-|NT
-|NT=Trypsin
-|Yes
-|Enzyme name
-
-|Accession
-|AC
-|AC=MS:1001251
-|No
-|PSI-MS ontology accession
-
-|Cleavage Site
-|CS
-|CS=(?<=[KR])(?!P)
-|No
-|Regular expression for cleavage site
+|Trypsin |NT=Trypsin;AC=MS:1001251
+|Lys-C |NT=Lys-C;AC=MS:1001309
 |===
 
-=== Common Enzymes
+For top-down/intact proteins, use `not applicable`. For multiple enzymes, add multiple columns.
 
-|===
-|Enzyme |Value |MS Accession
-
-|Trypsin
-|NT=Trypsin;AC=MS:1001251
-|MS:1001251
-
-|Trypsin/P
-|NT=Trypsin/P;AC=MS:1001313
-|MS:1001313
-
-|Lys-C
-|NT=Lys-C;AC=MS:1001309
-|MS:1001309
-
-|Chymotrypsin
-|NT=Chymotrypsin;AC=MS:1001306
-|MS:1001306
-
-|Asp-N
-|NT=Asp-N;AC=MS:1001303
-|MS:1001303
-
-|Glu-C
-|NT=Glu-C;AC=MS:1001917
-|MS:1001917
-|===
-
-=== Special Cases
-
-- **Top-down/intact proteins**: Use `not applicable`
-- **Multiple enzymes**: Add multiple columns
-
-|===
-|comment[cleavage agent details] |comment[cleavage agent details]
-
-|NT=Trypsin;AC=MS:1001251
-|NT=Lys-C;AC=MS:1001309
-|===
-
-[[mass-tolerances]]
 == Mass Tolerances
 
-=== Columns
+**Columns:** `comment[precursor mass tolerance]`, `comment[fragment mass tolerance]`
 
-- `comment[precursor mass tolerance]`
-- `comment[fragment mass tolerance]`
-
-=== Format
-
-`{value} {unit}`
-
-Where unit is either `Da` or `ppm`.
-
-=== Examples
+**Format:** `{value} {unit}` where unit is `Da` or `ppm`.
 
 |===
-|comment[precursor mass tolerance] |comment[fragment mass tolerance] |Instrument Type
+|Precursor |Fragment |Instrument Type
 
-|10 ppm
-|20 ppm
-|Orbitrap MS1/MS2
-
-|20 ppm
-|0.6 Da
-|Orbitrap MS1, Ion trap MS2
-
-|50 ppm
-|0.1 Da
-|Q-TOF
+|10 ppm |20 ppm |Orbitrap MS1/MS2
+|20 ppm |0.6 Da |Orbitrap MS1, Ion trap MS2
 |===
 
-IMPORTANT: Units for mass tolerances MUST be provided.
+== Data File
 
-[[example-sdrf]]
-== Example SDRF with Data File Metadata
+**Column:** `comment[data file]`
 
-|===
-|source name |assay name |technology type |comment[label] |comment[fraction identifier] |comment[instrument] |comment[cleavage agent details] |comment[modification parameters] |comment[modification parameters] |comment[precursor mass tolerance] |comment[fragment mass tolerance] |comment[data file]
+The raw file name generated by the instrument. RECOMMENDED as the last column.
 
-|sample_1
-|sample1_F1
-|proteomic profiling by mass spectrometry
-|label free sample
-|1
-|Q Exactive HF
-|NT=Trypsin;AC=MS:1001251
-|NT=Carbamidomethyl;MT=Fixed;TA=C
-|NT=Oxidation;MT=Variable;TA=M
-|10 ppm
-|20 ppm
-|sample1_F1.raw
+Supported types: Instrument raw files (.raw, .d, .wiff), converted peak lists (mzML, MGF), result files (mzIdentML).
 
-|sample_1
-|sample1_F2
-|proteomic profiling by mass spectrometry
-|label free sample
-|2
-|Q Exactive HF
-|NT=Trypsin;AC=MS:1001251
-|NT=Carbamidomethyl;MT=Fixed;TA=C
-|NT=Oxidation;MT=Variable;TA=M
-|10 ppm
-|20 ppm
-|sample1_F2.raw
-|===
+== File URI
 
-[[raw-file-uri]]
-== RAW File URI
+**Column:** `comment[file uri]`
 
-When data files are publicly available, it is RECOMMENDED to include the public URI.
-
-=== Column
-
-`comment[file uri]`
-
-=== Description
-
-Provides the public URI/URL where the raw file can be accessed. This is particularly useful for ProteomeXchange datasets where files are available via FTP.
-
-=== Example
+Public URI/URL where the raw file can be accessed.
 
 |===
 |assay name |comment[data file] |comment[file uri]
 
-|sample1_run1
-|000261_C05_P0001563_A00_B00K_R1.RAW
-|https://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/000261_C05_P0001563_A00_B00K_R1.RAW
+|sample1_run1 |sample1.RAW |https://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/sample1.RAW
 |===
 
-NOTE: The file URI should be a complete, publicly accessible URL. For PRIDE/ProteomeXchange datasets, use the FTP path from the archive.
+== ProteomeXchange Accession
 
-[[multiple-projects]]
-== Multiple Projects in One Annotation File
-
-Curators can decide to annotate multiple ProteomeXchange datasets into one large SDRF-Proteomics file for reanalysis purposes.
-
-=== Column
-
-`comment[proteomexchange accession number]`
-
-=== Description
+**Column:** `comment[proteomexchange accession number]`
 
 When combining multiple datasets, use this column to differentiate between different ProteomeXchange projects.
 
-=== Example
-
-|===
-|source name |comment[proteomexchange accession number] |assay name |comment[data file]
-
-|sample_1
-|PXD001234
-|PXD001234_run1
-|file1.raw
-
-|sample_2
-|PXD001234
-|PXD001234_run2
-|file2.raw
-
-|sample_3
-|PXD005678
-|PXD005678_run1
-|file3.raw
-|===
-
-NOTE: This is particularly useful for meta-analyses or large-scale reprocessing efforts where data from multiple studies are combined.
-
-[[best-practices]]
 == Best Practices
 
-1. **Use unique assay names**: Incorporate sample ID and run information to ensure uniqueness.
+1. **Use unique assay names** - Incorporate sample ID and run information to ensure uniqueness.
+2. **Specify technology type** - Always include for proper data classification.
+3. **Use ontology terms** - Prefer PSI-MS and PRIDE ontology terms for instruments, labels, and enzymes.
+4. **Document modifications** - Include all expected modifications with UNIMOD accessions.
+5. **Provide mass tolerances** - Include precursor and fragment tolerances for reproducibility.
+6. **Order columns consistently** - Follow: assay name, technology type, comments, data file (last).
 
-2. **Specify technology type**: Always include the technology type column for proper data classification.
-
-3. **Use ontology terms**: Prefer PSI-MS and PRIDE ontology terms for instruments, labels, and enzymes.
-
-4. **Document modifications**: Include all expected modifications with proper UNIMOD accessions.
-
-5. **Provide mass tolerances**: Include precursor and fragment mass tolerances for reproducibility.
-
-6. **Order columns consistently**: Follow the recommended column order for readability.
-
-7. **Use appropriate labels**: For label-free, always use "label free sample"; for multiplexed, use the correct channel names.
-
-[[references]]
 == References
 
 - PRIDE Ontology: https://www.ebi.ac.uk/ols4/ontologies/pride

@@ -15,934 +15,202 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-[[status]]
-== Status of this Guideline
+== Introduction
 
 This document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant).
 
+For human-specific metadata (disease staging, comorbidities, treatment history), see link:human-sample-metadata.adoc[Human Sample Metadata Guidelines].
+
 **Version 1.0.0** - 2025-01
 
-[[abstract]]
-== Abstract
+== Organism
 
-Sample metadata guidelines define standardized formats for common properties that apply across all organism types. This guideline covers:
+**Column:** `characteristics[organism]`
 
-- Organism annotation
-- Organism part / tissue annotation
-- Age and temporal information
-- Biological sex
-- Disease and health status
-- Developmental stage
-- Cell type annotation
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy (NCBITaxon)]
 
-For human-specific metadata (disease staging, comorbidities, treatment history, demographics, lifestyle factors), see link:human-sample-metadata.adoc[Human Sample Metadata Guidelines].
-
-[[organism-annotation]]
-== Organism Annotation
-
-=== Column
-
-`characteristics[organism]`
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy (NCBITaxon)]
-- **Alternative**: https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
-
-=== Format
-
-Use the scientific name in lowercase:
+Use the scientific name in lowercase. The validator will map to the correct ontology term.
 
 |===
 |Value |NCBITaxon ID |Description
 
-|homo sapiens
-|NCBITaxon:9606
-|Human
-
-|mus musculus
-|NCBITaxon:10090
-|Mouse
-
-|rattus norvegicus
-|NCBITaxon:10116
-|Rat
-
-|danio rerio
-|NCBITaxon:7955
-|Zebrafish
-
-|drosophila melanogaster
-|NCBITaxon:7227
-|Fruit fly
-
-|caenorhabditis elegans
-|NCBITaxon:6239
-|Nematode worm
-
-|saccharomyces cerevisiae
-|NCBITaxon:4932
-|Baker's yeast
-
-|arabidopsis thaliana
-|NCBITaxon:3702
-|Thale cress
+|homo sapiens |NCBITaxon:9606 |Human
+|mus musculus |NCBITaxon:10090 |Mouse
 |===
 
-IMPORTANT: Use lowercase for organism names. The validator will map to the correct ontology term.
+== Organism Part / Tissue
 
-[[organism-part-annotation]]
-== Organism Part / Tissue Annotation
+**Column:** `characteristics[organism part]`
 
-=== Column
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] for mammals/vertebrates, https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)] for plants, https://www.ebi.ac.uk/ols4/ontologies/fbbt[FlyBase Anatomy (FBbt)] for Drosophila.
 
-`characteristics[organism part]`
-
-=== Ontologies
-
-|===
-|Organism Type |Ontology |URL
-
-|Mammals/Vertebrates
-|UBERON
-|https://www.ebi.ac.uk/ols4/ontologies/uberon
-
-|Plants
-|Plant Ontology (PO)
-|https://www.ebi.ac.uk/ols4/ontologies/po
-
-|Drosophila
-|FlyBase Anatomy (FBbt)
-|https://www.ebi.ac.uk/ols4/ontologies/fbbt
-
-|C. elegans
-|WormBase Anatomy (WBbt)
-|https://www.ebi.ac.uk/ols4/ontologies/wbbt
-|===
-
-=== Common Values
+Use lowercase for all values. For cell line samples, use `not applicable` or specify the tissue of origin (e.g., `cervix` for HeLa).
 
 |===
 |Value |UBERON ID |Description
 
-|blood
-|UBERON:0000178
-|Whole blood
-
-|blood plasma
-|UBERON:0001969
-|Plasma fraction
-
-|blood serum
-|UBERON:0001977
-|Serum fraction
-
-|liver
-|UBERON:0002107
-|Liver tissue
-
-|brain
-|UBERON:0000955
-|Brain tissue
-
-|heart
-|UBERON:0000948
-|Heart tissue
-
-|kidney
-|UBERON:0002113
-|Kidney tissue
-
-|lung
-|UBERON:0002048
-|Lung tissue
-
-|skin
-|UBERON:0002097
-|Skin tissue
-
-|breast
-|UBERON:0000310
-|Breast tissue
-
-|colon
-|UBERON:0001155
-|Colon tissue
-
-|cerebrospinal fluid
-|UBERON:0001359
-|CSF
-
-|urine
-|UBERON:0001088
-|Urine
+|blood |UBERON:0000178 |Whole blood
+|liver |UBERON:0002107 |Liver tissue
 |===
 
-IMPORTANT: Use lowercase for all organism part values.
+== Age
 
-=== Cell Lines and Cell Culture
+**Column:** `characteristics[age]`
 
-For cell line samples, use:
+**Format:** `{Number}{Unit}` where Unit is: `Y` (Years), `M` (Months), `W` (Weeks), `D` (Days).
 
-- `not applicable` - when the sample is a cell line without clear tissue origin context
-- Or specify the tissue of origin (e.g., `cervix` for HeLa)
+For age ranges use: `{LowerBound}{Unit}-{UpperBound}{Unit}` (e.g., `40Y-50Y`).
 
-[[age-annotation]]
-== Age Annotation
-
-Age annotation applies to samples from humans, animals, and other organisms with defined lifespans.
-
-=== Column
-
-`characteristics[age]`
-
-=== Ontology
-
-No specific ontology. Use standardized format below.
-
-=== Standard Format
-
-[source]
-----
-{Number}{Unit}
-----
-
-Where Unit is:
-
-- `Y` = Years
-- `M` = Months
-- `W` = Weeks
-- `D` = Days
-
-=== Examples
+Use `not available` when age is unknown, `not applicable` for immortalized cell lines.
 
 |===
-|Age Description |SDRF Value |Use Case
+|Age Description |SDRF Value
 
-|40 years old
-|40Y
-|Human adult, aged mouse
-
-|2 years and 6 months
-|2Y6M
-|Human child, dog
-
-|8 weeks old
-|8W
-|Mouse, rat (common lab age)
-
-|10 weeks old mouse
-|10W
-|Standard lab mouse age
-
-|3 days old
-|3D
-|Neonatal samples, zebrafish larvae
-
-|Unknown age
-|not available
-|When age cannot be determined
+|40 years old |40Y
+|8 weeks old |8W
 |===
 
-=== Age Ranges
-
-When exact age is not available but a range is known:
-
-[source]
-----
-{LowerBound}{Unit}-{UpperBound}{Unit}
-----
-
-Examples:
-
-- `40Y-50Y` - Human between 40 and 50 years
-- `50Y-82Y` - Elderly cohort range
-- `8W-12W` - Mouse between 8 and 12 weeks
-
-=== Missing Values
-
-|===
-|Value |When to Use
-
-|not available
-|Age was not recorded or is unknown
-
-|not applicable
-|Age concept doesn't apply (e.g., immortalized cell lines)
-|===
-
-IMPORTANT: Always use `not available` or `not applicable` - never leave the field empty.
-
-[[developmental-stage]]
 == Developmental Stage
 
-=== Column
+**Column:** `characteristics[developmental stage]`
 
-`characteristics[developmental stage]`
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] (developmental stages)
-- **Alternative**: https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
-
-=== Common Values
-
-|===
-|Value |Description |Typical Organisms
-
-|adult
-|Sexually mature organism
-|All
-
-|embryonic
-|Pre-birth/pre-hatching
-|Vertebrates
-
-|fetal
-|Late embryonic (mammals)
-|Mammals
-
-|juvenile
-|Post-birth, pre-adult
-|Vertebrates
-
-|larval
-|Larval stage
-|Insects, fish
-
-|not available
-|Stage unknown
-|Any
-
-|not applicable
-|Stage not relevant (e.g., cell lines)
-|Cell culture
-|===
-
-=== Model Organism Specific Stages
-
-==== Mouse
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
 
 |===
 |Value |Description
 
-|embryonic day 14
-|E14 embryo
-
-|postnatal day 7
-|P7 pup
-
-|adult
-|8+ weeks typically
+|adult |Sexually mature organism
+|embryonic |Pre-birth/pre-hatching
 |===
 
-==== Zebrafish
+For model organisms, use specific stages when applicable: `embryonic day 14` (mouse E14), `24 hpf` (zebrafish 24 hours post fertilization).
 
-|===
-|Value |Description
+== Biological Sex
 
-|24 hpf
-|24 hours post fertilization
+**Column:** `characteristics[sex]`
 
-|48 hpf
-|48 hours post fertilization
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
 
-|larval
-|Post-hatching larva
-
-|adult
-|Sexually mature
-|===
-
-==== Drosophila
-
-|===
-|Value |Description
-
-|embryo
-|Embryonic stage
-
-|larva
-|L1, L2, L3 instars
-
-|pupa
-|Pupal stage
-
-|adult
-|Emerged adult
-|===
-
-[[sex-annotation]]
-== Biological Sex Annotation
-
-=== Column
-
-`characteristics[sex]`
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
-
-=== Standard Values
+Use lowercase for all values. For cell lines, sex reflects the original donor.
 
 |===
 |Value |PATO ID |Description
 
-|male
-|PATO:0000384
-|Biological male
-
-|female
-|PATO:0000383
-|Biological female
-
-|hermaphrodite
-|PATO:0001340
-|Hermaphroditic organism (e.g., C. elegans)
-
-|not available
-|
-|Sex unknown or not recorded
-
-|not applicable
-|
-|Sex not relevant (pooled samples, some cell lines)
+|male |PATO:0000384 |Biological male
+|female |PATO:0000383 |Biological female
 |===
 
-IMPORTANT: Use lowercase for all sex values.
+Use `not available` when sex is unknown, `not applicable` for pooled samples.
 
-=== Cell Lines
+== Disease
 
-For cell lines, sex reflects the original donor:
+**Column:** `characteristics[disease]`
 
-|===
-|Cell Line |characteristics[sex] |Source
+**Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology] (preferred), https://www.ebi.ac.uk/efo/[EFO], https://disease-ontology.org/[Human Disease Ontology (DOID)]
 
-|HeLa
-|female
-|Female donor (Henrietta Lacks)
-
-|HEK293
-|female
-|Female embryonic kidney
-
-|K562
-|female
-|Female CML patient
-
-|Jurkat
-|male
-|Male T-ALL patient
-
-|U2OS
-|female
-|Female osteosarcoma patient
-|===
-
-[[disease-annotation]]
-== Disease and Health Status Annotation
-
-=== Column
-
-`characteristics[disease]`
-
-=== Ontologies (in order of preference)
-
-1. **MONDO Disease Ontology**: https://mondo.monarchinitiative.org/
-2. **EFO (Experimental Factor Ontology)**: https://www.ebi.ac.uk/efo/
-3. **Human Disease Ontology (DOID)**: https://disease-ontology.org/
-
-=== Healthy/Normal Samples
-
-|===
-|Value |Ontology Term |When to Use
-
-|normal
-|PATO:0000461
-|Healthy control samples
-
-|not applicable
-|
-|When disease concept doesn't apply (technology development, cell lines)
-|===
-
-IMPORTANT: Use `normal` (lowercase) for healthy samples, mapped to PATO:0000461.
-
-==== Example: Disease vs Control Comparison
-
-|===
-|source name |characteristics[disease] |characteristics[compound] |factor value[disease]
-
-|sample_treat
-|necrotic tissue
-|drug A
-|necrotic tissue
-
-|sample_control
-|normal
-|none
-|normal
-|===
-
-=== Common Disease Values
+For healthy controls, use `normal` (mapped to PATO:0000461). For animal disease models, use the human disease name (e.g., `Alzheimer disease` for APP/PS1 mice).
 
 |===
 |Disease |SDRF Value |MONDO ID
 
-|Breast cancer
-|breast carcinoma
-|MONDO:0004989
-
-|Colorectal cancer
-|colorectal cancer
-|MONDO:0005575
-
-|Lung cancer
-|lung carcinoma
-|MONDO:0005138
-
-|Chronic lymphocytic leukemia
-|chronic lymphocytic leukemia
-|MONDO:0004946
-
-|Type 2 diabetes
-|type 2 diabetes mellitus
-|MONDO:0005148
-
-|Alzheimer's disease
-|Alzheimer disease
-|MONDO:0004975
-
-|Parkinson's disease
-|Parkinson disease
-|MONDO:0005180
-
-|Rheumatoid arthritis
-|rheumatoid arthritis
-|MONDO:0008383
-
-|Multiple sclerosis
-|multiple sclerosis
-|MONDO:0005301
-
-|COVID-19
-|COVID-19
-|MONDO:0100096
-
-|Melanoma
-|melanoma
-|MONDO:0005105
+|Healthy control |normal |PATO:0000461
+|Breast cancer |breast carcinoma |MONDO:0004989
 |===
 
-=== Animal Disease Models
+== Cell Type
 
-For animal models of human disease:
+**Column:** `characteristics[cell type]`
 
-|===
-|Model |characteristics[disease] |Notes
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
 
-|APP/PS1 Alzheimer mouse
-|Alzheimer disease
-|Genetic model
-
-|db/db diabetic mouse
-|type 2 diabetes mellitus
-|Genetic model
-
-|DSS colitis mouse
-|colitis
-|Induced disease
-
-|Wild-type control
-|normal
-|Healthy control
-|===
-
-TIP: Consider adding `comment[disease model]` to specify the model type when relevant.
-
-[[cell-type-annotation]]
-== Cell Type Annotation
-
-=== Column
-
-`characteristics[cell type]`
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
-- **Alternative**: https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
-
-=== Common Values
+For cell lines, optionally include the cell type of origin.
 
 |===
 |Value |CL ID |Description
 
-|epithelial cell
-|CL:0000066
-|General epithelial cell
-
-|fibroblast
-|CL:0000057
-|Fibroblast
-
-|hepatocyte
-|CL:0000182
-|Liver cell
-
-|neuron
-|CL:0000540
-|Nerve cell
-
-|T cell
-|CL:0000084
-|T lymphocyte
-
-|B cell
-|CL:0000236
-|B lymphocyte
-
-|monocyte
-|CL:0000576
-|Monocyte
-
-|macrophage
-|CL:0000235
-|Macrophage
-
-|natural killer cell
-|CL:0000623
-|NK cell
-
-|dendritic cell
-|CL:0000451
-|Dendritic cell
-
-|platelet
-|CL:0000233
-|Thrombocyte
-
-|erythrocyte
-|CL:0000232
-|Red blood cell
+|epithelial cell |CL:0000066 |General epithelial cell
+|T cell |CL:0000084 |T lymphocyte
 |===
 
-=== Immune Cell Subtypes
+For detailed immune cell studies, use specific subtypes: `CD4-positive, alpha-beta T cell` (CL:0000624), `regulatory T cell` (CL:0000815).
 
-For detailed immune cell studies, use specific subtypes:
+== Biological Replicate
 
-|===
-|Value |CL ID |Description
+**Column:** `characteristics[biological replicate]`
 
-|naive T cell
-|CL:0000898
-|Naive T lymphocyte
+**Format:** Numeric (1, 2, 3...). Independent biological samples should have different replicate numbers.
 
-|memory T cell
-|CL:0000813
-|Memory T lymphocyte
+== Individual Identifier
 
-|naive B cell
-|CL:0000788
-|Naive B lymphocyte
+**Column:** `characteristics[individual]`
 
-|memory B cell
-|CL:0000787
-|Memory B lymphocyte
-
-|CD4-positive, alpha-beta T cell
-|CL:0000624
-|CD4+ T cell
-
-|CD8-positive, alpha-beta T cell
-|CL:0000625
-|CD8+ T cell
-
-|regulatory T cell
-|CL:0000815
-|Treg cell
-
-|effector memory CD8-positive, alpha-beta T cell
-|CL:0000913
-|CD8+ effector memory
-|===
-
-=== Cell Lines
-
-For cell lines, optionally include the cell type of origin:
-
-|===
-|Cell Line |characteristics[cell type] |Notes
-
-|HeLa
-|epithelial cell
-|Cervical epithelial origin
-
-|HEK293
-|epithelial cell
-|Kidney epithelial origin
-
-|Jurkat
-|T cell
-|T cell leukemia line
-
-|K562
-|erythroid lineage cell
-|CML erythroid blast
-|===
-
-[[additional-columns]]
-== Additional Common Columns
-
-=== Biological Replicate
-
-|===
-|Column |Format |Example
-
-|characteristics[biological replicate]
-|Numeric (1, 2, 3...)
-|1
-|===
-
-Independent biological samples should have different replicate numbers.
-
-=== Individual Identifier
-
-|===
-|Column |Format |Example
-
-|characteristics[individual]
-|Alphanumeric identifier
-|patient_001, donor_A, mouse_1
-|===
+**Format:** Alphanumeric identifier (e.g., `patient_001`, `donor_A`).
 
 Used to link multiple samples from the same individual/organism.
 
-=== Ancestry Category (Human)
+== Ancestry Category
+
+**Column:** `characteristics[ancestry category]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/hancestro[HANCESTRO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+
+Example values: `European`, `East Asian`, `not available`.
+
+== Depletion
+
+**Column:** `characteristics[depletion]`
+
+For blood/plasma samples indicating abundant protein depletion.
+
+Values: `no depletion`, `depletion`, `not applicable`.
+
+== Patient-Derived Xenografts (PDX)
+
+**Column:** `characteristics[xenograft]`
+
+When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
 
 |===
-|Column |Ontology |Example Values
+|source name |characteristics[xenograft] |characteristics[organism] |characteristics[age]
 
-|characteristics[ancestry category]
-|HANCESTRO, EFO
-|European, East Asian, African, South Asian, admixed, not available
+|tumor_001 |not applicable |homo sapiens |65Y
+|pdx_001 |pancreatic adenocarcinoma grown in nude mice |homo sapiens |65Y
 |===
 
-=== Depletion (Blood/Plasma)
-
-|===
-|Column |Example Values |Notes
-
-|characteristics[depletion]
-|no depletion, depletion, not applicable
-|For blood/plasma samples indicating abundant protein depletion
-|===
-
-[[derived-samples]]
-== Derived Samples
-
-=== Patient-Derived Xenografts (PDX)
-
-In cancer research, patient-derived xenografts (PDX) are commonly used. In these experiments, the patient's tumor is transplanted into another organism, usually a mouse.
-
-==== Column
-
-`characteristics[xenograft]`
-
-==== Metadata Rules
-
-IMPORTANT: When annotating PDX samples, the metadata such as age and sex MUST refer to the original patient and not the host organism (mouse).
-
-==== Format
-
-The value should describe the growth condition:
-
-|===
-|Example Value |Description
-
-|pancreatic cancer cells grown in nude mice
-|PDX from pancreatic cancer patient
-
-|breast tumor grown in NSG mice
-|PDX from breast cancer patient
-
-|not applicable
-|Non-PDX samples
-|===
-
-==== Linking PDX to Original Tumor
-
-For experiments where both the PDX and the original tumor are measured:
-
-|===
-|Column |PDX Sample |Original Tumor Sample
-
-|characteristics[xenograft]
-|Description of growth condition
-|not applicable
-
-|characteristics[source name]
-|Reference to tumor sample's source name
-|not applicable
-
-|characteristics[individual]
-|Patient identifier
-|Patient identifier (same as PDX)
-|===
-
-==== Example
-
-|===
-|source name |characteristics[individual] |characteristics[xenograft] |characteristics[organism] |characteristics[age] |characteristics[sex]
-
-|tumor_001
-|patient_A
-|not applicable
-|homo sapiens
-|65Y
-|male
-
-|pdx_001
-|patient_A
-|pancreatic adenocarcinoma grown in nude mice
-|homo sapiens
-|65Y
-|male
-|===
-
-NOTE: Both tumor and PDX samples reference the same patient using `characteristics[individual]`. The age and sex refer to the original patient, not the host mouse.
-
-[[synthetic-peptide]]
 == Synthetic Peptide Libraries
 
-Synthetic peptide libraries are commonly used in proteomics for:
+**Column:** `characteristics[synthetic peptide]`
 
-- Benchmarking analytical and bioinformatics methods and algorithms
-- Improving peptide identification/quantification using spectral libraries
+Values: `synthetic` (sample is a synthetic peptide library), `not synthetic` (biological sample).
 
-=== Column
+For synthetic libraries, most sample metadata can be `not applicable`. The organism MAY be specified if the library was designed from specific species peptides.
 
-`characteristics[synthetic peptide]`
+== PTM Enrichment
 
-=== Standard Values
+**Column:** `characteristics[enrichment process]`
 
-|===
-|Value |Description
-
-|synthetic
-|Sample is a synthetic peptide library
-
-|not synthetic
-|Sample is not synthetic (biological sample)
-|===
-
-=== Metadata Handling
-
-When describing synthetic peptide libraries, most sample metadata can be declared as "not applicable". However, some fields may still be relevant:
-
-|===
-|Column |Recommendation
-
-|characteristics[organism]
-|MAY be specified if the library was designed from specific species peptides
-
-|characteristics[organism part]
-|not applicable
-
-|characteristics[disease]
-|not applicable
-
-|characteristics[cell type]
-|not applicable
-
-|characteristics[age]
-|not applicable
-
-|characteristics[sex]
-|not applicable
-|===
-
-=== Example
-
-|===
-|source name |characteristics[synthetic peptide] |characteristics[organism] |characteristics[disease]
-
-|synthetic_lib_001
-|synthetic
-|homo sapiens
-|not applicable
-|===
-
-See example: https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD000759/PXD000759.sdrf.tsv[Synthetic Peptide experiment]
-
-[[enrichment-process]]
-== PTM Enrichment Studies
-
-For post-translational modification (PTM) enriched experiments such as phosphoproteomics or glycoproteomics, the enrichment process SHOULD be annotated.
-
-=== Column
-
-`characteristics[enrichment process]`
-
-=== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
-
-=== Standard Values
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
 
 |===
 |Value |Description
 
-|enrichment of phosphorylated Protein
-|Phosphoproteomics enrichment
-
-|enrichment of glycosylated Protein
-|Glycoproteomics enrichment
-
-|not applicable
-|No PTM enrichment performed
+|enrichment of phosphorylated Protein |Phosphoproteomics enrichment
+|not applicable |No PTM enrichment performed
 |===
 
-=== Usage as Factor Value
-
-This characteristic can be used as a _factor value[enrichment process]_ to differentiate the expression between proteins in the PTM-enriched sample compared with the control.
-
-=== Example
-
-|===
-|source name |characteristics[enrichment process] |factor value[enrichment process]
-
-|phospho_sample
-|enrichment of phosphorylated Protein
-|enrichment of phosphorylated Protein
-
-|control_sample
-|not applicable
-|not applicable
-|===
-
-[[best-practices]]
 == Best Practices
 
-1. **Use lowercase**: All controlled vocabulary values should be lowercase (except proper nouns in disease names).
+1. **Use lowercase** for all controlled vocabulary values (except proper nouns in disease names).
+2. **Use ontology terms** mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).
+3. **Be consistent** with format across all samples in a dataset.
+4. **Document unknowns** using `not available` (unknown) or `not applicable` (not relevant) - never leave cells empty.
+5. **Validate before submission** using sdrf-pipelines to check ontology mappings.
 
-2. **Use standard age format**: Prefer `{Number}{Unit}` format (e.g., `45Y`, `10W`, `3D`).
-
-3. **Use ontology terms**: Map values to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).
-
-4. **Be consistent**: Use the same format for all samples in a dataset.
-
-5. **Document unknowns**: Use `not available` (unknown) or `not applicable` (not relevant) - never leave cells empty.
-
-6. **Use specific terms**: Prefer specific ontology terms over generic ones when the information is available.
-
-7. **Validate before submission**: Use sdrf-pipelines to validate ontology mappings.
-
-[[references]]
 == References
 
 - MONDO Disease Ontology: https://mondo.monarchinitiative.org/
 - Cell Ontology (CL): https://obofoundry.org/ontology/cl.html
 - UBERON Anatomy Ontology: https://obofoundry.org/ontology/uberon.html
-- PATO Phenotype and Trait Ontology: https://obofoundry.org/ontology/pato.html
+- PATO Phenotype Ontology: https://obofoundry.org/ontology/pato.html
 - NCBI Taxonomy: https://www.ncbi.nlm.nih.gov/taxonomy
 - EFO Experimental Factor Ontology: https://www.ebi.ac.uk/efo/

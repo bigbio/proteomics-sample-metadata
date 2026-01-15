@@ -15,812 +15,214 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-[[status]]
-== Status of this Guideline
+== Introduction
 
-This document provides guidelines for annotating human-specific metadata in SDRF-Proteomics format. These guidelines apply to all human samples, including both clinical studies and healthy individuals.
+This document provides guidelines for annotating human-specific metadata in SDRF-Proteomics format. These guidelines apply to clinical studies and healthy human samples.
+
+For general sample metadata (organism, age, sex, basic disease), see link:sample-metadata.adoc[Sample Metadata Guidelines].
 
 **Version 1.0.0** - 2025-01
 
-[[abstract]]
-== Abstract
+== Disease Stage
 
-Human-specific metadata is crucial for interpreting proteomics data from human samples, enabling stratification by clinical and demographic characteristics and integration with other biomedical datasets. This guideline defines standardized approaches for annotating human-specific metadata:
+**Column:** `characteristics[disease stage]`
 
-- Disease staging and grading
-- Pre-existing conditions and comorbidities
-- Treatment and medication history
-- Individual/patient identifiers
-- Additional clinical metadata (BMI, lifestyle factors, reproductive status)
-
-For general sample metadata guidelines (age, biological sex, basic disease annotation) that apply to all organisms, see link:sample-metadata.adoc[Sample Metadata Guidelines].
-
-[[disease-staging]]
-== Disease Staging and Grading
-
-Disease staging and grading are primarily used for human cancers and other progressive diseases.
-
-=== Disease Stage
-
-==== Column
-
-`characteristics[disease stage]`
-
-==== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
-- **Alternative**: https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
-
-==== Standard Values
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
 
 |===
 |Value |NCIT ID |Description
 
-|stage I
-|NCIT:C27966
-|Early localized disease
-
-|stage II
-|NCIT:C28054
-|Locally advanced
-
-|stage III
-|NCIT:C27970
-|Regional spread
-
-|stage IV
-|NCIT:C27971
-|Distant metastasis
-
-|early
-|
-|General early stage
-
-|advanced
-|
-|General advanced stage
-
-|localized
-|NCIT:C68804
-|Confined to primary site
-
-|metastatic
-|NCIT:C14174
-|Has spread to distant sites
-
-|not available
-|
-|Stage unknown
-
-|not applicable
-|
-|Staging not relevant (non-cancer)
+|stage I |NCIT:C27966 |Early localized disease
+|stage IV |NCIT:C27971 |Distant metastasis
 |===
 
-=== Cancer-Specific Staging
+Use `not available` when stage is unknown, `not applicable` for non-cancer samples.
 
-==== TNM Staging
+== TNM Staging
 
-===== Column
+**Column:** `characteristics[TNM staging]`
 
-`characteristics[TNM staging]`
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
 
-===== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
-
-===== Format
-
-[source]
-----
-T{0-4}N{0-3}M{0-1}
-----
-
-Components:
-
-- **T**: Primary tumor size/extent (T0-T4, Tis for in situ)
-- **N**: Regional lymph node involvement (N0-N3)
-- **M**: Distant metastasis (M0, M1)
-
-Prefix `p` indicates pathological staging (e.g., `pT2pN1M0`).
-
-===== Examples
+**Format:** `T{0-4}N{0-3}M{0-1}` where T = tumor size/extent, N = lymph node involvement, M = distant metastasis. Prefix `p` indicates pathological staging.
 
 |===
 |Value |Description
 
-|T1N0M0
-|Small tumor, no nodes, no metastasis
-
-|T2N1M0
-|Larger tumor, limited node involvement
-
-|T3N2M1
-|Large tumor, extensive nodes, metastatic
-
-|pT2pN1M0
-|Pathological staging after surgery
-
-|Tis
-|Carcinoma in situ
+|T1N0M0 |Small tumor, no nodes, no metastasis
+|pT2pN1M0 |Pathological staging after surgery
 |===
 
-==== Tumor Grade
+== Tumor Grade
 
-===== Column
+**Column:** `characteristics[tumor grade]`
 
-`characteristics[tumor grade]`
-
-===== Ontology
-
-- **Primary**: https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
-
-===== Standard Values
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
 
 |===
 |Value |NCIT ID |Description
 
-|grade 1
-|NCIT:C28076
-|Well differentiated
-
-|grade 2
-|NCIT:C28077
-|Moderately differentiated
-
-|grade 3
-|NCIT:C28078
-|Poorly differentiated
-
-|grade 4
-|NCIT:C28079
-|Undifferentiated
-
-|well differentiated
-|NCIT:C14167
-|Low grade
-
-|moderately differentiated
-|NCIT:C14168
-|Intermediate grade
-
-|poorly differentiated
-|NCIT:C14169
-|High grade
-
-|not available
-|
-|Grade unknown
-
-|not applicable
-|
-|Grading not relevant
+|grade 1 |NCIT:C28076 |Well differentiated
+|grade 3 |NCIT:C28078 |Poorly differentiated
 |===
 
-==== Cancer-Specific Classifications
+== Cancer-Specific Classifications
 
-===== Breast Cancer
-
-|===
-|Column |Example Values |Ontology
-
-|characteristics[breast cancer subtype]
-|luminal A, luminal B, HER2-enriched, triple-negative, basal-like
-|NCIT
-|===
+**Breast cancer subtype** (`characteristics[breast cancer subtype]`):
 
 |===
 |Value |NCIT ID |Description
 
-|luminal A
-|NCIT:C53554
-|ER+/PR+, HER2-, low Ki67
-
-|luminal B
-|NCIT:C53555
-|ER+/PR+, HER2- or HER2+, high Ki67
-
-|HER2-enriched
-|NCIT:C53556
-|ER-/PR-, HER2+
-
-|triple-negative
-|NCIT:C71732
-|ER-/PR-/HER2-
-
-|basal-like
-|NCIT:C53553
-|Similar to basal epithelial cells
+|luminal A |NCIT:C53554 |ER+/PR+, HER2-, low Ki67
+|triple-negative |NCIT:C71732 |ER-/PR-/HER2-
 |===
 
-===== Colorectal Cancer
+**Other classifications:** `characteristics[Dukes stage]` for colorectal cancer, `characteristics[Ann Arbor stage]` for lymphoma.
 
-|===
-|Column |Example Values
+== Pre-existing Condition
 
-|characteristics[Dukes stage]
-|Dukes A, Dukes B, Dukes C, Dukes D
-|===
+**Column:** `characteristics[pre-existing condition]`
 
-===== Lymphoma
+**Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology]
 
-|===
-|Column |Example Values
-
-|characteristics[Ann Arbor stage]
-|stage I, stage II, stage III, stage IV
-|===
-
-[[comorbidities]]
-== Pre-existing Conditions and Comorbidities
-
-=== Pre-existing Conditions
-
-==== Column
-
-`characteristics[pre-existing condition]`
-
-==== Ontology
-
-- **Primary**: https://mondo.monarchinitiative.org/[MONDO Disease Ontology]
-- **Alternative**: https://www.ebi.ac.uk/efo/[EFO]
-
-==== Common Values
+For multiple conditions, use multiple columns (preferred) or semicolon-separated values.
 
 |===
 |Condition |SDRF Value |MONDO ID
 
-|High blood pressure
-|hypertension
-|MONDO:0005044
-
-|Diabetes
-|type 2 diabetes mellitus
-|MONDO:0005148
-
-|Obesity
-|obesity
-|MONDO:0011122
-
-|Chronic kidney disease
-|chronic kidney disease
-|MONDO:0005300
-
-|Cardiovascular disease
-|cardiovascular disease
-|MONDO:0004995
-
-|Asthma
-|asthma
-|MONDO:0004979
-
-|Depression
-|depression
-|MONDO:0002050
-
-|None known
-|not available
-|
-
-|Not applicable
-|not applicable
-|
+|High blood pressure |hypertension |MONDO:0005044
+|Diabetes |type 2 diabetes mellitus |MONDO:0005148
 |===
 
-=== Multiple Conditions
+== Treatment
 
-Multiple pre-existing conditions can be captured by:
+**Column:** `characteristics[treatment]`
 
-**Option 1**: Multiple columns (PREFERRED)
-
-|===
-|characteristics[pre-existing condition] |characteristics[pre-existing condition]
-
-|hypertension
-|type 2 diabetes mellitus
-|===
-
-**Option 2**: Semicolon-separated values
-
-|===
-|characteristics[pre-existing condition]
-
-|hypertension;type 2 diabetes mellitus;obesity
-|===
-
-NOTE: Option 1 (multiple columns) is PREFERRED for clarity and parsing.
-
-=== Secondary Conditions
-
-==== Column
-
-`characteristics[secondary condition]`
-
-==== Description
-
-Conditions that are secondary to or result from the primary disease.
-
-==== Example Values
-
-|===
-|Value |Description
-
-|metastasis
-|Cancer spread to distant sites
-
-|infection
-|Secondary infection
-
-|organ failure
-|Organ function loss
-
-|treatment-related adverse event
-|Side effect of treatment
-|===
-
-[[treatment-annotation]]
-== Treatment and Medication Annotation
-
-=== Current Treatment
-
-==== Columns and Ontologies
-
-|===
-|Column |Ontology |Description
-
-|characteristics[treatment]
-|NCIT, EFO
-|Primary treatment/intervention
-
-|characteristics[compound]
-|ChEBI, NCIT
-|Specific drug/compound
-
-|characteristics[dose]
-|UO (Units Ontology)
-|Dosage administered
-|===
-
-==== Treatment Values
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
 
 |===
 |Value |NCIT ID |Description
 
-|chemotherapy
-|NCIT:C15632
-|Chemical drug treatment
-
-|immunotherapy
-|NCIT:C15262
-|Immune-based treatment
-
-|radiation therapy
-|NCIT:C15313
-|Radiotherapy
-
-|surgical resection
-|NCIT:C15329
-|Surgical removal
-
-|targeted therapy
-|NCIT:C62723
-|Molecularly targeted drugs
-
-|hormone therapy
-|NCIT:C15445
-|Hormonal treatment
-
-|untreated
-|
-|No treatment administered
-
-|not available
-|
-|Treatment unknown
+|chemotherapy |NCIT:C15632 |Chemical drug treatment
+|immunotherapy |NCIT:C15262 |Immune-based treatment
 |===
 
-==== Compound Examples
+Use `untreated` for no treatment, `not available` when unknown.
+
+== Compound
+
+**Column:** `characteristics[compound]`
+
+**Ontology:** https://www.ebi.ac.uk/chebi/[ChEBI], https://www.ebi.ac.uk/ols4/ontologies/ncit[NCIT]
 
 |===
 |Compound |ChEBI ID |Drug Class
 
-|doxorubicin
-|CHEBI:28748
-|Anthracycline chemotherapy
-
-|pembrolizumab
-|
-|PD-1 inhibitor immunotherapy
-
-|metformin
-|CHEBI:6801
-|Antidiabetic
-
-|cisplatin
-|CHEBI:27899
-|Platinum chemotherapy
-
-|tamoxifen
-|CHEBI:41774
-|Hormone therapy
+|doxorubicin |CHEBI:28748 |Anthracycline chemotherapy
+|cisplatin |CHEBI:27899 |Platinum chemotherapy
 |===
 
-==== Dose Format
+== Dose
 
-|===
-|Format |Example |Description
+**Column:** `characteristics[dose]`
 
-|{value} {unit}
-|100 mg
-|Standard dose
+**Format:** `{value} {unit}` (e.g., `100 mg`, `5 mg/kg`, `10 uM`).
 
-|{value} {unit}/{weight}
-|5 mg/kg
-|Weight-based dose
+== Treatment Status
 
-|{value} {unit} {frequency}
-|500 mg daily
-|Dose with frequency
+**Column:** `characteristics[treatment status]`
 
-|{concentration}
-|10 uM
-|In vitro concentration
-|===
+Values: `pre-treatment`, `on treatment`, `post-treatment`, `treatment naive`.
 
-=== Treatment History
+== Treatment Response
 
-==== Columns
+**Column:** `characteristics[treatment response]`
 
-|===
-|Column |Description |Example Values
-
-|characteristics[medication history]
-|Previous or concurrent medications
-|aspirin, statins, ACE inhibitors, metformin
-
-|characteristics[prior treatment]
-|Previous treatments for same condition
-|prior chemotherapy, radiation therapy naive, surgery only
-|===
-
-=== Treatment Status and Timing
-
-==== Columns and Values
-
-|===
-|Column |Example Values |Description
-
-|characteristics[treatment status]
-|pre-treatment, on treatment, post-treatment, treatment naive
-|Current treatment phase
-
-|characteristics[time post treatment]
-|24h, 7d, 2W, 3M, 1Y
-|Time since treatment (use standard time format)
-
-|characteristics[treatment response]
-|complete response, partial response, stable disease, progressive disease
-|Response to treatment
-|===
-
-==== Treatment Response Values
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
 
 |===
 |Value |NCIT ID |Description
 
-|complete response
-|NCIT:C4870
-|No detectable disease
-
-|partial response
-|NCIT:C18058
-|>50% reduction
-
-|stable disease
-|NCIT:C18213
-|No significant change
-
-|progressive disease
-|NCIT:C18206
-|Disease progression
+|complete response |NCIT:C4870 |No detectable disease
+|progressive disease |NCIT:C18206 |Disease progression
 |===
 
-[[individual-annotation]]
-== Individual/Patient Identifiers
+== Individual Identifier
 
-=== Column
+**Column:** `characteristics[individual]`
 
-`characteristics[individual]`
+**Format:** Alphanumeric pseudonymized identifier (e.g., `patient_001`, `P023455`).
 
-=== Format
+IMPORTANT: Never use actual patient names. Use pseudonymized identifiers only. Consider GDPR, HIPAA regulations.
 
-Alphanumeric pseudonymized identifier.
-
-=== Examples
+When multiple samples come from the same patient, use consistent identifier:
 
 |===
-|Format |Example |Notes
+|source name |characteristics[individual] |characteristics[organism part]
 
-|patient_{number}
-|patient_001
-|Sequential numbering
-
-|P{number}
-|P023455
-|Compact format
-
-|donor_{letter}
-|donor_A
-|Letter-based
-
-|{study}_{subject}
-|TCGA_BRCA_001
-|Study-prefixed
+|sample_001 |patient_001 |tumor
+|sample_002 |patient_001 |adjacent normal
 |===
 
-IMPORTANT: Privacy requirements
-
-- Never use actual patient names or identifiable information
-- Use pseudonymized identifiers only
-- Consider data protection regulations (GDPR, HIPAA)
-- Do not include dates of birth, social security numbers, or medical record numbers
-
-=== Linking Multiple Samples from Same Patient
-
-When multiple samples come from the same individual, use consistent individual identifier:
-
-|===
-|source name |characteristics[individual] |characteristics[organism part] |characteristics[sampling time point]
-
-|sample_001
-|patient_001
-|tumor
-|baseline
-
-|sample_002
-|patient_001
-|adjacent normal
-|baseline
-
-|sample_003
-|patient_001
-|tumor
-|post-treatment
-|===
-
-[[clinical-metadata]]
-== Additional Clinical Metadata
-
-=== Body Measurements
-
-==== Columns and Format
-
-|===
-|Column |Ontology |Format |Example
-
-|characteristics[body mass index]
-|NCIT:C16358
-|Numeric (kg/m²)
-|25.5
-
-|characteristics[weight]
-|NCIT:C81328
-|{value} kg
-|70 kg
-
-|characteristics[height]
-|NCIT:C81327
-|{value} cm
-|175 cm
-|===
-
-=== Ancestry and Ethnicity
-
-==== Columns and Ontologies
-
-|===
-|Column |Ontology |Description
-
-|characteristics[ancestry category]
-|HANCESTRO
-|Genetic ancestry
-
-|characteristics[ethnicity]
-|NCIT
-|Self-reported ethnicity
-|===
-
-==== Ancestry Values
-
-|===
-|Value |HANCESTRO ID |Description
-
-|European
-|HANCESTRO:0005
-|European ancestry
-
-|East Asian
-|HANCESTRO:0009
-|East Asian ancestry
-
-|African
-|HANCESTRO:0010
-|African ancestry
-
-|South Asian
-|HANCESTRO:0006
-|South Asian ancestry
-
-|admixed
-|
-|Mixed ancestry
-
-|not available
-|
-|Ancestry unknown
-|===
-
-=== Lifestyle Factors
-
-==== Smoking Status
-
-|===
-|Column |Example Values |NCIT IDs
-
-|characteristics[smoking status]
-|never smoker, former smoker, current smoker
-|NCIT:C65108, NCIT:C65107, NCIT:C65106
-|===
-
-==== Alcohol Consumption
-
-|===
-|Column |Example Values
-
-|characteristics[alcohol consumption]
-|none, moderate, heavy, social, not available
-|===
-
-==== Diet
-
-|===
-|Column |Example Values
-
-|characteristics[diet]
-|omnivore, vegetarian, vegan, western diet, mediterranean diet
-|===
-
-=== Reproductive Status
-
-==== Menopausal Status
-
-|===
-|Column |Example Values |Description
-
-|characteristics[menopausal status]
-|pre-menopausal, peri-menopausal, post-menopausal
-|For female subjects
-|===
-
-==== Pregnancy Status
-
-|===
-|Column |Example Values
-
-|characteristics[pregnancy status]
-|pregnant, not pregnant, postpartum, not applicable
-|===
-
-==== Gestational Age
+== Body Measurements
 
 |===
 |Column |Format |Example
 
-|characteristics[gestational age]
-|{weeks}W
-|12W, 28W, term
+|`characteristics[body mass index]` |Numeric (kg/m^2^) |25.5
+|`characteristics[weight]` |{value} kg |70 kg
 |===
 
-=== Sampling Time Point
+== Ancestry Category
 
-==== Column
+**Column:** `characteristics[ancestry category]`
 
-`characteristics[sampling time point]`
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/hancestro[HANCESTRO]
 
-==== Description
+|===
+|Value |HANCESTRO ID
+
+|European |HANCESTRO:0005
+|East Asian |HANCESTRO:0009
+|===
+
+Use `not available` when ancestry is unknown.
+
+== Smoking Status
+
+**Column:** `characteristics[smoking status]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
+
+Values: `never smoker` (NCIT:C65108), `former smoker` (NCIT:C65107), `current smoker` (NCIT:C65106).
+
+== Menopausal Status
+
+**Column:** `characteristics[menopausal status]`
+
+Values: `pre-menopausal`, `peri-menopausal`, `post-menopausal`.
+
+== Sampling Time Point
+
+**Column:** `characteristics[sampling time point]`
 
 For longitudinal studies, indicates when sample was collected relative to a reference point.
 
-==== Example Values
+Values: `baseline`, `week 1`, `post-treatment`, `follow-up`.
 
-|===
-|Value |Description
-
-|baseline
-|Before intervention/treatment
-
-|week 1
-|One week after baseline
-
-|month 3
-|Three months after baseline
-
-|post-treatment
-|After treatment completion
-
-|follow-up
-|Long-term follow-up visit
-|===
-
-[[example-sdrf]]
-== Example SDRF with Patient Metadata
-
-|===
-|source name |characteristics[organism] |characteristics[individual] |characteristics[sex] |characteristics[age] |characteristics[ancestry category] |characteristics[disease] |characteristics[disease stage] |characteristics[pre-existing condition] |characteristics[treatment] |characteristics[treatment status]
-
-|tumor_pt001
-|homo sapiens
-|patient_001
-|female
-|52Y
-|European
-|breast carcinoma
-|stage II
-|hypertension
-|chemotherapy
-|pre-treatment
-
-|normal_pt001
-|homo sapiens
-|patient_001
-|female
-|52Y
-|European
-|normal
-|not applicable
-|hypertension
-|chemotherapy
-|pre-treatment
-
-|tumor_pt002
-|homo sapiens
-|patient_002
-|female
-|67Y
-|East Asian
-|breast carcinoma
-|stage III
-|type 2 diabetes mellitus
-|immunotherapy
-|on treatment
-|===
-
-[[best-practices]]
 == Best Practices
 
-1. **Protect privacy**: Never include identifiable patient information.
+1. **Protect privacy** - Never include identifiable patient information.
+2. **Use ontology terms** - Prefer MONDO for diseases, NCIT for staging and treatments.
+3. **Be consistent** - Use the same format for all samples in a dataset.
+4. **Document unknowns** - Use `not available` rather than leaving cells empty.
+5. **Include temporal context** - Specify when measurements were taken relative to treatment.
+6. **Ensure regulatory compliance** - Follow GDPR, HIPAA, and other data protection regulations.
 
-2. **Use ontology terms**: Prefer MONDO for diseases, NCIT for staging and treatments.
-
-3. **Be consistent**: Use the same format for all samples in a dataset.
-
-4. **Document unknowns**: Use `not available` rather than leaving cells empty.
-
-5. **Distinguish primary from secondary**: Clearly separate the disease under study from comorbidities.
-
-6. **Include temporal context**: Specify when measurements were taken relative to treatment.
-
-7. **Use standard staging**: Prefer TNM staging for solid tumors when available.
-
-8. **Consider regulatory requirements**: Ensure compliance with GDPR, HIPAA, and other data protection regulations.
-
-[[references]]
 == References
 
 - MONDO Disease Ontology: https://mondo.monarchinitiative.org/
 - NCI Thesaurus (NCIT): https://ncithesaurus.nci.nih.gov/
 - Human Ancestry Ontology (HANCESTRO): https://www.ebi.ac.uk/ols4/ontologies/hancestro
 - ChEBI Chemical Entities: https://www.ebi.ac.uk/chebi/
-- Units Ontology (UO): https://www.ebi.ac.uk/ols4/ontologies/uo
 - TNM Classification: AJCC Cancer Staging Manual
-- GA4GH data standards: https://www.ga4gh.org/
