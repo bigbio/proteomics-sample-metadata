@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDRF Terms Reference - SDRF-Proteomics</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <style>
+        /* SDRF Terms Page Specific Styles */
+        .terms-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            margin-top: 0;
+            border: none;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .filters {
+            background: var(--background-alt);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group input[type="text"],
+        .filter-group select {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            min-width: 180px;
+            background: var(--background);
+        }
+
+        .filter-group input[type="text"]:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+
+        .stats {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-left: auto;
+            align-self: center;
+        }
+
+        .clear-btn {
+            padding: 0.5rem 1rem;
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--text-color);
+            transition: background 0.2s;
+        }
+
+        .clear-btn:hover {
+            background: var(--border-color);
+        }
+
+        /* Table Styles */
+        .terms-table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        #termsTable {
+            margin: 0;
+            border: none;
+        }
+
+        #termsTable th {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.875rem 1rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            border: none;
+            border-bottom: 1px solid var(--primary-dark);
+            white-space: nowrap;
+        }
+
+        #termsTable th:hover {
+            background: var(--primary-dark);
+        }
+
+        #termsTable th.sorted-asc::after {
+            content: ' ▲';
+            font-size: 0.7rem;
+        }
+
+        #termsTable th.sorted-desc::after {
+            content: ' ▼';
+            font-size: 0.7rem;
+        }
+
+        #termsTable td {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            vertical-align: top;
+        }
+
+        #termsTable tr:hover {
+            background-color: var(--background-alt);
+        }
+
+        #termsTable tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Type badges */
+        .type-characteristics {
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .type-comment {
+            background-color: #ffedd5;
+            color: #c2410c;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .type-other {
+            background-color: #f3e8ff;
+            color: #7c3aed;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .ontology-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 0.8rem;
+        }
+
+        .ontology-link:hover {
+            text-decoration: underline;
+        }
+
+        .to-be-filled {
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+
+        .usage-tag {
+            display: inline-block;
+            background: var(--code-bg);
+            color: var(--text-color);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin: 0.1rem;
+            white-space: nowrap;
+        }
+
+        .term-name {
+            font-weight: 600;
+            color: var(--text-color);
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+        }
+
+        .values-cell {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            max-width: 200px;
+        }
+
+        .description-cell {
+            max-width: 250px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group input[type="text"],
+            .filter-group select {
+                min-width: 100%;
+            }
+
+            .stats {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="has-doc-header">
+    <header class="doc-header">
+        <div class="doc-header-brand">
+            <a href="./index.html">SDRF-Proteomics</a>
+        </div>
+        <nav class="doc-header-nav">
+            <a href="./index.html">Home</a>
+            <a href="./specification.html">Specification</a>
+            <a href="./tool-support.html">Tools</a>
+            <a href="./index.html#metadata-guidelines" class="nav-current">Metadata Guidelines</a>
+            <a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a>
+        </nav>
+    </header>
+
+    <div class="terms-container">
+        <div class="page-header">
+            <h1>SDRF Terms Reference</h1>
+            <p>Comprehensive reference for all SDRF column terms, their ontology mappings, and allowed values. Use the filters to find specific terms or browse by template.</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Search Term</label>
+                    <input type="text" id="searchInput" placeholder="Filter by term name...">
+                </div>
+                <div class="filter-group">
+                    <label>Type</label>
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="characteristics">characteristics</option>
+                        <option value="comment">comment</option>
+                        <option value="other">other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Template</label>
+                    <select id="usageFilter">
+                        <option value="">All Templates</option>
+                        <option value="minimum">minimum</option>
+                        <option value="default">default</option>
+                        <option value="human">human</option>
+                        <option value="cell-lines">cell-lines</option>
+                        <option value="single-cell">single-cell</option>
+                        <option value="immunopeptidomics">immunopeptidomics</option>
+                        <option value="crosslinking">crosslinking</option>
+                        <option value="metaproteomics">metaproteomics</option>
+                        <option value="dia-acquisition">dia-acquisition</option>
+                        <option value="dda-acquisition">dda-acquisition</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Ontology Status</label>
+                    <select id="ontologyFilter">
+                        <option value="">All</option>
+                        <option value="defined">Has Ontology Term</option>
+                        <option value="missing">To Be Filled</option>
+                    </select>
+                </div>
+                <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
+                <span class="stats" id="stats"></span>
+            </div>
+        </div>
+
+        <div class="terms-table-wrapper">
+            <table id="termsTable">
+                <thead>
+                    <tr>
+                        <th data-sort="term">Term</th>
+                        <th data-sort="type">Type</th>
+                        <th data-sort="ontology">Ontology Accession</th>
+                        <th data-sort="usage">Usage (Templates)</th>
+                        <th data-sort="values">Values Source</th>
+                        <th data-sort="description">Description</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>SDRF-Proteomics is developed by the <a href="https://psidev.info/" target="_blank">HUPO-PSI</a> community.</p>
+            <p>Copyright &copy; Proteomics Standards Initiative. Licensed under <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE" target="_blank">Apache 2.0</a>.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Embedded SDRF terms data
+        const data = [
+            {term: "source name", type: "other", ontology_term_accession: "to be filled", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "free text", description: "Unique identifier for the biological sample"},
+            {term: "assay name", type: "other", ontology_term_accession: "to be filled", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "free text", description: "Unique identifier for the MS run"},
+            {term: "technology type", type: "other", ontology_term_accession: "EFO:0002772", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "fixed: proteomic profiling by mass spectrometry", description: "Type of technology used"},
+            {term: "organism", type: "characteristics", ontology_term_accession: "OBI:0100026", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "NCBITaxon", description: "Species of the sample"},
+            {term: "organism part", type: "characteristics", ontology_term_accession: "UBERON:0000061", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "UBERON, BTO", description: "Anatomical part of the organism"},
+            {term: "disease", type: "characteristics", ontology_term_accession: "OGMS:0000031", usage: "default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition, dda-acquisition", values: "MONDO, EFO, DOID", description: "Disease state of the sample"},
+            {term: "cell type", type: "characteristics", ontology_term_accession: "CL:0000000", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "CL, BTO, CLO", description: "Cell type of the sample"},
+            {term: "biological replicate", type: "characteristics", ontology_term_accession: "MS:1001809", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "integer", description: "Identifier for the biological replicate"},
+            {term: "ancestry category", type: "characteristics", ontology_term_accession: "HANCESTRO:0004", usage: "human, cell-lines", values: "HANCESTRO, EFO", description: "Ancestry or ethnic background of the donor"},
+            {term: "age", type: "characteristics", ontology_term_accession: "EFO:0000246", usage: "human, cell-lines", values: "pattern: Y/M/D format", description: "Age of the donor at sample collection"},
+            {term: "sex", type: "characteristics", ontology_term_accession: "PATO:0000047", usage: "human, cell-lines", values: "fixed: male, female, intersex, not available, not applicable", description: "Biological sex of the donor"},
+            {term: "developmental stage", type: "characteristics", ontology_term_accession: "EFO:0000399", usage: "human, cell-lines", values: "HsapDv, EFO", description: "Developmental stage of the donor"},
+            {term: "individual", type: "characteristics", ontology_term_accession: "to be filled", usage: "human, cell-lines", values: "free text pattern", description: "Unique identifier for the donor individual"},
+            {term: "cell line", type: "characteristics", ontology_term_accession: "CLO:0000031", usage: "cell-lines, immunopeptidomics", values: "CLO, BTO, EFO", description: "Name of the cell line"},
+            {term: "cellosaurus accession", type: "characteristics", ontology_term_accession: "to be filled", usage: "cell-lines", values: "Cellosaurus (CVCL_XXXX)", description: "Cellosaurus accession number for the cell line"},
+            {term: "cellosaurus name", type: "characteristics", ontology_term_accession: "to be filled", usage: "cell-lines", values: "Cellosaurus", description: "Official Cellosaurus name for the cell line"},
+            {term: "sampling site", type: "characteristics", ontology_term_accession: "to be filled", usage: "cell-lines", values: "UBERON, BTO", description: "Tissue or organ from which the cell line was derived"},
+            {term: "single cell isolation method", type: "characteristics", ontology_term_accession: "EFO:0010214", usage: "single-cell", values: "fixed: FACS, microfluidics, laser capture microdissection, manual picking, CellenONE, nanoPOTS", description: "Method used to isolate single cells"},
+            {term: "cell identifier", type: "characteristics", ontology_term_accession: "EFO:0010197", usage: "single-cell", values: "free text pattern", description: "Unique identifier for the single cell"},
+            {term: "cell viability", type: "characteristics", ontology_term_accession: "to be filled", usage: "single-cell", values: "fixed: live, dead, unknown", description: "Viability status of the cell at isolation"},
+            {term: "cell cycle phase", type: "characteristics", ontology_term_accession: "GO:0022403", usage: "single-cell", values: "fixed: G1, S, G2, M, G0", description: "Cell cycle phase of the isolated cell"},
+            {term: "sorting marker", type: "characteristics", ontology_term_accession: "to be filled", usage: "single-cell", values: "free text", description: "Markers used for cell sorting/selection"},
+            {term: "MHC class", type: "characteristics", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "fixed: MHC class I, MHC class II, MHC class I and II", description: "MHC class targeted for immunopeptidome enrichment"},
+            {term: "immunopeptidome enrichment method", type: "characteristics", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "fixed: immunoaffinity purification, mild acid elution, detergent lysis", description: "Method used to enrich MHC-bound peptides"},
+            {term: "HLA typing", type: "characteristics", ontology_term_accession: "NCIT:C71329", usage: "immunopeptidomics", values: "HLA nomenclature pattern", description: "HLA alleles expressed by the sample"},
+            {term: "HLA typing method", type: "characteristics", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "fixed: NGS-based typing, SSO typing, SSP typing, SBT typing, predicted from RNA-seq", description: "Method used for HLA typing"},
+            {term: "crosslinking reagent", type: "characteristics", ontology_term_accession: "to be filled", usage: "crosslinking", values: "XLMOD, ChEBI", description: "Name of the cross-linking reagent used"},
+            {term: "enrichment process", type: "characteristics", ontology_term_accession: "to be filled", usage: "crosslinking", values: "fixed: enrichment of cross-linked peptides, not applicable", description: "Indicates if the sample was enriched for cross-linked peptides"},
+            {term: "crosslink type", type: "characteristics", ontology_term_accession: "to be filled", usage: "crosslinking", values: "fixed: homo-bifunctional, hetero-bifunctional, zero-length, photo-reactive, cleavable", description: "Type of crosslinks being studied"},
+            {term: "crosslink distance", type: "characteristics", ontology_term_accession: "to be filled", usage: "crosslinking", values: "pattern: number + A", description: "Maximum distance constraint provided by the crosslinker"},
+            {term: "crosslinking reaction time", type: "characteristics", ontology_term_accession: "to be filled", usage: "crosslinking", values: "pattern: number + time unit", description: "Duration of the crosslinking reaction"},
+            {term: "crosslinking temperature", type: "characteristics", ontology_term_accession: "to be filled", usage: "crosslinking", values: "pattern: number + C", description: "Temperature at which crosslinking was performed"},
+            {term: "environmental sample type", type: "characteristics", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "ENVO, EFO", description: "Type of environmental sample analyzed"},
+            {term: "sample collection method", type: "characteristics", ontology_term_accession: "OBI:0000659", usage: "metaproteomics", values: "free text", description: "Method used to collect the environmental sample"},
+            {term: "geographic location", type: "characteristics", ontology_term_accession: "GAZ:00000448", usage: "metaproteomics", values: "GAZ", description: "Geographic location where sample was collected"},
+            {term: "collection date", type: "characteristics", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "ISO 8601 date", description: "Date when sample was collected"},
+            {term: "depth", type: "characteristics", ontology_term_accession: "PATO:0001595", usage: "metaproteomics", values: "pattern: number + m/cm", description: "Depth at which sample was collected"},
+            {term: "temperature", type: "characteristics", ontology_term_accession: "PATO:0000146", usage: "metaproteomics", values: "pattern: number + C", description: "Temperature at sampling location"},
+            {term: "pH", type: "characteristics", ontology_term_accession: "PATO:0001842", usage: "metaproteomics", values: "numeric", description: "pH at sampling location"},
+            {term: "host organism", type: "characteristics", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "NCBITaxon", description: "Host organism for host-associated microbiome samples"},
+            {term: "host disease", type: "characteristics", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "MONDO, DOID", description: "Disease state of the host organism"},
+            {term: "proteomics data acquisition method", type: "comment", ontology_term_accession: "PRIDE:0000989", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "PRIDE", description: "Mass spectrometry acquisition method"},
+            {term: "label", type: "comment", ontology_term_accession: "PRIDE:0000093", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "PRIDE", description: "Labeling strategy used for quantification"},
+            {term: "instrument", type: "comment", ontology_term_accession: "MS:1000031", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "MS (PSI-MS)", description: "Mass spectrometer instrument used"},
+            {term: "cleavage agent details", type: "comment", ontology_term_accession: "MS:1001045", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "MS (PSI-MS)", description: "Enzyme or chemical used for protein digestion"},
+            {term: "fraction identifier", type: "comment", ontology_term_accession: "MS:1000858", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "integer", description: "Fraction number for fractionated samples"},
+            {term: "technical replicate", type: "comment", ontology_term_accession: "MS:1001808", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "integer", description: "Identifier for the technical replicate"},
+            {term: "data file", type: "comment", ontology_term_accession: "MS:1000577", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "file name", description: "Name of the raw data file"},
+            {term: "modification parameters", type: "comment", ontology_term_accession: "MS:1001055", usage: "minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition", values: "Unimod, PSI-MOD", description: "Post-translational modifications searched"},
+            {term: "precursor mass tolerance", type: "comment", ontology_term_accession: "MS:1001412", usage: "minimum, default, dia-acquisition, dda-acquisition", values: "pattern: number + ppm/Da", description: "Precursor mass tolerance for database search"},
+            {term: "fragment mass tolerance", type: "comment", ontology_term_accession: "MS:1001413", usage: "minimum, default, dia-acquisition, dda-acquisition", values: "pattern: number + ppm/Da", description: "Fragment mass tolerance for database search"},
+            {term: "passage number", type: "comment", ontology_term_accession: "to be filled", usage: "cell-lines", values: "integer or range", description: "Passage number of the cell line"},
+            {term: "cell line source", type: "comment", ontology_term_accession: "to be filled", usage: "cell-lines", values: "free text", description: "Repository or source from which the cell line was obtained"},
+            {term: "authentication method", type: "comment", ontology_term_accession: "to be filled", usage: "cell-lines", values: "free text", description: "Method used to authenticate the cell line identity"},
+            {term: "carrier proteome", type: "comment", ontology_term_accession: "to be filled", usage: "single-cell", values: "fixed: yes, no, not applicable", description: "Carrier proteome used in carrier-assisted SCP methods"},
+            {term: "carrier channel", type: "comment", ontology_term_accession: "to be filled", usage: "single-cell", values: "TMT channel pattern", description: "TMT channel used for carrier proteome"},
+            {term: "reference channel", type: "comment", ontology_term_accession: "to be filled", usage: "single-cell", values: "TMT channel pattern", description: "TMT channel used for reference/booster"},
+            {term: "cells per well", type: "comment", ontology_term_accession: "to be filled", usage: "single-cell", values: "integer", description: "Number of cells per well/reaction"},
+            {term: "cell number", type: "comment", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "scientific notation", description: "Number of cells used for immunopeptidome extraction"},
+            {term: "tissue mass", type: "comment", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "pattern: number + mg/g", description: "Mass of tissue used for immunopeptidome extraction"},
+            {term: "antibody used", type: "comment", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "free text", description: "Antibody clone used for MHC immunoprecipitation"},
+            {term: "elution conditions", type: "comment", ontology_term_accession: "to be filled", usage: "immunopeptidomics", values: "free text", description: "Conditions used for peptide elution from MHC complexes"},
+            {term: "cross-linking method", type: "comment", ontology_term_accession: "to be filled", usage: "crosslinking", values: "fixed: cross-linking mass spectrometry, hydrogen-deuterium exchange, ion-mobility mass spectrometry", description: "MS-based cross-linking methodology used"},
+            {term: "cross-linker", type: "comment", ontology_term_accession: "to be filled", usage: "crosslinking", values: "XLMOD key-value format", description: "Cross-linker compound with structured properties"},
+            {term: "crosslinker concentration", type: "comment", ontology_term_accession: "to be filled", usage: "crosslinking", values: "pattern: number + mM/uM", description: "Concentration of crosslinking reagent used"},
+            {term: "crosslinker to protein ratio", type: "comment", ontology_term_accession: "to be filled", usage: "crosslinking", values: "ratio pattern", description: "Molar ratio of crosslinker to protein"},
+            {term: "quenching reagent", type: "comment", ontology_term_accession: "to be filled", usage: "crosslinking", values: "free text", description: "Reagent used to quench the crosslinking reaction"},
+            {term: "crosslink enrichment method", type: "comment", ontology_term_accession: "to be filled", usage: "crosslinking", values: "fixed: size exclusion chromatography, strong cation exchange, affinity enrichment, peptide SEC, high-pH reversed phase, FAIMS", description: "Method used to enrich crosslinked peptides"},
+            {term: "database search strategy", type: "comment", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "fixed: matched metagenome, reference database, two-step search, spectral library", description: "Strategy used for protein database searching"},
+            {term: "metagenome accession", type: "comment", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "accession pattern", description: "Accession number for matched metagenome data"},
+            {term: "sample storage", type: "comment", ontology_term_accession: "to be filled", usage: "metaproteomics", values: "free text", description: "Storage conditions for the sample before analysis"},
+            {term: "scan window lower limit", type: "comment", ontology_term_accession: "to be filled", usage: "dia-acquisition", values: "numeric m/z", description: "Lower m/z limit of the DIA scan window"},
+            {term: "scan window upper limit", type: "comment", ontology_term_accession: "to be filled", usage: "dia-acquisition", values: "numeric m/z", description: "Upper m/z limit of the DIA scan window"},
+            {term: "isolation window width", type: "comment", ontology_term_accession: "MS:1000828", usage: "dia-acquisition, dda-acquisition", values: "numeric m/z", description: "Width of the isolation window in m/z units"},
+            {term: "collision energy", type: "comment", ontology_term_accession: "MS:1000045", usage: "dia-acquisition, dda-acquisition", values: "numeric or stepped", description: "Collision energy used for fragmentation"},
+            {term: "dissociation method", type: "comment", ontology_term_accession: "MS:1000044", usage: "dia-acquisition, dda-acquisition", values: "MS (PSI-MS)", description: "Fragmentation method used"},
+            {term: "MS2 mass analyzer", type: "comment", ontology_term_accession: "MS:1000443", usage: "dia-acquisition, dda-acquisition", values: "MS (PSI-MS)", description: "Mass analyzer used for MS2 acquisition"},
+            {term: "DIA method", type: "comment", ontology_term_accession: "PRIDE:0000695", usage: "dia-acquisition", values: "PRIDE", description: "Specific DIA method variant used"},
+            {term: "top N", type: "comment", ontology_term_accession: "to be filled", usage: "dda-acquisition", values: "integer", description: "Number of most intense precursors selected for fragmentation per cycle"},
+            {term: "isolation window", type: "comment", ontology_term_accession: "MS:1000828", usage: "dda-acquisition", values: "numeric m/z", description: "Width of the precursor isolation window in m/z"},
+            {term: "dynamic exclusion duration", type: "comment", ontology_term_accession: "MS:1000502", usage: "dda-acquisition", values: "pattern: number + s", description: "Duration for which a precursor is excluded after selection"},
+            {term: "fractionation method", type: "comment", ontology_term_accession: "PRIDE:0000318", usage: "dda-acquisition", values: "fixed: high-pH reversed phase, strong cation exchange, strong anion exchange, isoelectric focusing, size exclusion chromatography, basic reversed phase", description: "Peptide fractionation method used before MS analysis"}
+        ];
+
+        let sortColumn = 'term';
+        let sortDirection = 'asc';
+
+        // Initialize the table
+        function loadData() {
+            renderTable();
+            updateStats();
+        }
+
+        function getOntologyLink(accession) {
+            if (!accession || accession === 'to be filled') {
+                return '<span class="to-be-filled">to be filled</span>';
+            }
+
+            const patterns = {
+                'EFO:': 'https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252F',
+                'MS:': 'https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_',
+                'PRIDE:': 'https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_',
+                'OBI:': 'https://www.ebi.ac.uk/ols4/ontologies/obi/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FOBI_',
+                'NCIT:': 'https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_',
+                'CL:': 'https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_',
+                'UBERON:': 'https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_',
+                'GO:': 'https://www.ebi.ac.uk/ols4/ontologies/go/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FGO_',
+                'PATO:': 'https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_',
+                'CLO:': 'https://www.ebi.ac.uk/ols4/ontologies/clo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCLO_',
+                'OGMS:': 'https://www.ebi.ac.uk/ols4/ontologies/ogms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FOGMS_',
+                'GAZ:': 'https://www.ebi.ac.uk/ols4/ontologies/gaz/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FGAZ_',
+                'HANCESTRO:': 'https://www.ebi.ac.uk/ols4/ontologies/hancestro/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHANCESTRO_'
+            };
+
+            for (const [prefix, baseUrl] of Object.entries(patterns)) {
+                if (accession.startsWith(prefix)) {
+                    const id = accession.replace(prefix, '').replace(':', '_');
+                    return `<a href="${baseUrl}${id}" target="_blank" class="ontology-link">${accession}</a>`;
+                }
+            }
+
+            return `<span class="ontology-link">${accession}</span>`;
+        }
+
+        function formatType(type) {
+            const classes = {
+                'characteristics': 'type-characteristics',
+                'comment': 'type-comment',
+                'other': 'type-other'
+            };
+            return `<span class="${classes[type] || ''}">${type}</span>`;
+        }
+
+        function formatUsage(usage) {
+            if (!usage) return '';
+            return usage.split(', ').map(u => `<span class="usage-tag">${u.trim()}</span>`).join(' ');
+        }
+
+        function renderTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+            const usageFilter = document.getElementById('usageFilter').value;
+            const ontologyFilter = document.getElementById('ontologyFilter').value;
+
+            let filteredData = data.filter(row => {
+                const matchesSearch = !searchTerm ||
+                    row.term.toLowerCase().includes(searchTerm) ||
+                    row.description.toLowerCase().includes(searchTerm);
+                const matchesType = !typeFilter || row.type === typeFilter;
+                const matchesUsage = !usageFilter || row.usage.includes(usageFilter);
+                const matchesOntology = !ontologyFilter ||
+                    (ontologyFilter === 'defined' && row.ontology_term_accession && row.ontology_term_accession !== 'to be filled') ||
+                    (ontologyFilter === 'missing' && (!row.ontology_term_accession || row.ontology_term_accession === 'to be filled'));
+
+                return matchesSearch && matchesType && matchesUsage && matchesOntology;
+            });
+
+            // Sort
+            filteredData.sort((a, b) => {
+                let aVal = a[sortColumn] || '';
+                let bVal = b[sortColumn] || '';
+                if (sortDirection === 'asc') {
+                    return aVal.localeCompare(bVal);
+                } else {
+                    return bVal.localeCompare(aVal);
+                }
+            });
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = filteredData.map(row => `
+                <tr>
+                    <td><span class="term-name">${row.term}</span></td>
+                    <td>${formatType(row.type)}</td>
+                    <td>${getOntologyLink(row.ontology_term_accession)}</td>
+                    <td>${formatUsage(row.usage)}</td>
+                    <td class="values-cell">${row.values}</td>
+                    <td class="description-cell" title="${row.description}">${row.description}</td>
+                </tr>
+            `).join('');
+
+            updateStats(filteredData.length);
+            updateSortIndicators();
+        }
+
+        function updateStats(count) {
+            const total = data.length;
+            const shown = count !== undefined ? count : total;
+            document.getElementById('stats').textContent = `Showing ${shown} of ${total} terms`;
+        }
+
+        function updateSortIndicators() {
+            document.querySelectorAll('th').forEach(th => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+                if (th.dataset.sort === sortColumn) {
+                    th.classList.add(sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                }
+            });
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('usageFilter').value = '';
+            document.getElementById('ontologyFilter').value = '';
+            renderTable();
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', renderTable);
+        document.getElementById('typeFilter').addEventListener('change', renderTable);
+        document.getElementById('usageFilter').addEventListener('change', renderTable);
+        document.getElementById('ontologyFilter').addEventListener('change', renderTable);
+
+        document.querySelectorAll('th[data-sort]').forEach(th => {
+            th.addEventListener('click', () => {
+                const column = th.dataset.sort;
+                if (sortColumn === column) {
+                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortColumn = column;
+                    sortDirection = 'asc';
+                }
+                renderTable();
+            });
+        });
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
