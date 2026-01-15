@@ -66,38 +66,45 @@
 </li>
 <li><a href="#from-sample-data">10. SDRF-Proteomics: data files metadata</a>
 <ul class="sectlevel2">
-<li><a href="#row-uniqueness">10.1. Row Uniqueness Requirements</a></li>
-<li><a href="#sample-prep">10.2. Sample preparation properties</a></li>
-<li><a href="#fragment-proper">10.3. MS/MS properties</a></li>
-<li><a href="#data-acquisition-method">10.4. Data acquisition</a></li>
-<li><a href="#_data_file_metadata_guidelines">10.5. Data File Metadata Guidelines</a></li>
+<li><a href="#sample-prep">10.1. Sample preparation properties</a></li>
+<li><a href="#fragment-proper">10.2. MS/MS properties</a></li>
+<li><a href="#data-acquisition-method">10.3. Data acquisition</a></li>
+<li><a href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></li>
 </ul>
 </li>
-<li><a href="#core-templates">11. Core Templates</a>
+<li><a href="#row-uniqueness">11. Row Uniqueness Requirements</a>
 <ul class="sectlevel2">
-<li><a href="#the-default-template">11.1. Default Template</a></li>
-<li><a href="#template-human">11.2. Human Template</a></li>
-<li><a href="#template-vertebrates">11.3. Vertebrates Template</a></li>
-<li><a href="#template-invertebrates">11.4. Invertebrates Template</a></li>
-<li><a href="#template-plants">11.5. Plants Template</a></li>
-<li><a href="#template-cardinality">11.6. Column Cardinality</a></li>
+<li><a href="#_error_level_constraint_validation_fails">11.1. Error-level constraint (validation fails)</a></li>
+<li><a href="#_warning_level_constraint_validation_warns">11.2. Warning-level constraint (validation warns)</a></li>
+<li><a href="#_assay_name_uniqueness">11.3. Assay name uniqueness</a></li>
+<li><a href="#_example_of_valid_multiplexed_experiment">11.4. Example of valid multiplexed experiment</a></li>
 </ul>
 </li>
-<li><a href="#study-variables">12. Factor Values (Study Variables)</a>
+<li><a href="#core-templates">12. Core Templates</a>
 <ul class="sectlevel2">
-<li><a href="#_column_format">12.1. Column Format</a></li>
-<li><a href="#_when_to_use_factor_values">12.2. When to Use Factor Values</a></li>
-<li><a href="#_rules">12.3. Rules</a></li>
-<li><a href="#_example">12.4. Example</a></li>
+<li><a href="#the-default-template">12.1. Default Template</a></li>
+<li><a href="#template-human">12.2. Human Template</a></li>
+<li><a href="#template-vertebrates">12.3. Vertebrates Template</a></li>
+<li><a href="#template-invertebrates">12.4. Invertebrates Template</a></li>
+<li><a href="#template-plants">12.5. Plants Template</a></li>
+<li><a href="#template-cardinality">12.6. Column Cardinality</a></li>
 </ul>
 </li>
-<li><a href="#extended-templates">13. Experiment-specific Templates</a></li>
-<li><a href="#example-annotated-datasets">14. Examples of Annotated Datasets</a></li>
-<li><a href="#_ongoing_template_discussions">15. Ongoing template discussions</a></li>
-<li><a href="#_intellectual_property_statement">16. Intellectual Property Statement</a></li>
-<li><a href="#_copyright_notice">17. Copyright Notice</a></li>
-<li><a href="#_how_to_cite">18. How to cite</a></li>
-<li><a href="#_references">19. References</a></li>
+<li><a href="#study-variables">13. Factor Values (Study Variables)</a>
+<ul class="sectlevel2">
+<li><a href="#_column_format">13.1. Column Format</a></li>
+<li><a href="#_when_to_use_factor_values">13.2. When to Use Factor Values</a></li>
+<li><a href="#_rules">13.3. Rules</a></li>
+<li><a href="#_example">13.4. Example</a></li>
+</ul>
+</li>
+<li><a href="#extended-templates">14. Experiment-specific Templates</a></li>
+<li><a href="#example-annotated-datasets">15. Examples of Annotated Datasets</a></li>
+<li><a href="#_ongoing_template_discussions">16. Ongoing template discussions</a></li>
+<li><a href="#_intellectual_property_statement">17. Intellectual Property Statement</a></li>
+<li><a href="#_copyright_notice">18. Copyright Notice</a></li>
+<li><a href="#_how_to_cite">19. How to cite</a></li>
+<li><a href="#_references">20. References</a></li>
 </ul>
 </div>
 </div>
@@ -523,7 +530,7 @@ We added the prefix v to the version number to indicate that it is the version o
 <p><strong>Space sensitivity</strong>: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).</p>
 </li>
 <li>
-<p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#from-sample-metadata">Chapter 9</a>; then the data file metadata columns in <a href="#from-sample-data">Chapter 10</a>; followed by the factor values columns in <a href="#study-variables">Chapter 12</a>.</p>
+<p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#from-sample-metadata">Chapter 9</a>; then the data file metadata columns in <a href="#from-sample-data">Chapter 10</a>; followed by the factor values columns in <a href="#study-variables">Chapter 13</a>.</p>
 </li>
 <li>
 <p><strong>Extension</strong>: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.</p>
@@ -610,7 +617,7 @@ We added the prefix v to the version number to indicate that it is the version o
 </tbody>
 </table>
 <div class="paragraph">
-<p>Example of an SDRF file with header comments (simplified example showing only select columns; see <a href="#core-templates">Chapter 11</a> for complete required columns):</p>
+<p>Example of an SDRF file with header comments (simplified example showing only select columns; see <a href="#core-templates">Chapter 12</a> for complete required columns):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1710,89 +1717,6 @@ If all pooled samples share the same value for a characteristic (e.g., all from 
 </tr>
 </tbody>
 </table>
-<div class="sect2">
-<h3 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">10.1. Row Uniqueness Requirements</a></h3>
-<div class="paragraph">
-<p>SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.</p>
-</div>
-<div class="paragraph">
-<p><strong>Error-level constraint (validation fails):</strong></p>
-</div>
-<div class="paragraph">
-<p>The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.</p>
-</div>
-<div class="paragraph">
-<p><strong>Warning-level constraint (validation warns):</strong></p>
-</div>
-<div class="paragraph">
-<p>The combination of <code>source name</code> + <code>assay name</code> SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.</p>
-</div>
-<div class="paragraph">
-<p><strong>Assay name uniqueness:</strong></p>
-</div>
-<div class="paragraph">
-<p>Each distinct MS run/data file MUST have exactly one globally unique <code>assay name</code>, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share the same <code>assay name</code> because multiple samples are analyzed in a single MS run. In these cases, the <code>comment[label]</code> column distinguishes between different samples within the same run, and the combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> remains unique.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Example of valid multiplexed experiment:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_C</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127C</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_D</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT128N</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>In this example, all four rows share the same <code>assay name</code> and <code>comment[data file]</code> because they represent different samples multiplexed in a single MS run. The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> is unique for each row.</p>
-</div>
 <div class="paragraph">
 <p>Example:</p>
 </div>
@@ -1829,9 +1753,8 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </tr>
 </tbody>
 </table>
-</div>
 <div class="sect2">
-<h3 id="sample-prep"><a class="anchor" href="#sample-prep"></a><a class="link" href="#sample-prep">10.2. Sample preparation properties</a></h3>
+<h3 id="sample-prep"><a class="anchor" href="#sample-prep"></a><a class="link" href="#sample-prep">10.1. Sample preparation properties</a></h3>
 <div class="paragraph">
 <p>In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters:</p>
 </div>
@@ -1853,7 +1776,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </div>
 </div>
 <div class="sect2">
-<h3 id="fragment-proper"><a class="anchor" href="#fragment-proper"></a><a class="link" href="#fragment-proper">10.3. MS/MS properties</a></h3>
+<h3 id="fragment-proper"><a class="anchor" href="#fragment-proper"></a><a class="link" href="#fragment-proper">10.2. MS/MS properties</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1866,7 +1789,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </div>
 </div>
 <div class="sect2">
-<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">10.4. Data acquisition</a></h3>
+<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">10.3. Data acquisition</a></h3>
 <div class="paragraph">
 <p>Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the <em>comment[proteomics data acquisition method]</em> column. The values MUST be children of the PRIDE ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659">proteomics data acquisition method (PRIDE:0000659)</a>. The following values are commonly used:</p>
 </div>
@@ -1925,7 +1848,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">10.5. Data File Metadata Guidelines</a></h3>
+<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
@@ -1940,7 +1863,93 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect1">
-<h2 id="core-templates"><a class="anchor" href="#core-templates"></a><a class="link" href="#core-templates">11. Core Templates</a></h2>
+<h2 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">11. Row Uniqueness Requirements</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.</p>
+</div>
+<div class="sect2">
+<h3 id="_error_level_constraint_validation_fails"><a class="anchor" href="#_error_level_constraint_validation_fails"></a><a class="link" href="#_error_level_constraint_validation_fails">11.1. Error-level constraint (validation fails)</a></h3>
+<div class="paragraph">
+<p>The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_warning_level_constraint_validation_warns"><a class="anchor" href="#_warning_level_constraint_validation_warns"></a><a class="link" href="#_warning_level_constraint_validation_warns">11.2. Warning-level constraint (validation warns)</a></h3>
+<div class="paragraph">
+<p>The combination of <code>source name</code> + <code>assay name</code> SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_assay_name_uniqueness"><a class="anchor" href="#_assay_name_uniqueness"></a><a class="link" href="#_assay_name_uniqueness">11.3. Assay name uniqueness</a></h3>
+<div class="paragraph">
+<p>Each distinct MS run/data file MUST have exactly one globally unique <code>assay name</code>, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share the same <code>assay name</code> because multiple samples are analyzed in a single MS run. In these cases, the <code>comment[label]</code> column distinguishes between different samples within the same run, and the combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> remains unique.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_of_valid_multiplexed_experiment"><a class="anchor" href="#_example_of_valid_multiplexed_experiment"></a><a class="link" href="#_example_of_valid_multiplexed_experiment">11.4. Example of valid multiplexed experiment</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">comment[label]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT128N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>In this example, all four rows share the same <code>assay name</code> and <code>comment[data file]</code> because they represent different samples multiplexed in a single MS run. The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> is unique for each row.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="core-templates"><a class="anchor" href="#core-templates"></a><a class="link" href="#core-templates">12. Core Templates</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>SDRF-Proteomics provides core templates that define the required and recommended metadata columns based on the sample organism. Each template includes both <strong>sample metadata</strong> (characteristics) and <strong>data file metadata</strong> (comments) - everything needed to create a complete SDRF file.</p>
@@ -1971,7 +1980,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 <p>For detailed explanations of each column, see <a href="#from-sample-metadata">sample metadata</a> for sample properties and <a href="#from-sample-data">data file metadata</a> for data file properties.</p>
 </div>
 <div class="sect2">
-<h3 id="the-default-template"><a class="anchor" href="#the-default-template"></a><a class="link" href="#the-default-template">11.1. Default Template</a></h3>
+<h3 id="the-default-template"><a class="anchor" href="#the-default-template"></a><a class="link" href="#the-default-template">12.1. Default Template</a></h3>
 <div class="paragraph">
 <p>The default template is the most basic template that can be used for any proteomics experiment. Use this when no other template is applicable.</p>
 </div>
@@ -2103,7 +2112,7 @@ The <a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-human"><a class="anchor" href="#template-human"></a><a class="link" href="#template-human">11.2. Human Template</a></h3>
+<h3 id="template-human"><a class="anchor" href="#template-human"></a><a class="link" href="#template-human">12.2. Human Template</a></h3>
 <div class="paragraph">
 <p>The human template extends the default template with clinical and demographic metadata required for human samples.</p>
 </div>
@@ -2265,7 +2274,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-vertebrates"><a class="anchor" href="#template-vertebrates"></a><a class="link" href="#template-vertebrates">11.3. Vertebrates Template</a></h3>
+<h3 id="template-vertebrates"><a class="anchor" href="#template-vertebrates"></a><a class="link" href="#template-vertebrates">12.3. Vertebrates Template</a></h3>
 <div class="paragraph">
 <p>The vertebrates template is used for non-human vertebrate species such as mouse, rat, zebrafish, and other model organisms.</p>
 </div>
@@ -2397,7 +2406,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-invertebrates"><a class="anchor" href="#template-invertebrates"></a><a class="link" href="#template-invertebrates">11.4. Invertebrates Template</a></h3>
+<h3 id="template-invertebrates"><a class="anchor" href="#template-invertebrates"></a><a class="link" href="#template-invertebrates">12.4. Invertebrates Template</a></h3>
 <div class="paragraph">
 <p>The invertebrates template is used for non-vertebrate animal species such as insects (Drosophila), nematodes (C. elegans), and other invertebrate model organisms.</p>
 </div>
@@ -2535,7 +2544,7 @@ For Drosophila samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt"
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-plants"><a class="anchor" href="#template-plants"></a><a class="link" href="#template-plants">11.5. Plants Template</a></h3>
+<h3 id="template-plants"><a class="anchor" href="#template-plants"></a><a class="link" href="#template-plants">12.5. Plants Template</a></h3>
 <div class="paragraph">
 <p>The plants template is used for plant species including model organisms like Arabidopsis thaliana and crop species.</p>
 </div>
@@ -2673,7 +2682,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-cardinality"><a class="anchor" href="#template-cardinality"></a><a class="link" href="#template-cardinality">11.6. Column Cardinality</a></h3>
+<h3 id="template-cardinality"><a class="anchor" href="#template-cardinality"></a><a class="link" href="#template-cardinality">12.6. Column Cardinality</a></h3>
 <div class="paragraph">
 <p>Some columns can appear multiple times for the same sample. The cardinality rules are:</p>
 </div>
@@ -2716,19 +2725,19 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="study-variables"><a class="anchor" href="#study-variables"></a><a class="link" href="#study-variables">12. Factor Values (Study Variables)</a></h2>
+<h2 id="study-variables"><a class="anchor" href="#study-variables"></a><a class="link" href="#study-variables">13. Factor Values (Study Variables)</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Factor values identify the experimental variables being studied - the conditions you want to compare in your analysis. They highlight which sample characteristics are the focus of your experiment.</p>
 </div>
 <div class="sect2">
-<h3 id="_column_format"><a class="anchor" href="#_column_format"></a><a class="link" href="#_column_format">12.1. Column Format</a></h3>
+<h3 id="_column_format"><a class="anchor" href="#_column_format"></a><a class="link" href="#_column_format">13.1. Column Format</a></h3>
 <div class="paragraph">
 <p><code>factor value[{variable name}]</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_when_to_use_factor_values"><a class="anchor" href="#_when_to_use_factor_values"></a><a class="link" href="#_when_to_use_factor_values">12.2. When to Use Factor Values</a></h3>
+<h3 id="_when_to_use_factor_values"><a class="anchor" href="#_when_to_use_factor_values"></a><a class="link" href="#_when_to_use_factor_values">13.2. When to Use Factor Values</a></h3>
 <div class="paragraph">
 <p>Use factor values to indicate:</p>
 </div>
@@ -2747,7 +2756,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_rules"><a class="anchor" href="#_rules"></a><a class="link" href="#_rules">12.3. Rules</a></h3>
+<h3 id="_rules"><a class="anchor" href="#_rules"></a><a class="link" href="#_rules">13.3. Rules</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2763,7 +2772,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example"><a class="anchor" href="#_example"></a><a class="link" href="#_example">12.4. Example</a></h3>
+<h3 id="_example"><a class="anchor" href="#_example"></a><a class="link" href="#_example">13.4. Example</a></h3>
 <div class="paragraph">
 <p>In an experiment comparing tumor vs. normal tissue across different cancer stages:</p>
 </div>
@@ -2815,7 +2824,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="extended-templates"><a class="anchor" href="#extended-templates"></a><a class="link" href="#extended-templates">13. Experiment-specific Templates</a></h2>
+<h2 id="extended-templates"><a class="anchor" href="#extended-templates"></a><a class="link" href="#extended-templates">14. Experiment-specific Templates</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For specialized proteomics experiments that require additional metadata beyond the core templates, experiment-specific templates provide detailed guidelines and checklists. These templates define experiment-specific metadata fields while maintaining full compatibility with the core SDRF-Proteomics format.</p>
@@ -2851,7 +2860,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="example-annotated-datasets"><a class="anchor" href="#example-annotated-datasets"></a><a class="link" href="#example-annotated-datasets">14. Examples of Annotated Datasets</a></h2>
+<h2 id="example-annotated-datasets"><a class="anchor" href="#example-annotated-datasets"></a><a class="link" href="#example-annotated-datasets">15. Examples of Annotated Datasets</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following table provides links to example SDRF files for different experiment types. These can serve as references when creating your own SDRF files.</p>
@@ -2916,7 +2925,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_ongoing_template_discussions"><a class="anchor" href="#_ongoing_template_discussions"></a><a class="link" href="#_ongoing_template_discussions">15. Ongoing template discussions</a></h2>
+<h2 id="_ongoing_template_discussions"><a class="anchor" href="#_ongoing_template_discussions"></a><a class="link" href="#_ongoing_template_discussions">16. Ongoing template discussions</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We have created a file in GitHub <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/templates-under-development.adoc">Ongoing template discussions</a> where we aggregate all the ongoing discussions about the format and new templates.</p>
@@ -2924,7 +2933,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_intellectual_property_statement"><a class="anchor" href="#_intellectual_property_statement"></a><a class="link" href="#_intellectual_property_statement">16. Intellectual Property Statement</a></h2>
+<h2 id="_intellectual_property_statement"><a class="anchor" href="#_intellectual_property_statement"></a><a class="link" href="#_intellectual_property_statement">17. Intellectual Property Statement</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The PSI takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Copies of claims of rights made available for publication and any assurances of licenses to be made available or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the PSI Chair.</p>
@@ -2935,7 +2944,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_copyright_notice"><a class="anchor" href="#_copyright_notice"></a><a class="link" href="#_copyright_notice">17. Copyright Notice</a></h2>
+<h2 id="_copyright_notice"><a class="anchor" href="#_copyright_notice"></a><a class="link" href="#_copyright_notice">18. Copyright Notice</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Copyright &#169; Proteomics Standards Initiative (2020). All Rights Reserved.</p>
@@ -2952,7 +2961,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_how_to_cite"><a class="anchor" href="#_how_to_cite"></a><a class="link" href="#_how_to_cite">18. How to cite</a></h2>
+<h2 id="_how_to_cite"><a class="anchor" href="#_how_to_cite"></a><a class="link" href="#_how_to_cite">19. How to cite</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Please cite this document as:</p>
@@ -2963,7 +2972,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">19. References</a></h2>
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">20. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -2986,7 +2995,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-15 12:35:41 UTC
+Last updated 2026-01-15 12:48:12 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
