@@ -7211,6 +7211,19 @@
             renderCharts();
             populateFilters();
             renderDatasets();
+            checkUrlParameters();
+        }
+
+        function checkUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const viewParam = urlParams.get('view');
+            if (viewParam) {
+                // Find the dataset by ID
+                const dataset = indexData.datasets.find(d => d.id === viewParam);
+                if (dataset) {
+                    viewDataset(dataset.raw_url, dataset.id);
+                }
+            }
         }
 
         function renderStatsDashboard() {
