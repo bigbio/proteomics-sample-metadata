@@ -66,10 +66,11 @@
 </li>
 <li><a href="#from-sample-data">10. SDRF-Proteomics: data files metadata</a>
 <ul class="sectlevel2">
-<li><a href="#sample-prep">10.1. Sample preparation properties</a></li>
-<li><a href="#fragment-proper">10.2. MS/MS properties</a></li>
-<li><a href="#data-acquisition-method">10.3. Data acquisition</a></li>
-<li><a href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></li>
+<li><a href="#row-uniqueness">10.1. Row Uniqueness Requirements</a></li>
+<li><a href="#sample-prep">10.2. Sample preparation properties</a></li>
+<li><a href="#fragment-proper">10.3. MS/MS properties</a></li>
+<li><a href="#data-acquisition-method">10.4. Data acquisition</a></li>
+<li><a href="#_data_file_metadata_guidelines">10.5. Data File Metadata Guidelines</a></li>
 </ul>
 </li>
 <li><a href="#core-templates">11. Core Templates</a>
@@ -1709,17 +1710,88 @@ If all pooled samples share the same value for a characteristic (e.g., all from 
 </tr>
 </tbody>
 </table>
-<div class="admonitionblock important">
+<div class="sect2">
+<h3 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">10.1. Row Uniqueness Requirements</a></h3>
+<div class="paragraph">
+<p>SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.</p>
+</div>
+<div class="paragraph">
+<p><strong>Error-level constraint (validation fails):</strong></p>
+</div>
+<div class="paragraph">
+<p>The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> MUST be unique across all rows in the SDRF file. If two rows have identical values for all three columns, validation will fail with an error. This constraint ensures that each sample-run-label combination can be uniquely identified.</p>
+</div>
+<div class="paragraph">
+<p><strong>Warning-level constraint (validation warns):</strong></p>
+</div>
+<div class="paragraph">
+<p>The combination of <code>source name</code> + <code>assay name</code> SHOULD be unique across all rows. Non-unique combinations will generate a warning during validation. This constraint helps identify potential issues where the same sample appears to have multiple entries for the same MS run without distinguishing labels.</p>
+</div>
+<div class="paragraph">
+<p><strong>Assay name uniqueness:</strong></p>
+</div>
+<div class="paragraph">
+<p>Each distinct MS run/data file MUST have exactly one globally unique <code>assay name</code>, and no two different data files may share an assay name. To ensure uniqueness, it is RECOMMENDED to incorporate sample-specific information in assay names, such as sample IDs or replicate numbers (e.g., "sample1_run1", "sample1_run2", "patient001_fraction01").</p>
+</div>
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<div class="title">Important</div>
+<div class="title">Note</div>
 </td>
 <td class="content">
-The combination of source name + assay name + comment[label] MUST be unique within the SDRF file.
+For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share the same <code>assay name</code> because multiple samples are analyzed in a single MS run. In these cases, the <code>comment[label]</code> column distinguishes between different samples within the same run, and the combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> remains unique.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Example of valid multiplexed experiment:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">comment[label]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT128N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>In this example, all four rows share the same <code>assay name</code> and <code>comment[data file]</code> because they represent different samples multiplexed in a single MS run. The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> is unique for each row.</p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -1757,8 +1829,9 @@ The combination of source name + assay name + comment[label] MUST be unique with
 </tr>
 </tbody>
 </table>
+</div>
 <div class="sect2">
-<h3 id="sample-prep"><a class="anchor" href="#sample-prep"></a><a class="link" href="#sample-prep">10.1. Sample preparation properties</a></h3>
+<h3 id="sample-prep"><a class="anchor" href="#sample-prep"></a><a class="link" href="#sample-prep">10.2. Sample preparation properties</a></h3>
 <div class="paragraph">
 <p>In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters:</p>
 </div>
@@ -1780,7 +1853,7 @@ The combination of source name + assay name + comment[label] MUST be unique with
 </div>
 </div>
 <div class="sect2">
-<h3 id="fragment-proper"><a class="anchor" href="#fragment-proper"></a><a class="link" href="#fragment-proper">10.2. MS/MS properties</a></h3>
+<h3 id="fragment-proper"><a class="anchor" href="#fragment-proper"></a><a class="link" href="#fragment-proper">10.3. MS/MS properties</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1793,7 +1866,7 @@ The combination of source name + assay name + comment[label] MUST be unique with
 </div>
 </div>
 <div class="sect2">
-<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">10.3. Data acquisition</a></h3>
+<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">10.4. Data acquisition</a></h3>
 <div class="paragraph">
 <p>Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the <em>comment[proteomics data acquisition method]</em> column. The values MUST be children of the PRIDE ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659">proteomics data acquisition method (PRIDE:0000659)</a>. The following values are commonly used:</p>
 </div>
@@ -1852,7 +1925,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></h3>
+<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">10.5. Data File Metadata Guidelines</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
@@ -2913,7 +2986,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-15 12:29:49 UTC
+Last updated 2026-01-15 12:35:41 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
