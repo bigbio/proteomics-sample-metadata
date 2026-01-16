@@ -67,6 +67,7 @@ If you're new to SDRF-Proteomics, here's a minimal example to get you started. A
 
 === Minimal Example
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -111,6 +112,18 @@ If you're new to SDRF-Proteomics, here's a minimal example to get you started. A
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics [organism] |characteristics [disease] |assay name |comment [label] |comment [instrument] |comment [cleavage agent details] |comment [data file]
+
+|sample_1 |homo sapiens |normal |run_1 |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |sample_1.raw
+|sample_2 |homo sapiens |hepatocellular carcinoma |run_2 |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |sample_2.raw
+|===
+_Blue columns: Sample metadata (characteristics) | Green columns: Data file metadata (comments)_
+endif::[]
 
 === Key Concepts
 
@@ -213,6 +226,7 @@ The SDRF-Proteomics aims to capture the sample metadata and its relationship wit
 
 The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each *ROW* corresponds to a relationship between a Sample and a Data file (in an ms proteomics experiment the data file containing the mass spectra), each *COLUMN* corresponds to an attribute/property of the Sample, the Data file, or the Factor values; and the value in each **CELL** is the specific value of the property for a given Sample/Data file/Factor value (**Figure 3**).
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -255,6 +269,18 @@ The SDRF-Proteomics file format describes the sample characteristics and the rel
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1"]
+|===
+|source name |characteristics [organism] |characteristics [disease] |assay name |comment [instrument] |comment [data file] |factor value [disease]
+
+|sample_1 |homo sapiens |normal |run_1 |Q Exactive HF |sample_1.raw |normal
+|sample_2 |homo sapiens |liver cancer |run_2 |Q Exactive HF |sample_2.raw |liver cancer
+|===
+_Blue: Sample metadata | Green: Data file metadata | Orange: Factor values_
+endif::[]
 
 **Figure 3**: SDRF-Proteomics in a nutshell. Each *row* links a sample to a data file. *Columns* represent sample properties (characteristics), data file properties (comments), or experimental variables (factor values).
 
@@ -545,6 +571,7 @@ The Sample metadata section provides information about the samples of origin and
 
 Example:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -579,6 +606,17 @@ Example:
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1"]
+|===
+|source name |characteristics [organism] |characteristics [organism part] |characteristics [disease] |characteristics [cell type]
+
+|sample_treat |homo sapiens |liver |liver cancer |not available
+|sample_control |homo sapiens |liver |liver cancer |not available
+|===
+endif::[]
 
 NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
 
@@ -601,6 +639,7 @@ https://www.ebi.ac.uk/biosamples/[BioSamples] provides persistent identifiers fo
 
 Example usage:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -642,6 +681,18 @@ Example usage:
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1"]
+|===
+|source name |characteristics [biosample accession number] |characteristics [organism] |characteristics [organism part] |characteristics [disease]
+
+|sample_001 |SAMN12345678 |homo sapiens |liver |liver cancer
+|sample_002 |SAMN12345679 |homo sapiens |liver |normal
+|sample_003 |SAMEA12345680 |mus musculus |brain |normal
+|===
+endif::[]
 
 The BioSamples accession number enables:
 
@@ -664,6 +715,7 @@ SDRF-Proteomics uses two columns to track replicates <<ref4>>:
 
 The following example shows 2 biological replicates, each with 2 fractions and 2 technical replicates:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -759,6 +811,23 @@ The following example shows 2 biological replicates, each with 2 fractions and 2
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1"]
+|===
+|source name |characteristics [biological replicate] |assay name |comment [label] |comment [fraction identifier] |comment [technical replicate] |comment [data file]
+
+|patient_001_sample |1 |run_01 |label free sample |1 |1 |P001_F1_TR1.raw
+|patient_001_sample |1 |run_02 |label free sample |2 |1 |P001_F2_TR1.raw
+|patient_001_sample |1 |run_03 |label free sample |1 |2 |P001_F1_TR2.raw
+|patient_001_sample |1 |run_04 |label free sample |2 |2 |P001_F2_TR2.raw
+|patient_002_sample |2 |run_05 |label free sample |1 |1 |P002_F1_TR1.raw
+|patient_002_sample |2 |run_06 |label free sample |2 |1 |P002_F2_TR1.raw
+|patient_002_sample |2 |run_07 |label free sample |1 |2 |P002_F1_TR2.raw
+|patient_002_sample |2 |run_08 |label free sample |2 |2 |P002_F2_TR2.raw
+|===
+endif::[]
 
 In this example:
 
@@ -805,6 +874,7 @@ NOTE: The `SN` key stands for "source name" and lists the `source name` values o
 
 When pooling details are unknown or samples come from external sources, use the simple `pooled` value:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -851,11 +921,24 @@ When pooling details are unknown or samples come from external sources, use the 
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1"]
+|===
+|source name |characteristics [pooled sample] |characteristics [organism] |assay name |comment [label] |comment [data file]
+
+|sample_1 |not pooled |homo sapiens |run_1 |TMT126 |file01.raw
+|sample_2 |not pooled |homo sapiens |run_1 |TMT127N |file01.raw
+|pooled_ref |pooled |homo sapiens |run_1 |TMT131C |file01.raw
+|===
+endif::[]
 
 ==== Example with detailed pooled reference
 
 When pooled samples are known and annotated in the same SDRF file, use the `SN=` format:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -920,6 +1003,19 @@ When pooled samples are known and annotated in the same SDRF file, use the `SN=`
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,2,1,1,1,1,1,1"]
+|===
+|source name |characteristics [pooled sample] |characteristics [organism] |characteristics [age] |characteristics [sex] |assay name |comment [label] |comment [data file]
+
+|sample_1 |not pooled |homo sapiens |45Y |male |run_1 |TMT126 |file01.raw
+|sample_2 |not pooled |homo sapiens |52Y |female |run_1 |TMT127N |file01.raw
+|sample_3 |not pooled |homo sapiens |38Y |male |run_1 |TMT127C |file01.raw
+|pooled_ref |SN=sample_1;SN=sample_2;SN=sample_3 |homo sapiens |not applicable |not applicable |run_1 |TMT131C |file01.raw
+|===
+endif::[]
 
 TIP: For pooled samples, use "not applicable" for individual-specific fields (age, sex, individual). If all pooled samples share a value (e.g., all females, or age range 40-50Y), that shared value MAY be used instead.
 
@@ -1010,6 +1106,7 @@ In addition to specifying the component and its quantity, the injected mass of t
 
 An example of SDRF-Proteomics for a sample spiked with a peptide would be:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -1031,6 +1128,16 @@ An example of SDRF-Proteomics for a sample spiked with a peptide would be:
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,2"]
+|===
+|characteristics [mass] |characteristics [spiked compound]
+
+|1 ug |CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
+|===
+endif::[]
 
 For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
 
@@ -1092,6 +1199,7 @@ The following properties MUST be provided for each data file:
 
 Example:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -1124,6 +1232,16 @@ Example:
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,2,1,1,1,1"]
+|===
+|source name |assay name |technology type |comment [proteomics data acquisition method] |comment [label] |comment [instrument] |comment [data file]
+
+|sample_1 |sample1_run1 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |sample1.raw
+|===
+endif::[]
 
 [[sample-prep]]
 === Sample preparation properties
@@ -1187,6 +1305,7 @@ NOTE: For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will sh
 
 Example of valid multiplexed experiment:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -1231,6 +1350,19 @@ Example of valid multiplexed experiment:
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1"]
+|===
+|source name |assay name |comment [label] |comment [data file]
+
+|sample_A |TMT_batch1_run1 |TMT126 |batch1_run1.raw
+|sample_B |TMT_batch1_run1 |TMT127N |batch1_run1.raw
+|sample_C |TMT_batch1_run1 |TMT127C |batch1_run1.raw
+|sample_D |TMT_batch1_run1 |TMT128N |batch1_run1.raw
+|===
+endif::[]
 
 In this example, all four rows share the same `assay name` and `comment[data file]` because they represent different samples multiplexed in a single MS run. The combination of `source name` + `assay name` + `comment[label]` is unique for each row.
 
@@ -1431,6 +1563,7 @@ Some columns can appear multiple times for the same sample. The cardinality rule
 
 Example of multiple organism part columns:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -1454,6 +1587,15 @@ Example of multiple organism part columns:
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1"]
+|===
+|source name |characteristics [organism part] |characteristics [organism part]
+|sample-1 |heart |heart left ventricle
+|===
+endif::[]
 
 The template files can be downloaded from the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[core-templates] folder.
 
@@ -1484,6 +1626,7 @@ Use factor values to indicate:
 
 In an experiment comparing tumor vs. normal tissue across different cancer stages:
 
+ifdef::backend-html5[]
 ++++
 <div class="sdrf-example-table">
 <table>
@@ -1526,6 +1669,17 @@ In an experiment comparing tumor vs. normal tissue across different cancer stage
 </div>
 </div>
 ++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1"]
+|===
+|source name |characteristics [disease] |characteristics [disease stage] |factor value [disease] |factor value [disease stage]
+|tumor_sample_1 |breast carcinoma |stage II |breast carcinoma |stage II
+|normal_sample_1 |normal |not applicable |normal |not applicable
+|tumor_sample_2 |breast carcinoma |stage III |breast carcinoma |stage III
+|===
+endif::[]
 
 In this example, both `disease` and `disease stage` are factor values because the experiment aims to compare expression differences between disease states and across cancer stages.
 
