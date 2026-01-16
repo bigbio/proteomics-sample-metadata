@@ -2,7 +2,7 @@
 
 [![Version](https://flat.badgen.net/static/sdrf-proteomics/1.0.1/orange)](CHANGELOG.md)
 [![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
-[![Open Issues](https://flat.badgen.net/github/open-issues/HUPO-PSI/mzSpecLib)](https://github.com/bigbio/proteomics-metadata-standard/issues)
+[![Open Issues](https://flat.badgen.net/github/open-issues/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/issues)
 [![Open PRs](https://flat.badgen.net/github/open-prs/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/pulls)
 ![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
 ![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
