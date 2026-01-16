@@ -16,23 +16,14 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_assay_name">2. Assay Name</a></li>
-<li><a href="#_technology_type">3. Technology Type</a></li>
-<li><a href="#_data_acquisition_method">4. Data Acquisition Method</a></li>
-<li><a href="#_label">5. Label</a></li>
-<li><a href="#_fraction_identifier">6. Fraction Identifier</a></li>
-<li><a href="#_technical_replicate">7. Technical Replicate</a></li>
-<li><a href="#_instrument">8. Instrument</a></li>
-<li><a href="#_ms2_analyzer_type">9. MS2 Analyzer Type</a></li>
-<li><a href="#_dia_scan_window">10. DIA Scan Window</a></li>
-<li><a href="#_protein_modifications">11. Protein Modifications</a></li>
-<li><a href="#_cleavage_agents">12. Cleavage Agents</a></li>
-<li><a href="#_mass_tolerances">13. Mass Tolerances</a></li>
-<li><a href="#_data_file">14. Data File</a></li>
-<li><a href="#_file_uri">15. File URI</a></li>
-<li><a href="#_proteomexchange_accession">16. ProteomeXchange Accession</a></li>
-<li><a href="#_best_practices">17. Best Practices</a></li>
-<li><a href="#_references">18. References</a></li>
+<li><a href="#_label">2. Label</a></li>
+<li><a href="#_ms2_analyzer_type">3. MS2 Analyzer Type</a></li>
+<li><a href="#_dia_scan_window">4. DIA Scan Window</a></li>
+<li><a href="#_protein_modifications">5. Protein Modifications</a></li>
+<li><a href="#_cleavage_agents">6. Cleavage Agents</a></li>
+<li><a href="#_mass_tolerances">7. Mass Tolerances</a></li>
+<li><a href="#_best_practices">8. Best Practices</a></li>
+<li><a href="#_references">9. References</a></li>
 </ul>
 </div>
 </div>
@@ -41,13 +32,7 @@
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">1. Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This document provides guidelines for annotating data file metadata in SDRF-Proteomics format, describing the relationship between samples and MS run files, instrument configurations, and analysis parameters.</p>
-</div>
-<div class="paragraph">
-<p>Data file properties use the <strong>comment</strong> prefix to differentiate from sample properties (characteristics).</p>
-</div>
-<div class="paragraph">
-<p>For sample metadata guidelines, see <a href="sample-metadata.adoc">Sample Metadata Guidelines</a>.</p>
+<p>This document provides detailed guidelines for data file metadata fields that require specific formatting or have complex standardization requirements. For basic field descriptions, see the main <a href="../README.adoc">SDRF-Proteomics specification</a>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Version 1.0.0</strong> - 2025-01</p>
@@ -55,128 +40,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_assay_name"><a class="anchor" href="#_assay_name"></a><a class="link" href="#_assay_name">2. Assay Name</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>assay name</code></p>
-</div>
-<div class="paragraph">
-<p>Unique identifier for an MS run (data file). Each distinct MS run MUST have exactly one globally unique assay name.</p>
-</div>
-<div class="paragraph">
-<p><strong>Uniqueness rules:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>source name</code> + <code>assay name</code> + <code>comment[label]</code> MUST be unique (error if not)</p>
-</li>
-<li>
-<p><code>source name</code> + <code>assay name</code> SHOULD be unique (warning if not)</p>
-</li>
-</ul>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Format</th>
-<th class="tableblock halign-left valign-top">Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_run</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample1_run1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_fraction_replicate</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample1_F1_R1</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>For multiplexed experiments (TMT, iTRAQ, SILAC), multiple rows may reference the same assay name with different labels.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_technology_type"><a class="anchor" href="#_technology_type"></a><a class="link" href="#_technology_type">3. Technology Type</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>technology type</code></p>
-</div>
-<div class="paragraph">
-<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE Ontology (PRIDE:0000663)</a></p>
-</div>
-<div class="paragraph">
-<p>REQUIRED for all MS-based SDRF files. Should be placed immediately after <code>assay name</code>.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">Use Case</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DDA, DIA, PRM, SRM experiments</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">protein profiling by proximity extension assay</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Olink panels</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_data_acquisition_method"><a class="anchor" href="#_data_acquisition_method"></a><a class="link" href="#_data_acquisition_method">4. Data Acquisition Method</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[proteomics data acquisition method]</code></p>
-</div>
-<div class="paragraph">
-<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE Ontology</a></p>
-</div>
-<div class="paragraph">
-<p>REQUIRED for all MS-based SDRF files.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DDA - precursors selected based on intensity</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">data-independent acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DIA - systematic fragmentation of all precursors</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_label"><a class="anchor" href="#_label"></a><a class="link" href="#_label">5. Label</a></h2>
+<h2 id="_label"><a class="anchor" href="#_label"></a><a class="link" href="#_label">2. Label</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[label]</code></p>
@@ -202,62 +66,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_fraction_identifier"><a class="anchor" href="#_fraction_identifier"></a><a class="link" href="#_fraction_identifier">6. Fraction Identifier</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[fraction identifier]</code></p>
-</div>
-<div class="paragraph">
-<p>Records the fraction number in fractionated experiments. MUST start from 1. If not fractionated, use <code>1</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_technical_replicate"><a class="anchor" href="#_technical_replicate"></a><a class="link" href="#_technical_replicate">7. Technical Replicate</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[technical replicate]</code></p>
-</div>
-<div class="paragraph">
-<p>Identifies technical replicates of the same sample preparation. MUST start from 1. If no replicates, use <code>1</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_instrument"><a class="anchor" href="#_instrument"></a><a class="link" href="#_instrument">8. Instrument</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[instrument]</code></p>
-</div>
-<div class="paragraph">
-<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/ms">PSI-MS Ontology - instrument model</a></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Thermo Q Exactive HF</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">timsTOF Pro</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bruker timsTOF Pro</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_ms2_analyzer_type"><a class="anchor" href="#_ms2_analyzer_type"></a><a class="link" href="#_ms2_analyzer_type">9. MS2 Analyzer Type</a></h2>
+<h2 id="_ms2_analyzer_type"><a class="anchor" href="#_ms2_analyzer_type"></a><a class="link" href="#_ms2_analyzer_type">3. MS2 Analyzer Type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[MS2 analyzer type]</code></p>
@@ -271,7 +80,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dia_scan_window"><a class="anchor" href="#_dia_scan_window"></a><a class="link" href="#_dia_scan_window">10. DIA Scan Window</a></h2>
+<h2 id="_dia_scan_window"><a class="anchor" href="#_dia_scan_window"></a><a class="link" href="#_dia_scan_window">4. DIA Scan Window</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[MS1 scan range]</code></p>
@@ -285,7 +94,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_protein_modifications"><a class="anchor" href="#_protein_modifications"></a><a class="link" href="#_protein_modifications">11. Protein Modifications</a></h2>
+<h2 id="_protein_modifications"><a class="anchor" href="#_protein_modifications"></a><a class="link" href="#_protein_modifications">5. Protein Modifications</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[modification parameters]</code></p>
@@ -347,7 +156,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cleavage_agents"><a class="anchor" href="#_cleavage_agents"></a><a class="link" href="#_cleavage_agents">12. Cleavage Agents</a></h2>
+<h2 id="_cleavage_agents"><a class="anchor" href="#_cleavage_agents"></a><a class="link" href="#_cleavage_agents">6. Cleavage Agents</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[cleavage agent details]</code></p>
@@ -386,7 +195,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">13. Mass Tolerances</a></h2>
+<h2 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">7. Mass Tolerances</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Columns:</strong> <code>comment[precursor mass tolerance]</code>, <code>comment[fragment mass tolerance]</code></p>
@@ -423,75 +232,12 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_data_file"><a class="anchor" href="#_data_file"></a><a class="link" href="#_data_file">14. Data File</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[data file]</code></p>
-</div>
-<div class="paragraph">
-<p>The raw file name generated by the instrument. RECOMMENDED as the last column.</p>
-</div>
-<div class="paragraph">
-<p>Supported types: Instrument raw files (.raw, .d, .wiff), converted peak lists (mzML, MGF), result files (mzIdentML).</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_file_uri"><a class="anchor" href="#_file_uri"></a><a class="link" href="#_file_uri">15. File URI</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[file uri]</code></p>
-</div>
-<div class="paragraph">
-<p>Public URI/URL where the raw file can be accessed.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
-<th class="tableblock halign-left valign-top">comment[file uri]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample1.RAW</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/sample1.RAW" class="bare">https://ftp.pride.ebi.ac.uk/pride/data/archive/2017/09/PXD005946/sample1.RAW</a></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_proteomexchange_accession"><a class="anchor" href="#_proteomexchange_accession"></a><a class="link" href="#_proteomexchange_accession">16. ProteomeXchange Accession</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>comment[proteomexchange accession number]</code></p>
-</div>
-<div class="paragraph">
-<p>When combining multiple datasets, use this column to differentiate between different ProteomeXchange projects.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">17. Best Practices</a></h2>
+<h2 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">8. Best Practices</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Use unique assay names</strong> - Incorporate sample ID and run information to ensure uniqueness.</p>
-</li>
-<li>
-<p><strong>Specify technology type</strong> - Always include for proper data classification.</p>
-</li>
-<li>
-<p><strong>Use ontology terms</strong> - Prefer PSI-MS and PRIDE ontology terms for instruments, labels, and enzymes.</p>
+<p><strong>Use ontology terms</strong> - Prefer PSI-MS and PRIDE ontology terms for labels and enzymes.</p>
 </li>
 <li>
 <p><strong>Document modifications</strong> - Include all expected modifications with UNIMOD accessions.</p>
@@ -499,15 +245,12 @@
 <li>
 <p><strong>Provide mass tolerances</strong> - Include precursor and fragment tolerances for reproducibility.</p>
 </li>
-<li>
-<p><strong>Order columns consistently</strong> - Follow: assay name, technology type, comments, data file (last).</p>
-</li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">18. References</a></h2>
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">9. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -530,7 +273,7 @@
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-16 15:07:26 UTC
+Last updated 2026-01-16 16:46:49 UTC
 </div>
 </div>
 </body>
