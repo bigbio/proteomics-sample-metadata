@@ -67,12 +67,27 @@ If you're new to SDRF-Proteomics, here's a minimal example to get you started. A
 
 === Minimal Example
 
-[source,tsv]
-----
-source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	characteristics[biological replicate]	assay name	technology type	comment[proteomics data acquisition method]	comment[label]	comment[instrument]	comment[cleavage agent details]	comment[fraction identifier]	comment[technical replicate]	comment[data file]
-sample_1	homo sapiens	liver	normal	1	run_1	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_1.raw
-sample_2	homo sapiens	liver	hepatocellular carcinoma	1	run_2	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	Q Exactive HF	NT=Trypsin;AC=MS:1001251	1	1	sample_2.raw
-----
+**Sample metadata columns:**
+
+[%header,cols="1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate]
+
+|sample_1 |homo sapiens |liver |normal |1
+|sample_2 |homo sapiens |liver |hepatocellular carcinoma |1
+|===
+
+**Data file metadata columns:**
+
+[%header,cols="1,1,1,1,1,1,1,1,1"]
+|===
+|source name |assay name |technology type |comment[data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[data file]
+
+|sample_1 |run_1 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |sample_1.raw
+|sample_2 |run_2 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |sample_2.raw
+|===
+
+TIP: In a real SDRF file, all columns appear in a single row. The tables above are split for readability.
 
 === Key Concepts
 
@@ -96,14 +111,14 @@ For detailed guidance, continue reading the full specification below.
 
 The official validator for SDRF-Proteomics files is **sdrf-pipelines**, a Python tool that checks your SDRF file for errors and compliance with the specification.
 
-=== Installation
+Installation:
 
 [source,bash]
 ----
 pip install sdrf-pipelines
 ----
 
-=== Basic Validation
+Basic Validation:
 
 [source,bash]
 ----
@@ -112,28 +127,6 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
 
 # Validate with a specific template
 parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
-----
-
-=== Available Templates for Validation
-
-- `default` - Basic validation
-- `human` - Human samples with clinical metadata
-- `vertebrates` - Non-human vertebrates
-- `invertebrates` - Invertebrates
-- `plants` - Plant samples
-- `cell_lines` - Cell line experiments
-
-=== Additional Features
-
-sdrf-pipelines can also convert SDRF files to configuration files for popular analysis tools:
-
-[source,bash]
-----
-# Convert to MaxQuant parameters
-parse_sdrf convert-maxquant --sdrf_file your_file.sdrf.tsv --output_folder ./
-
-# Convert to OpenMS parameters
-parse_sdrf convert-openms --sdrf_file your_file.sdrf.tsv --output_folder ./
 ----
 
 For more information, visit: https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines on GitHub]
