@@ -35,6 +35,8 @@ The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomic
 
 External contributors, researchers and the proteomics community are more than welcome to contribute to this project.
 
+For information on building the documentation website locally, see the [Development Guide](DEVELOPMENT.md).
+
 Contribute with the specification: you can contribute to the specification with ideas or refinements by adding an issue into the [issue tracker](https://github.com/bigbio/proteomics-metadata-standard/issues) or performing a PR.
 
 In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects) folder, users can see different public datasets that have been annotated so far by the contributors. If you would like to join these efforts, make a Fork of this repo and perform a pull request (PR) with your annotated project. If you don't have a project in mind, you can take one project from the [issues](https://github.com/bigbio/proteomics-metadata-standard/issues) and perform the annotation.

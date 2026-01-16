@@ -36,7 +36,7 @@ Further detailed information, including any updates to this document, implementa
 [[motivation]]
 == Motivation
 
-Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1].
+Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community <<ref1>>.
 
 Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example:
 
@@ -50,7 +50,7 @@ Such heterogeneity often prevents data interpretation, reproducibility, and inte
 - (ii) the sample metadata and data files acquisition metadata.
 - (iii) The relation between the sample and the data files. The experimental design.
 
-The general description includes minimum information to describe the study overall: http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&outputMode=XML[title, description, date of publication, type of experiment]. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing [1].
+The general description includes minimum information to describe the study overall: http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&outputMode=XML[title, description, date of publication, type of experiment]. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing <<ref1>>.
 
 image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sample-metadata.png[]
 
@@ -67,27 +67,50 @@ If you're new to SDRF-Proteomics, here's a minimal example to get you started. A
 
 === Minimal Example
 
-**Sample metadata columns:**
-
-[%header,cols="1,1,1,1,1"]
-|===
-|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate]
-
-|sample_1 |homo sapiens |liver |normal |1
-|sample_2 |homo sapiens |liver |hepatocellular carcinoma |1
-|===
-
-**Data file metadata columns:**
-
-[%header,cols="1,1,1,1,1,1,1,1,1"]
-|===
-|source name |assay name |technology type |comment[data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[data file]
-
-|sample_1 |run_1 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |sample_1.raw
-|sample_2 |run_2 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |sample_2.raw
-|===
-
-TIP: In a real SDRF file, all columns appear in a single row. The tables above are split for readability.
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [instrument]</th>
+<th class="data-col">comment [cleavage agent details]</th>
+<th class="data-col">comment [data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="data-col">run_1</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">sample_1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">hepatocellular carcinoma</td>
+<td class="data-col">run_2</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">sample_2.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comments)</span>
+</div>
+</div>
+++++
 
 === Key Concepts
 
@@ -145,7 +168,7 @@ This document describes the main specification of SDRF-Proteomics, the structure
 
 * https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/metadata-guidelines[Annotation guidelines]: Detailed documentation for specific metadata annotations (e.g., patient pre-existing condition, sample metadata, data file metadata).
 
-image::../images/sdrf-guidelines-structure.png[Logo]
+image::images/sdrf-guidelines-structure.png[Logo]
 
 **Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by specific experiment templates and annotation guidelines.
 
@@ -190,10 +213,50 @@ The SDRF-Proteomics aims to capture the sample metadata and its relationship wit
 
 The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each *ROW* corresponds to a relationship between a Sample and a Data file (in an ms proteomics experiment the data file containing the mass spectra), each *COLUMN* corresponds to an attribute/property of the Sample, the Data file, or the Factor values; and the value in each **CELL** is the specific value of the property for a given Sample/Data file/Factor value (**Figure 3**).
 
-[#img-sunset]
-image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sdrf-nutshell.png[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [instrument]</th>
+<th class="data-col">comment [data file]</th>
+<th class="factor-col">factor value [disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="data-col">run_1</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">sample_1.raw</td>
+<td class="factor-col">normal</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver cancer</td>
+<td class="data-col">run_2</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">sample_2.raw</td>
+<td class="factor-col">liver cancer</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+</div>
+</div>
+++++
 
-**Figure 3**: SDRF-Proteomics in a nutshell. The file format is a tab-delimited one where columns are properties of the sample, the data file or the variables under study. The rows are the samples of origin and the cells are the values for one property in a specific sample.
+**Figure 3**: SDRF-Proteomics in a nutshell. Each *row* links a sample to a data file. *Columns* represent sample properties (characteristics), data file properties (comments), or experimental variables (factor values).
 
 The SDRF-Proteomics format contains three main sections:
 
@@ -211,27 +274,15 @@ There are general scenarios/use cases that are addressed by the following rules:
 
 .When to use "not available" vs "not applicable"
 |===
-|Term |Meaning |Example Scenario |Example
+|Term |Meaning |Example
 
 |not available
-|Value exists but is unknown
-|Patient age was not recorded in the clinical data
+|Value exists but is unknown or could not be determined
 |characteristics[age] = not available
 
 |not applicable
-|Value does not apply to this sample
-|Cell line sample has no meaningful "age"
+|Value or concept does not apply to this sample
 |characteristics[age] = not applicable
-
-|not available
-|Information could not be determined
-|Disease status could not be confirmed
-|characteristics[disease] = not available
-
-|not applicable
-|Concept does not apply
-|Asking for "cell type" of a whole tissue homogenate
-|characteristics[cell type] = not applicable
 |===
 
 - **Case sensitivity**: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
@@ -240,9 +291,9 @@ There are general scenarios/use cases that are addressed by the following rules:
 - **Extension**: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.
 
 [[file-level-metadata]]
-=== File-level metadata (Header comments)
+=== SDRF file-level metadata
 
-SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.
+Since version 1.1.0, SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by other omics formats such as VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.
 
 Header comments MUST:
 
@@ -253,44 +304,50 @@ Header comments MUST:
 The following header fields are supported:
 
 |===
-|Key |Description |Example |Requirement
+|Key |Description |Example |Requirement | Ontology Term
 
-|fileformat
+|file_format
 |Identifier for the file format
 |SDRF
 |RECOMMENDED
+|PRIDE:0000831
 
 |version
 |SDRF-Proteomics specification version used
 |v1.1.0
 |RECOMMENDED
+|NCIT:C25714
 
 |template
 |Name of the template used
 |human, cell_lines, default
 |OPTIONAL
+|PRIDE:0000832
 
 |template_version
 |Version of the template
 |v1.0.0
 |OPTIONAL
+|PRIDE:0000833
 
 |source
 |Origin or creator of the file
 |PRIDE, user-generated
 |OPTIONAL
+|NCIT:C25683
 
 |validation_hash
 |Hash from validator certification
 |sha256:abc123...
 |OPTIONAL
+|PRIDE:0000834
 |===
 
 Example of an SDRF file with header comments (simplified example showing only select columns; see <<core-templates>> for complete required columns):
 
 [source,tsv]
 ----
-#fileformat=SDRF
+#file_format=SDRF
 #version=v1.1.0
 #template=human
 #template_version=v1.0.0
@@ -299,10 +356,10 @@ source name	characteristics[organism]	characteristics[organism part]	characteris
 sample_1	homo sapiens	liver	normal	run_1	sample_1.raw
 ----
 
-NOTE: Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately.
+NOTE: Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., `file_format`, `template_version`) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
 
 [[column-headers]]
-=== Column headers
+=== Table Column headers
 
 Depending on each section the column headers (property names) will be prefixed with the following prefixes: 
 
@@ -315,7 +372,7 @@ Each property name MUST be a valid ontology term or a valid controlled vocabular
 NOTE: A list of all controlled vocabularies and ontologies supported are in the <<ontologies-supported>> section. On each section we also provide a list of properties that are supported.
 
 [[sdrf-file-standardization]]
-=== Cell values
+=== Table Cell values
 
 The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.
 
@@ -346,83 +403,89 @@ The value for each property, (e.g. characteristics, comment, factor value) corre
 
 SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize metadata values. The following ontologies are supported:
 
+[cols="^1,<3,<3,<2", options="header"]
 |===
 |Category |Ontology/CV |Description |Notes
 
-4+^|*General Purpose*
+4+^s|*General Purpose*
 
 |General
-|Experimental Factor Ontology (EFO)
+|https://www.ebi.ac.uk/ols4/ontologies/efo[Experimental Factor Ontology (EFO)]
 |General experimental metadata
 |
 
 |General
-|PATO
+|https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
 |Phenotype and Trait Ontology
 |
 
-4+^|*Organism and Taxonomy*
+|General
+|https://www.ebi.ac.uk/ols4/ontologies/ncit[NCI Thesaurus (NCIT)]
+|Biomedical terminology
+|
+
+|General
+|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Controlled Vocabulary]
+|Proteomics-specific terms
+|
+
+4+^s|*Organism and Taxonomy*
 
 |Taxonomy
-|NCBI Taxonomy (NCBITaxon)
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy (NCBITaxon)]
 |Organism classification
 |
 
-|Taxonomy
-|Rat Strain Ontology
-|Rat strains and breeds
-|
-
-4+^|*Anatomy and Cell Types*
+4+^s|*Anatomy and Cell Types*
 
 |Anatomy
-|UBERON
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
 |Cross-species anatomy ontology
 |
 
 |Cell Type
-|Cell Ontology (CL)
+|https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
 |Cell type classification
 |
 
 |Anatomy
-|BRENDA Tissue Ontology (BTO)
+|https://www.ebi.ac.uk/ols4/ontologies/bto[BRENDA Tissue Ontology (BTO)]
 |Tissues and cell lines
 |
 
 |Anatomy
-|Plant Ontology (PO)
+|https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)]
 |Plant anatomy and development
 |For plant samples
 
 |Anatomy
-|FlyBase Anatomy (FBbt)
+|https://www.ebi.ac.uk/ols4/ontologies/fbbt[FlyBase Anatomy (FBbt)]
 |Drosophila anatomy
 |For Drosophila samples
 
 |Anatomy
-|WormBase Anatomy (WBbt)
+|https://www.ebi.ac.uk/ols4/ontologies/wbbt[WormBase Anatomy (WBbt)]
 |C. elegans anatomy
 |For C. elegans samples
 
 |Anatomy
-|Zebrafish Anatomy (ZFA)
+|https://www.ebi.ac.uk/ols4/ontologies/zfa[Zebrafish Anatomy (ZFA)]
 |Zebrafish anatomy and development
 |For zebrafish samples
 
-4+^|*Disease*
+4+^s|*Disease*
 
 |Disease
-|Mondo Disease Ontology (MONDO)
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[Mondo Disease Ontology (MONDO)]
 |Unified disease ontology
 |RECOMMENDED
 
 |Disease
-|Human Disease Ontology (DOID)
-|Human diseases
+|https://www.ebi.ac.uk/ols4/ontologies/efo[Experimental Factor Ontology (EFO)]
+|Disease terms from EFO
 |
 
-4+^|*Cell Lines*
+4+^s|*Cell Lines*
 
 |Cell Lines
 |https://www.cellosaurus.org/[Cellosaurus]
@@ -430,46 +493,41 @@ SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize
 |RECOMMENDED
 
 |Cell Lines
-|Cell Line Ontology (CLO)
+|https://www.ebi.ac.uk/ols4/ontologies/clo[Cell Line Ontology (CLO)]
 |Cell line ontology
 |Legacy support only
 
-4+^|*Mass Spectrometry and Proteomics*
+4+^s|*Mass Spectrometry and Proteomics*
 
 |MS/Proteomics
-|PSI Mass Spectrometry CV (PSI-MS)
+|https://www.ebi.ac.uk/ols4/ontologies/ms[PSI Mass Spectrometry CV (PSI-MS)]
 |Instruments, methods, parameters
 |
 
-|MS/Proteomics
-|PRIDE Controlled Vocabulary
-|Proteomics-specific terms
-|
-
 |Modifications
-|Unimod
+|https://www.ebi.ac.uk/ols4/ontologies/unimod[Unimod]
 |Protein modifications database
 |
 
 |Modifications
-|PSI-MOD CV
+|https://www.ebi.ac.uk/ols4/ontologies/mod[PSI-MOD CV]
 |Protein modifications ontology
 |
 
-4+^|*Other*
+4+^s|*Other*
 
 |Chemistry
-|ChEBI
+|https://www.ebi.ac.uk/ols4/ontologies/chebi[ChEBI]
 |Chemical Entities of Biological Interest
 |
 
 |Environment
-|Environment Ontology (ENVO)
+|https://www.ebi.ac.uk/ols4/ontologies/envo[Environment Ontology (ENVO)]
 |Environmental sample classification
 |For metaproteomics
 
 |Ancestry
-|Human Ancestry Ontology (HANCESTRO)
+|https://www.ebi.ac.uk/ols4/ontologies/hancestro[Human Ancestry Ontology (HANCESTRO)]
 |Human ancestry categories
 |For human samples
 |===
@@ -487,12 +545,40 @@ The Sample metadata section provides information about the samples of origin and
 
 Example:
 
-|===
-| source name   | characteristics[organism] | characteristics[organism part] | characteristics[disease] | characteristics[cell type]
-
-|sample_treat   | homo sapiens              | liver                          | liver cancer             | not available
-|sample_control | homo sapiens              | liver                          | liver cancer             | not available
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics [cell type]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_treat</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">liver cancer</td>
+<td class="sample-col">not available</td>
+</tr>
+<tr>
+<td class="sample-col">sample_control</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">liver cancer</td>
+<td class="sample-col">not available</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
 
 NOTE: Additional characteristics can be added depending on the type of the experiment and sample. The https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[SDRF-Proteomics templates] defines a set of templates and checklists of properties that should be provided depending on the proteomics experiment. In the core guidelines and templates, main document of SDRF-Proteomics, we explain the major sample properties for different experiments. However, SDRF-Proteomics can be extended using guidelines for specific experiments.
 
@@ -505,11 +591,7 @@ Some important notes:
 [[biosamples-integration]]
 === BioSamples database integration
 
-BioSamples databases are reference databases that store information about biological samples used in research. There are two main BioSamples services: the EBI BioSamples (https://www.ebi.ac.uk/biosamples/) and the NCBI BioSample (https://www.ncbi.nlm.nih.gov/biosample). Both provide persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries from either service through the use of BioSample accession numbers.
-
-To integrate with a BioSamples database, use the optional _characteristics[biosample accession number]_ column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry. Note that BioSample accession numbers must be requested from one of the BioSamples services (NCBI or EBI) before they can be used, and this can be done by users directly or by proteomics services like PRIDE on behalf of users.
-
-It is RECOMMENDED to place the _characteristics[biosample accession number]_ column immediately after the _source name_ column in the SDRF file. Additionally, each unique _source name_ should have a unique biosample accession number. It's important to note that _source name_ is unique to the individual sample/data file, not to the entire SDRF file, as a sample may be repeated in the file. The combination of _source name_ and _assay name_ is unique to the SDRF file.
+https://www.ebi.ac.uk/biosamples/[BioSamples] provides persistent identifiers for biological samples that enable cross-database linking <<ref5>>. Use the optional _characteristics[biosample accession number]_ column to link samples to BioSamples entries (EBI format: SAMEA*, NCBI format: SAMN*).
 
 |===
 |Property           |Column Name                            |Example Value     |Description
@@ -519,12 +601,47 @@ It is RECOMMENDED to place the _characteristics[biosample accession number]_ col
 
 Example usage:
 
-|===
-| source name   | characteristics[biosample accession number] | characteristics[organism] | characteristics[organism part] | characteristics[disease]
-|sample_001     | SAMN12345678                                 | homo sapiens              | liver                          | liver cancer
-|sample_002     | SAMN12345679                                 | homo sapiens              | liver                          | normal
-|sample_003     | SAMEA12345680                                | mus musculus              | brain                          | normal
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [biosample accession number]</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics [disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_001</td>
+<td class="sample-col">SAMN12345678</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">liver cancer</td>
+</tr>
+<tr>
+<td class="sample-col">sample_002</td>
+<td class="sample-col">SAMN12345679</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+</tr>
+<tr>
+<td class="sample-col">sample_003</td>
+<td class="sample-col">SAMEA12345680</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">brain</td>
+<td class="sample-col">normal</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
 
 The BioSamples accession number enables:
 
@@ -540,85 +657,108 @@ NOTE: BioSample accession numbers from NCBI follow the format `SAMNxxxxxxxxxx` a
 [[sample-technical-biological-replicates]]
 === Encoding sample technical and biological replicates
 
-Different measurements of the same biological sample are often categorized as (i) Technical or (ii) Biological replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo, in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation.
+SDRF-Proteomics uses two columns to track replicates <<ref4>>:
 
-For a given experiment, there are different levels to which samples can be matched - e.g., same sample, sample protocol, covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, Technical vs. Biological considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the SDRF-Proteomics format. However, data providers are encouraged to provide any identifier - e.g. Biological_replicate_1, Technical_replicate_2 - that would help link the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF-Proteomics specification is the following:
+- **characteristics[biological replicate]**: Identifies independent biological samples (e.g., different patients, different cell cultures)
+- **comment[technical replicate]**: Identifies repeated measurements of the same sample (e.g., multiple LC-MS/MS injections)
 
-**technical replicate**: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].
+The following example shows 2 biological replicates, each with 2 fractions and 2 technical replicates:
 
-In MS-based proteomics, a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.
-
-**Biological replicate**: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.
-
-The following example shows an experiment with 2 biological replicates (different samples from 2 patients), each with 2 fractions and 2 technical replicates:
-
-|===
-|source name |characteristics[biological replicate] |assay name |comment[label] |comment[fraction identifier] |comment[technical replicate] |comment[data file]
-
-|patient_001_sample
-|1
-|run_01
-|label free sample
-|1
-|1
-|P001_F1_TR1.raw
-
-|patient_001_sample
-|1
-|run_02
-|label free sample
-|2
-|1
-|P001_F2_TR1.raw
-
-|patient_001_sample
-|1
-|run_03
-|label free sample
-|1
-|2
-|P001_F1_TR2.raw
-
-|patient_001_sample
-|1
-|run_04
-|label free sample
-|2
-|2
-|P001_F2_TR2.raw
-
-|patient_002_sample
-|2
-|run_05
-|label free sample
-|1
-|1
-|P002_F1_TR1.raw
-
-|patient_002_sample
-|2
-|run_06
-|label free sample
-|2
-|1
-|P002_F2_TR1.raw
-
-|patient_002_sample
-|2
-|run_07
-|label free sample
-|1
-|2
-|P002_F1_TR2.raw
-
-|patient_002_sample
-|2
-|run_08
-|label free sample
-|2
-|2
-|P002_F2_TR2.raw
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [fraction identifier]</th>
+<th class="data-col">comment [technical replicate]</th>
+<th class="data-col">comment [data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_01</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">P001_F1_TR1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_02</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">1</td>
+<td class="data-col">P001_F2_TR1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_03</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">2</td>
+<td class="data-col">P001_F1_TR2.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_04</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">2</td>
+<td class="data-col">P001_F2_TR2.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_05</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">P002_F1_TR1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_06</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">1</td>
+<td class="data-col">P002_F2_TR1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_07</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">2</td>
+<td class="data-col">P002_F1_TR2.raw</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_08</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">2</td>
+<td class="data-col">P002_F2_TR2.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
 
 In this example:
 
@@ -661,38 +801,127 @@ The _characteristics[pooled sample]_ column accepts the following values:
 
 NOTE: The `SN` key stands for "source name" and lists the `source name` values of samples that are annotated in the same file and used in the same experiment and same MS run. Use semicolons to separate multiple entries.
 
-==== Example with pooled reference channel
+==== Example with simple pooled annotation
 
-|===
-|source name |characteristics[pooled sample] |characteristics[organism] |characteristics[age] |characteristics[sex] | assay name | comment[label] | comment[data file]
+When pooling details are unknown or samples come from external sources, use the simple `pooled` value:
 
-| sample_1   | not pooled | homo sapiens | 45Y | male |  run_1      | TMT126         | file01.raw
-| sample_2   | not pooled | homo sapiens | 52Y | female |  run_1      | TMT127N        | file01.raw
-| sample_3   | not pooled | homo sapiens | 38Y | male |  run_1      | TMT127C        | file01.raw
-| pooled_ref | SN=sample_1;SN=sample_2;SN=sample_3 | homo sapiens | not applicable | not applicable |  run_1      | TMT131C         | file01.raw
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [pooled sample]</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">pooled_ref</td>
+<td class="sample-col">pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT131C</td>
+<td class="data-col">file01.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
 
-==== Metadata handling for pooled samples
+==== Example with detailed pooled reference
 
-When a sample is pooled from multiple individuals, certain sample-specific metadata fields are no longer meaningful at the individual level. For pooled samples, the following metadata handling rules apply:
+When pooled samples are known and annotated in the same SDRF file, use the `SN=` format:
 
-**Fields that SHOULD use "not applicable" for pooled samples:**
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [pooled sample]</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [age]</th>
+<th class="sample-col">characteristics [sex]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">45Y</td>
+<td class="sample-col">male</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">52Y</td>
+<td class="sample-col">female</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">38Y</td>
+<td class="sample-col">male</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT127C</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">pooled_ref</td>
+<td class="sample-col">SN=sample_1;SN=sample_2;SN=sample_3</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT131C</td>
+<td class="data-col">file01.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
 
-- `characteristics[age]` - Age is not applicable when samples from multiple individuals of different ages are pooled
-- `characteristics[sex]` - Sex is not applicable when samples from individuals of different sexes are pooled
-- `characteristics[individual]` - Individual identifier is not applicable for pooled samples
-- `characteristics[ancestry category]` - Ancestry is not applicable when samples from individuals of different ancestries are pooled
-
-**Fields that SHOULD still be annotated for pooled samples:**
-
-- `characteristics[organism]` - The organism SHOULD still be specified (all pooled samples should be from the same organism)
-- `characteristics[organism part]` - The tissue/organ SHOULD be specified if consistent across pooled samples
-- `characteristics[disease]` - Disease status SHOULD be specified if consistent across pooled samples, otherwise use "not applicable"
-- `characteristics[cell type]` - Cell type SHOULD be specified if consistent across pooled samples
-
-IMPORTANT: When `characteristics[pooled sample]` contains "pooled" or an "SN=..." value, validators SHOULD accept "not applicable" for individual-specific metadata fields (age, sex, individual, ancestry category). This enables proper annotation of reference/normalization channels in multiplexed experiments.
-
-TIP: If all pooled samples share the same value for a characteristic (e.g., all from females, or all age 40-50Y), that shared value MAY be used instead of "not applicable".
+TIP: For pooled samples, use "not applicable" for individual-specific fields (age, sex, individual). If all pooled samples share a value (e.g., all females, or age range 40-50Y), that shared value MAY be used instead.
 
 [[spiked-in]]
 === Spiked-in samples
@@ -781,10 +1010,27 @@ In addition to specifying the component and its quantity, the injected mass of t
 
 An example of SDRF-Proteomics for a sample spiked with a peptide would be:
 
-|===
-|characteristics[mass] | characteristics[spiked compound]
-|1 ug                  | CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">characteristics [mass]</th>
+<th class="sample-col">characteristics [spiked compound]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">1 ug</td>
+<td class="sample-col">CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
 
 For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
 
@@ -829,7 +1075,7 @@ The following properties MUST be provided for each data file:
 
 |comment[cleavage agent details]
 |REQUIRED
-|Enzyme information
+|Enzyme information (use "not available" for undigested samples)
 
 |comment[fraction identifier]
 |REQUIRED
@@ -846,17 +1092,38 @@ The following properties MUST be provided for each data file:
 
 Example:
 
-|===
-|source name |assay name |technology type |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[data file]
-
-|sample_1
-|sample1_run1
-|proteomic profiling by mass spectrometry
-|data-dependent acquisition
-|label free sample
-|Q Exactive HF
-|sample1.raw
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment [proteomics data acquisition method]</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [instrument]</th>
+<th class="data-col">comment [data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="data-col">sample1_run1</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">sample1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
 
 [[sample-prep]]
 === Sample preparation properties
@@ -902,8 +1169,11 @@ For detailed guidance on data file metadata, refer to the conventions document:
 
 * link:metadata-guidelines/data-file-metadata.adoc[Data File Metadata Guidelines] - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties
 
+[[additional-sdrf-rules]]
+== Additional SDRF Rules
+
 [[row-uniqueness]]
-== Row Uniqueness Requirements
+=== Row Uniqueness Requirements
 
 SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.
 
@@ -917,14 +1187,50 @@ NOTE: For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will sh
 
 Example of valid multiplexed experiment:
 
-|===
-|source name |assay name |comment[label] |comment[data file]
-
-|sample_A |TMT_batch1_run1 |TMT126 |batch1_run1.raw
-|sample_B |TMT_batch1_run1 |TMT127N |batch1_run1.raw
-|sample_C |TMT_batch1_run1 |TMT127C |batch1_run1.raw
-|sample_D |TMT_batch1_run1 |TMT128N |batch1_run1.raw
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_A</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">batch1_run1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_B</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">batch1_run1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_C</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT127C</td>
+<td class="data-col">batch1_run1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_D</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT128N</td>
+<td class="data-col">batch1_run1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
 
 In this example, all four rows share the same `assay name` and `comment[data file]` because they represent different samples multiplexed in a single MS run. The combination of `source name` + `assay name` + `comment[label]` is unique for each row.
 
@@ -1124,10 +1430,30 @@ Some columns can appear multiple times for the same sample. The cardinality rule
 - **Multiple (*)**: Column can appear multiple times (e.g., organism part can specify both "heart" and "heart left ventricle")
 
 Example of multiple organism part columns:
-|===
-| source name | characteristics[organism part] | characteristics[organism part]
-| sample-1    | heart | heart left ventricle
-|===
+
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics [organism part]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample-1</td>
+<td class="sample-col">heart</td>
+<td class="sample-col">heart left ventricle</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
 
 The template files can be downloaded from the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[core-templates] folder.
 
@@ -1158,27 +1484,48 @@ Use factor values to indicate:
 
 In an experiment comparing tumor vs. normal tissue across different cancer stages:
 
-|===
-|source name |characteristics[disease] |characteristics[disease stage] |factor value[disease] |factor value[disease stage]
-
-|tumor_sample_1
-|breast carcinoma
-|stage II
-|breast carcinoma
-|stage II
-
-|normal_sample_1
-|normal
-|not applicable
-|normal
-|not applicable
-
-|tumor_sample_2
-|breast carcinoma
-|stage III
-|breast carcinoma
-|stage III
-|===
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics [disease stage]</th>
+<th class="factor-col">factor value [disease]</th>
+<th class="factor-col">factor value [disease stage]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">tumor_sample_1</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="sample-col">stage II</td>
+<td class="factor-col">breast carcinoma</td>
+<td class="factor-col">stage II</td>
+</tr>
+<tr>
+<td class="sample-col">normal_sample_1</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">not applicable</td>
+<td class="factor-col">normal</td>
+<td class="factor-col">not applicable</td>
+</tr>
+<tr>
+<td class="sample-col">tumor_sample_2</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="sample-col">stage III</td>
+<td class="factor-col">breast carcinoma</td>
+<td class="factor-col">stage III</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+</div>
+</div>
+++++
 
 In this example, both `disease` and `disease stage` are factor values because the experiment aims to compare expression differences between disease states and across cancer stages.
 
@@ -1266,9 +1613,11 @@ Please cite this document as:
 Dai C, Füllgrabe A, Pfeuffer J, Solovyeva EM, Deng J, Moreno P, Kamatchinathan S, Kundu DJ, George N, Fexova S, Grüning B, Föll MC, Griss J, Vaudel M, Audain E, Locard-Paulet M, Turewicz M, Eisenacher M, Uszkoreit J, Van Den Bossche T, Schwämmle V, Webel H, Schulze S, Bouyssié D, Jayaram S, Duggineni VK, Samaras P, Wilhelm M, Choi M, Wang M, Kohlbacher O, Brazma A, Papatheodorou I, Bandeira N, Deutsch EW, Vizcaíno JA, Bai M, Sachsenberg T, Levitsky LI, Perez-Riverol Y. A proteomics sample metadata representation for multiomics integration and big data analysis. Nat Commun. 2021 Oct 6;12(1):5854. doi: 10.1038/s41467-021-26111-3. PMID: 34615866; PMCID: PMC8494749. [Manuscript - https://www.nature.com/articles/s41467-021-26111-3]
 
 
+[bibliography]
 == References
 
-- [1] Y. Perez-Riverol, S. European Bioinformatics Community for Mass, Toward a Sample Metadata Standard in Public Proteomics Repositories, J Proteome Res 19(10) (2020) 3906-3909.
-- [2] A. Gonzalez-Beltran, E. Maguire, S.A. Sansone, P. Rocca-Serra, linkedISA: semantic representation of ISA-Tab experimental metadata, BMC Bioinformatics 15 Suppl 14 (2014) S4.
-- [3] T.F. Rayner, P. Rocca-Serra, P.T. Spellman, H.C. Causton, A. Farne, E. Holloway, R.A. Irizarry, J. Liu, D.S. Maier, M. Miller, K. Petersen, J. Quackenbush, G. Sherlock, C.J. Stoeckert, Jr., J. White, P.L. Whetzel, F. Wymore, H. Parkinson, U. Sarkans, C.A. Ball, A. Brazma, A simple spreadsheet-based, MIAME-supportive format for microarray data: MAGE-TAB, BMC Bioinformatics 7 (2006) 489.
-- [4] P. Blainey, M. Krzywinski, N. Altman, Points of significance: replication, Nat Methods 11(9) (2014) 879-80.
+- [[[ref1,1]]] Y. Perez-Riverol, S. European Bioinformatics Community for Mass, Toward a Sample Metadata Standard in Public Proteomics Repositories, J Proteome Res 19(10) (2020) 3906-3909. https://doi.org/10.1021/acs.jproteome.0c00376[doi:10.1021/acs.jproteome.0c00376]
+- [[[ref2,2]]] A. Gonzalez-Beltran, E. Maguire, S.A. Sansone, P. Rocca-Serra, linkedISA: semantic representation of ISA-Tab experimental metadata, BMC Bioinformatics 15 Suppl 14 (2014) S4. https://doi.org/10.1186/1471-2105-15-S14-S4[doi:10.1186/1471-2105-15-S14-S4]
+- [[[ref3,3]]] T.F. Rayner, P. Rocca-Serra, P.T. Spellman, et al., A simple spreadsheet-based, MIAME-supportive format for microarray data: MAGE-TAB, BMC Bioinformatics 7 (2006) 489. https://doi.org/10.1186/1471-2105-7-489[doi:10.1186/1471-2105-7-489]
+- [[[ref4,4]]] P. Blainey, M. Krzywinski, N. Altman, Points of significance: replication, Nat Methods 11(9) (2014) 879-80. https://doi.org/10.1038/nmeth.3091[doi:10.1038/nmeth.3091]
+- [[[ref5,5]]] D. Gupta, I. Liyanage, Y. Perez-Riverol, et al., BioSamples database: the global hub for sample metadata and multi-omics integration, Nucleic Acids Res (2025). https://doi.org/10.1093/nar/gkaf1133[doi:10.1093/nar/gkaf1133]
