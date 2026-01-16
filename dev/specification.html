@@ -37,9 +37,9 @@
 <li><a href="#_sdrf_proteomics_specification">7. SDRF-Proteomics specification</a>
 <ul class="sectlevel2">
 <li><a href="#sdrf-file-rules">7.1. Format rules</a></li>
-<li><a href="#file-level-metadata">7.2. File-level metadata (Header comments)</a></li>
-<li><a href="#column-headers">7.3. Column headers</a></li>
-<li><a href="#sdrf-file-standardization">7.4. Cell values</a></li>
+<li><a href="#file-level-metadata">7.2. SDRF file-level metadata</a></li>
+<li><a href="#column-headers">7.3. Table Column headers</a></li>
+<li><a href="#sdrf-file-standardization">7.4. Table Cell values</a></li>
 </ul>
 </li>
 <li><a href="#ontologies-supported">8. Ontologies and Controlled Vocabularies</a></li>
@@ -50,8 +50,8 @@
 <li><a href="#pooled-samples">9.3. Pooled samples</a>
 <ul class="sectlevel3">
 <li><a href="#_allowed_values_for_characteristicspooled_sample">9.3.1. Allowed values for characteristics[pooled sample]</a></li>
-<li><a href="#_example_with_pooled_reference_channel">9.3.2. Example with pooled reference channel</a></li>
-<li><a href="#_metadata_handling_for_pooled_samples">9.3.3. Metadata handling for pooled samples</a></li>
+<li><a href="#_example_with_simple_pooled_annotation">9.3.2. Example with simple pooled annotation</a></li>
+<li><a href="#_example_with_detailed_pooled_reference">9.3.3. Example with detailed pooled reference</a></li>
 </ul>
 </li>
 <li><a href="#spiked-in">9.4. Spiked-in samples</a></li>
@@ -66,7 +66,11 @@
 <li><a href="#_data_file_metadata_guidelines">10.4. Data File Metadata Guidelines</a></li>
 </ul>
 </li>
-<li><a href="#row-uniqueness">11. Row Uniqueness Requirements</a></li>
+<li><a href="#additional-sdrf-rules">11. Additional SDRF Rules</a>
+<ul class="sectlevel2">
+<li><a href="#row-uniqueness">11.1. Row Uniqueness Requirements</a></li>
+</ul>
+</li>
 <li><a href="#core-templates">12. Core Templates</a>
 <ul class="sectlevel2">
 <li><a href="#the-default-template">12.1. Default Template</a></li>
@@ -91,7 +95,7 @@
 <li><a href="#_intellectual_property_statement">17. Intellectual Property Statement</a></li>
 <li><a href="#_copyright_notice">18. Copyright Notice</a></li>
 <li><a href="#_how_to_cite">19. How to cite</a></li>
-<li><a href="#_references">20. References</a></li>
+<li><a href="#_references">References</a></li>
 </ul>
 </div>
 </div>
@@ -122,7 +126,7 @@
 <h2 id="motivation"><a class="anchor" href="#motivation"></a><a class="link" href="#motivation">3. Motivation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community [1].</p>
+<p>Many resources have emerged that provide raw or integrated proteomics data in the public domain. If these are valuable individually, their integration through re-analysis represents a huge asset for the community <a href="#ref1">[1]</a>.</p>
 </div>
 <div class="paragraph">
 <p>Unfortunately, proteomics experimental design and sample related information are often missing in public repositories or stored in very diverse ways and formats. For example:</p>
@@ -154,7 +158,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>The general description includes minimum information to describe the study overall: <a href="http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&amp;outputMode=XML">title, description, date of publication, type of experiment</a>. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (<strong>Figure 1</strong>) is mostly missing [1].</p>
+<p>The general description includes minimum information to describe the study overall: <a href="http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&amp;outputMode=XML">title, description, date of publication, type of experiment</a>. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (<strong>Figure 1</strong>) is mostly missing <a href="#ref1">[1]</a>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -180,107 +184,47 @@
 </div>
 <div class="sect2">
 <h3 id="_minimal_example"><a class="anchor" href="#_minimal_example"></a><a class="link" href="#_minimal_example">4.1. Minimal Example</a></h3>
-<div class="paragraph">
-<p><strong>Sample metadata columns:</strong></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism part]</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">hepatocellular carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Data file metadata columns:</strong></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1112%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">technology type</th>
-<th class="tableblock halign-left valign-top">comment[data acquisition method]</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[instrument]</th>
-<th class="tableblock halign-left valign-top">comment[cleavage agent details]</th>
-<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_1.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_2.raw</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock tip">
+<div class="sdrf-example-table">
 <table>
+<thead>
 <tr>
-<td class="icon">
-<div class="title">Tip</div>
-</td>
-<td class="content">
-In a real SDRF file, all columns appear in a single row. The tables above are split for readability.
-</td>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [instrument]</th>
+<th class="data-col">comment [cleavage agent details]</th>
+<th class="data-col">comment [data file]</th>
 </tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="data-col">run_1</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">sample_1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">hepatocellular carcinoma</td>
+<td class="data-col">run_2</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">sample_2.raw</td>
+</tr>
+</tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comments)</span>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -394,7 +338,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../images/sdrf-guidelines-structure.png" alt="Logo">
+<img src="images/sdrf-guidelines-structure.png" alt="Logo">
 </div>
 </div>
 <div class="paragraph">
@@ -481,13 +425,48 @@ We added the prefix v to the version number to indicate that it is the version o
 <div class="paragraph">
 <p>The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each <strong>ROW</strong> corresponds to a relationship between a Sample and a Data file (in an ms proteomics experiment the data file containing the mass spectra), each <strong>COLUMN</strong> corresponds to an attribute/property of the Sample, the Data file, or the Factor values; and the value in each <strong>CELL</strong> is the specific value of the property for a given Sample/Data file/Factor value (<strong>Figure 3</strong>).</p>
 </div>
-<div id="img-sunset" class="imageblock">
-<div class="content">
-<img src="https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sdrf-nutshell.png" alt="sdrf nutshell">
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [instrument]</th>
+<th class="data-col">comment [data file]</th>
+<th class="factor-col">factor value [disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="data-col">run_1</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">sample_1.raw</td>
+<td class="factor-col">normal</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver cancer</td>
+<td class="data-col">run_2</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">sample_2.raw</td>
+<td class="factor-col">liver cancer</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Figure 3</strong>: SDRF-Proteomics in a nutshell. The file format is a tab-delimited one where columns are properties of the sample, the data file or the variables under study. The rows are the samples of origin and the cells are the values for one property in a specific sample.</p>
+<p><strong>Figure 3</strong>: SDRF-Proteomics in a nutshell. Each <strong>row</strong> links a sample to a data file. <strong>Columns</strong> represent sample properties (characteristics), data file properties (comments), or experimental variables (factor values).</p>
 </div>
 <div class="paragraph">
 <p>The SDRF-Proteomics format contains three main sections:</p>
@@ -523,43 +502,27 @@ We added the prefix v to the version number to indicate that it is the version o
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. When to use "not available" vs "not applicable"</caption>
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Term</th>
 <th class="tableblock halign-left valign-top">Meaning</th>
-<th class="tableblock halign-left valign-top">Example Scenario</th>
 <th class="tableblock halign-left valign-top">Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Value exists but is unknown</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Patient age was not recorded in the clinical data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value exists but is unknown or could not be determined</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age] = not available</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Value does not apply to this sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell line sample has no meaningful "age"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value or concept does not apply to this sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age] = not applicable</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Information could not be determined</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disease status could not be confirmed</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease] = not available</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Concept does not apply</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Asking for "cell type" of a whole tissue homogenate</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell type] = not applicable</p></td>
 </tr>
 </tbody>
 </table>
@@ -581,9 +544,9 @@ We added the prefix v to the version number to indicate that it is the version o
 </div>
 </div>
 <div class="sect2">
-<h3 id="file-level-metadata"><a class="anchor" href="#file-level-metadata"></a><a class="link" href="#file-level-metadata">7.2. File-level metadata (Header comments)</a></h3>
+<h3 id="file-level-metadata"><a class="anchor" href="#file-level-metadata"></a><a class="link" href="#file-level-metadata">7.2. SDRF file-level metadata</a></h3>
 <div class="paragraph">
-<p>SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.</p>
+<p>Since version 1.1.0, SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by other omics formats such as VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.</p>
 </div>
 <div class="paragraph">
 <p>Header comments MUST:</p>
@@ -606,10 +569,11 @@ We added the prefix v to the version number to indicate that it is the version o
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
 </colgroup>
 <thead>
 <tr>
@@ -617,44 +581,51 @@ We added the prefix v to the version number to indicate that it is the version o
 <th class="tableblock halign-left valign-top">Description</th>
 <th class="tableblock halign-left valign-top">Example</th>
 <th class="tableblock halign-left valign-top">Requirement</th>
+<th class="tableblock halign-left valign-top">Ontology Term</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fileformat</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">file_format</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Identifier for the file format</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SDRF</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000831</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SDRF-Proteomics specification version used</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C25714</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">template</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Name of the template used</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">human, cell_lines, default</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000832</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">template_version</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Version of the template</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">v1.0.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000833</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">source</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Origin or creator of the file</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE, user-generated</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C25683</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">validation_hash</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Hash from validator certification</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sha256:abc123&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000834</p></td>
 </tr>
 </tbody>
 </table>
@@ -663,7 +634,7 @@ We added the prefix v to the version number to indicate that it is the version o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#fileformat=SDRF
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#file_format=SDRF
 #version=v1.1.0
 #template=human
 #template_version=v1.0.0
@@ -679,14 +650,14 @@ sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 <div class="title">Note</div>
 </td>
 <td class="content">
-Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately.
+Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., <code>file_format</code>, <code>template_version</code>) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
 </td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">7.3. Column headers</a></h3>
+<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">7.3. Table Column headers</a></h3>
 <div class="paragraph">
 <p>Depending on each section the column headers (property names) will be prefixed with the following prefixes:</p>
 </div>
@@ -720,7 +691,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </div>
 </div>
 <div class="sect2">
-<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">7.4. Cell values</a></h3>
+<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">7.4. Table Cell values</a></h3>
 <div class="paragraph">
 <p>The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.</p>
 </div>
@@ -805,14 +776,14 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 11.1111%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 22.2223%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Category</th>
+<th class="tableblock halign-center valign-top">Category</th>
 <th class="tableblock halign-left valign-top">Ontology/CV</th>
 <th class="tableblock halign-left valign-top">Description</th>
 <th class="tableblock halign-left valign-top">Notes</th>
@@ -820,155 +791,155 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>General Purpose</strong></p></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>General Purpose</strong></strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">General</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experimental Factor Ontology (EFO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">General</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo">Experimental Factor Ontology (EFO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">General experimental metadata</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">General</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATO</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">General</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Phenotype and Trait Ontology</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Organism and Taxonomy</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">General</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCI Thesaurus (NCIT)</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Biomedical terminology</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Taxonomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NCBI Taxonomy (NCBITaxon)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">General</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE Controlled Vocabulary</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Proteomics-specific terms</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Organism and Taxonomy</strong></strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Taxonomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBI Taxonomy (NCBITaxon)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Organism classification</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Taxonomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rat Strain Ontology</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rat strains and breeds</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Anatomy and Cell Types</strong></strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Anatomy and Cell Types</strong></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UBERON</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Anatomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cross-species anatomy ontology</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Ontology (CL)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Cell Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/cl">Cell Ontology (CL)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cell type classification</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BRENDA Tissue Ontology (BTO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Anatomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BRENDA Tissue Ontology (BTO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Tissues and cell lines</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Plant Ontology (PO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Anatomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/po">Plant Ontology (PO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Plant anatomy and development</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">For plant samples</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FlyBase Anatomy (FBbt)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Anatomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt">FlyBase Anatomy (FBbt)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Drosophila anatomy</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">For Drosophila samples</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WormBase Anatomy (WBbt)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Anatomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/wbbt">WormBase Anatomy (WBbt)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">C. elegans anatomy</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">For C. elegans samples</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Zebrafish Anatomy (ZFA)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Anatomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/zfa">Zebrafish Anatomy (ZFA)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Zebrafish anatomy and development</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">For zebrafish samples</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Disease</strong></p></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Disease</strong></strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disease</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mondo Disease Ontology (MONDO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">Mondo Disease Ontology (MONDO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Unified disease ontology</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disease</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human Disease Ontology (DOID)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human diseases</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo">Experimental Factor Ontology (EFO)</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease terms from EFO</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Cell Lines</strong></p></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Cell Lines</strong></strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Lines</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Cell Lines</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cell line knowledge resource</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Lines</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Line Ontology (CLO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Cell Lines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/clo">Cell Line Ontology (CLO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cell line ontology</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Legacy support only</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Mass Spectrometry and Proteomics</strong></p></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Mass Spectrometry and Proteomics</strong></strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MS/Proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PSI Mass Spectrometry CV (PSI-MS)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">MS/Proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">PSI Mass Spectrometry CV (PSI-MS)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Instruments, methods, parameters</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MS/Proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE Controlled Vocabulary</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Proteomics-specific terms</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Modifications</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unimod</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Modifications</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/unimod">Unimod</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Protein modifications database</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Modifications</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MOD CV</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Modifications</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mod">PSI-MOD CV</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Protein modifications ontology</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong>Other</strong></p></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Other</strong></strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Chemistry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ChEBI</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Chemistry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/chebi">ChEBI</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Chemical Entities of Biological Interest</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Environment</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Environment Ontology (ENVO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Environment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/envo">Environment Ontology (ENVO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Environmental sample classification</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">For metaproteomics</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human Ancestry Ontology (HANCESTRO)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Ancestry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/hancestro">Human Ancestry Ontology (HANCESTRO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human ancestry categories</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">For human samples</p></td>
 </tr>
@@ -1004,40 +975,38 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <div class="paragraph">
 <p>Example:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism part]</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">characteristics[cell type]</th>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics [cell type]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_treat</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver cancer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="sample-col">sample_treat</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">liver cancer</td>
+<td class="sample-col">not available</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_control</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver cancer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="sample-col">sample_control</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">liver cancer</td>
+<td class="sample-col">not available</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1066,13 +1035,7 @@ Additional characteristics can be added depending on the type of the experiment 
 <div class="sect2">
 <h3 id="biosamples-integration"><a class="anchor" href="#biosamples-integration"></a><a class="link" href="#biosamples-integration">9.1. BioSamples database integration</a></h3>
 <div class="paragraph">
-<p>BioSamples databases are reference databases that store information about biological samples used in research. There are two main BioSamples services: the EBI BioSamples (<a href="https://www.ebi.ac.uk/biosamples/" class="bare">https://www.ebi.ac.uk/biosamples/</a>) and the NCBI BioSample (<a href="https://www.ncbi.nlm.nih.gov/biosample" class="bare">https://www.ncbi.nlm.nih.gov/biosample</a>). Both provide persistent identifiers for samples that can be referenced across multiple studies and databases. SDRF-Proteomics supports linking samples to BioSamples entries from either service through the use of BioSample accession numbers.</p>
-</div>
-<div class="paragraph">
-<p>To integrate with a BioSamples database, use the optional <em>characteristics[biosample accession number]</em> column to specify the BioSamples accession identifier for each sample. This characteristic provides a direct link between the proteomics sample metadata and the corresponding BioSamples database entry. Note that BioSample accession numbers must be requested from one of the BioSamples services (NCBI or EBI) before they can be used, and this can be done by users directly or by proteomics services like PRIDE on behalf of users.</p>
-</div>
-<div class="paragraph">
-<p>It is RECOMMENDED to place the <em>characteristics[biosample accession number]</em> column immediately after the <em>source name</em> column in the SDRF file. Additionally, each unique <em>source name</em> should have a unique biosample accession number. It&#8217;s important to note that <em>source name</em> is unique to the individual sample/data file, not to the entire SDRF file, as a sample may be repeated in the file. The combination of <em>source name</em> and <em>assay name</em> is unique to the SDRF file.</p>
+<p><a href="https://www.ebi.ac.uk/biosamples/">BioSamples</a> provides persistent identifiers for biological samples that enable cross-database linking <a href="#ref5">[5]</a>. Use the optional <em>characteristics[biosample accession number]</em> column to link samples to BioSamples entries (EBI format: SAMEA*, NCBI format: SAMN*).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1105,45 +1068,45 @@ Additional characteristics can be added depending on the type of the experiment 
 <div class="paragraph">
 <p>Example usage:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [biosample accession number]</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics [disease]</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">source name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[biosample accession number]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism part]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease]</p></td>
+<td class="sample-col">sample_001</td>
+<td class="sample-col">SAMN12345678</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">liver cancer</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SAMN12345678</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver cancer</p></td>
+<td class="sample-col">sample_002</td>
+<td class="sample-col">SAMN12345679</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_002</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SAMN12345679</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_003</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SAMEA12345680</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">brain</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="sample-col">sample_003</td>
+<td class="sample-col">SAMEA12345680</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">brain</td>
+<td class="sample-col">normal</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
 <div class="paragraph">
 <p>The BioSamples accession number enables:</p>
 </div>
@@ -1182,119 +1145,114 @@ BioSample accession numbers from NCBI follow the format <code>SAMNxxxxxxxxxx</co
 <div class="sect2">
 <h3 id="sample-technical-biological-replicates"><a class="anchor" href="#sample-technical-biological-replicates"></a><a class="link" href="#sample-technical-biological-replicates">9.2. Encoding sample technical and biological replicates</a></h3>
 <div class="paragraph">
-<p>Different measurements of the same biological sample are often categorized as (i) Technical or (ii) Biological replicates, based on whether they are (i) matched on all variables, e.g. same sample and same protocol; or (ii) different samples matched on explanatory variable(s), e.g. different patients receiving a placebo, in a placebo vs. drug trial. Technical and biological replicates have different levels of independence, which must be taken into account during data interpretation.</p>
+<p>SDRF-Proteomics uses two columns to track replicates <a href="#ref4">[4]</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>characteristics[biological replicate]</strong>: Identifies independent biological samples (e.g., different patients, different cell cultures)</p>
+</li>
+<li>
+<p><strong>comment[technical replicate]</strong>: Identifies repeated measurements of the same sample (e.g., multiple LC-MS/MS injections)</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>For a given experiment, there are different levels to which samples can be matched - e.g., same sample, sample protocol, covariates - the definition of technical replicate can therefore vary based on the number of variables included. In addition, an experiment might be used in multiple models with different explanatory variable(s), and biological replicates in one model would not be replicates in another. Therefore, Technical vs. Biological considerations, while sometimes relevant to analytical and statistical interpretation, fall beyond the scope of the SDRF-Proteomics format. However, data providers are encouraged to provide any identifier - e.g. Biological_replicate_1, Technical_replicate_2 - that would help link the samples to their analytical and statistical analysis as comments. A good starting point for the SDRF-Proteomics specification is the following:</p>
+<p>The following example shows 2 biological replicates, each with 2 fractions and 2 technical replicates:</p>
 </div>
-<div class="paragraph">
-<p><strong>technical replicate</strong>: It is defined as repeated measurements of the same sample that represent independent measures of the random noise associated with protocols or equipment [4].</p>
-</div>
-<div class="paragraph">
-<p>In MS-based proteomics, a technical replicate can be, for example, doing the full sample preparation from extraction to MS multiple times to control variability in the instrument and sample preparation. Another valid example would be to replicate only one part of the analytical method, for example, run the sample twice on the LC-MS/MS. technical replicates indicate if measurements are scientifically robust or noisy, and how large the measured effect must be to stand out above that noise.</p>
-</div>
-<div class="paragraph">
-<p><strong>Biological replicate</strong>: parallel measurements of biologically distinct samples that capture biological variation, which may itself be a subject of study or a source of noise. Biological replicates address if and how widely the results of an experiment can be generalized. For example, repeating a particular assay with independently generated samples, individuals or samples derived from various cell types, tissue types, or organisms, to see if similar results can be observed. Context is critical, and appropriate biological replicates will indicate whether an experimental effect is sustainable under a different set of biological variables or an anomaly itself.</p>
-</div>
-<div class="paragraph">
-<p>The following example shows an experiment with 2 biological replicates (different samples from 2 patients), each with 2 fractions and 2 technical replicates:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2858%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
-<th class="tableblock halign-left valign-top">comment[technical replicate]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [fraction identifier]</th>
+<th class="data-col">comment [technical replicate]</th>
+<th class="data-col">comment [data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_01</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P001_F1_TR1.raw</p></td>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_01</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">P001_F1_TR1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_02</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P001_F2_TR1.raw</p></td>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_02</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">1</td>
+<td class="data-col">P001_F2_TR1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_03</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P001_F1_TR2.raw</p></td>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_03</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">2</td>
+<td class="data-col">P001_F1_TR2.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P001_F2_TR2.raw</p></td>
+<td class="sample-col">patient_001_sample</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_04</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">2</td>
+<td class="data-col">P001_F2_TR2.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_002_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_05</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P002_F1_TR1.raw</p></td>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_05</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">P002_F1_TR1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_002_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_06</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P002_F2_TR1.raw</p></td>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_06</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">1</td>
+<td class="data-col">P002_F2_TR1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_002_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_07</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P002_F1_TR2.raw</p></td>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_07</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">2</td>
+<td class="data-col">P002_F1_TR2.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patient_002_sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_08</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P002_F2_TR2.raw</p></td>
+<td class="sample-col">patient_002_sample</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_08</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">2</td>
+<td class="data-col">P002_F2_TR2.raw</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
 <div class="paragraph">
 <p>In this example:</p>
 </div>
@@ -1392,128 +1350,121 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 </div>
 </div>
 <div class="sect3">
-<h4 id="_example_with_pooled_reference_channel"><a class="anchor" href="#_example_with_pooled_reference_channel"></a><a class="link" href="#_example_with_pooled_reference_channel">9.3.2. Example with pooled reference channel</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-</colgroup>
+<h4 id="_example_with_simple_pooled_annotation"><a class="anchor" href="#_example_with_simple_pooled_annotation"></a><a class="link" href="#_example_with_simple_pooled_annotation">9.3.2. Example with simple pooled annotation</a></h4>
+<div class="paragraph">
+<p>When pooling details are unknown or samples come from external sources, use the simple <code>pooled</code> value:</p>
+</div>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[pooled sample]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[age]</th>
-<th class="tableblock halign-left valign-top">characteristics[sex]</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [pooled sample]</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not pooled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">male</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">file01.raw</p></td>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">file01.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not pooled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">52Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">female</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">file01.raw</p></td>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">file01.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not pooled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">38Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">male</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127C</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">file01.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pooled_ref</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SN=sample_1;SN=sample_2;SN=sample_3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">file01.raw</p></td>
+<td class="sample-col">pooled_ref</td>
+<td class="sample-col">pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT131C</td>
+<td class="data-col">file01.raw</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="_metadata_handling_for_pooled_samples"><a class="anchor" href="#_metadata_handling_for_pooled_samples"></a><a class="link" href="#_metadata_handling_for_pooled_samples">9.3.3. Metadata handling for pooled samples</a></h4>
+<h4 id="_example_with_detailed_pooled_reference"><a class="anchor" href="#_example_with_detailed_pooled_reference"></a><a class="link" href="#_example_with_detailed_pooled_reference">9.3.3. Example with detailed pooled reference</a></h4>
 <div class="paragraph">
-<p>When a sample is pooled from multiple individuals, certain sample-specific metadata fields are no longer meaningful at the individual level. For pooled samples, the following metadata handling rules apply:</p>
+<p>When pooled samples are known and annotated in the same SDRF file, use the <code>SN=</code> format:</p>
 </div>
-<div class="paragraph">
-<p><strong>Fields that SHOULD use "not applicable" for pooled samples:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>characteristics[age]</code> - Age is not applicable when samples from multiple individuals of different ages are pooled</p>
-</li>
-<li>
-<p><code>characteristics[sex]</code> - Sex is not applicable when samples from individuals of different sexes are pooled</p>
-</li>
-<li>
-<p><code>characteristics[individual]</code> - Individual identifier is not applicable for pooled samples</p>
-</li>
-<li>
-<p><code>characteristics[ancestry category]</code> - Ancestry is not applicable when samples from individuals of different ancestries are pooled</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Fields that SHOULD still be annotated for pooled samples:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>characteristics[organism]</code> - The organism SHOULD still be specified (all pooled samples should be from the same organism)</p>
-</li>
-<li>
-<p><code>characteristics[organism part]</code> - The tissue/organ SHOULD be specified if consistent across pooled samples</p>
-</li>
-<li>
-<p><code>characteristics[disease]</code> - Disease status SHOULD be specified if consistent across pooled samples, otherwise use "not applicable"</p>
-</li>
-<li>
-<p><code>characteristics[cell type]</code> - Cell type SHOULD be specified if consistent across pooled samples</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock important">
+<div class="sdrf-example-table">
 <table>
+<thead>
 <tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-When <code>characteristics[pooled sample]</code> contains "pooled" or an "SN=&#8230;&#8203;" value, validators SHOULD accept "not applicable" for individual-specific metadata fields (age, sex, individual, ancestry category). This enables proper annotation of reference/normalization channels in multiplexed experiments.
-</td>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [pooled sample]</th>
+<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics [age]</th>
+<th class="sample-col">characteristics [sex]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [data file]</th>
 </tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">45Y</td>
+<td class="sample-col">male</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">52Y</td>
+<td class="sample-col">female</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">not pooled</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">38Y</td>
+<td class="sample-col">male</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT127C</td>
+<td class="data-col">file01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">pooled_ref</td>
+<td class="sample-col">SN=sample_1;SN=sample_2;SN=sample_3</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="data-col">run_1</td>
+<td class="data-col">TMT131C</td>
+<td class="data-col">file01.raw</td>
+</tr>
+</tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1522,7 +1473,7 @@ When <code>characteristics[pooled sample]</code> contains "pooled" or an "SN=&#8
 <div class="title">Tip</div>
 </td>
 <td class="content">
-If all pooled samples share the same value for a characteristic (e.g., all from females, or all age 40-50Y), that shared value MAY be used instead of "not applicable".
+For pooled samples, use "not applicable" for individual-specific fields (age, sex, individual). If all pooled samples share a value (e.g., all females, or age range 40-50Y), that shared value MAY be used instead.
 </td>
 </tr>
 </table>
@@ -1648,22 +1599,25 @@ If all pooled samples share the same value for a characteristic (e.g., all from 
 <div class="paragraph">
 <p>An example of SDRF-Proteomics for a sample spiked with a peptide would be:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">characteristics [mass]</th>
+<th class="sample-col">characteristics [spiked compound]</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[mass]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[spiked compound]</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1 ug</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</p></td>
+<td class="sample-col">1 ug</td>
+<td class="sample-col">CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
 <div class="paragraph">
 <p>For multiple spiked components, the column <em>characteristics[spiked compound]</em> may be repeated.</p>
 </div>
@@ -1740,7 +1694,7 @@ If all pooled samples share the same value for a characteristic (e.g., all from 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[cleavage agent details]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enzyme information</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enzyme information (use "not available" for undigested samples)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[fraction identifier]</p></td>
@@ -1762,39 +1716,36 @@ If all pooled samples share the same value for a characteristic (e.g., all from 
 <div class="paragraph">
 <p>Example:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 14.2858%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">technology type</th>
-<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[instrument]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
+<th class="sample-col">source name</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment [proteomics data acquisition method]</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [instrument]</th>
+<th class="data-col">comment [data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample1.raw</p></td>
+<td class="sample-col">sample_1</td>
+<td class="data-col">sample1_run1</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">sample1.raw</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
 <div class="sect2">
 <h3 id="sample-prep"><a class="anchor" href="#sample-prep"></a><a class="link" href="#sample-prep">10.1. Sample preparation properties</a></h3>
 <div class="paragraph">
@@ -1905,8 +1856,10 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect1">
-<h2 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">11. Row Uniqueness Requirements</a></h2>
+<h2 id="additional-sdrf-rules"><a class="anchor" href="#additional-sdrf-rules"></a><a class="link" href="#additional-sdrf-rules">11. Additional SDRF Rules</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">11.1. Row Uniqueness Requirements</a></h3>
 <div class="paragraph">
 <p>SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.</p>
 </div>
@@ -1934,50 +1887,51 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <div class="paragraph">
 <p>Example of valid multiplexed experiment:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
+<th class="sample-col">source name</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment [label]</th>
+<th class="data-col">comment [data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+<td class="sample-col">sample_A</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+<td class="sample-col">sample_B</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_C</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127C</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+<td class="sample-col">sample_C</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT127C</td>
+<td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample_D</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT_batch1_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TMT128N</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">batch1_run1.raw</p></td>
+<td class="sample-col">sample_D</td>
+<td class="data-col">TMT_batch1_run1</td>
+<td class="data-col">TMT128N</td>
+<td class="data-col">batch1_run1.raw</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
 <div class="paragraph">
 <p>In this example, all four rows share the same <code>assay name</code> and <code>comment[data file]</code> because they represent different samples multiplexed in a single MS run. The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> is unique for each row.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2732,25 +2686,27 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <div class="paragraph">
 <p>Example of multiple organism part columns:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics [organism part]</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">source name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism part]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism part]</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sample-1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">heart</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">heart left ventricle</p></td>
+<td class="sample-col">sample-1</td>
+<td class="sample-col">heart</td>
+<td class="sample-col">heart left ventricle</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
 <div class="paragraph">
 <p>The template files can be downloaded from the <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates">core-templates</a> folder.</p>
 </div>
@@ -2809,47 +2765,46 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <div class="paragraph">
 <p>In an experiment comparing tumor vs. normal tissue across different cancer stages:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">characteristics[disease stage]</th>
-<th class="tableblock halign-left valign-top">factor value[disease]</th>
-<th class="tableblock halign-left valign-top">factor value[disease stage]</th>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics [disease stage]</th>
+<th class="factor-col">factor value [disease]</th>
+<th class="factor-col">factor value [disease stage]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_sample_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">stage II</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">stage II</p></td>
+<td class="sample-col">tumor_sample_1</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="sample-col">stage II</td>
+<td class="factor-col">breast carcinoma</td>
+<td class="factor-col">stage II</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal_sample_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="sample-col">normal_sample_1</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">not applicable</td>
+<td class="factor-col">normal</td>
+<td class="factor-col">not applicable</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_sample_2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">stage III</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">stage III</p></td>
+<td class="sample-col">tumor_sample_2</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="sample-col">stage III</td>
+<td class="factor-col">breast carcinoma</td>
+<td class="factor-col">stage III</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+</div>
+</div>
 <div class="paragraph">
 <p>In this example, both <code>disease</code> and <code>disease stage</code> are factor values because the experiment aims to compare expression differences between disease states and across cancer stages.</p>
 </div>
@@ -3005,21 +2960,24 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">20. References</a></h2>
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">References</a></h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
+<div class="ulist bibliography">
+<ul class="bibliography">
 <li>
-<p>[1] Y. Perez-Riverol, S. European Bioinformatics Community for Mass, Toward a Sample Metadata Standard in Public Proteomics Repositories, J Proteome Res 19(10) (2020) 3906-3909.</p>
+<p><a id="ref1"></a>[1] Y. Perez-Riverol, S. European Bioinformatics Community for Mass, Toward a Sample Metadata Standard in Public Proteomics Repositories, J Proteome Res 19(10) (2020) 3906-3909. <a href="https://doi.org/10.1021/acs.jproteome.0c00376">doi:10.1021/acs.jproteome.0c00376</a></p>
 </li>
 <li>
-<p>[2] A. Gonzalez-Beltran, E. Maguire, S.A. Sansone, P. Rocca-Serra, linkedISA: semantic representation of ISA-Tab experimental metadata, BMC Bioinformatics 15 Suppl 14 (2014) S4.</p>
+<p><a id="ref2"></a>[2] A. Gonzalez-Beltran, E. Maguire, S.A. Sansone, P. Rocca-Serra, linkedISA: semantic representation of ISA-Tab experimental metadata, BMC Bioinformatics 15 Suppl 14 (2014) S4. <a href="https://doi.org/10.1186/1471-2105-15-S14-S4">doi:10.1186/1471-2105-15-S14-S4</a></p>
 </li>
 <li>
-<p>[3] T.F. Rayner, P. Rocca-Serra, P.T. Spellman, H.C. Causton, A. Farne, E. Holloway, R.A. Irizarry, J. Liu, D.S. Maier, M. Miller, K. Petersen, J. Quackenbush, G. Sherlock, C.J. Stoeckert, Jr., J. White, P.L. Whetzel, F. Wymore, H. Parkinson, U. Sarkans, C.A. Ball, A. Brazma, A simple spreadsheet-based, MIAME-supportive format for microarray data: MAGE-TAB, BMC Bioinformatics 7 (2006) 489.</p>
+<p><a id="ref3"></a>[3] T.F. Rayner, P. Rocca-Serra, P.T. Spellman, et al., A simple spreadsheet-based, MIAME-supportive format for microarray data: MAGE-TAB, BMC Bioinformatics 7 (2006) 489. <a href="https://doi.org/10.1186/1471-2105-7-489">doi:10.1186/1471-2105-7-489</a></p>
 </li>
 <li>
-<p>[4] P. Blainey, M. Krzywinski, N. Altman, Points of significance: replication, Nat Methods 11(9) (2014) 879-80.</p>
+<p><a id="ref4"></a>[4] P. Blainey, M. Krzywinski, N. Altman, Points of significance: replication, Nat Methods 11(9) (2014) 879-80. <a href="https://doi.org/10.1038/nmeth.3091">doi:10.1038/nmeth.3091</a></p>
+</li>
+<li>
+<p><a id="ref5"></a>[5] D. Gupta, I. Liyanage, Y. Perez-Riverol, et al., BioSamples database: the global hub for sample metadata and multi-omics integration, Nucleic Acids Res (2025). <a href="https://doi.org/10.1093/nar/gkaf1133">doi:10.1093/nar/gkaf1133</a></p>
 </li>
 </ul>
 </div>
@@ -3028,7 +2986,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-16 07:38:01 UTC
+Last updated 2026-01-16 14:42:57 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
