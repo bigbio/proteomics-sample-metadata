@@ -499,7 +499,7 @@ SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize
 |Zebrafish anatomy and development
 |For zebrafish samples
 
-4+^s|*Disease*
+4+^s|*Disease* (see link:metadata-guidelines/sample-metadata.adoc#disease-annotation[Disease Annotation Guidelines])
 
 |Disease
 |https://www.ebi.ac.uk/ols4/ontologies/mondo[Mondo Disease Ontology (MONDO)]
@@ -509,6 +509,11 @@ SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize
 |Disease
 |https://www.ebi.ac.uk/ols4/ontologies/efo[Experimental Factor Ontology (EFO)]
 |Disease terms from EFO
+|
+
+|Healthy samples
+|https://www.ebi.ac.uk/ols4/ontologies/pato[Phenotype And Trait Ontology (PATO)]
+|Use `normal` (PATO:0000461) for healthy samples
 |
 
 4+^s|*Cell Lines*
@@ -566,7 +571,7 @@ The Sample metadata section provides information about the samples of origin and
 - *source name*: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)
 - *characteristics[organism]*: The organism of the Sample of origin.
 - *characteristics[organism part]*: The part of organism's anatomy or substance arising from an organism from which the biomaterial was derived, (e.g., liver)
-- *characteristics[disease]*: The disease under study in the Sample.
+- *characteristics[disease]*: The disease under study in the Sample. For healthy/control samples, use `normal` (see link:metadata-guidelines/sample-metadata.adoc#disease-annotation[Disease Annotation Guidelines]).
 - *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell. Examples are epithelial, glial etc.
 
 Example:
@@ -622,7 +627,7 @@ NOTE: Additional characteristics can be added depending on the type of the exper
 
 Some important notes:
 
-- Each characteristic name in the column header SHOULD be a CV term from the EFO ontology. For example, the header _characteristics[organism]_ corresponds to the ontology term Organism. However the values could be from EFO or other ontologies. For example, we RECOMMEND to use MONDO for diseases because it has better coverage than EFO.
+- Each characteristic name in the column header SHOULD be a CV term from the EFO ontology. For example, the header _characteristics[organism]_ corresponds to the ontology term Organism. However the values could be from EFO or other ontologies. For example, we RECOMMEND to use MONDO for diseases because it has better coverage than EFO. For healthy samples, use `normal` (PATO:0000461) - see link:metadata-guidelines/sample-metadata.adoc#disease-annotation[Disease Annotation Guidelines].
 
 - Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g., "immunophenotype".
 
@@ -1312,34 +1317,44 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
+<th>...</th>
 <th class="data-col">assay name</th>
 <th class="data-col">comment [label]</th>
+<th>...</th>
 <th class="data-col">comment [data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="sample-col">sample_A</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT126</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">sample_B</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT127N</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">sample_C</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT127C</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">sample_D</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT128N</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 </tbody>
@@ -1353,14 +1368,14 @@ ifdef::backend-html5[]
 endif::[]
 
 ifndef::backend-html5[]
-[%header,cols="1,1,1,1"]
+[%header,cols="1,1,1,1,1,1"]
 |===
-|source name |assay name |comment [label] |comment [data file]
+|source name |... |assay name |comment [label] |... |comment [data file]
 
-|sample_A |TMT_batch1_run1 |TMT126 |batch1_run1.raw
-|sample_B |TMT_batch1_run1 |TMT127N |batch1_run1.raw
-|sample_C |TMT_batch1_run1 |TMT127C |batch1_run1.raw
-|sample_D |TMT_batch1_run1 |TMT128N |batch1_run1.raw
+|sample_A |... |TMT_batch1_run1 |TMT126 |... |batch1_run1.raw
+|sample_B |... |TMT_batch1_run1 |TMT127N |... |batch1_run1.raw
+|sample_C |... |TMT_batch1_run1 |TMT127C |... |batch1_run1.raw
+|sample_D |... |TMT_batch1_run1 |TMT128N |... |batch1_run1.raw
 |===
 endif::[]
 
@@ -1570,15 +1585,19 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
+<th>...</th>
 <th class="sample-col">characteristics [organism part]</th>
 <th class="sample-col">characteristics [organism part]</th>
+<th>...</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="sample-col">sample-1</td>
+<td>...</td>
 <td class="sample-col">heart</td>
 <td class="sample-col">heart left ventricle</td>
+<td>...</td>
 </tr>
 </tbody>
 </table>
@@ -1590,10 +1609,10 @@ ifdef::backend-html5[]
 endif::[]
 
 ifndef::backend-html5[]
-[%header,cols="1,1,1"]
+[%header,cols="1,1,1,1,1"]
 |===
-|source name |characteristics [organism part] |characteristics [organism part]
-|sample-1 |heart |heart left ventricle
+|source name |... |characteristics [organism part] |characteristics [organism part] |...
+|sample-1 |... |heart |heart left ventricle |...
 |===
 endif::[]
 
@@ -1613,8 +1632,10 @@ Factor values identify the experimental variables being studied - the conditions
 Use factor values to indicate:
 
 - The primary variable(s) under investigation
-- Conditions being compared (e.g., disease vs. control, treated vs. untreated)
+- Conditions being compared (e.g., disease vs. normal, treated vs. untreated)
 - Variables that define experimental groups
+
+NOTE: Use `normal` (not "control") in the disease field for healthy samples. "Control" is an experimental design concept, not a disease state. See link:metadata-guidelines/sample-metadata.adoc#disease-annotation[Disease Annotation Guidelines] for details.
 
 === Rules
 
@@ -1633,8 +1654,10 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
+<th>...</th>
 <th class="sample-col">characteristics [disease]</th>
 <th class="sample-col">characteristics [disease stage]</th>
+<th>...</th>
 <th class="factor-col">factor value [disease]</th>
 <th class="factor-col">factor value [disease stage]</th>
 </tr>
@@ -1642,22 +1665,28 @@ ifdef::backend-html5[]
 <tbody>
 <tr>
 <td class="sample-col">tumor_sample_1</td>
+<td>...</td>
 <td class="sample-col">breast carcinoma</td>
 <td class="sample-col">stage II</td>
+<td>...</td>
 <td class="factor-col">breast carcinoma</td>
 <td class="factor-col">stage II</td>
 </tr>
 <tr>
 <td class="sample-col">normal_sample_1</td>
+<td>...</td>
 <td class="sample-col">normal</td>
 <td class="sample-col">not applicable</td>
+<td>...</td>
 <td class="factor-col">normal</td>
 <td class="factor-col">not applicable</td>
 </tr>
 <tr>
 <td class="sample-col">tumor_sample_2</td>
+<td>...</td>
 <td class="sample-col">breast carcinoma</td>
 <td class="sample-col">stage III</td>
+<td>...</td>
 <td class="factor-col">breast carcinoma</td>
 <td class="factor-col">stage III</td>
 </tr>
@@ -1672,12 +1701,12 @@ ifdef::backend-html5[]
 endif::[]
 
 ifndef::backend-html5[]
-[%header,cols="1,1,1,1,1"]
+[%header,cols="1,1,1,1,1,1,1"]
 |===
-|source name |characteristics [disease] |characteristics [disease stage] |factor value [disease] |factor value [disease stage]
-|tumor_sample_1 |breast carcinoma |stage II |breast carcinoma |stage II
-|normal_sample_1 |normal |not applicable |normal |not applicable
-|tumor_sample_2 |breast carcinoma |stage III |breast carcinoma |stage III
+|source name |... |characteristics [disease] |characteristics [disease stage] |... |factor value [disease] |factor value [disease stage]
+|tumor_sample_1 |... |breast carcinoma |stage II |... |breast carcinoma |stage II
+|normal_sample_1 |... |normal |not applicable |... |normal |not applicable
+|tumor_sample_2 |... |breast carcinoma |stage III |... |breast carcinoma |stage III
 |===
 endif::[]
 

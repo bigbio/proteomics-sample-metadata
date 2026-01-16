@@ -85,20 +85,80 @@ Use `not available` when age is unknown, `not applicable` for immortalized cell 
 
 For model organisms, use specific stages when applicable: `embryonic day 14` (mouse E14), `24 hpf` (zebrafish 24 hours post fertilization).
 
+[[disease-annotation]]
 == Disease
 
 **Column:** `characteristics[disease]`
 
 **Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology] (preferred), https://www.ebi.ac.uk/efo/[EFO], https://disease-ontology.org/[Human Disease Ontology (DOID)]
 
-For healthy controls, use `normal` (mapped to PATO:0000461). For animal disease models, use the human disease name (e.g., `Alzheimer disease` for APP/PS1 mice).
+=== Healthy Samples: normal vs healthy vs control
+
+For samples without disease, the terminology matters for standardization:
+
+**`normal`** (PATO:0000461) - **Recommended**
+
+- Standard term in pathology ("normal tissue" vs "tumor tissue")
+- Well-defined ontology mapping to PATO:0000461
+- Widely used in existing proteomics datasets
+
+**`healthy`** (PATO:0001421) - **Accepted alternative**
+
+- More intuitive for clinical/human samples
+- Has valid ontology support
+- Validators should accept both `normal` and `healthy`
+
+**`control`** - **Avoid in disease field**
+
+- "Control" is an **experimental design concept**, not a disease state
+- Ambiguous: a control could be healthy, vehicle-treated, time-zero, or even a different disease used for comparison
+- The experimental role should be captured in `factor value[disease]`, not in `characteristics[disease]`
+
+=== Disease State vs Experimental Role
+
+The `characteristics[disease]` column captures the **actual disease state** of the sample, while `factor value[disease]` indicates the **experimental comparison groups**:
 
 |===
-|Disease |SDRF Value |MONDO ID
+|source name |... |characteristics[disease] |... |factor value[disease]
 
-|Healthy control |normal |PATO:0000461
+|healthy_1 |... |normal |... |normal
+|tumor_1 |... |breast carcinoma |... |breast carcinoma
+|adjacent_1 |... |normal |... |normal
+|===
+
+In this example:
+
+- `healthy_1`: Healthy control sample from a healthy individual
+- `tumor_1`: Disease case sample (tumor tissue)
+- `adjacent_1`: Adjacent normal tissue from a cancer patient
+
+Both `healthy_1` and `adjacent_1` have `normal` as their disease state (no tumor cells), but they come from different individuals. The experimental design and comparison groups are defined by the factor values.
+
+=== Disease Examples
+
+|===
+|Disease |SDRF Value |Ontology ID
+
+|Healthy/no disease |normal |PATO:0000461
+|Healthy (alternative) |healthy |PATO:0001421
 |Breast cancer |breast carcinoma |MONDO:0004989
+|Alzheimer's disease |Alzheimer disease |MONDO:0004975
+|Type 2 diabetes |type 2 diabetes mellitus |MONDO:0005148
 |===
+
+=== Animal Disease Models
+
+For animal disease models, use the human disease name to facilitate cross-species comparisons:
+
+|===
+|source name |characteristics[organism] |... |characteristics[disease] |...
+
+|APP_PS1_sample1 |mus musculus |... |Alzheimer disease |...
+|dbdb_sample1 |mus musculus |... |type 2 diabetes mellitus |...
+|wildtype_sample1 |mus musculus |... |normal |...
+|===
+
+NOTE: APP/PS1 and db/db are common mouse disease models for Alzheimer's disease and type 2 diabetes respectively.
 
 == Cell Type
 
@@ -109,10 +169,10 @@ For healthy controls, use `normal` (mapped to PATO:0000461). For animal disease 
 For cell lines, optionally include the cell type of origin.
 
 |===
-|Value |CL ID |Description
+|Value |CL ID
 
-|epithelial cell |CL:0000066 |General epithelial cell
-|T cell |CL:0000084 |T lymphocyte
+|epithelial cell |CL:0000066
+|T cell |CL:0000084
 |===
 
 For detailed immune cell studies, use specific subtypes: `CD4-positive, alpha-beta T cell` (CL:0000624), `regulatory T cell` (CL:0000815).
@@ -132,10 +192,10 @@ Values: `no depletion`, `depletion`, `not applicable`.
 When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
 
 |===
-|source name |characteristics[xenograft] |characteristics[organism] |characteristics[age]
+|source name |characteristics[organism] |... |characteristics[xenograft] |characteristics[age] |...
 
-|tumor_001 |not applicable |homo sapiens |65Y
-|pdx_001 |pancreatic adenocarcinoma grown in nude mice |homo sapiens |65Y
+|tumor_001 |homo sapiens |... |not applicable |65Y |...
+|pdx_001 |homo sapiens |... |pancreatic adenocarcinoma grown in nude mice |65Y |...
 |===
 
 == Synthetic Peptide Libraries
