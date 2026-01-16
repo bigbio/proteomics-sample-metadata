@@ -20,7 +20,14 @@
 <li><a href="#_organism_part_tissue">3. Organism Part / Tissue</a></li>
 <li><a href="#_age">4. Age</a></li>
 <li><a href="#_developmental_stage">5. Developmental Stage</a></li>
-<li><a href="#_disease">6. Disease</a></li>
+<li><a href="#disease-annotation">6. Disease</a>
+<ul class="sectlevel2">
+<li><a href="#_healthy_samples_normal_vs_healthy_vs_control">6.1. Healthy Samples: normal vs healthy vs control</a></li>
+<li><a href="#_disease_state_vs_experimental_role">6.2. Disease State vs Experimental Role</a></li>
+<li><a href="#_disease_examples">6.3. Disease Examples</a></li>
+<li><a href="#_animal_disease_models">6.4. Animal Disease Models</a></li>
+</ul>
+</li>
 <li><a href="#_cell_type">7. Cell Type</a></li>
 <li><a href="#_depletion">8. Depletion</a></li>
 <li><a href="#_patient_derived_xenografts_pdx">9. Patient-Derived Xenografts (PDX)</a></li>
@@ -202,7 +209,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_disease"><a class="anchor" href="#_disease"></a><a class="link" href="#_disease">6. Disease</a></h2>
+<h2 id="disease-annotation"><a class="anchor" href="#disease-annotation"></a><a class="link" href="#disease-annotation">6. Disease</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[disease]</code></p>
@@ -210,9 +217,128 @@
 <div class="paragraph">
 <p><strong>Ontology:</strong> <a href="https://mondo.monarchinitiative.org/">MONDO Disease Ontology</a> (preferred), <a href="https://www.ebi.ac.uk/efo/">EFO</a>, <a href="https://disease-ontology.org/">Human Disease Ontology (DOID)</a></p>
 </div>
+<div class="sect2">
+<h3 id="_healthy_samples_normal_vs_healthy_vs_control"><a class="anchor" href="#_healthy_samples_normal_vs_healthy_vs_control"></a><a class="link" href="#_healthy_samples_normal_vs_healthy_vs_control">6.1. Healthy Samples: normal vs healthy vs control</a></h3>
 <div class="paragraph">
-<p>For healthy controls, use <code>normal</code> (mapped to PATO:0000461). For animal disease models, use the human disease name (e.g., <code>Alzheimer disease</code> for APP/PS1 mice).</p>
+<p>For samples without disease, the terminology matters for standardization:</p>
 </div>
+<div class="paragraph">
+<p><strong><code>normal</code></strong> (PATO:0000461) - <strong>Recommended</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Standard term in pathology ("normal tissue" vs "tumor tissue")</p>
+</li>
+<li>
+<p>Well-defined ontology mapping to PATO:0000461</p>
+</li>
+<li>
+<p>Widely used in existing proteomics datasets</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><code>healthy</code></strong> (PATO:0001421) - <strong>Accepted alternative</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>More intuitive for clinical/human samples</p>
+</li>
+<li>
+<p>Has valid ontology support</p>
+</li>
+<li>
+<p>Validators should accept both <code>normal</code> and <code>healthy</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><code>control</code></strong> - <strong>Avoid in disease field</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Control" is an <strong>experimental design concept</strong>, not a disease state</p>
+</li>
+<li>
+<p>Ambiguous: a control could be healthy, vehicle-treated, time-zero, or even a different disease used for comparison</p>
+</li>
+<li>
+<p>The experimental role should be captured in <code>factor value[disease]</code>, not in <code>characteristics[disease]</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disease_state_vs_experimental_role"><a class="anchor" href="#_disease_state_vs_experimental_role"></a><a class="link" href="#_disease_state_vs_experimental_role">6.2. Disease State vs Experimental Role</a></h3>
+<div class="paragraph">
+<p>The <code>characteristics[disease]</code> column captures the <strong>actual disease state</strong> of the sample, while <code>factor value[disease]</code> indicates the <strong>experimental comparison groups</strong>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">characteristics[disease]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">factor value[disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">healthy_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adjacent_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>In this example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>healthy_1</code>: Healthy control sample from a healthy individual</p>
+</li>
+<li>
+<p><code>tumor_1</code>: Disease case sample (tumor tissue)</p>
+</li>
+<li>
+<p><code>adjacent_1</code>: Adjacent normal tissue from a cancer patient</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Both <code>healthy_1</code> and <code>adjacent_1</code> have <code>normal</code> as their disease state (no tumor cells), but they come from different individuals. The experimental design and comparison groups are defined by the factor values.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disease_examples"><a class="anchor" href="#_disease_examples"></a><a class="link" href="#_disease_examples">6.3. Disease Examples</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -223,22 +349,97 @@
 <tr>
 <th class="tableblock halign-left valign-top">Disease</th>
 <th class="tableblock halign-left valign-top">SDRF Value</th>
-<th class="tableblock halign-left valign-top">MONDO ID</th>
+<th class="tableblock halign-left valign-top">Ontology ID</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Healthy control</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Healthy/no disease</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PATO:0000461</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Healthy (alternative)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">healthy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PATO:0001421</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Breast cancer</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0004989</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alzheimer&#8217;s disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alzheimer disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0004975</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type 2 diabetes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO:0005148</p></td>
+</tr>
 </tbody>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_animal_disease_models"><a class="anchor" href="#_animal_disease_models"></a><a class="link" href="#_animal_disease_models">6.4. Animal Disease Models</a></h3>
+<div class="paragraph">
+<p>For animal disease models, use the human disease name to facilitate cross-species comparisons:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">characteristics[disease]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">APP_PS1_sample1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alzheimer disease</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dbdb_sample1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wildtype_sample1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease and type 2 diabetes respectively.
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -255,27 +456,23 @@
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 50%;">
+<col style="width: 50%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Value</th>
 <th class="tableblock halign-left valign-top">CL ID</th>
-<th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">epithelial cell</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CL:0000066</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">General epithelial cell</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">T cell</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CL:0000084</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">T lymphocyte</p></td>
 </tr>
 </tbody>
 </table>
@@ -309,31 +506,39 @@
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[xenograft]</th>
 <th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">characteristics[xenograft]</th>
 <th class="tableblock halign-left valign-top">characteristics[age]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">tumor_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">65Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pdx_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pancreatic adenocarcinoma grown in nude mice</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pancreatic adenocarcinoma grown in nude mice</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">65Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 </tr>
 </tbody>
 </table>
@@ -440,7 +645,7 @@
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-16 16:46:49 UTC
+Last updated 2026-01-16 17:01:01 UTC
 </div>
 </div>
 </body>

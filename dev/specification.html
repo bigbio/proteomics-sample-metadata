@@ -872,7 +872,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <td class="tableblock halign-left valign-top"><p class="tableblock">For zebrafish samples</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Disease</strong></strong></p></td>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock"><strong><strong>Disease</strong> (see <a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">Disease Annotation Guidelines</a>)</strong></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock">Disease</p></td>
@@ -884,6 +884,12 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <td class="tableblock halign-center valign-top"><p class="tableblock">Disease</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo">Experimental Factor Ontology (EFO)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disease terms from EFO</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Healthy samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pato">Phenotype And Trait Ontology (PATO)</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>normal</code> (PATO:0000461) for healthy samples</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -965,7 +971,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <p><strong>characteristics[organism part]</strong>: The part of organism&#8217;s anatomy or substance arising from an organism from which the biomaterial was derived, (e.g., liver)</p>
 </li>
 <li>
-<p><strong>characteristics[disease]</strong>: The disease under study in the Sample.</p>
+<p><strong>characteristics[disease]</strong>: The disease under study in the Sample. For healthy/control samples, use <code>normal</code> (see <a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">Disease Annotation Guidelines</a>).</p>
 </li>
 <li>
 <p><strong>characteristics[cell type]</strong>: A cell type is a distinct morphological or functional form of cell. Examples are epithelial, glial etc.</p>
@@ -1025,7 +1031,7 @@ Additional characteristics can be added depending on the type of the experiment 
 <div class="ulist">
 <ul>
 <li>
-<p>Each characteristic name in the column header SHOULD be a CV term from the EFO ontology. For example, the header <em>characteristics[organism]</em> corresponds to the ontology term Organism. However the values could be from EFO or other ontologies. For example, we RECOMMEND to use MONDO for diseases because it has better coverage than EFO.</p>
+<p>Each characteristic name in the column header SHOULD be a CV term from the EFO ontology. For example, the header <em>characteristics[organism]</em> corresponds to the ontology term Organism. However the values could be from EFO or other ontologies. For example, we RECOMMEND to use MONDO for diseases because it has better coverage than EFO. For healthy samples, use <code>normal</code> (PATO:0000461) - see <a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">Disease Annotation Guidelines</a>.</p>
 </li>
 <li>
 <p>Multiple values (columns) for the same characteristics term are allowed in SDRF-Proteomics. However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g., "immunophenotype".</p>
@@ -1892,34 +1898,44 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <thead>
 <tr>
 <th class="sample-col">source name</th>
+<th>...</th>
 <th class="data-col">assay name</th>
 <th class="data-col">comment [label]</th>
+<th>...</th>
 <th class="data-col">comment [data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="sample-col">sample_A</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT126</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">sample_B</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT127N</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">sample_C</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT127C</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">sample_D</td>
+<td>...</td>
 <td class="data-col">TMT_batch1_run1</td>
 <td class="data-col">TMT128N</td>
+<td>...</td>
 <td class="data-col">batch1_run1.raw</td>
 </tr>
 </tbody>
@@ -2691,15 +2707,19 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <thead>
 <tr>
 <th class="sample-col">source name</th>
+<th>...</th>
 <th class="sample-col">characteristics [organism part]</th>
 <th class="sample-col">characteristics [organism part]</th>
+<th>...</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="sample-col">sample-1</td>
+<td>...</td>
 <td class="sample-col">heart</td>
 <td class="sample-col">heart left ventricle</td>
+<td>...</td>
 </tr>
 </tbody>
 </table>
@@ -2736,12 +2756,24 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <p>The primary variable(s) under investigation</p>
 </li>
 <li>
-<p>Conditions being compared (e.g., disease vs. control, treated vs. untreated)</p>
+<p>Conditions being compared (e.g., disease vs. normal, treated vs. untreated)</p>
 </li>
 <li>
 <p>Variables that define experimental groups</p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use <code>normal</code> (not "control") in the disease field for healthy samples. "Control" is an experimental design concept, not a disease state. See <a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">Disease Annotation Guidelines</a> for details.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -2770,8 +2802,10 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <thead>
 <tr>
 <th class="sample-col">source name</th>
+<th>...</th>
 <th class="sample-col">characteristics [disease]</th>
 <th class="sample-col">characteristics [disease stage]</th>
+<th>...</th>
 <th class="factor-col">factor value [disease]</th>
 <th class="factor-col">factor value [disease stage]</th>
 </tr>
@@ -2779,22 +2813,28 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <tbody>
 <tr>
 <td class="sample-col">tumor_sample_1</td>
+<td>...</td>
 <td class="sample-col">breast carcinoma</td>
 <td class="sample-col">stage II</td>
+<td>...</td>
 <td class="factor-col">breast carcinoma</td>
 <td class="factor-col">stage II</td>
 </tr>
 <tr>
 <td class="sample-col">normal_sample_1</td>
+<td>...</td>
 <td class="sample-col">normal</td>
 <td class="sample-col">not applicable</td>
+<td>...</td>
 <td class="factor-col">normal</td>
 <td class="factor-col">not applicable</td>
 </tr>
 <tr>
 <td class="sample-col">tumor_sample_2</td>
+<td>...</td>
 <td class="sample-col">breast carcinoma</td>
 <td class="sample-col">stage III</td>
+<td>...</td>
 <td class="factor-col">breast carcinoma</td>
 <td class="factor-col">stage III</td>
 </tr>
@@ -2986,7 +3026,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-16 16:46:49 UTC
+Last updated 2026-01-16 17:01:01 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
