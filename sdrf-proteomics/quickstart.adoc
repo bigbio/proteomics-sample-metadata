@@ -304,22 +304,42 @@ For more validation options, see link:../tool-support.adoc[Tool Support].
 
 == Complete Example
 
-Here's a complete SDRF file for a human liver cancer study comparing tumor vs. healthy tissue, following the human template guidelines:
+Here's a minimum valid SDRF file for a human liver cancer study, including all required columns from the human template:
 
-[cols="1,1,1,1,1,1,1,1,1,1,1,1,1"]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"]
 |===
-|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[age] |characteristics[sex] |characteristics[biological replicate] |assay name |comment[label] |comment[instrument] |comment[technical replicate] |comment[data file] |factor value[disease]
+|source name
+|characteristics[organism]
+|characteristics[organism part]
+|characteristics[disease]
+|characteristics[biological replicate]
+|characteristics[age]
+|characteristics[sex]
+|assay name
+|technology type
+|comment[proteomics proteomics data acquisition method]
+|comment[label]
+|comment[instrument]
+|comment[cleavage agent details]
+|comment[fraction identifier]
+|comment[technical replicate]
+|comment[data file]
+|factor value[disease]
 
 |patient_001
 |homo sapiens
 |liver
 |hepatocellular carcinoma
+|1
 |55Y
 |male
-|1
 |run_001
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
 |label free sample
 |Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
 |1
 |patient_001.raw
 |hepatocellular carcinoma
@@ -328,12 +348,16 @@ Here's a complete SDRF file for a human liver cancer study comparing tumor vs. h
 |homo sapiens
 |liver
 |hepatocellular carcinoma
+|2
 |62Y
 |female
-|2
 |run_002
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
 |label free sample
 |Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
 |1
 |patient_002.raw
 |hepatocellular carcinoma
@@ -342,12 +366,16 @@ Here's a complete SDRF file for a human liver cancer study comparing tumor vs. h
 |homo sapiens
 |liver
 |normal
+|3
 |48Y
 |male
-|3
 |run_003
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
 |label free sample
 |Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
 |1
 |control_001.raw
 |normal
@@ -356,25 +384,33 @@ Here's a complete SDRF file for a human liver cancer study comparing tumor vs. h
 |homo sapiens
 |liver
 |normal
+|4
 |51Y
 |female
-|4
 |run_004
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
 |label free sample
 |Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
 |1
 |control_002.raw
 |normal
 |===
 
+**Required columns in this example:**
+
+- **Sample metadata:** source name, organism, organism part, disease, biological replicate, age, sex
+- **Data file metadata:** assay name, technology type, proteomics data acquisition method, label, instrument, cleavage agent, fraction identifier, technical replicate, data file
+- **Factor value:** the experimental variable being compared (disease)
+
 **What this example tells us:**
 
-- 4 biological replicates from human liver tissue (each patient/control is a biological replicate)
-- 2 cancer patients (ages 55Y and 62Y), 2 healthy controls (ages 48Y and 51Y)
-- Human-specific metadata: age (in years format) and sex
-- Each sample run once (technical replicate = 1)
-- Label-free proteomics on a Q Exactive HF
-- The experimental variable (`factor value`) is disease status
+- 4 biological replicates (each patient/control is numbered 1-4)
+- No fractionation (fraction identifier = 1 for all)
+- Single injection per sample (technical replicate = 1)
+- Label-free DDA proteomics with trypsin digestion on Q Exactive HF
 
 == Common Scenarios
 
