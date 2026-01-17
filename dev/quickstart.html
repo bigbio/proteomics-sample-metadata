@@ -62,7 +62,7 @@
             <div class="example-finder">
                 <div class="search-box">
                     <input type="text" id="example-search" placeholder="e.g., homo sapiens, Q Exactive, PXD..." autocomplete="off">
-                    <button type="button" id="search-btn" class="btn btn-primary">Find Examples</button>
+                    <button type="button" id="search-btn" class="btn btn-primary" onclick="searchExamples()">Find Examples</button>
                 </div>
                 <div class="search-suggestions">
                     <span>Try:</span>
@@ -1366,16 +1366,17 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
             }).join('');
         }
 
-        // Enable search on Enter key
-        document.getElementById('example-search').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchExamples();
+        // Set up event listeners when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enable search on Enter key
+            var searchInput = document.getElementById('example-search');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchExamples();
+                    }
+                });
             }
-        });
-
-        // Enable search on button click
-        document.getElementById('search-btn').addEventListener('click', function() {
-            searchExamples();
         });
     </script>
 </body>
