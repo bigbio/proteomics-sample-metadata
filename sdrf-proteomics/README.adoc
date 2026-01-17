@@ -191,7 +191,7 @@ This document describes the main specification of SDRF-Proteomics, the structure
 
 * https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[Core templates]: Organism-based templates (human, vertebrates, plants, etc.) that define base schemas for common proteomics experiments. See the <<core-templates,Core Templates>> section.
 
-* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Specialized templates]: Complete schemas for specific experiment types (cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Specialized templates]: Complete schemas for specific experiment types and acquisition methods (DDA acquisition, DIA acquisition, cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:
 - A detailed README.adoc with checklists, and examples.
 - A template file ({name}-template.sdrf.tsv) with column headers.
 
@@ -1419,6 +1419,7 @@ Each template includes both **sample metadata** (characteristics columns describ
 Templates in SDRF-Proteomics follow a **hierarchical inheritance model**:
 
 - **Core templates** (default, human, vertebrates, invertebrates, plants) define organism-specific requirements
+- **Acquisition templates** (DDA, DIA) define acquisition-method-specific requirements
 - **Experiment-type templates** (single-cell, immunopeptidomics, crosslinking, etc.) define methodology-specific requirements
 - Templates can be **combined**: a human single-cell proteomics experiment would use both the human template AND the single-cell template
 - Templates can be **extended**: add custom columns beyond the template requirements for study-specific metadata
@@ -1426,6 +1427,49 @@ Templates in SDRF-Proteomics follow a **hierarchical inheritance model**:
 When combining templates, include all required columns from each applicable template. The validator will check compliance with all specified templates.
 
 TIP: **For developers and maintainers:** When creating new templates, follow the inheritance principle—child templates must not weaken parent requirements. For example, if the default template has `organism` as REQUIRED, the human template (which inherits from it) must also keep `organism` as REQUIRED. Child templates may add new required columns or promote recommended columns to required, but never downgrade required columns to optional.
+
+=== YAML Template Definitions
+
+Templates are implemented as YAML files that define validation rules, column requirements, and inheritance relationships. These YAML definitions are used by the https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] validator to check SDRF files for compliance.
+
+**Basic YAML template structure:**
+
+[source,yaml]
+----
+name: default                    # Template identifier
+description: Default SDRF template for general proteomics experiments
+version: 1.1.0
+extends: minimum                 # Parent template (inheritance)
+
+validators:                      # File-level validators
+  - validator_name: min_columns
+    params:
+      min_columns: 12
+
+columns:                         # Column definitions
+  - name: characteristics[disease]
+    description: Disease state of the sample
+    requirement: required        # required | recommended | optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:                  # Column-level validators
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - efo
+          error_level: warning
+----
+
+**Key properties:**
+
+- `name`: Template identifier used in validation commands
+- `extends`: Parent template to inherit from (e.g., `minimum`, `default`)
+- `requirement`: Column requirement level (`required`, `recommended`, `optional`)
+- `allow_not_applicable` / `allow_not_available`: Whether special values are permitted
+- `validators`: Validation rules (ontology checks, patterns, value constraints)
+
+Template files are located in the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[core-templates] and https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[templates] directories.
 
 === Choosing a Template
 
@@ -1612,6 +1656,29 @@ The plants template is used for plant species including model organisms like Ara
 Template file: https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/core-templates/sdrf-plants.sdrf.tsv[sdrf-plants.sdrf.tsv]
 
 NOTE: For plant samples, use https://www.ebi.ac.uk/ols4/ontologies/po[PO] (Plant Ontology) for organism part and cell type annotations.
+
+[[experiment-templates]]
+=== Experiment-Type Templates
+
+In addition to core organism-based templates, SDRF-Proteomics provides specialized templates for specific acquisition methods and experiment types. These templates extend the core templates with methodology-specific columns.
+
+==== Acquisition Templates
+
+Templates for specific mass spectrometry acquisition methods:
+
+- **link:templates/dda-acquisition/README.adoc[DDA Acquisition]**: Data-dependent acquisition experiments. Includes columns for dissociation method, collision energy, fractionation method, modification parameters, and mass tolerances.
+- **link:templates/dia-acquisition/README.adoc[DIA Acquisition]**: Data-independent acquisition experiments. Includes columns for scan window limits, isolation window width, DIA method, and spectral library information.
+
+==== Methodology Templates
+
+Templates for specialized proteomics methodologies (under development):
+
+- **link:templates/cell-lines/README.adoc[Cell Lines]**: Experiments using cell line samples. Includes Cellosaurus integration for cell line identification.
+- **link:templates/single-cell/README.adoc[Single-Cell Proteomics]**: Single-cell proteomics experiments. Includes columns for cell isolation method, carrier proteome, and single-cell identifiers.
+- **link:templates/immunopeptidomics/README.adoc[Immunopeptidomics]**: MHC peptide immunopeptidomics. Includes columns for MHC class, HLA typing, and enrichment methods.
+- **link:templates/crosslinking/README.adoc[Crosslinking MS]**: Cross-linking mass spectrometry experiments. Includes columns for crosslinking reagents and enrichment methods.
+- **link:templates/metaproteomics/README.adoc[Metaproteomics]**: Environmental and microbiome proteomics. Includes columns for environmental sample type and geographic location.
+- **link:templates/affinity-proteomics/README.adoc[Affinity Proteomics]**: Affinity-based proteomics (Olink, SomaScan). Includes columns specific to these platforms.
 
 [[template-cardinality]]
 === Column Cardinality

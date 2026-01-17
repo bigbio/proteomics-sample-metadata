@@ -1,6 +1,6 @@
 name: dia-acquisition
 description: SDRF template for Data-independent acquisition (DIA) experiments
-version: 1.0.0-dev
+version: 1.1.0
 extends: default
 columns:
   - name: comment[scan window lower limit]
@@ -60,6 +60,23 @@ columns:
             - 27
             - 25;27;30
             - 30%
+
+  - name: comment[modification parameters]
+    description: Post-translational modifications searched
+    requirement: recommended
+    cardinality: multiple
+    allow_not_applicable: false
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - unimod
+          error_level: warning
+          description: The modification parameters should be valid Unimod terms
+          examples:
+            - NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35
+            - NT=Carbamidomethyl;TA=C;MT=fixed;AC=UNIMOD:4
 
   - name: comment[precursor mass tolerance]
     description: Precursor mass tolerance for DIA analysis

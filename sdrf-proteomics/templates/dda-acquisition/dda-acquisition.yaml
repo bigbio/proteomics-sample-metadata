@@ -1,37 +1,25 @@
 name: dda-acquisition
 description: SDRF template for Data-dependent acquisition (DDA) experiments
-version: 1.0.0-dev
+version: 1.1.0
 extends: default
 columns:
-  - name: comment[top N]
-    description: Number of most intense precursors selected for fragmentation per cycle
+  - name: comment[dissociation method]
+    description: Fragmentation method used
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
     validators:
-      - validator_name: pattern
+      - validator_name: ontology
         params:
-          pattern: ^\d+$
-          description: Integer value
+          ontologies:
+            - ms
+          error_level: warning
+          description: Should be a valid MS ontology term for dissociation
           examples:
-            - 10
-            - 15
-            - 20
-
-  - name: comment[isolation window]
-    description: Width of the precursor isolation window in m/z
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: pattern
-        params:
-          pattern: ^\d+(\.\d+)?\s*(m/z|Da)?$
-          description: Width value with optional unit
-          examples:
-            - 1.6
-            - 2.0 m/z
-            - 1.4
+            - HCD
+            - CID
+            - ETD
+            - EThcD
 
   - name: comment[collision energy]
     description: Collision energy used for fragmentation
@@ -47,21 +35,6 @@ columns:
             - 27
             - 30%
             - normalized 27%
-
-  - name: comment[dynamic exclusion duration]
-    description: Duration for which a precursor is excluded after selection
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: pattern
-        params:
-          pattern: ^\d+(\.\d+)?\s*(s|ms)$
-          description: Duration with unit
-          examples:
-            - 30 s
-            - 60 s
-            - 45 s
 
   - name: comment[fractionation method]
     description: Peptide fractionation method used before MS analysis
@@ -81,6 +54,23 @@ columns:
             - not applicable
           error_level: warning
           description: Fractionation method used
+
+  - name: comment[modification parameters]
+    description: Post-translational modifications searched
+    requirement: recommended
+    cardinality: multiple
+    allow_not_applicable: false
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - unimod
+          error_level: warning
+          description: The modification parameters should be valid Unimod terms
+          examples:
+            - NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35
+            - NT=Carbamidomethyl;TA=C;MT=fixed;AC=UNIMOD:4
 
   - name: comment[precursor mass tolerance]
     description: Precursor mass tolerance for database search
@@ -109,24 +99,6 @@ columns:
           examples:
             - 0.02 Da
             - 20 ppm
-
-  - name: comment[dissociation method]
-    description: Fragmentation method used
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: ontology
-        params:
-          ontologies:
-            - ms
-          error_level: warning
-          description: Should be a valid MS ontology term for dissociation
-          examples:
-            - HCD
-            - CID
-            - ETD
-            - EThcD
 
   - name: comment[MS2 mass analyzer]
     description: Mass analyzer used for MS2 acquisition
