@@ -62,10 +62,9 @@
 <li><a href="#from-sample-data">9. SDRF-Proteomics: data files metadata</a>
 <ul class="sectlevel2">
 <li><a href="#cv-term-format">9.1. CV Term Format for Data File Metadata</a></li>
-<li><a href="#sample-prep">9.2. Sample preparation properties</a></li>
-<li><a href="#fragment-proper">9.3. MS/MS properties</a></li>
-<li><a href="#data-acquisition-method">9.4. Data acquisition</a></li>
-<li><a href="#_data_file_metadata_guidelines">9.5. Data File Metadata Guidelines</a></li>
+<li><a href="#sample-prep-fragmentation">9.2. Sample Preparation and Fragmentation</a></li>
+<li><a href="#data-acquisition-method">9.3. Data acquisition</a></li>
+<li><a href="#_data_file_metadata_guidelines">9.4. Data File Metadata Guidelines</a></li>
 </ul>
 </li>
 <li><a href="#additional-sdrf-rules">10. Additional SDRF Rules</a>
@@ -1643,42 +1642,26 @@ For pooled reference samples (e.g., TMT reference channels), use <code>pooled</c
 </div>
 </div>
 <div class="sect2">
-<h3 id="sample-prep"><a class="anchor" href="#sample-prep"></a><a class="link" href="#sample-prep">9.2. Sample preparation properties</a></h3>
+<h3 id="sample-prep-fragmentation"><a class="anchor" href="#sample-prep-fragmentation"></a><a class="link" href="#sample-prep-fragmentation">9.2. Sample Preparation and Fragmentation</a></h3>
 <div class="paragraph">
-<p>In order to encode sample preparation details, we strongly RECOMMEND specifying the following parameters:</p>
+<p>For detailed documentation of sample preparation and MS/MS fragmentation properties, see the <a href="metadata-guidelines/data-file-metadata.adoc">Data File Metadata Guidelines</a>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>comment[depletion]</strong>: The removal of specific components of a complex mixture of proteins or peptides based on some specific property of those components. The values of the columns will be <code>no depletion</code> or <code>depletion</code>. In the case of depletion <code>depleted fraction</code> or <code>bound fraction</code> can be specified.</p>
+<p><strong>Sample preparation</strong>: depletion, reduction reagent, alkylation reagent</p>
 </li>
 <li>
-<p><strong>comment[reduction reagent]</strong>: The chemical reagent that is used to break disulfide bonds in proteins. The values of the column are under the term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607&amp;viewMode=All&amp;siblings=false">reduction reagent</a>. For example, DTT.</p>
+<p><strong>Fractionation</strong>: fractionation method (used with fraction identifier)</p>
 </li>
 <li>
-<p><strong>comment[alkylation reagent]</strong>: The alkylation reagent that is used to covalently modify cysteine SH-groups after reduction, preventing them from forming unwanted novel disulfide bonds. The values of the column are under the term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598&amp;viewMode=All&amp;siblings=false">alkylation reagent</a>. For example, IAA.</p>
-</li>
-<li>
-<p><strong>comment[fractionation method]</strong>: The fraction method used to separate the sample. The values of this term can be read under PRIDE ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550">Fractionation method</a>. For example, Off-gel electrophoresis.</p>
+<p><strong>Fragmentation</strong>: collision energy, dissociation method</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="fragment-proper"><a class="anchor" href="#fragment-proper"></a><a class="link" href="#fragment-proper">9.3. MS/MS properties</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>comment[collision energy]</strong>: Collision energy can be added as non-normalized (10000 eV) or normalized (1000 NCE) value.</p>
-</li>
-<li>
-<p><strong>comment[dissociation method]</strong>: This property will provide information about the fragmentation method, like HCD, CID. The values of the column are under the term <a href="https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044&amp;viewMode=All&amp;siblings=false">dissociation method</a>.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">9.4. Data acquisition</a></h3>
+<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">9.3. Data acquisition</a></h3>
 <div class="paragraph">
 <p>Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the <em>comment[proteomics data acquisition method]</em> column. The values MUST be children of the PRIDE ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659">proteomics data acquisition method (PRIDE:0000659)</a>. The following values are commonly used:</p>
 </div>
@@ -1737,7 +1720,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">9.5. Data File Metadata Guidelines</a></h3>
+<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">9.4. Data File Metadata Guidelines</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
@@ -3209,7 +3192,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 09:30:38 UTC
+Last updated 2026-01-17 10:25:32 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
