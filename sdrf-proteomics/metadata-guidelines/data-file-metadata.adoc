@@ -127,6 +127,133 @@ For top-down/intact proteins, use `not applicable`. For multiple enzymes, add mu
 |20 ppm |0.6 Da |Orbitrap MS1, Ion trap MS2
 |===
 
+[[sample-preparation]]
+== Sample Preparation
+
+These columns capture sample preparation details prior to MS analysis. All are RECOMMENDED.
+
+=== Depletion
+
+**Column:** `comment[depletion]`
+
+Describes the removal of specific components (e.g., high-abundance proteins) from a complex mixture.
+
+**Values:**
+
+|===
+|Value |Description
+
+|no depletion |No depletion was performed
+|depletion |Sample was depleted (general)
+|depleted fraction |The depleted fraction (target proteins removed)
+|bound fraction |The bound fraction (removed proteins)
+|===
+
+=== Reduction Reagent
+
+**Column:** `comment[reduction reagent]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000607[PRIDE - reduction reagent]
+
+The chemical reagent used to break disulfide bonds in proteins.
+
+**Common values:**
+
+|===
+|Reagent |Description
+
+|DTT |Dithiothreitol
+|TCEP |Tris(2-carboxyethyl)phosphine
+|beta-mercaptoethanol |2-Mercaptoethanol
+|===
+
+=== Alkylation Reagent
+
+**Column:** `comment[alkylation reagent]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000598[PRIDE - alkylation reagent]
+
+The reagent used to covalently modify cysteine SH-groups after reduction, preventing reformation of disulfide bonds.
+
+**Common values:**
+
+|===
+|Reagent |Description
+
+|IAA |Iodoacetamide
+|IAM |Iodoacetamide (alternative abbreviation)
+|chloroacetamide |Chloroacetamide (CAA)
+|===
+
+[[fractionation]]
+== Fractionation
+
+**Column:** `comment[fractionation method]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[PRIDE - Fractionation method]
+
+The method used to separate samples into fractions before MS analysis. Use with `comment[fraction identifier]` to number fractions.
+
+**Common methods:**
+
+|===
+|Method |PRIDE Accession |Description
+
+|High-pH reversed-phase chromatography |PRIDE:0000564 |Peptide separation at high pH
+|Strong cation-exchange chromatography |PRIDE:0000561 |SCX fractionation
+|Off-gel electrophoresis |PRIDE:0000551 |Isoelectric focusing-based separation
+|SDS-PAGE |PRIDE:0000553 |Gel-based protein separation
+|===
+
+NOTE: For single-shot experiments without fractionation, this column can be omitted or set to `not applicable`.
+
+[[fragmentation]]
+== Fragmentation
+
+These columns describe MS/MS fragmentation parameters. RECOMMENDED for all MS experiments.
+
+=== Collision Energy
+
+**Column:** `comment[collision energy]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000045[PSI-MS - collision energy]
+
+The energy used to fragment precursor ions.
+
+**Format:** `{value} {unit}`
+
+|===
+|Format |Example |Description
+
+|Normalized |27 NCE |Normalized collision energy (instrument-specific normalization)
+|Absolute |30 eV |Absolute energy in electron volts
+|Stepped |22 NCE;26 NCE;30 NCE |Multiple energies (semicolon-separated)
+|===
+
+TIP: For DIA experiments with stepped collision energy, see the link:../templates/dia-acquisition/README.adoc[DIA template] for detailed guidance.
+
+=== Dissociation Method
+
+**Column:** `comment[dissociation method]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044[PSI-MS - dissociation method]
+
+The fragmentation method used in MS/MS acquisition.
+
+**Common methods:**
+
+|===
+|Method |Accession |Description
+
+|HCD |MS:1000422 |Higher-energy collisional dissociation (beam-type CID)
+|CID |MS:1000133 |Collision-induced dissociation (ion trap)
+|ETD |MS:1000598 |Electron transfer dissociation
+|EThcD |MS:1002631 |Electron transfer/higher-energy collision dissociation
+|UVPD |MS:1003246 |Ultraviolet photodissociation
+|===
+
+**CV term format:** `NT=HCD;AC=MS:1000422` or `NT=beam-type collision-induced dissociation;AC=MS:1000422`
+
 == Best Practices
 
 1. **Use ontology terms** - Prefer PSI-MS and PRIDE ontology terms for labels and enzymes.
