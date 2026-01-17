@@ -243,6 +243,7 @@ def main():
         # Create dataset entry
         dataset_entry = {
             'id': project_id,
+            'file': os.path.basename(filepath),  # Alias for filename (used by quickstart search)
             'filename': os.path.basename(filepath),
             'path': rel_path,
             'github_url': f'https://github.com/bigbio/proteomics-metadata-standard/blob/master/{rel_path}',
@@ -252,6 +253,7 @@ def main():
             'organisms': [o for o in dataset_organisms if o],
             'diseases': [d for d in dataset_diseases if d],
             'instruments': [i for i in dataset_instruments if i],
+            'acquisition_methods': [a for a in dataset_acq if a],  # Used by quickstart search
             'experiment_type': exp_type,
             'label_type': label_type,
             'template': parsed['metadata'].get('template', 'unknown'),

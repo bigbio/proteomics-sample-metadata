@@ -1327,36 +1327,72 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 
             if (!sdrfData || !sdrfData.datasets) {
                 resultsDiv.innerHTML = '<div class="loading-spinner">Loading dataset index... please wait</div>';
-                // Retry loading if not loaded yet
-                setTimeout(searchExamples, 500);
+                // Retry loading if not loaded yet (max 3 retries)
+                if (!window.searchRetryCount) window.searchRetryCount = 0;
+                if (window.searchRetryCount < 3) {
+                    window.searchRetryCount++;
+                    setTimeout(searchExamples, 500);
+                } else {
+                    resultsDiv.innerHTML = '<div class="no-results">Could not load dataset index. Please refresh the page or <a href="./sdrf-explorer.html">browse all datasets in the Explorer</a>.</div>';
+                    window.searchRetryCount = 0;
+                }
                 return;
             }
+            
+            // Reset retry counter on successful search
+            window.searchRetryCount = 0;
 
             // Search through datasets using available fields
-            var keywords = query.split(/\s+/);
+            var keywords = query.split(/\s+/).filter(function(k) { return k.length > 0; });
             var results = [];
+
+            if (keywords.length === 0) {
+                resultsDiv.innerHTML = '<div class="no-results">Please enter a search term.</div>';
+                return;
+            }
 
             for (var i = 0; i < sdrfData.datasets.length; i++) {
                 var dataset = sdrfData.datasets[i];
                 var searchParts = [
                     dataset.id || '',
-                    dataset.file || ''
+                    dataset.file || dataset.filename || ''
                 ];
-                if (dataset.organisms) {
+                
+                // Add organisms
+                if (dataset.organisms && Array.isArray(dataset.organisms)) {
                     for (var j = 0; j < dataset.organisms.length; j++) {
-                        searchParts.push(dataset.organisms[j]);
+                        if (dataset.organisms[j]) {
+                            searchParts.push(dataset.organisms[j]);
+                        }
                     }
                 }
-                if (dataset.instruments) {
+                
+                // Add instruments
+                if (dataset.instruments && Array.isArray(dataset.instruments)) {
                     for (var j = 0; j < dataset.instruments.length; j++) {
-                        searchParts.push(dataset.instruments[j]);
+                        if (dataset.instruments[j]) {
+                            searchParts.push(dataset.instruments[j]);
+                        }
                     }
                 }
-                if (dataset.acquisition_methods) {
+                
+                // Add acquisition methods
+                if (dataset.acquisition_methods && Array.isArray(dataset.acquisition_methods)) {
                     for (var j = 0; j < dataset.acquisition_methods.length; j++) {
-                        searchParts.push(dataset.acquisition_methods[j]);
+                        if (dataset.acquisition_methods[j]) {
+                            searchParts.push(dataset.acquisition_methods[j]);
+                        }
                     }
                 }
+                
+                // Also search in experiment type and label type
+                if (dataset.experiment_type) {
+                    searchParts.push(dataset.experiment_type);
+                }
+                if (dataset.label_type) {
+                    searchParts.push(dataset.label_type);
+                }
+                
                 var searchText = searchParts.join(' ').toLowerCase();
 
                 var matchesAll = true;
@@ -1368,11 +1404,11 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
                 }
                 if (matchesAll) {
                     results.push(dataset);
-                    if (results.length >= 5) break;
+                    if (results.length >= 10) break; // Show up to 10 results
                 }
             }
 
-            console.log('Found', results.length, 'results');
+            console.log('Found', results.length, 'results for query:', query);
 
             if (results.length === 0) {
                 resultsDiv.innerHTML = '<div class="no-results">No datasets found matching "' + query + '". <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a>.</div>';
