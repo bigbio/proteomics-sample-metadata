@@ -132,6 +132,22 @@ endif::[]
 3. **Factor values** use `factor value[...]` columns to indicate variables under study
 4. Each row links one sample to one data file
 
+=== Format Requirements
+
+The SDRF-Proteomics format has the following core requirements:
+
+- The SDRF file is a **tab-delimited format** where each row corresponds to a relationship between a Sample and a Data file.
+- Each column MUST correspond to an attribute/property of the Sample or the Data file.
+- Each cell value MUST be the property value for the corresponding Sample or Data file.
+- The file MUST start with columns describing sample properties (e.g., organism, disease), followed by data file properties (e.g., label, fraction identifier, data file).
+- Unknown values MUST be handled using `not available` (value is unknown) or `not applicable` (property doesn't apply to this sample).
+
+=== Scope
+
+The SDRF-Proteomics format aims to capture the **sample metadata** and its **relationship with data files** (e.g., raw files from mass spectrometers).
+
+IMPORTANT: SDRF-Proteomics does **not** aim to capture downstream analysis details, including: which samples were compared to which other samples, how samples are combined into study variables, or analysis parameters such as FDR thresholds or p-value cutoffs.
+
 === Getting Started Steps
 
 1. Choose a <<core-templates,core template>> (Human, Vertebrates, Plants, etc.)
@@ -840,7 +856,7 @@ In this example:
 - **Technical replicates**: Each biological sample is measured twice (`comment[technical replicate]` = 1 and 2)
 - **Fractions**: Each technical replicate has 2 fractions (`comment[fraction identifier]` = 1 and 2)
 
-IMPORTANT: Both _characteristics[biological replicate]_ and _comment[technical replicate]_ columns are REQUIRED. When no replicates are performed in a study, set both columns to 1 (i.e., each sample is biological replicate 1 and technical replicate 1).
+IMPORTANT: Both _characteristics[biological replicate]_ and _comment[technical replicate]_ columns are REQUIRED. When no replicates are performed in a study, set both columns to 1 (i.e., each sample is biological replicate 1 and technical replicate 1). For **pooled reference samples** (e.g., TMT reference channels), use `pooled` for biological replicate since these samples are mixtures of multiple replicates and assigning a specific replicate number would be misleading.
 
 Some examples with explicit annotation of the biological replicates can be found here:
 
@@ -994,8 +1010,8 @@ ifdef::backend-html5[]
 <td class="sample-col">pooled_ref</td>
 <td class="sample-col">SN=sample_1;SN=sample_2;SN=sample_3</td>
 <td class="sample-col">homo sapiens</td>
-<td class="sample-col">not applicable</td>
-<td class="sample-col">not applicable</td>
+<td class="sample-col">pooled</td>
+<td class="sample-col">pooled</td>
 <td class="data-col">run_1</td>
 <td class="data-col">TMT131C</td>
 <td class="data-col">file01.raw</td>
@@ -1018,11 +1034,11 @@ ifndef::backend-html5[]
 |sample_1 |not pooled |homo sapiens |45Y |male |run_1 |TMT126 |file01.raw
 |sample_2 |not pooled |homo sapiens |52Y |female |run_1 |TMT127N |file01.raw
 |sample_3 |not pooled |homo sapiens |38Y |male |run_1 |TMT127C |file01.raw
-|pooled_ref |SN=sample_1;SN=sample_2;SN=sample_3 |homo sapiens |not applicable |not applicable |run_1 |TMT131C |file01.raw
+|pooled_ref |SN=sample_1;SN=sample_2;SN=sample_3 |homo sapiens |pooled |pooled |run_1 |TMT131C |file01.raw
 |===
 endif::[]
 
-TIP: For pooled samples, use "not applicable" for individual-specific fields (age, sex, individual). If all pooled samples share a value (e.g., all females, or age range 40-50Y), that shared value MAY be used instead.
+TIP: For pooled reference samples (e.g., TMT reference channels), use `pooled` for individual-specific fields including **biological replicate**, age, sex, and individual. This clearly indicates that the value represents a mixture rather than a single sample. If all pooled samples share a value (e.g., all females, or age range 40Y-50Y), that shared value MAY be used instead.
 
 [[spiked-in]]
 === Spiked-in samples
