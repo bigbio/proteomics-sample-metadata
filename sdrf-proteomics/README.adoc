@@ -22,7 +22,7 @@ endif::[]
 [[status]]
 == Status of this document
 
-This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship File (SDRF)-Proteomics format. Distribution is unlimited.
+This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.
 
 **Version v1.1.0** - 2025-01
 
@@ -31,7 +31,7 @@ This document provides information to the proteomics community about a proposed 
 
 The Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).
 
-Further detailed information, including any updates to this document, implementations, and examples is available at https://github.com/bigbio/proteomics-metadata-standard[SDRF GitHub Repository]. The official PSI web page for the document is the following: http://psidev.info/sdrf.
+Further detailed information, including any updates to this document, implementations, and examples is available at https://github.com/bigbio/proteomics-metadata-standard[SDRF GitHub Repository]. The official PSI web page for the document is: https://psidev.info/magetab[HUPO-PSI MAGE-TAB].
 
 [[motivation]]
 == Motivation
@@ -42,7 +42,7 @@ Unfortunately, proteomics experimental design and sample related information are
 
 - The https://cptac-data-portal.georgetown.edu/[CPTAC Consortium] provides for every dataset a set of Excel files with the information on https://cptac-data-portal.georgetown.edu/study-summary/S048[each sample] including tumor size, origin, but also how every sample is related to a specific raw file (e.g. instrument configuration parameters).
 
-- As a resource routinely re-analysing public datasets, ProteomicsDB, captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as https://www.proteomicsdb.org/#projects/4267/6228[tissue, digestion method and instrument].
+- As a resource routinely re-analysing public datasets, https://www.proteomicsdb.org/[ProteomicsDB] captures for each sample in the database a minimum number of properties to describe the sample and the related experimental protocol such as tissue, digestion method and instrument.
 
 Such heterogeneity often prevents data interpretation, reproducibility, and integration of data from different resources. For every proteomics dataset we propose to capture at least three levels of metadata:
 
@@ -79,8 +79,8 @@ ifdef::backend-html5[]
 <th class="data-col">assay name</th>
 <th class="data-col">comment[label]</th>
 <th class="data-col">comment[instrument]</th>
-<th class="data-col">comment[cleavage agent details]</th>
 <th class="data-col">comment[data file]</th>
+<th class="factor-col">factor value[disease]</th>
 </tr>
 </thead>
 <tbody>
@@ -91,8 +91,8 @@ ifdef::backend-html5[]
 <td class="data-col">run_1</td>
 <td class="data-col">label free sample</td>
 <td class="data-col">Q Exactive HF</td>
-<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
 <td class="data-col">sample_1.raw</td>
+<td class="factor-col">normal</td>
 </tr>
 <tr>
 <td class="sample-col">sample_2</td>
@@ -101,14 +101,15 @@ ifdef::backend-html5[]
 <td class="data-col">run_2</td>
 <td class="data-col">label free sample</td>
 <td class="data-col">Q Exactive HF</td>
-<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
 <td class="data-col">sample_2.raw</td>
+<td class="factor-col">hepatocellular carcinoma</td>
 </tr>
 </tbody>
 </table>
 <div class="sdrf-legend">
 <span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
 <span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comments)</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
 </div>
 </div>
 ++++
@@ -117,12 +118,12 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1,1,1"]
 |===
-|source name |characteristics[organism] |characteristics[disease] |assay name |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[data file]
+|source name |characteristics[organism] |characteristics[disease] |assay name |comment[label] |comment[instrument] |comment[data file] |factor value[disease]
 
-|sample_1 |homo sapiens |normal |run_1 |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |sample_1.raw
-|sample_2 |homo sapiens |hepatocellular carcinoma |run_2 |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |sample_2.raw
+|sample_1 |homo sapiens |normal |run_1 |label free sample |Q Exactive HF |sample_1.raw |normal
+|sample_2 |homo sapiens |hepatocellular carcinoma |run_2 |label free sample |Q Exactive HF |sample_2.raw |hepatocellular carcinoma
 |===
-_Blue columns: Sample metadata (characteristics) | Green columns: Data file metadata (comments)_
+_Blue: Sample metadata | Green: Data file metadata | Orange: Factor values_
 endif::[]
 
 === Key Concepts
@@ -203,7 +204,7 @@ image::images/sdrf-guidelines-structure.png[Logo]
 
 NOTE: The main specification is in the `sdrf-proteomics` directory. Core templates (organism-based) are in `sdrf-proteomics/core-templates/` and specialized templates (experiment-type-specific) are in `sdrf-proteomics/templates/`. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict. 
 
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub (see introduction to GitHub - https://lab.github.com/githubtraining/introduction-to-github).
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub. For users unfamiliar with GitHub, you can also contact the PRIDE team at pride-support@ebi.ac.uk.
 
 A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
 

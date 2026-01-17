@@ -1,0 +1,288 @@
+= SDRF-Proteomics Quick Start Guide
+:sectnums:
+:toc: left
+:doctype: book
+:xrefstyle: short
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== What is SDRF-Proteomics?
+
+SDRF-Proteomics is a simple tab-separated file that describes your proteomics samples and links them to your data files. Think of it as a spreadsheet where:
+
+- Each **row** = one sample-to-file relationship
+- Each **column** = one piece of information (organism, disease, instrument, etc.)
+
+That's it. No programming required.
+
+== Your First SDRF File in 5 Minutes
+
+=== Step 1: Choose Your Template
+
+Answer these questions to find your template:
+
+[cols="1,1"]
+|===
+|Question |Template to Use
+
+|Is your sample from humans?
+|Use **human** template
+
+|Is your sample from mouse, rat, zebrafish?
+|Use **vertebrates** template
+
+|Is your sample from insects, worms?
+|Use **invertebrates** template
+
+|Is your sample from plants?
+|Use **plants** template
+
+|Is your sample a cell line?
+|Use **cell-lines** template
+
+|None of the above?
+|Use **default** template
+|===
+
+Download templates from: https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates
+
+=== Step 2: Fill in Your Sample Information
+
+Open your template in Excel or any spreadsheet software. For each sample, fill in:
+
+[cols="1,2,1"]
+|===
+|Column |What to Write |Example
+
+|source name
+|A unique name for your sample
+|patient_001
+
+|characteristics[organism]
+|Species name (lowercase)
+|homo sapiens
+
+|characteristics[organism part]
+|Tissue or body part
+|liver
+
+|characteristics[disease]
+|Disease name, or "normal" if healthy
+|hepatocellular carcinoma
+|===
+
+=== Step 3: Fill in Your Data File Information
+
+For each row, also fill in information about the raw file:
+
+[cols="1,2,1"]
+|===
+|Column |What to Write |Example
+
+|assay name
+|A name for this MS run
+|run_001
+
+|comment[label]
+|Type of labeling
+|label free sample
+
+|comment[instrument]
+|Mass spectrometer used
+|Q Exactive HF
+
+|comment[data file]
+|Your raw file name
+|sample_001.raw
+|===
+
+=== Step 4: Add Your Experimental Variables
+
+If you're comparing groups (e.g., disease vs. healthy), add a `factor value` column:
+
+[cols="1,2,1"]
+|===
+|Column |What to Write |Example
+
+|factor value[disease]
+|The variable you're studying
+|normal or hepatocellular carcinoma
+|===
+
+=== Step 5: Validate Your File
+
+Save your file as `.sdrf.tsv` and validate it:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+TIP: A web-based validator is also available for users who prefer not to use command line tools.
+
+== Complete Example
+
+Here's a complete SDRF file for a simple human liver cancer study:
+
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |assay name |comment[label] |comment[instrument] |comment[data file] |factor value[disease]
+
+|patient_001
+|homo sapiens
+|liver
+|hepatocellular carcinoma
+|run_001
+|label free sample
+|Q Exactive HF
+|patient_001.raw
+|hepatocellular carcinoma
+
+|patient_002
+|homo sapiens
+|liver
+|hepatocellular carcinoma
+|run_002
+|label free sample
+|Q Exactive HF
+|patient_002.raw
+|hepatocellular carcinoma
+
+|control_001
+|homo sapiens
+|liver
+|normal
+|run_003
+|label free sample
+|Q Exactive HF
+|control_001.raw
+|normal
+
+|control_002
+|homo sapiens
+|liver
+|normal
+|run_004
+|label free sample
+|Q Exactive HF
+|control_002.raw
+|normal
+|===
+
+== Common Experiment Types
+
+=== Label-Free DDA (Most Common)
+
+Required columns:
+
+- `source name`
+- `characteristics[organism]`
+- `characteristics[organism part]`
+- `characteristics[disease]`
+- `assay name`
+- `comment[label]` = "label free sample"
+- `comment[instrument]`
+- `comment[data file]`
+
+=== TMT/iTRAQ Labeling
+
+Same as above, but:
+
+- `comment[label]` = TMT126, TMT127N, TMT127C, etc.
+- Multiple samples share the same `comment[data file]`
+
+|===
+|source name |... |comment[label] |comment[data file]
+
+|sample_A |... |TMT126 |multiplex_1.raw
+|sample_B |... |TMT127N |multiplex_1.raw
+|sample_C |... |TMT127C |multiplex_1.raw
+|===
+
+=== Fractionated Samples
+
+Add a `comment[fraction identifier]` column:
+
+|===
+|source name |... |comment[fraction identifier] |comment[data file]
+
+|sample_001 |... |1 |sample_001_F1.raw
+|sample_001 |... |2 |sample_001_F2.raw
+|sample_001 |... |3 |sample_001_F3.raw
+|===
+
+=== Cell Line Experiments
+
+Use the cell-lines template and include:
+
+- `characteristics[cell line]` = HeLa, HEK293, etc.
+- `characteristics[cellosaurus accession]` = CVCL_0030 (from https://www.cellosaurus.org/)
+
+== Common Mistakes to Avoid
+
+[cols="1,1"]
+|===
+|Mistake |Correct
+
+|`Source Name` (capitalized)
+|`source name` (lowercase)
+
+|`characteristics [organism]` (space before bracket)
+|`characteristics[organism]` (no space)
+
+|`control` for healthy samples
+|`normal` for healthy samples
+
+|Leaving cells empty
+|Use `not available` or `not applicable`
+
+|`sourcename` (no space)
+|`source name` (with space)
+|===
+
+== Where to Find Correct Values
+
+[cols="1,2"]
+|===
+|For This Field |Look Here
+
+|Organism names
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy]
+
+|Tissue/organ names
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
+
+|Disease names
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO]
+
+|Cell types
+|https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology]
+
+|Instruments
+|https://www.ebi.ac.uk/ols4/ontologies/ms[PSI-MS]
+
+|Cell lines
+|https://www.cellosaurus.org/[Cellosaurus]
+|===
+
+TIP: Don't worry about finding the exact ontology term. Just write the common name (e.g., "liver", "breast cancer") and the validator will check it for you.
+
+== Getting Help
+
+- **Examples**: Browse real SDRF files from published datasets: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects]
+- **Questions**: Open an issue on https://github.com/bigbio/proteomics-metadata-standard/issues[GitHub] or email the PRIDE team
+- **Full specification**: For advanced use cases, see the link:README.adoc[complete specification]
+
+== Next Steps
+
+Once you're comfortable with the basics:
+
+1. Explore link:templates/[specialized templates] for your experiment type
+2. Read the link:metadata-guidelines/sample-metadata.adoc[sample metadata guidelines] for detailed field descriptions
+3. Learn about link:metadata-guidelines/data-file-metadata.adoc[data file metadata] for MS parameters
