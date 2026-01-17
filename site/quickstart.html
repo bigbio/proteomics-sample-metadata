@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Start Tutorial - SDRF-Proteomics</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 <body>
     <header class="site-header">
@@ -1247,14 +1246,30 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 
     <script>
         let sdrfData = null;
+        let dataLoadError = false;
 
         // Load SDRF data on page load
-        fetch('./sdrf-data.json')
-            .then(response => response.json())
-            .then(data => {
-                sdrfData = data;
-            })
-            .catch(err => console.error('Failed to load SDRF data:', err));
+        function loadSdrfData() {
+            fetch('./sdrf-data.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('HTTP error ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    sdrfData = data;
+                    dataLoadError = false;
+                    console.log('SDRF data loaded:', data.datasets ? data.datasets.length + ' datasets' : 'no datasets');
+                })
+                .catch(err => {
+                    console.error('Failed to load SDRF data:', err);
+                    dataLoadError = true;
+                });
+        }
+
+        // Load data when page loads
+        loadSdrfData();
 
         function searchWithTerm(term) {
             document.getElementById('example-search').value = term;
@@ -1271,8 +1286,19 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
                 return;
             }
 
+            if (dataLoadError) {
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        Could not load dataset index. <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a> instead.
+                    </div>
+                `;
+                return;
+            }
+
             if (!sdrfData || !sdrfData.datasets) {
-                resultsDiv.innerHTML = '<div class="loading-spinner">Loading data...</div>';
+                resultsDiv.innerHTML = '<div class="loading-spinner">Loading data... please wait</div>';
+                // Retry loading if not loaded yet
+                setTimeout(searchExamples, 500);
                 return;
             }
 
