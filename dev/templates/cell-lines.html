@@ -17,50 +17,44 @@
 <ul class="sectlevel1">
 <li><a href="#status">1. Status of this Template</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
-<li><a href="#motivation">3. Motivation</a></li>
-<li><a href="#cellosaurus">4. Cellosaurus: The Primary Cell Line Resource</a>
+<li><a href="#cellosaurus">3. Cellosaurus: The Primary Cell Line Resource</a>
 <ul class="sectlevel2">
-<li><a href="#_cellosaurus_accession_format">4.1. Cellosaurus Accession Format</a></li>
+<li><a href="#_cellosaurus_accession_format">3.1. Cellosaurus Accession Format</a></li>
 </ul>
 </li>
-<li><a href="#cell-line-metadata-db">5. SDRF Cell Line Metadata Database</a>
+<li><a href="#cell-line-metadata-db">4. SDRF Cell Line Metadata Database</a></li>
+<li><a href="#checklist">5. Checklist</a>
 <ul class="sectlevel2">
-<li><a href="#_database_structure">5.1. Database Structure</a></li>
-<li><a href="#_using_the_database">5.2. Using the Database</a></li>
+<li><a href="#_required_columns">5.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">5.2. Recommended Columns</a></li>
+<li><a href="#_optional_columns">5.3. Optional Columns</a></li>
 </ul>
 </li>
-<li><a href="#checklist">6. Checklist</a>
+<li><a href="#metadata-sources">6. Understanding Metadata Sources</a>
 <ul class="sectlevel2">
-<li><a href="#_required_columns">6.1. Required Columns</a></li>
-<li><a href="#_recommended_columns">6.2. Recommended Columns</a></li>
-<li><a href="#_optional_columns">6.3. Optional Columns</a></li>
+<li><a href="#_database_derived_metadata">6.1. Database-Derived Metadata</a></li>
+<li><a href="#_experiment_specific_metadata">6.2. Experiment-Specific Metadata</a></li>
 </ul>
 </li>
-<li><a href="#metadata-sources">7. Understanding Metadata Sources</a>
+<li><a href="#ontology-mapping">7. Ontology Mapping</a></li>
+<li><a href="#example-sdrf">8. Example SDRF Files</a>
 <ul class="sectlevel2">
-<li><a href="#_database_derived_metadata">7.1. Database-Derived Metadata</a></li>
-<li><a href="#_experiment_specific_metadata">7.2. Experiment-Specific Metadata</a></li>
+<li><a href="#_basic_cell_line_experiment">8.1. Basic Cell Line Experiment</a></li>
+<li><a href="#_multi_cell_line_comparison">8.2. Multi-Cell Line Comparison</a></li>
 </ul>
 </li>
-<li><a href="#ontology-mapping">8. Ontology Mapping</a></li>
-<li><a href="#example-sdrf">9. Example SDRF Files</a>
+<li><a href="#cell-line-issues">9. Common Cell Line Issues</a>
 <ul class="sectlevel2">
-<li><a href="#_basic_cell_line_experiment">9.1. Basic Cell Line Experiment</a></li>
-<li><a href="#_multi_cell_line_comparison">9.2. Multi-Cell Line Comparison</a></li>
+<li><a href="#_misidentified_cell_lines">9.1. Misidentified Cell Lines</a></li>
+<li><a href="#_cell_line_variants_and_sublines">9.2. Cell Line Variants and Sublines</a></li>
+<li><a href="#_cell_lines_with_unknown_donor_information">9.3. Cell Lines with Unknown Donor Information</a></li>
 </ul>
 </li>
-<li><a href="#cell-line-issues">10. Common Cell Line Issues</a>
-<ul class="sectlevel2">
-<li><a href="#_misidentified_cell_lines">10.1. Misidentified Cell Lines</a></li>
-<li><a href="#_cell_line_variants_and_sublines">10.2. Cell Line Variants and Sublines</a></li>
-<li><a href="#_cell_lines_with_unknown_donor_information">10.3. Cell Lines with Unknown Donor Information</a></li>
-</ul>
-</li>
-<li><a href="#best-practices">11. Best Practices</a></li>
-<li><a href="#template-file">12. Template File</a></li>
-<li><a href="#validation">13. Validation</a></li>
-<li><a href="#authors">14. Authors and Maintainers</a></li>
-<li><a href="#references">15. References</a></li>
+<li><a href="#best-practices">10. Best Practices</a></li>
+<li><a href="#template-file">11. Template File</a></li>
+<li><a href="#validation">12. Validation</a></li>
+<li><a href="#authors">13. Authors and Maintainers</a></li>
+<li><a href="#references">14. References</a></li>
 </ul>
 </div>
 </div>
@@ -83,71 +77,15 @@
 <h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Cell lines are extensively used in proteomics research, both for biological studies and for technology/method development. Cell lines present unique annotation challenges because:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>They have well-defined characteristics that can be retrieved from databases</p>
-</li>
-<li>
-<p>Metadata like sex, age, and disease refer to the original donor, not the cell line passage</p>
-</li>
-<li>
-<p>Multiple databases and ontologies exist for cell line identification</p>
-</li>
-<li>
-<p>Cell lines may be misidentified, contaminated, or have undergone genetic drift</p>
-</li>
-</ul>
+<p>Cell lines are extensively used in proteomics research for biological studies and technology development. They present unique annotation challenges: metadata (sex, age, disease) refers to the original donor, multiple naming conventions exist (HeLa, HELA, He-La), and cell lines may be misidentified or have undergone genetic drift.</p>
 </div>
 <div class="paragraph">
-<p>This template defines standardized approaches for annotating cell line experiments, including the use of Cellosaurus as the primary resource for cell line identification and metadata.</p>
+<p>This template defines standardized approaches for annotating cell line experiments, recommending Cellosaurus as the primary resource for cell line identification and metadata retrieval.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="motivation"><a class="anchor" href="#motivation"></a><a class="link" href="#motivation">3. Motivation</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Cell line annotation in proteomics datasets has historically been inconsistent:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Multiple naming conventions</strong>: HeLa, HELA, He-La may all refer to the same cell line</p>
-</li>
-<li>
-<p><strong>Outdated ontologies</strong>: The Cell Line Ontology (CLO) has not been actively maintained</p>
-</li>
-<li>
-<p><strong>Missing metadata</strong>: Key information about donor characteristics is often omitted</p>
-</li>
-<li>
-<p><strong>No standard identifiers</strong>: Lack of consistent accession numbers for cell lines</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>This template addresses these issues by:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Recommending Cellosaurus as the primary cell line resource</p>
-</li>
-<li>
-<p>Providing a curated database of cell line metadata for SDRF annotation</p>
-</li>
-<li>
-<p>Defining which metadata fields should be populated from databases vs. experiment-specific annotation</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="cellosaurus"><a class="anchor" href="#cellosaurus"></a><a class="link" href="#cellosaurus">4. Cellosaurus: The Primary Cell Line Resource</a></h2>
+<h2 id="cellosaurus"><a class="anchor" href="#cellosaurus"></a><a class="link" href="#cellosaurus">3. Cellosaurus: The Primary Cell Line Resource</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://www.cellosaurus.org/">Cellosaurus</a> is a comprehensive knowledge resource on cell lines maintained by the SIB Swiss Institute of Bioinformatics. It provides:</p>
@@ -184,7 +122,7 @@ While Cellosaurus is not a formal ontology, it is the most comprehensive and act
 </table>
 </div>
 <div class="sect2">
-<h3 id="_cellosaurus_accession_format"><a class="anchor" href="#_cellosaurus_accession_format"></a><a class="link" href="#_cellosaurus_accession_format">4.1. Cellosaurus Accession Format</a></h3>
+<h3 id="_cellosaurus_accession_format"><a class="anchor" href="#_cellosaurus_accession_format"></a><a class="link" href="#_cellosaurus_accession_format">3.1. Cellosaurus Accession Format</a></h3>
 <div class="paragraph">
 <p>Cellosaurus accessions follow the format <code>CVCL_XXXX</code> where XXXX is a unique identifier:</p>
 </div>
@@ -243,7 +181,7 @@ While Cellosaurus is not a formal ontology, it is the most comprehensive and act
 </div>
 </div>
 <div class="sect1">
-<h2 id="cell-line-metadata-db"><a class="anchor" href="#cell-line-metadata-db"></a><a class="link" href="#cell-line-metadata-db">5. SDRF Cell Line Metadata Database</a></h2>
+<h2 id="cell-line-metadata-db"><a class="anchor" href="#cell-line-metadata-db"></a><a class="link" href="#cell-line-metadata-db">4. SDRF Cell Line Metadata Database</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>To facilitate consistent annotation of cell line experiments, a curated database of cell line metadata is available:</p>
@@ -255,144 +193,16 @@ While Cellosaurus is not a formal ontology, it is the most comprehensive and act
 <p>The database file is available at:
 <a href="https://raw.githubusercontent.com/bigbio/sdrf-cellline-metadata-db/main/cl-annotations-db.tsv" class="bare">https://raw.githubusercontent.com/bigbio/sdrf-cellline-metadata-db/main/cl-annotations-db.tsv</a></p>
 </div>
-<div class="sect2">
-<h3 id="_database_structure"><a class="anchor" href="#_database_structure"></a><a class="link" href="#_database_structure">5.1. Database Structure</a></h3>
-<div class="paragraph">
-<p>The database contains the following fields mapped to SDRF columns:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Database Column</th>
-<th class="tableblock halign-left valign-top">SDRF Column</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell line]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Common cell line name</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cellosaurus name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cellosaurus name]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Official Cellosaurus name</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cellosaurus accession</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cellosaurus accession]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cellosaurus accession (CVCL_XXXX)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">bto cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[bto cell line]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BRENDA Tissue Ontology term (if available)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">organism</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Species of origin</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">organism part</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism part]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tissue/organ of origin</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sampling site</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sampling site]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical location</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">age</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Age of donor at sample collection</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">developmental stage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[developmental stage]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of donor</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sex</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sex]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sex of donor</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ancestry category</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[ancestry category]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry/ethnicity of donor</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">disease</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of original tissue</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cell type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell type]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell type classification</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Material type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[material type]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological material</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">synonyms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cell line synonyms]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alternative names for the cell line</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_using_the_database"><a class="anchor" href="#_using_the_database"></a><a class="link" href="#_using_the_database">5.2. Using the Database</a></h3>
-<div class="paragraph">
-<p>When annotating cell line experiments:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Look up your cell line in the database</p>
-</li>
-<li>
-<p>Copy the relevant metadata fields to your SDRF file</p>
-</li>
-<li>
-<p>Add experiment-specific annotations (treatment, passage number, etc.)</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Example workflow:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash"># Download the database
-wget https://raw.githubusercontent.com/bigbio/sdrf-cellline-metadata-db/main/cl-annotations-db.tsv
-
-# Search for your cell line
-grep -i "HeLa" cl-annotations-db.tsv</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">6. Checklist</a></h2>
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Checklist</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section defines the metadata columns required and recommended for cell line experiments.</p>
 </div>
 <div class="sect2">
-<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">6.1. Required Columns</a></h3>
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">5.1. Required Columns</a></h3>
 <div class="paragraph">
 <p>The following columns are REQUIRED for cell line experiments:</p>
 </div>
@@ -407,7 +217,7 @@ grep -i "HeLa" cl-annotations-db.tsv</code></pre>
 <tr>
 <th class="tableblock halign-left valign-top">Column Name</th>
 <th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Source</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
 <th class="tableblock halign-left valign-top">Example Values</th>
 </tr>
 </thead>
@@ -415,32 +225,32 @@ grep -i "HeLa" cl-annotations-db.tsv</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell line]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Name of the cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database or user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">HeLa, HEK293, K562</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Species of the cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBITaxon</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens, mus musculus</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism part]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Tissue/organ of origin</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cervix, kidney, blood</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of original tissue</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cervical adenocarcinoma, normal, chronic myelogenous leukemia</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.2. Recommended Columns</a></h3>
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.2. Recommended Columns</a></h3>
 <div class="paragraph">
 <p>The following columns are RECOMMENDED for cell line experiments:</p>
 </div>
@@ -455,7 +265,7 @@ grep -i "HeLa" cl-annotations-db.tsv</code></pre>
 <tr>
 <th class="tableblock halign-left valign-top">Column Name</th>
 <th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Source</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
 <th class="tableblock halign-left valign-top">Example Values</th>
 </tr>
 </thead>
@@ -463,72 +273,74 @@ grep -i "HeLa" cl-annotations-db.tsv</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cellosaurus accession]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cellosaurus unique identifier</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CVCL_0030, CVCL_0045, CVCL_0004</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cellosaurus name]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Official Cellosaurus name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">HeLa, HEK293, K-562</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell type]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cell type classification</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/cl">Cell Ontology (CL)</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">epithelial cell, fibroblast, lymphoblast</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sex]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sex of original donor</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">female, male, not available</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Age of donor at sample collection</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age of donor at sample collection (also known as <a href="https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C164712">Cell Line Source Age</a>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">31Y, not available, fetal</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sampling site]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical sampling location</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cervix uteri, fetal kidney, peripheral blood</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[passage number]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Passage number of cells used</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experiment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007061">EFO:0007061</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">P15, P20-25, low passage</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[cell line source]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Source/provider of cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experiment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ATCC, DSMZ, ECACC, in-house</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[authentication method]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Method used to verify cell line identity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experiment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">STR profiling, SNP genotyping, not performed</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">6.3. Optional Columns</a></h3>
+<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">5.3. Optional Columns</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Column Name</th>
 <th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
 <th class="tableblock halign-left valign-top">Example Values</th>
 </tr>
 </thead>
@@ -536,26 +348,31 @@ grep -i "HeLa" cl-annotations-db.tsv</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[developmental stage]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of donor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">adult, fetus, embryo</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[ancestry category]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry of donor if known</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/hancestro">HANCESTRO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">African American, European, not available</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[mycoplasma status]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mycoplasma contamination testing result</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">negative, positive, not tested</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[culture conditions]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Culture medium and conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DMEM + 10% FBS, RPMI-1640 + 10% FBS</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[cell line modifications]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Genetic or other modifications</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CRISPR knockout of TP53, GFP-tagged, parental</p></td>
 </tr>
 </tbody>
@@ -564,13 +381,13 @@ grep -i "HeLa" cl-annotations-db.tsv</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="metadata-sources"><a class="anchor" href="#metadata-sources"></a><a class="link" href="#metadata-sources">7. Understanding Metadata Sources</a></h2>
+<h2 id="metadata-sources"><a class="anchor" href="#metadata-sources"></a><a class="link" href="#metadata-sources">6. Understanding Metadata Sources</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Cell line metadata comes from two sources:</p>
 </div>
 <div class="sect2">
-<h3 id="_database_derived_metadata"><a class="anchor" href="#_database_derived_metadata"></a><a class="link" href="#_database_derived_metadata">7.1. Database-Derived Metadata</a></h3>
+<h3 id="_database_derived_metadata"><a class="anchor" href="#_database_derived_metadata"></a><a class="link" href="#_database_derived_metadata">6.1. Database-Derived Metadata</a></h3>
 <div class="paragraph">
 <p>These fields describe the original cell line and SHOULD be obtained from Cellosaurus or the SDRF Cell Line Metadata Database:</p>
 </div>
@@ -622,7 +439,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect2">
-<h3 id="_experiment_specific_metadata"><a class="anchor" href="#_experiment_specific_metadata"></a><a class="link" href="#_experiment_specific_metadata">7.2. Experiment-Specific Metadata</a></h3>
+<h3 id="_experiment_specific_metadata"><a class="anchor" href="#_experiment_specific_metadata"></a><a class="link" href="#_experiment_specific_metadata">6.2. Experiment-Specific Metadata</a></h3>
 <div class="paragraph">
 <p>These fields describe your specific experiment and SHOULD be provided by the user:</p>
 </div>
@@ -658,21 +475,23 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect1">
-<h2 id="ontology-mapping"><a class="anchor" href="#ontology-mapping"></a><a class="link" href="#ontology-mapping">8. Ontology Mapping</a></h2>
+<h2 id="ontology-mapping"><a class="anchor" href="#ontology-mapping"></a><a class="link" href="#ontology-mapping">7. Ontology Mapping</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>While Cellosaurus is the RECOMMENDED primary resource, SDRF-Proteomics also accepts terms from:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Resource</th>
 <th class="tableblock halign-left valign-top">Use Case</th>
+<th class="tableblock halign-left valign-top">OLS Link</th>
 <th class="tableblock halign-left valign-top">Example</th>
 </tr>
 </thead>
@@ -680,21 +499,25 @@ For database-derived fields, use the values from the cell line database, NOT val
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cellosaurus</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Primary cell line identification (RECOMMENDED)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CVCL_0030</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BTO (BRENDA Tissue Ontology)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alternative ontology terms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alternative ontology terms for cell lines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/bto">OLS - BTO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BTO:0000567</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CLO (Cell Line Ontology)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Legacy support (not actively maintained)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/clo">OLS - CLO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CLO:0003684</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">EFO (Experimental Factor Ontology)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">General experimental factors</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo">OLS - EFO</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">EFO:0001185</p></td>
 </tr>
 </tbody>
@@ -707,10 +530,10 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect1">
-<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">9. Example SDRF Files</a></h2>
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">8. Example SDRF Files</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_basic_cell_line_experiment"><a class="anchor" href="#_basic_cell_line_experiment"></a><a class="link" href="#_basic_cell_line_experiment">9.1. Basic Cell Line Experiment</a></h3>
+<h3 id="_basic_cell_line_experiment"><a class="anchor" href="#_basic_cell_line_experiment"></a><a class="link" href="#_basic_cell_line_experiment">8.1. Basic Cell Line Experiment</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 7.1428%;">
@@ -799,7 +622,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </table>
 </div>
 <div class="sect2">
-<h3 id="_multi_cell_line_comparison"><a class="anchor" href="#_multi_cell_line_comparison"></a><a class="link" href="#_multi_cell_line_comparison">9.2. Multi-Cell Line Comparison</a></h3>
+<h3 id="_multi_cell_line_comparison"><a class="anchor" href="#_multi_cell_line_comparison"></a><a class="link" href="#_multi_cell_line_comparison">8.2. Multi-Cell Line Comparison</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -882,10 +705,10 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect1">
-<h2 id="cell-line-issues"><a class="anchor" href="#cell-line-issues"></a><a class="link" href="#cell-line-issues">10. Common Cell Line Issues</a></h2>
+<h2 id="cell-line-issues"><a class="anchor" href="#cell-line-issues"></a><a class="link" href="#cell-line-issues">9. Common Cell Line Issues</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_misidentified_cell_lines"><a class="anchor" href="#_misidentified_cell_lines"></a><a class="link" href="#_misidentified_cell_lines">10.1. Misidentified Cell Lines</a></h3>
+<h3 id="_misidentified_cell_lines"><a class="anchor" href="#_misidentified_cell_lines"></a><a class="link" href="#_misidentified_cell_lines">9.1. Misidentified Cell Lines</a></h3>
 <div class="paragraph">
 <p>Some cell lines have known issues with misidentification or contamination. Cellosaurus documents these problems. When using cell lines with known issues:</p>
 </div>
@@ -904,7 +727,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect2">
-<h3 id="_cell_line_variants_and_sublines"><a class="anchor" href="#_cell_line_variants_and_sublines"></a><a class="link" href="#_cell_line_variants_and_sublines">10.2. Cell Line Variants and Sublines</a></h3>
+<h3 id="_cell_line_variants_and_sublines"><a class="anchor" href="#_cell_line_variants_and_sublines"></a><a class="link" href="#_cell_line_variants_and_sublines">9.2. Cell Line Variants and Sublines</a></h3>
 <div class="paragraph">
 <p>For cell line variants or sublines:</p>
 </div>
@@ -944,7 +767,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect2">
-<h3 id="_cell_lines_with_unknown_donor_information"><a class="anchor" href="#_cell_lines_with_unknown_donor_information"></a><a class="link" href="#_cell_lines_with_unknown_donor_information">10.3. Cell Lines with Unknown Donor Information</a></h3>
+<h3 id="_cell_lines_with_unknown_donor_information"><a class="anchor" href="#_cell_lines_with_unknown_donor_information"></a><a class="link" href="#_cell_lines_with_unknown_donor_information">9.3. Cell Lines with Unknown Donor Information</a></h3>
 <div class="paragraph">
 <p>For cell lines where donor information is unknown:</p>
 </div>
@@ -965,7 +788,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect1">
-<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">11. Best Practices</a></h2>
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">10. Best Practices</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -998,7 +821,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect1">
-<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">12. Template File</a></h2>
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">11. Template File</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The cell line SDRF template file is available in this directory:</p>
@@ -1013,7 +836,7 @@ For database-derived fields, use the values from the cell line database, NOT val
 </div>
 </div>
 <div class="sect1">
-<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">13. Validation</a></h2>
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">12. Validation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Cell line SDRF files should be validated using the sdrf-pipelines tool:</p>
@@ -1027,7 +850,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">14. Authors and Maintainers</a></h2>
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">13. Authors and Maintainers</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This template was developed by the SDRF-Proteomics community.</p>
@@ -1038,7 +861,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">15. References</a></h2>
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">14. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -1061,7 +884,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 11:15:35 UTC
+Last updated 2026-01-17 11:29:15 UTC
 </div>
 </div>
 </body>
