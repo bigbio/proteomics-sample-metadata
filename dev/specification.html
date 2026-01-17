@@ -77,13 +77,20 @@
 <ul class="sectlevel2">
 <li><a href="#_what_is_a_template">12.1. What is a Template?</a></li>
 <li><a href="#_template_inheritance_and_composition">12.2. Template Inheritance and Composition</a></li>
-<li><a href="#_choosing_a_template">12.3. Choosing a Template</a></li>
-<li><a href="#the-default-template">12.4. Default Template</a></li>
-<li><a href="#template-human">12.5. Human Template</a></li>
-<li><a href="#template-vertebrates">12.6. Vertebrates Template</a></li>
-<li><a href="#template-invertebrates">12.7. Invertebrates Template</a></li>
-<li><a href="#template-plants">12.8. Plants Template</a></li>
-<li><a href="#template-cardinality">12.9. Column Cardinality</a></li>
+<li><a href="#_yaml_template_definitions">12.3. YAML Template Definitions</a></li>
+<li><a href="#_choosing_a_template">12.4. Choosing a Template</a></li>
+<li><a href="#the-default-template">12.5. Default Template</a></li>
+<li><a href="#template-human">12.6. Human Template</a></li>
+<li><a href="#template-vertebrates">12.7. Vertebrates Template</a></li>
+<li><a href="#template-invertebrates">12.8. Invertebrates Template</a></li>
+<li><a href="#template-plants">12.9. Plants Template</a></li>
+<li><a href="#experiment-templates">12.10. Experiment-Type Templates</a>
+<ul class="sectlevel3">
+<li><a href="#_acquisition_templates">12.10.1. Acquisition Templates</a></li>
+<li><a href="#_methodology_templates">12.10.2. Methodology Templates</a></li>
+</ul>
+</li>
+<li><a href="#template-cardinality">12.11. Column Cardinality</a></li>
 </ul>
 </li>
 <li><a href="#study-variables">13. Factor Values (Study Variables)</a>
@@ -367,7 +374,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 <p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates">Core templates</a>: Organism-based templates (human, vertebrates, plants, etc.) that define base schemas for common proteomics experiments. See the <a href="#core-templates">Core Templates</a> section.</p>
 </li>
 <li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Specialized templates</a>: Complete schemas for specific experiment types (cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:</p>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Specialized templates</a>: Complete schemas for specific experiment types and acquisition methods (DDA acquisition, DIA acquisition, cell-lines, single-cell, affinity-proteomics, crosslinking, immunopeptidomics, metaproteomics). Each template has its own directory containing:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -2035,6 +2042,9 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <p><strong>Core templates</strong> (default, human, vertebrates, invertebrates, plants) define organism-specific requirements</p>
 </li>
 <li>
+<p><strong>Acquisition templates</strong> (DDA, DIA) define acquisition-method-specific requirements</p>
+</li>
+<li>
 <p><strong>Experiment-type templates</strong> (single-cell, immunopeptidomics, crosslinking, etc.) define methodology-specific requirements</p>
 </li>
 <li>
@@ -2062,7 +2072,68 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_choosing_a_template"><a class="anchor" href="#_choosing_a_template"></a><a class="link" href="#_choosing_a_template">12.3. Choosing a Template</a></h3>
+<h3 id="_yaml_template_definitions"><a class="anchor" href="#_yaml_template_definitions"></a><a class="link" href="#_yaml_template_definitions">12.3. YAML Template Definitions</a></h3>
+<div class="paragraph">
+<p>Templates are implemented as YAML files that define validation rules, column requirements, and inheritance relationships. These YAML definitions are used by the <a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines</a> validator to check SDRF files for compliance.</p>
+</div>
+<div class="paragraph">
+<p><strong>Basic YAML template structure:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">name: default                    # Template identifier
+description: Default SDRF template for general proteomics experiments
+version: 1.1.0
+extends: minimum                 # Parent template (inheritance)
+
+validators:                      # File-level validators
+  - validator_name: min_columns
+    params:
+      min_columns: 12
+
+columns:                         # Column definitions
+  - name: characteristics[disease]
+    description: Disease state of the sample
+    requirement: required        # required | recommended | optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:                  # Column-level validators
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - efo
+          error_level: warning</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Key properties:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>name</code>: Template identifier used in validation commands</p>
+</li>
+<li>
+<p><code>extends</code>: Parent template to inherit from (e.g., <code>minimum</code>, <code>default</code>)</p>
+</li>
+<li>
+<p><code>requirement</code>: Column requirement level (<code>required</code>, <code>recommended</code>, <code>optional</code>)</p>
+</li>
+<li>
+<p><code>allow_not_applicable</code> / <code>allow_not_available</code>: Whether special values are permitted</p>
+</li>
+<li>
+<p><code>validators</code>: Validation rules (ontology checks, patterns, value constraints)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Template files are located in the <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates">core-templates</a> and <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">templates</a> directories.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_choosing_a_template"><a class="anchor" href="#_choosing_a_template"></a><a class="link" href="#_choosing_a_template">12.4. Choosing a Template</a></h3>
 <div class="paragraph">
 <p>Choose the appropriate core template based on your sample organism:</p>
 </div>
@@ -2093,7 +2164,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </div>
 </div>
 <div class="sect2">
-<h3 id="the-default-template"><a class="anchor" href="#the-default-template"></a><a class="link" href="#the-default-template">12.4. Default Template</a></h3>
+<h3 id="the-default-template"><a class="anchor" href="#the-default-template"></a><a class="link" href="#the-default-template">12.5. Default Template</a></h3>
 <div class="paragraph">
 <p>The default template is the most basic template that can be used for any proteomics experiment. Use this when no organism-specific template is applicable.</p>
 </div>
@@ -2225,7 +2296,7 @@ The <a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-human"><a class="anchor" href="#template-human"></a><a class="link" href="#template-human">12.5. Human Template</a></h3>
+<h3 id="template-human"><a class="anchor" href="#template-human"></a><a class="link" href="#template-human">12.6. Human Template</a></h3>
 <div class="paragraph">
 <p>The human template extends the default template with clinical and demographic metadata required for human samples.</p>
 </div>
@@ -2387,7 +2458,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-vertebrates"><a class="anchor" href="#template-vertebrates"></a><a class="link" href="#template-vertebrates">12.6. Vertebrates Template</a></h3>
+<h3 id="template-vertebrates"><a class="anchor" href="#template-vertebrates"></a><a class="link" href="#template-vertebrates">12.7. Vertebrates Template</a></h3>
 <div class="paragraph">
 <p>The vertebrates template is used for non-human vertebrate species such as mouse, rat, zebrafish, and other model organisms.</p>
 </div>
@@ -2519,7 +2590,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-invertebrates"><a class="anchor" href="#template-invertebrates"></a><a class="link" href="#template-invertebrates">12.7. Invertebrates Template</a></h3>
+<h3 id="template-invertebrates"><a class="anchor" href="#template-invertebrates"></a><a class="link" href="#template-invertebrates">12.8. Invertebrates Template</a></h3>
 <div class="paragraph">
 <p>The invertebrates template is used for non-vertebrate animal species such as insects (Drosophila), nematodes (C. elegans), and other invertebrate model organisms.</p>
 </div>
@@ -2657,7 +2728,7 @@ For Drosophila samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt"
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-plants"><a class="anchor" href="#template-plants"></a><a class="link" href="#template-plants">12.8. Plants Template</a></h3>
+<h3 id="template-plants"><a class="anchor" href="#template-plants"></a><a class="link" href="#template-plants">12.9. Plants Template</a></h3>
 <div class="paragraph">
 <p>The plants template is used for plant species including model organisms like Arabidopsis thaliana and crop species.</p>
 </div>
@@ -2795,7 +2866,57 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-cardinality"><a class="anchor" href="#template-cardinality"></a><a class="link" href="#template-cardinality">12.9. Column Cardinality</a></h3>
+<h3 id="experiment-templates"><a class="anchor" href="#experiment-templates"></a><a class="link" href="#experiment-templates">12.10. Experiment-Type Templates</a></h3>
+<div class="paragraph">
+<p>In addition to core organism-based templates, SDRF-Proteomics provides specialized templates for specific acquisition methods and experiment types. These templates extend the core templates with methodology-specific columns.</p>
+</div>
+<div class="sect3">
+<h4 id="_acquisition_templates"><a class="anchor" href="#_acquisition_templates"></a><a class="link" href="#_acquisition_templates">12.10.1. Acquisition Templates</a></h4>
+<div class="paragraph">
+<p>Templates for specific mass spectrometry acquisition methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><a href="templates/dda-acquisition/README.adoc">DDA Acquisition</a></strong>: Data-dependent acquisition experiments. Includes columns for dissociation method, collision energy, fractionation method, modification parameters, and mass tolerances.</p>
+</li>
+<li>
+<p><strong><a href="templates/dia-acquisition/README.adoc">DIA Acquisition</a></strong>: Data-independent acquisition experiments. Includes columns for scan window limits, isolation window width, DIA method, and spectral library information.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_methodology_templates"><a class="anchor" href="#_methodology_templates"></a><a class="link" href="#_methodology_templates">12.10.2. Methodology Templates</a></h4>
+<div class="paragraph">
+<p>Templates for specialized proteomics methodologies (under development):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><a href="templates/cell-lines/README.adoc">Cell Lines</a></strong>: Experiments using cell line samples. Includes Cellosaurus integration for cell line identification.</p>
+</li>
+<li>
+<p><strong><a href="templates/single-cell/README.adoc">Single-Cell Proteomics</a></strong>: Single-cell proteomics experiments. Includes columns for cell isolation method, carrier proteome, and single-cell identifiers.</p>
+</li>
+<li>
+<p><strong><a href="templates/immunopeptidomics/README.adoc">Immunopeptidomics</a></strong>: MHC peptide immunopeptidomics. Includes columns for MHC class, HLA typing, and enrichment methods.</p>
+</li>
+<li>
+<p><strong><a href="templates/crosslinking/README.adoc">Crosslinking MS</a></strong>: Cross-linking mass spectrometry experiments. Includes columns for crosslinking reagents and enrichment methods.</p>
+</li>
+<li>
+<p><strong><a href="templates/metaproteomics/README.adoc">Metaproteomics</a></strong>: Environmental and microbiome proteomics. Includes columns for environmental sample type and geographic location.</p>
+</li>
+<li>
+<p><strong><a href="templates/affinity-proteomics/README.adoc">Affinity Proteomics</a></strong>: Affinity-based proteomics (Olink, SomaScan). Includes columns specific to these platforms.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="template-cardinality"><a class="anchor" href="#template-cardinality"></a><a class="link" href="#template-cardinality">12.11. Column Cardinality</a></h3>
 <div class="paragraph">
 <p>Some columns can appear multiple times for the same sample. The cardinality rules are:</p>
 </div>
@@ -3136,7 +3257,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 06:55:34 UTC
+Last updated 2026-01-17 07:47:02 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

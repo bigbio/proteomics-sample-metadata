@@ -18,29 +18,28 @@
 <li><a href="#status">1. Status of this Template</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
 <li><a href="#motivation">3. Motivation</a></li>
-<li><a href="#connections">4. Connections to Analysis Pipelines</a></li>
-<li><a href="#additional-ontologies">5. Additional Ontologies</a></li>
-<li><a href="#checklist">6. Checklist</a>
+<li><a href="#additional-ontologies">4. Additional Ontologies</a></li>
+<li><a href="#checklist">5. Checklist</a>
 <ul class="sectlevel2">
-<li><a href="#_required_columns">6.1. Required Columns</a></li>
-<li><a href="#_recommended_columns">6.2. Recommended Columns</a></li>
+<li><a href="#_recommended_columns">5.1. Recommended Columns</a></li>
+<li><a href="#_optional_columns">5.2. Optional Columns</a></li>
 </ul>
 </li>
-<li><a href="#fractionation-methods">7. Fractionation Methods</a></li>
-<li><a href="#dda-parameters">8. DDA Acquisition Parameters</a>
+<li><a href="#fractionation-methods">6. Fractionation Methods</a></li>
+<li><a href="#dda-parameters">7. DDA Acquisition Parameters</a>
 <ul class="sectlevel2">
-<li><a href="#_top_n_selection">8.1. Top-N Selection</a></li>
-<li><a href="#_dynamic_exclusion">8.2. Dynamic Exclusion</a></li>
+<li><a href="#_dissociation_methods">7.1. Dissociation Methods</a></li>
+<li><a href="#_mass_tolerances">7.2. Mass Tolerances</a></li>
 </ul>
 </li>
-<li><a href="#example-sdrf">9. Example SDRF File</a></li>
-<li><a href="#single-shot-example">10. Single-Shot DDA Example</a></li>
-<li><a href="#tmt-dda-example">11. TMT-Labeled DDA Example</a></li>
-<li><a href="#best-practices">12. Best Practices for DDA Annotation</a></li>
-<li><a href="#template-file">13. Template File</a></li>
-<li><a href="#validation">14. Validation</a></li>
-<li><a href="#authors">15. Authors and Maintainers</a></li>
-<li><a href="#references">16. References</a></li>
+<li><a href="#example-sdrf">8. Example SDRF File</a></li>
+<li><a href="#single-shot-example">9. Single-Shot DDA Example</a></li>
+<li><a href="#tmt-dda-example">10. TMT-Labeled DDA Example</a></li>
+<li><a href="#best-practices">11. Best Practices for DDA Annotation</a></li>
+<li><a href="#template-file">12. Template File</a></li>
+<li><a href="#validation">13. Validation</a></li>
+<li><a href="#authors">14. Authors and Maintainers</a></li>
+<li><a href="#references">15. References</a></li>
 </ul>
 </div>
 </div>
@@ -52,13 +51,13 @@
 <p>This document provides a template for annotating Data-dependent acquisition (DDA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DDA-specific metadata.</p>
 </div>
 <div class="paragraph">
-<p><strong>Type:</strong> Specialized Template (used in combination with core templates)</p>
+<p><strong>Type:</strong> Acquisition Template (used in combination with core templates)</p>
 </div>
 <div class="paragraph">
-<p><strong>Status:</strong> Draft - This template is under active development and may change significantly.</p>
+<p><strong>Status:</strong> Released</p>
 </div>
 <div class="paragraph">
-<p><strong>Version:</strong> 1.0.0-dev - 2025-01</p>
+<p><strong>Version:</strong> 1.1.0 - 2025-01</p>
 </div>
 </div>
 </div>
@@ -98,22 +97,22 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Top-N selection</strong>: Number of precursors selected per cycle</p>
+<p><strong>Dissociation method</strong>: HCD, CID, ETD, or hybrid methods produce different fragmentation patterns</p>
 </li>
 <li>
-<p><strong>Dynamic exclusion</strong>: Duration and settings to avoid resampling</p>
-</li>
-<li>
-<p><strong>Isolation width</strong>: Width of the precursor isolation window</p>
-</li>
-<li>
-<p><strong>Intensity threshold</strong>: Minimum intensity for precursor selection</p>
+<p><strong>Collision energy</strong>: Energy applied for peptide fragmentation</p>
 </li>
 <li>
 <p><strong>Fractionation</strong>: DDA experiments often use extensive fractionation for deep proteome coverage</p>
 </li>
 <li>
-<p><strong>Charge state filtering</strong>: Which charge states are selected for fragmentation</p>
+<p><strong>Modification parameters</strong>: Post-translational modifications searched in the database</p>
+</li>
+<li>
+<p><strong>Mass tolerances</strong>: Precursor and fragment mass tolerances for database searching</p>
+</li>
+<li>
+<p><strong>MS2 mass analyzer</strong>: Affects resolution and mass accuracy of fragment spectra</p>
 </li>
 </ol>
 </div>
@@ -123,40 +122,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="connections"><a class="anchor" href="#connections"></a><a class="link" href="#connections">4. Connections to Analysis Pipelines</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>DDA data is typically analyzed using:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>MaxQuant</strong>: Widely used for label-free and labeling quantification</p>
-</li>
-<li>
-<p><strong>Proteome Discoverer</strong>: Thermo Fisher&#8217;s commercial platform</p>
-</li>
-<li>
-<p><strong>MSFragger/FragPipe</strong>: High-speed database searching</p>
-</li>
-<li>
-<p><strong>Comet/Percolator</strong>: Open-source search and validation</p>
-</li>
-<li>
-<p><strong>Mascot</strong>: Commercial database search engine</p>
-</li>
-<li>
-<p><strong>PEAKS</strong>: De novo sequencing and database search</p>
-</li>
-<li>
-<p><strong>OpenMS</strong>: Open-source proteomics pipeline</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">5. Additional Ontologies</a></h2>
+<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">4. Additional Ontologies</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In addition to the ontologies supported by the core SDRF-Proteomics specification, DDA templates utilize:</p>
@@ -174,15 +140,15 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">6. Checklist</a></h2>
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Checklist</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section defines the metadata columns required and recommended for DDA experiments.</p>
+<p>This section defines the metadata columns required and recommended for DDA experiments. These columns are based on analysis of 1000+ annotated DDA projects to identify commonly used metadata.</p>
 </div>
 <div class="sect2">
-<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">6.1. Required Columns</a></h3>
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.1. Recommended Columns</a></h3>
 <div class="paragraph">
-<p>The following columns are REQUIRED for DDA experiments in addition to the core SDRF-Proteomics requirements:</p>
+<p>The following columns are RECOMMENDED for DDA experiments (in addition to the core SDRF-Proteomics requirements):</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -202,115 +168,80 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[proteomics data acquisition method]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Must indicate DDA acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE CV</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[precursor mass tolerance]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for precursor ions in database search</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm, 20 ppm, 0.02 Da</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[fragment mass tolerance]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for fragment ions in database search</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da, 0.05 Da, 0.5 Da, 20 ppm</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.2. Recommended Columns</a></h3>
-<div class="paragraph">
-<p>The following columns are RECOMMENDED for DDA experiments:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Cardinality</th>
-<th class="tableblock halign-left valign-top">Ontology/CV</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[fractionation method]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to fractionate the sample before MS</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE CV</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564, NT=Strong cation exchange;AC=PRIDE:0000565, no fractionation</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[collision energy]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Collision energy used for fragmentation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE, 27 eV, 35 NCE</p></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[dissociation method]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Fragmentation method used</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MS CV</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422, NT=electron-transfer dissociation;AC=MS:1000598</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD, CID, ETD, EThcD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[modification parameters]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post-translational modifications searched</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIMOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">5.2. Optional Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are OPTIONAL but commonly used:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[collision energy]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collision energy used for fragmentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27, 30%, normalized 27%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[fractionation method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to fractionate the sample before MS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high-pH reversed phase, strong cation exchange, not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[precursor mass tolerance]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for precursor ions in database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm, 20 ppm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[fragment mass tolerance]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for fragment ions in database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da, 20 ppm</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[MS2 mass analyzer]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mass analyzer used for MS2 acquisition</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MS CV</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484, NT=linear ion trap;AC=MS:1000291</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[top N]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of precursors selected per MS1 scan</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10, 15, 20, 40</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[isolation window]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Width of precursor isolation window</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1.6 Th, 2.0 m/z, 1.2 Th</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[dynamic exclusion duration]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Time for dynamic exclusion</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 s, 60 s, 45 s</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[intensity threshold]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum intensity for precursor selection</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1e4, 5000, 1e5</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[charge state]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Charge states selected for fragmentation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Range or list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2-6, 2-7, 2+;3+;4+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orbitrap, ion trap, TOF</p></td>
 </tr>
 </tbody>
 </table>
@@ -318,7 +249,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="fractionation-methods"><a class="anchor" href="#fractionation-methods"></a><a class="link" href="#fractionation-methods">7. Fractionation Methods</a></h2>
+<h2 id="fractionation-methods"><a class="anchor" href="#fractionation-methods"></a><a class="link" href="#fractionation-methods">6. Fractionation Methods</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>DDA experiments often employ fractionation to increase proteome coverage. Common methods:</p>
@@ -389,62 +320,60 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="dda-parameters"><a class="anchor" href="#dda-parameters"></a><a class="link" href="#dda-parameters">8. DDA Acquisition Parameters</a></h2>
+<h2 id="dda-parameters"><a class="anchor" href="#dda-parameters"></a><a class="link" href="#dda-parameters">7. DDA Acquisition Parameters</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_top_n_selection"><a class="anchor" href="#_top_n_selection"></a><a class="link" href="#_top_n_selection">8.1. Top-N Selection</a></h3>
+<h3 id="_dissociation_methods"><a class="anchor" href="#_dissociation_methods"></a><a class="link" href="#_dissociation_methods">7.1. Dissociation Methods</a></h3>
 <div class="paragraph">
-<p>The number of precursors selected per MS1 scan significantly affects:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Proteome depth</p>
-</li>
-<li>
-<p>Quantification accuracy</p>
-</li>
-<li>
-<p>Duty cycle/cycle time</p>
-</li>
-</ul>
+<p>The fragmentation method significantly affects peptide identification:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Top-N Value</th>
-<th class="tableblock halign-left valign-top">Typical Use Case</th>
-<th class="tableblock halign-left valign-top">Trade-offs</th>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">PSI-MS Term</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Typical Use</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10-15</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Standard discovery</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Good depth and quantification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS:1000422</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Beam-type collision-induced dissociation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standard Orbitrap-based workflows</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">20-40</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deep profiling, fractionated samples</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum identifications, longer cycle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS:1000133</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collision-induced dissociation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ion trap instruments</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5-10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Short gradients, targeted</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fast cycles, lower depth</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ETD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS:1000598</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Electron-transfer dissociation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Labile PTMs, larger peptides</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EThcD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS:1002631</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ETD with supplemental HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PTM localization</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_dynamic_exclusion"><a class="anchor" href="#_dynamic_exclusion"></a><a class="link" href="#_dynamic_exclusion">8.2. Dynamic Exclusion</a></h3>
+<h3 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">7.2. Mass Tolerances</a></h3>
 <div class="paragraph">
-<p>Dynamic exclusion settings prevent repeated sampling of abundant peptides:</p>
+<p>Mass tolerance settings for database searching:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -455,25 +384,20 @@
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
 <th class="tableblock halign-left valign-top">Typical Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Duration</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Time a precursor is excluded after selection</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30-90 s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Precursor tolerance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10-20 ppm (Orbitrap), 0.5-1 Da (ion trap)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tolerance for matching precursor masses</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mass window for exclusion matching</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Repeat count</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Times a precursor can be selected before exclusion</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1-2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fragment tolerance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02-0.05 Da (Orbitrap), 0.5-0.6 Da (ion trap)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tolerance for matching fragment ions</p></td>
 </tr>
 </tbody>
 </table>
@@ -481,46 +405,34 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">9. Example SDRF File</a></h2>
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">8. Example SDRF File</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A complete example for a fractionated DDA proteomics experiment:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3478%;">
-<col style="width: 4.3484%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6666%;">
+<col style="width: 6.6676%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism part]</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
 <th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">technology type</th>
 <th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
 <th class="tableblock halign-left valign-top">comment[label]</th>
 <th class="tableblock halign-left valign-top">comment[instrument]</th>
@@ -528,12 +440,174 @@
 <th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
 <th class="tableblock halign-left valign-top">comment[fractionation method]</th>
 <th class="tableblock halign-left valign-top">comment[technical replicate]</th>
-<th class="tableblock halign-left valign-top">comment[top N]</th>
-<th class="tableblock halign-left valign-top">comment[isolation window]</th>
+<th class="tableblock halign-left valign-top">comment[dissociation method]</th>
 <th class="tableblock halign-left valign-top">comment[collision energy]</th>
-<th class="tableblock halign-left valign-top">comment[dynamic exclusion duration]</th>
-<th class="tableblock halign-left valign-top">comment[precursor mass tolerance]</th>
-<th class="tableblock halign-left valign-top">comment[fragment mass tolerance]</th>
+<th class="tableblock halign-left valign-top">comment[modification parameters]</th>
+<th class="tableblock halign-left valign-top">comment[modification parameters]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver001_F01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data-dependent acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high-pH reversed phase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Carbamidomethyl;TA=C;MT=Fixed;AC=UNIMOD:4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver001_F01.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver001_F02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data-dependent acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high-pH reversed phase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Carbamidomethyl;TA=C;MT=Fixed;AC=UNIMOD:4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver001_F02.raw</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver002_F01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data-dependent acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive HF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high-pH reversed phase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Carbamidomethyl;TA=C;MT=Fixed;AC=UNIMOD:4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver002_F01.raw</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>&#8230;&#8203;</code> column indicates omitted core columns (organism, organism part, disease, biological replicate, technology type).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="single-shot-example"><a class="anchor" href="#single-shot-example"></a><a class="link" href="#single-shot-example">9. Single-Shot DDA Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For high-throughput or clinical samples without fractionation:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.091%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
+<th class="tableblock halign-left valign-top">comment[label]</th>
+<th class="tableblock halign-left valign-top">comment[instrument]</th>
+<th class="tableblock halign-left valign-top">comment[cleavage agent details]</th>
+<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
+<th class="tableblock halign-left valign-top">comment[technical replicate]</th>
+<th class="tableblock halign-left valign-top">comment[dissociation method]</th>
+<th class="tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma001_run1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data-dependent acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orbitrap Exploris 480</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_001.raw</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For single-shot experiments, <code>comment[fractionation method]</code> can be omitted or set to <code>not applicable</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tmt-dda-example"><a class="anchor" href="#tmt-dda-example"></a><a class="link" href="#tmt-dda-example">10. TMT-Labeled DDA Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For isobaric labeling experiments (TMT, iTRAQ):</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">assay name</th>
+<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
+<th class="tableblock halign-left valign-top">comment[label]</th>
+<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
+<th class="tableblock halign-left valign-top">comment[fractionation method]</th>
 <th class="tableblock halign-left valign-top">comment[dissociation method]</th>
 <th class="tableblock halign-left valign-top">comment[MS2 mass analyzer]</th>
 <th class="tableblock halign-left valign-top">comment[data file]</th>
@@ -541,250 +615,27 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver001_F01</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Q Exactive HF;AC=MS:1002523</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1.6 Th</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45 s</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver001_F01.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver001_F02</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Q Exactive HF;AC=MS:1002523</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1.6 Th</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45 s</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver001_F02.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver001_F03</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Q Exactive HF;AC=MS:1002523</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1.6 Th</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45 s</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver001_F03.raw</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver_sample_002</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">hepatocellular carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DDA_liver002_F01</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Q Exactive HF;AC=MS:1002523</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1.6 Th</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45 s</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=beam-type collision-induced dissociation;AC=MS:1000422</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liver002_F01.raw</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="single-shot-example"><a class="anchor" href="#single-shot-example"></a><a class="link" href="#single-shot-example">10. Single-Shot DDA Example</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For high-throughput or clinical samples without fractionation:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2631%;">
-<col style="width: 5.2642%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism part]</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">technology type</th>
-<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[instrument]</th>
-<th class="tableblock halign-left valign-top">comment[cleavage agent details]</th>
-<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
-<th class="tableblock halign-left valign-top">comment[fractionation method]</th>
-<th class="tableblock halign-left valign-top">comment[technical replicate]</th>
-<th class="tableblock halign-left valign-top">comment[top N]</th>
-<th class="tableblock halign-left valign-top">comment[collision energy]</th>
-<th class="tableblock halign-left valign-top">comment[precursor mass tolerance]</th>
-<th class="tableblock halign-left valign-top">comment[fragment mass tolerance]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">blood plasma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">plasma001_run1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AC=MS:1002038;NT=label free sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap Exploris 480;AC=MS:1003028</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">no fractionation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">plasma_001.raw</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="tmt-dda-example"><a class="anchor" href="#tmt-dda-example"></a><a class="link" href="#tmt-dda-example">11. TMT-Labeled DDA Example</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For isobaric labeling experiments (TMT, iTRAQ):</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3333%;">
-<col style="width: 8.3337%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">characteristics[biological replicate]</th>
-<th class="tableblock halign-left valign-top">assay name</th>
-<th class="tableblock halign-left valign-top">comment[proteomics data acquisition method]</th>
-<th class="tableblock halign-left valign-top">comment[label]</th>
-<th class="tableblock halign-left valign-top">comment[fraction identifier]</th>
-<th class="tableblock halign-left valign-top">comment[fractionation method]</th>
-<th class="tableblock halign-left valign-top">comment[top N]</th>
-<th class="tableblock halign-left valign-top">comment[MS2 mass analyzer]</th>
-<th class="tableblock halign-left valign-top">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample_A_rep1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT_set1_F01</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data-dependent acquisition</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high-pH reversed phase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orbitrap</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT_set1_F01.raw</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sample_B_rep1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cancer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT_set1_F01</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Data-dependent acquisition;AC=PRIDE:0000627</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data-dependent acquisition</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Orbitrap;AC=MS:1000484</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high-pH reversed phase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orbitrap</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TMT_set1_F01.raw</p></td>
 </tr>
 </tbody>
@@ -804,40 +655,37 @@ For TMT experiments, multiple samples share the same raw file. Use <code>comment
 </div>
 </div>
 <div class="sect1">
-<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">12. Best Practices for DDA Annotation</a></h2>
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">11. Best Practices for DDA Annotation</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Always specify acquisition method</strong>: Use <code>comment[proteomics data acquisition method]</code> with the PRIDE CV term for DDA.</p>
+<p><strong>Always specify acquisition method</strong>: Use <code>comment[proteomics data acquisition method]</code> with <code>Data-dependent acquisition</code>.</p>
+</li>
+<li>
+<p><strong>Document fragmentation method</strong>: Use <code>comment[dissociation method]</code> to specify HCD, CID, ETD, or EThcD—these produce different fragmentation patterns and affect peptide identification.</p>
+</li>
+<li>
+<p><strong>Include modification parameters</strong>: Document all searched PTMs using <code>comment[modification parameters]</code> with UNIMOD accessions.</p>
 </li>
 <li>
 <p><strong>Document fractionation</strong>: Include <code>comment[fractionation method]</code> and properly number fractions with <code>comment[fraction identifier]</code>.</p>
 </li>
 <li>
-<p><strong>Report mass tolerances</strong>: Precursor and fragment mass tolerances are essential for data reanalysis.</p>
+<p><strong>Report collision energy</strong>: Include <code>comment[collision energy]</code> when available, as it affects fragmentation quality.</p>
 </li>
 <li>
-<p><strong>Include key acquisition parameters</strong>: Top-N, isolation window, and collision energy significantly affect results.</p>
+<p><strong>Specify MS2 analyzer</strong>: Use <code>comment[MS2 mass analyzer]</code> for hybrid instruments (e.g., Orbitrap vs ion trap MS2).</p>
 </li>
 <li>
-<p><strong>Note dynamic exclusion</strong>: This parameter affects reproducibility between technical replicates.</p>
-</li>
-<li>
-<p><strong>Specify MS2 analyzer</strong>: Important for understanding resolution and mass accuracy of fragment spectra.</p>
-</li>
-<li>
-<p><strong>Document fragmentation method</strong>: HCD, CID, ETD, and EThcD produce different fragmentation patterns.</p>
-</li>
-<li>
-<p><strong>Consider instrument-specific settings</strong>: Different platforms may have unique parameters worth documenting.</p>
+<p><strong>Report mass tolerances when known</strong>: <code>comment[precursor mass tolerance]</code> and <code>comment[fragment mass tolerance]</code> aid data reanalysis.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">13. Template File</a></h2>
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">12. Template File</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The DDA SDRF template file is available in this directory:</p>
@@ -852,7 +700,7 @@ For TMT experiments, multiple samples share the same raw file. Use <code>comment
 </div>
 </div>
 <div class="sect1">
-<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">14. Validation</a></h2>
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">13. Validation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>DDA SDRF files should be validated using the sdrf-pipelines tool:</p>
@@ -878,7 +726,7 @@ DDA-specific validation rules are under development.
 </div>
 </div>
 <div class="sect1">
-<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">15. Authors and Maintainers</a></h2>
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">14. Authors and Maintainers</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This template was developed by the SDRF-Proteomics community.</p>
@@ -889,7 +737,7 @@ DDA-specific validation rules are under development.
 </div>
 </div>
 <div class="sect1">
-<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">16. References</a></h2>
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">15. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -912,7 +760,7 @@ DDA-specific validation rules are under development.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 06:55:34 UTC
+Last updated 2026-01-17 07:47:02 UTC
 </div>
 </div>
 </body>
