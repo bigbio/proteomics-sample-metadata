@@ -1,0 +1,249 @@
+= Sample Metadata Guidelines
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Introduction
+
+This document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant).
+
+For human-specific metadata (disease staging, comorbidities, treatment history), see link:human-sample-metadata.adoc[Human Sample Metadata Guidelines].
+
+**Version 1.0.0** - 2025-01
+
+== Organism
+
+**Column:** `characteristics[organism]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy (NCBITaxon)]
+
+Use the scientific name in lowercase. The validator will map to the correct ontology term.
+
+|===
+|Value |NCBITaxon ID |Description
+
+|homo sapiens |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_9606[NCBITaxon:9606] |Human
+|mus musculus |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10090[NCBITaxon:10090] |Mouse
+|rattus norvegicus |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10116[NCBITaxon:10116] |Rat
+|danio rerio |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_7955[NCBITaxon:7955] |Zebrafish
+|drosophila melanogaster |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_7227[NCBITaxon:7227] |Fruit fly
+|arabidopsis thaliana |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_3702[NCBITaxon:3702] |Thale cress
+|===
+
+== Organism Part / Tissue
+
+**Column:** `characteristics[organism part]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] for mammals/vertebrates, https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)] for plants, https://www.ebi.ac.uk/ols4/ontologies/fbbt[FlyBase Anatomy (FBbt)] for Drosophila.
+
+Use lowercase for all values. For cell line samples, use `not applicable` or specify the tissue of origin (e.g., `cervix` for HeLa).
+
+|===
+|Value |UBERON ID |Description
+
+|blood |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000178[UBERON:0000178] |Whole blood
+|blood plasma |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0001969[UBERON:0001969] |Blood plasma
+|liver |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002107[UBERON:0002107] |Liver tissue
+|brain |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000955[UBERON:0000955] |Brain
+|heart |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000948[UBERON:0000948] |Heart
+|kidney |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002113[UBERON:0002113] |Kidney
+|===
+
+== Age
+
+**Column:** `characteristics[age]`
+
+**Format:** `{Number}{Unit}` where Unit is: `Y` (Years), `M` (Months), `W` (Weeks), `D` (Days).
+
+For age ranges use: `{LowerBound}{Unit}-{UpperBound}{Unit}` (e.g., `40Y-50Y`).
+
+Use `not available` when age is unknown, `not applicable` for immortalized cell lines.
+
+|===
+|Age Description |SDRF Value
+
+|40 years old |40Y
+|8 weeks old |8W
+|===
+
+== Developmental Stage
+
+**Column:** `characteristics[developmental stage]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+
+|===
+|Value |Description
+
+|adult |Sexually mature organism
+|embryonic |Pre-birth/pre-hatching
+|===
+
+For model organisms, use specific stages when applicable: `embryonic day 14` (mouse E14), `24 hpf` (zebrafish 24 hours post fertilization).
+
+[[disease-annotation]]
+== Disease
+
+**Column:** `characteristics[disease]`
+
+**Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology] (preferred), https://www.ebi.ac.uk/efo/[EFO], https://disease-ontology.org/[Human Disease Ontology (DOID)]
+
+=== Healthy Samples: normal vs healthy vs control
+
+For samples without disease, the terminology matters for standardization:
+
+**`normal`** (PATO:0000461) - **Recommended**
+
+- Standard term in pathology ("normal tissue" vs "tumor tissue")
+- Well-defined ontology mapping to PATO:0000461
+- Widely used in existing proteomics datasets
+
+**`healthy`** (PATO:0001421) - **Accepted alternative**
+
+- More intuitive for clinical/human samples
+- Has valid ontology support
+- Validators should accept both `normal` and `healthy`
+
+**`control`** - **Avoid in disease field**
+
+- "Control" is an **experimental design concept**, not a disease state
+- Ambiguous: a control could be healthy, vehicle-treated, time-zero, or even a different disease used for comparison
+- The experimental role should be captured in `factor value[disease]`, not in `characteristics[disease]`
+
+=== Disease State vs Experimental Role
+
+The `characteristics[disease]` column captures the **actual disease state** of the sample, while `factor value[disease]` indicates the **experimental comparison groups**:
+
+|===
+|source name |... |characteristics[disease] |... |factor value[disease]
+
+|healthy_1 |... |normal |... |normal
+|tumor_1 |... |breast carcinoma |... |breast carcinoma
+|adjacent_1 |... |normal |... |normal
+|===
+
+In this example:
+
+- `healthy_1`: Healthy control sample from a healthy individual
+- `tumor_1`: Disease case sample (tumor tissue)
+- `adjacent_1`: Adjacent normal tissue from a cancer patient
+
+Both `healthy_1` and `adjacent_1` have `normal` as their disease state (no tumor cells), but they come from different individuals. The experimental design and comparison groups are defined by the factor values.
+
+=== Disease Examples
+
+|===
+|Disease |SDRF Value |Ontology Link
+
+|Healthy/no disease |normal |https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]
+|Healthy (alternative) |healthy |https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0001421[PATO:0001421]
+|Breast cancer |breast carcinoma |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004989[MONDO:0004989]
+|Alzheimer's disease |Alzheimer disease |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004975[MONDO:0004975]
+|Type 2 diabetes |type 2 diabetes mellitus |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0005148[MONDO:0005148]
+|COVID-19 |COVID-19 |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0100096[MONDO:0100096]
+|===
+
+=== Animal Disease Models
+
+For animal disease models, use the human disease name to facilitate cross-species comparisons:
+
+|===
+|source name |characteristics[organism] |... |characteristics[disease] |...
+
+|APP_PS1_sample1 |mus musculus |... |Alzheimer disease |...
+|dbdb_sample1 |mus musculus |... |type 2 diabetes mellitus |...
+|wildtype_sample1 |mus musculus |... |normal |...
+|===
+
+NOTE: APP/PS1 and db/db are common mouse disease models for Alzheimer's disease and type 2 diabetes respectively.
+
+== Cell Type
+
+**Column:** `characteristics[cell type]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
+
+For cell lines, optionally include the cell type of origin.
+
+|===
+|Value |CL Link
+
+|epithelial cell |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000066[CL:0000066]
+|T cell |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000084[CL:0000084]
+|B cell |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000236[CL:0000236]
+|macrophage |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000235[CL:0000235]
+|fibroblast |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000057[CL:0000057]
+|===
+
+For detailed immune cell studies, use specific subtypes: https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000624[CD4-positive, alpha-beta T cell (CL:0000624)], https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000815[regulatory T cell (CL:0000815)].
+
+== Depletion
+
+**Column:** `characteristics[depletion]`
+
+For blood/plasma samples indicating abundant protein depletion.
+
+Values: `no depletion`, `depletion`, `not applicable`.
+
+== Patient-Derived Xenografts (PDX)
+
+**Column:** `characteristics[xenograft]`
+
+When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
+
+|===
+|source name |characteristics[organism] |... |characteristics[xenograft] |characteristics[age] |...
+
+|tumor_001 |homo sapiens |... |not applicable |65Y |...
+|pdx_001 |homo sapiens |... |pancreatic adenocarcinoma grown in nude mice |65Y |...
+|===
+
+== Synthetic Peptide Libraries
+
+**Column:** `characteristics[synthetic peptide]`
+
+Values: `synthetic` (sample is a synthetic peptide library), `not synthetic` (biological sample).
+
+For synthetic libraries, most sample metadata can be `not applicable`. The organism MAY be specified if the library was designed from specific species peptides.
+
+== PTM Enrichment
+
+**Column:** `characteristics[enrichment process]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+
+|===
+|Value |Description
+
+|enrichment of phosphorylated Protein |Phosphoproteomics enrichment
+|not applicable |No PTM enrichment performed
+|===
+
+== Best Practices
+
+1. **Use lowercase** for all controlled vocabulary values (except proper nouns in disease names).
+2. **Use ontology terms** mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).
+3. **Be consistent** with format across all samples in a dataset.
+4. **Document unknowns** using `not available` (unknown) or `not applicable` (not relevant) - never leave cells empty.
+5. **Validate before submission** using sdrf-pipelines to check ontology mappings.
+
+== References
+
+- MONDO Disease Ontology: https://mondo.monarchinitiative.org/
+- Cell Ontology (CL): https://obofoundry.org/ontology/cl.html
+- UBERON Anatomy Ontology: https://obofoundry.org/ontology/uberon.html
+- PATO Phenotype Ontology: https://obofoundry.org/ontology/pato.html
+- NCBI Taxonomy: https://www.ncbi.nlm.nih.gov/taxonomy
+- EFO Experimental Factor Ontology: https://www.ebi.ac.uk/efo/

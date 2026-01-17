@@ -1,0 +1,197 @@
+name: metaproteomics
+description: SDRF template for metaproteomics experiments (microbial community proteomics)
+version: 1.0.0-dev
+extends: minimum
+columns:
+  - name: characteristics[environmental sample type]
+    description: Type of environmental sample analyzed
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - envo
+            - efo
+          error_level: warning
+          description: Should be a valid ENVO or EFO term
+          examples:
+            - soil
+            - seawater
+            - gut microbiome
+            - wastewater
+            - biofilm
+
+  - name: characteristics[sample collection method]
+    description: Method used to collect the environmental sample
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Collection method description
+          examples:
+            - grab sample
+            - core sample
+            - swab
+            - filtration
+
+  - name: characteristics[geographic location]
+    description: Geographic location where sample was collected
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - gaz
+          error_level: warning
+          description: Should be a valid GAZ term or coordinates
+          examples:
+            - Pacific Ocean
+            - Amazon rainforest
+            - 47.6062° N, 122.3321° W
+
+  - name: characteristics[collection date]
+    description: Date when sample was collected
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d{4}(-\d{2}(-\d{2})?)?$
+          description: ISO 8601 date format
+          examples:
+            - 2023-06-15
+            - 2023-06
+            - 2023
+
+  - name: characteristics[depth]
+    description: Depth at which sample was collected
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(m|cm|mm)$
+          description: Depth with unit
+          examples:
+            - 10 m
+            - 50 cm
+            - 100 m
+
+  - name: characteristics[temperature]
+    description: Temperature at sampling location
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^-?\d+(\.\d+)?\s*[Cc]$
+          description: Temperature in Celsius
+          examples:
+            - 25 C
+            - 4 C
+            - -20 C
+
+  - name: characteristics[pH]
+    description: pH at sampling location
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?$
+          description: pH value
+          examples:
+            - 7.0
+            - 5.5
+            - 8.2
+
+  - name: characteristics[host organism]
+    description: Host organism for host-associated microbiome samples
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ncbitaxon
+          error_level: warning
+          description: Should be a valid NCBI Taxonomy term
+          examples:
+            - Homo sapiens
+            - Mus musculus
+
+  - name: characteristics[host disease]
+    description: Disease state of the host organism
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - doid
+          error_level: warning
+          description: Should be a valid disease ontology term
+          examples:
+            - inflammatory bowel disease
+            - colorectal cancer
+            - healthy
+
+  - name: comment[database search strategy]
+    description: Strategy used for protein database searching
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - matched metagenome
+            - reference database
+            - two-step search
+            - spectral library
+          error_level: warning
+          description: Database search strategy
+
+  - name: comment[metagenome accession]
+    description: Accession number for matched metagenome data
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[A-Z]+\d+$
+          description: Database accession number
+          examples:
+            - PRJNA123456
+            - SRR123456
+            - ERR123456
+
+  - name: comment[sample storage]
+    description: Storage conditions for the sample before analysis
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Storage conditions
+          examples:
+            - -80C
+            - liquid nitrogen
+            - 4C

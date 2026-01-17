@@ -1,0 +1,260 @@
+= SDRF-Proteomics: Data-dependent acquisition (DDA) Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating Data-dependent acquisition (DDA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DDA-specific metadata.
+
+**Type:** Experiment-type Template (used in combination with core templates)
+
+**Status:** Released
+
+**Version:** 1.1.0 - 2025-01
+
+[[abstract]]
+== Abstract
+
+Data-dependent acquisition (DDA) is the most widely used mass spectrometry acquisition strategy for proteomics. This template captures acquisition-specific parameters that affect data quality and reproducibility: dissociation method, collision energy, fractionation, modification parameters, mass tolerances, and MS2 mass analyzer.
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for DDA experiments.
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for DDA experiments (in addition to the core SDRF-Proteomics requirements):
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[dissociation method]
+|Fragmentation method used
+|0..1
+|https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044[PSI-MS (MS:1000044)]
+|NT=HCD;AC=MS:1000422
+
+|comment[modification parameters]
+|Post-translational modifications searched
+|0..*
+|https://www.unimod.org/[UNIMOD]
+|NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35
+|===
+
+=== Optional Columns
+
+The following columns are OPTIONAL but commonly used:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|comment[collision energy]
+|Collision energy used for fragmentation
+|0..1
+|https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000045[PSI-MS (MS:1000045)]
+|27, 30, normalized 27
+
+|comment[fractionation method]
+|Method used to fractionate the sample before MS
+|0..1
+|https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000550[PRIDE (PRIDE:0000550)]
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+
+|link:../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances[comment[precursor mass tolerance]]
+|Mass tolerance for precursor ions in database search
+|0..1
+|Numeric value with unit
+|10 ppm, 20 ppm
+
+|link:../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances[comment[fragment mass tolerance]]
+|Mass tolerance for fragment ions in database search
+|0..1
+|Numeric value with unit
+|0.02 Da, 20 ppm
+
+|comment[MS2 mass analyzer]
+|Mass analyzer used for MS2 acquisition
+|0..1
+|https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000443[PSI-MS (MS:1000443)]
+|NT=orbitrap;AC=MS:1000484
+|===
+
+NOTE: For data file metadata (comment columns), use the full CV term format `NT={name};AC={accession}` when possible. This format enables automated validation and software can often determine these values from raw files.
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a fractionated DDA proteomics experiment:
+
+|===
+|source name |... |assay name |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[fractionation method] |comment[technical replicate] |comment[dissociation method] |comment[collision energy] |comment[modification parameters] |comment[modification parameters] |comment[data file]
+
+|liver_sample_001
+|...
+|DDA_liver001_F01
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
+|high-pH reversed phase
+|1
+|HCD
+|30
+|NT=Carbamidomethyl;TA=C;MT=Fixed;AC=UNIMOD:4
+|NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35
+|liver001_F01.raw
+
+|liver_sample_001
+|...
+|DDA_liver001_F02
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|2
+|high-pH reversed phase
+|1
+|HCD
+|30
+|NT=Carbamidomethyl;TA=C;MT=Fixed;AC=UNIMOD:4
+|NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35
+|liver001_F02.raw
+
+|liver_sample_002
+|...
+|DDA_liver002_F01
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
+|high-pH reversed phase
+|1
+|HCD
+|30
+|NT=Carbamidomethyl;TA=C;MT=Fixed;AC=UNIMOD:4
+|NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35
+|liver002_F01.raw
+|===
+
+NOTE: The `...` column indicates omitted core columns (organism, organism part, disease, biological replicate, technology type).
+
+[[single-shot-example]]
+== Single-Shot DDA Example
+
+For high-throughput or clinical samples without fractionation:
+
+|===
+|source name |... |assay name |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[technical replicate] |comment[dissociation method] |comment[data file]
+
+|plasma_001
+|...
+|plasma001_run1
+|Data-dependent acquisition
+|label free sample
+|Orbitrap Exploris 480
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|HCD
+|plasma_001.raw
+|===
+
+NOTE: For single-shot experiments, `comment[fractionation method]` can be omitted or set to `not applicable`.
+
+[[tmt-dda-example]]
+== TMT-Labeled DDA Example
+
+For isobaric labeling experiments (TMT, iTRAQ):
+
+|===
+|source name |... |assay name |comment[proteomics data acquisition method] |comment[label] |comment[fraction identifier] |comment[fractionation method] |comment[dissociation method] |comment[MS2 mass analyzer] |comment[data file]
+
+|sample_A_rep1
+|...
+|TMT_set1_F01
+|Data-dependent acquisition
+|TMT126
+|1
+|high-pH reversed phase
+|HCD
+|orbitrap
+|TMT_set1_F01.raw
+
+|sample_B_rep1
+|...
+|TMT_set1_F01
+|Data-dependent acquisition
+|TMT127N
+|1
+|high-pH reversed phase
+|HCD
+|orbitrap
+|TMT_set1_F01.raw
+|===
+
+NOTE: For TMT experiments, multiple samples share the same raw file. Use `comment[label]` to distinguish channels. TMT quantification can use MS2 or MS3 acquisition—for MS3-based TMT, use https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000646[PRIDE:0000646 (MS3 spectra)].
+
+[[best-practices]]
+== Best Practices for DDA Annotation
+
+1. **Always specify acquisition method**: Use `comment[proteomics data acquisition method]` with `Data-dependent acquisition`.
+
+2. **Document fragmentation method**: Use `comment[dissociation method]` to specify HCD, CID, ETD, or EThcD—these produce different fragmentation patterns and affect peptide identification.
+
+3. **Include modification parameters**: Document all searched PTMs using `comment[modification parameters]` with UNIMOD accessions.
+
+4. **Document fractionation**: Include `comment[fractionation method]` and properly number fractions with `comment[fraction identifier]`.
+
+5. **Report collision energy**: Include `comment[collision energy]` when available, as it affects fragmentation quality.
+
+6. **Specify MS2 analyzer**: Use `comment[MS2 mass analyzer]` for hybrid instruments (e.g., Orbitrap vs ion trap MS2).
+
+7. **Report mass tolerances when known**: `comment[precursor mass tolerance]` and `comment[fragment mass tolerance]` aid data reanalysis.
+
+[[template-file]]
+== Template File
+
+The DDA SDRF template file is available in this directory:
+
+- link:dda-acquisition-template.sdrf.tsv[dda-acquisition-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+DDA SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+NOTE: DDA-specific validation rules are under development.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+

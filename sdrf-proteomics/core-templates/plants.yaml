@@ -1,0 +1,74 @@
+name: plants
+description: SDRF template for plant samples (Arabidopsis, crops, etc.)
+version: 1.1.0
+extends: default
+columns:
+  - name: characteristics[developmental stage]
+    description: Developmental stage of the plant
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - po
+            - efo
+          error_level: warning
+          description: The developmental stage should be a valid Plant Ontology (PO) or EFO term
+          examples:
+            - seedling stage
+            - flowering stage
+            - rosette growth stage
+            - senescent stage
+
+  - name: characteristics[strain/breed]
+    description: Cultivar, ecotype, or accession of the plant
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Plant cultivar or ecotype name
+          examples:
+            - Col-0
+            - Ler-0
+            - Nipponbare
+            - B73
+
+  - name: characteristics[growth conditions]
+    description: Growth conditions for the plant
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Description of growth conditions
+          examples:
+            - long day (16h light/8h dark)
+            - short day (8h light/16h dark)
+            - continuous light
+            - greenhouse
+
+  - name: characteristics[treatment]
+    description: Treatment applied to the plant
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - efo
+            - chebi
+          error_level: warning
+          description: Treatment should be described using ontology terms when possible
+          examples:
+            - drought stress
+            - salt stress
+            - pathogen infection
+            - hormone treatment
