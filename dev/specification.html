@@ -407,7 +407,7 @@ The main specification is in the <code>sdrf-proteomics</code> directory. Core te
 </table>
 </div>
 <div class="paragraph">
-<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub. For users unfamiliar with GitHub, you can also contact the PRIDE team at <a href="mailto:pride-support@ebi.ac.uk">pride-support@ebi.ac.uk</a>.</p>
+<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.</p>
 </div>
 <div class="paragraph">
 <p>A set of examples and annotated projects from ProteomeXchange can be found here: <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects" class="bare">https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects</a></p>
@@ -993,12 +993,24 @@ BioSample accession numbers from NCBI follow the format <code>SAMNxxxxxxxxxx</co
 <div class="ulist">
 <ul>
 <li>
-<p><strong>characteristics[biological replicate]</strong>: Identifies independent biological samples (e.g., different patients, different cell cultures)</p>
+<p><strong>characteristics[biological replicate]</strong>: Identifies independent biological samples within each experimental condition (factor value group). Replicate numbers are assigned per condition, so if you have 2 cancer samples and 2 healthy samples, both groups would have biological replicates numbered 1 and 2.</p>
 </li>
 <li>
 <p><strong>comment[technical replicate]</strong>: Identifies repeated measurements of the same sample (e.g., multiple LC-MS/MS injections)</p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Biological replicate numbering restarts for each experimental condition (factor value). For example, in a disease study with factor value[disease], the cancer samples would be numbered 1, 2, 3&#8230;&#8203; and the normal samples would independently be numbered 1, 2, 3&#8230;&#8203; This establishes the relationship between each sample and its experimental condition.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The following example shows 2 biological replicates, each with 2 fractions and 2 technical replicates:</p>
@@ -3163,7 +3175,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 16:34:53 UTC
+Last updated 2026-01-17 16:50:07 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
