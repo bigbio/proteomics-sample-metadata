@@ -23,7 +23,9 @@
 <ul class="sectlevel2">
 <li><a href="#_minimal_example">4.1. Minimal Example</a></li>
 <li><a href="#_key_concepts">4.2. Key Concepts</a></li>
-<li><a href="#_getting_started_steps">4.3. Getting Started Steps</a></li>
+<li><a href="#_format_requirements">4.3. Format Requirements</a></li>
+<li><a href="#_scope">4.4. Scope</a></li>
+<li><a href="#_getting_started_steps">4.5. Getting Started Steps</a></li>
 </ul>
 </li>
 <li><a href="#validation">5. Validating SDRF Files</a></li>
@@ -247,7 +249,50 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_getting_started_steps"><a class="anchor" href="#_getting_started_steps"></a><a class="link" href="#_getting_started_steps">4.3. Getting Started Steps</a></h3>
+<h3 id="_format_requirements"><a class="anchor" href="#_format_requirements"></a><a class="link" href="#_format_requirements">4.3. Format Requirements</a></h3>
+<div class="paragraph">
+<p>The SDRF-Proteomics format has the following core requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The SDRF file is a <strong>tab-delimited format</strong> where each row corresponds to a relationship between a Sample and a Data file.</p>
+</li>
+<li>
+<p>Each column MUST correspond to an attribute/property of the Sample or the Data file.</p>
+</li>
+<li>
+<p>Each cell value MUST be the property value for the corresponding Sample or Data file.</p>
+</li>
+<li>
+<p>The file MUST start with columns describing sample properties (e.g., organism, disease), followed by data file properties (e.g., label, fraction identifier, data file).</p>
+</li>
+<li>
+<p>Unknown values MUST be handled using <code>not available</code> (value is unknown) or <code>not applicable</code> (property doesn&#8217;t apply to this sample).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scope"><a class="anchor" href="#_scope"></a><a class="link" href="#_scope">4.4. Scope</a></h3>
+<div class="paragraph">
+<p>The SDRF-Proteomics format aims to capture the <strong>sample metadata</strong> and its <strong>relationship with data files</strong> (e.g., raw files from mass spectrometers).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+SDRF-Proteomics does <strong>not</strong> aim to capture downstream analysis details, including: which samples were compared to which other samples, how samples are combined into study variables, or analysis parameters such as FDR thresholds or p-value cutoffs.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_getting_started_steps"><a class="anchor" href="#_getting_started_steps"></a><a class="link" href="#_getting_started_steps">4.5. Getting Started Steps</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1282,7 +1327,7 @@ BioSample accession numbers from NCBI follow the format <code>SAMNxxxxxxxxxx</co
 <div class="title">Important</div>
 </td>
 <td class="content">
-Both <em>characteristics[biological replicate]</em> and <em>comment[technical replicate]</em> columns are REQUIRED. When no replicates are performed in a study, set both columns to 1 (i.e., each sample is biological replicate 1 and technical replicate 1).
+Both <em>characteristics[biological replicate]</em> and <em>comment[technical replicate]</em> columns are REQUIRED. When no replicates are performed in a study, set both columns to 1 (i.e., each sample is biological replicate 1 and technical replicate 1). For <strong>pooled reference samples</strong> (e.g., TMT reference channels), use <code>pooled</code> for biological replicate since these samples are mixtures of multiple replicates and assigning a specific replicate number would be misleading.
 </td>
 </tr>
 </table>
@@ -1459,8 +1504,8 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <td class="sample-col">pooled_ref</td>
 <td class="sample-col">SN=sample_1;SN=sample_2;SN=sample_3</td>
 <td class="sample-col">homo sapiens</td>
-<td class="sample-col">not applicable</td>
-<td class="sample-col">not applicable</td>
+<td class="sample-col">pooled</td>
+<td class="sample-col">pooled</td>
 <td class="data-col">run_1</td>
 <td class="data-col">TMT131C</td>
 <td class="data-col">file01.raw</td>
@@ -1479,7 +1524,7 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <div class="title">Tip</div>
 </td>
 <td class="content">
-For pooled samples, use "not applicable" for individual-specific fields (age, sex, individual). If all pooled samples share a value (e.g., all females, or age range 40-50Y), that shared value MAY be used instead.
+For pooled reference samples (e.g., TMT reference channels), use <code>pooled</code> for individual-specific fields including <strong>biological replicate</strong>, age, sex, and individual. This clearly indicates that the value represents a mixture rather than a single sample. If all pooled samples share a value (e.g., all females, or age range 40Y-50Y), that shared value MAY be used instead.
 </td>
 </tr>
 </table>
@@ -3026,7 +3071,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-16 17:01:01 UTC
+Last updated 2026-01-17 06:28:08 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
