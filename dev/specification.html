@@ -75,12 +75,15 @@
 </li>
 <li><a href="#core-templates">12. Core Templates</a>
 <ul class="sectlevel2">
-<li><a href="#the-default-template">12.1. Default Template</a></li>
-<li><a href="#template-human">12.2. Human Template</a></li>
-<li><a href="#template-vertebrates">12.3. Vertebrates Template</a></li>
-<li><a href="#template-invertebrates">12.4. Invertebrates Template</a></li>
-<li><a href="#template-plants">12.5. Plants Template</a></li>
-<li><a href="#template-cardinality">12.6. Column Cardinality</a></li>
+<li><a href="#_what_is_a_template">12.1. What is a Template?</a></li>
+<li><a href="#_template_inheritance_and_composition">12.2. Template Inheritance and Composition</a></li>
+<li><a href="#_choosing_a_template">12.3. Choosing a Template</a></li>
+<li><a href="#the-default-template">12.4. Default Template</a></li>
+<li><a href="#template-human">12.5. Human Template</a></li>
+<li><a href="#template-vertebrates">12.6. Vertebrates Template</a></li>
+<li><a href="#template-invertebrates">12.7. Invertebrates Template</a></li>
+<li><a href="#template-plants">12.8. Plants Template</a></li>
+<li><a href="#template-cardinality">12.9. Column Cardinality</a></li>
 </ul>
 </li>
 <li><a href="#study-variables">13. Factor Values (Study Variables)</a>
@@ -268,7 +271,7 @@
 <p>The file MUST start with columns describing sample properties (e.g., organism, disease), followed by data file properties (e.g., label, fraction identifier, data file).</p>
 </li>
 <li>
-<p>Unknown values MUST be handled using <code>not available</code> (value is unknown) or <code>not applicable</code> (property doesn&#8217;t apply to this sample).</p>
+<p>Unknown values MUST be handled using <code>not available</code> (value is unknown), <code>not applicable</code> (property doesn&#8217;t apply), or <code>pooled</code> (value is a mixture from multiple samples).</p>
 </li>
 </ul>
 </div>
@@ -542,20 +545,25 @@ We added the prefix v to the version number to indicate that it is the version o
 <li>
 <p><strong>Not Applicable values</strong>: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use <strong>not applicable</strong>.</p>
 </li>
+<li>
+<p><strong>Pooled values</strong>: In some cases, the sample is a pool of multiple samples (e.g., TMT reference channels), and the value cannot be represented as a single value. In those cases, users SHOULD use <strong>pooled</strong>.</p>
+</li>
 </ul>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. When to use "not available" vs "not applicable"</caption>
+<caption class="title">Table 1. Special values for SDRF cells</caption>
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Term</th>
 <th class="tableblock halign-left valign-top">Meaning</th>
 <th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Use Case</th>
 </tr>
 </thead>
 <tbody>
@@ -563,11 +571,19 @@ We added the prefix v to the version number to indicate that it is the version o
 <td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Value exists but is unknown or could not be determined</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age] = not available</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Patient age was not recorded in the study</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Value or concept does not apply to this sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age] = not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Synthetic peptide library has no age</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pooled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value represents a mixture of multiple samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[biological replicate] = pooled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT reference channel pooled from multiple replicates</p></td>
 </tr>
 </tbody>
 </table>
@@ -1999,11 +2015,56 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <div class="sect1">
 <h2 id="core-templates"><a class="anchor" href="#core-templates"></a><a class="link" href="#core-templates">12. Core Templates</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_a_template"><a class="anchor" href="#_what_is_a_template"></a><a class="link" href="#_what_is_a_template">12.1. What is a Template?</a></h3>
 <div class="paragraph">
-<p>SDRF-Proteomics provides core templates that define the required and recommended metadata columns based on the sample organism. Each template includes both <strong>sample metadata</strong> (characteristics) and <strong>data file metadata</strong> (comments) - everything needed to create a complete SDRF file.</p>
+<p>A <strong>template</strong> in SDRF-Proteomics is a predefined set of metadata columns (both required and recommended) that ensures consistent and complete annotation for a specific type of experiment or sample. Templates serve the same purpose as <strong>metadata checklists</strong>, <strong>minimum information standards</strong> (like MIAPE), or <strong>validation schemas</strong> in other data standards—they define what information must be captured to make a dataset FAIR (Findable, Accessible, Interoperable, Reusable).</p>
 </div>
 <div class="paragraph">
-<p>Choose the appropriate template based on your sample organism:</p>
+<p>Each template includes both <strong>sample metadata</strong> (characteristics columns describing the biological sample) and <strong>data file metadata</strong> (comment columns describing the MS data files)—everything needed to create a complete, validated SDRF file.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_template_inheritance_and_composition"><a class="anchor" href="#_template_inheritance_and_composition"></a><a class="link" href="#_template_inheritance_and_composition">12.2. Template Inheritance and Composition</a></h3>
+<div class="paragraph">
+<p>Templates in SDRF-Proteomics follow a <strong>hierarchical inheritance model</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Core templates</strong> (default, human, vertebrates, invertebrates, plants) define organism-specific requirements</p>
+</li>
+<li>
+<p><strong>Experiment-type templates</strong> (single-cell, immunopeptidomics, crosslinking, etc.) define methodology-specific requirements</p>
+</li>
+<li>
+<p>Templates can be <strong>combined</strong>: a human single-cell proteomics experiment would use both the human template AND the single-cell template</p>
+</li>
+<li>
+<p>Templates can be <strong>extended</strong>: add custom columns beyond the template requirements for study-specific metadata</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When combining templates, include all required columns from each applicable template. The validator will check compliance with all specified templates.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<strong>For developers and maintainers:</strong> When creating new templates, follow the inheritance principle—child templates must not weaken parent requirements. For example, if the default template has <code>organism</code> as REQUIRED, the human template (which inherits from it) must also keep <code>organism</code> as REQUIRED. Child templates may add new required columns or promote recommended columns to required, but never downgrade required columns to optional.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_choosing_a_template"><a class="anchor" href="#_choosing_a_template"></a><a class="link" href="#_choosing_a_template">12.3. Choosing a Template</a></h3>
+<div class="paragraph">
+<p>Choose the appropriate core template based on your sample organism:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2025,12 +2086,16 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </ul>
 </div>
 <div class="paragraph">
+<p>Then, if applicable, also apply an <a href="#experiment-templates">experiment-type template</a> for specialized methodologies.</p>
+</div>
+<div class="paragraph">
 <p>For detailed explanations of each column, see <a href="#from-sample-metadata">sample metadata</a> for sample properties and <a href="#from-sample-data">data file metadata</a> for data file properties.</p>
 </div>
+</div>
 <div class="sect2">
-<h3 id="the-default-template"><a class="anchor" href="#the-default-template"></a><a class="link" href="#the-default-template">12.1. Default Template</a></h3>
+<h3 id="the-default-template"><a class="anchor" href="#the-default-template"></a><a class="link" href="#the-default-template">12.4. Default Template</a></h3>
 <div class="paragraph">
-<p>The default template is the most basic template that can be used for any proteomics experiment. Use this when no other template is applicable.</p>
+<p>The default template is the most basic template that can be used for any proteomics experiment. Use this when no organism-specific template is applicable.</p>
 </div>
 <div class="paragraph">
 <p><strong>Checklist:</strong></p>
@@ -2160,7 +2225,7 @@ The <a href="metadata-guidelines/sample-metadata.adoc#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-human"><a class="anchor" href="#template-human"></a><a class="link" href="#template-human">12.2. Human Template</a></h3>
+<h3 id="template-human"><a class="anchor" href="#template-human"></a><a class="link" href="#template-human">12.5. Human Template</a></h3>
 <div class="paragraph">
 <p>The human template extends the default template with clinical and demographic metadata required for human samples.</p>
 </div>
@@ -2322,7 +2387,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-vertebrates"><a class="anchor" href="#template-vertebrates"></a><a class="link" href="#template-vertebrates">12.3. Vertebrates Template</a></h3>
+<h3 id="template-vertebrates"><a class="anchor" href="#template-vertebrates"></a><a class="link" href="#template-vertebrates">12.6. Vertebrates Template</a></h3>
 <div class="paragraph">
 <p>The vertebrates template is used for non-human vertebrate species such as mouse, rat, zebrafish, and other model organisms.</p>
 </div>
@@ -2454,7 +2519,7 @@ The characteristics[individual] column is optional and is only used when a code 
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-invertebrates"><a class="anchor" href="#template-invertebrates"></a><a class="link" href="#template-invertebrates">12.4. Invertebrates Template</a></h3>
+<h3 id="template-invertebrates"><a class="anchor" href="#template-invertebrates"></a><a class="link" href="#template-invertebrates">12.7. Invertebrates Template</a></h3>
 <div class="paragraph">
 <p>The invertebrates template is used for non-vertebrate animal species such as insects (Drosophila), nematodes (C. elegans), and other invertebrate model organisms.</p>
 </div>
@@ -2592,7 +2657,7 @@ For Drosophila samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/fbbt"
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-plants"><a class="anchor" href="#template-plants"></a><a class="link" href="#template-plants">12.5. Plants Template</a></h3>
+<h3 id="template-plants"><a class="anchor" href="#template-plants"></a><a class="link" href="#template-plants">12.8. Plants Template</a></h3>
 <div class="paragraph">
 <p>The plants template is used for plant species including model organisms like Arabidopsis thaliana and crop species.</p>
 </div>
@@ -2730,7 +2795,7 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 </div>
 </div>
 <div class="sect2">
-<h3 id="template-cardinality"><a class="anchor" href="#template-cardinality"></a><a class="link" href="#template-cardinality">12.6. Column Cardinality</a></h3>
+<h3 id="template-cardinality"><a class="anchor" href="#template-cardinality"></a><a class="link" href="#template-cardinality">12.9. Column Cardinality</a></h3>
 <div class="paragraph">
 <p>Some columns can appear multiple times for the same sample. The cardinality rules are:</p>
 </div>
@@ -3071,7 +3136,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 06:28:08 UTC
+Last updated 2026-01-17 06:55:34 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
