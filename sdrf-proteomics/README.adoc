@@ -74,13 +74,13 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [instrument]</th>
-<th class="data-col">comment [cleavage agent details]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -117,7 +117,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1,1,1"]
 |===
-|source name |characteristics [organism] |characteristics [disease] |assay name |comment [label] |comment [instrument] |comment [cleavage agent details] |comment [data file]
+|source name |characteristics[organism] |characteristics[disease] |assay name |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[data file]
 
 |sample_1 |homo sapiens |normal |run_1 |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |sample_1.raw
 |sample_2 |homo sapiens |hepatocellular carcinoma |run_2 |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |sample_2.raw
@@ -249,12 +249,12 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [instrument]</th>
-<th class="data-col">comment [data file]</th>
-<th class="factor-col">factor value [disease]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[data file]</th>
+<th class="factor-col">factor value[disease]</th>
 </tr>
 </thead>
 <tbody>
@@ -290,7 +290,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1,1"]
 |===
-|source name |characteristics [organism] |characteristics [disease] |assay name |comment [instrument] |comment [data file] |factor value [disease]
+|source name |characteristics[organism] |characteristics[disease] |assay name |comment[instrument] |comment[data file] |factor value[disease]
 
 |sample_1 |homo sapiens |normal |run_1 |Q Exactive HF |sample_1.raw |normal
 |sample_2 |homo sapiens |liver cancer |run_2 |Q Exactive HF |sample_2.raw |liver cancer
@@ -335,8 +335,8 @@ There are general scenarios/use cases that are addressed by the following rules:
 |TMT reference channel pooled from multiple replicates
 |===
 
-- **Case sensitivity**: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
-- **Space sensitivity**: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).
+- **Case sensitivity**: Text values are case-insensitive, but **column names are case-sensitive**. Use lowercase for all column names (e.g., `source name`, `characteristics[organism]`, `comment[label]`). Incorrect casing like `Source Name` or `Characteristics[organism]` will cause validation failures.
+- **Space sensitivity**: The SDRF is sensitive to spaces in column names (`sourcename` ≠ `source name`). Column names must include appropriate spaces (e.g., `source name`, not `sourcename`) but must NOT have a space before the bracket (e.g., `characteristics[organism]`, not `characteristics [organism]`).
 - **Column order**: The SDRF columns follows some structure; first the sample metadata columns in <<from-sample-metadata>>; then the data file metadata columns in <<from-sample-data>>; followed by the factor values columns in <<study-variables>>. 
 - **Extension**: The extension of the SDRF file SHOULD be sdrf.tsv (preferred) or .txt.
 
@@ -454,10 +454,10 @@ The value for each property, (e.g. characteristics, comment, factor value) corre
 The Sample metadata section provides information about the samples of origin and their characteristics. Each sample contains a _source name_ (unique identifier) and a set of _characteristics_ columns. The first column of the file should be the _source name_ and the following columns should be the characteristics of the sample. For example, for any proteomics experiment (human, vertebrate, cell line), the following characteristics should be provided:
 
 - *source name*: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)
-- *characteristics[organism]*: The organism of the Sample of origin.
-- *characteristics[organism part]*: The part of organism's anatomy or substance arising from an organism from which the biomaterial was derived, (e.g., liver)
-- *characteristics[disease]*: The disease under study in the Sample. For healthy/control samples, use `normal` (see link:metadata-guidelines/sample-metadata.adoc#disease-annotation[Disease Annotation Guidelines]).
-- *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell. Examples are epithelial, glial etc.
+- *characteristics[organism]*: The organism of the Sample of origin. Values MUST come from https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy].
+- *characteristics[organism part]*: The part of organism's anatomy or substance arising from an organism from which the biomaterial was derived (e.g., liver). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO].
+- *characteristics[disease]*: The disease under study in the Sample. Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], or https://www.ebi.ac.uk/ols4/ontologies/doid[DOID]. For healthy/control samples, use `normal` (https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]) - see link:metadata-guidelines/sample-metadata.adoc#disease-annotation[Disease Annotation Guidelines].
+- *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell (e.g., epithelial, glial). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO].
 
 Example:
 
@@ -468,10 +468,10 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [organism part]</th>
-<th class="sample-col">characteristics [disease]</th>
-<th class="sample-col">characteristics [cell type]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[cell type]</th>
 </tr>
 </thead>
 <tbody>
@@ -501,7 +501,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1"]
 |===
-|source name |characteristics [organism] |characteristics [organism part] |characteristics [disease] |characteristics [cell type]
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[cell type]
 
 |sample_treat |homo sapiens |liver |liver cancer |not available
 |sample_control |homo sapiens |liver |liver cancer |not available
@@ -536,10 +536,10 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [biosample accession number]</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [organism part]</th>
-<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics[biosample accession number]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
 </tr>
 </thead>
 <tbody>
@@ -576,7 +576,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1"]
 |===
-|source name |characteristics [biosample accession number] |characteristics [organism] |characteristics [organism part] |characteristics [disease]
+|source name |characteristics[biosample accession number] |characteristics[organism] |characteristics[organism part] |characteristics[disease]
 
 |sample_001 |SAMN12345678 |homo sapiens |liver |liver cancer
 |sample_002 |SAMN12345679 |homo sapiens |liver |normal
@@ -612,12 +612,12 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [biological replicate]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [fraction identifier]</th>
-<th class="data-col">comment [technical replicate]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[technical replicate]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -706,7 +706,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1,1"]
 |===
-|source name |characteristics [biological replicate] |assay name |comment [label] |comment [fraction identifier] |comment [technical replicate] |comment [data file]
+|source name |characteristics[biological replicate] |assay name |comment[label] |comment[fraction identifier] |comment[technical replicate] |comment[data file]
 
 |patient_001_sample |1 |run_01 |label free sample |1 |1 |P001_F1_TR1.raw
 |patient_001_sample |1 |run_02 |label free sample |2 |1 |P001_F2_TR1.raw
@@ -771,11 +771,11 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [pooled sample]</th>
-<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics[pooled sample]</th>
+<th class="sample-col">characteristics[organism]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -816,7 +816,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1"]
 |===
-|source name |characteristics [pooled sample] |characteristics [organism] |assay name |comment [label] |comment [data file]
+|source name |characteristics[pooled sample] |characteristics[organism] |assay name |comment[label] |comment[data file]
 
 |sample_1 |not pooled |homo sapiens |run_1 |TMT126 |file01.raw
 |sample_2 |not pooled |homo sapiens |run_1 |TMT127N |file01.raw
@@ -835,13 +835,13 @@ ifdef::backend-html5[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [pooled sample]</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [age]</th>
-<th class="sample-col">characteristics [sex]</th>
+<th class="sample-col">characteristics[pooled sample]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[age]</th>
+<th class="sample-col">characteristics[sex]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -898,7 +898,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,2,1,1,1,1,1,1"]
 |===
-|source name |characteristics [pooled sample] |characteristics [organism] |characteristics [age] |characteristics [sex] |assay name |comment [label] |comment [data file]
+|source name |characteristics[pooled sample] |characteristics[organism] |characteristics[age] |characteristics[sex] |assay name |comment[label] |comment[data file]
 
 |sample_1 |not pooled |homo sapiens |45Y |male |run_1 |TMT126 |file01.raw
 |sample_2 |not pooled |homo sapiens |52Y |female |run_1 |TMT127N |file01.raw
@@ -1002,8 +1002,8 @@ ifdef::backend-html5[]
 <table>
 <thead>
 <tr>
-<th class="sample-col">characteristics [mass]</th>
-<th class="sample-col">characteristics [spiked compound]</th>
+<th class="sample-col">characteristics[mass]</th>
+<th class="sample-col">characteristics[spiked compound]</th>
 </tr>
 </thead>
 <tbody>
@@ -1023,7 +1023,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,2"]
 |===
-|characteristics [mass] |characteristics [spiked compound]
+|characteristics[mass] |characteristics[spiked compound]
 
 |1 ug |CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
 |===
@@ -1057,43 +1057,52 @@ This format enables automated validation and software extraction from raw files.
 The following properties MUST be provided for each data file:
 
 |===
-|Column |Requirement |Description
+|Column |Requirement |Description |Ontology
 
 |assay name
 |REQUIRED
 |Unique identifier for an MS run/data file
+|Free text
 
 |technology type
 |REQUIRED
 |Technology used to capture the data
+|Fixed values
 
 |comment[proteomics data acquisition method]
 |REQUIRED
 |DDA, DIA, PRM, SRM
+|https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659[PRIDE:0000659]
 
 |comment[label]
 |REQUIRED
 |Label applied to sample (or "label free sample")
+|https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000093[PRIDE - Labels]
 
 |comment[instrument]
 |REQUIRED
 |Mass spectrometer model
+|https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000031[PSI-MS - Instruments]
 
 |comment[cleavage agent details]
 |REQUIRED
 |Enzyme information (use "not applicable" for top-down/undigested samples)
+|https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001045[PSI-MS - Cleavage agents]
 
 |comment[fraction identifier]
 |REQUIRED
 |Fraction number (1 if not fractionated)
+|Integer
 
 |comment[technical replicate]
 |REQUIRED
 |Technical replicate number (1 if none)
+|Integer
 
 |comment[data file]
 |REQUIRED
 |Name of the raw file
+|Free text
 |===
 
 Example:
@@ -1107,10 +1116,10 @@ ifdef::backend-html5[]
 <th class="sample-col">source name</th>
 <th class="data-col">assay name</th>
 <th class="data-col">technology type</th>
-<th class="data-col">comment [proteomics data acquisition method]</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [instrument]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -1136,7 +1145,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,2,1,1,1,1"]
 |===
-|source name |assay name |technology type |comment [proteomics data acquisition method] |comment [label] |comment [instrument] |comment [data file]
+|source name |assay name |technology type |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[data file]
 
 |sample_1 |sample1_run1 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |sample1.raw
 |===
@@ -1202,9 +1211,9 @@ ifdef::backend-html5[]
 <th class="sample-col">source name</th>
 <th>...</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
+<th class="data-col">comment[label]</th>
 <th>...</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -1253,7 +1262,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1"]
 |===
-|source name |... |assay name |comment [label] |... |comment [data file]
+|source name |... |assay name |comment[label] |... |comment[data file]
 
 |sample_A |... |TMT_batch1_run1 |TMT126 |... |batch1_run1.raw
 |sample_B |... |TMT_batch1_run1 |TMT127N |... |batch1_run1.raw
@@ -1686,8 +1695,8 @@ ifdef::backend-html5[]
 <tr>
 <th class="sample-col">source name</th>
 <th>...</th>
-<th class="sample-col">characteristics [organism part]</th>
-<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[organism part]</th>
 <th>...</th>
 </tr>
 </thead>
@@ -1711,7 +1720,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1"]
 |===
-|source name |... |characteristics [organism part] |characteristics [organism part] |...
+|source name |... |characteristics[organism part] |characteristics[organism part] |...
 |sample-1 |... |heart |heart left ventricle |...
 |===
 endif::[]
@@ -1755,11 +1764,11 @@ ifdef::backend-html5[]
 <tr>
 <th class="sample-col">source name</th>
 <th>...</th>
-<th class="sample-col">characteristics [disease]</th>
-<th class="sample-col">characteristics [disease stage]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[disease stage]</th>
 <th>...</th>
-<th class="factor-col">factor value [disease]</th>
-<th class="factor-col">factor value [disease stage]</th>
+<th class="factor-col">factor value[disease]</th>
+<th class="factor-col">factor value[disease stage]</th>
 </tr>
 </thead>
 <tbody>
@@ -1803,7 +1812,7 @@ endif::[]
 ifndef::backend-html5[]
 [%header,cols="1,1,1,1,1,1,1"]
 |===
-|source name |... |characteristics [disease] |characteristics [disease stage] |... |factor value [disease] |factor value [disease stage]
+|source name |... |characteristics[disease] |characteristics[disease stage] |... |factor value[disease] |factor value[disease stage]
 |tumor_sample_1 |... |breast carcinoma |stage II |... |breast carcinoma |stage II
 |normal_sample_1 |... |normal |not applicable |... |normal |not applicable
 |tumor_sample_2 |... |breast carcinoma |stage III |... |breast carcinoma |stage III
