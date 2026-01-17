@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start - SDRF-Proteomics</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <h1>SDRF-Proteomics</h1>
+            <p class="tagline">Quick Start Guide</p>
+        </div>
+        <nav class="main-nav">
+            <a href="./index.html">Home</a>
+            <a href="./specification.html">Specification</a>
+            <a href="./sdrf-terms.html">SDRF Terms</a>
+            <a href="./sdrf-explorer.html">Explorer</a>
+            <a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a>
+        </nav>
+    </header>
+
+    <main class="container quickstart-page">
+        <section class="hero" style="padding: 2rem 0;">
+            <h2>Create Your First SDRF File in 5 Minutes</h2>
+            <p>SDRF-Proteomics is a simple tab-separated file that describes your proteomics samples and links them to your data files.</p>
+        </section>
+
+        <section class="section">
+            <h2>Step 1: Choose Your Template</h2>
+            <p>Answer this question to find your template:</p>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Your Sample Type</th>
+                        <th>Template to Use</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Human samples</td>
+                        <td><strong>human</strong></td>
+                        <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Download</a></td>
+                    </tr>
+                    <tr>
+                        <td>Mouse, rat, zebrafish</td>
+                        <td><strong>vertebrates</strong></td>
+                        <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Download</a></td>
+                    </tr>
+                    <tr>
+                        <td>Insects, worms</td>
+                        <td><strong>invertebrates</strong></td>
+                        <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Download</a></td>
+                    </tr>
+                    <tr>
+                        <td>Plants</td>
+                        <td><strong>plants</strong></td>
+                        <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Download</a></td>
+                    </tr>
+                    <tr>
+                        <td>Cell lines</td>
+                        <td><strong>cell-lines</strong></td>
+                        <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/cell-lines">Download</a></td>
+                    </tr>
+                    <tr>
+                        <td>Other / Not sure</td>
+                        <td><strong>default</strong></td>
+                        <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Download</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Step 2: Fill in Your Sample Information</h2>
+            <p>Open your template in Excel or any spreadsheet software. For each sample, fill in:</p>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>What to Write</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>source name</code></td>
+                        <td>A unique name for your sample</td>
+                        <td>patient_001</td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics[organism]</code></td>
+                        <td>Species name (lowercase)</td>
+                        <td>homo sapiens</td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics[organism part]</code></td>
+                        <td>Tissue or body part</td>
+                        <td>liver</td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics[disease]</code></td>
+                        <td>Disease name, or "normal" if healthy</td>
+                        <td>hepatocellular carcinoma</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Step 3: Fill in Your Data File Information</h2>
+            <p>For each row, also fill in information about the raw file:</p>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>What to Write</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>assay name</code></td>
+                        <td>A name for this MS run</td>
+                        <td>run_001</td>
+                    </tr>
+                    <tr>
+                        <td><code>comment[label]</code></td>
+                        <td>Type of labeling</td>
+                        <td>label free sample</td>
+                    </tr>
+                    <tr>
+                        <td><code>comment[instrument]</code></td>
+                        <td>Mass spectrometer used</td>
+                        <td>Q Exactive HF</td>
+                    </tr>
+                    <tr>
+                        <td><code>comment[data file]</code></td>
+                        <td>Your raw file name</td>
+                        <td>sample_001.raw</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Step 4: Add Your Experimental Variables</h2>
+            <p>If you're comparing groups (e.g., disease vs. healthy), add a <code>factor value</code> column:</p>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>What to Write</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>factor value[disease]</code></td>
+                        <td>The variable you're studying</td>
+                        <td>normal <em>or</em> hepatocellular carcinoma</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Step 5: Validate Your File</h2>
+            <p>Save your file as <code>.sdrf.tsv</code> and validate it:</p>
+
+            <div class="code-block">
+                <pre><code>pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Complete Example</h2>
+            <p>Here's a complete SDRF file for a simple human liver cancer study:</p>
+
+            <div class="table-wrapper" style="overflow-x: auto;">
+                <table class="sdrf-example">
+                    <thead>
+                        <tr>
+                            <th class="sample-col">source name</th>
+                            <th class="sample-col">characteristics[organism]</th>
+                            <th class="sample-col">characteristics[organism part]</th>
+                            <th class="sample-col">characteristics[disease]</th>
+                            <th class="data-col">assay name</th>
+                            <th class="data-col">comment[label]</th>
+                            <th class="data-col">comment[instrument]</th>
+                            <th class="data-col">comment[data file]</th>
+                            <th class="factor-col">factor value[disease]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>patient_001</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>hepatocellular carcinoma</td>
+                            <td>run_001</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>patient_001.raw</td>
+                            <td>hepatocellular carcinoma</td>
+                        </tr>
+                        <tr>
+                            <td>patient_002</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>hepatocellular carcinoma</td>
+                            <td>run_002</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>patient_002.raw</td>
+                            <td>hepatocellular carcinoma</td>
+                        </tr>
+                        <tr>
+                            <td>control_001</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>normal</td>
+                            <td>run_003</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>control_001.raw</td>
+                            <td>normal</td>
+                        </tr>
+                        <tr>
+                            <td>control_002</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>normal</td>
+                            <td>run_004</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>control_002.raw</td>
+                            <td>normal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="sdrf-legend" style="margin-top: 1rem;">
+                <span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+                <span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+                <span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Common Mistakes to Avoid</h2>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Mistake</th>
+                        <th>Correct</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Source Name</code> (capitalized)</td>
+                        <td><code>source name</code> (lowercase)</td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics [organism]</code> (space before bracket)</td>
+                        <td><code>characteristics[organism]</code> (no space)</td>
+                    </tr>
+                    <tr>
+                        <td><code>control</code> for healthy samples</td>
+                        <td><code>normal</code> for healthy samples</td>
+                    </tr>
+                    <tr>
+                        <td>Leaving cells empty</td>
+                        <td>Use <code>not available</code> or <code>not applicable</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>sourcename</code> (no space)</td>
+                        <td><code>source name</code> (with space)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Where to Find Correct Values</h2>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>For This Field</th>
+                        <th>Look Here</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Organism names</td>
+                        <td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon" target="_blank">NCBI Taxonomy</a></td>
+                    </tr>
+                    <tr>
+                        <td>Tissue/organ names</td>
+                        <td><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon" target="_blank">UBERON</a></td>
+                    </tr>
+                    <tr>
+                        <td>Disease names</td>
+                        <td><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo" target="_blank">MONDO</a></td>
+                    </tr>
+                    <tr>
+                        <td>Cell types</td>
+                        <td><a href="https://www.ebi.ac.uk/ols4/ontologies/cl" target="_blank">Cell Ontology</a></td>
+                    </tr>
+                    <tr>
+                        <td>Instruments</td>
+                        <td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms" target="_blank">PSI-MS</a></td>
+                    </tr>
+                    <tr>
+                        <td>Cell lines</td>
+                        <td><a href="https://www.cellosaurus.org/" target="_blank">Cellosaurus</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 1rem;"><strong>Tip:</strong> Don't worry about finding the exact ontology term. Just write the common name (e.g., "liver", "breast cancer") and the validator will check it for you.</p>
+        </section>
+
+        <section class="section">
+            <h2>Getting Help</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Examples</h4>
+                    <p>Browse real SDRF files from published datasets</p>
+                    <a href="./sdrf-explorer.html">SDRF Explorer</a>
+                </div>
+                <div class="card">
+                    <h4>All Terms</h4>
+                    <p>Complete reference of all SDRF columns and values</p>
+                    <a href="./sdrf-terms.html">SDRF Terms</a>
+                </div>
+                <div class="card">
+                    <h4>Full Specification</h4>
+                    <p>Detailed specification for advanced use cases</p>
+                    <a href="./specification.html">Specification</a>
+                </div>
+                <div class="card">
+                    <h4>Questions?</h4>
+                    <p>Open an issue on GitHub or contact the PRIDE team</p>
+                    <a href="https://github.com/bigbio/proteomics-metadata-standard/issues" target="_blank">Get Help</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>SDRF-Proteomics is developed by the <a href="https://psidev.info/" target="_blank">HUPO-PSI</a> community.</p>
+            <p>Copyright &copy; Proteomics Standards Initiative. Licensed under <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE" target="_blank">Apache 2.0</a>.</p>
+        </div>
+    </footer>
+
+    <style>
+        .quickstart-page .section {
+            margin-bottom: 2.5rem;
+        }
+        .quickstart-page h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .sdrf-example {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .sdrf-example th, .sdrf-example td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .sdrf-example .sample-col {
+            background-color: #e3f2fd;
+        }
+        .sdrf-example .data-col {
+            background-color: #e8f5e9;
+        }
+        .sdrf-example .factor-col {
+            background-color: #fff3e0;
+        }
+        .sdrf-legend {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .legend-color.sample-bg {
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+        }
+        .legend-color.data-bg {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+        }
+        .legend-color.factor-bg {
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+        }
+    </style>
+</body>
+</html>
