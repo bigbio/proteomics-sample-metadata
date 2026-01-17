@@ -61,8 +61,8 @@
 
             <div class="example-finder">
                 <div class="search-box">
-                    <input type="text" id="example-search" placeholder="e.g., HeLa DIA, human liver TMT, mouse brain label-free..." autocomplete="off">
-                    <button onclick="searchExamples()" class="btn btn-primary">Find Examples</button>
+                    <input type="text" id="example-search" placeholder="e.g., homo sapiens, Q Exactive, PXD..." autocomplete="off">
+                    <button type="button" id="search-btn" class="btn btn-primary">Find Examples</button>
                 </div>
                 <div class="search-suggestions">
                     <span>Try:</span>
@@ -1192,6 +1192,23 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
             font-style: italic;
             margin-top: 0.5rem;
         }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background-color: var(--primary-color, #1976D2);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #1565C0;
+        }
         .sdrf-legend {
             display: flex;
             gap: 1.5rem;
@@ -1354,6 +1371,11 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
             if (e.key === 'Enter') {
                 searchExamples();
             }
+        });
+
+        // Enable search on button click
+        document.getElementById('search-btn').addEventListener('click', function() {
+            searchExamples();
         });
     </script>
 </body>
