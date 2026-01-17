@@ -30,30 +30,9 @@ This document provides guidelines for annotating cell line-based proteomics expe
 [[abstract]]
 == Abstract
 
-Cell lines are extensively used in proteomics research, both for biological studies and for technology/method development. Cell lines present unique annotation challenges because:
+Cell lines are extensively used in proteomics research for biological studies and technology development. They present unique annotation challenges: metadata (sex, age, disease) refers to the original donor, multiple naming conventions exist (HeLa, HELA, He-La), and cell lines may be misidentified or have undergone genetic drift.
 
-- They have well-defined characteristics that can be retrieved from databases
-- Metadata like sex, age, and disease refer to the original donor, not the cell line passage
-- Multiple databases and ontologies exist for cell line identification
-- Cell lines may be misidentified, contaminated, or have undergone genetic drift
-
-This template defines standardized approaches for annotating cell line experiments, including the use of Cellosaurus as the primary resource for cell line identification and metadata.
-
-[[motivation]]
-== Motivation
-
-Cell line annotation in proteomics datasets has historically been inconsistent:
-
-1. **Multiple naming conventions**: HeLa, HELA, He-La may all refer to the same cell line
-2. **Outdated ontologies**: The Cell Line Ontology (CLO) has not been actively maintained
-3. **Missing metadata**: Key information about donor characteristics is often omitted
-4. **No standard identifiers**: Lack of consistent accession numbers for cell lines
-
-This template addresses these issues by:
-
-- Recommending Cellosaurus as the primary cell line resource
-- Providing a curated database of cell line metadata for SDRF annotation
-- Defining which metadata fields should be populated from databases vs. experiment-specific annotation
+This template defines standardized approaches for annotating cell line experiments, recommending Cellosaurus as the primary resource for cell line identification and metadata retrieval.
 
 [[cellosaurus]]
 == Cellosaurus: The Primary Cell Line Resource
@@ -114,92 +93,6 @@ https://github.com/bigbio/sdrf-cellline-metadata-db[SDRF Cell Line Metadata Data
 The database file is available at:
 https://raw.githubusercontent.com/bigbio/sdrf-cellline-metadata-db/main/cl-annotations-db.tsv
 
-=== Database Structure
-
-The database contains the following fields mapped to SDRF columns:
-
-|===
-|Database Column |SDRF Column |Description
-
-|cell line
-|characteristics[cell line]
-|Common cell line name
-
-|cellosaurus name
-|characteristics[cellosaurus name]
-|Official Cellosaurus name
-
-|cellosaurus accession
-|characteristics[cellosaurus accession]
-|Cellosaurus accession (CVCL_XXXX)
-
-|bto cell line
-|characteristics[bto cell line]
-|BRENDA Tissue Ontology term (if available)
-
-|organism
-|characteristics[organism]
-|Species of origin
-
-|organism part
-|characteristics[organism part]
-|Tissue/organ of origin
-
-|sampling site
-|characteristics[sampling site]
-|Specific anatomical location
-
-|age
-|characteristics[age]
-|Age of donor at sample collection
-
-|developmental stage
-|characteristics[developmental stage]
-|Developmental stage of donor
-
-|sex
-|characteristics[sex]
-|Sex of donor
-
-|ancestry category
-|characteristics[ancestry category]
-|Ancestry/ethnicity of donor
-
-|disease
-|characteristics[disease]
-|Disease state of original tissue
-
-|cell type
-|characteristics[cell type]
-|Cell type classification
-
-|Material type
-|characteristics[material type]
-|Type of biological material
-
-|synonyms
-|comment[cell line synonyms]
-|Alternative names for the cell line
-|===
-
-=== Using the Database
-
-When annotating cell line experiments:
-
-1. Look up your cell line in the database
-2. Copy the relevant metadata fields to your SDRF file
-3. Add experiment-specific annotations (treatment, passage number, etc.)
-
-Example workflow:
-[source,bash]
-----
-# Download the database
-wget https://raw.githubusercontent.com/bigbio/sdrf-cellline-metadata-db/main/cl-annotations-db.tsv
-
-# Search for your cell line
-grep -i "HeLa" cl-annotations-db.tsv
-----
-
 [[checklist]]
 == Checklist
 
@@ -210,26 +103,26 @@ This section defines the metadata columns required and recommended for cell line
 The following columns are REQUIRED for cell line experiments:
 
 |===
-|Column Name |Description |Source |Example Values
+|Column Name |Description |Ontology |Example Values
 
 |characteristics[cell line]
 |Name of the cell line
-|Database or user
+|https://www.cellosaurus.org/[Cellosaurus]
 |HeLa, HEK293, K562
 
 |characteristics[organism]
 |Species of the cell line
-|Database
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBITaxon]
 |homo sapiens, mus musculus
 
 |characteristics[organism part]
 |Tissue/organ of origin
-|Database
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
 |cervix, kidney, blood
 
 |characteristics[disease]
 |Disease state of original tissue
-|Database
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO]
 |cervical adenocarcinoma, normal, chronic myelogenous leukemia
 |===
 
@@ -238,77 +131,82 @@ The following columns are REQUIRED for cell line experiments:
 The following columns are RECOMMENDED for cell line experiments:
 
 |===
-|Column Name |Description |Source |Example Values
+|Column Name |Description |Ontology |Example Values
 
 |characteristics[cellosaurus accession]
 |Cellosaurus unique identifier
-|Database
+|https://www.cellosaurus.org/[Cellosaurus]
 |CVCL_0030, CVCL_0045, CVCL_0004
 
 |characteristics[cellosaurus name]
 |Official Cellosaurus name
-|Database
+|https://www.cellosaurus.org/[Cellosaurus]
 |HeLa, HEK293, K-562
 
 |characteristics[cell type]
 |Cell type classification
-|Database
+|https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
 |epithelial cell, fibroblast, lymphoblast
 
 |characteristics[sex]
 |Sex of original donor
-|Database
+|https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
 |female, male, not available
 
 |characteristics[age]
-|Age of donor at sample collection
-|Database
+|Age of donor at sample collection (also known as https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C164712[Cell Line Source Age])
+|Free text
 |31Y, not available, fetal
 
 |characteristics[sampling site]
 |Specific anatomical sampling location
-|Database
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
 |cervix uteri, fetal kidney, peripheral blood
 
 |comment[passage number]
 |Passage number of cells used
-|Experiment
+|https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007061[EFO:0007061]
 |P15, P20-25, low passage
 
 |comment[cell line source]
 |Source/provider of cell line
-|Experiment
+|Free text
 |ATCC, DSMZ, ECACC, in-house
 
 |comment[authentication method]
 |Method used to verify cell line identity
-|Experiment
+|Free text
 |STR profiling, SNP genotyping, not performed
 |===
 
 === Optional Columns
 
 |===
-|Column Name |Description |Example Values
+|Column Name |Description |Ontology |Example Values
 
 |characteristics[developmental stage]
 |Developmental stage of donor
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
 |adult, fetus, embryo
 
 |characteristics[ancestry category]
 |Ancestry of donor if known
+|https://www.ebi.ac.uk/ols4/ontologies/hancestro[HANCESTRO]
 |African American, European, not available
 
 |comment[mycoplasma status]
 |Mycoplasma contamination testing result
+|Free text
 |negative, positive, not tested
 
 |comment[culture conditions]
 |Culture medium and conditions
+|Free text
 |DMEM + 10% FBS, RPMI-1640 + 10% FBS
 
 |comment[cell line modifications]
 |Genetic or other modifications
+|Free text
 |CRISPR knockout of TP53, GFP-tagged, parental
 |===
 
@@ -353,22 +251,26 @@ These fields describe your specific experiment and SHOULD be provided by the use
 While Cellosaurus is the RECOMMENDED primary resource, SDRF-Proteomics also accepts terms from:
 
 |===
-|Resource |Use Case |Example
+|Resource |Use Case |OLS Link |Example
 
 |Cellosaurus
 |Primary cell line identification (RECOMMENDED)
+|https://www.cellosaurus.org/[Cellosaurus]
 |CVCL_0030
 
 |BTO (BRENDA Tissue Ontology)
-|Alternative ontology terms
+|Alternative ontology terms for cell lines
+|https://www.ebi.ac.uk/ols4/ontologies/bto[OLS - BTO]
 |BTO:0000567
 
 |CLO (Cell Line Ontology)
 |Legacy support (not actively maintained)
+|https://www.ebi.ac.uk/ols4/ontologies/clo[OLS - CLO]
 |CLO:0003684
 
 |EFO (Experimental Factor Ontology)
 |General experimental factors
+|https://www.ebi.ac.uk/ols4/ontologies/efo[OLS - EFO]
 |EFO:0001185
 |===
 
