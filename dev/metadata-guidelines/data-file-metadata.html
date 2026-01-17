@@ -16,14 +16,15 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_label">2. Label</a></li>
-<li><a href="#_ms2_analyzer_type">3. MS2 Analyzer Type</a></li>
-<li><a href="#_dia_scan_window">4. DIA Scan Window</a></li>
-<li><a href="#_protein_modifications">5. Protein Modifications</a></li>
-<li><a href="#_cleavage_agents">6. Cleavage Agents</a></li>
-<li><a href="#_mass_tolerances">7. Mass Tolerances</a></li>
-<li><a href="#_best_practices">8. Best Practices</a></li>
-<li><a href="#_references">9. References</a></li>
+<li><a href="#_cv_term_format">2. CV Term Format</a></li>
+<li><a href="#_label">3. Label</a></li>
+<li><a href="#_ms2_analyzer_type">4. MS2 Analyzer Type</a></li>
+<li><a href="#_dia_scan_window">5. DIA Scan Window</a></li>
+<li><a href="#_protein_modifications">6. Protein Modifications</a></li>
+<li><a href="#_cleavage_agents">7. Cleavage Agents</a></li>
+<li><a href="#_mass_tolerances">8. Mass Tolerances</a></li>
+<li><a href="#_best_practices">9. Best Practices</a></li>
+<li><a href="#_references">10. References</a></li>
 </ul>
 </div>
 </div>
@@ -40,7 +41,65 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_label"><a class="anchor" href="#_label"></a><a class="link" href="#_label">2. Label</a></h2>
+<h2 id="_cv_term_format"><a class="anchor" href="#_cv_term_format"></a><a class="link" href="#_cv_term_format">2. CV Term Format</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For data file metadata columns that reference ontology terms, use the structured CV term format:</p>
+</div>
+<div class="paragraph">
+<p><code>NT={term name};AC={accession}</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Examples:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Dissociation method: <code>NT=HCD;AC=PRIDE:0000590</code></p>
+</li>
+<li>
+<p>Fractionation method: <code>NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</code></p>
+</li>
+<li>
+<p>Instrument: <code>NT=Q Exactive HF;AC=MS:1002523</code></p>
+</li>
+<li>
+<p>Label: <code>NT=TMT126;AC=PRIDE:0000285</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Why use the structured format?</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Automated annotation</strong>: Many data file properties (instrument, acquisition method, dissociation method) can be automatically determined by software from raw files.</p>
+</li>
+<li>
+<p><strong>Validation</strong>: Accession numbers enable automated validation against ontologies.</p>
+</li>
+<li>
+<p><strong>Interoperability</strong>: Structured terms are unambiguous across different tools and databases.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Unlike sample metadata (characteristics) which are typically annotated manually using simple term names, data file metadata benefits from the structured CV term format because these values are often extracted programmatically from instrument files.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_label"><a class="anchor" href="#_label"></a><a class="link" href="#_label">3. Label</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[label]</code></p>
@@ -66,7 +125,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_ms2_analyzer_type"><a class="anchor" href="#_ms2_analyzer_type"></a><a class="link" href="#_ms2_analyzer_type">3. MS2 Analyzer Type</a></h2>
+<h2 id="_ms2_analyzer_type"><a class="anchor" href="#_ms2_analyzer_type"></a><a class="link" href="#_ms2_analyzer_type">4. MS2 Analyzer Type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[MS2 analyzer type]</code></p>
@@ -80,7 +139,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dia_scan_window"><a class="anchor" href="#_dia_scan_window"></a><a class="link" href="#_dia_scan_window">4. DIA Scan Window</a></h2>
+<h2 id="_dia_scan_window"><a class="anchor" href="#_dia_scan_window"></a><a class="link" href="#_dia_scan_window">5. DIA Scan Window</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[MS1 scan range]</code></p>
@@ -94,7 +153,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_protein_modifications"><a class="anchor" href="#_protein_modifications"></a><a class="link" href="#_protein_modifications">5. Protein Modifications</a></h2>
+<h2 id="_protein_modifications"><a class="anchor" href="#_protein_modifications"></a><a class="link" href="#_protein_modifications">6. Protein Modifications</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[modification parameters]</code></p>
@@ -156,7 +215,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cleavage_agents"><a class="anchor" href="#_cleavage_agents"></a><a class="link" href="#_cleavage_agents">6. Cleavage Agents</a></h2>
+<h2 id="_cleavage_agents"><a class="anchor" href="#_cleavage_agents"></a><a class="link" href="#_cleavage_agents">7. Cleavage Agents</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>comment[cleavage agent details]</code></p>
@@ -195,7 +254,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">7. Mass Tolerances</a></h2>
+<h2 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">8. Mass Tolerances</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Columns:</strong> <code>comment[precursor mass tolerance]</code>, <code>comment[fragment mass tolerance]</code></p>
@@ -232,7 +291,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">8. Best Practices</a></h2>
+<h2 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">9. Best Practices</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -250,7 +309,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">9. References</a></h2>
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">10. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -273,7 +332,7 @@
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 07:47:02 UTC
+Last updated 2026-01-17 08:02:39 UTC
 </div>
 </div>
 </body>
