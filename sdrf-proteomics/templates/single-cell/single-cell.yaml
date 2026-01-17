@@ -1,8 +1,63 @@
 name: single-cell
 description: SDRF template for single-cell proteomics (SCP) experiments
-version: 1.0.0-dev
+version: 1.1.0-dev
 extends: default
 columns:
+  # Sample characteristics inherited from default: organism, organism part, disease, cell type, biological replicate
+
+  - name: characteristics[developmental stage]
+    description: Developmental stage of the organism at sample collection
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - efo
+            - hsapdv
+            - mmusdv
+            - uberon
+          error_level: warning
+          description: Developmental stage should be a valid ontology term
+          examples:
+            - adult
+            - embryonic stage
+            - fetal stage
+            - neonate
+
+  - name: characteristics[genotype]
+    description: Genotype of the organism (especially for model organisms)
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Genotype notation following standard conventions
+          examples:
+            - wild type genotype
+            - Pitx2-/-
+            - GFP+
+
+  - name: characteristics[strain]
+    description: Strain or genetic background of model organisms
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Strain name
+          examples:
+            - C57BL/6
+            - BALB/c
+            - CD1
+            - Sprague-Dawley
+
+  # Single-cell specific sample characteristics
   - name: characteristics[single cell isolation method]
     description: Method used to isolate single cells
     requirement: required
@@ -148,3 +203,21 @@ columns:
             - 5
             - 10
             - 100
+
+  - name: comment[single cell quality]
+    description: Quality assessment of the single cell preparation
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - OK
+            - pass
+            - fail
+            - not OK
+            - not available
+            - not applicable
+          error_level: warning
+          description: Single cell quality assessment
