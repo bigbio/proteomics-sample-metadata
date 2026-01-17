@@ -195,13 +195,13 @@
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [instrument]</th>
-<th class="data-col">comment [cleavage agent details]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -479,12 +479,12 @@ We added the prefix v to the version number to indicate that it is the version o
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [instrument]</th>
-<th class="data-col">comment [data file]</th>
-<th class="factor-col">factor value [disease]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[data file]</th>
+<th class="factor-col">factor value[disease]</th>
 </tr>
 </thead>
 <tbody>
@@ -591,10 +591,10 @@ We added the prefix v to the version number to indicate that it is the version o
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Case sensitivity</strong>: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).</p>
+<p><strong>Case sensitivity</strong>: Text values are case-insensitive, but <strong>column names are case-sensitive</strong>. Use lowercase for all column names (e.g., <code>source name</code>, <code>characteristics[organism]</code>, <code>comment[label]</code>). Incorrect casing like <code>Source Name</code> or <code>Characteristics[organism]</code> will cause validation failures.</p>
 </li>
 <li>
-<p><strong>Space sensitivity</strong>: By specification the SDRF is sensitive to spaces in column names (sourcename != source name).</p>
+<p><strong>Space sensitivity</strong>: The SDRF is sensitive to spaces in column names (<code>sourcename</code> ≠ <code>source name</code>). Column names must include appropriate spaces (e.g., <code>source name</code>, not <code>sourcename</code>) but must NOT have a space before the bracket (e.g., <code>characteristics[organism]</code>, not <code>characteristics [organism]</code>).</p>
 </li>
 <li>
 <p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#from-sample-metadata">Chapter 8</a>; then the data file metadata columns in <a href="#from-sample-data">Chapter 9</a>; followed by the factor values columns in <a href="#study-variables">Chapter 13</a>.</p>
@@ -842,16 +842,16 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <p><strong>source name</strong>: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)</p>
 </li>
 <li>
-<p><strong>characteristics[organism]</strong>: The organism of the Sample of origin.</p>
+<p><strong>characteristics[organism]</strong>: The organism of the Sample of origin. Values MUST come from <a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBI Taxonomy</a>.</p>
 </li>
 <li>
-<p><strong>characteristics[organism part]</strong>: The part of organism&#8217;s anatomy or substance arising from an organism from which the biomaterial was derived, (e.g., liver)</p>
+<p><strong>characteristics[organism part]</strong>: The part of organism&#8217;s anatomy or substance arising from an organism from which the biomaterial was derived (e.g., liver). Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a>.</p>
 </li>
 <li>
-<p><strong>characteristics[disease]</strong>: The disease under study in the Sample. For healthy/control samples, use <code>normal</code> (see <a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">Disease Annotation Guidelines</a>).</p>
+<p><strong>characteristics[disease]</strong>: The disease under study in the Sample. Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a>, or <a href="https://www.ebi.ac.uk/ols4/ontologies/doid">DOID</a>. For healthy/control samples, use <code>normal</code> (<a href="https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461">PATO:0000461</a>) - see <a href="metadata-guidelines/sample-metadata.adoc#disease-annotation">Disease Annotation Guidelines</a>.</p>
 </li>
 <li>
-<p><strong>characteristics[cell type]</strong>: A cell type is a distinct morphological or functional form of cell. Examples are epithelial, glial etc.</p>
+<p><strong>characteristics[cell type]</strong>: A cell type is a distinct morphological or functional form of cell (e.g., epithelial, glial). Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/cl">Cell Ontology (CL)</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a>.</p>
 </li>
 </ul>
 </div>
@@ -863,10 +863,10 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [organism part]</th>
-<th class="sample-col">characteristics [disease]</th>
-<th class="sample-col">characteristics [cell type]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[cell type]</th>
 </tr>
 </thead>
 <tbody>
@@ -956,10 +956,10 @@ Additional characteristics can be added depending on the type of the experiment 
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [biosample accession number]</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [organism part]</th>
-<th class="sample-col">characteristics [disease]</th>
+<th class="sample-col">characteristics[biosample accession number]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
 </tr>
 </thead>
 <tbody>
@@ -1048,12 +1048,12 @@ BioSample accession numbers from NCBI follow the format <code>SAMNxxxxxxxxxx</co
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [biological replicate]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [fraction identifier]</th>
-<th class="data-col">comment [technical replicate]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[technical replicate]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -1242,11 +1242,11 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [pooled sample]</th>
-<th class="sample-col">characteristics [organism]</th>
+<th class="sample-col">characteristics[pooled sample]</th>
+<th class="sample-col">characteristics[organism]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -1292,13 +1292,13 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics [pooled sample]</th>
-<th class="sample-col">characteristics [organism]</th>
-<th class="sample-col">characteristics [age]</th>
-<th class="sample-col">characteristics [sex]</th>
+<th class="sample-col">characteristics[pooled sample]</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[age]</th>
+<th class="sample-col">characteristics[sex]</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -1486,8 +1486,8 @@ For pooled reference samples (e.g., TMT reference channels), use <code>pooled</c
 <table>
 <thead>
 <tr>
-<th class="sample-col">characteristics [mass]</th>
-<th class="sample-col">characteristics [spiked compound]</th>
+<th class="sample-col">characteristics[mass]</th>
+<th class="sample-col">characteristics[spiked compound]</th>
 </tr>
 </thead>
 <tbody>
@@ -1548,15 +1548,17 @@ For pooled reference samples (e.g., TMT reference channels), use <code>pooled</c
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Column</th>
 <th class="tableblock halign-left valign-top">Requirement</th>
 <th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
 </tr>
 </thead>
 <tbody>
@@ -1564,46 +1566,55 @@ For pooled reference samples (e.g., TMT reference channels), use <code>pooled</c
 <td class="tableblock halign-left valign-top"><p class="tableblock">assay name</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for an MS run/data file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">technology type</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Technology used to capture the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fixed values</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[proteomics data acquisition method]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DDA, DIA, PRM, SRM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659">PRIDE:0000659</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[label]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Label applied to sample (or "label free sample")</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000093">PRIDE - Labels</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[instrument]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mass spectrometer model</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000031">PSI-MS - Instruments</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[cleavage agent details]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Enzyme information (use "not applicable" for top-down/undigested samples)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001045">PSI-MS - Cleavage agents</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[fraction identifier]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Fraction number (1 if not fractionated)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[technical replicate]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Technical replicate number (1 if none)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[data file]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Name of the raw file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 </tr>
 </tbody>
 </table>
@@ -1617,10 +1628,10 @@ For pooled reference samples (e.g., TMT reference channels), use <code>pooled</c
 <th class="sample-col">source name</th>
 <th class="data-col">assay name</th>
 <th class="data-col">technology type</th>
-<th class="data-col">comment [proteomics data acquisition method]</th>
-<th class="data-col">comment [label]</th>
-<th class="data-col">comment [instrument]</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -1773,9 +1784,9 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <th class="sample-col">source name</th>
 <th>...</th>
 <th class="data-col">assay name</th>
-<th class="data-col">comment [label]</th>
+<th class="data-col">comment[label]</th>
 <th>...</th>
-<th class="data-col">comment [data file]</th>
+<th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
@@ -2910,8 +2921,8 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <tr>
 <th class="sample-col">source name</th>
 <th>...</th>
-<th class="sample-col">characteristics [organism part]</th>
-<th class="sample-col">characteristics [organism part]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[organism part]</th>
 <th>...</th>
 </tr>
 </thead>
@@ -3005,11 +3016,11 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 <tr>
 <th class="sample-col">source name</th>
 <th>...</th>
-<th class="sample-col">characteristics [disease]</th>
-<th class="sample-col">characteristics [disease stage]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[disease stage]</th>
 <th>...</th>
-<th class="factor-col">factor value [disease]</th>
-<th class="factor-col">factor value [disease stage]</th>
+<th class="factor-col">factor value[disease]</th>
+<th class="factor-col">factor value[disease stage]</th>
 </tr>
 </thead>
 <tbody>
@@ -3192,7 +3203,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 10:25:32 UTC
+Last updated 2026-01-17 11:07:02 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
