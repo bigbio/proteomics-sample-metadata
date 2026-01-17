@@ -367,22 +367,26 @@
         <!-- Complete Example with Explanation -->
         <section class="section">
             <h2>Complete Example</h2>
-            <p>Here's a complete SDRF file for a human liver cancer study comparing tumor vs. healthy tissue, following the human template guidelines:</p>
+            <p>Here's a minimum valid SDRF file for a human liver cancer study, including all required columns from the human template:</p>
 
             <div class="table-wrapper" style="overflow-x: auto;">
-                <table class="sdrf-example">
+                <table class="sdrf-example sdrf-example-full">
                     <thead>
                         <tr>
                             <th class="sample-col">source name</th>
                             <th class="sample-col">characteristics[organism]</th>
                             <th class="sample-col">characteristics[organism part]</th>
                             <th class="sample-col">characteristics[disease]</th>
+                            <th class="sample-col">characteristics[biological replicate]</th>
                             <th class="sample-col">characteristics[age]</th>
                             <th class="sample-col">characteristics[sex]</th>
-                            <th class="sample-col">characteristics[biological replicate]</th>
                             <th class="data-col">assay name</th>
+                            <th class="data-col">technology type</th>
+                            <th class="data-col">comment[proteomics proteomics data acquisition method]</th>
                             <th class="data-col">comment[label]</th>
                             <th class="data-col">comment[instrument]</th>
+                            <th class="data-col">comment[cleavage agent details]</th>
+                            <th class="data-col">comment[fraction identifier]</th>
                             <th class="data-col">comment[technical replicate]</th>
                             <th class="data-col">comment[data file]</th>
                             <th class="factor-col">factor value[disease]</th>
@@ -394,12 +398,16 @@
                             <td>homo sapiens</td>
                             <td>liver</td>
                             <td>hepatocellular carcinoma</td>
+                            <td>1</td>
                             <td>55Y</td>
                             <td>male</td>
-                            <td>1</td>
                             <td>run_001</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
                             <td>label free sample</td>
                             <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
                             <td>1</td>
                             <td>patient_001.raw</td>
                             <td>hepatocellular carcinoma</td>
@@ -409,12 +417,16 @@
                             <td>homo sapiens</td>
                             <td>liver</td>
                             <td>hepatocellular carcinoma</td>
+                            <td>2</td>
                             <td>62Y</td>
                             <td>female</td>
-                            <td>2</td>
                             <td>run_002</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
                             <td>label free sample</td>
                             <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
                             <td>1</td>
                             <td>patient_002.raw</td>
                             <td>hepatocellular carcinoma</td>
@@ -424,12 +436,16 @@
                             <td>homo sapiens</td>
                             <td>liver</td>
                             <td>normal</td>
+                            <td>3</td>
                             <td>48Y</td>
                             <td>male</td>
-                            <td>3</td>
                             <td>run_003</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
                             <td>label free sample</td>
                             <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
                             <td>1</td>
                             <td>control_001.raw</td>
                             <td>normal</td>
@@ -439,12 +455,16 @@
                             <td>homo sapiens</td>
                             <td>liver</td>
                             <td>normal</td>
+                            <td>4</td>
                             <td>51Y</td>
                             <td>female</td>
-                            <td>4</td>
                             <td>run_004</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
                             <td>label free sample</td>
                             <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
                             <td>1</td>
                             <td>control_002.raw</td>
                             <td>normal</td>
@@ -452,6 +472,7 @@
                     </tbody>
                 </table>
             </div>
+            <p class="scroll-hint">Scroll horizontally to see all columns &rarr;</p>
             <div class="sdrf-legend" style="margin-top: 1rem;">
                 <span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
                 <span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comment)</span>
@@ -459,14 +480,18 @@
             </div>
 
             <div class="example-explanation">
+                <h4>Required columns in this example:</h4>
+                <ul>
+                    <li><strong>Sample metadata:</strong> source name, organism, organism part, disease, biological replicate, age, sex</li>
+                    <li><strong>Data file metadata:</strong> assay name, technology type, proteomics data acquisition method, label, instrument, cleavage agent, fraction identifier, technical replicate, data file</li>
+                    <li><strong>Factor value:</strong> the experimental variable being compared (disease)</li>
+                </ul>
                 <h4>What this example tells us:</h4>
                 <ul>
-                    <li>4 biological replicates from human liver tissue (each patient/control is a biological replicate)</li>
-                    <li>2 cancer patients (ages 55Y and 62Y), 2 healthy controls (ages 48Y and 51Y)</li>
-                    <li>Human-specific metadata: age (in years format) and sex</li>
-                    <li>Each sample run once (technical replicate = 1)</li>
-                    <li>Label-free proteomics on a Q Exactive HF</li>
-                    <li>The experimental variable (<code>factor value</code>) is disease status</li>
+                    <li>4 biological replicates (each patient/control is numbered 1-4)</li>
+                    <li>No fractionation (fraction identifier = 1 for all)</li>
+                    <li>Single injection per sample (technical replicate = 1)</li>
+                    <li>Label-free DDA proteomics with trypsin digestion on Q Exactive HF</li>
                 </ul>
             </div>
         </section>
@@ -1143,6 +1168,16 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
             padding: 0.5rem;
             text-align: left;
         }
+        .sdrf-example.sdrf-example-full th {
+            white-space: nowrap;
+            font-size: 0.75rem;
+            padding: 0.4rem;
+        }
+        .sdrf-example.sdrf-example-full td {
+            white-space: nowrap;
+            font-size: 0.75rem;
+            padding: 0.4rem;
+        }
         .sdrf-example .sample-col {
             background-color: #e3f2fd;
         }
@@ -1151,6 +1186,12 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
         }
         .sdrf-example .factor-col {
             background-color: #fff3e0;
+        }
+        .scroll-hint {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 0.5rem;
         }
         .sdrf-legend {
             display: flex;
