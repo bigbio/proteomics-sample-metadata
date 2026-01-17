@@ -32,27 +32,9 @@ This document provides a template for annotating Data-independent acquisition (D
 [[abstract]]
 == Abstract
 
-Data-independent acquisition (DIA) is a mass spectrometry acquisition strategy where all precursor ions within a specified m/z range are fragmented systematically, regardless of their intensity. Unlike Data-dependent acquisition (DDA), DIA provides:
+Data-independent acquisition (DIA) is a mass spectrometry acquisition strategy where all precursor ions within a specified m/z range are fragmented systematically, regardless of their intensity. Unlike Data-dependent acquisition (DDA), DIA provides comprehensive and reproducible proteome coverage, reduced missing values across samples, and better quantitative accuracy. Popular DIA methods include SWATH-MS, MSE, All-Ion Fragmentation (AIF), and various windowed DIA approaches.
 
-- Comprehensive and reproducible proteome coverage
-- Reduced missing values across samples
-- Better quantitative accuracy and precision
-- Systematic sampling of all detectable peptides
-
-Popular DIA methods include SWATH-MS, MSE, All-Ion Fragmentation (AIF), and various windowed DIA approaches. This template captures the acquisition parameters essential for DIA data analysis and reproducibility.
-
-[[motivation]]
-== Motivation
-
-DIA experiments have unique characteristics that distinguish them from DDA proteomics:
-
-1. **Isolation window schemes**: DIA uses predefined m/z windows that must be documented
-2. **Scan window ranges**: The precursor mass range covered by the acquisition
-3. **Stepped collision energies**: Many DIA methods use multiple collision energies per scan
-4. **Spectral library requirements**: DIA analysis often requires spectral libraries for peptide identification
-5. **Cycle time considerations**: The time to complete one full DIA cycle affects quantification
-
-These aspects require additional metadata beyond standard SDRF-Proteomics fields.
+DIA experiments have unique characteristics: predefined m/z isolation windows, scan window ranges, stepped collision energies, and spectral library requirements. This template captures the acquisition parameters essential for DIA data analysis and reproducibility.
 
 [[connections]]
 == Connections to Analysis Pipelines
@@ -73,35 +55,9 @@ When documenting DIA experiments, noting the intended or used analysis software 
 
 This section defines the metadata columns required and recommended for DIA experiments.
 
-=== Required Columns
-
-The following columns are REQUIRED for DIA experiments in addition to the core SDRF-Proteomics requirements:
-
-|===
-|Column Name |Description |Cardinality |Ontology/CV |Example Values
-
-|comment[proteomics data acquisition method]
-|Must indicate DIA acquisition
-|1
-|PRIDE CV
-|NT=Data-independent acquisition;AC=PRIDE:0000450
-
-|comment[precursor mass tolerance]
-|Mass tolerance for precursor ions
-|1
-|Numeric value with unit
-|20 ppm, 10 ppm, 0.02 Da
-
-|comment[fragment mass tolerance]
-|Mass tolerance for fragment ions
-|1
-|Numeric value with unit
-|0.02 Da, 0.05 Da, 20 ppm
-|===
-
 === Recommended Columns
 
-The following columns are RECOMMENDED for DIA experiments:
+The following columns are RECOMMENDED for DIA experiments (in addition to the core SDRF-Proteomics requirements):
 
 |===
 |Column Name |Description |Cardinality |Ontology/CV |Example Values
@@ -109,20 +65,20 @@ The following columns are RECOMMENDED for DIA experiments:
 |comment[scan window lower limit]
 |Lower m/z limit of the DIA scan range
 |0..1
-|Numeric value with unit (Th or m/z)
-|350 Th, 400 m/z, 380 Th
+|Numeric value
+|400, 350
 
 |comment[scan window upper limit]
 |Upper m/z limit of the DIA scan range
 |0..1
-|Numeric value with unit (Th or m/z)
-|1650 Th, 1200 m/z, 1800 Th
+|Numeric value
+|1200, 1650
 
 |comment[isolation window width]
 |Width of DIA isolation windows
 |0..1
-|Numeric value with unit
-|25 Th, 8 m/z, variable
+|Numeric value
+|25, 8, variable
 
 |comment[number of isolation windows]
 |Total number of DIA windows per cycle
@@ -169,6 +125,26 @@ The following columns are RECOMMENDED for DIA experiments:
 
 NOTE: The parent term for all DIA methods is `Data-independent acquisition` (PRIDE:0000450). Use `comment[DIA method]` to specify the specific variant when known. Check the https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Controlled Vocabulary] for available terms.
 
+=== Optional Columns
+
+The following columns are OPTIONAL but commonly used:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|link:../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances[comment[precursor mass tolerance]]
+|Mass tolerance for precursor ions in database search
+|0..1
+|Numeric value with unit
+|10 ppm, 20 ppm
+
+|link:../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances[comment[fragment mass tolerance]]
+|Mass tolerance for fragment ions in database search
+|0..1
+|Numeric value with unit
+|0.02 Da, 20 ppm
+|===
+
 [[stepped-collision-energy]]
 == Stepped Collision Energy
 
@@ -204,7 +180,7 @@ DIA methods vary in their isolation window strategies:
 
 |Fixed windows
 |Equal-width windows across mass range
-|comment[isolation window width] = 25 Th
+|comment[isolation window width] = 25
 
 |Variable windows
 |Windows optimized for ion density
@@ -289,9 +265,9 @@ A complete example for a DIA proteomics experiment:
 |NT=Trypsin;AC=MS:1001251
 |1
 |1
-|350 Th
-|1650 Th
-|25 Th
+|350
+|1650
+|25
 |22 NCE
 |26 NCE
 |30 NCE
@@ -314,9 +290,9 @@ A complete example for a DIA proteomics experiment:
 |NT=Trypsin;AC=MS:1001251
 |1
 |1
-|350 Th
-|1650 Th
-|25 Th
+|350
+|1650
+|25
 |22 NCE
 |26 NCE
 |30 NCE
@@ -339,9 +315,9 @@ A complete example for a DIA proteomics experiment:
 |NT=Trypsin;AC=MS:1001251
 |1
 |1
-|350 Th
-|1650 Th
-|25 Th
+|350
+|1650
+|25
 |22 NCE
 |26 NCE
 |30 NCE
@@ -415,10 +391,3 @@ This template was developed by the SDRF-Proteomics community with contributions 
 
 For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
 
-[[references]]
-== References
-
-- Gillet LC, et al. (2012) Targeted data extraction of the MS/MS spectra generated by data-independent acquisition: a new concept for consistent and accurate proteome analysis. Molecular & Cellular Proteomics.
-- Ludwig C, et al. (2018) Data-independent acquisition-based SWATH-MS for quantitative proteomics: a tutorial. Molecular Systems Biology.
-- Demichev V, et al. (2020) DIA-NN: neural networks and interference correction enable deep proteome coverage in high throughput. Nature Methods.
-- Meier F, et al. (2020) diaPASEF: parallel accumulation-serial fragmentation combined with data-independent acquisition. Nature Methods.

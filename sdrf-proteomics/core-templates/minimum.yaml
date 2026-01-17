@@ -87,11 +87,20 @@ columns:
             - T cell
 
   - name: characteristics[biological replicate]
-    description: Identifier for the biological replicate (integer starting from 1)
+    description: Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples)
     requirement: required
-    type: integer
     allow_not_applicable: false
     allow_not_available: false
+    allow_pooled: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+$|^pooled$
+          description: Biological replicate should be an integer or 'pooled' for pooled reference samples
+          examples:
+            - 1
+            - 2
+            - pooled
 
   - name: assay name
     description: Unique identifier for the MS run
@@ -111,6 +120,8 @@ columns:
         params:
           values:
             - proteomic profiling by mass spectrometry
+            - protein expression profiling by antibody array
+            - protein expression profiling by aptamer array
 
   - name: comment[proteomics data acquisition method]
     description: Mass spectrometry acquisition method

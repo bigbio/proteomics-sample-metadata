@@ -32,28 +32,7 @@ This document provides a template for annotating Data-dependent acquisition (DDA
 [[abstract]]
 == Abstract
 
-Data-dependent acquisition (DDA) is the traditional and most widely used mass spectrometry acquisition strategy for proteomics. In DDA mode, the mass spectrometer:
-
-- Performs a survey scan (MS1) to detect precursor ions
-- Selects the most intense precursors (top-N) for fragmentation
-- Acquires MS2 spectra for selected precursors
-- Uses dynamic exclusion to avoid resampling the same ions
-
-DDA remains the gold standard for discovery proteomics, peptide identification, and building spectral libraries. This template captures the acquisition parameters essential for DDA data analysis and reproducibility.
-
-[[motivation]]
-== Motivation
-
-DDA experiments have specific parameters that affect data quality and reproducibility:
-
-1. **Dissociation method**: HCD, CID, ETD, or hybrid methods produce different fragmentation patterns
-2. **Collision energy**: Energy applied for peptide fragmentation
-3. **Fractionation**: DDA experiments often use extensive fractionation for deep proteome coverage
-4. **Modification parameters**: Post-translational modifications searched in the database
-5. **Mass tolerances**: Precursor and fragment mass tolerances for database searching
-6. **MS2 mass analyzer**: Affects resolution and mass accuracy of fragment spectra
-
-These aspects require documentation beyond standard SDRF-Proteomics fields.
+Data-dependent acquisition (DDA) is the most widely used mass spectrometry acquisition strategy for proteomics. This template captures acquisition-specific parameters that affect data quality and reproducibility: dissociation method, collision energy, fractionation, modification parameters, mass tolerances, and MS2 mass analyzer.
 
 [[checklist]]
 == Checklist
@@ -71,7 +50,7 @@ The following columns are RECOMMENDED for DDA experiments (in addition to the co
 |Fragmentation method used
 |0..1
 |MS, PRIDE (children of MS:1000044)
-|NT=HCD;AC=PRIDE:0000590, NT=CID;AC=PRIDE:0000591
+|NT=HCD;AC=PRIDE:0000590
 
 |comment[modification parameters]
 |Post-translational modifications searched
@@ -99,13 +78,13 @@ The following columns are OPTIONAL but commonly used:
 |PRIDE (children of PRIDE:0000550)
 |NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564, NT=Strong cation-exchange chromatography;AC=PRIDE:0000561
 
-|comment[precursor mass tolerance]
+|link:../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances[comment[precursor mass tolerance]]
 |Mass tolerance for precursor ions in database search
 |0..1
 |Numeric value with unit
 |10 ppm, 20 ppm
 
-|comment[fragment mass tolerance]
+|link:../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances[comment[fragment mass tolerance]]
 |Mass tolerance for fragment ions in database search
 |0..1
 |Numeric value with unit
@@ -115,103 +94,10 @@ The following columns are OPTIONAL but commonly used:
 |Mass analyzer used for MS2 acquisition
 |0..1
 |MS (children of MS:1000443)
-|NT=orbitrap;AC=MS:1000484, NT=linear ion trap;AC=MS:1000291
+|NT=orbitrap;AC=MS:1000484
 |===
 
-NOTE: For data file metadata (comment columns), use the full CV term format `NT={name};AC={accession}` when possible. This format enables automated validation and software can often determine these values from raw files. Sample metadata (characteristics) are typically annotated by humans and can use simple term names.
-
-[[fractionation-methods]]
-== Fractionation Methods
-
-DDA experiments often employ fractionation to increase proteome coverage. Common methods:
-
-|===
-|Method |PRIDE CV Term |Description |Typical Use
-
-|High-pH reversed-phase chromatography
-|PRIDE:0000564
-|Orthogonal to low-pH RP-LC
-|Deep proteome profiling
-
-|Strong cation-exchange chromatography (SCX)
-|PRIDE:0000561
-|Charge-based separation
-|Complex samples, PTM enrichment
-
-|Strong anion-exchange chromatography (SAX)
-|PRIDE:0000558
-|Charge-based separation
-|Phosphopeptide fractionation
-
-|Size-exclusion chromatography (SEC)
-|PRIDE:0000557
-|Size-based separation
-|Protein complex analysis
-
-|Isoelectric focusing
-|PRIDE:0000553
-|pI-based separation
-|Complex samples
-
-|Off-gel electrophoresis
-|PRIDE:0000552
-|pI-based fractionation into liquid fractions
-|Peptide fractionation
-
-|No fractionation
-|not applicable
-|Single-shot analysis
-|High-throughput, clinical samples
-|===
-
-Document fractionation using `comment[fractionation method]` and indicate fraction numbers with `comment[fraction identifier]`.
-
-[[dda-parameters]]
-== DDA Acquisition Parameters
-
-=== Dissociation Methods
-
-The fragmentation method significantly affects peptide identification. Values should be children of https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044[MS:1000044 (dissociation method)]:
-
-|===
-|Method |Ontology Term |Description |Typical Use
-
-|HCD
-|PRIDE:0000590, MS:1000422
-|Beam-type collision-induced dissociation
-|Standard Orbitrap-based workflows
-
-|CID
-|PRIDE:0000591, MS:1000133
-|Collision-induced dissociation
-|Ion trap instruments
-
-|ETD
-|MS:1000598
-|Electron-transfer dissociation
-|Labile PTMs, larger peptides
-
-|EThcD
-|PRIDE:0000589, MS:1002631
-|ETD with supplemental HCD
-|PTM localization
-|===
-
-=== Mass Tolerances
-
-Mass tolerance settings for database searching:
-
-|===
-|Parameter |Typical Values |Description
-
-|Precursor tolerance
-|10-20 ppm (Orbitrap), 0.5-1 Da (ion trap)
-|Tolerance for matching precursor masses
-
-|Fragment tolerance
-|0.02-0.05 Da (Orbitrap), 0.5-0.6 Da (ion trap)
-|Tolerance for matching fragment ions
-|===
+NOTE: For data file metadata (comment columns), use the full CV term format `NT={name};AC={accession}` when possible. This format enables automated validation and software can often determine these values from raw files.
 
 [[example-sdrf]]
 == Example SDRF File
@@ -326,7 +212,7 @@ For isobaric labeling experiments (TMT, iTRAQ):
 |TMT_set1_F01.raw
 |===
 
-NOTE: For TMT experiments, multiple samples share the same raw file. Use `comment[label]` to distinguish channels.
+NOTE: For TMT experiments, multiple samples share the same raw file. Use `comment[label]` to distinguish channels. TMT quantification can use MS2 or MS3 acquisition—for MS3-based TMT, use https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000646[PRIDE:0000646 (MS3 spectra)].
 
 [[best-practices]]
 == Best Practices for DDA Annotation
@@ -372,10 +258,3 @@ This template was developed by the SDRF-Proteomics community.
 
 For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
 
-[[references]]
-== References
-
-- Michalski A, et al. (2011) More than 100,000 detectable peptide species elute in single shotgun proteomics runs but the majority is inaccessible to data-dependent LC-MS/MS. Journal of Proteome Research.
-- Hebert AS, et al. (2014) The one hour yeast proteome. Molecular & Cellular Proteomics.
-- Kelstrup CD, et al. (2018) Performance evaluation of the Q Exactive HF-X for shotgun proteomics. Journal of Proteome Research.
-- Bekker-Jensen DB, et al. (2017) An optimized shotgun strategy for the rapid generation of comprehensive human proteomes. Cell Systems.
