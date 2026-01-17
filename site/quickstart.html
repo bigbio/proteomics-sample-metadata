@@ -30,7 +30,7 @@
         <!-- Introduction -->
         <section class="hero" style="padding: 2rem 0;">
             <h2>Learn SDRF-Proteomics by Building Your First File</h2>
-            <p>This interactive tutorial will guide you through creating an SDRF file step-by-step. By the end, you'll understand the format and have a working file for your experiment.</p>
+            <p>This tutorial will guide you through creating an SDRF file step-by-step. By the end, you'll understand the format and have a working file for your experiment.</p>
             <p class="time-estimate"><strong>Estimated time:</strong> 10-15 minutes</p>
         </section>
 
@@ -55,86 +55,123 @@
             </div>
         </section>
 
-        <!-- Understanding Templates -->
+        <!-- Find Similar Examples -->
         <section class="section">
-            <h2>Understanding Templates</h2>
-            <p>Templates are <strong>pre-made SDRF files with the right columns already set up</strong> for your experiment type. Instead of figuring out which columns you need, just pick a template and fill in your data.</p>
+            <h2>Find an Example Similar to Your Experiment</h2>
+            <p>The best way to learn is by example. Search for datasets similar to yours and see how they structured their SDRF files:</p>
 
-            <div class="template-explanation">
-                <div class="template-card">
-                    <h4>Core Templates</h4>
-                    <p>Based on your <strong>organism type</strong>. These define the basic biological information needed.</p>
-                    <ul>
-                        <li><strong>human</strong> &mdash; includes columns for age, sex, ancestry</li>
-                        <li><strong>vertebrates</strong> &mdash; mouse, rat, zebrafish, etc.</li>
-                        <li><strong>invertebrates</strong> &mdash; insects, worms, etc.</li>
-                        <li><strong>plants</strong> &mdash; includes plant-specific metadata</li>
-                        <li><strong>default</strong> &mdash; minimal columns for any organism</li>
-                    </ul>
+            <div class="example-finder">
+                <div class="search-box">
+                    <input type="text" id="example-search" placeholder="e.g., HeLa DIA, human liver TMT, mouse brain label-free..." autocomplete="off">
+                    <button onclick="searchExamples()" class="btn btn-primary">Find Examples</button>
                 </div>
-                <div class="template-card">
-                    <h4>Specialized Templates</h4>
-                    <p>Based on your <strong>experiment type</strong>. Add extra columns for specific workflows.</p>
-                    <ul>
-                        <li><strong>cell-lines</strong> &mdash; adds cell line identifiers</li>
-                        <li><strong>dia-acquisition</strong> &mdash; DIA-specific parameters</li>
-                        <li><strong>immunopeptidomics</strong> &mdash; HLA typing, etc.</li>
-                        <li><strong>crosslinking</strong> &mdash; XL-MS specific columns</li>
-                    </ul>
+                <div class="search-suggestions">
+                    <span>Try:</span>
+                    <button onclick="searchWithTerm('HeLa')">HeLa</button>
+                    <button onclick="searchWithTerm('human plasma')">human plasma</button>
+                    <button onclick="searchWithTerm('TMT')">TMT</button>
+                    <button onclick="searchWithTerm('mouse brain')">mouse brain</button>
+                    <button onclick="searchWithTerm('DIA')">DIA</button>
+                    <button onclick="searchWithTerm('cancer')">cancer</button>
                 </div>
+                <div id="search-results" class="search-results"></div>
             </div>
 
             <div class="tip-box tip-info">
-                <strong>Tip:</strong> You can combine templates! Start with a core template (e.g., "human") and add columns from specialized templates as needed.
-                <a href="./index.html#templates" class="learn-more">Browse all templates &rarr;</a>
+                <strong>Tip:</strong> Once you find a similar dataset, click "View SDRF" to see the complete file structure. You can use it as a template for your own experiment.
+                <a href="./sdrf-explorer.html" class="learn-more">Browse all datasets in the Explorer &rarr;</a>
             </div>
         </section>
 
-        <!-- Interactive Wizard -->
-        <section class="section wizard-section">
-            <h2>Step 1: Build Your Template</h2>
-            <p>Answer these questions to get your personalized template with the right columns:</p>
+        <!-- Understanding Templates -->
+        <section class="section">
+            <h2>Step 1: Choose Your Template</h2>
+            <p>Templates are <strong>pre-made SDRF files with the right columns already set up</strong> for your experiment type. Pick one based on your organism and experiment:</p>
 
-            <div class="wizard-container">
-                <div class="wizard-question">
-                    <label><strong>What organism are your samples from?</strong></label>
-                    <select id="organism-select" onchange="updateWizard()">
-                        <option value="">Select organism...</option>
-                        <option value="human">Human</option>
-                        <option value="mouse">Mouse</option>
-                        <option value="other-vertebrate">Other vertebrate (rat, zebrafish, etc.)</option>
-                        <option value="invertebrate">Invertebrate (insects, worms)</option>
-                        <option value="plant">Plant</option>
-                        <option value="cell-line">Cell line</option>
-                        <option value="other">Other / Mixed</option>
-                    </select>
+            <div class="template-grid">
+                <div class="template-section">
+                    <h4>Core Templates (by organism)</h4>
+                    <table class="templates-table">
+                        <thead>
+                            <tr>
+                                <th>Your Samples</th>
+                                <th>Template</th>
+                                <th>Includes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Human samples</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/human" target="_blank"><strong>human</strong></a></td>
+                                <td>age, sex, ancestry, ethnicity</td>
+                            </tr>
+                            <tr>
+                                <td>Mouse, rat, zebrafish</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/vertebrates" target="_blank"><strong>vertebrates</strong></a></td>
+                                <td>developmental stage, strain</td>
+                            </tr>
+                            <tr>
+                                <td>Insects, worms</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/invertebrates" target="_blank"><strong>invertebrates</strong></a></td>
+                                <td>developmental stage</td>
+                            </tr>
+                            <tr>
+                                <td>Plants</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/plants" target="_blank"><strong>plants</strong></a></td>
+                                <td>cultivar, growth conditions</td>
+                            </tr>
+                            <tr>
+                                <td>Other / Not sure</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/default" target="_blank"><strong>default</strong></a></td>
+                                <td>minimal required columns</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="wizard-question">
-                    <label><strong>What type of labeling did you use?</strong></label>
-                    <select id="labeling-select" onchange="updateWizard()">
-                        <option value="">Select labeling...</option>
-                        <option value="label-free">Label-free</option>
-                        <option value="tmt">TMT / iTRAQ</option>
-                        <option value="silac">SILAC</option>
-                        <option value="other">Other</option>
-                    </select>
+                <div class="template-section">
+                    <h4>Specialized Templates (by experiment type)</h4>
+                    <table class="templates-table">
+                        <thead>
+                            <tr>
+                                <th>Experiment Type</th>
+                                <th>Template</th>
+                                <th>Adds</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cell line studies</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/cell-lines" target="_blank"><strong>cell-lines</strong></a></td>
+                                <td>cell line name, Cellosaurus ID</td>
+                            </tr>
+                            <tr>
+                                <td>DIA acquisition</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/dia-acquisition" target="_blank"><strong>dia-acquisition</strong></a></td>
+                                <td>DIA isolation window</td>
+                            </tr>
+                            <tr>
+                                <td>Immunopeptidomics</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/immunopeptidomics" target="_blank"><strong>immunopeptidomics</strong></a></td>
+                                <td>HLA alleles, MHC class</td>
+                            </tr>
+                            <tr>
+                                <td>Cross-linking MS</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/crosslinking" target="_blank"><strong>crosslinking</strong></a></td>
+                                <td>crosslinker, cleavability</td>
+                            </tr>
+                            <tr>
+                                <td>Single-cell proteomics</td>
+                                <td><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates/single-cell" target="_blank"><strong>single-cell</strong></a></td>
+                                <td>single cell identifier</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <div class="wizard-question">
-                    <label><strong>Did you fractionate your samples?</strong></label>
-                    <select id="fractionation-select" onchange="updateWizard()">
-                        <option value="">Select...</option>
-                        <option value="no">No fractionation</option>
-                        <option value="yes">Yes, fractionated</option>
-                    </select>
-                </div>
-
-                <div id="wizard-result" class="wizard-result" style="display: none;">
-                    <h4>Your Required Columns:</h4>
-                    <div id="column-list"></div>
-                    <a id="template-download" href="#" class="btn btn-primary" target="_blank">Download Template</a>
-                </div>
+            <div class="tip-box">
+                <strong>Tip:</strong> You can combine templates! Start with a core template (e.g., "human") and add columns from specialized templates as needed.
             </div>
         </section>
 
@@ -224,34 +261,6 @@
 
             <div class="tip-box">
                 <strong>Tip:</strong> Don't stress about finding exact ontology terms. Write the common name (e.g., "liver", "breast cancer") and the validator will check it for you. You can always refine later.
-            </div>
-
-            <div class="interactive-example">
-                <h4>Try It: Enter a Sample</h4>
-                <div class="example-form">
-                    <div class="form-row">
-                        <label>source name:</label>
-                        <input type="text" id="try-source" placeholder="e.g., sample_001" oninput="updatePreview()">
-                    </div>
-                    <div class="form-row">
-                        <label>organism:</label>
-                        <input type="text" id="try-organism" placeholder="e.g., homo sapiens" oninput="updatePreview()">
-                    </div>
-                    <div class="form-row">
-                        <label>organism part:</label>
-                        <input type="text" id="try-tissue" placeholder="e.g., liver" oninput="updatePreview()">
-                    </div>
-                    <div class="form-row">
-                        <label>disease:</label>
-                        <input type="text" id="try-disease" placeholder="e.g., normal" oninput="updatePreview()">
-                    </div>
-                </div>
-                <div class="preview-box">
-                    <strong>Your SDRF row will look like:</strong>
-                    <div id="preview-output" class="preview-output">
-                        <span class="placeholder">Fill in the fields above to see a preview...</span>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -743,6 +752,113 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
             font-size: 0.95rem;
         }
 
+        /* Example Finder */
+        .example-finder {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .search-box {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .search-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .search-suggestions span {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .search-suggestions button {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-suggestions button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        .search-results {
+            margin-top: 1rem;
+        }
+        .search-results .no-results {
+            color: #666;
+            font-style: italic;
+        }
+        .search-results .result-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .search-results .result-item:hover {
+            border-color: var(--primary-color);
+        }
+        .result-item h5 {
+            margin: 0 0 0.5rem 0;
+            color: var(--primary-color);
+        }
+        .result-item .result-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .result-item .result-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .result-item .result-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .result-item .result-actions a {
+            font-size: 0.85rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .result-item .result-actions .btn-view {
+            background: var(--primary-color);
+            color: white;
+        }
+        .result-item .result-actions .btn-pride {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .loading-spinner {
+            text-align: center;
+            padding: 1rem;
+            color: #666;
+        }
+
         /* Concept and Tip Boxes */
         .concept-box {
             background: linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%);
@@ -787,72 +903,16 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
             font-weight: 500;
         }
 
-        /* Template Explanation */
-        .template-explanation {
+        /* Template Grid */
+        .template-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 1.5rem;
             margin: 1.5rem 0;
         }
-        .template-card {
-            background: #f8f9fa;
-            padding: 1.25rem;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-        .template-card h4 {
-            margin: 0 0 0.5rem 0;
+        .template-section h4 {
+            margin: 0 0 0.75rem 0;
             color: var(--primary-color);
-        }
-        .template-card ul {
-            margin: 0.5rem 0 0 1.25rem;
-            font-size: 0.9rem;
-        }
-
-        /* Wizard */
-        .wizard-container {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-        .wizard-question {
-            margin-bottom: 1.25rem;
-        }
-        .wizard-question label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        .wizard-question select {
-            width: 100%;
-            max-width: 400px;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        .wizard-result {
-            margin-top: 1.5rem;
-            padding: 1.25rem;
-            background: #e8f5e9;
-            border-radius: 8px;
-        }
-        .wizard-result h4 {
-            margin: 0 0 1rem 0;
-        }
-        #column-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        #column-list span {
-            background: white;
-            padding: 0.35rem 0.75rem;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            border: 1px solid #a5d6a7;
         }
 
         /* Column Types */
@@ -907,55 +967,6 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
         .factor-highlight .column-label {
             background: #F57C00;
             color: white;
-        }
-
-        /* Interactive Example */
-        .interactive-example {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
-        }
-        .interactive-example h4 {
-            margin: 0 0 1rem 0;
-        }
-        .example-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .form-row label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-        .form-row input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .preview-box {
-            background: white;
-            padding: 1rem;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        .preview-output {
-            font-family: monospace;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            padding: 0.75rem;
-            background: #f5f5f5;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-        .preview-output .placeholder {
-            color: #999;
-            font-style: italic;
         }
 
         /* Code Block */
@@ -1160,85 +1171,104 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
         .example-explanation ul {
             margin: 0 0 0 1.5rem;
         }
+
+        @media (max-width: 600px) {
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-box {
+                flex-direction: column;
+            }
+        }
     </style>
 
     <script>
-        // Wizard functionality
-        function updateWizard() {
-            const organism = document.getElementById('organism-select').value;
-            const labeling = document.getElementById('labeling-select').value;
-            const fractionation = document.getElementById('fractionation-select').value;
+        let sdrfData = null;
 
-            if (!organism || !labeling || !fractionation) {
-                document.getElementById('wizard-result').style.display = 'none';
+        // Load SDRF data on page load
+        fetch('./sdrf-data.json')
+            .then(response => response.json())
+            .then(data => {
+                sdrfData = data;
+            })
+            .catch(err => console.error('Failed to load SDRF data:', err));
+
+        function searchWithTerm(term) {
+            document.getElementById('example-search').value = term;
+            searchExamples();
+        }
+
+        function searchExamples() {
+            const searchInput = document.getElementById('example-search');
+            const resultsDiv = document.getElementById('search-results');
+            const query = searchInput.value.toLowerCase().trim();
+
+            if (!query) {
+                resultsDiv.innerHTML = '';
                 return;
             }
 
-            // Base columns for all experiments
-            let columns = [
-                'source name',
-                'characteristics[organism]',
-                'characteristics[organism part]',
-                'characteristics[disease]',
-                'assay name',
-                'comment[label]',
-                'comment[instrument]',
-                'comment[data file]'
-            ];
-
-            // Add organism-specific columns
-            if (organism === 'human') {
-                columns.splice(4, 0, 'characteristics[age]', 'characteristics[sex]');
-            } else if (organism === 'cell-line') {
-                columns.splice(4, 0, 'characteristics[cell line]', 'characteristics[cellosaurus accession]');
+            if (!sdrfData || !sdrfData.datasets) {
+                resultsDiv.innerHTML = '<div class="loading-spinner">Loading data...</div>';
+                return;
             }
 
-            // Add fractionation column
-            if (fractionation === 'yes') {
-                columns.push('comment[fraction identifier]');
+            // Search through datasets
+            const keywords = query.split(/\s+/);
+            const results = sdrfData.datasets.filter(dataset => {
+                const searchText = [
+                    dataset.id,
+                    dataset.title || '',
+                    ...(dataset.organisms || []),
+                    ...(dataset.organism_parts || []),
+                    ...(dataset.diseases || []),
+                    ...(dataset.instruments || []),
+                    ...(dataset.labels || []),
+                    ...(dataset.cell_lines || [])
+                ].join(' ').toLowerCase();
+
+                return keywords.every(kw => searchText.includes(kw));
+            }).slice(0, 5); // Limit to 5 results
+
+            if (results.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        No datasets found matching "${query}".
+                        <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a>.
+                    </div>
+                `;
+                return;
             }
 
-            // Add factor value
-            columns.push('factor value[disease]');
+            resultsDiv.innerHTML = results.map(dataset => {
+                const organisms = dataset.organisms ? dataset.organisms.slice(0, 2).join(', ') : 'N/A';
+                const tissues = dataset.organism_parts ? dataset.organism_parts.slice(0, 2).join(', ') : 'N/A';
+                const labels = dataset.labels ? dataset.labels.slice(0, 2).join(', ') : 'N/A';
 
-            // Display results
-            const columnList = document.getElementById('column-list');
-            columnList.innerHTML = columns.map(col => `<span>${col}</span>`).join('');
-
-            // Set template download link
-            let templateType = organism === 'cell-line' ? 'cell-lines' :
-                              organism === 'human' ? 'human' :
-                              organism === 'mouse' ? 'vertebrates' :
-                              organism === 'other-vertebrate' ? 'vertebrates' :
-                              organism === 'invertebrate' ? 'invertebrates' :
-                              organism === 'plant' ? 'plants' : 'default';
-
-            document.getElementById('template-download').href =
-                `https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates`;
-
-            document.getElementById('wizard-result').style.display = 'block';
+                return `
+                    <div class="result-item">
+                        <h5>${dataset.id}</h5>
+                        <div class="result-meta">
+                            <span><strong>Organism:</strong> ${organisms}</span>
+                            <span><strong>Tissue:</strong> ${tissues}</span>
+                            <span><strong>Label:</strong> ${labels}</span>
+                            <span><strong>Samples:</strong> ${dataset.sample_count || 'N/A'}</span>
+                        </div>
+                        <div class="result-actions">
+                            <a href="./sdrf-explorer.html?view=${dataset.id}" class="btn-view">View SDRF</a>
+                            <a href="https://www.ebi.ac.uk/pride/archive/projects/${dataset.id}" target="_blank" class="btn-pride">View in PRIDE</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        // Preview functionality
-        function updatePreview() {
-            const source = document.getElementById('try-source').value || '...';
-            const organism = document.getElementById('try-organism').value || '...';
-            const tissue = document.getElementById('try-tissue').value || '...';
-            const disease = document.getElementById('try-disease').value || '...';
-
-            const allEmpty = !document.getElementById('try-source').value &&
-                           !document.getElementById('try-organism').value &&
-                           !document.getElementById('try-tissue').value &&
-                           !document.getElementById('try-disease').value;
-
-            const previewOutput = document.getElementById('preview-output');
-
-            if (allEmpty) {
-                previewOutput.innerHTML = '<span class="placeholder">Fill in the fields above to see a preview...</span>';
-            } else {
-                previewOutput.innerHTML = `<span style="color:#1976D2">${source}</span>\t<span style="color:#1976D2">${organism}</span>\t<span style="color:#1976D2">${tissue}</span>\t<span style="color:#1976D2">${disease}</span>\t...`;
+        // Enable search on Enter key
+        document.getElementById('example-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchExamples();
             }
-        }
+        });
     </script>
 </body>
 </html>
