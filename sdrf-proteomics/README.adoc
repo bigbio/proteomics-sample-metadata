@@ -140,7 +140,7 @@ The SDRF-Proteomics format has the following core requirements:
 - Each column MUST correspond to an attribute/property of the Sample or the Data file.
 - Each cell value MUST be the property value for the corresponding Sample or Data file.
 - The file MUST start with columns describing sample properties (e.g., organism, disease), followed by data file properties (e.g., label, fraction identifier, data file).
-- Unknown values MUST be handled using `not available` (value is unknown) or `not applicable` (property doesn't apply to this sample).
+- Unknown values MUST be handled using `not available` (value is unknown), `not applicable` (property doesn't apply), or `pooled` (value is a mixture from multiple samples).
 
 === Scope
 
@@ -313,18 +313,26 @@ There are general scenarios/use cases that are addressed by the following rules:
 
 - **Unknown values**: In some cases, the column is mandatory in the format, but for some samples the corresponding value is unknown. In those cases, users SHOULD use *not available*.
 - **Not Applicable values**: In some cases, the column is mandatory, but for some samples the corresponding value is not applicable. In those cases, users SHOULD use *not applicable*.
+- **Pooled values**: In some cases, the sample is a pool of multiple samples (e.g., TMT reference channels), and the value cannot be represented as a single value. In those cases, users SHOULD use *pooled*.
 
-.When to use "not available" vs "not applicable"
+.Special values for SDRF cells
 |===
-|Term |Meaning |Example
+|Term |Meaning |Example |Use Case
 
 |not available
 |Value exists but is unknown or could not be determined
 |characteristics[age] = not available
+|Patient age was not recorded in the study
 
 |not applicable
 |Value or concept does not apply to this sample
 |characteristics[age] = not applicable
+|Synthetic peptide library has no age
+
+|pooled
+|Value represents a mixture of multiple samples
+|characteristics[biological replicate] = pooled
+|TMT reference channel pooled from multiple replicates
 |===
 
 - **Case sensitivity**: By specification the SDRF is case-insensitive for text values, but we RECOMMEND using lowercase characters throughout all the text (Column names and values).
@@ -1400,9 +1408,28 @@ In this example, all four rows share the same `assay name` and `comment[data fil
 [[core-templates]]
 == Core Templates
 
-SDRF-Proteomics provides core templates that define the required and recommended metadata columns based on the sample organism. Each template includes both **sample metadata** (characteristics) and **data file metadata** (comments) - everything needed to create a complete SDRF file.
+=== What is a Template?
 
-Choose the appropriate template based on your sample organism:
+A **template** in SDRF-Proteomics is a predefined set of metadata columns (both required and recommended) that ensures consistent and complete annotation for a specific type of experiment or sample. Templates serve the same purpose as **metadata checklists**, **minimum information standards** (like MIAPE), or **validation schemas** in other data standards—they define what information must be captured to make a dataset FAIR (Findable, Accessible, Interoperable, Reusable).
+
+Each template includes both **sample metadata** (characteristics columns describing the biological sample) and **data file metadata** (comment columns describing the MS data files)—everything needed to create a complete, validated SDRF file.
+
+=== Template Inheritance and Composition
+
+Templates in SDRF-Proteomics follow a **hierarchical inheritance model**:
+
+- **Core templates** (default, human, vertebrates, invertebrates, plants) define organism-specific requirements
+- **Experiment-type templates** (single-cell, immunopeptidomics, crosslinking, etc.) define methodology-specific requirements
+- Templates can be **combined**: a human single-cell proteomics experiment would use both the human template AND the single-cell template
+- Templates can be **extended**: add custom columns beyond the template requirements for study-specific metadata
+
+When combining templates, include all required columns from each applicable template. The validator will check compliance with all specified templates.
+
+TIP: **For developers and maintainers:** When creating new templates, follow the inheritance principle—child templates must not weaken parent requirements. For example, if the default template has `organism` as REQUIRED, the human template (which inherits from it) must also keep `organism` as REQUIRED. Child templates may add new required columns or promote recommended columns to required, but never downgrade required columns to optional.
+
+=== Choosing a Template
+
+Choose the appropriate core template based on your sample organism:
 
 - <<the-default-template,Default template>>: Basic template for any proteomics experiment
 - <<template-human,Human template>>: For human samples with additional clinical metadata (age, sex, ancestry)
@@ -1410,12 +1437,14 @@ Choose the appropriate template based on your sample organism:
 - <<template-invertebrates,Invertebrates template>>: For insects (Drosophila), nematodes (C. elegans), and other invertebrates
 - <<template-plants,Plants template>>: For plant species (Arabidopsis, crops)
 
+Then, if applicable, also apply an <<experiment-templates,experiment-type template>> for specialized methodologies.
+
 For detailed explanations of each column, see <<from-sample-metadata,sample metadata>> for sample properties and <<from-sample-data,data file metadata>> for data file properties.
 
 [[the-default-template]]
 === Default Template
 
-The default template is the most basic template that can be used for any proteomics experiment. Use this when no other template is applicable.
+The default template is the most basic template that can be used for any proteomics experiment. Use this when no organism-specific template is applicable.
 
 **Checklist:**
 
