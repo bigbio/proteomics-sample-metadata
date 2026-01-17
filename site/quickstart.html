@@ -67,12 +67,12 @@
                 </div>
                 <div class="search-suggestions">
                     <span>Try:</span>
-                    <button onclick="searchWithTerm('HeLa')">HeLa</button>
-                    <button onclick="searchWithTerm('human plasma')">human plasma</button>
-                    <button onclick="searchWithTerm('TMT')">TMT</button>
-                    <button onclick="searchWithTerm('mouse brain')">mouse brain</button>
-                    <button onclick="searchWithTerm('DIA')">DIA</button>
-                    <button onclick="searchWithTerm('cancer')">cancer</button>
+                    <button onclick="searchWithTerm('homo sapiens')">Human</button>
+                    <button onclick="searchWithTerm('mus musculus')">Mouse</button>
+                    <button onclick="searchWithTerm('Q Exactive')">Q Exactive</button>
+                    <button onclick="searchWithTerm('Orbitrap')">Orbitrap</button>
+                    <button onclick="searchWithTerm('Data-independent')">DIA</button>
+                    <button onclick="searchWithTerm('PXD')">PRIDE datasets</button>
                 </div>
                 <div id="search-results" class="search-results"></div>
             </div>
@@ -1213,18 +1213,15 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
                 return;
             }
 
-            // Search through datasets
+            // Search through datasets using available fields
             const keywords = query.split(/\s+/);
             const results = sdrfData.datasets.filter(dataset => {
                 const searchText = [
-                    dataset.id,
-                    dataset.title || '',
+                    dataset.id || '',
+                    dataset.file || '',
                     ...(dataset.organisms || []),
-                    ...(dataset.organism_parts || []),
-                    ...(dataset.diseases || []),
                     ...(dataset.instruments || []),
-                    ...(dataset.labels || []),
-                    ...(dataset.cell_lines || [])
+                    ...(dataset.acquisition_methods || [])
                 ].join(' ').toLowerCase();
 
                 return keywords.every(kw => searchText.includes(kw));
@@ -1242,17 +1239,17 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 
             resultsDiv.innerHTML = results.map(dataset => {
                 const organisms = dataset.organisms ? dataset.organisms.slice(0, 2).join(', ') : 'N/A';
-                const tissues = dataset.organism_parts ? dataset.organism_parts.slice(0, 2).join(', ') : 'N/A';
-                const labels = dataset.labels ? dataset.labels.slice(0, 2).join(', ') : 'N/A';
+                const instruments = dataset.instruments ? dataset.instruments.slice(0, 2).join(', ') : 'N/A';
+                const acquisition = dataset.acquisition_methods ? dataset.acquisition_methods[0] : 'N/A';
 
                 return `
                     <div class="result-item">
                         <h5>${dataset.id}</h5>
                         <div class="result-meta">
                             <span><strong>Organism:</strong> ${organisms}</span>
-                            <span><strong>Tissue:</strong> ${tissues}</span>
-                            <span><strong>Label:</strong> ${labels}</span>
-                            <span><strong>Samples:</strong> ${dataset.sample_count || 'N/A'}</span>
+                            <span><strong>Instrument:</strong> ${instruments}</span>
+                            <span><strong>Acquisition:</strong> ${acquisition}</span>
+                            <span><strong>Samples:</strong> ${dataset.num_samples || 'N/A'}</span>
                         </div>
                         <div class="result-actions">
                             <a href="./sdrf-explorer.html?view=${dataset.id}" class="btn-view">View SDRF</a>
