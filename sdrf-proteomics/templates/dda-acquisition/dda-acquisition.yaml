@@ -13,13 +13,16 @@ columns:
         params:
           ontologies:
             - ms
+            - pride
+          parent_term: MS:1000044
           error_level: warning
-          description: Should be a valid MS ontology term for dissociation
+          description: Dissociation method should be a child term of MS:1000044
           examples:
             - HCD
             - CID
             - ETD
             - EThcD
+            - ETciD
 
   - name: comment[collision energy]
     description: Collision energy used for fragmentation
@@ -42,18 +45,19 @@ columns:
     allow_not_applicable: true
     allow_not_available: true
     validators:
-      - validator_name: values
+      - validator_name: ontology
         params:
-          values:
-            - high-pH reversed phase
-            - strong cation exchange
-            - strong anion exchange
-            - isoelectric focusing
-            - size exclusion chromatography
-            - basic reversed phase
-            - not applicable
+          ontologies:
+            - pride
+          parent_term: PRIDE:0000550
           error_level: warning
-          description: Fractionation method used
+          description: Fractionation method should be a child term of PRIDE:0000550
+          examples:
+            - High-pH reversed-phase chromatography (hpHRP)
+            - Strong cation-exchange chromatography (SCX)
+            - Strong anion-exchange chromatography (SAX)
+            - Size-exclusion chromatography (SEC)
+            - Isoelectric focusing
 
   - name: comment[modification parameters]
     description: Post-translational modifications searched

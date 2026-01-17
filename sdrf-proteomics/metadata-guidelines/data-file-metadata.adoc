@@ -21,6 +21,27 @@ This document provides detailed guidelines for data file metadata fields that re
 
 **Version 1.0.0** - 2025-01
 
+== CV Term Format
+
+For data file metadata columns that reference ontology terms, use the structured CV term format:
+
+`NT={term name};AC={accession}`
+
+**Examples:**
+
+- Dissociation method: `NT=HCD;AC=PRIDE:0000590`
+- Fractionation method: `NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564`
+- Instrument: `NT=Q Exactive HF;AC=MS:1002523`
+- Label: `NT=TMT126;AC=PRIDE:0000285`
+
+**Why use the structured format?**
+
+1. **Automated annotation**: Many data file properties (instrument, acquisition method, dissociation method) can be automatically determined by software from raw files.
+2. **Validation**: Accession numbers enable automated validation against ontologies.
+3. **Interoperability**: Structured terms are unambiguous across different tools and databases.
+
+NOTE: Unlike sample metadata (characteristics) which are typically annotated manually using simple term names, data file metadata benefits from the structured CV term format because these values are often extracted programmatically from instrument files.
+
 == Label
 
 **Column:** `comment[label]`

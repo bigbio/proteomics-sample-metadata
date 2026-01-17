@@ -55,18 +55,10 @@ DDA experiments have specific parameters that affect data quality and reproducib
 
 These aspects require documentation beyond standard SDRF-Proteomics fields.
 
-[[additional-ontologies]]
-== Additional Ontologies
-
-In addition to the ontologies supported by the core SDRF-Proteomics specification, DDA templates utilize:
-
-- **PSI-MS CV**: For mass spectrometry acquisition terms
-- **PRIDE CV**: For proteomics data acquisition methods and fractionation
-
 [[checklist]]
 == Checklist
 
-This section defines the metadata columns required and recommended for DDA experiments. These columns are based on analysis of 1000+ annotated DDA projects to identify commonly used metadata.
+This section defines the metadata columns required and recommended for DDA experiments.
 
 === Recommended Columns
 
@@ -78,14 +70,14 @@ The following columns are RECOMMENDED for DDA experiments (in addition to the co
 |comment[dissociation method]
 |Fragmentation method used
 |0..1
-|PSI-MS CV
-|HCD, CID, ETD, EThcD
+|MS, PRIDE (children of MS:1000044)
+|NT=HCD;AC=PRIDE:0000590, NT=CID;AC=PRIDE:0000591
 
 |comment[modification parameters]
 |Post-translational modifications searched
 |0..*
 |UNIMOD
-|NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35
+|NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35
 |===
 
 === Optional Columns
@@ -98,14 +90,14 @@ The following columns are OPTIONAL but commonly used:
 |comment[collision energy]
 |Collision energy used for fragmentation
 |0..1
-|Numeric value with unit
-|27, 30%, normalized 27%
+|Numeric value
+|27, 30, normalized 27
 
 |comment[fractionation method]
 |Method used to fractionate the sample before MS
 |0..1
-|PRIDE CV
-|high-pH reversed phase, strong cation exchange, not applicable
+|PRIDE (children of PRIDE:0000550)
+|NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564, NT=Strong cation-exchange chromatography;AC=PRIDE:0000561
 
 |comment[precursor mass tolerance]
 |Mass tolerance for precursor ions in database search
@@ -122,9 +114,11 @@ The following columns are OPTIONAL but commonly used:
 |comment[MS2 mass analyzer]
 |Mass analyzer used for MS2 acquisition
 |0..1
-|PSI-MS CV
-|orbitrap, ion trap, TOF
+|MS (children of MS:1000443)
+|NT=orbitrap;AC=MS:1000484, NT=linear ion trap;AC=MS:1000291
 |===
+
+NOTE: For data file metadata (comment columns), use the full CV term format `NT={name};AC={accession}` when possible. This format enables automated validation and software can often determine these values from raw files. Sample metadata (characteristics) are typically annotated by humans and can use simple term names.
 
 [[fractionation-methods]]
 == Fractionation Methods
@@ -134,35 +128,35 @@ DDA experiments often employ fractionation to increase proteome coverage. Common
 |===
 |Method |PRIDE CV Term |Description |Typical Use
 
-|High-pH reversed-phase
+|High-pH reversed-phase chromatography
 |PRIDE:0000564
 |Orthogonal to low-pH RP-LC
 |Deep proteome profiling
 
-|Strong cation exchange (SCX)
-|PRIDE:0000565
+|Strong cation-exchange chromatography (SCX)
+|PRIDE:0000561
 |Charge-based separation
 |Complex samples, PTM enrichment
 
-|Strong anion exchange (SAX)
-|PRIDE:0000566
+|Strong anion-exchange chromatography (SAX)
+|PRIDE:0000558
 |Charge-based separation
 |Phosphopeptide fractionation
 
-|Basic reversed-phase
-|PRIDE:0000567
-|High pH reversed-phase
-|General fractionation
-
-|Size exclusion chromatography
-|PRIDE:0000568
+|Size-exclusion chromatography (SEC)
+|PRIDE:0000557
 |Size-based separation
 |Protein complex analysis
 
-|Isoelectric focusing (OFFGEL)
-|PRIDE:0000569
+|Isoelectric focusing
+|PRIDE:0000553
 |pI-based separation
 |Complex samples
+
+|Off-gel electrophoresis
+|PRIDE:0000552
+|pI-based fractionation into liquid fractions
+|Peptide fractionation
 
 |No fractionation
 |not applicable
@@ -177,18 +171,18 @@ Document fractionation using `comment[fractionation method]` and indicate fracti
 
 === Dissociation Methods
 
-The fragmentation method significantly affects peptide identification:
+The fragmentation method significantly affects peptide identification. Values should be children of https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044[MS:1000044 (dissociation method)]:
 
 |===
-|Method |PSI-MS Term |Description |Typical Use
+|Method |Ontology Term |Description |Typical Use
 
 |HCD
-|MS:1000422
+|PRIDE:0000590, MS:1000422
 |Beam-type collision-induced dissociation
 |Standard Orbitrap-based workflows
 
 |CID
-|MS:1000133
+|PRIDE:0000591, MS:1000133
 |Collision-induced dissociation
 |Ion trap instruments
 
@@ -198,7 +192,7 @@ The fragmentation method significantly affects peptide identification:
 |Labile PTMs, larger peptides
 
 |EThcD
-|MS:1002631
+|PRIDE:0000589, MS:1002631
 |ETD with supplemental HCD
 |PTM localization
 |===
