@@ -61,8 +61,8 @@
 
             <div class="example-finder">
                 <div class="search-box">
-                    <input type="text" id="example-search" placeholder="e.g., homo sapiens, Q Exactive, PXD..." autocomplete="off">
-                    <button type="button" id="search-btn" class="btn btn-primary" onclick="searchExamples()">Find Examples</button>
+                    <input type="text" id="example-search" placeholder="e.g., homo sapiens, Q Exactive, PXD..." autocomplete="off" onkeypress="if(event.key==='Enter'){searchExamples();}">
+                    <button type="button" id="search-btn" class="btn btn-primary" onclick="console.log('Button clicked'); document.getElementById('search-results').innerHTML='Searching...'; searchExamples();">Find Examples</button>
                 </div>
                 <div class="search-suggestions">
                     <span>Try:</span>
@@ -1262,26 +1262,31 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
     </style>
 
     <script>
-        let sdrfData = null;
-        let dataLoadError = false;
+        var sdrfData = null;
+        var dataLoadError = false;
 
         // Load SDRF data on page load
         function loadSdrfData() {
+            console.log('Loading SDRF data...');
             fetch('./sdrf-data.json')
-                .then(response => {
+                .then(function(response) {
                     if (!response.ok) {
                         throw new Error('HTTP error ' + response.status);
                     }
                     return response.json();
                 })
-                .then(data => {
+                .then(function(data) {
                     sdrfData = data;
                     dataLoadError = false;
                     console.log('SDRF data loaded:', data.datasets ? data.datasets.length + ' datasets' : 'no datasets');
                 })
-                .catch(err => {
+                .catch(function(err) {
                     console.error('Failed to load SDRF data:', err);
                     dataLoadError = true;
+                    // Check if running from file:// protocol
+                    if (window.location.protocol === 'file:') {
+                        console.warn('Running from file:// - fetch may not work. Try using a local server.');
+                    }
                 });
         }
 
@@ -1294,76 +1299,108 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
         }
 
         function searchExamples() {
-            const searchInput = document.getElementById('example-search');
-            const resultsDiv = document.getElementById('search-results');
-            const query = searchInput.value.toLowerCase().trim();
+            console.log('searchExamples called');
+            var searchInput = document.getElementById('example-search');
+            var resultsDiv = document.getElementById('search-results');
 
-            if (!query) {
-                resultsDiv.innerHTML = '';
+            if (!searchInput || !resultsDiv) {
+                console.error('Elements not found:', {searchInput: !!searchInput, resultsDiv: !!resultsDiv});
+                alert('Error: Page elements not found');
                 return;
             }
 
+            var query = searchInput.value.toLowerCase().trim();
+            console.log('Query:', query);
+
+            if (!query) {
+                resultsDiv.innerHTML = '<div class="no-results">Please enter a search term above.</div>';
+                return;
+            }
+
+            // Show immediate feedback
+            resultsDiv.innerHTML = '<div class="loading-spinner">Searching...</div>';
+
             if (dataLoadError) {
-                resultsDiv.innerHTML = `
-                    <div class="no-results">
-                        Could not load dataset index. <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a> instead.
-                    </div>
-                `;
+                resultsDiv.innerHTML = '<div class="no-results">Could not load dataset index. <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a> instead.</div>';
                 return;
             }
 
             if (!sdrfData || !sdrfData.datasets) {
-                resultsDiv.innerHTML = '<div class="loading-spinner">Loading data... please wait</div>';
+                resultsDiv.innerHTML = '<div class="loading-spinner">Loading dataset index... please wait</div>';
                 // Retry loading if not loaded yet
                 setTimeout(searchExamples, 500);
                 return;
             }
 
             // Search through datasets using available fields
-            const keywords = query.split(/\s+/);
-            const results = sdrfData.datasets.filter(dataset => {
-                const searchText = [
-                    dataset.id || '',
-                    dataset.file || '',
-                    ...(dataset.organisms || []),
-                    ...(dataset.instruments || []),
-                    ...(dataset.acquisition_methods || [])
-                ].join(' ').toLowerCase();
+            var keywords = query.split(/\s+/);
+            var results = [];
 
-                return keywords.every(kw => searchText.includes(kw));
-            }).slice(0, 5); // Limit to 5 results
+            for (var i = 0; i < sdrfData.datasets.length; i++) {
+                var dataset = sdrfData.datasets[i];
+                var searchParts = [
+                    dataset.id || '',
+                    dataset.file || ''
+                ];
+                if (dataset.organisms) {
+                    for (var j = 0; j < dataset.organisms.length; j++) {
+                        searchParts.push(dataset.organisms[j]);
+                    }
+                }
+                if (dataset.instruments) {
+                    for (var j = 0; j < dataset.instruments.length; j++) {
+                        searchParts.push(dataset.instruments[j]);
+                    }
+                }
+                if (dataset.acquisition_methods) {
+                    for (var j = 0; j < dataset.acquisition_methods.length; j++) {
+                        searchParts.push(dataset.acquisition_methods[j]);
+                    }
+                }
+                var searchText = searchParts.join(' ').toLowerCase();
+
+                var matchesAll = true;
+                for (var k = 0; k < keywords.length; k++) {
+                    if (searchText.indexOf(keywords[k]) === -1) {
+                        matchesAll = false;
+                        break;
+                    }
+                }
+                if (matchesAll) {
+                    results.push(dataset);
+                    if (results.length >= 5) break;
+                }
+            }
+
+            console.log('Found', results.length, 'results');
 
             if (results.length === 0) {
-                resultsDiv.innerHTML = `
-                    <div class="no-results">
-                        No datasets found matching "${query}".
-                        <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a>.
-                    </div>
-                `;
+                resultsDiv.innerHTML = '<div class="no-results">No datasets found matching "' + query + '". <a href="./sdrf-explorer.html">Browse all datasets in the Explorer</a>.</div>';
                 return;
             }
 
-            resultsDiv.innerHTML = results.map(dataset => {
-                const organisms = dataset.organisms ? dataset.organisms.slice(0, 2).join(', ') : 'N/A';
-                const instruments = dataset.instruments ? dataset.instruments.slice(0, 2).join(', ') : 'N/A';
-                const acquisition = dataset.acquisition_methods ? dataset.acquisition_methods[0] : 'N/A';
+            var html = '';
+            for (var i = 0; i < results.length; i++) {
+                var dataset = results[i];
+                var organisms = dataset.organisms ? dataset.organisms.slice(0, 2).join(', ') : 'N/A';
+                var instruments = dataset.instruments ? dataset.instruments.slice(0, 2).join(', ') : 'N/A';
+                var acquisition = dataset.acquisition_methods ? dataset.acquisition_methods[0] : 'N/A';
 
-                return `
-                    <div class="result-item">
-                        <h5>${dataset.id}</h5>
-                        <div class="result-meta">
-                            <span><strong>Organism:</strong> ${organisms}</span>
-                            <span><strong>Instrument:</strong> ${instruments}</span>
-                            <span><strong>Acquisition:</strong> ${acquisition}</span>
-                            <span><strong>Samples:</strong> ${dataset.num_samples || 'N/A'}</span>
-                        </div>
-                        <div class="result-actions">
-                            <a href="./sdrf-explorer.html?view=${dataset.id}" class="btn-view">View SDRF</a>
-                            <a href="https://www.ebi.ac.uk/pride/archive/projects/${dataset.id}" target="_blank" class="btn-pride">View in PRIDE</a>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                html += '<div class="result-item">';
+                html += '<h5>' + dataset.id + '</h5>';
+                html += '<div class="result-meta">';
+                html += '<span><strong>Organism:</strong> ' + organisms + '</span>';
+                html += '<span><strong>Instrument:</strong> ' + instruments + '</span>';
+                html += '<span><strong>Acquisition:</strong> ' + acquisition + '</span>';
+                html += '<span><strong>Samples:</strong> ' + (dataset.num_samples || 'N/A') + '</span>';
+                html += '</div>';
+                html += '<div class="result-actions">';
+                html += '<a href="./sdrf-explorer.html?view=' + dataset.id + '" class="btn-view">View SDRF</a>';
+                html += '<a href="https://www.ebi.ac.uk/pride/archive/projects/' + dataset.id + '" target="_blank" class="btn-pride">View in PRIDE</a>';
+                html += '</div>';
+                html += '</div>';
+            }
+            resultsDiv.innerHTML = html;
         }
 
         // Set up event listeners when DOM is ready
