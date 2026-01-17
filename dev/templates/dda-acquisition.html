@@ -17,28 +17,19 @@
 <ul class="sectlevel1">
 <li><a href="#status">1. Status of this Template</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
-<li><a href="#motivation">3. Motivation</a></li>
-<li><a href="#checklist">4. Checklist</a>
+<li><a href="#checklist">3. Checklist</a>
 <ul class="sectlevel2">
-<li><a href="#_recommended_columns">4.1. Recommended Columns</a></li>
-<li><a href="#_optional_columns">4.2. Optional Columns</a></li>
+<li><a href="#_recommended_columns">3.1. Recommended Columns</a></li>
+<li><a href="#_optional_columns">3.2. Optional Columns</a></li>
 </ul>
 </li>
-<li><a href="#fractionation-methods">5. Fractionation Methods</a></li>
-<li><a href="#dda-parameters">6. DDA Acquisition Parameters</a>
-<ul class="sectlevel2">
-<li><a href="#_dissociation_methods">6.1. Dissociation Methods</a></li>
-<li><a href="#_mass_tolerances">6.2. Mass Tolerances</a></li>
-</ul>
-</li>
-<li><a href="#example-sdrf">7. Example SDRF File</a></li>
-<li><a href="#single-shot-example">8. Single-Shot DDA Example</a></li>
-<li><a href="#tmt-dda-example">9. TMT-Labeled DDA Example</a></li>
-<li><a href="#best-practices">10. Best Practices for DDA Annotation</a></li>
-<li><a href="#template-file">11. Template File</a></li>
-<li><a href="#validation">12. Validation</a></li>
-<li><a href="#authors">13. Authors and Maintainers</a></li>
-<li><a href="#references">14. References</a></li>
+<li><a href="#example-sdrf">4. Example SDRF File</a></li>
+<li><a href="#single-shot-example">5. Single-Shot DDA Example</a></li>
+<li><a href="#tmt-dda-example">6. TMT-Labeled DDA Example</a></li>
+<li><a href="#best-practices">7. Best Practices for DDA Annotation</a></li>
+<li><a href="#template-file">8. Template File</a></li>
+<li><a href="#validation">9. Validation</a></li>
+<li><a href="#authors">10. Authors and Maintainers</a></li>
 </ul>
 </div>
 </div>
@@ -64,70 +55,18 @@
 <h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Data-dependent acquisition (DDA) is the traditional and most widely used mass spectrometry acquisition strategy for proteomics. In DDA mode, the mass spectrometer:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Performs a survey scan (MS1) to detect precursor ions</p>
-</li>
-<li>
-<p>Selects the most intense precursors (top-N) for fragmentation</p>
-</li>
-<li>
-<p>Acquires MS2 spectra for selected precursors</p>
-</li>
-<li>
-<p>Uses dynamic exclusion to avoid resampling the same ions</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>DDA remains the gold standard for discovery proteomics, peptide identification, and building spectral libraries. This template captures the acquisition parameters essential for DDA data analysis and reproducibility.</p>
+<p>Data-dependent acquisition (DDA) is the most widely used mass spectrometry acquisition strategy for proteomics. This template captures acquisition-specific parameters that affect data quality and reproducibility: dissociation method, collision energy, fractionation, modification parameters, mass tolerances, and MS2 mass analyzer.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="motivation"><a class="anchor" href="#motivation"></a><a class="link" href="#motivation">3. Motivation</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>DDA experiments have specific parameters that affect data quality and reproducibility:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Dissociation method</strong>: HCD, CID, ETD, or hybrid methods produce different fragmentation patterns</p>
-</li>
-<li>
-<p><strong>Collision energy</strong>: Energy applied for peptide fragmentation</p>
-</li>
-<li>
-<p><strong>Fractionation</strong>: DDA experiments often use extensive fractionation for deep proteome coverage</p>
-</li>
-<li>
-<p><strong>Modification parameters</strong>: Post-translational modifications searched in the database</p>
-</li>
-<li>
-<p><strong>Mass tolerances</strong>: Precursor and fragment mass tolerances for database searching</p>
-</li>
-<li>
-<p><strong>MS2 mass analyzer</strong>: Affects resolution and mass accuracy of fragment spectra</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>These aspects require documentation beyond standard SDRF-Proteomics fields.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">4. Checklist</a></h2>
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">3. Checklist</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section defines the metadata columns required and recommended for DDA experiments.</p>
 </div>
 <div class="sect2">
-<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">4.1. Recommended Columns</a></h3>
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">3.1. Recommended Columns</a></h3>
 <div class="paragraph">
 <p>The following columns are RECOMMENDED for DDA experiments (in addition to the core SDRF-Proteomics requirements):</p>
 </div>
@@ -154,7 +93,7 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">Fragmentation method used</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MS, PRIDE (children of MS:1000044)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=HCD;AC=PRIDE:0000590, NT=CID;AC=PRIDE:0000591</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=HCD;AC=PRIDE:0000590</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment[modification parameters]</p></td>
@@ -167,7 +106,7 @@
 </table>
 </div>
 <div class="sect2">
-<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">4.2. Optional Columns</a></h3>
+<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">3.2. Optional Columns</a></h3>
 <div class="paragraph">
 <p>The following columns are OPTIONAL but commonly used:</p>
 </div>
@@ -204,14 +143,14 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564, NT=Strong cation-exchange chromatography;AC=PRIDE:0000561</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[precursor mass tolerance]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances">comment[precursor mass tolerance</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for precursor ions in database search</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm, 20 ppm</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[fragment mass tolerance]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../../metadata-guidelines/data-file-metadata.adoc#mass-tolerances">comment[fragment mass tolerance</a>]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mass tolerance for fragment ions in database search</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
@@ -222,7 +161,7 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mass analyzer used for MS2 acquisition</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MS (children of MS:1000443)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=orbitrap;AC=MS:1000484, NT=linear ion trap;AC=MS:1000291</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=orbitrap;AC=MS:1000484</p></td>
 </tr>
 </tbody>
 </table>
@@ -233,7 +172,7 @@
 <div class="title">Note</div>
 </td>
 <td class="content">
-For data file metadata (comment columns), use the full CV term format <code>NT={name};AC={accession}</code> when possible. This format enables automated validation and software can often determine these values from raw files. Sample metadata (characteristics) are typically annotated by humans and can use simple term names.
+For data file metadata (comment columns), use the full CV term format <code>NT={name};AC={accession}</code> when possible. This format enables automated validation and software can often determine these values from raw files.
 </td>
 </tr>
 </table>
@@ -242,163 +181,7 @@ For data file metadata (comment columns), use the full CV term format <code>NT={
 </div>
 </div>
 <div class="sect1">
-<h2 id="fractionation-methods"><a class="anchor" href="#fractionation-methods"></a><a class="link" href="#fractionation-methods">5. Fractionation Methods</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>DDA experiments often employ fractionation to increase proteome coverage. Common methods:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Method</th>
-<th class="tableblock halign-left valign-top">PRIDE CV Term</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Typical Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">High-pH reversed-phase chromatography</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000564</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orthogonal to low-pH RP-LC</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deep proteome profiling</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Strong cation-exchange chromatography (SCX)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000561</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Charge-based separation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Complex samples, PTM enrichment</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Strong anion-exchange chromatography (SAX)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000558</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Charge-based separation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Phosphopeptide fractionation</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Size-exclusion chromatography (SEC)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000557</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Size-based separation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Protein complex analysis</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Isoelectric focusing</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000553</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pI-based separation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Complex samples</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Off-gel electrophoresis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000552</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pI-based fractionation into liquid fractions</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Peptide fractionation</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No fractionation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Single-shot analysis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">High-throughput, clinical samples</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Document fractionation using <code>comment[fractionation method]</code> and indicate fraction numbers with <code>comment[fraction identifier]</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="dda-parameters"><a class="anchor" href="#dda-parameters"></a><a class="link" href="#dda-parameters">6. DDA Acquisition Parameters</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_dissociation_methods"><a class="anchor" href="#_dissociation_methods"></a><a class="link" href="#_dissociation_methods">6.1. Dissociation Methods</a></h3>
-<div class="paragraph">
-<p>The fragmentation method significantly affects peptide identification. Values should be children of <a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044">MS:1000044 (dissociation method)</a>:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Method</th>
-<th class="tableblock halign-left valign-top">Ontology Term</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Typical Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000590, MS:1000422</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Beam-type collision-induced dissociation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Standard Orbitrap-based workflows</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000591, MS:1000133</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Collision-induced dissociation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ion trap instruments</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ETD</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MS:1000598</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Electron-transfer dissociation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Labile PTMs, larger peptides</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">EThcD</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000589, MS:1002631</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ETD with supplemental HCD</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PTM localization</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">6.2. Mass Tolerances</a></h3>
-<div class="paragraph">
-<p>Mass tolerance settings for database searching:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Typical Values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Precursor tolerance</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10-20 ppm (Orbitrap), 0.5-1 Da (ion trap)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tolerance for matching precursor masses</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fragment tolerance</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.02-0.05 Da (Orbitrap), 0.5-0.6 Da (ion trap)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tolerance for matching fragment ions</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">7. Example SDRF File</a></h2>
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">4. Example SDRF File</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A complete example for a fractionated DDA proteomics experiment:</p>
@@ -509,7 +292,7 @@ The <code>&#8230;&#8203;</code> column indicates omitted core columns (organism,
 </div>
 </div>
 <div class="sect1">
-<h2 id="single-shot-example"><a class="anchor" href="#single-shot-example"></a><a class="link" href="#single-shot-example">8. Single-Shot DDA Example</a></h2>
+<h2 id="single-shot-example"><a class="anchor" href="#single-shot-example"></a><a class="link" href="#single-shot-example">5. Single-Shot DDA Example</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For high-throughput or clinical samples without fractionation:</p>
@@ -574,7 +357,7 @@ For single-shot experiments, <code>comment[fractionation method]</code> can be o
 </div>
 </div>
 <div class="sect1">
-<h2 id="tmt-dda-example"><a class="anchor" href="#tmt-dda-example"></a><a class="link" href="#tmt-dda-example">9. TMT-Labeled DDA Example</a></h2>
+<h2 id="tmt-dda-example"><a class="anchor" href="#tmt-dda-example"></a><a class="link" href="#tmt-dda-example">6. TMT-Labeled DDA Example</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For isobaric labeling experiments (TMT, iTRAQ):</p>
@@ -640,7 +423,7 @@ For single-shot experiments, <code>comment[fractionation method]</code> can be o
 <div class="title">Note</div>
 </td>
 <td class="content">
-For TMT experiments, multiple samples share the same raw file. Use <code>comment[label]</code> to distinguish channels.
+For TMT experiments, multiple samples share the same raw file. Use <code>comment[label]</code> to distinguish channels. TMT quantification can use MS2 or MS3 acquisition—for MS3-based TMT, use <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000646">PRIDE:0000646 (MS3 spectra)</a>.
 </td>
 </tr>
 </table>
@@ -648,7 +431,7 @@ For TMT experiments, multiple samples share the same raw file. Use <code>comment
 </div>
 </div>
 <div class="sect1">
-<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">10. Best Practices for DDA Annotation</a></h2>
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">7. Best Practices for DDA Annotation</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -678,7 +461,7 @@ For TMT experiments, multiple samples share the same raw file. Use <code>comment
 </div>
 </div>
 <div class="sect1">
-<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">11. Template File</a></h2>
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">8. Template File</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The DDA SDRF template file is available in this directory:</p>
@@ -693,7 +476,7 @@ For TMT experiments, multiple samples share the same raw file. Use <code>comment
 </div>
 </div>
 <div class="sect1">
-<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">12. Validation</a></h2>
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">9. Validation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>DDA SDRF files should be validated using the sdrf-pipelines tool:</p>
@@ -719,7 +502,7 @@ DDA-specific validation rules are under development.
 </div>
 </div>
 <div class="sect1">
-<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">13. Authors and Maintainers</a></h2>
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">10. Authors and Maintainers</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This template was developed by the SDRF-Proteomics community.</p>
@@ -729,31 +512,10 @@ DDA-specific validation rules are under development.
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">14. References</a></h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Michalski A, et al. (2011) More than 100,000 detectable peptide species elute in single shotgun proteomics runs but the majority is inaccessible to data-dependent LC-MS/MS. Journal of Proteome Research.</p>
-</li>
-<li>
-<p>Hebert AS, et al. (2014) The one hour yeast proteome. Molecular &amp; Cellular Proteomics.</p>
-</li>
-<li>
-<p>Kelstrup CD, et al. (2018) Performance evaluation of the Q Exactive HF-X for shotgun proteomics. Journal of Proteome Research.</p>
-</li>
-<li>
-<p>Bekker-Jensen DB, et al. (2017) An optimized shotgun strategy for the rapid generation of comprehensive human proteomes. Cell Systems.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-17 08:02:39 UTC
+Last updated 2026-01-17 08:36:45 UTC
 </div>
 </div>
 </body>
