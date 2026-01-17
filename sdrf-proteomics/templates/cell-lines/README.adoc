@@ -61,26 +61,6 @@ Cellosaurus accessions follow the format `CVCL_XXXX` where XXXX is a unique iden
 |HEK293
 |HEK293
 |CVCL_0045
-
-|K562
-|K-562
-|CVCL_0004
-
-|Jurkat
-|Jurkat
-|CVCL_0065
-
-|MCF7
-|MCF7
-|CVCL_0031
-
-|A549
-|A549
-|CVCL_0023
-
-|U2OS
-|U-2 OS
-|CVCL_0042
 |===
 
 [[cell-line-metadata-db]]
@@ -170,13 +150,8 @@ The following columns are RECOMMENDED for cell line experiments:
 
 |comment[cell line source]
 |Source/provider of cell line
-|Free text
+|https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0004443[EFO:0004443]
 |ATCC, DSMZ, ECACC, in-house
-
-|comment[authentication method]
-|Method used to verify cell line identity
-|Free text
-|STR profiling, SNP genotyping, not performed
 |===
 
 === Optional Columns
@@ -194,19 +169,9 @@ The following columns are RECOMMENDED for cell line experiments:
 |https://www.ebi.ac.uk/ols4/ontologies/hancestro[HANCESTRO]
 |African American, European, not available
 
-|comment[mycoplasma status]
-|Mycoplasma contamination testing result
-|Free text
-|negative, positive, not tested
-
-|comment[culture conditions]
-|Culture medium and conditions
-|Free text
-|DMEM + 10% FBS, RPMI-1640 + 10% FBS
-
 |comment[cell line modifications]
 |Genetic or other modifications
-|Free text
+|https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000510[EFO:0000510]
 |CRISPR knockout of TP53, GFP-tagged, parental
 |===
 
@@ -236,14 +201,11 @@ IMPORTANT: For database-derived fields, use the values from the cell line databa
 
 These fields describe your specific experiment and SHOULD be provided by the user:
 
-- `comment[passage number]` - Your passage number
-- `comment[cell line source]` - Where you obtained cells
-- `comment[authentication method]` - Your authentication
-- `comment[mycoplasma status]` - Your testing results
-- `comment[culture conditions]` - Your culture conditions
-- `comment[cell line modifications]` - Any modifications made
-- `characteristics[treatment]` - Experimental treatments
-- `characteristics[compound]` - Drugs/compounds applied
+- `comment[passage number]` - Your passage number (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007061[EFO:0007061])
+- `comment[cell line source]` - Where you obtained cells (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0004443[EFO:0004443 - Material Supplier])
+- `comment[cell line modifications]` - Any modifications made (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000510[EFO:0000510 - Genetic modification])
+- `characteristics[treatment]` - Experimental treatments (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000727[EFO:0000727])
+- `characteristics[compound]` - Drugs/compounds applied (https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000369[EFO:0000369 - Compound Based Treatment])
 
 [[ontology-mapping]]
 == Ontology Mapping
@@ -432,15 +394,13 @@ For cell lines where donor information is unknown:
 
 3. **Document passage number**: Include `comment[passage number]` for reproducibility.
 
-4. **Verify cell line identity**: Document authentication in `comment[authentication method]`.
+4. **Use official names**: Prefer Cellosaurus names over informal abbreviations.
 
-5. **Use official names**: Prefer Cellosaurus names over informal abbreviations.
+5. **Separate database vs. experiment metadata**: Understand which fields come from databases vs. your experiment.
 
-6. **Separate database vs. experiment metadata**: Understand which fields come from databases vs. your experiment.
+6. **Check for known issues**: Review Cellosaurus for contamination or misidentification reports.
 
-7. **Check for known issues**: Review Cellosaurus for contamination or misidentification reports.
-
-8. **Include source information**: Document where cells were obtained with `comment[cell line source]`.
+7. **Include source information**: Document where cells were obtained with `comment[cell line source]`.
 
 [[template-file]]
 == Template File
