@@ -204,7 +204,7 @@ image::images/sdrf-guidelines-structure.png[Logo]
 
 NOTE: The main specification is in the `sdrf-proteomics` directory. Core templates (organism-based) are in `sdrf-proteomics/core-templates/` and specialized templates (experiment-type-specific) are in `sdrf-proteomics/templates/`. Templates are extensions of the core specification, and should follow all the rules and requirements in the main specification. If a template rule is in conflict with the specification, a note should be done in the main specification to reflect the extension or conflict. 
 
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub. For users unfamiliar with GitHub, you can also contact the PRIDE team at pride-support@ebi.ac.uk.
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.
 
 A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
 
@@ -592,8 +592,10 @@ NOTE: BioSample accession numbers from NCBI follow the format `SAMNxxxxxxxxxx` a
 
 SDRF-Proteomics uses two columns to track replicates <<ref4>>:
 
-- **characteristics[biological replicate]**: Identifies independent biological samples (e.g., different patients, different cell cultures)
+- **characteristics[biological replicate]**: Identifies independent biological samples within each experimental condition (factor value group). Replicate numbers are assigned per condition, so if you have 2 cancer samples and 2 healthy samples, both groups would have biological replicates numbered 1 and 2.
 - **comment[technical replicate]**: Identifies repeated measurements of the same sample (e.g., multiple LC-MS/MS injections)
+
+IMPORTANT: Biological replicate numbering restarts for each experimental condition (factor value). For example, in a disease study with factor value[disease], the cancer samples would be numbered 1, 2, 3... and the normal samples would independently be numbered 1, 2, 3... This establishes the relationship between each sample and its experimental condition.
 
 The following example shows 2 biological replicates, each with 2 fractions and 2 technical replicates:
 
