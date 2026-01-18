@@ -32,14 +32,16 @@ columns:
         params:
           # Age format: number + unit (Y/M/D), optionally combined, with optional range
           # Examples: 45Y, 6M, 30Y6M, 30Y6M15D, 40Y-50Y, 1Y-2Y6M
-          pattern: ^\d+[yYmMdD](\d+[yYmMdD])*(-\d+[yYmMdD](\d+[yYmMdD])*)?$
+          # Also allows "not available" when age is unknown
+          pattern: ^(\d+[yYmMdD](\d+[yYmMdD])*(-\d+[yYmMdD](\d+[yYmMdD])*)?|not available)$
           case_sensitive: false
-          description: Age should be in format like 45Y, 6M, 30Y6M, or ranges like 40Y-50Y
+          description: Age should be in format like 45Y, 6M, 30Y6M, or ranges like 40Y-50Y. Use "not available" if unknown.
           examples:
             - 45Y
             - 6M
             - 30Y6M
             - 40Y-50Y
+            - not available
 
   - name: characteristics[sex]
     description: Biological sex of the donor
