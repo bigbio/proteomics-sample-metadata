@@ -150,9 +150,14 @@ pre code {
 .site-header {
     background: var(--bg);
     color: var(--text);
-    padding: 48px 32px 32px;
-    text-align: left;
+    padding: 16px 32px;
     border-bottom: 1px solid var(--border);
+}
+
+.header-container {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .site-header .header-content {
@@ -202,15 +207,14 @@ pre code {
 }
 
 .main-nav {
-    margin-top: 24px;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 4px;
     padding: 4px;
     background: var(--bg-alt);
     border-radius: 8px;
     border: 1px solid var(--border);
-    max-width: fit-content;
 }
 
 .main-nav a {
@@ -246,6 +250,44 @@ pre code {
     background: rgba(9, 105, 218, 0.15);
 }
 
+/* Nav Search */
+.nav-search {
+    position: relative;
+    margin-left: auto;
+}
+
+.nav-search #search-input {
+    width: 180px;
+    padding: 6px 12px;
+    padding-right: 3.5rem;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, width 0.2s;
+}
+
+.nav-search #search-input:focus {
+    width: 240px;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+}
+
+.nav-search .search-shortcut {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.65rem;
+    color: var(--text-light);
+    background: var(--bg-alt);
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+}
+
 /* Search */
 .search-container {
     position: relative;
@@ -253,39 +295,8 @@ pre code {
     max-width: 500px;
 }
 
-#search-input {
-    width: 100%;
-    padding: 10px 16px;
-    padding-right: 4rem;
-    font-size: 0.9rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg);
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-}
-
 #search-input::placeholder {
     color: var(--text-light);
-}
-
-#search-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
-}
-
-.search-shortcut {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    color: var(--text-light);
-    background: var(--bg-alt);
-    padding: 2px 6px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
 }
 
 #search-results {
@@ -302,6 +313,15 @@ pre code {
     overflow-y: auto;
     display: none;
     z-index: 1000;
+}
+
+.header-container #search-results {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: auto;
+    width: 400px;
+    margin-top: 8px;
 }
 
 #search-results.active {
@@ -390,6 +410,14 @@ pre code {
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border-light);
+}
+
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0;
 }
 
 /* Buttons */
@@ -509,18 +537,14 @@ pre code {
 
 /* Compact horizontal card layout */
 .card-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin-top: 24px;
 }
 
 .card-compact {
-    flex: 0 1 auto;
-    min-width: 160px;
-    max-width: 200px;
-    padding: 16px 20px;
+    padding: 14px 16px;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -534,21 +558,26 @@ pre code {
 }
 
 .card-compact h4 {
-    margin: 0 0 8px 0;
-    font-size: 1rem;
+    margin: 0 0 6px 0;
+    font-size: 0.9rem;
     color: var(--accent);
 }
 
 .card-compact p {
-    margin: 0 0 12px 0;
-    font-size: 0.8rem;
+    margin: 0 0 10px 0;
+    font-size: 0.75rem;
     color: var(--text-light);
     line-height: 1.4;
 }
 
 .card-compact a {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 500;
+}
+
+/* For 5 items in core templates, allow wrapping */
+.card-row.card-row-5 {
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .quick-links {
@@ -1209,19 +1238,20 @@ body.has-doc-header.toc2 #toc {
 .templates-table th {
     background: var(--bg-alt);
     color: var(--text);
-    padding: 12px 16px;
+    padding: 10px 12px;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-align: left;
     border: none;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
 }
 
 .templates-table td {
-    padding: 12px 16px;
+    padding: 10px 12px;
     border: none;
     border-bottom: 1px solid var(--border-light);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     vertical-align: middle;
 }
 
@@ -1236,6 +1266,11 @@ body.has-doc-header.toc2 #toc {
 .templates-table td:first-child a {
     font-weight: 600;
     color: var(--accent);
+    white-space: nowrap;
+}
+
+.templates-table td:nth-child(2) {
+    font-size: 0.78rem;
 }
 
 /* SDRF Example Table Styles */
@@ -1359,13 +1394,23 @@ body.has-doc-header.toc2 #toc {
     }
 }
 
+@media (max-width: 900px) {
+    .card-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-row.card-row-5 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 32px 20px;
     }
 
     .site-header {
-        padding: 32px 20px;
+        padding: 16px 20px;
     }
 
     h1 {
@@ -1384,6 +1429,14 @@ body.has-doc-header.toc2 #toc {
         grid-template-columns: 1fr;
     }
 
+    .card-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-row.card-row-5 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .btn-group {
         flex-direction: column;
     }
@@ -1393,7 +1446,27 @@ body.has-doc-header.toc2 #toc {
     }
 
     .main-nav {
-        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-search {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    .nav-search #search-input {
+        width: 100%;
+    }
+
+    .nav-search #search-input:focus {
+        width: 100%;
+    }
+
+    .header-container #search-results {
+        width: 100%;
+        left: 0;
     }
 
     .doc-header {
@@ -1426,6 +1499,11 @@ body.has-doc-header.toc2 #toc {
     .site-footer {
         flex-direction: column;
         text-align: center;
+    }
+
+    .card-row,
+    .card-row.card-row-5 {
+        grid-template-columns: 1fr;
     }
 }
 
