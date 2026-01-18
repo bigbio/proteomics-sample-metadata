@@ -218,6 +218,49 @@ Values: `synthetic` (sample is a synthetic peptide library), `not synthetic` (bi
 
 For synthetic libraries, most sample metadata can be `not applicable`. The organism MAY be specified if the library was designed from specific species peptides.
 
+== Material Type
+
+**Column:** `characteristics[material type]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000837[PRIDE:0000837] (derived from https://www.fged.org/projects/mage-tab/[MAGE-TAB] specification)
+
+Material type describes the nature of the biological material being analyzed. This column originates from the MAGE-TAB specification for transcriptomics and has been adopted for proteomics to enable cross-omics data integration.
+
+**Requirement:** Optional
+
+**Allowed values:**
+
+|===
+|Value |Description |When to Use
+
+|tissue |Solid tissue sample from an organism |Biopsies, surgical specimens, autopsy samples
+|cell |Individual cells or cell suspensions |FACS-sorted cells, primary cell cultures, dissociated tissue
+|cell line |Established immortalized cell line |HeLa, HEK293, A549, etc.
+|organism part |A part of an organism's anatomy |Organ samples, body fluids (when not whole tissue)
+|whole organism |Complete organism sample |Single-celled organisms, small model organisms (C. elegans, yeast)
+|synthetic |Artificially synthesized material |Synthetic peptide libraries, recombinant proteins
+|===
+
+**Special values:**
+
+- `not available`: When material type is unknown
+- `not applicable`: When the concept doesn't apply (e.g., for computational datasets)
+
+**Examples:**
+
+|===
+|Sample Type |characteristics[material type] |characteristics[organism part] |characteristics[cell line]
+
+|Liver biopsy |tissue |liver |not applicable
+|HeLa cells |cell line |cervix |HeLa
+|Sorted T cells |cell |blood |not applicable
+|Mouse whole brain |tissue |brain |not applicable
+|E. coli culture |whole organism |not applicable |not applicable
+|Synthetic peptides |synthetic |not applicable |not applicable
+|===
+
+NOTE: For cell line samples, use `cell line` as the material type. The specific cell line name goes in `characteristics[cell line]`. The tissue of origin can be specified in `characteristics[organism part]`.
+
 == PTM Enrichment
 
 **Column:** `characteristics[enrichment process]`

@@ -1727,6 +1727,161 @@ endif::[]
 
 The template files can be downloaded from the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates[core-templates] folder.
 
+[[extending-sdrf]]
+=== Extending SDRF with Custom Columns
+
+Templates define the minimum required and recommended columns for a given experiment type. However, SDRF-Proteomics is designed to be **extensible** - you can add any additional columns to capture study-specific metadata beyond what templates define. This section provides guidance on adding custom columns.
+
+==== When to Add Custom Columns
+
+Add custom columns when your experiment requires metadata that is:
+
+- Not covered by existing templates but important for data interpretation
+- Specific to your experimental design or technology
+- Required for cross-study integration or data reuse
+- Needed to comply with domain-specific standards (e.g., clinical trials, environmental studies)
+
+==== Rules for Custom Columns
+
+1. **Use appropriate column prefixes:**
+** `characteristics[...]` - For sample-related metadata (properties of the biological material)
+** `comment[...]` - For technical or protocol-related metadata (data acquisition, processing)
+** `factor value[...]` - For experimental variables (see <<study-variables>>)
+
+2. **Follow naming conventions:**
+** Use lowercase for column names inside brackets
+** Use descriptive, specific names (e.g., `characteristics[tumor grade]` not `characteristics[grade]`)
+** Use ontology terms when they exist (e.g., `characteristics[patient bmi]` maps to EFO term)
+
+3. **Use controlled vocabularies when available:**
+** Reference existing ontologies (EFO, MONDO, UBERON, etc.) for values
+** Prefer standardized terms over free text when possible
+** For new terms, follow the key=value format if ontology reference is needed
+
+==== Common Additional Columns
+
+The following columns are not required by templates but are commonly used and recommended for specific study types:
+
+|===
+|Column |Category |Description |Example Values |When to Use
+
+|characteristics[material type]
+|Sample
+|Type of biological material (derived from https://www.fged.org/projects/mage-tab/[MAGE-TAB])
+|tissue, cell, cell line, organism part, whole organism, synthetic
+|Cross-omics integration, clarifying sample origin
+
+|characteristics[treatment]
+|Sample
+|Treatment applied to the sample
+|dexamethasone, vehicle control, untreated
+|Drug treatment studies
+
+|characteristics[time point]
+|Sample
+|Time of sample collection
+|0h, 24h, 7d, baseline
+|Time-course experiments
+
+|characteristics[dose]
+|Sample
+|Dose of treatment if applicable
+|10 mg/kg, 100 nM, high dose
+|Dose-response studies
+
+|characteristics[patient bmi]
+|Sample
+|Body mass index (for human studies)
+|25.3 kg/m2, 30.1 kg/m2
+|Metabolic or obesity-related studies
+
+|characteristics[smoking status]
+|Sample
+|Smoking history of the patient
+|never smoked, current smoker, former smoker
+|Lung or cardiovascular studies
+
+|comment[sample preparation]
+|Data
+|Sample preparation method details
+|in-solution digestion, FASP, SP3
+|Detailed protocol documentation
+
+|comment[enrichment method]
+|Data
+|Enrichment or depletion strategy
+|phosphopeptide enrichment, glycopeptide enrichment
+|PTM-focused studies
+|===
+
+See link:metadata-guidelines/sample-metadata.adoc#material-type[Material Type Guidelines] for detailed guidance on the `characteristics[material type]` column.
+
+==== Example: Adding Study-Specific Columns
+
+For a drug treatment time-course study, you might add columns beyond the template requirements:
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[treatment]</th>
+<th class="sample-col">characteristics[time point]</th>
+<th class="sample-col">characteristics[dose]</th>
+<th class="ellipsis-col">...</th>
+<th class="factor-col">factor value[treatment]</th>
+<th class="factor-col">factor value[time point]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_ctrl_0h</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">vehicle control</td>
+<td class="sample-col">0h</td>
+<td class="sample-col">not applicable</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">vehicle control</td>
+<td class="factor-col">0h</td>
+</tr>
+<tr>
+<td class="sample-col">sample_drug_24h</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">dexamethasone</td>
+<td class="sample-col">24h</td>
+<td class="sample-col">100 nM</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">dexamethasone</td>
+<td class="factor-col">24h</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[disease] |characteristics[treatment] |characteristics[time point] |characteristics[dose] |... |factor value[treatment] |factor value[time point]
+
+|sample_ctrl_0h |homo sapiens |normal |vehicle control |0h |not applicable |... |vehicle control |0h
+|sample_drug_24h |homo sapiens |normal |dexamethasone |24h |100 nM |... |dexamethasone |24h
+|===
+endif::[]
+
+TIP: When adding custom columns, check the link:metadata-guidelines/sdrf-terms.tsv[SDRF Terms Reference] and https://www.ebi.ac.uk/ols4/[EBI Ontology Lookup Service (OLS)] to find existing terms that match your metadata needs. Using standardized terms improves data interoperability.
+
 [[study-variables]]
 == Factor Values (Study Variables)
 
