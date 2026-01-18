@@ -86,6 +86,14 @@
 <li><a href="#template-plants">12.9. Plants Template</a></li>
 <li><a href="#experiment-templates">12.10. Experiment-Type Templates</a></li>
 <li><a href="#template-cardinality">12.11. Column Cardinality</a></li>
+<li><a href="#extending-sdrf">12.12. Extending SDRF with Custom Columns</a>
+<ul class="sectlevel3">
+<li><a href="#_when_to_add_custom_columns">12.12.1. When to Add Custom Columns</a></li>
+<li><a href="#_rules_for_custom_columns">12.12.2. Rules for Custom Columns</a></li>
+<li><a href="#_common_additional_columns">12.12.3. Common Additional Columns</a></li>
+<li><a href="#_example_adding_study_specific_columns">12.12.4. Example: Adding Study-Specific Columns</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#study-variables">13. Factor Values (Study Variables)</a>
@@ -2922,6 +2930,237 @@ For plant samples, use <a href="https://www.ebi.ac.uk/ols4/ontologies/po">PO</a>
 <p>The template files can be downloaded from the <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/core-templates">core-templates</a> folder.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="extending-sdrf"><a class="anchor" href="#extending-sdrf"></a><a class="link" href="#extending-sdrf">12.12. Extending SDRF with Custom Columns</a></h3>
+<div class="paragraph">
+<p>Templates define the minimum required and recommended columns for a given experiment type. However, SDRF-Proteomics is designed to be <strong>extensible</strong> - you can add any additional columns to capture study-specific metadata beyond what templates define. This section provides guidance on adding custom columns.</p>
+</div>
+<div class="sect3">
+<h4 id="_when_to_add_custom_columns"><a class="anchor" href="#_when_to_add_custom_columns"></a><a class="link" href="#_when_to_add_custom_columns">12.12.1. When to Add Custom Columns</a></h4>
+<div class="paragraph">
+<p>Add custom columns when your experiment requires metadata that is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Not covered by existing templates but important for data interpretation</p>
+</li>
+<li>
+<p>Specific to your experimental design or technology</p>
+</li>
+<li>
+<p>Required for cross-study integration or data reuse</p>
+</li>
+<li>
+<p>Needed to comply with domain-specific standards (e.g., clinical trials, environmental studies)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rules_for_custom_columns"><a class="anchor" href="#_rules_for_custom_columns"></a><a class="link" href="#_rules_for_custom_columns">12.12.2. Rules for Custom Columns</a></h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Use appropriate column prefixes:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>characteristics[&#8230;&#8203;]</code> - For sample-related metadata (properties of the biological material)</p>
+</li>
+<li>
+<p><code>comment[&#8230;&#8203;]</code> - For technical or protocol-related metadata (data acquisition, processing)</p>
+</li>
+<li>
+<p><code>factor value[&#8230;&#8203;]</code> - For experimental variables (see <a href="#study-variables">Chapter 13</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Follow naming conventions:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use lowercase for column names inside brackets</p>
+</li>
+<li>
+<p>Use descriptive, specific names (e.g., <code>characteristics[tumor grade]</code> not <code>characteristics[grade]</code>)</p>
+</li>
+<li>
+<p>Use ontology terms when they exist (e.g., <code>characteristics[patient bmi]</code> maps to EFO term)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Use controlled vocabularies when available:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Reference existing ontologies (EFO, MONDO, UBERON, etc.) for values</p>
+</li>
+<li>
+<p>Prefer standardized terms over free text when possible</p>
+</li>
+<li>
+<p>For new terms, follow the key=value format if ontology reference is needed</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_common_additional_columns"><a class="anchor" href="#_common_additional_columns"></a><a class="link" href="#_common_additional_columns">12.12.3. Common Additional Columns</a></h4>
+<div class="paragraph">
+<p>The following columns are not required by templates but are commonly used and recommended for specific study types:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Category</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[material type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological material (derived from <a href="https://www.fged.org/projects/mage-tab/">MAGE-TAB</a>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tissue, cell, cell line, organism part, whole organism, synthetic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-omics integration, clarifying sample origin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[treatment]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Treatment applied to the sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dexamethasone, vehicle control, untreated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drug treatment studies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[time point]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time of sample collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0h, 24h, 7d, baseline</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time-course experiments</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[dose]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dose of treatment if applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 mg/kg, 100 nM, high dose</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dose-response studies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[patient bmi]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Body mass index (for human studies)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25.3 kg/m2, 30.1 kg/m2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Metabolic or obesity-related studies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[smoking status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Smoking history of the patient</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">never smoked, current smoker, former smoker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lung or cardiovascular studies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample preparation]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample preparation method details</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">in-solution digestion, FASP, SP3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Detailed protocol documentation</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[enrichment method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enrichment or depletion strategy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">phosphopeptide enrichment, glycopeptide enrichment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PTM-focused studies</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>See <a href="metadata-guidelines/sample-metadata.adoc#material-type">Material Type Guidelines</a> for detailed guidance on the <code>characteristics[material type]</code> column.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_adding_study_specific_columns"><a class="anchor" href="#_example_adding_study_specific_columns"></a><a class="link" href="#_example_adding_study_specific_columns">12.12.4. Example: Adding Study-Specific Columns</a></h4>
+<div class="paragraph">
+<p>For a drug treatment time-course study, you might add columns beyond the template requirements:</p>
+</div>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[treatment]</th>
+<th class="sample-col">characteristics[time point]</th>
+<th class="sample-col">characteristics[dose]</th>
+<th class="ellipsis-col">...</th>
+<th class="factor-col">factor value[treatment]</th>
+<th class="factor-col">factor value[time point]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_ctrl_0h</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">vehicle control</td>
+<td class="sample-col">0h</td>
+<td class="sample-col">not applicable</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">vehicle control</td>
+<td class="factor-col">0h</td>
+</tr>
+<tr>
+<td class="sample-col">sample_drug_24h</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">dexamethasone</td>
+<td class="sample-col">24h</td>
+<td class="sample-col">100 nM</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">dexamethasone</td>
+<td class="factor-col">24h</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+When adding custom columns, check the <a href="metadata-guidelines/sdrf-terms.tsv">SDRF Terms Reference</a> and <a href="https://www.ebi.ac.uk/ols4/">EBI Ontology Lookup Service (OLS)</a> to find existing terms that match your metadata needs. Using standardized terms improves data interoperability.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3181,7 +3420,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-18 08:03:48 UTC
+Last updated 2026-01-18 10:23:16 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
