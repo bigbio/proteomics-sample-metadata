@@ -6,8 +6,10 @@ This guide explains how to build and maintain the SDRF-Proteomics documentation 
 
 ```
 proteomics-metadata-standard/
+├── build-docs.sh              # Unified build script (local & CI/CD)
 ├── sdrf-proteomics/           # Main specification source
 │   ├── README.adoc            # Main specification (AsciiDoc)
+│   ├── tool-support.adoc      # Tool support page
 │   ├── metadata-guidelines/   # General metadata guidelines
 │   │   ├── sample-metadata.adoc
 │   │   ├── data-file-metadata.adoc
@@ -18,23 +20,25 @@ proteomics-metadata-standard/
 │   │   ├── invertebrates/     # Invertebrates (Drosophila, C. elegans)
 │   │   ├── plants/            # Plant organisms
 │   │   ├── default/           # Default template
-│   │   ├── minimum/           # Minimum required columns
 │   │   ├── cell-lines/        # Cell line experiments
 │   │   ├── crosslinking/      # XL-MS experiments
 │   │   ├── immunopeptidomics/ # Immunopeptidomics
 │   │   └── ...
+│   └── images/                # Specification images
 ├── site/                      # Website assets and build scripts
 │   ├── css/style.css          # Main stylesheet
 │   ├── js/search.js           # Search functionality
 │   ├── index.html             # Homepage
+│   ├── quickstart.html        # Quick start guide
 │   ├── sdrf-explorer.html     # SDRF dataset explorer
 │   ├── sdrf-terms.html        # Terms reference page
 │   ├── build-sdrf-index.py    # Builds dataset index
 │   └── build-search-index.py  # Builds search index
 ├── annotated-projects/        # Annotated SDRF files (~300 datasets)
-├── demo_page/                 # Local preview output
+├── demo_page/                 # Local preview output (git-ignored)
 ├── .github/workflows/         # CI/CD configuration
 │   └── build-docs.yml         # Website build workflow
+├── DEVELOPMENT.md             # This file
 └── README.md                  # Project overview
 ```
 
@@ -53,10 +57,44 @@ python3 --version
 
 ## Building the Website Locally
 
-### Quick Build (Specification Only)
+### Using the Build Script (Recommended)
+
+The easiest way to build the documentation is using the provided build script. This script replicates the exact CI/CD build process, ensuring consistency between local and deployed builds.
 
 ```bash
-# Build the main specification
+# Build to default directory (demo_page/)
+./build-docs.sh
+
+# Build with a clean start (removes existing output)
+./build-docs.sh --clean
+
+# Build to a specific directory
+./build-docs.sh docs
+
+# Build dev version (adds development banner)
+./build-docs.sh docs/dev --dev
+
+# Show help
+./build-docs.sh --help
+```
+
+#### What the Build Script Does
+
+1. **Converts AsciiDoc to HTML** using Asciidoctor with proper styling options
+2. **Copies static assets** (CSS, JavaScript, images)
+3. **Copies static HTML pages** (index.html, quickstart.html, sdrf-explorer.html, sdrf-terms.html)
+4. **Builds SDRF Explorer index** from annotated-projects
+5. **Injects navigation headers** into all generated HTML pages
+6. **Transforms SDRF links** to use the SDRF Explorer viewer
+7. **Builds search index** for site-wide search functionality
+8. **Adds dev banner** (when using `--dev` flag)
+
+### Manual Build (Advanced)
+
+If you need to build individual files for quick iteration:
+
+```bash
+# Build the main specification only
 asciidoctor \
   -D demo_page \
   -a stylesheet=css/style.css \
@@ -71,54 +109,17 @@ asciidoctor \
   sdrf-proteomics/README.adoc
 ```
 
-### Full Build (All Pages)
-
-```bash
-# Set output directory
-OUTPUT_DIR="demo_page"
-
-# Create directories
-mkdir -p $OUTPUT_DIR/metadata-guidelines $OUTPUT_DIR/templates $OUTPUT_DIR/images $OUTPUT_DIR/css $OUTPUT_DIR/js
-
-# Build main specification
-asciidoctor -D $OUTPUT_DIR -a stylesheet=css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks -a source-highlighter=highlight.js --backend=html5 -o specification.html sdrf-proteomics/README.adoc
-
-# Build metadata guidelines
-asciidoctor -D $OUTPUT_DIR/metadata-guidelines -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o sample-metadata.html sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
-
-asciidoctor -D $OUTPUT_DIR/metadata-guidelines -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o data-file-metadata.html sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc
-
-# Build templates (including human template which contains clinical metadata guidelines)
-for dir in sdrf-proteomics/templates/*/; do
-  if [ -f "${dir}README.adoc" ]; then
-    template_name=$(basename "$dir")
-    asciidoctor -D $OUTPUT_DIR/templates -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o "${template_name}.html" "${dir}README.adoc"
-  fi
-done
-
-# Copy assets
-cp -r images/* $OUTPUT_DIR/images/ 2>/dev/null || true
-cp site/css/style.css $OUTPUT_DIR/css/
-cp site/index.html $OUTPUT_DIR/
-cp site/js/search.js $OUTPUT_DIR/js/
-cp site/sdrf-terms.html $OUTPUT_DIR/
-cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv $OUTPUT_DIR/
-cp site/sdrf-data.json $OUTPUT_DIR/
-cp site/sdrf-explorer.html $OUTPUT_DIR/
-
-echo "Build complete! Open demo_page/specification.html in your browser."
-```
+**Note:** Manual builds will be missing navigation headers, search functionality, and other features. Use the build script for testing the complete site.
 
 ### View Locally
 
-Simply open the HTML files directly in your browser:
+After building, open the site directly in your browser:
 
 ```bash
-open demo_page/specification.html
 open demo_page/index.html
 ```
 
-No web server is required - the pages are self-contained.
+The site is self-contained and doesn't require a web server.
 
 ## Key Files to Modify
 
@@ -182,7 +183,30 @@ The website is automatically built and deployed when pushing to:
 - `master` branch → Production site (https://sdrf.quantms.org/)
 - `dev` branch → Development site (https://sdrf.quantms.org/dev/)
 
-The build process is defined in `.github/workflows/build-docs.yml`.
+The CI/CD workflow (`.github/workflows/build-docs.yml`) performs the same steps as the local build script, ensuring consistency.
+
+### Local vs CI/CD Comparison
+
+| Feature | Local (build-docs.sh) | CI/CD |
+|---------|----------------------|-------|
+| AsciiDoc conversion | ✓ | ✓ |
+| Navigation headers | ✓ | ✓ |
+| SDRF link transformation | ✓ | ✓ |
+| Search index | ✓ | ✓ |
+| Dev banner | `--dev` flag | Auto for dev branch |
+| Output directory | Configurable | docs/ or docs/dev/ |
+
+### Ensuring Consistency
+
+To verify your local build matches the deployed version:
+
+```bash
+# Build same as production
+./build-docs.sh --clean
+
+# Build same as dev deployment
+./build-docs.sh --clean --dev
+```
 
 ## Adding New Annotated Projects
 
@@ -227,3 +251,45 @@ grep -l "characteristics\[disease\]" annotated-projects/*/*.sdrf.tsv
 # Count annotated projects
 ls -d annotated-projects/PXD* | wc -l
 ```
+
+## Troubleshooting
+
+### Stylesheet Warnings
+
+When building, you may see warnings like:
+```
+asciidoctor: WARNING: stylesheet does not exist or cannot be read
+```
+
+These are expected and can be ignored. We use `-a linkcss` which links the stylesheet at runtime rather than embedding it during build.
+
+### Missing Dependencies
+
+If you see errors about missing commands:
+- **asciidoctor**: `gem install asciidoctor`
+- **python3**: Install Python 3 from https://python.org
+
+### Build Output Differences
+
+If the local build looks different from the deployed version:
+1. Ensure you're using the build script (`./build-docs.sh`), not manual asciidoctor commands
+2. Clear the output directory with `--clean`
+3. Check that you have the latest site assets (`git pull`)
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| No navigation header | Use the build script instead of manual asciidoctor |
+| CSS not loading | Ensure `site/css/style.css` was copied to output |
+| Dev banner missing | Use `--dev` flag when building |
+| Search not working | Ensure `search-index.json` was generated |
+
+## Contributing
+
+1. Make changes to the appropriate AsciiDoc or HTML files
+2. Build locally and test: `./build-docs.sh --clean`
+3. View locally: `open demo_page/index.html`
+4. Create a pull request to the `dev` branch for review
+5. After approval and merge to dev, changes deploy to https://sdrf.quantms.org/dev/
+6. After merge to master, changes deploy to https://sdrf.quantms.org/
