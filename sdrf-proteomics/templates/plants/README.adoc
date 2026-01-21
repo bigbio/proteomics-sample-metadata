@@ -1,0 +1,346 @@
+= SDRF-Proteomics: Plants Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0
+
+[[abstract]]
+== Abstract
+
+The plants template provides standardized metadata fields for plant proteomics experiments. This includes model organisms like Arabidopsis thaliana, as well as crop species, trees, and other plant systems.
+
+This template is appropriate for:
+
+* Arabidopsis proteomics studies
+* Crop proteomics (rice, maize, wheat, soybean)
+* Plant stress response studies
+* Agricultural and plant biology research
+
+[[extends]]
+== Template Hierarchy
+
+[source]
+----
+base (construction artifact)
+  └── plants (SAMPLE layer - must combine with TECHNOLOGY template)
+----
+
+The plants template extends the **base** template, adding disease annotation and plant-specific fields.
+
+[IMPORTANT]
+====
+The plants template **cannot be used alone**. You must combine it with a technology template:
+
+* `ms-base` + `plants` - For MS-based proteomics of plant samples
+* `affinity-base` + `plants` - For affinity proteomics of plant samples
+====
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns
+
+All columns from the link:../base/README.adoc[base template] are inherited (source name, organism, organism part, biological replicate, assay name, technology type, instrument, technical replicate, data file). Technology-specific columns come from the technology template (`ms-base` or `affinity-base`).
+
+=== Plants-Specific Columns
+
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|characteristics[disease]
+|Required
+|Disease state of the sample
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], https://www.ebi.ac.uk/ols4/ontologies/doid[DOID], https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
+|normal, breast cancer, diabetes mellitus
+
+|characteristics[developmental stage]
+|Recommended
+|Developmental stage of the plant
+|https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+|seedling stage, flowering stage, rosette growth stage, senescent stage
+
+|characteristics[strain/breed]
+|Optional
+|Cultivar, ecotype, or accession of the plant
+|—
+|Col-0, Ler-0, Nipponbare, B73
+
+|characteristics[growth conditions]
+|Optional
+|Growth conditions for the plant
+|—
+|long day (16h light/8h dark), short day (8h light/16h dark), continuous light, greenhouse
+
+|characteristics[treatment]
+|Optional
+|Treatment applied to the plant
+|https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], https://www.ebi.ac.uk/chebi/[ChEBI]
+|drought stress, salt stress, pathogen infection, hormone treatment
+|===
+
+[[common-organisms]]
+== Common Plant Organisms
+
+|===
+|Common Name |Scientific Name |NCBITaxon ID |Common Ecotypes/Cultivars
+
+|Arabidopsis |Arabidopsis thaliana |NCBITaxon:3702 |Col-0, Ler-0, Ws-0, C24
+|Rice |Oryza sativa |NCBITaxon:4530 |Nipponbare, IR64, Kasalath
+|Maize |Zea mays |NCBITaxon:4577 |B73, Mo17, W22
+|Wheat |Triticum aestivum |NCBITaxon:4565 |Chinese Spring
+|Soybean |Glycine max |NCBITaxon:3847 |Williams 82
+|Tomato |Solanum lycopersicum |NCBITaxon:4081 |M82, Micro-Tom
+|===
+
+[[developmental-stages]]
+== Developmental Stages
+
+Common developmental stages from the Plant Ontology (PO):
+
+|===
+|Stage |PO Term |Description
+
+|seedling stage |PO:0007131 |Plant after germination before mature vegetative growth
+|rosette growth stage |PO:0007113 |Arabidopsis-specific rosette development
+|vegetative growth stage |PO:0007134 |Mature vegetative plant
+|reproductive growth stage |PO:0007130 |Flowering and fruiting
+|flowering stage |PO:0007616 |Active flowering
+|fruit formation stage |PO:0007042 |Fruit/seed development
+|senescent stage |PO:0025337 |Aging and senescence
+|===
+
+[[organism-parts]]
+== Plant Organism Parts
+
+Common plant tissue/organ terms:
+
+|===
+|Organ/Tissue |Ontology Term |Description
+
+|leaf |PO:0025034 |Photosynthetic organ
+|root |PO:0009005 |Underground organ
+|stem |PO:0009047 |Main axis
+|flower |PO:0009046 |Reproductive structure
+|seed |PO:0009010 |Mature ovule
+|fruit |PO:0009001 |Mature ovary
+|shoot |PO:0009006 |Aerial part
+|whole plant |PO:0000003 |Entire organism
+|===
+
+[[growth-conditions]]
+== Growth Conditions
+
+Document growth conditions using standard descriptions:
+
+|===
+|Condition |Format |Example
+
+|Photoperiod |{light}h light/{dark}h dark |16h light/8h dark
+|Temperature |{temp}°C |22°C
+|Light intensity |{value} μmol m⁻² s⁻¹ |120 μmol m⁻² s⁻¹
+|Growth medium |{medium name} |1/2 MS medium
+|===
+
+[[treatments]]
+== Common Plant Treatments
+
+|===
+|Treatment Type |Example Values |Ontology
+
+|Abiotic stress |drought stress, salt stress, cold stress, heat stress |EFO
+|Biotic stress |pathogen infection, herbivore attack |EFO
+|Hormone treatment |auxin treatment, ABA treatment, jasmonic acid |ChEBI
+|Nutrient stress |nitrogen starvation, phosphate starvation |EFO
+|===
+
+[[validation]]
+== Validation
+
+Validate SDRF files using sdrf-pipelines:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+sdrf_validate --sdrf_file your_file.sdrf.tsv --template plants
+----
+
+[[examples]]
+== Examples
+
+=== Arabidopsis Stress Study Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[developmental stage]</th>
+<th class="sample-col">characteristics[strain/breed]</th>
+<th class="sample-col">characteristics[growth conditions]</th>
+<th class="sample-col">characteristics[treatment]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">arabidopsis thaliana</td>
+<td class="sample-col">leaf</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">rosette growth stage</td>
+<td class="sample-col">Col-0</td>
+<td class="sample-col">long day (16h light/8h dark)</td>
+<td class="sample-col">control</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">arabidopsis thaliana</td>
+<td class="sample-col">leaf</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">rosette growth stage</td>
+<td class="sample-col">Col-0</td>
+<td class="sample-col">long day (16h light/8h dark)</td>
+<td class="sample-col">control</td>
+<td class="sample-col">2</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">arabidopsis thaliana</td>
+<td class="sample-col">leaf</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">rosette growth stage</td>
+<td class="sample-col">Col-0</td>
+<td class="sample-col">long day (16h light/8h dark)</td>
+<td class="sample-col">drought stress</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_4</td>
+<td class="sample-col">arabidopsis thaliana</td>
+<td class="sample-col">leaf</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">rosette growth stage</td>
+<td class="sample-col">Col-0</td>
+<td class="sample-col">long day (16h light/8h dark)</td>
+<td class="sample-col">drought stress</td>
+<td class="sample-col">2</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[developmental stage] |characteristics[strain/breed] |characteristics[growth conditions] |characteristics[treatment] |characteristics[biological replicate]
+
+|sample_1 |arabidopsis thaliana |leaf |normal |rosette growth stage |Col-0 |long day (16h light/8h dark) |control |1
+|sample_2 |arabidopsis thaliana |leaf |normal |rosette growth stage |Col-0 |long day (16h light/8h dark) |control |2
+|sample_3 |arabidopsis thaliana |leaf |normal |rosette growth stage |Col-0 |long day (16h light/8h dark) |drought stress |1
+|sample_4 |arabidopsis thaliana |leaf |normal |rosette growth stage |Col-0 |long day (16h light/8h dark) |drought stress |2
+|===
+endif::[]
+
+=== Rice Proteomics Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[developmental stage]</th>
+<th class="sample-col">characteristics[strain/breed]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">oryza sativa</td>
+<td class="sample-col">leaf</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">seedling stage</td>
+<td class="sample-col">Nipponbare</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">oryza sativa</td>
+<td class="sample-col">leaf</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">seedling stage</td>
+<td class="sample-col">Nipponbare</td>
+<td class="sample-col">2</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">oryza sativa</td>
+<td class="sample-col">root</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">seedling stage</td>
+<td class="sample-col">Nipponbare</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_4</td>
+<td class="sample-col">oryza sativa</td>
+<td class="sample-col">root</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">seedling stage</td>
+<td class="sample-col">Nipponbare</td>
+<td class="sample-col">2</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[developmental stage] |characteristics[strain/breed] |characteristics[biological replicate]
+
+|sample_1 |oryza sativa |leaf |normal |seedling stage |Nipponbare |1
+|sample_2 |oryza sativa |leaf |normal |seedling stage |Nipponbare |2
+|sample_3 |oryza sativa |root |normal |seedling stage |Nipponbare |1
+|sample_4 |oryza sativa |root |normal |seedling stage |Nipponbare |2
+|===
+endif::[]

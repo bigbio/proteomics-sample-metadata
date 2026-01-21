@@ -1,7 +1,12 @@
 name: cell-lines
-description: SDRF template for cell line samples with Cellosaurus-based annotation
+description: SDRF template for cell line samples with Cellosaurus-based annotation. Cell lines can originate from any organism - combine with appropriate organism template (human for HeLa, vertebrates for NIH 3T3, invertebrates for Sf9).
 version: 1.1.0
-extends: human
+extends: base
+usable_alone: false
+layer: experiment
+combine_with:
+  - technology: required  # ms-base or affinity-base
+  - sample: required      # human, vertebrates, or invertebrates (based on cell line origin)
 columns:
   - name: characteristics[cell line]
     description: Name of the cell line

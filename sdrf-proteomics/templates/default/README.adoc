@@ -1,0 +1,269 @@
+= SDRF-Proteomics: Default Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status
+
+**Status:** Legacy (Deprecated)
+
+**Version:** 1.1.0
+
+[WARNING]
+====
+**This template is deprecated.** For new projects, use the new layered template architecture:
+
+* **MS-based proteomics:** Use link:../ms-base/README.adoc[`ms-base`] (+ optional sample template like `human`)
+* **Affinity-based proteomics:** Use link:../affinity-base/README.adoc[`affinity-base`] (+ optional sample template)
+
+The `default` template is maintained for **backwards compatibility** with existing annotated projects (298+ datasets use this template).
+====
+
+[[abstract]]
+== Abstract
+
+The default template was historically the base template for MS-based SDRF-Proteomics files. It defines core required columns for MS proteomics experiments.
+
+**For new projects, the recommended architecture is:**
+
+1. Choose a **technology template**: `ms-base` or `affinity-base`
+2. Optionally add a **sample template**: `human`, `vertebrates`, `invertebrates`, or `plants`
+3. Optionally add an **experiment template**: `dda-acquisition`, `single-cell`, etc.
+
+[[extends]]
+== Template Hierarchy (Legacy)
+
+[source]
+----
+default  ← Legacy MS-based template (this one)
+----
+
+NOTE: The new architecture uses `base` → `ms-base` or `affinity-base` as the foundation. See link:../README.adoc[Templates Overview] for details.
+
+[[checklist]]
+== Checklist
+
+=== Sample Metadata Columns
+
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|source name
+|Required
+|Unique identifier for the biological sample
+|—
+|sample_1, patient_001, S1
+
+|characteristics[organism]
+|Required
+|Species of the sample
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBITaxon]
+|homo sapiens, mus musculus, rattus norvegicus
+
+|characteristics[organism part]
+|Required
+|Anatomical part of the organism
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON], https://www.ebi.ac.uk/ols4/ontologies/bto[BTO]
+|liver, brain, heart, blood
+
+|characteristics[cell type]
+|Recommended
+|Cell type of the sample
+|https://www.ebi.ac.uk/ols4/ontologies/cl[CL], https://www.ebi.ac.uk/ols4/ontologies/bto[BTO]
+|hepatocyte, neuron, fibroblast, T cell
+
+|characteristics[biological replicate]
+|Required
+|Identifier for the biological replicate
+|—
+|1, 2, 3, pooled
+|===
+
+=== MS Run Metadata Columns
+
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|assay name
+|Required
+|Unique identifier for the MS run
+|—
+|run_1, MS_001
+
+|technology type
+|Required
+|Type of technology used
+|—
+|proteomic profiling by mass spectrometry
+
+|comment[proteomics data acquisition method]
+|Required
+|MS acquisition method
+|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE]
+|Data-dependent acquisition, Data-independent acquisition
+
+|comment[label]
+|Required
+|Labeling strategy
+|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE]
+|label free sample, TMT126, SILAC heavy
+
+|comment[instrument]
+|Required
+|Mass spectrometer instrument
+|https://www.ebi.ac.uk/ols4/ontologies/ms[MS]
+|Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro
+
+|comment[cleavage agent details]
+|Required
+|Enzyme for protein digestion
+|https://www.ebi.ac.uk/ols4/ontologies/ms[MS]
+|NT=Trypsin;AC=MS:1001251
+
+|comment[fraction identifier]
+|Required
+|Fraction number (integer)
+|—
+|1, 2, 3
+
+|comment[technical replicate]
+|Required
+|Technical replicate identifier (integer)
+|—
+|1, 2
+
+|comment[data file]
+|Required
+|Name of the raw data file
+|—
+|sample_1.raw, run_001.mzML
+|===
+
+[[validators]]
+== Built-in Validators
+
+The default template includes these validation rules:
+
+|===
+|Validator |Description
+
+|min_columns |Minimum 12 columns required
+|trailing_whitespace_validator |No trailing whitespace in values
+|column_order |Columns must be in correct order
+|empty_cells |No empty cells allowed
+|combination_of_columns_no_duplicate_validator |No duplicate source name + assay name + label combinations
+|===
+
+[[special-values]]
+== Special Values
+
+|===
+|Value |When to Use
+
+|not applicable |The column doesn't apply to this sample type
+|not available |The information exists but is unknown
+|pooled |For biological replicate when samples are pooled
+|===
+
+[[validation]]
+== Validation
+
+Validate SDRF files using sdrf-pipelines:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template default
+----
+
+[[examples]]
+== Examples
+
+=== Minimal Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[technical replicate]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_1</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">sample_1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">2</td>
+<td class="data-col">run_2</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">sample_2.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[biological replicate] |assay name |technology type |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[cleavage agent details] |comment[fraction identifier] |comment[technical replicate] |comment[data file]
+
+|sample_1 |homo sapiens |liver |1 |run_1 |proteomic profiling by mass spectrometry |Data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |1 |sample_1.raw
+|sample_2 |homo sapiens |liver |2 |run_2 |proteomic profiling by mass spectrometry |Data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |1 |sample_2.raw
+|===
+endif::[]
+
+NOTE: This is the base template without disease annotation. For biological experiments, use organism-specific templates (human, vertebrates, plants, etc.) that include disease and other relevant columns.

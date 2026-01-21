@@ -1,8 +1,31 @@
 name: plants
-description: SDRF template for plant samples (Arabidopsis, crops, etc.)
+description: SDRF template for plant samples (Arabidopsis, crops, etc.). Must be combined with a technology template (ms-base or affinity-base).
 version: 1.1.0
-extends: default
+extends: base
+usable_alone: false
+layer: sample
 columns:
+  - name: characteristics[disease]
+    description: Disease state of the sample
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - efo
+            - doid
+            - pato
+          error_level: warning
+          description: The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.
+          examples:
+            - normal
+            - breast cancer
+            - diabetes mellitus
+            - Alzheimer disease
+
   - name: characteristics[developmental stage]
     description: Developmental stage of the plant
     requirement: recommended

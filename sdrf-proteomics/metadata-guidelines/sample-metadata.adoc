@@ -19,9 +19,9 @@ endif::[]
 
 This document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant).
 
-For human-specific metadata (disease staging, comorbidities, treatment history), see link:human-sample-metadata.adoc[Human Sample Metadata Guidelines].
+For human-specific metadata (disease staging, comorbidities, treatment history), see link:../templates/human/README.adoc[Human Sample Metadata Guidelines].
 
-**Version 1.0.0** - 2025-01
+**Version 1.1.0** - 2026-01
 
 == Organism
 
@@ -49,6 +49,15 @@ Use the scientific name in lowercase. The validator will map to the correct onto
 **Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] for mammals/vertebrates, https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)] for plants, https://www.ebi.ac.uk/ols4/ontologies/fbbt[FlyBase Anatomy (FBbt)] for Drosophila.
 
 Use lowercase for all values. For cell line samples, use `not applicable` or specify the tissue of origin (e.g., `cervix` for HeLa).
+
+[NOTE]
+====
+**Do NOT use `characteristics[tissue]`** - Use `characteristics[organism part]` instead.
+
+The `characteristics[tissue]` column should not be used as a replacement for `characteristics[organism part]`. When tissue-related columns are needed, they should be used alongside `characteristics[organism part]` for additional categorization (e.g., `characteristics[tissue supergroup]` for higher-level grouping).
+
+Always use `characteristics[organism part]` for specifying anatomical location or tissue type. Do not use `characteristics[tissue]` as a replacement.
+====
 
 |===
 |Value |UBERON ID |Description
@@ -169,6 +178,123 @@ For animal disease models, use the human disease name to facilitate cross-specie
 
 NOTE: APP/PS1 and db/db are common mouse disease models for Alzheimer's disease and type 2 diabetes respectively.
 
+[[phenotype-annotation]]
+== Phenotype
+
+**Column:** `characteristics[phenotype]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pato[PATO:0000001], https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651[EFO:0000651]
+
+**Requirement:** Optional
+
+Describes observable characteristics or traits of a sample that result from genotype, environment, and treatment interactions. Captures **how the sample behaves or appears**, not what disease it has.
+
+=== Key Distinction: Disease vs Phenotype vs Genotype
+
+Understanding the relationship between these concepts is critical for accurate annotation:
+
+|===
+|Column |Purpose |What it captures |Example
+
+|`characteristics[disease]` |Health condition |What disease/pathology is present |"breast cancer", "normal", "Alzheimer disease"
+|`characteristics[genotype]` |Genetic variant |What genetic variant is present |"KRAS G12D mutant", "wild type", "APP/PS1 transgenic"
+|`characteristics[phenotype]` |Observable trait |How the sample behaves/appears |"gefitinib sensitive", "high fat diet", "stress response"
+|===
+
+**Important:** These are complementary, not mutually exclusive:
+
+* A sample can have a **disease** (Alzheimer's) caused by a **genotype** (APP mutation) that results in a **phenotype** (amyloid accumulation)
+* A sample can have a **phenotype** (drug resistant) without a known **genotype** cause
+* A sample can have a **genotype** (transgenic) without an obvious **phenotype**
+
+=== Phenotype Categories
+
+**1. Drug Response Phenotypes**
+
+Used in pharmacoproteomics to describe drug sensitivity or resistance:
+
+[source]
+----
+characteristics[phenotype]: gefitinib sensitive
+characteristics[phenotype]: cisplatin resistant
+characteristics[phenotype]: tamoxifen resistant
+characteristics[phenotype]: sensitive to methotrexate
+----
+
+**2. Molecular Marker Phenotypes**
+
+Used for biomarker status in precision medicine studies:
+
+[source]
+----
+characteristics[phenotype]: HER2 positive
+characteristics[phenotype]: ER positive
+characteristics[phenotype]: ALDH+
+characteristics[phenotype]: CD34 positive
+----
+
+**3. Expression/Overexpression Phenotypes**
+
+Used to describe gene/protein expression characteristics:
+
+[source]
+----
+characteristics[phenotype]: overexpressing Neurogenin3
+characteristics[phenotype]: FOXP3 expression
+characteristics[phenotype]: RPS4 over-expression
+----
+
+**4. Functional Phenotypes**
+
+Used for differentiation states and functional traits:
+
+[source]
+----
+characteristics[phenotype]: undifferentiated
+characteristics[phenotype]: adipogenic
+characteristics[phenotype]: high protein content
+----
+
+**5. Environmental/Treatment Response Phenotypes**
+
+Used for model organism studies with environmental or dietary interventions:
+
+[source]
+----
+characteristics[phenotype]: high fat diet
+characteristics[phenotype]: caloric restriction
+characteristics[phenotype]: heat shock response
+characteristics[phenotype]: oxidative stress
+----
+
+=== Phenotype in Model Organisms
+
+Phenotype is particularly important for model organism studies where the same genotype may produce different phenotypes under different conditions:
+
+|===
+|source name |characteristics[organism] |characteristics[genotype] |characteristics[phenotype]
+
+|mouse_hfd_1 |mus musculus |wild type |high fat diet induced obesity
+|mouse_ctrl_1 |mus musculus |wild type |normal diet
+|zebrafish_hs_1 |danio rerio |hsp70:GFP transgenic |heat shock response
+|fly_stress_1 |drosophila melanogaster |wild type |oxidative stress
+|===
+
+=== When NOT to Use Phenotype
+
+* ❌ For disease names → Use `characteristics[disease]`
+* ❌ For genetic variants → Use `characteristics[genotype]`
+* ❌ For treatments applied → Use `characteristics[compound]` or `characteristics[treatment]`
+* ❌ For basic sample properties → Use appropriate specific column (age, sex, etc.)
+
+=== Proteomics Use Cases
+
+1. **Pharmacoproteomics:** Compare proteomes of drug-sensitive vs. drug-resistant samples
+2. **Precision Medicine:** Stratify samples by biomarker status (HER2+/HER2-, ER+/ER-)
+3. **Drug Response Studies:** Identify proteomic signatures of treatment response
+4. **Stem Cell Research:** Track proteomic changes during differentiation
+5. **Model Organism Studies:** Characterize phenotypic responses to environmental conditions
+
 == Cell Type
 
 **Column:** `characteristics[cell type]`
@@ -273,6 +399,108 @@ NOTE: For cell line samples, use `cell line` as the material type. The specific 
 |enrichment of phosphorylated Protein |Phosphoproteomics enrichment
 |not applicable |No PTM enrichment performed
 |===
+
+[[spiked-in-samples]]
+== Spiked-in Samples
+
+There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.
+
+To include information about the spiked compounds, use _characteristics[spiked compound]_. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:
+
+|===
+|Key |Meaning |Examples |Peptide |Protein |Mixture |Other
+
+|CT
+|Compound type
+|protein, peptide, mixture, other
+|REQUIRED
+|REQUIRED
+|REQUIRED
+|REQUIRED
+
+|QY
+|Quantity (molar or mass)
+|10 mg, 20 nmol
+|REQUIRED
+|REQUIRED
+|REQUIRED
+|REQUIRED
+
+|PS
+|Peptide sequence
+|PEPTIDESEQ
+|REQUIRED
+|-
+|-
+|-
+
+|AC
+|Uniprot Accession
+|A9WZ33
+|-
+|REQUIRED
+|-
+|-
+
+|CN
+|Compound name
+|iRT mixture, substance name
+|OPTIONAL
+|OPTIONAL
+|OPTIONAL
+|OPTIONAL
+
+|SP
+|Species
+|Escherichia coli K-12
+|OPTIONAL
+|OPTIONAL
+|OPTIONAL
+|OPTIONAL
+
+|CV
+|Compound vendor
+|in-house or vendor name
+|OPTIONAL
+|OPTIONAL
+|REQUIRED
+|OPTIONAL
+
+|CS
+|Compound specification URI
+|http://vendor.web.site/specs/kit.xlsx
+|OPTIONAL
+|OPTIONAL
+|OPTIONAL
+|OPTIONAL
+
+|CF
+|Compound formula
+|C2H2O
+|-
+|-
+|-
+|OPTIONAL
+|===
+
+In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as _characteristics[mass]_.
+
+=== Example: Spiked Peptide
+
+An example of SDRF-Proteomics for a sample spiked with a peptide would be:
+
+[%header,cols="1,2"]
+|===
+|characteristics[mass] |characteristics[spiked compound]
+
+|1 ug |CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
+|===
+
+For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
+
+=== Spiked Biological Samples
+
+If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample), then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of _characteristics[spiked compound]_ is optional in this case; if provided, it SHOULD be the string `spiked` for the spiked sample.
 
 == Best Practices
 

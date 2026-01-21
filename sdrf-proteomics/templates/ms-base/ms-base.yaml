@@ -1,0 +1,99 @@
+name: ms-base
+description: Base SDRF template for mass spectrometry-based proteomics. This is the minimum valid template for any MS experiment.
+version: 1.1.0
+extends: base
+usable_alone: true
+validators:
+  - validator_name: min_columns
+    params:
+      min_columns: 12
+  - validator_name: combination_of_columns_no_duplicate_validator
+    params:
+      column_name:
+        - source name
+        - assay name
+        - comment[label]
+      column_name_warning:
+        - source name
+        - assay name
+columns:
+  - name: comment[proteomics data acquisition method]
+    description: Mass spectrometry acquisition method
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - pride
+          error_level: error
+          description: The proteomics data acquisition method should be a valid PRIDE ontology term
+          examples:
+            - Data-dependent acquisition
+            - Data-independent acquisition
+            - Parallel reaction monitoring
+            - Selected reaction monitoring
+
+  - name: comment[instrument]
+    description: Mass spectrometer instrument used
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: single_cardinality_validator
+        params: {}
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+          error_level: error
+          description: The instrument should be a valid MS ontology term
+          examples:
+            - LTQ Orbitrap
+            - Q Exactive
+            - Orbitrap Fusion Lumos
+            - timsTOF Pro
+
+  - name: comment[cleavage agent details]
+    description: Enzyme or chemical used for protein digestion
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+          error_level: error
+          description: The cleavage agent details should be valid MS ontology terms
+          examples:
+            - NT=Trypsin;AC=MS:1001251
+            - NT=Lys-C;AC=MS:1001309
+            - NT=Chymotrypsin;AC=MS:1001306
+
+  - name: comment[label]
+    description: Labeling strategy used for quantification
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - pride
+          error_level: error
+          description: The label should be a valid PRIDE ontology term
+          examples:
+            - label free sample
+            - SILAC light
+            - SILAC heavy
+            - TMT126
+            - iTRAQ114
+
+  - name: comment[fraction identifier]
+    description: Fraction number for fractionated samples (integer, use 1 for non-fractionated)
+    requirement: required
+    type: integer
+    allow_not_applicable: false
+    allow_not_available: false

@@ -1,0 +1,318 @@
+= SDRF-Proteomics: Invertebrates Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0
+
+[[abstract]]
+== Abstract
+
+The invertebrates template provides standardized metadata fields for invertebrate proteomics experiments. This includes model organisms like Drosophila melanogaster and Caenorhabditis elegans, as well as other insects, worms, and invertebrate species.
+
+This template is appropriate for:
+
+* Drosophila (fruit fly) proteomics studies
+* C. elegans proteomics studies
+* Insect proteomics (bees, mosquitoes, etc.)
+* Marine invertebrate studies
+
+[[extends]]
+== Template Hierarchy
+
+[source]
+----
+base (construction artifact)
+  └── invertebrates (SAMPLE layer - must combine with TECHNOLOGY template)
+----
+
+The invertebrates template extends the **base** template, adding disease annotation and invertebrate-specific fields.
+
+[IMPORTANT]
+====
+The invertebrates template **cannot be used alone**. You must combine it with a technology template:
+
+* `ms-base` + `invertebrates` - For MS-based proteomics of invertebrate samples
+* `affinity-base` + `invertebrates` - For affinity proteomics of invertebrate samples
+====
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns
+
+All columns from the link:../base/README.adoc[base template] are inherited (source name, organism, organism part, biological replicate, assay name, technology type, instrument, technical replicate, data file). Technology-specific columns come from the technology template (`ms-base` or `affinity-base`).
+
+=== Invertebrates-Specific Columns
+
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|characteristics[disease]
+|Required
+|Disease state of the sample
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], https://www.ebi.ac.uk/ols4/ontologies/doid[DOID], https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
+|normal, breast cancer, diabetes mellitus
+
+|characteristics[developmental stage]
+|Recommended
+|Developmental stage of the organism
+|https://www.ebi.ac.uk/ols4/ontologies/fbdv[FBdv] (Drosophila), https://www.ebi.ac.uk/ols4/ontologies/wbls[WBls] (C. elegans), https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
+|adult stage, larval stage, pupal stage, embryonic stage
+
+|characteristics[strain/breed]
+|Optional
+|Strain of the organism
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBITaxon]
+|Oregon-R, w1118, N2, Canton-S
+
+|characteristics[genotype]
+|Optional
+|Genotype of the organism
+|—
+|wild type, daf-2(e1370), w[*]; P{GAL4}
+|===
+
+[[common-organisms]]
+== Common Invertebrate Organisms
+
+|===
+|Common Name |Scientific Name |NCBITaxon ID |Common Strains |Developmental Stage Ontology
+
+|Fruit fly |Drosophila melanogaster |NCBITaxon:7227 |Oregon-R, Canton-S, w1118 |FBdv
+|Nematode |Caenorhabditis elegans |NCBITaxon:6239 |N2, CB4856 |WBls
+|Honey bee |Apis mellifera |NCBITaxon:7460 |— |—
+|Mosquito |Anopheles gambiae |NCBITaxon:7165 |— |—
+|===
+
+[[developmental-stages]]
+== Developmental Stages
+
+=== Drosophila Stages (FBdv)
+
+|===
+|Stage |FBdv Term |Description
+
+|embryonic stage |FBdv:00005289 |Embryo development
+|larval stage |FBdv:00005336 |Larval instar stages (L1, L2, L3)
+|pupal stage |FBdv:00005349 |Metamorphosis
+|adult stage |FBdv:00005369 |Sexually mature adult
+|===
+
+=== C. elegans Stages (WBls)
+
+|===
+|Stage |WBls Term |Description
+
+|embryo Ce |WBls:0000003 |Embryonic development
+|L1 larva Ce |WBls:0000024 |First larval stage
+|L2 larva Ce |WBls:0000027 |Second larval stage
+|L3 larva Ce |WBls:0000035 |Third larval stage
+|L4 larva Ce |WBls:0000038 |Fourth larval stage
+|dauer larva Ce |WBls:0000032 |Dauer stage
+|adult Ce |WBls:0000041 |Adult stage
+|===
+
+[[genotype-notation]]
+== Genotype Notation
+
+=== Drosophila Genotype Format
+
+Drosophila genotypes follow a specific notation:
+
+[source]
+----
+# Wild type
+wild type
+
+# Single mutation
+w[1118]
+
+# Multiple alleles with GAL4/UAS system
+w[*]; P{GAL4-da.G32}
+----
+
+=== C. elegans Genotype Format
+
+C. elegans genotypes use allele notation:
+
+[source]
+----
+# Wild type
+wild type
+
+# Single mutation (gene-allele format)
+daf-2(e1370)
+
+# Multiple mutations
+daf-2(e1370); daf-16(mgDf50)
+----
+
+[[validation]]
+== Validation
+
+Validate SDRF files using sdrf-pipelines:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+sdrf_validate --sdrf_file your_file.sdrf.tsv --template invertebrates
+----
+
+[[examples]]
+== Examples
+
+=== Drosophila Study Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[developmental stage]</th>
+<th class="sample-col">characteristics[strain/breed]</th>
+<th class="sample-col">characteristics[genotype]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">drosophila melanogaster</td>
+<td class="sample-col">whole organism</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult stage</td>
+<td class="sample-col">Oregon-R</td>
+<td class="sample-col">wild type</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">drosophila melanogaster</td>
+<td class="sample-col">whole organism</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult stage</td>
+<td class="sample-col">Oregon-R</td>
+<td class="sample-col">wild type</td>
+<td class="sample-col">2</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">drosophila melanogaster</td>
+<td class="sample-col">whole organism</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult stage</td>
+<td class="sample-col">w1118</td>
+<td class="sample-col">w[1118]</td>
+<td class="sample-col">1</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[developmental stage] |characteristics[strain/breed] |characteristics[genotype] |characteristics[biological replicate]
+
+|sample_1 |drosophila melanogaster |whole organism |normal |adult stage |Oregon-R |wild type |1
+|sample_2 |drosophila melanogaster |whole organism |normal |adult stage |Oregon-R |wild type |2
+|sample_3 |drosophila melanogaster |whole organism |normal |adult stage |w1118 |w[1118] |1
+|===
+endif::[]
+
+=== C. elegans Study Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[developmental stage]</th>
+<th class="sample-col">characteristics[strain/breed]</th>
+<th class="sample-col">characteristics[genotype]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">caenorhabditis elegans</td>
+<td class="sample-col">whole organism</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult Ce</td>
+<td class="sample-col">N2</td>
+<td class="sample-col">wild type</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">caenorhabditis elegans</td>
+<td class="sample-col">whole organism</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult Ce</td>
+<td class="sample-col">N2</td>
+<td class="sample-col">wild type</td>
+<td class="sample-col">2</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">caenorhabditis elegans</td>
+<td class="sample-col">whole organism</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult Ce</td>
+<td class="sample-col">CB1370</td>
+<td class="sample-col">daf-2(e1370)</td>
+<td class="sample-col">1</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[developmental stage] |characteristics[strain/breed] |characteristics[genotype] |characteristics[biological replicate]
+
+|sample_1 |caenorhabditis elegans |whole organism |normal |adult Ce |N2 |wild type |1
+|sample_2 |caenorhabditis elegans |whole organism |normal |adult Ce |N2 |wild type |2
+|sample_3 |caenorhabditis elegans |whole organism |normal |adult Ce |CB1370 |daf-2(e1370) |1
+|===
+endif::[]

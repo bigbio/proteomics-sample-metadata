@@ -5,218 +5,382 @@
 
 == Introduction
 
-This directory contains SDRF templates for specific types of proteomics experiments. Templates are complete schemas that define columns needed for a specific type of experiment.
+This directory contains SDRF templates for proteomics experiments. Templates are schemas that define the columns needed for different experiment types, technologies, and organisms.
 
-SDRF-Proteomics uses a two-tier system for organizing templates:
+SDRF-Proteomics uses a **layered template system** that separates concerns:
 
-1. **Core Templates**: Organism-based base schemas (human, vertebrates, plants, etc.)
-2. **Specialized Templates**: Complete schemas for specific experiment types (cell-lines, single-cell, crosslinking, etc.)
+1. **BASE Layer**: Construction artifact with shared columns (not usable directly)
+2. **TECHNOLOGY Layer**: Minimum valid templates for MS or affinity proteomics
+3. **SAMPLE Layer**: Organism-specific metadata (human, vertebrates, plants, etc.)
+4. **EXPERIMENT Layer**: Experiment-type specific schemas (cell-lines, single-cell, etc.)
 
 Templates can be combined to capture the full metadata requirements of an experiment.
+
+== Template Architecture
+
+=== Understanding Template Layers
+
+[IMPORTANT]
+====
+**Not all templates can be used alone.** Understanding which templates are valid on their own is crucial:
+
+|===
+|Template |Layer |Valid Alone? |Must Combine With
+
+|`base`
+|BASE
+|*No*
+|Construction artifact - never used directly
+
+|`ms-base`
+|TECHNOLOGY
+|*Yes*
+|Minimum valid SDRF for MS proteomics
+
+|`affinity-base`
+|TECHNOLOGY
+|*Yes*
+|Minimum valid SDRF for affinity proteomics
+
+|`human`, `vertebrates`, `plants`, `invertebrates`
+|SAMPLE
+|*No*
+|Must combine with `ms-base` OR `affinity-base`
+
+|`cell-lines`, `single-cell`, `crosslinking`, etc.
+|EXPERIMENT
+|*No*
+|Must combine with TECHNOLOGY template (and often SAMPLE)
+|===
+====
+
+=== Template Hierarchy
+
+[source]
+----
+base (CONSTRUCTION ARTIFACT - not valid alone)
+  │   Shared columns: source name, organism, organism part,
+  │                   biological replicate, assay name, technology type,
+  │                   instrument, technical replicate, data file
+  │
+  ├── ms-base (MINIMUM VALID for MS proteomics)
+  │   │   Adds: acquisition method, cleavage agent, label, fraction identifier
+  │   │
+  │   ├── dda-acquisition (extends ms-base with DDA-specific columns)
+  │   ├── dia-acquisition (extends ms-base with DIA-specific columns)
+  │   ├── crosslinking (extends ms-base with XL-MS columns)
+  │   ├── single-cell (extends ms-base with SCP columns)
+  │   └── immunopeptidomics (extends ms-base with MHC-MS columns)
+  │
+  └── affinity-base (MINIMUM VALID for affinity proteomics)
+      │   Adds: affinity method, affinity reagent, panel name, quantification unit
+      │
+      └── affinity-proteomics (extends affinity-base with additional columns)
+
+Sample templates (combine with TECHNOLOGY templates):
+  ├── human (adds: disease, age, sex, ancestry)
+  ├── vertebrates (adds: disease, developmental stage, strain)
+  ├── invertebrates (adds: disease, developmental stage, genotype)
+  └── plants (adds: disease, developmental stage, growth conditions)
+
+Experiment templates (organism-agnostic):
+  └── cell-lines (adds: cell line name, Cellosaurus ID, passage number)
+----
 
 == Template Structure
 
 Each template directory contains:
 
 - `README.adoc` - Complete documentation including:
-  * Abstract and motivation for the template
+  * Status and version information
+  * Abstract and motivation
   * Checklist of required and recommended columns
   * Examples and best practices
   * Validation instructions
-- `{template-name}.sdrf.tsv` - Template file with column headers
+- `{template-name}.yaml` - Template configuration file
+- `{template-name}-template.sdrf.tsv` - Template file with column headers
 
 == Declaring Templates in SDRF Files
 
-Templates are declared in the file-level metadata header:
+Templates are declared in the file-level metadata header. You must always include at least one TECHNOLOGY template (`ms-base` or `affinity-base`):
 
 [source]
 ----
 #file_format=SDRF; version=v1.0.0
+#template=ms-base; version=v1.1.0
 #template=human; version=v1.1.0
-----
-
-Multiple templates can be combined:
-
-[source]
-----
-#file_format=SDRF; version=v1.0.0
-#template=human; version=v1.1.0
-#template=cell-lines; version=v1.0.0
-----
-
-Specialized templates can be combined with core templates:
-
-[source]
-----
-#file_format=SDRF; version=v1.0.0
-#template=human; version=v1.1.0
-#template=crosslinking; version=v1.0.0-dev
 ----
 
 == Available Templates
 
-=== Core Templates (Organism-based)
+=== Technology Templates (Required)
 
-Core templates provide organism-specific metadata columns. Choose the core template that matches your sample's organism.
+Technology templates define the data acquisition method. **You must use exactly one technology template.**
 
 |===
-|Template |Status |Version |Description |Files
+|Template |Status |Version |Description |Documentation |Valid Alone?
 
-|Default
+|MS-Base
 |Released
 |1.1.0
-|Basic template for any proteomics experiment
-|link:../core-templates/sdrf-default.sdrf.tsv[TSV]
+|Base template for all MS-based proteomics
+|link:ms-base/README.adoc[Docs]
+|*Yes* - minimum for MS
+
+|Affinity-Base
+|Released
+|1.1.0
+|Base template for affinity proteomics (Olink, SomaScan)
+|link:affinity-base/README.adoc[Docs]
+|*Yes* - minimum for affinity
+|===
+
+=== Sample Templates (Organism-based)
+
+Sample templates add organism-specific metadata columns. **Must be combined with a technology template.**
+
+|===
+|Template |Status |Version |Description |Documentation
 
 |Human
 |Released
 |1.1.0
 |Human samples with clinical metadata
-|link:../core-templates/sdrf-human.sdrf.tsv[TSV]
+|link:human/README.adoc[Docs]
 
 |Vertebrates
 |Released
 |1.1.0
-|Non-human vertebrate organisms
-|link:../core-templates/sdrf-vertebrates.sdrf.tsv[TSV]
+|Non-human vertebrate organisms (mouse, rat, zebrafish)
+|link:vertebrates/README.adoc[Docs]
 
 |Invertebrates
 |Released
 |1.1.0
 |Invertebrate organisms (Drosophila, C. elegans)
-|link:../core-templates/sdrf-invertebrates.sdrf.tsv[TSV]
+|link:invertebrates/README.adoc[Docs]
 
 |Plants
 |Released
 |1.1.0
 |Plant organisms (Arabidopsis, crops)
-|link:../core-templates/sdrf-plants.sdrf.tsv[TSV]
+|link:plants/README.adoc[Docs]
 |===
 
-=== Specialized Templates
+=== Experiment Templates
 
-Specialized templates provide complete schemas for specific experiment types. These can be combined with core templates.
+Experiment templates add experiment-specific columns. **Must be combined with appropriate technology and sample templates.**
 
 |===
-|Template |Status |Version |Description |Documentation |Template
+|Template |Status |Version |Description |Documentation |Requires
 
 |Cell Lines
 |Released
-|1.0.0
+|1.1.0
 |Cellosaurus-based cell line annotation
 |link:cell-lines/README.adoc[Docs]
-|link:cell-lines/cell-lines-template.sdrf.tsv[TSV]
+|TECHNOLOGY + SAMPLE (based on cell origin)
 
 |Affinity Proteomics
 |Draft
 |1.0.0-dev
-|Olink, SomaScan, Luminex, RPPA
+|Olink, SomaScan, Luminex, RPPA specific columns
 |link:affinity-proteomics/README.adoc[Docs]
-|link:affinity-proteomics/affinity-proteomics-template.sdrf.tsv[TSV]
+|affinity-base
 
 |Crosslinking
 |Draft
 |1.0.0-dev
 |XL-MS structural proteomics
 |link:crosslinking/README.adoc[Docs]
-|link:crosslinking/crosslinking-template.sdrf.tsv[TSV]
+|ms-base
 
-|DDA (Data-dependent acquisition)
+|DDA Acquisition
 |Draft
-|1.0.0-dev
+|1.1.0
 |DDA-specific acquisition parameters
 |link:dda-acquisition/README.adoc[Docs]
-|link:dda-acquisition/dda-acquisition-template.sdrf.tsv[TSV]
+|ms-base
 
-|DIA (Data-independent acquisition)
+|DIA Acquisition
 |Draft
-|1.0.0-dev
+|1.1.0
 |DIA/SWATH acquisition parameters
 |link:dia-acquisition/README.adoc[Docs]
-|link:dia-acquisition/dia-acquisition-template.sdrf.tsv[TSV]
+|ms-base
 
 |Immunopeptidomics
 |Draft
 |1.0.0-dev
 |MHC-bound peptide identification
 |link:immunopeptidomics/README.adoc[Docs]
-|link:immunopeptidomics/immunopeptidomics-template.sdrf.tsv[TSV]
+|ms-base
 
 |Metaproteomics
 |Draft
 |1.0.0-dev
 |Microbial community proteomics
 |link:metaproteomics/README.adoc[Docs]
-|link:metaproteomics/metaproteomics-template.sdrf.tsv[TSV]
+|ms-base
 
 |Single Cell
 |Draft
 |1.0.0-dev
 |Single cell proteomics (SCP)
 |link:single-cell/README.adoc[Docs]
-|link:single-cell/single-cell-template.sdrf.tsv[TSV]
+|ms-base
 |===
 
-TIP: **Released** templates are production-ready. **Draft** templates (version ending in `-dev`) are under active development and may change significantly.
+=== Construction Artifacts (Not for Direct Use)
+
+|===
+|Template |Purpose
+
+|Base
+|Shared columns inherited by all templates. **Never use directly.**
+
+|Default
+|Legacy template - use `ms-base` instead.
+|===
+
+TIP: **Released** templates are production-ready. **Draft** templates (version ending in `-dev`) are under active development and may change.
 
 == How to Use Templates
 
-=== Choosing Templates
+=== Step 1: Choose Your Technology Template
 
-1. **Start with a core template**: Choose the organism-based template that matches your samples (human, vertebrates, plants, etc.)
-2. **Add specialized templates**: If your experiment type has a specialized template (cell-lines, single-cell, crosslinking), add it
+First, determine your proteomics technology:
 
-=== Example Combinations
+- **Mass spectrometry?** Use `ms-base`
+- **Affinity proteomics (Olink, SomaScan)?** Use `affinity-base`
 
-**Human tissue proteomics:**
+=== Step 2: Add Sample Template (Recommended)
+
+Add the appropriate organism template for richer sample metadata:
+
+- Human samples → `human`
+- Mouse, rat, zebrafish → `vertebrates`
+- Drosophila, C. elegans → `invertebrates`
+- Arabidopsis, crops → `plants`
+
+=== Step 3: Add Experiment Templates (If Applicable)
+
+If your experiment type has a specialized template, add it:
+
+- Cell lines → `cell-lines`
+- Single-cell proteomics → `single-cell`
+- Crosslinking MS → `crosslinking`
+- DDA-specific parameters → `dda-acquisition`
+- DIA-specific parameters → `dia-acquisition`
+
+== Example Combinations
+
+=== MS-Based Proteomics
+
+**Minimal MS proteomics (ms-base only):**
 [source]
 ----
+#template=ms-base; version=v1.1.0
+----
+
+**Human tissue MS proteomics (recommended):**
+[source]
+----
+#template=ms-base; version=v1.1.0
 #template=human; version=v1.1.0
 ----
 
-**Human cell line proteomics:**
+**Human DDA proteomics with full parameters:**
 [source]
 ----
+#template=ms-base; version=v1.1.0
 #template=human; version=v1.1.0
-#template=cell-lines; version=v1.0.0
+#template=dda-acquisition; version=v1.1.0
 ----
 
-**Mouse single-cell proteomics:**
+**Mouse single-cell DIA proteomics:**
 [source]
 ----
+#template=ms-base; version=v1.1.0
 #template=vertebrates; version=v1.1.0
 #template=single-cell; version=v1.0.0-dev
+#template=dia-acquisition; version=v1.1.0
 ----
 
-**Human crosslinking mass spectrometry:**
+**Human cell line proteomics (HeLa):**
+[source]
+----
+#template=ms-base; version=v1.1.0
+#template=human; version=v1.1.0
+#template=cell-lines; version=v1.1.0
+----
+
+**Mouse cell line proteomics (NIH 3T3):**
+[source]
+----
+#template=ms-base; version=v1.1.0
+#template=vertebrates; version=v1.1.0
+#template=cell-lines; version=v1.1.0
+----
+
+**Insect cell line proteomics (Sf9):**
+[source]
+----
+#template=ms-base; version=v1.1.0
+#template=invertebrates; version=v1.1.0
+#template=cell-lines; version=v1.1.0
+----
+
+=== Affinity-Based Proteomics
+
+**Minimal Olink proteomics (affinity-base only):**
+[source]
+----
+#template=affinity-base; version=v1.1.0
+----
+
+**Human Olink proteomics (recommended):**
+[source]
+----
+#template=affinity-base; version=v1.1.0
+#template=human; version=v1.1.0
+----
+
+**Human SomaScan proteomics:**
+[source]
+----
+#template=affinity-base; version=v1.1.0
+#template=human; version=v1.1.0
+#template=affinity-proteomics; version=v1.0.0-dev
+----
+
+=== Invalid Combinations
+
+[WARNING]
+====
+The following combinations are **invalid**:
+
 [source]
 ----
 #template=human; version=v1.1.0
-#template=crosslinking; version=v1.0.0-dev
 ----
+*Error: Missing technology template (ms-base or affinity-base)*
 
-**Human immunopeptidomics:**
 [source]
 ----
-#template=human; version=v1.1.0
-#template=immunopeptidomics; version=v1.0.0-dev
+#template=base; version=v1.1.0
 ----
+*Error: base is a construction artifact, not usable directly*
 
-**Human DIA proteomics:**
 [source]
 ----
-#template=human; version=v1.1.0
-#template=dia-acquisition; version=v1.0.0-dev
+#template=ms-base; version=v1.1.0
+#template=affinity-base; version=v1.1.0
 ----
+*Error: Cannot combine two technology templates*
+====
 
-**Human DDA deep proteome profiling:**
-[source]
-----
-#template=human; version=v1.1.0
-#template=dda-acquisition; version=v1.0.0-dev
-----
-
-=== Validation
+== Validation
 
 Templates can be validated using the sdrf-pipelines tool:
 
@@ -226,11 +390,11 @@ pip install sdrf-pipelines
 parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template <template-name>
 ----
 
-Where `<template-name>` is one of: `default`, `human`, `cell-line`, `vertebrates`, `invertebrates`, `plants`, `single-cell`, `affinity-proteomics`, `crosslinking`, `dda-acquisition`, `dia-acquisition`, `immunopeptidomics`, `metaproteomics`.
+Where `<template-name>` is one of: `ms-base`, `affinity-base`, `human`, `vertebrates`, `invertebrates`, `plants`, `cell-lines`, `single-cell`, `affinity-proteomics`, `crosslinking`, `dda-acquisition`, `dia-acquisition`, `immunopeptidomics`, `metaproteomics`.
 
 == Template Versioning
 
-Templates follow an independent versioning scheme from the main specification, allowing them to evolve at different rates.
+Templates follow semantic versioning, independent from the main specification.
 
 === Status and Version Numbering
 
@@ -238,14 +402,14 @@ Templates follow an independent versioning scheme from the main specification, a
 |Status |Version Format |Stability |Recommended Use
 
 |Released
-|X.Y.Z (e.g., 1.0.0)
-|Stable API, backward-compatible only
+|X.Y.Z (e.g., 1.1.0)
+|Stable API, backward-compatible
 |Production, repository submissions
 
 |Draft
 |X.Y.Z-dev (e.g., 1.0.0-dev)
-|Under active development, may change significantly
-|Experimentation only, feedback welcome
+|Under active development
+|Experimentation, feedback welcome
 |===
 
 === Semantic Versioning
@@ -254,15 +418,16 @@ Templates follow an independent versioning scheme from the main specification, a
 * **MINOR** (1.0 → 1.1): New optional columns, non-breaking changes
 * **PATCH** (1.0.0 → 1.0.1): Documentation fixes, clarifications
 
-TIP: When submitting to repositories like PRIDE, use Released templates. Draft templates (with `-dev` suffix) require coordination with curators.
+TIP: When submitting to repositories like PRIDE, use Released templates. Draft templates require coordination with curators.
 
 == Adding New Templates
 
 To propose a new template:
 
-1. Create an issue on the GitHub repository describing the experiment type and its specific metadata requirements
+1. Create an issue on the GitHub repository describing the experiment type and its metadata requirements
 2. Develop a draft template following the established structure:
-   * README.adoc with all standard sections (Status, Abstract, Motivation, Checklist, Examples, Best Practices, etc.)
+   * README.adoc with all standard sections
+   * YAML configuration file
    * Template TSV file with column headers
 3. Create a pull request against the `dev` branch
 

@@ -1,0 +1,271 @@
+= SDRF-Proteomics: Affinity-Base Template
+:sectnums:
+:toc: left
+:doctype: book
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0
+
+[[abstract]]
+== Abstract
+
+The Affinity-Base template is the **minimum valid SDRF template** for affinity-based proteomics experiments. It includes all columns necessary to describe an affinity proteomics dataset.
+
+This template is appropriate for:
+
+* Olink proteomics (PEA technology)
+* SomaScan proteomics (aptamer-based)
+* Luminex assays (bead-based)
+* RPPA (Reverse Phase Protein Array)
+* ELISA-based proteomics
+* Other antibody or aptamer-based protein detection
+
+[[hierarchy]]
+== Template Hierarchy
+
+[source]
+----
+base
+  └── affinity-base (THIS TEMPLATE)
+        │
+        └── affinity-proteomics (additional affinity-specific columns)
+----
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns (from base)
+
+|===
+|Column Name |Requirement |Description
+
+|source name |Required |Unique identifier for the biological sample
+|characteristics[organism] |Required |Species (NCBI Taxonomy)
+|characteristics[organism part] |Required |Anatomical part
+|characteristics[cell type] |Recommended |Cell type
+|characteristics[biological replicate] |Required |Biological replicate number
+|assay name |Required |Unique identifier for the assay run
+|technology type |Required |"protein expression profiling by antibody array" or "protein expression profiling by aptamer array"
+|comment[technical replicate] |Recommended |Technical replicate number
+|comment[data file] |Required |Data file name
+|===
+
+=== Affinity-Specific Columns
+
+|===
+|Column Name |Requirement |Description |Example Values
+
+|comment[instrument]
+|Required
+|Affinity platform/instrument used
+|Olink Explore HT, SomaScan Assay 7K, Luminex 200
+
+|characteristics[affinity method]
+|Required
+|Affinity proteomics platform
+|Olink, SomaScan, Luminex, RPPA, ELISA
+
+|characteristics[affinity reagent]
+|Required
+|Type of affinity reagent
+|antibody, aptamer, nanobody, affimer
+
+|comment[panel name]
+|Recommended
+|Commercial panel name
+|Olink Explore 3072, SomaScan 7K, Luminex Human Cytokine Panel
+
+|comment[quantification unit]
+|Recommended
+|Unit of quantification
+|NPX, RFU, MFI, pg/mL
+|===
+
+=== Columns NOT in This Template
+
+[NOTE]
+====
+The following MS-specific columns are **NOT** included in affinity templates:
+
+* `comment[proteomics data acquisition method]` - No MS acquisition
+* `comment[cleavage agent details]` - No protein digestion
+* `comment[label]` - No isotopic labeling
+* `comment[fraction identifier]` - No fractionation
+====
+
+[[usage]]
+== Usage
+
+=== Minimal Affinity Proteomics
+
+[source]
+----
+#template=affinity-base; version=v1.1.0
+----
+
+=== With Sample Metadata (Recommended)
+
+[source]
+----
+#template=affinity-base; version=v1.1.0
+#template=human; version=v1.1.0
+----
+
+=== With Additional Affinity Parameters
+
+[source]
+----
+#template=affinity-base; version=v1.1.0
+#template=human; version=v1.1.0
+#template=affinity-proteomics; version=v1.0.0-dev
+----
+
+[[validation]]
+== Validation
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template affinity-base
+----
+
+[[example]]
+== Example
+
+=== Olink Proteomics Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="sample-col">characteristics[affinity method]</th>
+<th class="sample-col">characteristics[affinity reagent]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[panel name]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">1</td>
+<td class="sample-col">Olink</td>
+<td class="sample-col">antibody</td>
+<td class="data-col">run_1</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 3072</td>
+<td class="data-col">NPX</td>
+<td class="data-col">sample1_olink.parquet</td>
+</tr>
+</tbody>
+</table>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[biological replicate] |characteristics[affinity method] |characteristics[affinity reagent] |assay name |technology type |comment[instrument] |comment[panel name] |comment[quantification unit] |comment[data file]
+
+|sample_1 |homo sapiens |blood plasma |1 |Olink |antibody |run_1 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 3072 |NPX |sample1_olink.parquet
+|===
+endif::[]
+
+=== SomaScan Proteomics Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="sample-col">characteristics[affinity method]</th>
+<th class="sample-col">characteristics[affinity reagent]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[panel name]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood serum</td>
+<td class="sample-col">1</td>
+<td class="sample-col">SomaScan</td>
+<td class="sample-col">aptamer</td>
+<td class="data-col">run_1</td>
+<td class="data-col">protein expression profiling by aptamer array</td>
+<td class="data-col">SomaScan Assay 7K</td>
+<td class="data-col">SomaScan 7K v4.1</td>
+<td class="data-col">RFU</td>
+<td class="data-col">sample1_somascan.adat</td>
+</tr>
+</tbody>
+</table>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[biological replicate] |characteristics[affinity method] |characteristics[affinity reagent] |assay name |technology type |comment[instrument] |comment[panel name] |comment[quantification unit] |comment[data file]
+
+|sample_1 |homo sapiens |blood serum |1 |SomaScan |aptamer |run_1 |protein expression profiling by aptamer array |SomaScan Assay 7K |SomaScan 7K v4.1 |RFU |sample1_somascan.adat
+|===
+endif::[]
+
+[[instruments]]
+== Common Affinity Instruments
+
+|===
+|Platform |Instrument Examples |Quantification Unit
+
+|Olink
+|Olink Explore HT, Olink Signature Q100, Olink Flex
+|NPX (Normalized Protein eXpression)
+
+|SomaScan
+|SomaScan Assay 7K, Agilent Microarray Scanner
+|RFU (Relative Fluorescence Units)
+
+|Luminex
+|Luminex 200, MAGPIX, FLEXMAP 3D
+|MFI (Median Fluorescence Intensity)
+
+|MSD
+|MESO QuickPlex SQ 120, MESO SECTOR S 600
+|Signal intensity
+|===
+
+[[related]]
+== Related Templates
+
+* link:../base/README.adoc[Base Template] - Parent template (construction artifact)
+* link:../affinity-proteomics/README.adoc[Affinity Proteomics] - Additional affinity-specific columns
+* link:../human/README.adoc[Human Template] - Human sample metadata

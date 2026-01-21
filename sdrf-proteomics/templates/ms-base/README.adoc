@@ -1,0 +1,190 @@
+= SDRF-Proteomics: MS-Base Template
+:sectnums:
+:toc: left
+:doctype: book
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0
+
+[[abstract]]
+== Abstract
+
+The MS-Base template is the **minimum valid SDRF template** for mass spectrometry-based proteomics experiments. It includes all columns necessary to describe an MS proteomics dataset.
+
+This template is appropriate for:
+
+* DDA (Data-Dependent Acquisition) proteomics
+* DIA (Data-Independent Acquisition) proteomics
+* Targeted proteomics (SRM/MRM/PRM)
+* Any experiment using mass spectrometry for protein/peptide detection
+
+[[hierarchy]]
+== Template Hierarchy
+
+[source]
+----
+base
+  └── ms-base (THIS TEMPLATE)
+        │
+        ├── dda-acquisition (DDA-specific columns)
+        ├── dia-acquisition (DIA-specific columns)
+        ├── crosslinking (XL-MS columns)
+        ├── single-cell (SCP columns)
+        └── immunopeptidomics (MHC-MS columns)
+----
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns (from base)
+
+|===
+|Column Name |Requirement |Description
+
+|source name |Required |Unique identifier for the biological sample
+|characteristics[organism] |Required |Species (NCBI Taxonomy)
+|characteristics[organism part] |Required |Anatomical part
+|characteristics[cell type] |Recommended |Cell type
+|characteristics[biological replicate] |Required |Biological replicate number
+|assay name |Required |Unique identifier for the MS run
+|technology type |Required |"proteomic profiling by mass spectrometry"
+|comment[technical replicate] |Recommended |Technical replicate number
+|comment[data file] |Required |Raw data file name
+|===
+
+=== MS-Specific Columns
+
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|comment[instrument]
+|Required
+|Mass spectrometer used
+|https://www.ebi.ac.uk/ols4/ontologies/ms[MS]
+|Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro
+
+|comment[proteomics data acquisition method]
+|Required
+|MS acquisition method
+|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE]
+|Data-dependent acquisition, Data-independent acquisition
+
+|comment[cleavage agent details]
+|Required
+|Enzyme used for digestion
+|https://www.ebi.ac.uk/ols4/ontologies/ms[MS]
+|NT=Trypsin;AC=MS:1001251
+
+|comment[label]
+|Required
+|Labeling strategy
+|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE]
+|label free sample, TMT126, SILAC heavy
+
+|comment[fraction identifier]
+|Required
+|Fraction number (1 for non-fractionated)
+|—
+|1, 2, 3
+|===
+
+[[usage]]
+== Usage
+
+=== Minimal MS Proteomics
+
+[source]
+----
+#template=ms-base; version=v1.1.0
+----
+
+=== With Sample Metadata (Recommended)
+
+[source]
+----
+#template=ms-base; version=v1.1.0
+#template=human; version=v1.1.0
+----
+
+=== With Acquisition-Specific Parameters
+
+[source]
+----
+#template=ms-base; version=v1.1.0
+#template=human; version=v1.1.0
+#template=dda-acquisition; version=v1.1.0
+----
+
+[[validation]]
+== Validation
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template ms-base
+----
+
+[[example]]
+== Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_1</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">sample1.raw</td>
+</tr>
+</tbody>
+</table>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[biological replicate] |assay name |technology type |comment[instrument] |comment[proteomics data acquisition method] |comment[cleavage agent details] |comment[label] |comment[fraction identifier] |comment[data file]
+
+|sample_1 |homo sapiens |liver |1 |run_1 |proteomic profiling by mass spectrometry |Q Exactive HF |Data-dependent acquisition |NT=Trypsin;AC=MS:1001251 |label free sample |1 |sample1.raw
+|===
+endif::[]
+
+[[related]]
+== Related Templates
+
+* link:../base/README.adoc[Base Template] - Parent template (construction artifact)
+* link:../dda-acquisition/README.adoc[DDA Acquisition] - DDA-specific columns
+* link:../dia-acquisition/README.adoc[DIA Acquisition] - DIA-specific columns
+* link:../human/README.adoc[Human Template] - Human sample metadata

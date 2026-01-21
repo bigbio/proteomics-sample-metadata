@@ -1,0 +1,214 @@
+= SDRF-Proteomics: Vertebrates Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0
+
+[[abstract]]
+== Abstract
+
+The vertebrates template provides standardized metadata fields for non-human vertebrate proteomics experiments. This includes mammals (mouse, rat, etc.), birds, fish, reptiles, and amphibians.
+
+This template is appropriate for:
+
+* Mouse and rat proteomics studies
+* Model organism research (zebrafish, Xenopus)
+* Livestock and agricultural animal studies
+* Wildlife and comparative proteomics
+
+[[extends]]
+== Template Hierarchy
+
+[source]
+----
+base (construction artifact)
+  └── vertebrates (SAMPLE layer - must combine with TECHNOLOGY template)
+----
+
+The vertebrates template extends the **base** template, adding disease annotation and vertebrate-specific fields.
+
+[IMPORTANT]
+====
+The vertebrates template **cannot be used alone**. You must combine it with a technology template:
+
+* `ms-base` + `vertebrates` - For MS-based proteomics of vertebrate samples
+* `affinity-base` + `vertebrates` - For affinity proteomics of vertebrate samples
+====
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns
+
+All columns from the link:../base/README.adoc[base template] are inherited (source name, organism, organism part, biological replicate, assay name, technology type, instrument, technical replicate, data file). Technology-specific columns come from the technology template (`ms-base` or `affinity-base`).
+
+=== Vertebrates-Specific Columns
+
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|characteristics[disease]
+|Required
+|Disease state of the sample
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], https://www.ebi.ac.uk/ols4/ontologies/doid[DOID], https://www.ebi.ac.uk/ols4/ontologies/pato[PATO]
+|normal, breast cancer, diabetes mellitus
+
+|characteristics[developmental stage]
+|Recommended
+|Developmental stage of the organism
+|https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
+|adult, embryo, juvenile, larval stage
+
+|characteristics[strain/breed]
+|Optional
+|Strain or breed of the organism
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBITaxon]
+|C57BL/6, Sprague-Dawley, BALB/c
+
+|characteristics[sex]
+|Optional
+|Biological sex of the organism
+|—
+|male, female, hermaphrodite, not available, not applicable
+|===
+
+[[common-organisms]]
+== Common Vertebrate Organisms
+
+|===
+|Common Name |Scientific Name |NCBITaxon ID |Common Strains/Breeds
+
+|Mouse |Mus musculus |NCBITaxon:10090 |C57BL/6, BALB/c, 129S1
+|Rat |Rattus norvegicus |NCBITaxon:10116 |Sprague-Dawley, Wistar, Lewis
+|Zebrafish |Danio rerio |NCBITaxon:7955 |AB, TL, WIK
+|Pig |Sus scrofa |NCBITaxon:9823 |Large White, Duroc
+|Chicken |Gallus gallus |NCBITaxon:9031 |—
+|Xenopus |Xenopus laevis |NCBITaxon:8355 |—
+|===
+
+[[developmental-stages]]
+== Developmental Stages
+
+Common developmental stage terms for vertebrates:
+
+|===
+|Stage |EFO/UBERON Term |Description
+
+|adult |EFO:0001272 |Sexually mature organism
+|embryo |UBERON:0000068 |Organism in early development
+|juvenile |EFO:0001303 |Post-embryonic, pre-adult
+|neonate |EFO:0001375 |Newborn
+|fetus |UBERON:0000323 |Late embryonic stage (mammals)
+|===
+
+[[validation]]
+== Validation
+
+Validate SDRF files using sdrf-pipelines:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+sdrf_validate --sdrf_file your_file.sdrf.tsv --template vertebrates
+----
+
+[[examples]]
+== Examples
+
+=== Mouse Study Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[developmental stage]</th>
+<th class="sample-col">characteristics[strain/breed]</th>
+<th class="sample-col">characteristics[sex]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">male</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">male</td>
+<td class="sample-col">2</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">female</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_4</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">female</td>
+<td class="sample-col">2</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[developmental stage] |characteristics[strain/breed] |characteristics[sex] |characteristics[biological replicate]
+
+|sample_1 |mus musculus |liver |normal |adult |C57BL/6 |male |1
+|sample_2 |mus musculus |liver |normal |adult |C57BL/6 |male |2
+|sample_3 |mus musculus |liver |normal |adult |C57BL/6 |female |1
+|sample_4 |mus musculus |liver |normal |adult |C57BL/6 |female |2
+|===
+endif::[]

@@ -1,8 +1,31 @@
 name: human
-description: Human SDRF template with human-specific metadata fields
+description: Human SDRF template with human-specific sample metadata fields. Must be combined with a technology template (ms-base or affinity-base).
 version: 1.1.0
-extends: default
+extends: base
+usable_alone: false
+layer: sample
 columns:
+  - name: characteristics[disease]
+    description: Disease state of the sample
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - efo
+            - doid
+            - pato
+          error_level: warning
+          description: The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.
+          examples:
+            - normal
+            - breast cancer
+            - diabetes mellitus
+            - Alzheimer disease
+
   - name: characteristics[ancestry category]
     description: Ancestry or ethnic background of the donor
     requirement: recommended
