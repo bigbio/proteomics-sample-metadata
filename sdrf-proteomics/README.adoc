@@ -1400,6 +1400,8 @@ Templates in SDRF-Proteomics follow a **layered architecture** that separates co
 |No - must combine with TECHNOLOGY
 |===
 
+TIP: The **base** template is an internal construction artifact that defines shared columns inherited by all other templates. It should never be used directly by users. This specification document itself serves as the documentation for base template columns - all columns defined in the <<from-sample-metadata,sample metadata>> and <<from-sample-data,data file metadata>> sections are inherited by technology and sample templates.
+
 **Key concepts:**
 
 - **Technology templates** (`ms-base` or `affinity-base`) are **required** - you must use exactly one
@@ -1415,18 +1417,33 @@ Templates form a layered inheritance hierarchy. Child templates inherit all colu
 
 [source]
 ----
-base                           # Core columns for all SDRF files
-├── ms-base                    # Mass spectrometry technology
-│   ├── dda-acquisition       # DDA-specific columns
-│   ├── dia-acquisition       # DIA-specific columns
-│   └── crosslinking          # XL-MS-specific columns
-├── affinity-base              # Affinity proteomics technology
-│   └── affinity-proteomics   # Platform-specific columns
-├── human                      # Human sample metadata
-├── vertebrates                # Vertebrate sample metadata
-├── invertebrates              # Invertebrate sample metadata
-├── plants                     # Plant sample metadata
-└── cell-lines                 # Cell line sample metadata
+base (CONSTRUCTION ARTIFACT - not valid alone)
+  │   Shared columns: source name, organism, organism part,
+  │                   biological replicate, assay name, technology type,
+  │                   instrument, technical replicate, data file
+  │
+  ├── ms-base (MINIMUM VALID for MS proteomics)
+  │   │   Adds: acquisition method, cleavage agent, label, fraction identifier
+  │   │
+  │   ├── dda-acquisition (extends ms-base with DDA-specific columns)
+  │   ├── dia-acquisition (extends ms-base with DIA-specific columns)
+  │   ├── crosslinking (extends ms-base with XL-MS columns)
+  │   ├── single-cell (extends ms-base with SCP columns)
+  │   └── immunopeptidomics (extends ms-base with MHC-MS columns)
+  │
+  └── affinity-base (MINIMUM VALID for affinity proteomics)
+      │   Adds: affinity method, affinity reagent, panel name, quantification unit
+      │
+      └── affinity-proteomics (extends affinity-base with additional columns)
+
+Sample templates (combine with TECHNOLOGY templates):
+  ├── human (adds: disease, age, sex, ancestry)
+  ├── vertebrates (adds: disease, developmental stage, strain)
+  ├── invertebrates (adds: disease, developmental stage, genotype)
+  └── plants (adds: disease, developmental stage, growth conditions)
+
+Experiment templates (organism-agnostic):
+  └── cell-lines (adds: cell line name, Cellosaurus ID, passage number)
 ----
 
 **Inheritance rules:**
@@ -1457,7 +1474,7 @@ First, determine your proteomics technology and select the appropriate technolog
 | **Yes** - minimum for affinity
 |===
 
-=== Sample Templates
+=== Core Templates
 
 Add the appropriate sample template based on your sample organism:
 
@@ -1542,61 +1559,10 @@ Add custom columns when your experiment requires metadata that is:
 
 ==== Common Additional Columns
 
-The following columns are not required by templates but are commonly used and recommended for specific study types:
+Beyond template requirements, many commonly used columns can enhance your SDRF file. For a comprehensive list of additional columns for sample metadata (treatment, time point, dose, BMI, smoking status, etc.) and data metadata (sample preparation, enrichment method, etc.), see:
 
-|===
-|Column |Category |Description |Example Values |When to Use
-
-|characteristics[material type]
-|Sample
-|Type of biological material (derived from https://www.fged.org/projects/mage-tab/[MAGE-TAB])
-|tissue, cell, cell line, organism part, whole organism, synthetic
-|Cross-omics integration, clarifying sample origin
-
-|characteristics[treatment]
-|Sample
-|Treatment applied to the sample
-|dexamethasone, vehicle control, untreated
-|Drug treatment studies
-
-|characteristics[time point]
-|Sample
-|Time of sample collection
-|0h, 24h, 7d, baseline
-|Time-course experiments
-
-|characteristics[dose]
-|Sample
-|Dose of treatment if applicable
-|10 mg/kg, 100 nM, high dose
-|Dose-response studies
-
-|characteristics[patient bmi]
-|Sample
-|Body mass index (for human studies)
-|25.3 kg/m2, 30.1 kg/m2
-|Metabolic or obesity-related studies
-
-|characteristics[smoking status]
-|Sample
-|Smoking history of the patient
-|never smoked, current smoker, former smoker
-|Lung or cardiovascular studies
-
-|comment[sample preparation]
-|Data
-|Sample preparation method details
-|in-solution digestion, FASP, SP3
-|Detailed protocol documentation
-
-|comment[enrichment method]
-|Data
-|Enrichment or depletion strategy
-|phosphopeptide enrichment, glycopeptide enrichment
-|PTM-focused studies
-|===
-
-See link:metadata-guidelines/sample-metadata.html#material-type[Material Type Guidelines] for detailed guidance on the `characteristics[material type]` column.
+* link:metadata-guidelines/sample-metadata.html#common-additional-columns[Common Additional Columns] in the Sample Metadata Guidelines
+* link:sdrf-terms.html[SDRF Terms Reference] for a comprehensive list of commonly used terms
 
 ==== Example: Adding Study-Specific Columns
 
@@ -1900,41 +1866,49 @@ SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize
 [[example-annotated-datasets]]
 == Examples of Annotated Datasets
 
-The following table provides links to example SDRF files for different experiment types. These can serve as references when creating your own SDRF files.
+The following table provides links to example SDRF files for different experiment types. Click "View in Explorer" to open the SDRF file in the interactive viewer.
 
 |===
-|Experiment Type |Dataset |Description |SDRF URL
+|Experiment Type |Dataset |Description |View |Source
 
 |Label-free
 |PXD008934
 |Human proteome label-free quantification
-|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD008934[View SDRF]
+|link:sdrf-explorer.html?view=PXD008934[View in Explorer]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD008934[GitHub]
 
 |TMT
 |PXD017710
 |TMT-labeled quantitative proteomics
-|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710[View SDRF]
+|link:sdrf-explorer.html?view=PXD017710[View in Explorer]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710[GitHub]
 
 |SILAC
 |PXD000612
 |SILAC-based quantification
-|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000612[View SDRF]
+|link:sdrf-explorer.html?view=PXD000612[View in Explorer]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000612[GitHub]
 
 |DIA
 |PXD018830
 |Data-independent acquisition
-|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD018830[View SDRF]
+|link:sdrf-explorer.html?view=PXD018830[View in Explorer]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD018830[GitHub]
 
 |Phosphoproteomics
 |PXD000759
 |PTM enrichment study
-|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000759[View SDRF]
+|link:sdrf-explorer.html?view=PXD000759[View in Explorer]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000759[GitHub]
 
 |Cell lines
 |PXD001819
 |Cell line proteomics
-|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD001819[View SDRF]
+|link:sdrf-explorer.html?view=PXD001819[View in Explorer]
+|https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD001819[GitHub]
 |===
+
+TIP: Use the link:sdrf-explorer.html[SDRF Explorer] to browse all {total_datasets}+ annotated datasets with filtering, statistics, and interactive viewing.
 
 A comprehensive collection of annotated projects is available at: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects Repository]
 

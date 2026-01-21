@@ -6,100 +6,27 @@
 [[status]]
 == Status
 
-**Status:** Construction Artifact
+**Status:** Internal Construction Artifact
 
-**Version:** 1.1.0
+**Version:** 1.1.0 - 2026-01
 
-[WARNING]
+[IMPORTANT]
 ====
-**This template cannot be used directly.** It is a construction artifact that defines shared columns inherited by all other templates. Use `ms-base` or `affinity-base` instead.
+**This template cannot be used directly.** It is an internal construction artifact that defines shared columns inherited by all other templates.
+
+For documentation of base columns, see the link:../../README.adoc[main SDRF-Proteomics specification], specifically the sample metadata and data file metadata sections.
 ====
-
-[[abstract]]
-== Abstract
-
-The base template defines the universal columns shared by ALL proteomics experiments, regardless of technology (MS or affinity-based). It serves as the foundation upon which technology-specific templates are built.
-
-This template exists to:
-
-* Centralize shared column definitions
-* Ensure consistency across technology templates
-* Simplify maintenance of common metadata requirements
-
-[[hierarchy]]
-== Template Hierarchy
-
-[source]
-----
-base (THIS TEMPLATE - not usable directly)
-  │
-  ├── ms-base (MINIMUM VALID for MS proteomics)
-  │
-  └── affinity-base (MINIMUM VALID for affinity proteomics)
-----
-
-[[columns]]
-== Columns Defined
-
-The base template defines these shared columns:
-
-|===
-|Column Name |Requirement |Description
-
-|source name
-|Required
-|Unique identifier for the biological sample
-
-|characteristics[organism]
-|Required
-|Species of the sample (NCBI Taxonomy)
-
-|characteristics[organism part]
-|Required
-|Anatomical part from which sample was derived
-
-|characteristics[cell type]
-|Recommended
-|Cell type of the sample
-
-|characteristics[biological replicate]
-|Required
-|Biological replicate identifier
-
-|assay name
-|Required
-|Unique identifier for the data acquisition run
-
-|technology type
-|Required
-|Type of technology used
-
-|comment[instrument]
-|Required
-|Instrument used for data acquisition (MS or affinity platform)
-
-|comment[technical replicate]
-|Recommended
-|Technical replicate identifier
-
-|comment[data file]
-|Required
-|Name of the raw data file
-|===
 
 [[usage]]
 == Usage
 
-[IMPORTANT]
-====
-**Do not use this template directly.** Instead, use:
+Use one of the following technology templates instead:
 
-* `ms-base` - For mass spectrometry-based proteomics
-* `affinity-base` - For affinity-based proteomics (Olink, SomaScan)
-====
+* link:../ms-base/README.adoc[MS-Base Template] - For mass spectrometry-based proteomics
+* link:../affinity-base/README.adoc[Affinity-Base Template] - For affinity-based proteomics (Olink, SomaScan)
 
-[[related]]
-== Related Templates
+[[files]]
+== Template Files
 
-* link:../ms-base/README.adoc[MS-Base Template] - Minimum valid template for MS proteomics
-* link:../affinity-base/README.adoc[Affinity-Base Template] - Minimum valid template for affinity proteomics
+* `base.yaml` - YAML template definition for validation
+* `base-template.sdrf.tsv` - Column header template

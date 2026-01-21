@@ -8,7 +8,7 @@
 
 **Status:** Released
 
-**Version:** 1.1.0
+**Version:** 1.1.0 - 2026-01
 
 [[abstract]]
 == Abstract
@@ -40,50 +40,136 @@ base
 
 === Inherited Columns (from base)
 
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the biological sample</td>
+</tr>
+<tr>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species (NCBI Taxonomy)</td>
+</tr>
+<tr>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Anatomical part</td>
+</tr>
+<tr>
+<td><code>characteristics[cell type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Cell type</td>
+</tr>
+<tr>
+<td><code>characteristics[biological replicate]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological replicate number</td>
+</tr>
+<tr>
+<td><code>assay name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the assay run</td>
+</tr>
+<tr>
+<td><code>technology type</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>"protein expression profiling by antibody array" or "protein expression profiling by aptamer array"</td>
+</tr>
+<tr>
+<td><code>comment[technical replicate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Technical replicate number</td>
+</tr>
+<tr>
+<td><code>comment[data file]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Data file name</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,3", options="header"]
 |===
 |Column Name |Requirement |Description
 
-|source name |Required |Unique identifier for the biological sample
-|characteristics[organism] |Required |Species (NCBI Taxonomy)
-|characteristics[organism part] |Required |Anatomical part
-|characteristics[cell type] |Recommended |Cell type
-|characteristics[biological replicate] |Required |Biological replicate number
-|assay name |Required |Unique identifier for the assay run
-|technology type |Required |"protein expression profiling by antibody array" or "protein expression profiling by aptamer array"
-|comment[technical replicate] |Recommended |Technical replicate number
-|comment[data file] |Required |Data file name
+|source name |REQUIRED |Unique identifier for the biological sample
+|characteristics[organism] |REQUIRED |Species (NCBI Taxonomy)
+|characteristics[organism part] |REQUIRED |Anatomical part
+|characteristics[cell type] |RECOMMENDED |Cell type
+|characteristics[biological replicate] |REQUIRED |Biological replicate number
+|assay name |REQUIRED |Unique identifier for the assay run
+|technology type |REQUIRED |"protein expression profiling by antibody array" or "protein expression profiling by aptamer array"
+|comment[technical replicate] |RECOMMENDED |Technical replicate number
+|comment[data file] |REQUIRED |Data file name
 |===
+endif::[]
 
 === Affinity-Specific Columns
 
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Affinity platform/instrument used</td>
+<td>Olink Explore HT, SomaScan Assay 7K, Luminex 200</td>
+</tr>
+<tr>
+<td><code>characteristics[affinity method]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Affinity proteomics platform</td>
+<td>Olink, SomaScan, Luminex, RPPA, ELISA</td>
+</tr>
+<tr>
+<td><code>characteristics[affinity reagent]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Type of affinity reagent</td>
+<td>antibody, aptamer, nanobody, affimer</td>
+</tr>
+<tr>
+<td><code>comment[panel name]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Commercial panel name</td>
+<td>Olink Explore 3072, SomaScan 7K, Luminex Human Cytokine Panel</td>
+</tr>
+<tr>
+<td><code>comment[quantification unit]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Unit of quantification</td>
+<td>NPX, RFU, MFI, pg/mL</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
 |===
 |Column Name |Requirement |Description |Example Values
 
-|comment[instrument]
-|Required
-|Affinity platform/instrument used
-|Olink Explore HT, SomaScan Assay 7K, Luminex 200
-
-|characteristics[affinity method]
-|Required
-|Affinity proteomics platform
-|Olink, SomaScan, Luminex, RPPA, ELISA
-
-|characteristics[affinity reagent]
-|Required
-|Type of affinity reagent
-|antibody, aptamer, nanobody, affimer
-
-|comment[panel name]
-|Recommended
-|Commercial panel name
-|Olink Explore 3072, SomaScan 7K, Luminex Human Cytokine Panel
-
-|comment[quantification unit]
-|Recommended
-|Unit of quantification
-|NPX, RFU, MFI, pg/mL
+|comment[instrument] |REQUIRED |Affinity platform/instrument used |Olink Explore HT, SomaScan Assay 7K, Luminex 200
+|characteristics[affinity method] |REQUIRED |Affinity proteomics platform |Olink, SomaScan, Luminex, RPPA, ELISA
+|characteristics[affinity reagent] |REQUIRED |Type of affinity reagent |antibody, aptamer, nanobody, affimer
+|comment[panel name] |RECOMMENDED |Commercial panel name |Olink Explore 3072, SomaScan 7K, Luminex Human Cytokine Panel
+|comment[quantification unit] |RECOMMENDED |Unit of quantification |NPX, RFU, MFI, pg/mL
 |===
+endif::[]
 
 === Columns NOT in This Template
 
@@ -121,7 +207,7 @@ The following MS-specific columns are **NOT** included in affinity templates:
 ----
 #template=affinity-base; version=v1.1.0
 #template=human; version=v1.1.0
-#template=affinity-proteomics; version=v1.0.0-dev
+#template=affinity-proteomics; version=v1.0.0
 ----
 
 [[validation]]
@@ -243,25 +329,49 @@ endif::[]
 [[instruments]]
 == Common Affinity Instruments
 
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Platform</th><th>Instrument Examples</th><th>Quantification Unit</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Olink</strong></td>
+<td>Olink Explore HT, Olink Signature Q100, Olink Flex</td>
+<td>NPX (Normalized Protein eXpression)</td>
+</tr>
+<tr>
+<td><strong>SomaScan</strong></td>
+<td>SomaScan Assay 7K, Agilent Microarray Scanner</td>
+<td>RFU (Relative Fluorescence Units)</td>
+</tr>
+<tr>
+<td><strong>Luminex</strong></td>
+<td>Luminex 200, MAGPIX, FLEXMAP 3D</td>
+<td>MFI (Median Fluorescence Intensity)</td>
+</tr>
+<tr>
+<td><strong>MSD</strong></td>
+<td>MESO QuickPlex SQ 120, MESO SECTOR S 600</td>
+<td>Signal intensity</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,2,2", options="header"]
 |===
 |Platform |Instrument Examples |Quantification Unit
 
-|Olink
-|Olink Explore HT, Olink Signature Q100, Olink Flex
-|NPX (Normalized Protein eXpression)
-
-|SomaScan
-|SomaScan Assay 7K, Agilent Microarray Scanner
-|RFU (Relative Fluorescence Units)
-
-|Luminex
-|Luminex 200, MAGPIX, FLEXMAP 3D
-|MFI (Median Fluorescence Intensity)
-
-|MSD
-|MESO QuickPlex SQ 120, MESO SECTOR S 600
-|Signal intensity
+|Olink |Olink Explore HT, Olink Signature Q100, Olink Flex |NPX (Normalized Protein eXpression)
+|SomaScan |SomaScan Assay 7K, Agilent Microarray Scanner |RFU (Relative Fluorescence Units)
+|Luminex |Luminex 200, MAGPIX, FLEXMAP 3D |MFI (Median Fluorescence Intensity)
+|MSD |MESO QuickPlex SQ 120, MESO SECTOR S 600 |Signal intensity
 |===
+endif::[]
 
 [[related]]
 == Related Templates

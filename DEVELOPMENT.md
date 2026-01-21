@@ -8,17 +8,21 @@ This guide explains how to build and maintain the SDRF-Proteomics documentation 
 proteomics-metadata-standard/
 ├── sdrf-proteomics/           # Main specification source
 │   ├── README.adoc            # Main specification (AsciiDoc)
-│   ├── metadata-guidelines/   # Detailed metadata guidelines
+│   ├── metadata-guidelines/   # General metadata guidelines
 │   │   ├── sample-metadata.adoc
-│   │   ├── human-sample-metadata.adoc
 │   │   ├── data-file-metadata.adoc
 │   │   └── sdrf-terms.tsv
-│   ├── templates/             # Experiment-specific templates
-│   │   ├── cell-lines/
-│   │   ├── crosslinking/
-│   │   ├── immunopeptidomics/
+│   ├── templates/             # All templates (core + specialized)
+│   │   ├── human/             # Human template (includes clinical metadata)
+│   │   ├── vertebrates/       # Non-human vertebrates
+│   │   ├── invertebrates/     # Invertebrates (Drosophila, C. elegans)
+│   │   ├── plants/            # Plant organisms
+│   │   ├── default/           # Default template
+│   │   ├── minimum/           # Minimum required columns
+│   │   ├── cell-lines/        # Cell line experiments
+│   │   ├── crosslinking/      # XL-MS experiments
+│   │   ├── immunopeptidomics/ # Immunopeptidomics
 │   │   └── ...
-│   └── core-templates/        # Core SDRF templates (TSV files)
 ├── site/                      # Website assets and build scripts
 │   ├── css/style.css          # Main stylesheet
 │   ├── js/search.js           # Search functionality
@@ -82,9 +86,15 @@ asciidoctor -D $OUTPUT_DIR -a stylesheet=css/style.css -a linkcss -a toc=left -a
 # Build metadata guidelines
 asciidoctor -D $OUTPUT_DIR/metadata-guidelines -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o sample-metadata.html sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
 
-asciidoctor -D $OUTPUT_DIR/metadata-guidelines -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o human-metadata.html sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc
-
 asciidoctor -D $OUTPUT_DIR/metadata-guidelines -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o data-file-metadata.html sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc
+
+# Build templates (including human template which contains clinical metadata guidelines)
+for dir in sdrf-proteomics/templates/*/; do
+  if [ -f "${dir}README.adoc" ]; then
+    template_name=$(basename "$dir")
+    asciidoctor -D $OUTPUT_DIR/templates -a stylesheet=../css/style.css -a linkcss -a toc=left -a toclevels=3 -a sectanchors -a sectlinks --backend=html5 -o "${template_name}.html" "${dir}README.adoc"
+  fi
+done
 
 # Copy assets
 cp -r images/* $OUTPUT_DIR/images/ 2>/dev/null || true

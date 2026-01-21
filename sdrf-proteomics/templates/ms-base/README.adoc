@@ -8,7 +8,7 @@
 
 **Status:** Released
 
-**Version:** 1.1.0
+**Version:** 1.1.0 - 2026-01
 
 [[abstract]]
 == Abstract
@@ -42,55 +42,141 @@ base
 
 === Inherited Columns (from base)
 
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the biological sample</td>
+</tr>
+<tr>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species (NCBI Taxonomy)</td>
+</tr>
+<tr>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Anatomical part</td>
+</tr>
+<tr>
+<td><code>characteristics[cell type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Cell type</td>
+</tr>
+<tr>
+<td><code>characteristics[biological replicate]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological replicate number</td>
+</tr>
+<tr>
+<td><code>assay name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the MS run</td>
+</tr>
+<tr>
+<td><code>technology type</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>"proteomic profiling by mass spectrometry"</td>
+</tr>
+<tr>
+<td><code>comment[technical replicate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Technical replicate number</td>
+</tr>
+<tr>
+<td><code>comment[data file]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Raw data file name</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,3", options="header"]
 |===
 |Column Name |Requirement |Description
 
-|source name |Required |Unique identifier for the biological sample
-|characteristics[organism] |Required |Species (NCBI Taxonomy)
-|characteristics[organism part] |Required |Anatomical part
-|characteristics[cell type] |Recommended |Cell type
-|characteristics[biological replicate] |Required |Biological replicate number
-|assay name |Required |Unique identifier for the MS run
-|technology type |Required |"proteomic profiling by mass spectrometry"
-|comment[technical replicate] |Recommended |Technical replicate number
-|comment[data file] |Required |Raw data file name
+|source name |REQUIRED |Unique identifier for the biological sample
+|characteristics[organism] |REQUIRED |Species (NCBI Taxonomy)
+|characteristics[organism part] |REQUIRED |Anatomical part
+|characteristics[cell type] |RECOMMENDED |Cell type
+|characteristics[biological replicate] |REQUIRED |Biological replicate number
+|assay name |REQUIRED |Unique identifier for the MS run
+|technology type |REQUIRED |"proteomic profiling by mass spectrometry"
+|comment[technical replicate] |RECOMMENDED |Technical replicate number
+|comment[data file] |REQUIRED |Raw data file name
 |===
+endif::[]
 
 === MS-Specific Columns
 
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Mass spectrometer used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">MS</a></td>
+<td>Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro</td>
+</tr>
+<tr>
+<td><code>comment[proteomics data acquisition method]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>MS acquisition method</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE</a></td>
+<td>Data-dependent acquisition, Data-independent acquisition</td>
+</tr>
+<tr>
+<td><code>comment[cleavage agent details]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Enzyme used for digestion</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">MS</a></td>
+<td>NT=Trypsin;AC=MS:1001251</td>
+</tr>
+<tr>
+<td><code>comment[label]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Labeling strategy</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE</a></td>
+<td>label free sample, TMT126, SILAC heavy</td>
+</tr>
+<tr>
+<td><code>comment[fraction identifier]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Fraction number (1 for non-fractionated)</td>
+<td>—</td>
+<td>1, 2, 3</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
 |===
 |Column Name |Requirement |Description |Ontology |Example Values
 
-|comment[instrument]
-|Required
-|Mass spectrometer used
-|https://www.ebi.ac.uk/ols4/ontologies/ms[MS]
-|Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro
-
-|comment[proteomics data acquisition method]
-|Required
-|MS acquisition method
-|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE]
-|Data-dependent acquisition, Data-independent acquisition
-
-|comment[cleavage agent details]
-|Required
-|Enzyme used for digestion
-|https://www.ebi.ac.uk/ols4/ontologies/ms[MS]
-|NT=Trypsin;AC=MS:1001251
-
-|comment[label]
-|Required
-|Labeling strategy
-|https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE]
-|label free sample, TMT126, SILAC heavy
-
-|comment[fraction identifier]
-|Required
-|Fraction number (1 for non-fractionated)
-|—
-|1, 2, 3
+|comment[instrument] |REQUIRED |Mass spectrometer used |MS |Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro
+|comment[proteomics data acquisition method] |REQUIRED |MS acquisition method |PRIDE |Data-dependent acquisition, Data-independent acquisition
+|comment[cleavage agent details] |REQUIRED |Enzyme used for digestion |MS |NT=Trypsin;AC=MS:1001251
+|comment[label] |REQUIRED |Labeling strategy |PRIDE |label free sample, TMT126, SILAC heavy
+|comment[fraction identifier] |REQUIRED |Fraction number (1 for non-fractionated) |— |1, 2, 3
 |===
+endif::[]
 
 [[usage]]
 == Usage

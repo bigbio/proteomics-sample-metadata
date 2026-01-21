@@ -70,23 +70,71 @@ Always use `characteristics[organism part]` for specifying anatomical location o
 |kidney |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002113[UBERON:0002113] |Kidney
 |===
 
+[[age-annotation]]
 == Age
 
 **Column:** `characteristics[age]`
 
 **Format:** `{Number}{Unit}` where Unit is: `Y` (Years), `M` (Months), `W` (Weeks), `D` (Days).
 
-For age ranges use: `{LowerBound}{Unit}-{UpperBound}{Unit}` (e.g., `40Y-50Y`).
-
-Use `not available` when age is unknown, `not applicable` for immortalized cell lines.
+=== Age Formats
 
 |===
-|Age Description |SDRF Value
+|Age Type |Format |Example |Description
 
-|40 years old |40Y
-|8 weeks old |8W
+|Exact age |`{Number}{Unit}` |`40Y` |40 years old
+|Exact age |`{Number}{Unit}` |`8W` |8 weeks old
+|Age range |`{Lower}{Unit}-{Upper}{Unit}` |`40Y-50Y` |Between 40 and 50 years
+|Greater than |`>{Number}{Unit}` |`>18Y` |Older than 18 years
+|Less than |`<{Number}{Unit}` |`<65Y` |Younger than 65 years
+|Greater or equal |`>={Number}{Unit}` |`>=21Y` |21 years or older
 |===
 
+=== Special Values
+
+|===
+|Value |When to Use
+
+|`not available` |Age is unknown or not recorded
+|`not applicable` |Age doesn't apply (e.g., immortalized cell lines, pooled samples from different ages)
+|===
+
+[IMPORTANT]
+====
+**When exact age is unavailable:** If age cannot be determined precisely, consider using:
+
+1. **Age ranges** (e.g., `40Y-50Y`) when approximate age is known
+2. **Comparison operators** (e.g., `>18Y`) when only bounds are known
+3. **link:#developmental-stage[Developmental stage]** (e.g., `adult`, `juvenile`, `embryonic`) when age is unknown but developmental stage can be inferred from other metadata
+
+The developmental stage column is particularly useful for:
+
+* Animal studies where exact age may not be recorded
+* Pooled samples from subjects of different ages
+* Historical samples where age records are incomplete
+====
+
+[[sex-annotation]]
+== Sex
+
+**Column:** `characteristics[sex]`
+
+**Requirement:** REQUIRED for human samples, OPTIONAL for other organisms.
+
+**Allowed values:**
+
+|===
+|Value |Description
+
+|male |Male biological sex
+|female |Female biological sex
+|not available |Sex is unknown or not recorded
+|not applicable |Sex doesn't apply (e.g., pooled samples from mixed sexes)
+|===
+
+NOTE: Use lowercase values. For cell lines, use the sex of the original donor if known (e.g., `female` for HeLa cells), otherwise use `not available`.
+
+[[developmental-stage]]
 == Developmental Stage
 
 **Column:** `characteristics[developmental stage]`
@@ -119,10 +167,10 @@ For samples without disease, the terminology matters for standardization:
 - Well-defined ontology mapping to PATO:0000461
 - Widely used in existing proteomics datasets
 
-**`healthy`** (PATO:0001421) - **Accepted alternative**
+**`healthy`** (SIO:001012) - **Accepted alternative**
 
 - More intuitive for clinical/human samples
-- Has valid ontology support
+- Has valid ontology support (Semanticscience Integrated Ontology)
 - Validators should accept both `normal` and `healthy`
 
 **`control`** - **Avoid in disease field**
@@ -135,6 +183,52 @@ For samples without disease, the terminology matters for standardization:
 
 The `characteristics[disease]` column captures the **actual disease state** of the sample, while `factor value[disease]` indicates the **experimental comparison groups**:
 
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="ellipsis-col">...</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="ellipsis-col">...</th>
+<th class="factor-col">factor value[disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">healthy_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">normal</td>
+</tr>
+<tr>
+<td class="sample-col">tumor_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">breast carcinoma</td>
+</tr>
+<tr>
+<td class="sample-col">adjacent_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">normal</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor value</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
 |===
 |source name |... |characteristics[disease] |... |factor value[disease]
 
@@ -142,6 +236,7 @@ The `characteristics[disease]` column captures the **actual disease state** of t
 |tumor_1 |... |breast carcinoma |... |breast carcinoma
 |adjacent_1 |... |normal |... |normal
 |===
+endif::[]
 
 In this example:
 
@@ -157,7 +252,7 @@ Both `healthy_1` and `adjacent_1` have `normal` as their disease state (no tumor
 |Disease |SDRF Value |Ontology Link
 
 |Healthy/no disease |normal |https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]
-|Healthy (alternative) |healthy |https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0001421[PATO:0001421]
+|Healthy (alternative) |healthy |https://www.ebi.ac.uk/ols4/ontologies/sio/classes/http%253A%252F%252Fsemanticscience.org%252Fresource%252FSIO_001012[SIO:001012]
 |Breast cancer |breast carcinoma |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004989[MONDO:0004989]
 |Alzheimer's disease |Alzheimer disease |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004975[MONDO:0004975]
 |Type 2 diabetes |type 2 diabetes mellitus |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0005148[MONDO:0005148]
@@ -168,6 +263,51 @@ Both `healthy_1` and `adjacent_1` have `normal` as their disease state (no tumor
 
 For animal disease models, use the human disease name to facilitate cross-species comparisons:
 
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="ellipsis-col">...</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="ellipsis-col">...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">APP_PS1_sample1</td>
+<td class="sample-col">mus musculus</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">Alzheimer disease</td>
+<td class="ellipsis-col">...</td>
+</tr>
+<tr>
+<td class="sample-col">dbdb_sample1</td>
+<td class="sample-col">mus musculus</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">type 2 diabetes mellitus</td>
+<td class="ellipsis-col">...</td>
+</tr>
+<tr>
+<td class="sample-col">wildtype_sample1</td>
+<td class="sample-col">mus musculus</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
 |===
 |source name |characteristics[organism] |... |characteristics[disease] |...
 
@@ -175,6 +315,7 @@ For animal disease models, use the human disease name to facilitate cross-specie
 |dbdb_sample1 |mus musculus |... |type 2 diabetes mellitus |...
 |wildtype_sample1 |mus musculus |... |normal |...
 |===
+endif::[]
 
 NOTE: APP/PS1 and db/db are common mouse disease models for Alzheimer's disease and type 2 diabetes respectively.
 
@@ -295,6 +436,7 @@ Phenotype is particularly important for model organism studies where the same ge
 4. **Stem Cell Research:** Track proteomic changes during differentiation
 5. **Model Organism Studies:** Characterize phenotypic responses to environmental conditions
 
+[[cell-type-annotation]]
 == Cell Type
 
 **Column:** `characteristics[cell type]`
@@ -501,6 +643,73 @@ For multiple spiked components, the column _characteristics[spiked compound]_ ma
 === Spiked Biological Samples
 
 If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample), then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of _characteristics[spiked compound]_ is optional in this case; if provided, it SHOULD be the string `spiked` for the spiked sample.
+
+[[common-additional-columns]]
+== Common Additional Columns
+
+SDRF-Proteomics templates define the minimum required and recommended columns. However, you can extend your SDRF file with additional columns to capture study-specific metadata. The following columns are commonly used across different study types:
+
+=== Sample-Related Columns
+
+[cols="2,4,2,2,1", options="header"]
+|===
+|Column |Description |Example Values |When to Use |Example
+
+|`characteristics[material type]`
+|Type of biological material (derived from https://www.fged.org/projects/mage-tab/[MAGE-TAB])
+|tissue, cell, cell line, organism part, whole organism, synthetic
+|Cross-omics integration, clarifying sample origin
+|link:../sdrf-explorer.html?view=PXD000612[PXD000612]
+
+|`characteristics[treatment]`
+|Treatment applied to the sample
+|dexamethasone, vehicle control, untreated
+|Drug treatment studies
+|link:../sdrf-explorer.html?view=PXD017291[PXD017291]
+
+|`characteristics[time point]`
+|Time of sample collection
+|0h, 24h, 7d, baseline
+|Time-course experiments
+|link:../sdrf-explorer.html?view=PXD007555[PXD007555]
+
+|`characteristics[dose]`
+|Dose of treatment if applicable
+|10 mg/kg, 100 nM, high dose
+|Dose-response studies
+|—
+
+|`characteristics[patient bmi]`
+|Body mass index (for human studies)
+|25.3 kg/m2, 30.1 kg/m2
+|Metabolic or obesity-related studies
+|link:../sdrf-explorer.html?view=PXD005780[PXD005780]
+
+|`characteristics[smoking status]`
+|Smoking history of the patient
+|never smoked, current smoker, former smoker
+|Lung or cardiovascular studies
+|—
+|===
+
+=== Data-Related Columns
+
+[cols="2,4,2,2", options="header"]
+|===
+|Column |Description |Example Values |When to Use
+
+|`comment[sample preparation]`
+|Sample preparation method details
+|in-solution digestion, FASP, SP3
+|Detailed protocol documentation
+
+|`comment[enrichment method]`
+|Enrichment or depletion strategy
+|phosphopeptide enrichment, glycopeptide enrichment
+|PTM-focused studies
+|===
+
+See also the link:../sdrf-terms.html[SDRF Terms Reference] for a comprehensive list of commonly used terms and columns.
 
 == Best Practices
 
