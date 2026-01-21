@@ -18,24 +18,51 @@
 <li><a href="#_introduction">1. Introduction</a></li>
 <li><a href="#_organism">2. Organism</a></li>
 <li><a href="#_organism_part_tissue">3. Organism Part / Tissue</a></li>
-<li><a href="#_age">4. Age</a></li>
-<li><a href="#_developmental_stage">5. Developmental Stage</a></li>
-<li><a href="#disease-annotation">6. Disease</a>
+<li><a href="#age-annotation">4. Age</a>
 <ul class="sectlevel2">
-<li><a href="#_healthy_samples_normal_vs_healthy_vs_control">6.1. Healthy Samples: normal vs healthy vs control</a></li>
-<li><a href="#_disease_state_vs_experimental_role">6.2. Disease State vs Experimental Role</a></li>
-<li><a href="#_disease_examples">6.3. Disease Examples</a></li>
-<li><a href="#_animal_disease_models">6.4. Animal Disease Models</a></li>
+<li><a href="#_age_formats">4.1. Age Formats</a></li>
+<li><a href="#_special_values">4.2. Special Values</a></li>
 </ul>
 </li>
-<li><a href="#_cell_type">7. Cell Type</a></li>
-<li><a href="#_depletion">8. Depletion</a></li>
-<li><a href="#_patient_derived_xenografts_pdx">9. Patient-Derived Xenografts (PDX)</a></li>
-<li><a href="#_synthetic_peptide_libraries">10. Synthetic Peptide Libraries</a></li>
-<li><a href="#_material_type">11. Material Type</a></li>
-<li><a href="#_ptm_enrichment">12. PTM Enrichment</a></li>
-<li><a href="#_best_practices">13. Best Practices</a></li>
-<li><a href="#_references">14. References</a></li>
+<li><a href="#sex-annotation">5. Sex</a></li>
+<li><a href="#developmental-stage">6. Developmental Stage</a></li>
+<li><a href="#disease-annotation">7. Disease</a>
+<ul class="sectlevel2">
+<li><a href="#_healthy_samples_normal_vs_healthy_vs_control">7.1. Healthy Samples: normal vs healthy vs control</a></li>
+<li><a href="#_disease_state_vs_experimental_role">7.2. Disease State vs Experimental Role</a></li>
+<li><a href="#_disease_examples">7.3. Disease Examples</a></li>
+<li><a href="#_animal_disease_models">7.4. Animal Disease Models</a></li>
+</ul>
+</li>
+<li><a href="#phenotype-annotation">8. Phenotype</a>
+<ul class="sectlevel2">
+<li><a href="#_key_distinction_disease_vs_phenotype_vs_genotype">8.1. Key Distinction: Disease vs Phenotype vs Genotype</a></li>
+<li><a href="#_phenotype_categories">8.2. Phenotype Categories</a></li>
+<li><a href="#_phenotype_in_model_organisms">8.3. Phenotype in Model Organisms</a></li>
+<li><a href="#_when_not_to_use_phenotype">8.4. When NOT to Use Phenotype</a></li>
+<li><a href="#_proteomics_use_cases">8.5. Proteomics Use Cases</a></li>
+</ul>
+</li>
+<li><a href="#cell-type-annotation">9. Cell Type</a></li>
+<li><a href="#_depletion">10. Depletion</a></li>
+<li><a href="#_patient_derived_xenografts_pdx">11. Patient-Derived Xenografts (PDX)</a></li>
+<li><a href="#_synthetic_peptide_libraries">12. Synthetic Peptide Libraries</a></li>
+<li><a href="#_material_type">13. Material Type</a></li>
+<li><a href="#_ptm_enrichment">14. PTM Enrichment</a></li>
+<li><a href="#spiked-in-samples">15. Spiked-in Samples</a>
+<ul class="sectlevel2">
+<li><a href="#_example_spiked_peptide">15.1. Example: Spiked Peptide</a></li>
+<li><a href="#_spiked_biological_samples">15.2. Spiked Biological Samples</a></li>
+</ul>
+</li>
+<li><a href="#common-additional-columns">16. Common Additional Columns</a>
+<ul class="sectlevel2">
+<li><a href="#_sample_related_columns">16.1. Sample-Related Columns</a></li>
+<li><a href="#_data_related_columns">16.2. Data-Related Columns</a></li>
+</ul>
+</li>
+<li><a href="#_best_practices">17. Best Practices</a></li>
+<li><a href="#_references">18. References</a></li>
 </ul>
 </div>
 </div>
@@ -47,10 +74,10 @@
 <p>This document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant).</p>
 </div>
 <div class="paragraph">
-<p>For human-specific metadata (disease staging, comorbidities, treatment history), see <a href="human-sample-metadata.adoc">Human Sample Metadata Guidelines</a>.</p>
+<p>For human-specific metadata (disease staging, comorbidities, treatment history), see <a href="../templates/human/README.adoc">Human Sample Metadata Guidelines</a>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Version 1.0.0</strong> - 2025-01</p>
+<p><strong>Version 1.1.0</strong> - 2026-01</p>
 </div>
 </div>
 </div>
@@ -126,6 +153,26 @@
 <div class="paragraph">
 <p>Use lowercase for all values. For cell line samples, use <code>not applicable</code> or specify the tissue of origin (e.g., <code>cervix</code> for HeLa).</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Do NOT use <code>characteristics[tissue]</code></strong> - Use <code>characteristics[organism part]</code> instead.</p>
+</div>
+<div class="paragraph">
+<p>The <code>characteristics[tissue]</code> column should not be used as a replacement for <code>characteristics[organism part]</code>. When tissue-related columns are needed, they should be used alongside <code>characteristics[organism part]</code> for additional categorization (e.g., <code>characteristics[tissue supergroup]</code> for higher-level grouping).</p>
+</div>
+<div class="paragraph">
+<p>Always use <code>characteristics[organism part]</code> for specifying anatomical location or tissue type. Do not use <code>characteristics[tissue]</code> as a replacement.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -175,7 +222,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_age"><a class="anchor" href="#_age"></a><a class="link" href="#_age">4. Age</a></h2>
+<h2 id="age-annotation"><a class="anchor" href="#age-annotation"></a><a class="link" href="#age-annotation">4. Age</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[age]</code></p>
@@ -183,11 +230,144 @@
 <div class="paragraph">
 <p><strong>Format:</strong> <code>{Number}{Unit}</code> where Unit is: <code>Y</code> (Years), <code>M</code> (Months), <code>W</code> (Weeks), <code>D</code> (Days).</p>
 </div>
+<div class="sect2">
+<h3 id="_age_formats"><a class="anchor" href="#_age_formats"></a><a class="link" href="#_age_formats">4.1. Age Formats</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Age Type</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exact age</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{Number}{Unit}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>40Y</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40 years old</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exact age</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{Number}{Unit}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>8W</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8 weeks old</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{Lower}{Unit}-{Upper}{Unit}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>40Y-50Y</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Between 40 and 50 years</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Greater than</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&gt;{Number}{Unit}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&gt;18Y</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Older than 18 years</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less than</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;{Number}{Unit}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;65Y</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Younger than 65 years</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Greater or equal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&gt;={Number}{Unit}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&gt;=21Y</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21 years or older</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_special_values"><a class="anchor" href="#_special_values"></a><a class="link" href="#_special_values">4.2. Special Values</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>not available</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age is unknown or not recorded</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>not applicable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age doesn&#8217;t apply (e.g., immortalized cell lines, pooled samples from different ages)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>For age ranges use: <code>{LowerBound}{Unit}-{UpperBound}{Unit}</code> (e.g., <code>40Y-50Y</code>).</p>
+<p><strong>When exact age is unavailable:</strong> If age cannot be determined precisely, consider using:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Age ranges</strong> (e.g., <code>40Y-50Y</code>) when approximate age is known</p>
+</li>
+<li>
+<p><strong>Comparison operators</strong> (e.g., <code>&gt;18Y</code>) when only bounds are known</p>
+</li>
+<li>
+<p><strong><a href="#developmental-stage">Developmental stage</a></strong> (e.g., <code>adult</code>, <code>juvenile</code>, <code>embryonic</code>) when age is unknown but developmental stage can be inferred from other metadata</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>Use <code>not available</code> when age is unknown, <code>not applicable</code> for immortalized cell lines.</p>
+<p>The developmental stage column is particularly useful for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Animal studies where exact age may not be recorded</p>
+</li>
+<li>
+<p>Pooled samples from subjects of different ages</p>
+</li>
+<li>
+<p>Historical samples where age records are incomplete</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sex-annotation"><a class="anchor" href="#sex-annotation"></a><a class="link" href="#sex-annotation">5. Sex</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Column:</strong> <code>characteristics[sex]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Requirement:</strong> REQUIRED for human samples, OPTIONAL for other organisms.</p>
+</div>
+<div class="paragraph">
+<p><strong>Allowed values:</strong></p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -196,25 +376,45 @@
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Age Description</th>
-<th class="tableblock halign-left valign-top">SDRF Value</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">40 years old</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">40Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">male</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Male biological sex</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8 weeks old</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">female</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Female biological sex</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sex is unknown or not recorded</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sex doesn&#8217;t apply (e.g., pooled samples from mixed sexes)</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use lowercase values. For cell lines, use the sex of the original donor if known (e.g., <code>female</code> for HeLa cells), otherwise use <code>not available</code>.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_developmental_stage"><a class="anchor" href="#_developmental_stage"></a><a class="link" href="#_developmental_stage">5. Developmental Stage</a></h2>
+<h2 id="developmental-stage"><a class="anchor" href="#developmental-stage"></a><a class="link" href="#developmental-stage">6. Developmental Stage</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[developmental stage]</code></p>
@@ -250,7 +450,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="disease-annotation"><a class="anchor" href="#disease-annotation"></a><a class="link" href="#disease-annotation">6. Disease</a></h2>
+<h2 id="disease-annotation"><a class="anchor" href="#disease-annotation"></a><a class="link" href="#disease-annotation">7. Disease</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[disease]</code></p>
@@ -259,7 +459,7 @@
 <p><strong>Ontology:</strong> <a href="https://mondo.monarchinitiative.org/">MONDO Disease Ontology</a> (preferred), <a href="https://www.ebi.ac.uk/efo/">EFO</a>, <a href="https://disease-ontology.org/">Human Disease Ontology (DOID)</a></p>
 </div>
 <div class="sect2">
-<h3 id="_healthy_samples_normal_vs_healthy_vs_control"><a class="anchor" href="#_healthy_samples_normal_vs_healthy_vs_control"></a><a class="link" href="#_healthy_samples_normal_vs_healthy_vs_control">6.1. Healthy Samples: normal vs healthy vs control</a></h3>
+<h3 id="_healthy_samples_normal_vs_healthy_vs_control"><a class="anchor" href="#_healthy_samples_normal_vs_healthy_vs_control"></a><a class="link" href="#_healthy_samples_normal_vs_healthy_vs_control">7.1. Healthy Samples: normal vs healthy vs control</a></h3>
 <div class="paragraph">
 <p>For samples without disease, the terminology matters for standardization:</p>
 </div>
@@ -280,7 +480,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p><strong><code>healthy</code></strong> (PATO:0001421) - <strong>Accepted alternative</strong></p>
+<p><strong><code>healthy</code></strong> (SIO:001012) - <strong>Accepted alternative</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -288,7 +488,7 @@
 <p>More intuitive for clinical/human samples</p>
 </li>
 <li>
-<p>Has valid ontology support</p>
+<p>Has valid ontology support (Semanticscience Integrated Ontology)</p>
 </li>
 <li>
 <p>Validators should accept both <code>normal</code> and <code>healthy</code></p>
@@ -313,51 +513,50 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_disease_state_vs_experimental_role"><a class="anchor" href="#_disease_state_vs_experimental_role"></a><a class="link" href="#_disease_state_vs_experimental_role">6.2. Disease State vs Experimental Role</a></h3>
+<h3 id="_disease_state_vs_experimental_role"><a class="anchor" href="#_disease_state_vs_experimental_role"></a><a class="link" href="#_disease_state_vs_experimental_role">7.2. Disease State vs Experimental Role</a></h3>
 <div class="paragraph">
 <p>The <code>characteristics[disease]</code> column captures the <strong>actual disease state</strong> of the sample, while <code>factor value[disease]</code> indicates the <strong>experimental comparison groups</strong>:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
-<th class="tableblock halign-left valign-top">factor value[disease]</th>
+<th class="sample-col">source name</th>
+<th class="ellipsis-col">...</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="ellipsis-col">...</th>
+<th class="factor-col">factor value[disease]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">healthy_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="sample-col">healthy_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">normal</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
+<td class="sample-col">tumor_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">breast carcinoma</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">adjacent_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+<td class="sample-col">adjacent_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">normal</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor value</span>
+</div>
+</div>
 <div class="paragraph">
 <p>In this example:</p>
 </div>
@@ -379,7 +578,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_disease_examples"><a class="anchor" href="#_disease_examples"></a><a class="link" href="#_disease_examples">6.3. Disease Examples</a></h3>
+<h3 id="_disease_examples"><a class="anchor" href="#_disease_examples"></a><a class="link" href="#_disease_examples">7.3. Disease Examples</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -402,7 +601,7 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Healthy (alternative)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">healthy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0001421">PATO:0001421</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/sio/classes/http%253A%252F%252Fsemanticscience.org%252Fresource%252FSIO_001012">SIO:001012</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Breast cancer</p></td>
@@ -428,51 +627,49 @@
 </table>
 </div>
 <div class="sect2">
-<h3 id="_animal_disease_models"><a class="anchor" href="#_animal_disease_models"></a><a class="link" href="#_animal_disease_models">6.4. Animal Disease Models</a></h3>
+<h3 id="_animal_disease_models"><a class="anchor" href="#_animal_disease_models"></a><a class="link" href="#_animal_disease_models">7.4. Animal Disease Models</a></h3>
 <div class="paragraph">
 <p>For animal disease models, use the human disease name to facilitate cross-species comparisons:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
+<div class="sdrf-example-table">
+<table>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
-<th class="tableblock halign-left valign-top">characteristics[disease]</th>
-<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="ellipsis-col">...</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="ellipsis-col">...</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">APP_PS1_sample1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alzheimer disease</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="sample-col">APP_PS1_sample1</td>
+<td class="sample-col">mus musculus</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">Alzheimer disease</td>
+<td class="ellipsis-col">...</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">dbdb_sample1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="sample-col">dbdb_sample1</td>
+<td class="sample-col">mus musculus</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">type 2 diabetes mellitus</td>
+<td class="ellipsis-col">...</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">wildtype_sample1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="sample-col">wildtype_sample1</td>
+<td class="sample-col">mus musculus</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
 </tr>
 </tbody>
 </table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -489,7 +686,242 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cell_type"><a class="anchor" href="#_cell_type"></a><a class="link" href="#_cell_type">7. Cell Type</a></h2>
+<h2 id="phenotype-annotation"><a class="anchor" href="#phenotype-annotation"></a><a class="link" href="#phenotype-annotation">8. Phenotype</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Column:</strong> <code>characteristics[phenotype]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO:0000001</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651">EFO:0000651</a></p>
+</div>
+<div class="paragraph">
+<p><strong>Requirement:</strong> Optional</p>
+</div>
+<div class="paragraph">
+<p>Describes observable characteristics or traits of a sample that result from genotype, environment, and treatment interactions. Captures <strong>how the sample behaves or appears</strong>, not what disease it has.</p>
+</div>
+<div class="sect2">
+<h3 id="_key_distinction_disease_vs_phenotype_vs_genotype"><a class="anchor" href="#_key_distinction_disease_vs_phenotype_vs_genotype"></a><a class="link" href="#_key_distinction_disease_vs_phenotype_vs_genotype">8.1. Key Distinction: Disease vs Phenotype vs Genotype</a></h3>
+<div class="paragraph">
+<p>Understanding the relationship between these concepts is critical for accurate annotation:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Purpose</th>
+<th class="tableblock halign-left valign-top">What it captures</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Health condition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">What disease/pathology is present</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"breast cancer", "normal", "Alzheimer disease"</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genetic variant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">What genetic variant is present</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"KRAS G12D mutant", "wild type", "APP/PS1 transgenic"</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phenotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Observable trait</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">How the sample behaves/appears</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"gefitinib sensitive", "high fat diet", "stress response"</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Important:</strong> These are complementary, not mutually exclusive:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A sample can have a <strong>disease</strong> (Alzheimer&#8217;s) caused by a <strong>genotype</strong> (APP mutation) that results in a <strong>phenotype</strong> (amyloid accumulation)</p>
+</li>
+<li>
+<p>A sample can have a <strong>phenotype</strong> (drug resistant) without a known <strong>genotype</strong> cause</p>
+</li>
+<li>
+<p>A sample can have a <strong>genotype</strong> (transgenic) without an obvious <strong>phenotype</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_phenotype_categories"><a class="anchor" href="#_phenotype_categories"></a><a class="link" href="#_phenotype_categories">8.2. Phenotype Categories</a></h3>
+<div class="paragraph">
+<p><strong>1. Drug Response Phenotypes</strong></p>
+</div>
+<div class="paragraph">
+<p>Used in pharmacoproteomics to describe drug sensitivity or resistance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>characteristics[phenotype]: gefitinib sensitive
+characteristics[phenotype]: cisplatin resistant
+characteristics[phenotype]: tamoxifen resistant
+characteristics[phenotype]: sensitive to methotrexate</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>2. Molecular Marker Phenotypes</strong></p>
+</div>
+<div class="paragraph">
+<p>Used for biomarker status in precision medicine studies:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>characteristics[phenotype]: HER2 positive
+characteristics[phenotype]: ER positive
+characteristics[phenotype]: ALDH+
+characteristics[phenotype]: CD34 positive</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>3. Expression/Overexpression Phenotypes</strong></p>
+</div>
+<div class="paragraph">
+<p>Used to describe gene/protein expression characteristics:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>characteristics[phenotype]: overexpressing Neurogenin3
+characteristics[phenotype]: FOXP3 expression
+characteristics[phenotype]: RPS4 over-expression</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>4. Functional Phenotypes</strong></p>
+</div>
+<div class="paragraph">
+<p>Used for differentiation states and functional traits:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>characteristics[phenotype]: undifferentiated
+characteristics[phenotype]: adipogenic
+characteristics[phenotype]: high protein content</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>5. Environmental/Treatment Response Phenotypes</strong></p>
+</div>
+<div class="paragraph">
+<p>Used for model organism studies with environmental or dietary interventions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>characteristics[phenotype]: high fat diet
+characteristics[phenotype]: caloric restriction
+characteristics[phenotype]: heat shock response
+characteristics[phenotype]: oxidative stress</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_phenotype_in_model_organisms"><a class="anchor" href="#_phenotype_in_model_organisms"></a><a class="link" href="#_phenotype_in_model_organisms">8.3. Phenotype in Model Organisms</a></h3>
+<div class="paragraph">
+<p>Phenotype is particularly important for model organism studies where the same genotype may produce different phenotypes under different conditions:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[genotype]</th>
+<th class="tableblock halign-left valign-top">characteristics[phenotype]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mouse_hfd_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wild type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">high fat diet induced obesity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mouse_ctrl_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wild type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal diet</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zebrafish_hs_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">danio rerio</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hsp70:GFP transgenic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">heat shock response</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fly_stress_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">drosophila melanogaster</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wild type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oxidative stress</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_when_not_to_use_phenotype"><a class="anchor" href="#_when_not_to_use_phenotype"></a><a class="link" href="#_when_not_to_use_phenotype">8.4. When NOT to Use Phenotype</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>❌ For disease names → Use <code>characteristics[disease]</code></p>
+</li>
+<li>
+<p>❌ For genetic variants → Use <code>characteristics[genotype]</code></p>
+</li>
+<li>
+<p>❌ For treatments applied → Use <code>characteristics[compound]</code> or <code>characteristics[treatment]</code></p>
+</li>
+<li>
+<p>❌ For basic sample properties → Use appropriate specific column (age, sex, etc.)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_proteomics_use_cases"><a class="anchor" href="#_proteomics_use_cases"></a><a class="link" href="#_proteomics_use_cases">8.5. Proteomics Use Cases</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Pharmacoproteomics:</strong> Compare proteomes of drug-sensitive vs. drug-resistant samples</p>
+</li>
+<li>
+<p><strong>Precision Medicine:</strong> Stratify samples by biomarker status (HER2+/HER2-, ER+/ER-)</p>
+</li>
+<li>
+<p><strong>Drug Response Studies:</strong> Identify proteomic signatures of treatment response</p>
+</li>
+<li>
+<p><strong>Stem Cell Research:</strong> Track proteomic changes during differentiation</p>
+</li>
+<li>
+<p><strong>Model Organism Studies:</strong> Characterize phenotypic responses to environmental conditions</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cell-type-annotation"><a class="anchor" href="#cell-type-annotation"></a><a class="link" href="#cell-type-annotation">9. Cell Type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[cell type]</code></p>
@@ -540,7 +972,7 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_depletion"><a class="anchor" href="#_depletion"></a><a class="link" href="#_depletion">8. Depletion</a></h2>
+<h2 id="_depletion"><a class="anchor" href="#_depletion"></a><a class="link" href="#_depletion">10. Depletion</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[depletion]</code></p>
@@ -554,7 +986,7 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_patient_derived_xenografts_pdx"><a class="anchor" href="#_patient_derived_xenografts_pdx"></a><a class="link" href="#_patient_derived_xenografts_pdx">9. Patient-Derived Xenografts (PDX)</a></h2>
+<h2 id="_patient_derived_xenografts_pdx"><a class="anchor" href="#_patient_derived_xenografts_pdx"></a><a class="link" href="#_patient_derived_xenografts_pdx">11. Patient-Derived Xenografts (PDX)</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[xenograft]</code></p>
@@ -603,7 +1035,7 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_synthetic_peptide_libraries"><a class="anchor" href="#_synthetic_peptide_libraries"></a><a class="link" href="#_synthetic_peptide_libraries">10. Synthetic Peptide Libraries</a></h2>
+<h2 id="_synthetic_peptide_libraries"><a class="anchor" href="#_synthetic_peptide_libraries"></a><a class="link" href="#_synthetic_peptide_libraries">12. Synthetic Peptide Libraries</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[synthetic peptide]</code></p>
@@ -617,7 +1049,7 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_material_type"><a class="anchor" href="#_material_type"></a><a class="link" href="#_material_type">11. Material Type</a></h2>
+<h2 id="_material_type"><a class="anchor" href="#_material_type"></a><a class="link" href="#_material_type">13. Material Type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[material type]</code></p>
@@ -765,7 +1197,7 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_ptm_enrichment"><a class="anchor" href="#_ptm_enrichment"></a><a class="link" href="#_ptm_enrichment">12. PTM Enrichment</a></h2>
+<h2 id="_ptm_enrichment"><a class="anchor" href="#_ptm_enrichment"></a><a class="link" href="#_ptm_enrichment">14. PTM Enrichment</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[enrichment process]</code></p>
@@ -798,7 +1230,268 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">13. Best Practices</a></h2>
+<h2 id="spiked-in-samples"><a class="anchor" href="#spiked-in-samples"></a><a class="link" href="#spiked-in-samples">15. Spiked-in Samples</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.</p>
+</div>
+<div class="paragraph">
+<p>To include information about the spiked compounds, use <em>characteristics[spiked compound]</em>. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2858%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+<th class="tableblock halign-left valign-top">Peptide</th>
+<th class="tableblock halign-left valign-top">Protein</th>
+<th class="tableblock halign-left valign-top">Mixture</th>
+<th class="tableblock halign-left valign-top">Other</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compound type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">protein, peptide, mixture, other</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quantity (molar or mass)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 mg, 20 nmol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Peptide sequence</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PEPTIDESEQ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uniprot Accession</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A9WZ33</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compound name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iRT mixture, substance name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Species</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Escherichia coli K-12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compound vendor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">in-house or vendor name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compound specification URI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="http://vendor.web.site/specs/kit.xlsx" class="bare">http://vendor.web.site/specs/kit.xlsx</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compound formula</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C2H2O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as <em>characteristics[mass]</em>.</p>
+</div>
+<div class="sect2">
+<h3 id="_example_spiked_peptide"><a class="anchor" href="#_example_spiked_peptide"></a><a class="link" href="#_example_spiked_peptide">15.1. Example: Spiked Peptide</a></h3>
+<div class="paragraph">
+<p>An example of SDRF-Proteomics for a sample spiked with a peptide would be:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">characteristics[mass]</th>
+<th class="tableblock halign-left valign-top">characteristics[spiked compound]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 ug</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For multiple spiked components, the column <em>characteristics[spiked compound]</em> may be repeated.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spiked_biological_samples"><a class="anchor" href="#_spiked_biological_samples"></a><a class="link" href="#_spiked_biological_samples">15.2. Spiked Biological Samples</a></h3>
+<div class="paragraph">
+<p>If the spiked component is another biological sample (e.g. <em>E. coli</em> lysate spiked into human sample), then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have <code>characteristics[mass]</code> specified. Inclusion of <em>characteristics[spiked compound]</em> is optional in this case; if provided, it SHOULD be the string <code>spiked</code> for the spiked sample.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="common-additional-columns"><a class="anchor" href="#common-additional-columns"></a><a class="link" href="#common-additional-columns">16. Common Additional Columns</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SDRF-Proteomics templates define the minimum required and recommended columns. However, you can extend your SDRF file with additional columns to capture study-specific metadata. The following columns are commonly used across different study types:</p>
+</div>
+<div class="sect2">
+<h3 id="_sample_related_columns"><a class="anchor" href="#_sample_related_columns"></a><a class="link" href="#_sample_related_columns">16.1. Sample-Related Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 18.1818%;">
+<col style="width: 36.3636%;">
+<col style="width: 18.1818%;">
+<col style="width: 18.1818%;">
+<col style="width: 9.091%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">When to Use</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[material type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological material (derived from <a href="https://www.fged.org/projects/mage-tab/">MAGE-TAB</a>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tissue, cell, cell line, organism part, whole organism, synthetic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-omics integration, clarifying sample origin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../sdrf-explorer.html?view=PXD000612">PXD000612</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[treatment]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Treatment applied to the sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dexamethasone, vehicle control, untreated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drug treatment studies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../sdrf-explorer.html?view=PXD017291">PXD017291</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[time point]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time of sample collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0h, 24h, 7d, baseline</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time-course experiments</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../sdrf-explorer.html?view=PXD007555">PXD007555</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dose]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dose of treatment if applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 mg/kg, 100 nM, high dose</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dose-response studies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[patient bmi]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Body mass index (for human studies)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25.3 kg/m2, 30.1 kg/m2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Metabolic or obesity-related studies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../sdrf-explorer.html?view=PXD005780">PXD005780</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[smoking status]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Smoking history of the patient</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">never smoked, current smoker, former smoker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lung or cardiovascular studies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_data_related_columns"><a class="anchor" href="#_data_related_columns"></a><a class="link" href="#_data_related_columns">16.2. Data-Related Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+<th class="tableblock halign-left valign-top">When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample preparation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample preparation method details</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">in-solution digestion, FASP, SP3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Detailed protocol documentation</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[enrichment method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enrichment or depletion strategy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">phosphopeptide enrichment, glycopeptide enrichment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PTM-focused studies</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>See also the <a href="../sdrf-terms.html">SDRF Terms Reference</a> for a comprehensive list of commonly used terms and columns.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">17. Best Practices</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -822,7 +1515,7 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">14. References</a></h2>
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">18. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -851,7 +1544,7 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-18 14:25:55 UTC
+Last updated 2026-01-21 15:07:36 UTC
 </div>
 </div>
 </body>

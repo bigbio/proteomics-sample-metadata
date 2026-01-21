@@ -26,8 +26,9 @@
 <li><a href="#checklist">5. Checklist</a>
 <ul class="sectlevel2">
 <li><a href="#_required_columns">5.1. Required Columns</a></li>
-<li><a href="#_recommended_columns">5.2. Recommended Columns</a></li>
-<li><a href="#_optional_columns">5.3. Optional Columns</a></li>
+<li><a href="#_required_cellosaurus_columns">5.2. Required Cellosaurus Columns</a></li>
+<li><a href="#_recommended_columns">5.3. Recommended Columns</a></li>
+<li><a href="#_optional_columns">5.4. Optional Columns</a></li>
 </ul>
 </li>
 <li><a href="#metadata-sources">6. Understanding Metadata Sources</a>
@@ -69,7 +70,7 @@
 <p><strong>Status:</strong> Released</p>
 </div>
 <div class="paragraph">
-<p><strong>Version:</strong> 1.0.0 - 2025-01</p>
+<p><strong>Version:</strong> 1.1.0 - 2026-01</p>
 </div>
 </div>
 </div>
@@ -80,7 +81,19 @@
 <p>Cell lines are extensively used in proteomics research for biological studies and technology development. They present unique annotation challenges: metadata (sex, age, disease) refers to the original donor, multiple naming conventions exist (HeLa, HELA, He-La), and cell lines may be misidentified or have undergone genetic drift.</p>
 </div>
 <div class="paragraph">
-<p>This template defines standardized approaches for annotating cell line experiments, recommending Cellosaurus as the primary resource for cell line identification and metadata retrieval.</p>
+<p>This template defines standardized approaches for annotating cell line experiments, using <strong>Cellosaurus as the PRIMARY standard</strong> for cell line identification and metadata retrieval.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<strong>Cellosaurus is the REQUIRED primary standard</strong> for cell line annotation in SDRF-Proteomics. The <code>characteristics[cellosaurus accession]</code> column (CVCL_XXXX format) is REQUIRED for all cell line experiments. Do NOT use EFO, CLO, or BTO as primary identifiers - these are accepted only for legacy compatibility and cross-reference purposes.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -181,156 +194,151 @@ While Cellosaurus is not a formal ontology, it is the most comprehensive and act
 <div class="paragraph">
 <p>The following columns are REQUIRED for cell line experiments:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
+<table class="tableblock frame-all grid-all stretch requirements-table">
 <thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Ontology</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell line]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">HeLa, HEK293, K562</p></td>
+<td><code>characteristics[cell line]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Name of the cell line</td>
+<td><a href="https://www.cellosaurus.org/">Cellosaurus</a></td>
+<td>HeLa, HEK293, K562</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Species of the cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBITaxon</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens, mus musculus</p></td>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species of the cell line</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBITaxon</a></td>
+<td>homo sapiens, mus musculus</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[organism part]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tissue/organ of origin</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cervix, kidney, blood</p></td>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Tissue/organ of origin</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></td>
+<td>cervix, kidney, blood</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of original tissue</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cervical adenocarcinoma, normal, chronic myelogenous leukemia</p></td>
+<td><code>characteristics[disease]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Disease state of original tissue</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a></td>
+<td>cervical adenocarcinoma, normal, chronic myelogenous leukemia</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.2. Recommended Columns</a></h3>
+<h3 id="_required_cellosaurus_columns"><a class="anchor" href="#_required_cellosaurus_columns"></a><a class="link" href="#_required_cellosaurus_columns">5.2. Required Cellosaurus Columns</a></h3>
+<div class="paragraph">
+<p>The following Cellosaurus columns are REQUIRED for cell line experiments:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>characteristics[cellosaurus accession]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Cellosaurus unique identifier</td>
+<td><a href="https://www.cellosaurus.org/">Cellosaurus</a></td>
+<td>CVCL_0030, CVCL_0045, CVCL_0004</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.3. Recommended Columns</a></h3>
 <div class="paragraph">
 <p>The following columns are RECOMMENDED for cell line experiments:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
+<table class="tableblock frame-all grid-all stretch requirements-table">
 <thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Ontology</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cellosaurus accession]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cellosaurus unique identifier</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CVCL_0030, CVCL_0045, CVCL_0004</p></td>
+<td><code>characteristics[cellosaurus name]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Official Cellosaurus name</td>
+<td><a href="https://www.cellosaurus.org/">Cellosaurus</a></td>
+<td>HeLa, HEK293, K-562</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cellosaurus name]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Official Cellosaurus name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.cellosaurus.org/">Cellosaurus</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">HeLa, HEK293, K-562</p></td>
+<td><code>characteristics[cell type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Cell type classification</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/cl">Cell Ontology (CL)</a></td>
+<td>epithelial cell, fibroblast, lymphoblast</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell type]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cell type classification</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/cl">Cell Ontology (CL)</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">epithelial cell, fibroblast, lymphoblast</p></td>
+<td><code>characteristics[sex]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Sex of original donor</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO</a></td>
+<td>female, male, not available</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sex]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sex of original donor</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">female, male, not available</p></td>
+<td><code>characteristics[age]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Age of donor at sample collection</td>
+<td>Free text</td>
+<td>31Y, not available, fetal</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Age of donor at sample collection (also known as <a href="https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C164712">Cell Line Source Age</a>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">31Y, not available, fetal</p></td>
+<td><code>characteristics[sampling site]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Specific anatomical sampling location</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></td>
+<td>cervix uteri, fetal kidney, peripheral blood</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sampling site]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical sampling location</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cervix uteri, fetal kidney, peripheral blood</p></td>
+<td><code>comment[passage number]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Passage number of cells used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007061">EFO:0007061</a></td>
+<td>P15, P20-25, low passage</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[passage number]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Passage number of cells used</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007061">EFO:0007061</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P15, P20-25, low passage</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cell line source]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Source/provider of cell line</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0004443">EFO:0004443</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ATCC, DSMZ, ECACC, in-house</p></td>
+<td><code>comment[cell line source]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Source/provider of cell line</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0004443">EFO:0004443</a></td>
+<td>ATCC, DSMZ, ECACC, in-house</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">5.3. Optional Columns</a></h3>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
+<h3 id="_optional_columns"><a class="anchor" href="#_optional_columns"></a><a class="link" href="#_optional_columns">5.4. Optional Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
 <thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Ontology</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[developmental stage]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of donor</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">adult, fetus, embryo</p></td>
+<td><code>characteristics[developmental stage]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Developmental stage of donor</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></td>
+<td>adult, fetus, embryo</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[ancestry category]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry of donor if known</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/hancestro">HANCESTRO</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">African American, European, not available</p></td>
+<td><code>characteristics[ancestry category]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Ancestry of donor if known</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/hancestro">HANCESTRO</a></td>
+<td>African American, European, not available</td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cell line modifications]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genetic or other modifications</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000510">EFO:0000510</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CRISPR knockout of TP53, GFP-tagged, parental</p></td>
+<td><code>comment[cell line modifications]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Genetic or other modifications</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000510">EFO:0000510</a></td>
+<td>CRISPR knockout of TP53, GFP-tagged, parental</td>
 </tr>
 </tbody>
 </table>
@@ -789,7 +797,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-18 14:25:55 UTC
+Last updated 2026-01-21 15:07:36 UTC
 </div>
 </div>
 </body>
