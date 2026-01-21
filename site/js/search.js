@@ -98,11 +98,31 @@ function performSearch(query) {
     }
 
     try {
-        // Add wildcards for partial matching
-        const searchTerms = query.split(' ')
-            .filter(term => term.length > 1)
-            .map(term => `${term}* ${term}~1`)
-            .join(' ');
+        // Check if query looks like an ontology term (e.g., EFO:0000510, MONDO:0005010)
+        const ontologyPattern = /^[A-Z]{2,}:\d+$/i;
+        const ontologyPrefixPattern = /^[A-Z]{2,}$/i;
+
+        let searchTerms;
+
+        if (ontologyPattern.test(query)) {
+            // Exact ontology term search - search in keywords field with boost
+            searchTerms = `keywords:${query.toUpperCase()} ${query.toUpperCase()}`;
+        } else if (ontologyPrefixPattern.test(query) && query.length <= 8) {
+            // Ontology prefix search (e.g., "EFO", "MONDO")
+            searchTerms = `keywords:${query.toUpperCase()}* ${query.toUpperCase()}`;
+        } else {
+            // Standard search with wildcards for partial matching
+            searchTerms = query.split(' ')
+                .filter(term => term.length > 1)
+                .map(term => {
+                    // Don't add fuzzy matching to terms that look like ontology IDs
+                    if (/^[A-Z]{2,}:\d+$/i.test(term)) {
+                        return `keywords:${term.toUpperCase()} ${term.toUpperCase()}`;
+                    }
+                    return `${term}* ${term}~1`;
+                })
+                .join(' ');
+        }
 
         const results = searchIndex.search(searchTerms);
         displayResults(results, query);

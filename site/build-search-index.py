@@ -78,9 +78,13 @@ def extract_keywords(content):
     """Extract potential keywords from content."""
     keywords = set()
 
-    # Extract ontology terms (e.g., EFO, MONDO, NCIT)
-    ontology_terms = re.findall(r'\b([A-Z]{2,}(?::[A-Z0-9]+)?)\b', content)
-    keywords.update(ontology_terms)
+    # Extract ontology terms with full accession (e.g., EFO:0000510, MONDO:0005010, NCIT:C12345)
+    full_ontology_terms = re.findall(r'\b([A-Z]{2,}:\d{4,})\b', content)
+    keywords.update(full_ontology_terms)
+
+    # Extract ontology prefixes (e.g., EFO, MONDO, NCIT, PATO, CHEBI)
+    ontology_prefixes = re.findall(r'\b(EFO|MONDO|NCIT|PATO|CHEBI|UBERON|CL|GO|HANCESTRO|MS|UO|HP|DOID|OBI|CLO|BTO)\b', content)
+    keywords.update(ontology_prefixes)
 
     # Extract characteristics and comments
     characteristics = re.findall(r'characteristics\[([^\]]+)\]', content)
@@ -89,11 +93,63 @@ def extract_keywords(content):
     comments = re.findall(r'comment\[([^\]]+)\]', content)
     keywords.update(comments)
 
-    # Extract column names
+    # Extract column names (underscore format)
     columns = re.findall(r'_([a-z][a-z_ ]+)_', content)
     keywords.update(columns)
 
+    # Extract SDRF column headers (source name, assay name, etc.)
+    sdrf_columns = re.findall(r'\b(source name|assay name|material type|technology type|factor value|comment)\b', content, re.IGNORECASE)
+    keywords.update([c.lower() for c in sdrf_columns])
+
+    # Extract common SDRF values (cell type, organism part, disease, etc.)
+    sdrf_values = re.findall(r'\b(cell line|cell type|organism part|organism|disease|tissue|age|sex|ancestry category|developmental stage|individual|biological replicate|technical replicate|fraction identifier|label|instrument|modification parameters|cleavage agent|enrichment process)\b', content, re.IGNORECASE)
+    keywords.update([v.lower() for v in sdrf_values])
+
     return ' '.join(keywords)
+
+
+def parse_sdrf_terms_tsv(filepath):
+    """Parse sdrf-terms.tsv and return searchable entries."""
+    entries = []
+
+    with open(filepath, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+    # Skip header
+    header = lines[0].strip().split('\t') if lines else []
+
+    for line in lines[1:]:
+        parts = line.strip().split('\t')
+        if len(parts) >= 3:
+            column_name = parts[0] if len(parts) > 0 else ''
+            template = parts[1] if len(parts) > 1 else ''
+            required = parts[2] if len(parts) > 2 else ''
+            ontology = parts[3] if len(parts) > 3 else ''
+            description = parts[4] if len(parts) > 4 else ''
+
+            # Create searchable content
+            content = f"{column_name} {template} {ontology} {description}"
+
+            # Build keywords from column name and ontology
+            keywords = [column_name]
+            if ontology:
+                keywords.append(ontology)
+            # Extract ontology terms from the ontology field
+            ontology_terms = re.findall(r'\b([A-Z]{2,}:\d{4,})\b', ontology)
+            keywords.extend(ontology_terms)
+            # Extract ontology prefixes
+            ontology_prefixes = re.findall(r'\b([A-Z]{2,})\b', ontology)
+            keywords.extend(ontology_prefixes)
+
+            entries.append({
+                'title': f"Column: {column_name}",
+                'content': content,
+                'url': f"./sdrf-terms.html#{slugify(column_name)}",
+                'section': 'SDRF Terms Reference',
+                'keywords': ' '.join(keywords)
+            })
+
+    return entries
 
 
 def build_index(docs_dir, output_file):
@@ -116,6 +172,11 @@ def build_index(docs_dir, output_file):
             'file': 'sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc',
             'url': './metadata-guidelines/data-file-metadata.html',
             'section': 'Data File Metadata Guidelines'
+        },
+        {
+            'file': 'sdrf-proteomics/tool-support.adoc',
+            'url': './tool-support.html',
+            'section': 'Tool Support'
         },
     ]
 
@@ -151,6 +212,14 @@ def build_index(docs_dir, output_file):
         # Split large documents into chunks for better search results
         chunks = split_into_chunks(content, title, doc['url'], doc['section'], keywords)
         index.extend(chunks)
+
+    # Index sdrf-terms.tsv for column definitions and ontology mappings
+    sdrf_terms_path = Path(docs_dir) / 'sdrf-proteomics' / 'metadata-guidelines' / 'sdrf-terms.tsv'
+    if sdrf_terms_path.exists():
+        print(f"Indexing: sdrf-terms.tsv")
+        sdrf_entries = parse_sdrf_terms_tsv(sdrf_terms_path)
+        index.extend(sdrf_entries)
+        print(f"  Added {len(sdrf_entries)} SDRF term entries")
 
     # Write JSON index (for server-based fetch)
     with open(output_file, 'w', encoding='utf-8') as f:
