@@ -43,6 +43,35 @@ Most controlled vocabulary values should be **lowercase**:
 
 NOTE: Validators should normalize common capitalization variations (e.g., accept both `Homo sapiens` and `homo sapiens`), but submitters should use lowercase for consistency.
 
+=== Reserved Values
+
+The following reserved values can be used across multiple columns when specific data is unavailable:
+
+|===
+|Value |When to Use |Example Columns
+
+|`not available`
+|Information was not collected or is unknown
+|age, sex, ancestry category, disease
+
+|`not applicable`
+|The field does not apply to this sample type
+|organism part (for cell lines), cell type (for whole organism)
+
+|`anonymized`
+|Information exists but has been intentionally redacted for privacy protection (e.g., in clinical studies with de-identified patient data)
+|age, sex, individual, ancestry category
+
+|`pooled`
+|Sample is pooled from multiple sources with different values
+|biological replicate, age, sex
+|===
+
+[IMPORTANT]
+====
+Use `anonymized` when the data exists but cannot be shared due to privacy requirements. This is distinct from `not available` (data was never collected) and provides important context for data reuse. For example, a clinical study may have patient ages recorded internally but publish the data with `anonymized` ages to protect patient identity.
+====
+
 == Organism
 
 **Column:** `characteristics[organism]`
@@ -117,6 +146,7 @@ Always use `characteristics[organism part]` for specifying anatomical location o
 
 |`not available` |Age is unknown or not recorded
 |`not applicable` |Age doesn't apply (e.g., immortalized cell lines, pooled samples from different ages)
+|`anonymized` |Age has been intentionally redacted for privacy protection
 |===
 
 [IMPORTANT]
@@ -148,11 +178,14 @@ The developmental stage column is particularly useful for:
 
 |male |Male biological sex
 |female |Female biological sex
+|intersex |Intersex biological sex
+|anonymized |Sex has been intentionally redacted for privacy protection
 |not available |Sex is unknown or not recorded
 |not applicable |Sex doesn't apply (e.g., pooled samples from mixed sexes)
+|pooled |Pooled samples from subjects of different sexes
 |===
 
-NOTE: Use lowercase values. For cell lines, use the sex of the original donor if known (e.g., `female` for HeLa cells), otherwise use `not available`.
+NOTE: Use lowercase values. For cell lines, use the sex of the original donor if known (e.g., `female` for HeLa cells), otherwise use `not available`. Use `anonymized` when the information exists but has been redacted for privacy reasons (e.g., clinical studies with de-identified data).
 
 [[developmental-stage]]
 == Developmental Stage
