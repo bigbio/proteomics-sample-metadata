@@ -265,7 +265,7 @@
 <div class="title">Note</div>
 </td>
 <td class="content">
-This minimal example shows a <strong>mass spectrometry-based</strong> proteomics experiment. For detailed requirements see the <a href="templates/ms-base.html">MS-Base template</a>. For <strong>affinity-based proteomics</strong> (Olink, SomaScan), different columns are required - see the <a href="templates/affinity-base.html">Affinity-Base template</a>.
+This minimal example shows a <strong>mass spectrometry-based</strong> proteomics experiment. For detailed requirements see the <a href="templates/ms-base.html">MS-Base template</a>. For <strong>affinity-based proteomics</strong> (Olink, SomaScan), different columns are required - see the <a href="templates/affinity-proteomics.html">Affinity-Proteomics template</a>.
 </td>
 </tr>
 </table>
@@ -338,7 +338,7 @@ SDRF-Proteomics does <strong>not</strong> aim to capture downstream analysis det
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Choose a <a href="#templates">technology template</a> based on your <a href="#technology-type">technology type</a>: <code>ms-base</code> for <em>proteomic profiling by mass spectrometry</em>, <code>affinity-base</code> for <em>protein expression profiling by antibody/aptamer array</em> (Olink, SomaScan)</p>
+<p>Choose a <a href="#templates">technology template</a> based on your <a href="#technology-type">technology type</a>: <code>ms-base</code> for <em>proteomic profiling by mass spectrometry</em>, <code>affinity-proteomics</code> for <em>protein expression profiling by antibody/aptamer array</em> (Olink, SomaScan)</p>
 </li>
 <li>
 <p>Add the appropriate <a href="#templates">sample template</a> for your organism (Human, Vertebrates, Invertebrates, Plants, or Cell-lines)</p>
@@ -429,7 +429,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-base, affinity-base), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
+<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-base, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -870,7 +870,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Key=value representation (Human and Computer readable)</strong>: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="metadata-guidelines/data-file-metadata.html#protein-modifications">Protein Modifications</a>):</p>
+<p><strong>Key=value representation (Human and Computer readable)</strong>: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="metadata-guidelines/data-file-metadata.html#_protein_modifications">Protein Modifications</a>):</p>
 <div class="literalblock">
 <div class="content">
 <pre>NT=Glu-&gt;pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E</pre>
@@ -1212,7 +1212,7 @@ Both <em>characteristics[biological replicate]</em> and <em>comment[technical re
 <div class="sect2">
 <h3 id="pooled-samples"><a class="anchor" href="#pooled-samples"></a><a class="link" href="#pooled-samples">8.3. Pooled samples</a></h3>
 <div class="paragraph">
-<p>When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see <a href="metadata-guidelines/data-file-metadata.html#label-annotations">Label Annotations</a>).</p>
+<p>When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see <a href="metadata-guidelines/data-file-metadata.html#_label">Label Annotations</a>).</p>
 </div>
 <div class="paragraph">
 <p>One possible exception is made for the case when one channel (e.g., in a TMT/iTRAQ multiplexed experiment) is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, the <em>characteristics[pooled sample]</em> column SHOULD be used.</p>
@@ -1433,7 +1433,7 @@ For pooled samples (e.g., TMT reference channels), use <code>pooled</code> for i
 <p>This format enables automated validation and software extraction from raw files. Sample metadata (characteristics) can use simple term names since they are typically human-annotated.</p>
 </div>
 <div class="paragraph">
-<p>The following properties MUST be provided for each data file in <strong>mass spectrometry-based proteomics</strong> experiments. For <strong>affinity-based proteomics</strong> (Olink, SomaScan), see the <a href="templates/affinity-base.html">Affinity-Base template</a> for different required columns.</p>
+<p>The following properties MUST be provided for each data file in <strong>mass spectrometry-based proteomics</strong> experiments. For <strong>affinity-based proteomics</strong> (Olink, SomaScan), see the <a href="templates/affinity-proteomics.html">Affinity-Proteomics template</a> for different required columns.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch requirements-table">
 <colgroup>
@@ -1823,7 +1823,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>TECHNOLOGY</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Minimum valid templates for data acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/ms-base.html">ms-base</a>, <a href="templates/affinity-base.html">affinity-base</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/ms-base.html">ms-base</a>, <a href="templates/affinity-proteomics.html">affinity-proteomics</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Yes</strong> - these are the minimum valid SDRFs</p></td>
 </tr>
 <tr>
@@ -1858,7 +1858,7 @@ The <strong>base</strong> template is an internal construction artifact that def
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Technology templates</strong> (<code>ms-base</code> or <code>affinity-base</code>) are <strong>required</strong> - you must use exactly one</p>
+<p><strong>Technology templates</strong> (<code>ms-base</code> or <code>affinity-proteomics</code>) are <strong>required</strong> - you must use exactly one</p>
 </li>
 <li>
 <p><strong>Sample templates</strong> (<code>human</code>, <code>vertebrates</code>, etc.) are <strong>recommended</strong> but optional</p>
@@ -1896,10 +1896,11 @@ The <strong>base</strong> template is an internal construction artifact that def
   │   ├── single-cell (extends ms-base with SCP columns)
   │   └── immunopeptidomics (extends ms-base with MHC-MS columns)
   │
-  └── affinity-base (MINIMUM VALID for affinity proteomics)
-      │   Adds: affinity method, affinity reagent, panel name, quantification unit
+  └── affinity-proteomics (MINIMUM VALID for affinity proteomics)
+      │   Adds: instrument, panel name, quantification unit, sample type
       │
-      └── affinity-proteomics (extends affinity-base with additional columns)
+      ├── olink (extends affinity-proteomics with Olink-specific columns)
+      └── somascan (extends affinity-proteomics with SomaScan-specific columns)
 
 Sample templates (combine with TECHNOLOGY templates):
   ├── human (adds: disease, age, sex, ancestry)
@@ -1974,9 +1975,9 @@ Experiment templates (organism-agnostic):
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Yes</strong> - minimum for MS</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><a href="templates/affinity-base.html">Affinity-Base</a></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><a href="templates/affinity-proteomics.html">Affinity-Proteomics</a></strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Affinity-based proteomics (Olink, SomaScan, Luminex, RPPA)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/affinity-base.html">Full documentation</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/affinity-proteomics.html">Full documentation</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Yes</strong> - minimum for affinity</p></td>
 </tr>
 </tbody>
@@ -2718,7 +2719,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-22 15:58:12 UTC
+Last updated 2026-01-22 19:58:25 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
