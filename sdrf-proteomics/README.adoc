@@ -147,7 +147,7 @@ ifndef::backend-html5[]
 _Blue: Sample metadata | Green: Data file metadata | Orange: Factor values_
 endif::[]
 
-NOTE: This minimal example shows a **mass spectrometry-based** proteomics experiment. For detailed requirements see the link:templates/ms-base.html[MS-Base template]. For **affinity-based proteomics** (Olink, SomaScan), different columns are required - see the link:templates/affinity-base.html[Affinity-Base template].
+NOTE: This minimal example shows a **mass spectrometry-based** proteomics experiment. For detailed requirements see the link:templates/ms-base.html[MS-Base template]. For **affinity-based proteomics** (Olink, SomaScan), different columns are required - see the link:templates/affinity-proteomics.html[Affinity-Proteomics template].
 
 === Key Concepts
 
@@ -174,7 +174,7 @@ IMPORTANT: SDRF-Proteomics does **not** aim to capture downstream analysis detai
 
 === Getting Started Steps
 
-1. Choose a <<templates,technology template>> based on your <<technology-type,technology type>>: `ms-base` for _proteomic profiling by mass spectrometry_, `affinity-base` for _protein expression profiling by antibody/aptamer array_ (Olink, SomaScan)
+1. Choose a <<templates,technology template>> based on your <<technology-type,technology type>>: `ms-base` for _proteomic profiling by mass spectrometry_, `affinity-proteomics` for _protein expression profiling by antibody/aptamer array_ (Olink, SomaScan)
 2. Add the appropriate <<templates,sample template>> for your organism (Human, Vertebrates, Invertebrates, Plants, or Cell-lines)
 3. Fill in sample metadata (characteristics columns)
 4. Fill in data file metadata (comment columns)
@@ -222,7 +222,7 @@ Each template has its own directory containing a detailed README.adoc with check
 
 image::images/sdrf-guidelines-structure.png[Logo]
 
-**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-base, affinity-base), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.
+**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-base, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.
 
 NOTE: The main specification is in the `sdrf-proteomics` directory. All templates are organized in `sdrf-proteomics/templates/`. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type. 
 
@@ -577,7 +577,7 @@ ifndef::backend-html5[]
 |===
 endif::[]
 
-- **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:metadata-guidelines/data-file-metadata.html#protein-modifications[Protein Modifications]):
+- **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:metadata-guidelines/data-file-metadata.html#_protein_modifications[Protein Modifications]):
 
   NT=Glu->pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E
 
@@ -858,7 +858,7 @@ Some examples with explicit annotation of the biological replicates can be found
 [[pooled-samples]]
 === Pooled samples
 
-When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see link:metadata-guidelines/data-file-metadata.html#label-annotations[Label Annotations]).
+When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see link:metadata-guidelines/data-file-metadata.html#_label[Label Annotations]).
 
 One possible exception is made for the case when one channel (e.g., in a TMT/iTRAQ multiplexed experiment) is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, the _characteristics[pooled sample]_ column SHOULD be used.
 
@@ -1054,7 +1054,7 @@ Examples: `NT=HCD;AC=PRIDE:0000590`, `NT=Orbitrap;AC=MS:1000484`
 
 This format enables automated validation and software extraction from raw files. Sample metadata (characteristics) can use simple term names since they are typically human-annotated.
 
-The following properties MUST be provided for each data file in **mass spectrometry-based proteomics** experiments. For **affinity-based proteomics** (Olink, SomaScan), see the link:templates/affinity-base.html[Affinity-Base template] for different required columns.
+The following properties MUST be provided for each data file in **mass spectrometry-based proteomics** experiments. For **affinity-based proteomics** (Olink, SomaScan), see the link:templates/affinity-proteomics.html[Affinity-Proteomics template] for different required columns.
 
 ifdef::backend-html5[]
 ++++
@@ -1392,7 +1392,7 @@ Templates in SDRF-Proteomics follow a **layered architecture** that separates co
 
 |**TECHNOLOGY**
 |Minimum valid templates for data acquisition
-|link:templates/ms-base.html[ms-base], link:templates/affinity-base.html[affinity-base]
+|link:templates/ms-base.html[ms-base], link:templates/affinity-proteomics.html[affinity-proteomics]
 |**Yes** - these are the minimum valid SDRFs
 
 |**SAMPLE**
@@ -1410,7 +1410,7 @@ TIP: The **base** template is an internal construction artifact that defines sha
 
 **Key concepts:**
 
-- **Technology templates** (`ms-base` or `affinity-base`) are **required** - you must use exactly one
+- **Technology templates** (`ms-base` or `affinity-proteomics`) are **required** - you must use exactly one
 - **Sample templates** (`human`, `vertebrates`, etc.) are **recommended** but optional
 - **Experiment templates** provide additional methodology-specific columns
 - Templates can be **extended**: add custom columns beyond the template requirements for study-specific metadata
@@ -1437,10 +1437,11 @@ base (CONSTRUCTION ARTIFACT - not valid alone)
   │   ├── single-cell (extends ms-base with SCP columns)
   │   └── immunopeptidomics (extends ms-base with MHC-MS columns)
   │
-  └── affinity-base (MINIMUM VALID for affinity proteomics)
-      │   Adds: affinity method, affinity reagent, panel name, quantification unit
+  └── affinity-proteomics (MINIMUM VALID for affinity proteomics)
+      │   Adds: instrument, panel name, quantification unit, sample type
       │
-      └── affinity-proteomics (extends affinity-base with additional columns)
+      ├── olink (extends affinity-proteomics with Olink-specific columns)
+      └── somascan (extends affinity-proteomics with SomaScan-specific columns)
 
 Sample templates (combine with TECHNOLOGY templates):
   ├── human (adds: disease, age, sex, ancestry)
@@ -1474,9 +1475,9 @@ First, determine your proteomics technology and select the appropriate technolog
 | link:templates/ms-base.html[Full documentation]
 | **Yes** - minimum for MS
 
-| **link:templates/affinity-base.html[Affinity-Base]**
+| **link:templates/affinity-proteomics.html[Affinity-Proteomics]**
 | Affinity-based proteomics (Olink, SomaScan, Luminex, RPPA)
-| link:templates/affinity-base.html[Full documentation]
+| link:templates/affinity-proteomics.html[Full documentation]
 | **Yes** - minimum for affinity
 |===
 

@@ -2,14 +2,11 @@
 :sectnums:
 :toc: left
 :doctype: book
-//only works on some backends, not HTML
 :showcomments:
-//use style like Section 1 when referencing within the document.
 :xrefstyle: short
 :figure-caption: Figure
 :pdf-page-size: A4
 
-//GitHub specific settings
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
@@ -21,299 +18,330 @@ endif::[]
 [[status]]
 == Status of this Template
 
-This document provides guidelines for annotating affinity-based proteomics experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with affinity proteomics-specific metadata fields.
+This document provides guidelines for annotating affinity-based proteomics experiments in SDRF-Proteomics format.
+
+**Type:** Technology Template
 
 **Status:** Released
 
-**Version:** 1.0.0 - 2026-01
+**Version:** 1.1.0 - 2026-01
 
 [[abstract]]
 == Abstract
 
-Affinity proteomics encompasses experimental approaches that use affinity-based capture methods to study specific protein subsets or interactions. Unlike mass spectrometry-based proteomics, these methods typically use antibodies, aptamers, or other affinity reagents to detect and quantify proteins. Major platforms include Proximity Extension Assay (PEA/Olink), aptamer-based assays (SomaScan), antibody arrays, and immunoaffinity-MS hybrid approaches.
-
-These experiments have unique characteristics: pre-defined protein panels, detection via sequencing/fluorescence rather than MS, high throughput, relative quantification units (NPX, RFU), and platform-specific considerations. This template defines metadata requirements for annotating affinity proteomics experiments, enabling data integration across platforms.
-
-[[scope]]
-== Scope
+Affinity proteomics uses affinity-based capture methods (antibodies, aptamers, or other reagents) to detect and quantify proteins. Unlike mass spectrometry-based proteomics, these methods typically produce a single data file per study containing measurements for all samples across all targeted proteins.
 
 This template covers:
 
-- Proximity Extension Assays (Olink)
-- Aptamer-based protein profiling (SomaScan)
-- Antibody/bead arrays (Luminex, MSD)
-- Reverse phase protein arrays (RPPA)
-- Immunoaffinity enrichment followed by MS detection
+* **Olink** - Proximity Extension Assay (PEA)
+* **SomaScan** - Aptamer-based protein profiling
+* **Luminex/MSD** - Bead-based immunoassays
+* **RPPA** - Reverse Phase Protein Arrays
+* **Other** - ELISA, Western blot, immunoaffinity-MS
 
-IMPORTANT: While affinity proteomics extends SDRF-Proteomics, many of these technologies do not use mass spectrometry. The `technology type` and `assay name` columns are adapted accordingly.
+[[key-differences]]
+== Key Differences from MS-Based Proteomics
 
-[[technology-type]]
-== Technology Type Annotation
+Understanding these differences is critical for correct SDRF annotation.
 
-For affinity proteomics, the `technology type` column MUST reflect the actual detection technology:
+=== Data File Structure
 
+[cols="1,1", options="header"]
 |===
-|Platform |Technology Type Value
+|MS-Based Proteomics |Affinity Proteomics
 
-|Olink PEA
-|protein profiling by proximity extension assay
+|Each row = one sample-to-raw-file relationship
+|Each row = one sample in a shared data file
 
-|SomaScan
-|protein profiling by aptamer-based assay
+|Multiple raw files (one per sample or fraction)
+|**One data file per study** containing all samples
 
-|Luminex/MSD
-|protein profiling by immunoassay
-
-|RPPA
-|protein profiling by reverse phase protein array
-
-|Immunoaffinity-MS
-|proteomic profiling by mass spectrometry
+|Each sample typically has its own data file
+|Same data file appears in multiple rows
 |===
+
+=== Technology Type
+
+[cols="1,1", options="header"]
+|===
+|MS-Based |Affinity-Based
+
+|`proteomic profiling by mass spectrometry`
+|`protein expression profiling by antibody array` or `protein expression profiling by aptamer array`
+|===
+
+=== Assay Name Purpose
+
+[IMPORTANT]
+====
+In affinity proteomics, `assay name` serves a different purpose than in MS-based proteomics:
+
+* **MS-based**: Unique identifier for each MS run/data file
+* **Affinity-based**: **Sample ID from the platform data file** - this is the critical linking column that connects SDRF rows to samples in the shared data file
+====
+
+=== Columns NOT Applicable
+
+The following MS-specific columns should **NOT** be included in affinity proteomics SDRF files:
+
+* `comment[proteomics data acquisition method]` - No MS acquisition
+* `comment[label]` - No isotopic labeling
+* `comment[cleavage agent details]` - No protein digestion
+* `comment[fraction identifier]` - Typically no fractionation
+* `comment[modification parameters]` - Not relevant
+* `comment[precursor mass tolerance]` / `comment[fragment mass tolerance]` - No MS tolerances
+* `comment[dissociation method]` / `comment[collision energy]` - No MS/MS
+
+[[hierarchy]]
+== Template Hierarchy
+
+[source]
+----
+base
+  └── affinity-proteomics (THIS TEMPLATE)
+        ├── olink (Olink-specific columns)
+        └── somascan (SomaScan-specific columns)
+----
 
 [[checklist]]
 == Checklist
 
-This section defines the metadata columns required and recommended for affinity proteomics experiments.
-
 === Required Columns
 
-The following columns are REQUIRED for affinity proteomics experiments in addition to the core SDRF-Proteomics requirements:
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the biological sample</td>
+<td>patient_001_plasma, sample_A</td>
+</tr>
+<tr>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species (NCBI Taxonomy)</td>
+<td>homo sapiens</td>
+</tr>
+<tr>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Anatomical part or sample type</td>
+<td>blood plasma, blood serum, CSF</td>
+</tr>
+<tr>
+<td><code>characteristics[disease]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Disease state (use "normal" for healthy)</td>
+<td>rheumatoid arthritis, normal</td>
+</tr>
+<tr>
+<td><code>characteristics[biological replicate]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological replicate number or "pooled"</td>
+<td>1, 2, pooled, not available</td>
+</tr>
+<tr>
+<td><code>assay name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td><strong>Sample ID from platform data file</strong> - critical linking column</td>
+<td>XB6, Sample_ID_1, L14_NIST</td>
+</tr>
+<tr>
+<td><code>technology type</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Must be affinity-specific technology type</td>
+<td>protein expression profiling by antibody array</td>
+</tr>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Affinity platform/instrument</td>
+<td>Olink Explore HT, SomaScan Assay 7K</td>
+</tr>
+<tr>
+<td><code>comment[data file]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Single data file name (same for all rows)</td>
+<td>olink_npx.csv, somascan_results.adat</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
 
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
 |===
-|Column Name |Description |Cardinality |Ontology/CV |Example Values
+|Column |Requirement |Description |Example Values
 
-|characteristics[affinity reagent]
-|Primary reagent type or platform used for affinity-based capture
-|1
-|Controlled vocabulary
-|Olink proximity extension assay, SOMAscan aptamer panel, antibody array, immunoaffinity beads
-
-|characteristics[affinity method]
-|General method category for affinity-based detection
-|1
-|Controlled vocabulary
-|proximity extension assay, aptamer-based assay, immunoaffinity capture, sandwich immunoassay, reverse phase protein array
+|source name |REQUIRED |Unique identifier for the biological sample |patient_001_plasma
+|characteristics[organism] |REQUIRED |Species (NCBI Taxonomy) |homo sapiens
+|characteristics[organism part] |REQUIRED |Anatomical part or sample type |blood plasma, blood serum
+|characteristics[disease] |RECOMMENDED |Disease state (use "normal" for healthy) |rheumatoid arthritis, normal
+|characteristics[biological replicate] |REQUIRED |Biological replicate number or "pooled" |1, 2, pooled
+|assay name |REQUIRED |**Sample ID from platform data file** |XB6, Sample_ID_1
+|technology type |REQUIRED |Must be affinity-specific |protein expression profiling by antibody array
+|comment[instrument] |REQUIRED |Affinity platform/instrument |Olink Explore HT
+|comment[data file] |REQUIRED |Single data file name |olink_npx.csv
 |===
+endif::[]
 
 === Recommended Columns
 
-The following columns are RECOMMENDED for affinity proteomics experiments:
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[sample type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Sample classification from platform</td>
+<td>sample, sample_control, negative_control, plate_control</td>
+</tr>
+<tr>
+<td><code>comment[plate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Plate identifier for batch effect analysis</td>
+<td>1, 2, plate_A</td>
+</tr>
+<tr>
+<td><code>comment[panel name]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Commercial panel name</td>
+<td>Olink Explore 3072, SomaScan 7K</td>
+</tr>
+<tr>
+<td><code>comment[panel version]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Panel version</td>
+<td>v4.1, 2023-01</td>
+</tr>
+<tr>
+<td><code>comment[quantification unit]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Platform-specific measurement unit</td>
+<td>NPX, RFU, MFI, pg/mL</td>
+</tr>
+<tr>
+<td><code>comment[technical replicate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Technical replicate number</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
 
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
 |===
-|Column Name |Description |Cardinality |Ontology/CV |Example Values
+|Column |Requirement |Description |Example Values
 
-|characteristics[target protein class]
-|Class or category of proteins being targeted by the panel
-|0..*
-|Controlled vocabulary or free text
-|cytokines, inflammation markers, cardiovascular biomarkers, oncology panel, kinases
-
-|comment[panel name]
-|Commercial name or identifier of the protein panel
-|0..1
-|Free text
-|Olink Target 96 Inflammation, SomaScan 7K, Olink Explore 3072, custom panel
-
-|comment[panel composition]
-|Number and description of targets in the panel
-|0..1
-|Free text description
-|92 proteins, 7000 protein targets, 48 cytokines
-
-|comment[panel version]
-|Version of the panel if applicable
-|0..1
-|Version identifier
-|v3.0, 2023-01, lot ABC123
-
-|comment[detection sensitivity]
-|Sensitivity or detection limit of the assay
-|0..1
-|Concentration with unit
-|1 pg/mL, 0.1 pg/mL, LOD 5 pg/mL, femtomolar range
-
-|comment[quantification unit]
-|Unit of measurement for quantitative values
-|0..1
-|Unit identifier
-|NPX (Normalized Protein eXpression), RFU (Relative Fluorescence Units), pg/mL, MFI
-
-|comment[sample volume]
-|Volume of sample used for the assay
-|0..1
-|Numeric value with unit
-|1 uL, 10 uL, 50 uL, 100 uL
-
-|comment[sample type]
-|Type of biological sample material
-|0..1
-|Controlled vocabulary
-|serum, plasma (EDTA), plasma (citrate), CSF, urine, tissue lysate
-
-|comment[dilution factor]
-|Sample dilution if applied
-|0..1
-|Ratio or factor
-|1:4, 1:100, undiluted, 10x
+|comment[sample type] |RECOMMENDED |Sample classification from platform |sample, negative_control, plate_control
+|comment[plate] |RECOMMENDED |Plate identifier for batch effects |1, 2, plate_A
+|comment[panel name] |RECOMMENDED |Commercial panel name |Olink Explore 3072, SomaScan 7K
+|comment[panel version] |OPTIONAL |Panel version |v4.1, 2023-01
+|comment[quantification unit] |RECOMMENDED |Measurement unit |NPX, RFU, MFI, pg/mL
+|comment[technical replicate] |RECOMMENDED |Technical replicate number |1
 |===
+endif::[]
 
-[[olink-specific]]
-== Olink-Specific Checklist
+[[technology-types]]
+== Technology Type Values
 
-For Olink Proximity Extension Assay experiments:
+Use the appropriate technology type for your platform:
 
-=== Required for Olink
-
+[cols="1,2", options="header"]
 |===
-|Column Name |Description |Example Values
+|Platform |Technology Type Value
 
-|comment[olink panel]
-|Name of the Olink panel
-|Target 96 Inflammation, Target 96 Cardiovascular II, Explore 384 Inflammation
-
-|comment[olink platform]
-|Olink instrument/platform version
-|Olink Target 96, Olink Explore 384, Olink Explore HT
-|===
-
-=== Recommended for Olink
-
-|===
-|Column Name |Description |Example Values
-
-|comment[NPX normalization]
-|Normalization method applied to NPX values
-|plate control normalized, intensity normalized, bridge normalized
-
-|comment[QC warning]
-|Quality control warnings if any
-|QC pass, below LOD, plate effect warning
-
-|comment[olink lot number]
-|Reagent lot number for traceability
-|lot_2023_001, B12345
-|===
-
-[[somascan-specific]]
-== SomaScan-Specific Checklist
-
-For SomaScan aptamer-based experiments:
-
-=== Required for SomaScan
-
-|===
-|Column Name |Description |Example Values
-
-|comment[somascan menu]
-|SomaScan assay menu version
-|SomaScan 1.1K, SomaScan 5K, SomaScan 7K, SomaScan 11K
-
-|comment[somascan platform]
-|Platform/instrument version
-|SomaScan Assay v4.0, SomaScan Assay v4.1
-|===
-
-=== Recommended for SomaScan
-
-|===
-|Column Name |Description |Example Values
-
-|comment[normalization method]
-|Normalization applied to RFU values
-|median normalization, calibrator normalization, hybridization control normalization
-
-|comment[sample matrix]
-|Sample matrix type
-|serum, plasma EDTA, plasma citrate
-|===
-
-[[immunoassay-specific]]
-== Immunoassay Array Checklist
-
-For Luminex, MSD, and similar bead/plate-based immunoassays:
-
-|===
-|Column Name |Description |Example Values
-
-|comment[assay platform]
-|Immunoassay platform used
-|Luminex xMAP, MSD MULTI-ARRAY, ELLA, Simoa
-
-|comment[antibody source]
-|Source of capture/detection antibodies
-|R&D Systems, Bio-Rad, custom antibodies, Millipore
-
-|comment[standard curve]
-|Whether standard curve was included
-|yes, no, included in kit
-
-|comment[detection method]
-|Detection methodology
-|fluorescence, electrochemiluminescence, enzyme-linked
-|===
-
-[[immunoaffinity-ms]]
-== Immunoaffinity-MS Checklist
-
-For experiments combining immunoaffinity capture with mass spectrometry:
-
-These experiments use affinity enrichment followed by MS detection. They should include:
-
-1. Standard MS-related columns from core SDRF-Proteomics
-2. Affinity-specific columns for the capture step
-
-|===
-|Column Name |Description |Example Values
-
-|characteristics[enrichment method]
-|Immunoaffinity enrichment approach
-|anti-FLAG IP, anti-HA IP, SISCAPA, immuno-MRM
-
-|comment[capture antibody]
-|Antibody used for enrichment
-|anti-FLAG M2, anti-GFP nanobody, custom polyclonal
-
-|comment[bead type]
-|Type of beads used for capture
-|Protein A/G agarose, magnetic beads, NHS-sepharose
-|===
-
-[[data-file-formats]]
-== Data File Formats
-
-Affinity proteomics platforms produce various output formats:
-
-|===
-|Platform |Typical File Format |File Extension
-
-|Olink
-|Excel or CSV with NPX values
-|.xlsx, .csv
+|Olink (PEA)
+|`protein expression profiling by antibody array`
 
 |SomaScan
-|ADAT format (proprietary) or CSV
-|.adat, .csv
+|`protein expression profiling by aptamer array`
 
-|Luminex
-|CSV or xPONENT format
-|.csv, .xml
+|Luminex/MSD/ELISA
+|`protein expression profiling by antibody array`
 
-|MSD
-|Discovery Workbench format
-|.xlsx, .csv
+|RPPA
+|`protein expression profiling by antibody array`
 
 |Immunoaffinity-MS
-|Standard MS formats
-|.raw, .mzML
+|`proteomic profiling by mass spectrometry`
 |===
 
-For `comment[data file]`, use the actual file name regardless of format.
+[[data-file-structure]]
+== Understanding the Data File Structure
 
-[[example-sdrf]]
-== Example SDRF Files
+=== One Data File, Multiple Rows
 
-=== Olink Example
+In affinity proteomics, **one data file contains all samples**. The SDRF reflects this:
+
+* Same `comment[data file]` value for all rows
+* `assay name` (Sample ID) distinguishes different samples
+* Multiple rows may exist for the same sample (one per protein measured, if tracking at that granularity)
+
+**Example:**
+[source]
+----
+source name  | assay name   | comment[data file]
+sample_1     | Sample_ID_1  | olink_npx.csv
+sample_2     | Sample_ID_2  | olink_npx.csv
+sample_3     | Sample_ID_3  | olink_npx.csv
+----
+
+=== Assay Name = Sample ID
+
+The `assay name` column contains the **Sample ID from the platform data file**:
+
+* This is the key that links SDRF rows to the data file
+* Each unique Sample ID in the data file = one unique `assay name` in SDRF
+* Must match exactly what appears in the platform output
+
+[[special-cases]]
+== Handling Special Cases
+
+=== Pooled Samples
+
+For samples pooled from multiple individuals:
+
+[cols="1,2", options="header"]
+|===
+|Column |Value
+
+|characteristics[individual] |pooled
+|characteristics[age] |pooled (or age range if known, e.g., "40Y-50Y")
+|characteristics[sex] |pooled (if mixed) or specific value if all same sex
+|characteristics[biological replicate] |pooled
+|===
+
+=== Control Samples
+
+For negative controls, plate controls, and other QC samples:
+
+[cols="1,2", options="header"]
+|===
+|Column |Value
+
+|characteristics[disease] |not applicable
+|characteristics[age] |not applicable
+|characteristics[sex] |not applicable
+|characteristics[individual] |not applicable
+|comment[sample type] |negative_control, plate_control, sample_control
+|===
+
+[[example-olink]]
+== Example: Olink Proteomics
 
 ifndef::env-github[]
 ++++
@@ -323,34 +351,43 @@ ifndef::env-github[]
 <tr>
 <th class="sample-col">source name</th>
 <th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
 <th class="sample-col">characteristics[disease]</th>
-<th class="sample-col">characteristics[affinity method]</th>
-<th class="ellipsis-col">...</th>
-<th class="data-col">comment[olink panel]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[panel name]</th>
 <th class="data-col">comment[quantification unit]</th>
 <th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="sample-col">patient_001_plasma</td>
+<td class="sample-col">patient_001</td>
 <td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
 <td class="sample-col">rheumatoid arthritis</td>
-<td class="sample-col">proximity extension assay</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">Target 96 Inflammation</td>
+<td class="sample-col">1</td>
+<td class="data-col">XB6</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
 <td class="data-col">NPX</td>
-<td class="data-col">plate1_results.xlsx</td>
+<td class="data-col">olink_npx.csv</td>
 </tr>
 <tr>
-<td class="sample-col">patient_002_plasma</td>
+<td class="sample-col">patient_002</td>
 <td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
 <td class="sample-col">normal</td>
-<td class="sample-col">proximity extension assay</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">Target 96 Inflammation</td>
+<td class="sample-col">2</td>
+<td class="data-col">XB65</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
 <td class="data-col">NPX</td>
-<td class="data-col">plate1_results.xlsx</td>
+<td class="data-col">olink_npx.csv</td>
 </tr>
 </tbody>
 </table>
@@ -363,15 +400,72 @@ ifndef::env-github[]
 endif::[]
 
 ifdef::env-github[]
+[cols="1,1,1,1,1,1,1,1,1,1,1", options="header"]
 |===
-|source name |characteristics[organism] |characteristics[disease] |characteristics[affinity method] |... |comment[olink panel] |comment[quantification unit] |comment[data file]
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate] |assay name |technology type |comment[instrument] |comment[panel name] |comment[quantification unit] |comment[data file]
 
-|patient_001_plasma |homo sapiens |rheumatoid arthritis |proximity extension assay |... |Target 96 Inflammation |NPX |plate1_results.xlsx
-|patient_002_plasma |homo sapiens |normal |proximity extension assay |... |Target 96 Inflammation |NPX |plate1_results.xlsx
+|patient_001 |homo sapiens |blood plasma |rheumatoid arthritis |1 |XB6 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 1536 |NPX |olink_npx.csv
+|patient_002 |homo sapiens |blood plasma |normal |2 |XB65 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 1536 |NPX |olink_npx.csv
 |===
 endif::[]
 
-=== SomaScan Example
+[[example-somascan]]
+== Example: SomaScan Proteomics
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[panel name]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">subject_A</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood serum</td>
+<td class="sample-col">type 2 diabetes mellitus</td>
+<td class="data-col">Sample_001</td>
+<td class="data-col">protein expression profiling by aptamer array</td>
+<td class="data-col">SomaScan Assay 7K</td>
+<td class="data-col">SomaScan 7K v4.1</td>
+<td class="data-col">RFU</td>
+<td class="data-col">somascan_results.adat</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+[cols="1,1,1,1,1,1,1,1,1,1", options="header"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |assay name |technology type |comment[instrument] |comment[panel name] |comment[quantification unit] |comment[data file]
+
+|subject_A |homo sapiens |blood serum |type 2 diabetes mellitus |Sample_001 |protein expression profiling by aptamer array |SomaScan Assay 7K |SomaScan 7K v4.1 |RFU |somascan_results.adat
+|===
+endif::[]
+
+[[example-controls]]
+== Example: With Controls
+
+For experiments that include various control types:
 
 ifndef::env-github[]
 ++++
@@ -382,70 +476,124 @@ ifndef::env-github[]
 <th class="sample-col">source name</th>
 <th class="sample-col">characteristics[organism]</th>
 <th class="sample-col">characteristics[disease]</th>
-<th class="sample-col">characteristics[affinity method]</th>
-<th class="ellipsis-col">...</th>
-<th class="data-col">comment[somascan menu]</th>
-<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment[sample type]</th>
+<th class="data-col">comment[plate]</th>
 <th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="sample-col">subject_A_serum</td>
+<td class="sample-col">patient_001</td>
 <td class="sample-col">homo sapiens</td>
-<td class="sample-col">type 2 diabetes mellitus</td>
-<td class="sample-col">aptamer-based assay</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">SomaScan 7K</td>
-<td class="data-col">RFU</td>
-<td class="data-col">somascan_batch1.adat</td>
+<td class="sample-col">cardiovascular disease</td>
+<td class="data-col">L14_P001</td>
+<td class="data-col">sample</td>
+<td class="data-col">2</td>
+<td class="data-col">olink_reveal.parquet</td>
+</tr>
+<tr>
+<td class="sample-col">pool_control</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not applicable</td>
+<td class="data-col">L14_NIST</td>
+<td class="data-col">sample_control</td>
+<td class="data-col">2</td>
+<td class="data-col">olink_reveal.parquet</td>
+</tr>
+<tr>
+<td class="sample-col">neg_ctrl</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="data-col">L14_NEG1</td>
+<td class="data-col">negative_control</td>
+<td class="data-col">2</td>
+<td class="data-col">olink_reveal.parquet</td>
 </tr>
 </tbody>
 </table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
-</div>
 </div>
 ++++
 endif::[]
 
 ifdef::env-github[]
+[cols="1,1,1,1,1,1,1", options="header"]
 |===
-|source name |characteristics[organism] |characteristics[disease] |characteristics[affinity method] |... |comment[somascan menu] |comment[quantification unit] |comment[data file]
+|source name |characteristics[organism] |characteristics[disease] |assay name |comment[sample type] |comment[plate] |comment[data file]
 
-|subject_A_serum |homo sapiens |type 2 diabetes mellitus |aptamer-based assay |... |SomaScan 7K |RFU |somascan_batch1.adat
+|patient_001 |homo sapiens |cardiovascular disease |L14_P001 |sample |2 |olink_reveal.parquet
+|pool_control |homo sapiens |not applicable |L14_NIST |sample_control |2 |olink_reveal.parquet
+|neg_ctrl |not applicable |not applicable |L14_NEG1 |negative_control |2 |olink_reveal.parquet
 |===
 endif::[]
+
+[[platforms]]
+== Platform-Specific Information
+
+=== Quantification Units
+
+[cols="1,2,2", options="header"]
+|===
+|Platform |Quantification Unit |Description
+
+|Olink |NPX |Normalized Protein eXpression (log2 scale)
+|SomaScan |RFU |Relative Fluorescence Units
+|Luminex |MFI |Median Fluorescence Intensity
+|MSD |Signal intensity |Electrochemiluminescence signal
+|ELISA/MSD |pg/mL, ng/mL |Absolute concentration
+|===
+
+=== Common Instruments
+
+[cols="1,2", options="header"]
+|===
+|Platform |Instrument Examples
+
+|Olink |Olink Explore HT, Olink Signature Q100, Olink Flex
+|SomaScan |SomaScan Assay 7K, SomaScan Assay 11K
+|Luminex |Luminex 200, MAGPIX, FLEXMAP 3D
+|MSD |MESO QuickPlex SQ 120, MESO SECTOR S 600
+|===
+
+=== Data File Formats
+
+[cols="1,2,1", options="header"]
+|===
+|Platform |Typical Format |Extension
+
+|Olink |Excel, CSV, or Parquet with NPX values |.xlsx, .csv, .parquet
+|SomaScan |ADAT format (proprietary) or CSV |.adat, .csv
+|Luminex |CSV or xPONENT format |.csv, .xml
+|MSD |Discovery Workbench format |.xlsx, .csv
+|===
 
 [[best-practices]]
-== Best Practices for Affinity Proteomics Annotation
+== Best Practices
 
-1. **Specify the platform clearly**: Always identify the specific technology platform used.
+1. **Use platform Sample IDs as assay name**: The `assay name` must match exactly what appears in the platform data file to enable proper linking.
 
-2. **Document panel information**: Include panel name, version, and composition for reproducibility.
+2. **Specify technology type correctly**: Always use affinity-specific technology types, never MS technology types for non-MS platforms.
 
-3. **Report quantification units**: Different platforms use different scales (NPX, RFU, pg/mL) - always specify.
+3. **Document quantification units**: Different platforms use different scales - always specify (NPX, RFU, MFI, pg/mL).
 
-4. **Note sample requirements**: Document sample type, volume, and any dilutions applied.
+4. **Include plate information**: For multi-plate experiments, `comment[plate]` is important for batch effect analysis.
 
-5. **Include QC information**: When available, note quality control status or warnings.
+5. **Classify samples properly**: Use `comment[sample type]` to distinguish biological samples from controls.
 
-6. **Use appropriate technology type**: Do not use MS-specific technology types for non-MS platforms.
+6. **Handle pooled samples correctly**: Use "pooled" for individual-specific fields when samples are pooled.
 
-7. **Link to panel documentation**: When possible, reference manufacturer documentation for panel contents.
+7. **Mark controls appropriately**: Use "not applicable" for sample characteristics of controls where the value doesn't apply.
 
-8. **Consider cross-platform studies**: When combining affinity and MS data, clearly distinguish samples and methods.
+[[validation]]
+== Validation
 
-[[cross-platform]]
-== Cross-Platform Data Integration
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template affinity-proteomics
+----
 
-When combining affinity proteomics with mass spectrometry data:
-
-- Use consistent `source name` values for the same biological samples
-- Clearly distinguish technology types in the SDRF
-- Consider using `characteristics[biosample accession number]` to link related samples
-- Document any batch effects or platform-specific normalizations
+NOTE: MS-specific validations (label, cleavage agent, etc.) do not apply to affinity proteomics.
 
 [[template-file]]
 == Template File
@@ -454,25 +602,12 @@ The affinity proteomics SDRF template file is available in this directory:
 
 - link:affinity-proteomics-template.sdrf.tsv[affinity-proteomics-template.sdrf.tsv]
 
-[[validation]]
-== Validation
+[[related-templates]]
+== Related Templates
 
-Affinity proteomics SDRF files should be validated using the sdrf-pipelines tool:
-
-[source,bash]
-----
-pip install sdrf-pipelines
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template affinity-proteomics
-----
-
-NOTE: Some MS-specific validations may not apply to non-MS affinity platforms.
-
-[[authors]]
-== Authors and Maintainers
-
-This template was developed by the SDRF-Proteomics community with contributions from affinity proteomics researchers.
-
-For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+* link:../olink/README.adoc[Olink Template] - Olink-specific columns (NPX normalization, QC warnings)
+* link:../somascan/README.adoc[SomaScan Template] - SomaScan-specific columns (menu version, matrix)
+* link:../human/README.adoc[Human Template] - Human sample metadata (can be combined)
 
 [[references]]
 == References
@@ -481,4 +616,3 @@ For questions or suggestions, please open an issue on the https://github.com/big
 - Gold L, et al. (2010) Aptamer-based multiplexed proteomic technology for biomarker discovery. PLoS ONE.
 - Olink Proteomics: https://www.olink.com/
 - SomaLogic: https://somalogic.com/
-- Schwenk JM, et al. (2017) The Human Protein Atlas as a proteomic resource for biomarker discovery. Journal of Internal Medicine.

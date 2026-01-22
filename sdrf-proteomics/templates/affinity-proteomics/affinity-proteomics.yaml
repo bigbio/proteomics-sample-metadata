@@ -1,63 +1,33 @@
 name: affinity-proteomics
-description: SDRF template for affinity-based proteomics experiments (Olink, SomaScan, Luminex, RPPA). Extends affinity-base with additional affinity-specific columns.
-version: 1.0.0-dev
-extends: affinity-base
-usable_alone: false
-layer: experiment
+description: SDRF template for affinity-based proteomics experiments (Olink, SomaScan, Luminex, RPPA). This is the base template for all affinity proteomics experiments.
+version: 1.1.0
+extends: base
+usable_alone: true
+layer: technology
+validators:
+  - validator_name: min_columns
+    params:
+      min_columns: 8
 columns:
-  - name: characteristics[affinity reagent]
-    description: Type of affinity reagent used for protein detection
+  - name: comment[instrument]
+    description: Affinity proteomics platform/instrument used for data acquisition
     requirement: required
     allow_not_applicable: false
     allow_not_available: false
     validators:
-      - validator_name: values
-        params:
-          values:
-            - antibody
-            - aptamer
-            - nanobody
-            - affimer
-            - not applicable
-          error_level: error
-          description: Type of affinity reagent
-
-  - name: characteristics[affinity method]
-    description: Affinity-based proteomics platform/method used
-    requirement: required
-    allow_not_applicable: false
-    allow_not_available: false
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - Olink
-            - SomaScan
-            - Luminex
-            - RPPA
-            - MSD
-            - Simoa
-            - ELISA
-            - Western blot
-            - not applicable
-          error_level: error
-          description: Affinity proteomics platform
-
-  - name: characteristics[target protein class]
-    description: Class of proteins targeted by the assay
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
+      - validator_name: single_cardinality_validator
+        params: {}
       - validator_name: pattern
         params:
           pattern: ^.+$
-          description: Protein class targeted
+          description: The instrument should describe the affinity platform used
           examples:
-            - cytokines
-            - cardiovascular markers
-            - inflammation panel
-            - oncology panel
+            - Olink Explore HT
+            - Olink Signature Q100
+            - SomaScan Assay 7K
+            - SomaScan Assay 11K
+            - Luminex 200
+            - MAGPIX
 
   - name: comment[panel name]
     description: Name of the commercial panel used
@@ -71,8 +41,10 @@ columns:
           description: Panel name
           examples:
             - Olink Explore 3072
+            - Olink Explore 1536
             - Olink Target 96 Inflammation
             - SomaScan 7K
+            - SomaScan 11K
             - Luminex Human Cytokine Panel
 
   - name: comment[panel version]
@@ -86,12 +58,12 @@ columns:
           pattern: ^.+$
           description: Panel version
           examples:
-            - v2.0
+            - v4.1
             - 2023-01
             - 7K v4.1
 
   - name: comment[quantification unit]
-    description: Unit of quantification for the assay
+    description: Unit of quantification for the assay (platform-specific)
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
@@ -101,6 +73,7 @@ columns:
           values:
             - NPX
             - RFU
+            - MFI
             - pg/mL
             - ng/mL
             - arbitrary units
@@ -109,23 +82,8 @@ columns:
           error_level: warning
           description: Quantification unit
 
-  - name: comment[sample volume]
-    description: Volume of sample used for the assay
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: pattern
-        params:
-          pattern: ^\d+(\.\d+)?\s*(uL|µL|mL)$
-          description: Sample volume with unit
-          examples:
-            - 1 uL
-            - 50 uL
-            - 100 µL
-
   - name: comment[sample type]
-    description: Type of sample analyzed
+    description: Sample classification from platform (distinguishes biological samples from controls)
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
@@ -133,27 +91,27 @@ columns:
       - validator_name: values
         params:
           values:
-            - serum
-            - plasma
-            - CSF
-            - urine
-            - cell lysate
-            - tissue lysate
+            - sample
+            - sample_control
+            - negative_control
+            - plate_control
+            - buffer_control
             - not applicable
           error_level: warning
-          description: Sample type
+          description: Sample type classification
 
-  - name: comment[dilution factor]
-    description: Dilution factor applied to the sample
+  - name: comment[plate]
+    description: Plate identifier for batch effect analysis
     requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: pattern
         params:
-          pattern: ^1:\d+$|^undiluted$
-          description: Dilution factor
+          pattern: ^.+$
+          description: Plate identifier
           examples:
-            - 1:10
-            - 1:100
-            - undiluted
+            - 1
+            - 2
+            - plate_A
+            - Plate_001
