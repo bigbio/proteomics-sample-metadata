@@ -21,6 +21,12 @@ This document provides detailed guidelines for data file metadata fields that re
 
 **Version 1.0.0** - 2025-01
 
+== Best Practices
+
+1. **Use ontology terms** - Prefer PSI-MS and PRIDE ontology terms for labels and enzymes.
+2. **Document modifications** - Include all expected modifications with UNIMOD accessions.
+3. **Provide mass tolerances** - Include precursor and fragment tolerances for reproducibility.
+
 == CV Term Format
 
 For data file metadata columns that reference ontology terms, use the structured CV term format:
@@ -94,10 +100,13 @@ Alternative: Use `comment[scan window lower limit]` and `comment[scan window upp
 **Format:** Key=value pairs: `NT=ModificationName;AC=Accession;MT=Type;TA=AminoAcid;PP=Position`
 
 |===
-|Property |Key |Description
+|Property |Key |Description |Values
 
-|Name |NT |Modification name (UNIMOD or PSI-MOD)
-|Accession |AC |UNIMOD or PSI-MOD accession
+|Name |NT |Modification name |UNIMOD or PSI-MOD term name
+|Accession |AC |Ontology accession |UNIMOD:X or MOD:X
+|Type |MT |Fixed or Variable |`Fixed`, `Variable`
+|Target Amino Acid |TA |Target residue(s) |Single letter codes, multiple separated by commas (e.g., `S,T,Y`)
+|Position |PP |Modification position |`Anywhere`, `Protein N-term`, `Protein C-term`, `Any N-term`, `Any C-term`
 |===
 
 **Common modifications:**
@@ -105,10 +114,10 @@ Alternative: Use `comment[scan window lower limit]` and `comment[scan window upp
 |===
 |Modification |Value |UNIMOD Link
 
-|Carbamidomethyl (fixed) |NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C |https://www.unimod.org/modifications_view.php?editid1=4[UNIMOD:4]
-|Oxidation (variable) |NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M |https://www.unimod.org/modifications_view.php?editid1=35[UNIMOD:35]
-|Phosphorylation (variable) |NT=Phospho;AC=UNIMOD:21;MT=Variable;TA=S,T,Y |https://www.unimod.org/modifications_view.php?editid1=21[UNIMOD:21]
-|Acetylation (variable) |NT=Acetyl;AC=UNIMOD:1;MT=Variable;TA=K,Protein N-term |https://www.unimod.org/modifications_view.php?editid1=1[UNIMOD:1]
+|Carbamidomethyl (fixed) |NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C;PP=Anywhere |https://www.unimod.org/modifications_view.php?editid1=4[UNIMOD:4]
+|Oxidation (variable) |NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M;PP=Anywhere |https://www.unimod.org/modifications_view.php?editid1=35[UNIMOD:35]
+|Phosphorylation (variable) |NT=Phospho;AC=UNIMOD:21;MT=Variable;TA=S,T,Y;PP=Anywhere |https://www.unimod.org/modifications_view.php?editid1=21[UNIMOD:21]
+|Acetylation (variable, N-term) |NT=Acetyl;AC=UNIMOD:1;MT=Variable;TA=K;PP=Protein N-term |https://www.unimod.org/modifications_view.php?editid1=1[UNIMOD:1]
 |===
 
 == Cleavage Agents
@@ -260,29 +269,23 @@ TIP: For DIA experiments with stepped collision energy, see the link:../template
 
 **Column:** `comment[dissociation method]`
 
-**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ms/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMS_1000044[PSI-MS - dissociation method]
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044[PRIDE - dissociation method (MS:1000044)]
 
-The fragmentation method used in MS/MS acquisition.
+The fragmentation method used in MS/MS acquisition. Values should be children of MS:1000044 from the PRIDE ontology.
 
 **Common methods:**
 
 |===
-|Method |OLS Link |Description
+|Method |Accession |OLS Link |Description
 
-|HCD |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000422[MS:1000422] |Higher-energy collisional dissociation (beam-type CID)
-|CID |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000133[MS:1000133] |Collision-induced dissociation (ion trap)
-|ETD |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000598[MS:1000598] |Electron transfer dissociation
-|EThcD |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1002631[MS:1002631] |Electron transfer/higher-energy collision dissociation
-|UVPD |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1003246[MS:1003246] |Ultraviolet photodissociation
+|HCD |PRIDE:0000590 |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000590[PRIDE:0000590] |Higher-energy collisional dissociation (beam-type CID)
+|CID |PRIDE:0000591 |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000591[PRIDE:0000591] |Collision-induced dissociation (ion trap)
+|ETD |PRIDE:0000593 |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000593[PRIDE:0000593] |Electron transfer dissociation
+|EThcD |PRIDE:0000594 |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000594[PRIDE:0000594] |Electron transfer/higher-energy collision dissociation
+|ETciD |PRIDE:0000592 |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000592[PRIDE:0000592] |Electron transfer/collision-induced dissociation
 |===
 
-**CV term format:** `NT=HCD;AC=MS:1000422` or `NT=beam-type collision-induced dissociation;AC=MS:1000422`
-
-== Best Practices
-
-1. **Use ontology terms** - Prefer PSI-MS and PRIDE ontology terms for labels and enzymes.
-2. **Document modifications** - Include all expected modifications with UNIMOD accessions.
-3. **Provide mass tolerances** - Include precursor and fragment tolerances for reproducibility.
+**CV term format:** `NT=HCD;AC=PRIDE:0000590`
 
 == References
 
