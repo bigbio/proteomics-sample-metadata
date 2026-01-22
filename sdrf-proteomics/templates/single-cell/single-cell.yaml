@@ -1,11 +1,127 @@
 name: single-cell
-description: SDRF template for single-cell proteomics (SCP) experiments. Currently MS-based; extends ms-base with single-cell-specific columns.
-version: 1.0.0-dev
+description: SDRF template for single-cell proteomics (SCP) experiments. Extends ms-base with single-cell-specific columns. Aligned with Nature Methods SCP guidelines (Gatto et al., 2023).
+version: 1.1.0
 extends: ms-base
 usable_alone: false
 layer: experiment
 columns:
-  # Sample characteristics inherited from default: organism, organism part, disease, cell type, biological replicate
+  # Sample characteristics inherited from ms-base: organism, organism part, disease, cell type, biological replicate
+
+  # ==========================================================================
+  # REQUIRED COLUMNS (per Nature Methods SCP guidelines)
+  # ==========================================================================
+
+  - name: comment[sample type]
+    description: Classification of the sample - distinguishes single cells from carriers, references, and controls. Critical for proper data analysis.
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - single cell
+            - carrier
+            - reference
+            - empty
+            - negative control
+            - bulk control
+            - not applicable
+          error_level: error
+          description: Sample type classification per SCP guidelines
+
+  - name: characteristics[single cell isolation method]
+    description: Method used to isolate single cells (FACS, cellenONE, LCM, etc.)
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - FACS
+            - cellenONE
+            - CellenONE
+            - microfluidics
+            - laser capture microdissection
+            - LCM
+            - manual picking
+            - nanoPOTS
+            - droplet microfluidics
+            - acoustic droplet ejection
+            - not applicable
+          error_level: warning
+          description: Single cell isolation method
+
+  - name: characteristics[cell identifier]
+    description: Unique identifier for each single cell within the experiment. Required per SCP guidelines for tracking cells through analysis.
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[A-Za-z0-9_.-]+$|^carrier$|^reference$|^empty$|^not applicable$
+          description: Cell identifier (alphanumeric with underscores, hyphens, dots)
+          examples:
+            - cell_001
+            - SC_A1
+            - well_B3
+            - barcode_ATCGATCG
+            - carrier
+            - reference
+
+  # ==========================================================================
+  # RECOMMENDED COLUMNS (per Nature Methods SCP guidelines)
+  # ==========================================================================
+
+  - name: characteristics[individual]
+    description: Unique identifier for the donor/patient individual. Important for studies with multiple donors.
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[A-Za-z0-9_-]+$|^not available$|^not applicable$
+          description: Individual/patient/donor identifier
+          examples:
+            - patient_001
+            - donor_A
+            - C1
+            - T1
+
+  - name: comment[sample preparation batch]
+    description: Batch identifier for sample preparation (plate, chip, processing batch). Critical for batch effect correction.
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Sample preparation batch identifier
+          examples:
+            - plate1
+            - plate2
+            - chip_A
+            - batch_20220601
+
+  - name: comment[cells per well]
+    description: Number of cells per well/reaction. Use 1 for true single cells, higher numbers for small pools.
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+$|^not applicable$|^not available$
+          description: Number of cells
+          examples:
+            - 1
+            - 5
+            - 10
+            - 100
 
   - name: characteristics[developmental stage]
     description: Developmental stage of the organism at sample collection
@@ -28,6 +144,137 @@ columns:
             - fetal stage
             - neonate
 
+  # ==========================================================================
+  # OPTIONAL COLUMNS - Flow Cytometry Data (per Nature Methods guidelines)
+  # ==========================================================================
+
+  - name: characteristics[forward scatter]
+    description: Forward scatter (FSC) value from flow cytometry - proxy for cell size
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[\d.]+$|^not available$|^not applicable$
+          description: FSC value (numeric)
+          examples:
+            - 316.0
+            - 250
+            - not applicable
+
+  - name: characteristics[side scatter]
+    description: Side scatter (SSC) value from flow cytometry - proxy for cell granularity/complexity
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[\d.]+$|^not available$|^not applicable$
+          description: SSC value (numeric)
+          examples:
+            - 301.0
+            - 184
+            - not applicable
+
+  - name: characteristics[sorting marker]
+    description: Markers used for cell sorting/selection with optional intensity values
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Sorting marker(s) and optional intensity
+          examples:
+            - CD45+
+            - GFP+
+            - CD3+CD4+
+            - CD34:APC-Cy7-A=276.0
+            - PI-
+
+  # ==========================================================================
+  # OPTIONAL COLUMNS - Cell State and Quality
+  # ==========================================================================
+
+  - name: characteristics[cell viability]
+    description: Viability status of the cell at isolation
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - live
+            - viable
+            - dead
+            - unknown
+            - not available
+            - not applicable
+          error_level: warning
+          description: Cell viability status
+
+  - name: characteristics[cell cycle phase]
+    description: Cell cycle phase if determined (e.g., by FACS or computational inference)
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - G1
+            - S
+            - G2
+            - G2/M
+            - M
+            - G0
+            - not determined
+            - not available
+            - not applicable
+          error_level: warning
+          description: Cell cycle phase
+
+  - name: characteristics[cell diameter]
+    description: Physical diameter of the isolated cell if measured (in micrometers)
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^[\d.]+ ?um$|^[\d.]+ ?μm$|^not available$|^not applicable$
+          description: Cell diameter with unit
+          examples:
+            - 15 um
+            - 20.5 um
+            - 12 μm
+
+  - name: comment[single cell quality]
+    description: Quality assessment of the single cell preparation (pass/fail based on QC criteria)
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - pass
+            - fail
+            - OK
+            - not OK
+            - not available
+            - not applicable
+          error_level: warning
+          description: Single cell quality assessment
+
+  # ==========================================================================
+  # OPTIONAL COLUMNS - Model Organisms
+  # ==========================================================================
+
   - name: characteristics[genotype]
     description: Genotype of the organism (especially for model organisms)
     requirement: optional
@@ -42,6 +289,7 @@ columns:
             - wild type genotype
             - Pitx2-/-
             - GFP+
+            - daf-2(e1370)
 
   - name: characteristics[strain]
     description: Strain or genetic background of model organisms
@@ -59,79 +307,12 @@ columns:
             - CD1
             - Sprague-Dawley
 
-  # Single-cell specific sample characteristics
-  - name: characteristics[single cell isolation method]
-    description: Method used to isolate single cells
-    requirement: required
-    allow_not_applicable: false
-    allow_not_available: false
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - FACS
-            - microfluidics
-            - laser capture microdissection
-            - manual picking
-            - CellenONE
-            - cellenONE
-            - nanoPOTS
-            - not applicable
-          error_level: warning
-          description: Single cell isolation method
+  # ==========================================================================
+  # OPTIONAL COLUMNS - Carrier and Multiplexing (for SCoPE-MS type methods)
+  # ==========================================================================
 
-  - name: characteristics[cell identifier]
-    description: Unique identifier for the single cell
-    requirement: recommended
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: pattern
-        params:
-          pattern: ^[A-Za-z0-9_-]+$
-          description: Cell identifier
-          examples:
-            - cell_001
-            - A1
-            - well_B3
-
-  - name: characteristics[cell viability]
-    description: Viability status of the cell at isolation
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - live
-            - dead
-            - unknown
-            - not applicable
-          error_level: warning
-          description: Cell viability status
-
-  - name: characteristics[cell cycle phase]
-    description: Cell cycle phase of the isolated cell
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - G1
-            - S
-            - G2
-            - M
-            - G0
-            - not available
-            - not applicable
-          error_level: warning
-          description: Cell cycle phase
-
-  - name: characteristics[sorting marker]
-    description: Markers used for cell sorting/selection
+  - name: comment[carrier proteome]
+    description: Description of carrier proteome used in carrier-assisted SCP methods (e.g., "200x HeLa carrier")
     requirement: optional
     allow_not_applicable: true
     allow_not_available: true
@@ -139,87 +320,106 @@ columns:
       - validator_name: pattern
         params:
           pattern: ^.+$
-          description: Sorting marker(s)
+          description: Carrier proteome description
           examples:
-            - CD45+
-            - GFP+
-            - CD3+CD4+
-
-  - name: comment[carrier proteome]
-    description: Carrier proteome used in carrier-assisted SCP methods
-    requirement: optional
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - yes
-            - no
+            - 200x HeLa carrier
+            - 100 ng bovine serum albumin
+            - no carrier
             - not applicable
-          error_level: warning
-          description: Whether carrier proteome was used
 
   - name: comment[carrier channel]
-    description: TMT channel used for carrier proteome
+    description: TMT/iTRAQ channel used for carrier proteome
     requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: pattern
         params:
-          pattern: ^TMT\d+[NC]?$|^not applicable$
-          description: TMT channel for carrier
+          pattern: ^TMT\d+[NC]?$|^iTRAQ\d+$|^not applicable$|^-$
+          description: TMT/iTRAQ channel for carrier
           examples:
             - TMT131C
             - TMT126
             - not applicable
 
   - name: comment[reference channel]
-    description: TMT channel used for reference/booster
+    description: TMT/iTRAQ channel used for reference/booster sample
     requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: pattern
         params:
-          pattern: ^TMT\d+[NC]?$|^not applicable$
-          description: TMT channel for reference
+          pattern: ^TMT\d+[NC]?$|^iTRAQ\d+$|^not applicable$|^-$
+          description: TMT/iTRAQ channel for reference
           examples:
             - TMT127N
             - TMT134N
             - not applicable
 
-  - name: comment[cells per well]
-    description: Number of cells per well/reaction
-    requirement: recommended
+  # ==========================================================================
+  # OPTIONAL COLUMNS - Batch and Technical Tracking
+  # ==========================================================================
+
+  - name: comment[LC batch]
+    description: Liquid chromatography batch identifier for batch effect tracking
+    requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: pattern
         params:
-          pattern: ^\d+$
-          description: Number of cells
+          pattern: ^.+$
+          description: LC batch identifier
           examples:
-            - 1
-            - 5
-            - 10
-            - 100
+            - LC1
+            - LC2
+            - column_A
 
-  - name: comment[single cell quality]
-    description: Quality assessment of the single cell preparation
+  - name: comment[acquisition date]
+    description: Date and time of MS data acquisition (ISO 8601 format recommended)
     requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
-      - validator_name: values
+      - validator_name: pattern
         params:
-          values:
-            - OK
-            - pass
-            - fail
-            - not OK
-            - not available
+          pattern: ^.+$
+          description: Acquisition date/time
+          examples:
+            - 2022-06-01_18:28:37
+            - 2022-06-01
+            - 20220601
+
+  # ==========================================================================
+  # OPTIONAL COLUMNS - Spatial Information
+  # ==========================================================================
+
+  - name: comment[spatial coordinates]
+    description: X,Y coordinates if cells were isolated from a spatial context (e.g., LCM from tissue)
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^X=[\d.]+;Y=[\d.]+$|^not applicable$|^not available$
+          description: Spatial coordinates
+          examples:
+            - X=100;Y=250
+            - X=50.5;Y=120.3
             - not applicable
-          error_level: warning
-          description: Single cell quality assessment
+
+  - name: comment[tissue section]
+    description: Tissue section identifier for spatially resolved single-cell proteomics
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^.+$
+          description: Tissue section identifier
+          examples:
+            - section_001
+            - slide_A_section_3

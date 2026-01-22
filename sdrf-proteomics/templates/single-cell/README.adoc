@@ -23,16 +23,27 @@ endif::[]
 
 This document provides guidelines for annotating single cell proteomics (SCP) experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with single-cell-specific metadata fields.
 
-**Status:** Draft - This template is under active development and may change significantly.
+**Status:** Beta - This template is aligned with community guidelines and ready for early adoption.
 
-**Version:** 1.0.0-dev - 2026-01
+**Version:** 1.1.0 - 2026-01
+
+[[guidelines]]
+== Alignment with Community Guidelines
+
+This template is aligned with the **Nature Methods single-cell proteomics guidelines**:
+
+****
+Gatto L, Aebersold R, Cox J, et al. (2023). **Initial recommendations for performing, benchmarking and reporting single-cell proteomics experiments.** _Nature Methods_, 20(3), 375-386. https://doi.org/10.1038/s41592-023-01785-3
+****
+
+The metadata columns and requirements in this template follow the recommendations from this community consensus paper for standardizing SCP experiment reporting.
 
 [[abstract]]
 == Abstract
 
 Single cell proteomics (SCP) characterizes the proteome at the level of individual cells, providing insights into cellular heterogeneity, rare cell populations, cellular state transitions, and protein expression dynamics at single-cell resolution.
 
-SCP experiments have unique characteristics: cell isolation methods (FACS, microfluidics), ultra-low sample input (picogram to nanogram), carrier proteome strategies, cell-level metadata requirements, and high-throughput multiplexing (SCoPE-MS, TMT). This template defines the additional metadata requirements for annotating single cell proteomics datasets.
+SCP experiments have unique characteristics: cell isolation methods (FACS, microfluidics, cellenONE), ultra-low sample input (picogram to nanogram), carrier proteome strategies, cell-level metadata requirements, and high-throughput multiplexing (SCoPE-MS, TMT). This template defines the additional metadata requirements for annotating single cell proteomics datasets.
 
 [[connections]]
 == Connections to Other Omics Fields
@@ -42,7 +53,7 @@ Single cell proteomics data is often integrated with:
 - **Single-cell RNA sequencing (scRNA-seq)**: For multi-omic cellular characterization
 - **Single-cell ATAC-seq**: For chromatin accessibility correlation
 - **Spatial transcriptomics**: When cells have spatial context
-- **Flow cytometry data**: For pre-sorting characterization
+- **Flow cytometry data**: For pre-sorting characterization (FSC, SSC, sorting markers)
 
 When available, linking to related single-cell omics datasets through BioSamples accession numbers or shared cell identifiers is highly RECOMMENDED.
 
@@ -54,98 +65,206 @@ In addition to the ontologies supported by the core SDRF-Proteomics specificatio
 - **Cell Ontology (CL)**: For cell type classification (https://obofoundry.org/ontology/cl.html)
 - **Human Cell Atlas ontologies**: For standardized cell annotations
 - **EDAM ontology**: For bioinformatics data types and operations
+- **Human/Mouse Developmental Stage ontologies (HsapDv, MmusDv)**: For developmental stage annotation
 
 [[checklist]]
 == Checklist
 
-This section defines the metadata columns required and recommended for single cell proteomics experiments.
+This section defines the metadata columns required and recommended for single cell proteomics experiments, following the Nature Methods SCP guidelines.
 
 === Required Columns
 
 The following columns are REQUIRED for single cell proteomics experiments in addition to the core SDRF-Proteomics requirements:
 
 |===
-|Column Name |Description |Cardinality |Ontology/CV |Example Values
+|Column Name |Description |Cardinality |Controlled Values |Example Values
+
+|comment[sample type]
+|Classification of the sample - distinguishes single cells from carriers, references, and controls. **Critical for proper data analysis.**
+|1
+|single cell, carrier, reference, empty, negative control, bulk control, not applicable
+|single cell, carrier, reference, empty
 
 |characteristics[single cell isolation method]
 |Technique used to isolate individual cells
 |1
-|EFO, PRIDE CV
-|FACS, micromanipulation, laser capture microdissection, droplet microfluidics, nanoPOTS, cellenONE
+|FACS, cellenONE, CellenONE, microfluidics, laser capture microdissection, LCM, manual picking, nanoPOTS, droplet microfluidics, acoustic droplet ejection, not applicable
+|FACS, cellenONE, laser capture microdissection
 
 |characteristics[cell identifier]
-|Unique identifier for individual cells within the experiment
+|Unique identifier for each single cell within the experiment. Required per SCP guidelines for tracking cells through analysis.
 |1
-|Alphanumeric identifier
-|cell_001, SC_A1, barcode_ATCGATCG, well_A01
+|Alphanumeric identifier (use `carrier`, `reference`, `empty` for non-single-cell samples)
+|cell_001, SC_A1, well_B3, barcode_ATCGATCG, carrier, reference
 |===
 
 === Recommended Columns
 
-The following columns are RECOMMENDED for single cell proteomics experiments:
+The following columns are RECOMMENDED for single cell proteomics experiments per the Nature Methods guidelines:
 
 |===
 |Column Name |Description |Cardinality |Ontology/CV |Example Values
 
-|characteristics[cell viability]
-|Viability status of the isolated cell at time of collection
+|characteristics[individual]
+|Unique identifier for the donor/patient individual. Important for studies with multiple donors.
 |0..1
-|Percentage or qualitative measure
-|viable, 95%, live, dead
+|Alphanumeric identifier
+|patient_001, donor_A, C1, T1
 
-|characteristics[cell diameter]
-|Physical diameter of the isolated cell if measured
+|comment[sample preparation batch]
+|Batch identifier for sample preparation (plate, chip, processing batch). **Critical for batch effect correction.**
 |0..1
-|Numeric value with unit (micrometers)
-|15 um, 20.5 um, 12 um
+|Free text identifier
+|plate1, plate2, chip_A, batch_20220601
 
-|characteristics[cell cycle phase]
-|Cell cycle phase if determined (e.g., by FACS)
+|comment[cells per well]
+|Number of cells per well/reaction. Use 1 for true single cells, higher numbers for small pools.
 |0..1
-|Controlled vocabulary
-|G1, S, G2/M, G0, not determined
+|Numeric value
+|1, 5, 10, 100
+
+|characteristics[developmental stage]
+|Developmental stage of the organism at sample collection
+|0..1
+|EFO, HsapDv, MmusDv, UBERON
+|adult, embryonic stage, fetal stage, neonate
+|===
+
+=== Optional Columns - Flow Cytometry Data
+
+Per the Nature Methods guidelines, flow cytometry data should be reported when available:
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[forward scatter]
+|Forward scatter (FSC) value from flow cytometry - proxy for cell size
+|316.0, 250, not applicable
+
+|characteristics[side scatter]
+|Side scatter (SSC) value from flow cytometry - proxy for cell granularity/complexity
+|301.0, 184, not applicable
 
 |characteristics[sorting marker]
-|Markers used for cell sorting/selection
-|0..*
-|Free text or controlled vocabulary
-|CD45+, GFP+, CD3+CD4+, PI-
+|Markers used for cell sorting/selection with optional intensity values
+|CD45+, GFP+, CD3+CD4+, CD34:APC-Cy7-A=276.0, PI-
+|===
+
+=== Optional Columns - Cell State and Quality
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[cell viability]
+|Viability status of the cell at isolation
+|live, viable, dead, unknown
+
+|characteristics[cell cycle phase]
+|Cell cycle phase if determined (e.g., by FACS or computational inference)
+|G1, S, G2, G2/M, M, G0, not determined
+
+|characteristics[cell diameter]
+|Physical diameter of the isolated cell if measured (in micrometers)
+|15 um, 20.5 um, 12 μm
+
+|comment[single cell quality]
+|Quality assessment of the single cell preparation (pass/fail based on QC criteria)
+|pass, fail, OK, not OK
+|===
+
+=== Optional Columns - Model Organisms
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[genotype]
+|Genotype of the organism (especially for model organisms)
+|wild type genotype, Pitx2-/-, GFP+, daf-2(e1370)
+
+|characteristics[strain]
+|Strain or genetic background of model organisms
+|C57BL/6, BALB/c, CD1, Sprague-Dawley
+|===
+
+=== Optional Columns - Carrier and Multiplexing (SCoPE-MS type methods)
+
+|===
+|Column Name |Description |Example Values
 
 |comment[carrier proteome]
-|Information about carrier proteome used for signal boosting
-|0..1
-|Free text description
+|Description of carrier proteome used in carrier-assisted SCP methods
 |200x HeLa carrier, 100 ng bovine serum albumin, no carrier
 
 |comment[carrier channel]
-|TMT channel used for carrier when applicable
-|0..1
-|TMT label identifier
-|TMT131C, TMT134, not applicable
+|TMT/iTRAQ channel used for carrier proteome
+|TMT131C, TMT126, not applicable
 
 |comment[reference channel]
-|TMT channel used as reference for normalization
-|0..1
-|TMT label identifier
-|TMT126, TMT127N, not applicable
+|TMT/iTRAQ channel used for reference/booster sample
+|TMT127N, TMT134N, not applicable
+|===
 
-|comment[cells per well]
-|Number of cells isolated per well/container
-|0..1
-|Numeric value
-|1, single cell, 10 cells
+=== Optional Columns - Batch and Technical Tracking
 
-|comment[cell collection method]
-|Specific collection approach used
-|0..1
-|Free text description
-|mouth pipetting, automated dispensing, acoustic droplet ejection
+|===
+|Column Name |Description |Example Values
+
+|comment[LC batch]
+|Liquid chromatography batch identifier for batch effect tracking
+|LC1, LC2, column_A
+
+|comment[acquisition date]
+|Date and time of MS data acquisition (ISO 8601 format recommended)
+|2022-06-01_18:28:37, 2022-06-01, 20220601
+|===
+
+=== Optional Columns - Spatial Information
+
+For spatially-resolved single-cell proteomics (e.g., laser capture microdissection from tissue):
+
+|===
+|Column Name |Description |Example Values
 
 |comment[spatial coordinates]
 |X,Y coordinates if cells were isolated from a spatial context
-|0..1
-|Coordinate format
-|X=100;Y=250, not applicable
+|X=100;Y=250, X=50.5;Y=120.3, not applicable
+
+|comment[tissue section]
+|Tissue section identifier for spatially resolved single-cell proteomics
+|section_001, slide_A_section_3
+|===
+
+[[sample-type]]
+== Sample Type Classification
+
+The `comment[sample type]` column is critical for distinguishing the different sample types commonly used in SCP experiments:
+
+|===
+|Sample Type |Description |Use Case
+
+|single cell
+|An individual cell isolated for proteomics analysis
+|The primary analyte in SCP experiments
+
+|carrier
+|Carrier proteome channel (e.g., 200x HeLa lysate) used to boost signal in carrier-assisted methods
+|SCoPE-MS, SCoPE2, and similar methods
+
+|reference
+|Reference channel used for normalization across runs
+|TMT-based experiments requiring cross-run normalization
+
+|empty
+|Control well with no cells - used to estimate background and noise
+|QC for cell isolation efficiency
+
+|negative control
+|Negative control sample to assess technical artifacts
+|Method validation and QC
+
+|bulk control
+|Bulk sample (many cells) for comparison with single-cell data
+|Benchmarking single-cell vs. bulk measurements
 |===
 
 [[cell-identifier]]
@@ -162,6 +281,12 @@ Recommended naming conventions for cell identifiers:
 - **Barcode-based**: `barcode_ATCGATCG` (for methods using molecular barcodes)
 - **Combined**: `plate1_well_A01_cell1`
 
+For non-single-cell channels, use descriptive identifiers:
+
+- **Carrier**: `carrier`
+- **Reference**: `reference`
+- **Empty**: `empty`
+
 === Uniqueness Requirements
 
 - Cell identifiers MUST be unique within the SDRF file
@@ -176,37 +301,55 @@ Many SCP methods use TMT or similar labeling to multiplex multiple cells in a si
 === SCoPE-MS and Similar Methods
 
 |===
-|source name |characteristics[cell identifier] |characteristics[cell type] |assay name |comment[label] |comment[carrier channel] |comment[data file]
+|source name |comment[sample type] |characteristics[cell identifier] |characteristics[individual] |characteristics[cell type] |comment[sample preparation batch] |comment[label] |comment[carrier channel] |comment[data file]
 
-|single_cell_sample
+|PBMC_patient1
+|single cell
 |cell_001
+|patient_001
 |T cell
-|SCP_run_001
+|plate1
 |TMT127N
 |TMT131C
 |run001.raw
 
-|single_cell_sample
+|PBMC_patient1
+|single cell
 |cell_002
+|patient_001
 |B cell
-|SCP_run_001
+|plate1
 |TMT127C
 |TMT131C
 |run001.raw
 
-|single_cell_sample
+|PBMC_patient1
+|single cell
 |cell_003
+|patient_001
 |monocyte
-|SCP_run_001
+|plate1
 |TMT128N
 |TMT131C
 |run001.raw
 
 |carrier_reference
 |carrier
+|carrier
+|not applicable
 |mixed
-|SCP_run_001
+|plate1
 |TMT131C
+|TMT131C
+|run001.raw
+
+|empty_well
+|empty
+|empty
+|not applicable
+|not applicable
+|plate1
+|TMT126
 |TMT131C
 |run001.raw
 |===
@@ -215,14 +358,15 @@ Many SCP methods use TMT or similar labeling to multiplex multiple cells in a si
 
 When using carrier proteome strategies:
 
+- Use `comment[sample type]` to clearly indicate which rows are carriers, references, or single cells
 - Annotate the carrier channel with `comment[carrier channel]`
-- Use `characteristics[cell identifier]` = `carrier` or `reference` for non-single-cell channels
-- Set `characteristics[cell type]` to `mixed` or specify the carrier source
+- Use `characteristics[cell identifier]` = `carrier`, `reference`, or `empty` for non-single-cell channels
+- Set `characteristics[cell type]` to `mixed` or specify the carrier source for carrier channels
 
 [[label-free-scp]]
 == Label-Free Single Cell Proteomics Checklist
 
-For label-free SCP methods (nanoPOTS, SCoPE2 without TMT, etc.):
+For label-free SCP methods (nanoPOTS, direct injection, etc.):
 
 - Set `comment[label]` to `label free sample`
 - Each cell corresponds to one MS run
@@ -231,17 +375,21 @@ For label-free SCP methods (nanoPOTS, SCoPE2 without TMT, etc.):
 Example:
 
 |===
-|source name |characteristics[cell identifier] |characteristics[cell type] |assay name |comment[label] |comment[data file]
+|source name |comment[sample type] |characteristics[cell identifier] |characteristics[individual] |characteristics[cell type] |assay name |comment[label] |comment[data file]
 
 |tissue_section_1
+|single cell
 |cell_LCM_001
+|donor_A
 |epithelial cell
 |LCM_cell_001_run
 |label free sample
 |cell001.raw
 
 |tissue_section_1
+|single cell
 |cell_LCM_002
+|donor_A
 |stromal cell
 |LCM_cell_002_run
 |label free sample
@@ -251,7 +399,7 @@ Example:
 [[example-sdrf]]
 == Example SDRF File
 
-A complete example for a TMT-based single cell proteomics experiment:
+A complete example for a TMT-based single cell proteomics experiment aligned with Nature Methods guidelines:
 
 ifndef::env-github[]
 ++++
@@ -260,59 +408,69 @@ ifndef::env-github[]
 <thead>
 <tr>
 <th class="sample-col">source name</th>
-<th class="sample-col">characteristics[cell type]</th>
-<th class="sample-col">characteristics[single cell isolation method]</th>
+<th class="sample-col">comment[sample type]</th>
 <th class="sample-col">characteristics[cell identifier]</th>
+<th class="sample-col">characteristics[individual]</th>
+<th class="sample-col">characteristics[cell type]</th>
+<th class="sample-col">characteristics[forward scatter]</th>
+<th class="sample-col">characteristics[side scatter]</th>
 <th class="ellipsis-col">...</th>
+<th class="data-col">comment[sample preparation batch]</th>
 <th class="data-col">comment[label]</th>
-<th class="data-col">comment[carrier channel]</th>
-<th class="data-col">comment[cells per well]</th>
 <th class="data-col">comment[data file]</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="sample-col">PBMC_donor1</td>
-<td class="sample-col">T cell</td>
-<td class="sample-col">FACS</td>
+<td class="sample-col">single cell</td>
 <td class="sample-col">cell_T001</td>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">T cell</td>
+<td class="sample-col">316.0</td>
+<td class="sample-col">301.0</td>
 <td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
 <td class="data-col">TMT127N</td>
-<td class="data-col">TMT131C</td>
-<td class="data-col">1</td>
 <td class="data-col">batch1_set1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">PBMC_donor1</td>
-<td class="sample-col">B cell</td>
-<td class="sample-col">FACS</td>
+<td class="sample-col">single cell</td>
 <td class="sample-col">cell_B001</td>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">B cell</td>
+<td class="sample-col">250.0</td>
+<td class="sample-col">184.0</td>
 <td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
 <td class="data-col">TMT127C</td>
-<td class="data-col">TMT131C</td>
-<td class="data-col">1</td>
-<td class="data-col">batch1_set1.raw</td>
-</tr>
-<tr>
-<td class="sample-col">PBMC_donor1</td>
-<td class="sample-col">monocyte</td>
-<td class="sample-col">FACS</td>
-<td class="sample-col">cell_M001</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">TMT128N</td>
-<td class="data-col">TMT131C</td>
-<td class="data-col">1</td>
 <td class="data-col">batch1_set1.raw</td>
 </tr>
 <tr>
 <td class="sample-col">carrier_HeLa</td>
+<td class="sample-col">carrier</td>
+<td class="sample-col">carrier</td>
+<td class="sample-col">not applicable</td>
 <td class="sample-col">epithelial cell</td>
 <td class="sample-col">not applicable</td>
-<td class="sample-col">carrier</td>
+<td class="sample-col">not applicable</td>
 <td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
 <td class="data-col">TMT131C</td>
-<td class="data-col">TMT131C</td>
-<td class="data-col">not applicable</td>
+<td class="data-col">batch1_set1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">empty_control</td>
+<td class="sample-col">empty</td>
+<td class="sample-col">empty</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
+<td class="data-col">TMT126</td>
 <td class="data-col">batch1_set1.raw</td>
 </tr>
 </tbody>
@@ -327,16 +485,16 @@ endif::[]
 
 ifdef::env-github[]
 |===
-|source name |characteristics[cell type] |characteristics[single cell isolation method] |characteristics[cell identifier] |... |comment[label] |comment[carrier channel] |comment[cells per well] |comment[data file]
+|source name |comment[sample type] |characteristics[cell identifier] |characteristics[individual] |characteristics[cell type] |characteristics[forward scatter] |characteristics[side scatter] |... |comment[sample preparation batch] |comment[label] |comment[data file]
 
-|PBMC_donor1 |T cell |FACS |cell_T001 |... |TMT127N |TMT131C |1 |batch1_set1.raw
-|PBMC_donor1 |B cell |FACS |cell_B001 |... |TMT127C |TMT131C |1 |batch1_set1.raw
-|PBMC_donor1 |monocyte |FACS |cell_M001 |... |TMT128N |TMT131C |1 |batch1_set1.raw
-|carrier_HeLa |epithelial cell |not applicable |carrier |... |TMT131C |TMT131C |not applicable |batch1_set1.raw
+|PBMC_donor1 |single cell |cell_T001 |patient_001 |T cell |316.0 |301.0 |... |plate1 |TMT127N |batch1_set1.raw
+|PBMC_donor1 |single cell |cell_B001 |patient_001 |B cell |250.0 |184.0 |... |plate1 |TMT127C |batch1_set1.raw
+|carrier_HeLa |carrier |carrier |not applicable |epithelial cell |not applicable |not applicable |... |plate1 |TMT131C |batch1_set1.raw
+|empty_control |empty |empty |not applicable |not applicable |not applicable |not applicable |... |plate1 |TMT126 |batch1_set1.raw
 |===
 endif::[]
 
-NOTE: The `...` column indicates omitted columns (organism, disease, cell viability, biological replicate, assay name, technology type, carrier proteome, fraction identifier, cleavage agent details, instrument).
+NOTE: The `...` column indicates omitted columns (organism, disease, biological replicate, assay name, technology type, carrier proteome, fraction identifier, cleavage agent details, instrument).
 
 [[quality-metrics]]
 == Quality Control Annotations
@@ -368,21 +526,27 @@ NOTE: These columns may be added after data analysis and are not required at sub
 [[best-practices]]
 == Best Practices for Single Cell Proteomics Annotation
 
-1. **Always provide cell identifiers**: Each cell MUST have a unique identifier enabling tracking through analysis.
+Following the Nature Methods SCP guidelines:
 
-2. **Document isolation method**: Specify the exact technique used for cell isolation (FACS, LCM, microfluidics, etc.).
+1. **Always classify sample types**: Use `comment[sample type]` to distinguish single cells from carriers, references, and controls.
 
-3. **Annotate carrier channels**: When using carrier proteome, clearly identify which channels contain carrier vs. single cells.
+2. **Provide unique cell identifiers**: Each cell MUST have a unique identifier enabling tracking through analysis.
 
-4. **Include cell type information**: Annotate cell types using Cell Ontology terms when possible.
+3. **Document isolation method**: Specify the exact technique used for cell isolation (FACS, LCM, cellenONE, etc.).
 
-5. **Report cell numbers**: Use `comment[cells per well]` to indicate whether measurements are truly single cells or small pools.
+4. **Track individual/donor information**: Use `characteristics[individual]` to identify which donor/patient each cell came from.
 
-6. **Link sorting parameters**: Document any sorting markers or gates used for cell selection.
+5. **Record batch information**: Document `comment[sample preparation batch]` and `comment[LC batch]` for batch effect correction.
 
-7. **Consider batch effects**: Include batch/plate information in annotations for proper batch correction.
+6. **Include flow cytometry data when available**: Report FSC, SSC, and sorting marker values.
 
-8. **Use factor values**: Use `factor value` columns to indicate experimental variables (treatment, time point, cell type comparisons).
+7. **Annotate carrier channels**: When using carrier proteome, clearly identify which channels contain carrier vs. single cells.
+
+8. **Include cell type information**: Annotate cell types using Cell Ontology terms when possible.
+
+9. **Report cell numbers**: Use `comment[cells per well]` to indicate whether measurements are truly single cells or small pools.
+
+10. **Use factor values**: Use `factor value` columns to indicate experimental variables (treatment, time point, cell type comparisons).
 
 [[template-file]]
 == Template File
@@ -405,14 +569,15 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template single-cell
 [[authors]]
 == Authors and Maintainers
 
-This template was developed by the SDRF-Proteomics community with contributions from single cell proteomics researchers.
+This template was developed by the SDRF-Proteomics community with contributions from single cell proteomics researchers, aligned with the Nature Methods SCP consensus guidelines.
 
 For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
 
 [[references]]
 == References
 
-- Slavov N. (2021) Single-cell protein analysis by mass spectrometry. Current Opinion in Chemical Biology.
-- Specht H, et al. (2021) Single-cell proteomic and transcriptomic analysis of macrophage heterogeneity using SCoPE2. Genome Biology.
-- Kelly RT. (2020) Single-cell Proteomics: Progress and Prospects. Molecular & Cellular Proteomics.
-- Budnik B, et al. (2018) SCoPE-MS: mass spectrometry of single mammalian cells quantifies proteome heterogeneity during cell differentiation. Genome Biology.
+- **Gatto L, Aebersold R, Cox J, et al.** (2023). Initial recommendations for performing, benchmarking and reporting single-cell proteomics experiments. _Nature Methods_, 20(3), 375-386. https://doi.org/10.1038/s41592-023-01785-3
+- Slavov N. (2021) Single-cell protein analysis by mass spectrometry. _Current Opinion in Chemical Biology_.
+- Specht H, et al. (2021) Single-cell proteomic and transcriptomic analysis of macrophage heterogeneity using SCoPE2. _Genome Biology_.
+- Kelly RT. (2020) Single-cell Proteomics: Progress and Prospects. _Molecular & Cellular Proteomics_.
+- Budnik B, et al. (2018) SCoPE-MS: mass spectrometry of single mammalian cells quantifies proteome heterogeneity during cell differentiation. _Genome Biology_.
