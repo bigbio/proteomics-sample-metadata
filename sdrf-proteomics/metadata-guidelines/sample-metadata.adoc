@@ -35,50 +35,18 @@ For human-specific metadata (disease staging, comorbidities, treatment history),
 
 === Capitalization Rules
 
-Most controlled vocabulary values should be **lowercase**:
+Most controlled vocabulary values are recommended to be **lowercase**:
 
 - Organism names: `homo sapiens`, `mus musculus`
 - Organism parts: `blood`, `liver`, `brain`
 - Sex values: `male`, `female`
-- Developmental stages: `adult`, `embryonic`
-- Disease names (general): `breast carcinoma`, `type 2 diabetes mellitus`
 
 **Exceptions** (retain proper noun capitalization):
 
-- Disease names with proper nouns: `Alzheimer disease`, `Parkinson disease`
 - Ancestry categories (geographic populations): `African`, `European`, `South Asian`
 - Cell line names: `HeLa`, `HEK293`, `K562`
 
 NOTE: Validators should normalize common capitalization variations (e.g., accept both `Homo sapiens` and `homo sapiens`), but submitters should use lowercase for consistency.
-
-=== Reserved Values
-
-The following reserved values can be used across multiple columns when specific data is unavailable:
-
-|===
-|Value |When to Use |Example Columns
-
-|`not available`
-|Information was not collected or is unknown
-|age, sex, ancestry category, disease
-
-|`not applicable`
-|The field does not apply to this sample type
-|organism part (for cell lines), cell type (for whole organism)
-
-|`anonymized`
-|Information exists but has been intentionally redacted for privacy protection (e.g., in clinical studies with de-identified patient data)
-|age, sex, individual, ancestry category
-
-|`pooled`
-|Sample is pooled from multiple sources with different values
-|biological replicate, age, sex
-|===
-
-[IMPORTANT]
-====
-Use `anonymized` when the data exists but cannot be shared due to privacy requirements. This is distinct from `not available` (data was never collected) and provides important context for data reuse. For example, a clinical study may have patient ages recorded internally but publish the data with `anonymized` ages to protect patient identity.
-====
 
 == Organism
 
@@ -93,10 +61,6 @@ Use the scientific name in lowercase. The validator will map to the correct onto
 
 |homo sapiens |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_9606[NCBITaxon:9606] |Human
 |mus musculus |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10090[NCBITaxon:10090] |Mouse
-|rattus norvegicus |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10116[NCBITaxon:10116] |Rat
-|danio rerio |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_7955[NCBITaxon:7955] |Zebrafish
-|drosophila melanogaster |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_7227[NCBITaxon:7227] |Fruit fly
-|arabidopsis thaliana |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_3702[NCBITaxon:3702] |Thale cress
 |===
 
 == Organism Part / Tissue
@@ -112,19 +76,15 @@ Use lowercase for all values. For cell line samples, use `not applicable` or spe
 **Do NOT use `characteristics[tissue]`** - Use `characteristics[organism part]` instead.
 
 The `characteristics[tissue]` column should not be used as a replacement for `characteristics[organism part]`. When tissue-related columns are needed, they should be used alongside `characteristics[organism part]` for additional categorization (e.g., `characteristics[tissue supergroup]` for higher-level grouping).
-
-Always use `characteristics[organism part]` for specifying anatomical location or tissue type. Do not use `characteristics[tissue]` as a replacement.
 ====
 
 |===
 |Value |UBERON ID |Description
 
-|blood |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000178[UBERON:0000178] |Whole blood
 |blood plasma |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0001969[UBERON:0001969] |Blood plasma
 |liver |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002107[UBERON:0002107] |Liver tissue
 |brain |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000955[UBERON:0000955] |Brain
-|heart |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000948[UBERON:0000948] |Heart
-|kidney |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002113[UBERON:0002113] |Kidney
+|heart 
 |===
 
 [[age-annotation]]
@@ -177,7 +137,7 @@ The developmental stage column is particularly useful for:
 
 **Column:** `characteristics[sex]`
 
-**Requirement:** REQUIRED for human samples, OPTIONAL for other organisms.
+**Requirement:** REQUIRED for human samples, OPTIONAL for other organisms. Values allowed are under PATO ontology: https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000047[PATO:0000047 - Biological Sex] 
 
 **Allowed values:**
 
@@ -186,11 +146,6 @@ The developmental stage column is particularly useful for:
 
 |male |Male biological sex
 |female |Female biological sex
-|intersex |Intersex biological sex
-|anonymized |Sex has been intentionally redacted for privacy protection
-|not available |Sex is unknown or not recorded
-|not applicable |Sex doesn't apply (e.g., pooled samples from mixed sexes)
-|pooled |Pooled samples from subjects of different sexes
 |===
 
 NOTE: Use lowercase values. For cell lines, use the sex of the original donor if known (e.g., `female` for HeLa cells), otherwise use `not available`. Use `anonymized` when the information exists but has been redacted for privacy reasons (e.g., clinical studies with de-identified data).
@@ -234,13 +189,11 @@ For samples without disease, the terminology matters for standardization:
 - Has valid ontology support (Semanticscience Integrated Ontology)
 - Validators should accept both `normal` and `healthy`
 
-**`control`** - **Avoid in disease field**
-
-- "Control" is an **experimental design concept**, not a disease state
+[[WARNING]]
+====
+- Avoid using "Control" as a disease state, it is an **experimental design concept**, not a disease state
 - Ambiguous: a control could be healthy, vehicle-treated, time-zero, or even a different disease used for comparison
-- The experimental role should be captured in `factor value[disease]`, not in `characteristics[disease]`
-
-=== Disease State vs Experimental Role
+====    
 
 The `characteristics[disease]` column captures the **actual disease state** of the sample, while `factor value[disease]` indicates the **experimental comparison groups**:
 
@@ -315,187 +268,38 @@ Both `healthy_1` and `adjacent_1` have `normal` as their disease state (no tumor
 |Healthy/no disease |normal |https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]
 |Healthy (alternative) |healthy |https://www.ebi.ac.uk/ols4/ontologies/sio/classes/http%253A%252F%252Fsemanticscience.org%252Fresource%252FSIO_001012[SIO:001012]
 |Breast cancer |breast carcinoma |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004989[MONDO:0004989]
-|Alzheimer's disease |Alzheimer disease |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004975[MONDO:0004975]
-|Type 2 diabetes |type 2 diabetes mellitus |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0005148[MONDO:0005148]
-|COVID-19 |COVID-19 |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0100096[MONDO:0100096]
 |===
 
-=== Animal Disease Models
-
-For animal disease models, use the human disease name to facilitate cross-species comparisons:
-
-ifdef::backend-html5[]
-++++
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="ellipsis-col">...</th>
-<th class="sample-col">characteristics[disease]</th>
-<th class="ellipsis-col">...</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">APP_PS1_sample1</td>
-<td class="sample-col">mus musculus</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">Alzheimer disease</td>
-<td class="ellipsis-col">...</td>
-</tr>
-<tr>
-<td class="sample-col">dbdb_sample1</td>
-<td class="sample-col">mus musculus</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">type 2 diabetes mellitus</td>
-<td class="ellipsis-col">...</td>
-</tr>
-<tr>
-<td class="sample-col">wildtype_sample1</td>
-<td class="sample-col">mus musculus</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">normal</td>
-<td class="ellipsis-col">...</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-</div>
-</div>
-++++
-endif::[]
-
-ifndef::backend-html5[]
-|===
-|source name |characteristics[organism] |... |characteristics[disease] |...
-
-|APP_PS1_sample1 |mus musculus |... |Alzheimer disease |...
-|dbdb_sample1 |mus musculus |... |type 2 diabetes mellitus |...
-|wildtype_sample1 |mus musculus |... |normal |...
-|===
-endif::[]
-
-NOTE: APP/PS1 and db/db are common mouse disease models for Alzheimer's disease and type 2 diabetes respectively.
+TIP: For animal disease models, use the human disease name to facilitate cross-species comparisons. 
 
 [[phenotype-annotation]]
 == Phenotype
 
 **Column:** `characteristics[phenotype]`
 
-**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pato[PATO:0000001], https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651[EFO:0000651]
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651[EFO:0000651]
 
 **Requirement:** Optional
 
 Describes observable characteristics or traits of a sample that result from genotype, environment, and treatment interactions. Captures **how the sample behaves or appears**, not what disease it has.
 
-=== Key Distinction: Disease vs Phenotype vs Genotype
-
-Understanding the relationship between these concepts is critical for accurate annotation:
-
 |===
-|Column |Purpose |What it captures |Example
+|Column |Purpose |Example
 
-|`characteristics[disease]` |Health condition |What disease/pathology is present |"breast cancer", "normal", "Alzheimer disease"
-|`characteristics[genotype]` |Genetic variant |What genetic variant is present |"KRAS G12D mutant", "wild type", "APP/PS1 transgenic"
-|`characteristics[phenotype]` |Observable trait |How the sample behaves/appears |"gefitinib sensitive", "high fat diet", "stress response"
+|`characteristics[disease]` |What disease/pathology is present |"breast cancer", "Alzheimer disease"
+|`characteristics[genotype]` |What genetic variant is present |"KRAS G12D mutant", "wild type"
+|`characteristics[phenotype]` |How the sample behaves/appears |"gefitinib sensitive", "HER2 positive"
 |===
 
-**Important:** These are complementary, not mutually exclusive:
+**Common phenotype categories:**
 
-* A sample can have a **disease** (Alzheimer's) caused by a **genotype** (APP mutation) that results in a **phenotype** (amyloid accumulation)
-* A sample can have a **phenotype** (drug resistant) without a known **genotype** cause
-* A sample can have a **genotype** (transgenic) without an obvious **phenotype**
+* **Drug response:** gefitinib sensitive, cisplatin resistant
+* **Molecular markers:** HER2 positive, ER positive
+* **Expression states:** overexpressing Neurogenin3, FOXP3 expression
+* **Functional traits:** undifferentiated, adipogenic
+* **Environmental responses:** high fat diet, heat shock response
 
-=== Phenotype Categories
-
-**1. Drug Response Phenotypes**
-
-Used in pharmacoproteomics to describe drug sensitivity or resistance:
-
-[source]
-----
-characteristics[phenotype]: gefitinib sensitive
-characteristics[phenotype]: cisplatin resistant
-characteristics[phenotype]: tamoxifen resistant
-characteristics[phenotype]: sensitive to methotrexate
-----
-
-**2. Molecular Marker Phenotypes**
-
-Used for biomarker status in precision medicine studies:
-
-[source]
-----
-characteristics[phenotype]: HER2 positive
-characteristics[phenotype]: ER positive
-characteristics[phenotype]: ALDH+
-characteristics[phenotype]: CD34 positive
-----
-
-**3. Expression/Overexpression Phenotypes**
-
-Used to describe gene/protein expression characteristics:
-
-[source]
-----
-characteristics[phenotype]: overexpressing Neurogenin3
-characteristics[phenotype]: FOXP3 expression
-characteristics[phenotype]: RPS4 over-expression
-----
-
-**4. Functional Phenotypes**
-
-Used for differentiation states and functional traits:
-
-[source]
-----
-characteristics[phenotype]: undifferentiated
-characteristics[phenotype]: adipogenic
-characteristics[phenotype]: high protein content
-----
-
-**5. Environmental/Treatment Response Phenotypes**
-
-Used for model organism studies with environmental or dietary interventions:
-
-[source]
-----
-characteristics[phenotype]: high fat diet
-characteristics[phenotype]: caloric restriction
-characteristics[phenotype]: heat shock response
-characteristics[phenotype]: oxidative stress
-----
-
-=== Phenotype in Model Organisms
-
-Phenotype is particularly important for model organism studies where the same genotype may produce different phenotypes under different conditions:
-
-|===
-|source name |characteristics[organism] |characteristics[genotype] |characteristics[phenotype]
-
-|mouse_hfd_1 |mus musculus |wild type |high fat diet induced obesity
-|mouse_ctrl_1 |mus musculus |wild type |normal diet
-|zebrafish_hs_1 |danio rerio |hsp70:GFP transgenic |heat shock response
-|fly_stress_1 |drosophila melanogaster |wild type |oxidative stress
-|===
-
-=== When NOT to Use Phenotype
-
-* ❌ For disease names → Use `characteristics[disease]`
-* ❌ For genetic variants → Use `characteristics[genotype]`
-* ❌ For treatments applied → Use `characteristics[compound]` or `characteristics[treatment]`
-* ❌ For basic sample properties → Use appropriate specific column (age, sex, etc.)
-
-=== Proteomics Use Cases
-
-1. **Pharmacoproteomics:** Compare proteomes of drug-sensitive vs. drug-resistant samples
-2. **Precision Medicine:** Stratify samples by biomarker status (HER2+/HER2-, ER+/ER-)
-3. **Drug Response Studies:** Identify proteomic signatures of treatment response
-4. **Stem Cell Research:** Track proteomic changes during differentiation
-5. **Model Organism Studies:** Characterize phenotypic responses to environmental conditions
+**When NOT to use phenotype:** For disease names use `characteristics[disease]`, for genetic variants use `characteristics[genotype]`, for treatments use `characteristics[compound]` or `characteristics[treatment]`.
 
 [[cell-type-annotation]]
 == Cell Type
@@ -517,35 +321,6 @@ For cell lines, optionally include the cell type of origin.
 |===
 
 For detailed immune cell studies, use specific subtypes: https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000624[CD4-positive, alpha-beta T cell (CL:0000624)], https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000815[regulatory T cell (CL:0000815)].
-
-== Depletion
-
-**Column:** `characteristics[depletion]`
-
-For blood/plasma samples indicating abundant protein depletion.
-
-Values: `no depletion`, `depletion`, `not applicable`.
-
-== Patient-Derived Xenografts (PDX)
-
-**Column:** `characteristics[xenograft]`
-
-When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
-
-|===
-|source name |characteristics[organism] |... |characteristics[xenograft] |characteristics[age] |...
-
-|tumor_001 |homo sapiens |... |not applicable |65Y |...
-|pdx_001 |homo sapiens |... |pancreatic adenocarcinoma grown in nude mice |65Y |...
-|===
-
-== Synthetic Peptide Libraries
-
-**Column:** `characteristics[synthetic peptide]`
-
-Values: `synthetic` (sample is a synthetic peptide library), `not synthetic` (biological sample).
-
-For synthetic libraries, most sample metadata can be `not applicable`. The organism MAY be specified if the library was designed from specific species peptides.
 
 == Material Type
 
@@ -602,6 +377,35 @@ NOTE: For cell line samples, use `cell line` as the material type. The specific 
 |enrichment of phosphorylated Protein |Phosphoproteomics enrichment
 |not applicable |No PTM enrichment performed
 |===
+
+== Depletion
+
+**Column:** `characteristics[depletion]`
+
+For blood/plasma samples indicating abundant protein depletion.
+
+Values: `no depletion`, `depletion`, `not applicable`.
+
+== Patient-Derived Xenografts (PDX)
+
+**Column:** `characteristics[xenograft]`
+
+When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
+
+|===
+|source name |characteristics[organism] |... |characteristics[xenograft] |characteristics[age] |...
+
+|tumor_001 |homo sapiens |... |not applicable |65Y |...
+|pdx_001 |homo sapiens |... |pancreatic adenocarcinoma grown in nude mice |65Y |...
+|===
+
+== Synthetic Peptide Libraries
+
+**Column:** `characteristics[synthetic peptide]`
+
+Values: `synthetic` (sample is a synthetic peptide library), `not synthetic` (biological sample).
+
+For synthetic libraries, most sample metadata can be `not applicable`. The organism MAY be specified if the library was designed from specific species peptides.
 
 [[spiked-in-samples]]
 == Spiked-in Samples

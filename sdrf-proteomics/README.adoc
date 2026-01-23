@@ -858,99 +858,13 @@ Some examples with explicit annotation of the biological replicates can be found
 [[pooled-samples]]
 === Pooled samples
 
-When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see link:metadata-guidelines/data-file-metadata.html#_label[Label Annotations]).
+When multiple samples are pooled into one (e.g., TMT/iTRAQ reference channels for normalization), use the _characteristics[pooled sample]_ column to indicate pooling status. Allowed values:
 
-One possible exception is made for the case when one channel (e.g., in a TMT/iTRAQ multiplexed experiment) is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, the _characteristics[pooled sample]_ column SHOULD be used.
+- **not pooled**: Regular individual samples
+- **pooled**: Sample is pooled but individual sources are unknown
+- **SN=sample1;SN=sample2;...**: Lists source names of pooled samples when known
 
-==== Allowed values for characteristics[pooled sample]
-
-The _characteristics[pooled sample]_ column accepts the following values:
-
-|===
-|Value |Description |When to Use
-
-|not pooled
-|Sample is not pooled, represents a single biological sample
-|Regular individual samples
-
-|pooled
-|Sample is pooled but individual source samples cannot be annotated
-|When pooling details are unknown or samples are from external sources
-
-|SN=sample1;SN=sample2;...
-|Structured format listing source names of pooled samples
-|When individual samples are known and annotated in the same SDRF file
-|===
-
-NOTE: The `SN` key stands for "source name" and lists the `source name` values of samples that are annotated in the same file and used in the same experiment and same MS run. Use semicolons to separate multiple entries.
-
-==== Example with simple pooled annotation
-
-When pooling details are unknown or samples come from external sources, use the simple `pooled` value:
-
-ifdef::backend-html5[]
-++++
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[pooled sample]</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="data-col">assay name</th>
-<th class="data-col">comment[label]</th>
-<th class="data-col">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">sample_1</td>
-<td class="sample-col">not pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT126</td>
-<td class="data-col">file01.raw</td>
-</tr>
-<tr>
-<td class="sample-col">sample_2</td>
-<td class="sample-col">not pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT127N</td>
-<td class="data-col">file01.raw</td>
-</tr>
-<tr>
-<td class="sample-col">pooled_ref</td>
-<td class="sample-col">pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT131C</td>
-<td class="data-col">file01.raw</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
-</div>
-</div>
-++++
-endif::[]
-
-ifndef::backend-html5[]
-[%header,cols="1,1,1,1,1,1"]
-|===
-|source name |characteristics[pooled sample] |characteristics[organism] |assay name |comment[label] |comment[data file]
-
-|sample_1 |not pooled |homo sapiens |run_1 |TMT126 |file01.raw
-|sample_2 |not pooled |homo sapiens |run_1 |TMT127N |file01.raw
-|pooled_ref |pooled |homo sapiens |run_1 |TMT131C |file01.raw
-|===
-endif::[]
-
-==== Example with detailed pooled reference
-
-When pooled samples are known and annotated in the same SDRF file, use the `SN=` format:
+Example:
 
 ifdef::backend-html5[]
 ++++
@@ -962,8 +876,6 @@ ifdef::backend-html5[]
 <th class="sample-col">characteristics[pooled sample]</th>
 <th class="sample-col">characteristics[organism]</th>
 <th class="sample-col">characteristics[age]</th>
-<th class="sample-col">characteristics[sex]</th>
-<th class="data-col">assay name</th>
 <th class="data-col">comment[label]</th>
 <th class="data-col">comment[data file]</th>
 </tr>
@@ -974,8 +886,6 @@ ifdef::backend-html5[]
 <td class="sample-col">not pooled</td>
 <td class="sample-col">homo sapiens</td>
 <td class="sample-col">45Y</td>
-<td class="sample-col">male</td>
-<td class="data-col">run_1</td>
 <td class="data-col">TMT126</td>
 <td class="data-col">file01.raw</td>
 </tr>
@@ -984,28 +894,14 @@ ifdef::backend-html5[]
 <td class="sample-col">not pooled</td>
 <td class="sample-col">homo sapiens</td>
 <td class="sample-col">52Y</td>
-<td class="sample-col">female</td>
-<td class="data-col">run_1</td>
 <td class="data-col">TMT127N</td>
 <td class="data-col">file01.raw</td>
 </tr>
 <tr>
-<td class="sample-col">sample_3</td>
-<td class="sample-col">not pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">38Y</td>
-<td class="sample-col">male</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT127C</td>
-<td class="data-col">file01.raw</td>
-</tr>
-<tr>
 <td class="sample-col">pooled_ref</td>
-<td class="sample-col">SN=sample_1;SN=sample_2;SN=sample_3</td>
+<td class="sample-col">SN=sample_1;SN=sample_2</td>
 <td class="sample-col">homo sapiens</td>
 <td class="sample-col">pooled</td>
-<td class="sample-col">pooled</td>
-<td class="data-col">run_1</td>
 <td class="data-col">TMT131C</td>
 <td class="data-col">file01.raw</td>
 </tr>
@@ -1020,18 +916,17 @@ ifdef::backend-html5[]
 endif::[]
 
 ifndef::backend-html5[]
-[%header,cols="1,2,1,1,1,1,1,1"]
+[%header,cols="1,2,1,1,1,1"]
 |===
-|source name |characteristics[pooled sample] |characteristics[organism] |characteristics[age] |characteristics[sex] |assay name |comment[label] |comment[data file]
+|source name |characteristics[pooled sample] |characteristics[organism] |characteristics[age] |comment[label] |comment[data file]
 
-|sample_1 |not pooled |homo sapiens |45Y |male |run_1 |TMT126 |file01.raw
-|sample_2 |not pooled |homo sapiens |52Y |female |run_1 |TMT127N |file01.raw
-|sample_3 |not pooled |homo sapiens |38Y |male |run_1 |TMT127C |file01.raw
-|pooled_ref |SN=sample_1;SN=sample_2;SN=sample_3 |homo sapiens |pooled |pooled |run_1 |TMT131C |file01.raw
+|sample_1 |not pooled |homo sapiens |45Y |TMT126 |file01.raw
+|sample_2 |not pooled |homo sapiens |52Y |TMT127N |file01.raw
+|pooled_ref |SN=sample_1;SN=sample_2 |homo sapiens |pooled |TMT131C |file01.raw
 |===
 endif::[]
 
-TIP: For pooled samples (e.g., TMT reference channels), use `pooled` for individual-specific fields including **biological replicate**, age, sex, and individual. This clearly indicates that the value represents a mixture rather than a single sample. If all pooled samples share a value (e.g., all females, or age range 40Y-50Y), that shared value MAY be used instead.
+TIP: For pooled samples, use `pooled` for individual-specific fields (biological replicate, age, sex) to indicate a mixture rather than a single sample.
 
 === Sample Metadata Guidelines
 
