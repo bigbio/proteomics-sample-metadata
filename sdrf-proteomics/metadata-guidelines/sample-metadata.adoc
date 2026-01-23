@@ -365,6 +365,45 @@ Material type describes the nature of the biological material being analyzed. Th
 
 NOTE: For cell line samples, use `cell line` as the material type. The specific cell line name goes in `characteristics[cell line]`. The tissue of origin can be specified in `characteristics[organism part]`.
 
+=== Sample-Related Columns
+
+[cols="2,4,2,2,1", options="header"]
+|===
+|Column |Description |Example Values |When to Use |Example
+
+|`characteristics[treatment]`
+|Treatment applied to the sample
+|dexamethasone, vehicle control, untreated
+|Drug treatment studies
+|link:../sdrf-explorer.html?view=PXD017291[PXD017291]
+
+|`characteristics[time point]`
+|Time of sample collection
+|0h, 24h, 7d, baseline
+|Time-course experiments
+|link:../sdrf-explorer.html?view=PXD007555[PXD007555]
+
+|`characteristics[dose]`
+|Dose of treatment if applicable
+|10 mg/kg, 100 nM, high dose
+|Dose-response studies
+|—
+
+|`characteristics[patient bmi]`
+|Body mass index (for human studies)
+|25.3 kg/m2, 30.1 kg/m2
+|Metabolic or obesity-related studies
+|link:../sdrf-explorer.html?view=PXD005780[PXD005780]
+
+|`characteristics[smoking status]`
+|Smoking history of the patient
+|never smoked, current smoker, former smoker
+|Lung or cardiovascular studies
+|—
+|===
+
+A good list of other columns could be found in the sdrf-terms.tsv file; and also in the Human Sample Metadata Guidelines. 
+
 == PTM Enrichment
 
 **Column:** `characteristics[enrichment process]`
@@ -410,171 +449,24 @@ For synthetic libraries, most sample metadata can be `not applicable`. The organ
 [[spiked-in-samples]]
 == Spiked-in Samples
 
-There are multiple scenarios when a sample is spiked with additional analytes. Peptides, proteins, or mixtures can be added to the sample as controlled amounts to provide a standard or ground truth for quantification, or for retention time alignment, etc.
+**Column:** `characteristics[spiked compound]`
 
-To include information about the spiked compounds, use _characteristics[spiked compound]_. The information is provided in key-value pairs. Here are the keys and values that SHOULD be provided:
+For samples spiked with peptides, proteins, or mixtures (e.g., for quantification standards or retention time alignment), use key-value pairs:
 
 |===
-|Key |Meaning |Examples |Peptide |Protein |Mixture |Other
+|Key |Meaning |Example |Required for
 
-|CT
-|Compound type
-|protein, peptide, mixture, other
-|REQUIRED
-|REQUIRED
-|REQUIRED
-|REQUIRED
-
-|QY
-|Quantity (molar or mass)
-|10 mg, 20 nmol
-|REQUIRED
-|REQUIRED
-|REQUIRED
-|REQUIRED
-
-|PS
-|Peptide sequence
-|PEPTIDESEQ
-|REQUIRED
-|-
-|-
-|-
-
-|AC
-|Uniprot Accession
-|A9WZ33
-|-
-|REQUIRED
-|-
-|-
-
-|CN
-|Compound name
-|iRT mixture, substance name
-|OPTIONAL
-|OPTIONAL
-|OPTIONAL
-|OPTIONAL
-
-|SP
-|Species
-|Escherichia coli K-12
-|OPTIONAL
-|OPTIONAL
-|OPTIONAL
-|OPTIONAL
-
-|CV
-|Compound vendor
-|in-house or vendor name
-|OPTIONAL
-|OPTIONAL
-|REQUIRED
-|OPTIONAL
-
-|CS
-|Compound specification URI
-|http://vendor.web.site/specs/kit.xlsx
-|OPTIONAL
-|OPTIONAL
-|OPTIONAL
-|OPTIONAL
-
-|CF
-|Compound formula
-|C2H2O
-|-
-|-
-|-
-|OPTIONAL
+|CT |Compound type |peptide, protein, mixture |All
+|QY |Quantity |10 fmol, 20 nmol |All
+|PS |Peptide sequence |PEPTIDESEQ |Peptides
+|AC |UniProt accession |A9WZ33 |Proteins
+|CN |Compound name |iRT mixture |Optional
+|CV |Compound vendor |Biognosys |Mixtures (required)
 |===
 
-In addition to specifying the component and its quantity, the injected mass of the main sample SHOULD be specified as _characteristics[mass]_.
+**Example:** `characteristics[spiked compound]: CT=peptide;PS=PEPTIDESEQ;QY=10 fmol`
 
-=== Example: Spiked Peptide
-
-An example of SDRF-Proteomics for a sample spiked with a peptide would be:
-
-[%header,cols="1,2"]
-|===
-|characteristics[mass] |characteristics[spiked compound]
-
-|1 ug |CT=peptide;PS=PEPTIDESEQ;QY=10 fmol
-|===
-
-For multiple spiked components, the column _characteristics[spiked compound]_ may be repeated.
-
-=== Spiked Biological Samples
-
-If the spiked component is another biological sample (e.g. __E. coli__ lysate spiked into human sample), then the spiked component MUST be annotated in its own row. Both components of the sample SHOULD have `characteristics[mass]` specified. Inclusion of _characteristics[spiked compound]_ is optional in this case; if provided, it SHOULD be the string `spiked` for the spiked sample.
-
-[[common-additional-columns]]
-== Common Additional Columns
-
-SDRF-Proteomics templates define the minimum required and recommended columns. However, you can extend your SDRF file with additional columns to capture study-specific metadata. The following columns are commonly used across different study types:
-
-=== Sample-Related Columns
-
-[cols="2,4,2,2,1", options="header"]
-|===
-|Column |Description |Example Values |When to Use |Example
-
-|`characteristics[material type]`
-|Type of biological material (derived from https://www.fged.org/projects/mage-tab/[MAGE-TAB])
-|tissue, cell, cell line, organism part, whole organism, synthetic
-|Cross-omics integration, clarifying sample origin
-|link:../sdrf-explorer.html?view=PXD000612[PXD000612]
-
-|`characteristics[treatment]`
-|Treatment applied to the sample
-|dexamethasone, vehicle control, untreated
-|Drug treatment studies
-|link:../sdrf-explorer.html?view=PXD017291[PXD017291]
-
-|`characteristics[time point]`
-|Time of sample collection
-|0h, 24h, 7d, baseline
-|Time-course experiments
-|link:../sdrf-explorer.html?view=PXD007555[PXD007555]
-
-|`characteristics[dose]`
-|Dose of treatment if applicable
-|10 mg/kg, 100 nM, high dose
-|Dose-response studies
-|—
-
-|`characteristics[patient bmi]`
-|Body mass index (for human studies)
-|25.3 kg/m2, 30.1 kg/m2
-|Metabolic or obesity-related studies
-|link:../sdrf-explorer.html?view=PXD005780[PXD005780]
-
-|`characteristics[smoking status]`
-|Smoking history of the patient
-|never smoked, current smoker, former smoker
-|Lung or cardiovascular studies
-|—
-|===
-
-=== Data-Related Columns
-
-[cols="2,4,2,2", options="header"]
-|===
-|Column |Description |Example Values |When to Use
-
-|`comment[sample preparation]`
-|Sample preparation method details
-|in-solution digestion, FASP, SP3
-|Detailed protocol documentation
-
-|`comment[enrichment method]`
-|Enrichment or depletion strategy
-|phosphopeptide enrichment, glycopeptide enrichment
-|PTM-focused studies
-|===
-
-See also the link:../sdrf-terms.html[SDRF Terms Reference] for a comprehensive list of commonly used terms and columns.
+The injected mass of the main sample SHOULD be specified in `characteristics[mass]`. For multiple spiked components, repeat the column. If the spiked component is another biological sample (e.g., _E. coli_ lysate), annotate it in its own row with `characteristics[mass]` specified for both components.
 
 == References
 
