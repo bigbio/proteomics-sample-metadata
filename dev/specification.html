@@ -49,13 +49,7 @@
 <ul class="sectlevel2">
 <li><a href="#biosamples-integration">8.1. BioSamples database integration</a></li>
 <li><a href="#sample-technical-biological-replicates">8.2. Encoding sample technical and biological replicates</a></li>
-<li><a href="#pooled-samples">8.3. Pooled samples</a>
-<ul class="sectlevel3">
-<li><a href="#_allowed_values_for_characteristicspooled_sample">8.3.1. Allowed values for characteristics[pooled sample]</a></li>
-<li><a href="#_example_with_simple_pooled_annotation">8.3.2. Example with simple pooled annotation</a></li>
-<li><a href="#_example_with_detailed_pooled_reference">8.3.3. Example with detailed pooled reference</a></li>
-</ul>
-</li>
+<li><a href="#pooled-samples">8.3. Pooled samples</a></li>
 <li><a href="#_sample_metadata_guidelines">8.4. Sample Metadata Guidelines</a></li>
 </ul>
 </li>
@@ -1212,114 +1206,23 @@ Both <em>characteristics[biological replicate]</em> and <em>comment[technical re
 <div class="sect2">
 <h3 id="pooled-samples"><a class="anchor" href="#pooled-samples"></a><a class="link" href="#pooled-samples">8.3. Pooled samples</a></h3>
 <div class="paragraph">
-<p>When multiple samples are pooled into one, the general approach is to annotate them separately, abiding by the general rule: one row stands for one sample-to-file relationship. In this case, multiple rows are created for the corresponding data file, much like in multiplexed labeling experiments (see <a href="metadata-guidelines/data-file-metadata.html#_label">Label Annotations</a>).</p>
+<p>When multiple samples are pooled into one (e.g., TMT/iTRAQ reference channels for normalization), use the <em>characteristics[pooled sample]</em> column to indicate pooling status. Allowed values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>not pooled</strong>: Regular individual samples</p>
+</li>
+<li>
+<p><strong>pooled</strong>: Sample is pooled but individual sources are unknown</p>
+</li>
+<li>
+<p><strong>SN=sample1;SN=sample2;&#8230;&#8203;</strong>: Lists source names of pooled samples when known</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>One possible exception is made for the case when one channel (e.g., in a TMT/iTRAQ multiplexed experiment) is used for a sample pooled from all other channels, typically for normalization purposes. In this case, it is not necessary to repeat all sample annotations. Instead, the <em>characteristics[pooled sample]</em> column SHOULD be used.</p>
-</div>
-<div class="sect3">
-<h4 id="_allowed_values_for_characteristicspooled_sample"><a class="anchor" href="#_allowed_values_for_characteristicspooled_sample"></a><a class="link" href="#_allowed_values_for_characteristicspooled_sample">8.3.1. Allowed values for characteristics[pooled sample]</a></h4>
-<div class="paragraph">
-<p>The <em>characteristics[pooled sample]</em> column accepts the following values:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">When to Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not pooled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sample is not pooled, represents a single biological sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Regular individual samples</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pooled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sample is pooled but individual source samples cannot be annotated</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When pooling details are unknown or samples are from external sources</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SN=sample1;SN=sample2;&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Structured format listing source names of pooled samples</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When individual samples are known and annotated in the same SDRF file</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The <code>SN</code> key stands for "source name" and lists the <code>source name</code> values of samples that are annotated in the same file and used in the same experiment and same MS run. Use semicolons to separate multiple entries.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_example_with_simple_pooled_annotation"><a class="anchor" href="#_example_with_simple_pooled_annotation"></a><a class="link" href="#_example_with_simple_pooled_annotation">8.3.2. Example with simple pooled annotation</a></h4>
-<div class="paragraph">
-<p>When pooling details are unknown or samples come from external sources, use the simple <code>pooled</code> value:</p>
-</div>
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[pooled sample]</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="data-col">assay name</th>
-<th class="data-col">comment[label]</th>
-<th class="data-col">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">sample_1</td>
-<td class="sample-col">not pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT126</td>
-<td class="data-col">file01.raw</td>
-</tr>
-<tr>
-<td class="sample-col">sample_2</td>
-<td class="sample-col">not pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT127N</td>
-<td class="data-col">file01.raw</td>
-</tr>
-<tr>
-<td class="sample-col">pooled_ref</td>
-<td class="sample-col">pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT131C</td>
-<td class="data-col">file01.raw</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_example_with_detailed_pooled_reference"><a class="anchor" href="#_example_with_detailed_pooled_reference"></a><a class="link" href="#_example_with_detailed_pooled_reference">8.3.3. Example with detailed pooled reference</a></h4>
-<div class="paragraph">
-<p>When pooled samples are known and annotated in the same SDRF file, use the <code>SN=</code> format:</p>
+<p>Example:</p>
 </div>
 <div class="sdrf-example-table">
 <table>
@@ -1329,8 +1232,6 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <th class="sample-col">characteristics[pooled sample]</th>
 <th class="sample-col">characteristics[organism]</th>
 <th class="sample-col">characteristics[age]</th>
-<th class="sample-col">characteristics[sex]</th>
-<th class="data-col">assay name</th>
 <th class="data-col">comment[label]</th>
 <th class="data-col">comment[data file]</th>
 </tr>
@@ -1341,8 +1242,6 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <td class="sample-col">not pooled</td>
 <td class="sample-col">homo sapiens</td>
 <td class="sample-col">45Y</td>
-<td class="sample-col">male</td>
-<td class="data-col">run_1</td>
 <td class="data-col">TMT126</td>
 <td class="data-col">file01.raw</td>
 </tr>
@@ -1351,28 +1250,14 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <td class="sample-col">not pooled</td>
 <td class="sample-col">homo sapiens</td>
 <td class="sample-col">52Y</td>
-<td class="sample-col">female</td>
-<td class="data-col">run_1</td>
 <td class="data-col">TMT127N</td>
 <td class="data-col">file01.raw</td>
 </tr>
 <tr>
-<td class="sample-col">sample_3</td>
-<td class="sample-col">not pooled</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">38Y</td>
-<td class="sample-col">male</td>
-<td class="data-col">run_1</td>
-<td class="data-col">TMT127C</td>
-<td class="data-col">file01.raw</td>
-</tr>
-<tr>
 <td class="sample-col">pooled_ref</td>
-<td class="sample-col">SN=sample_1;SN=sample_2;SN=sample_3</td>
+<td class="sample-col">SN=sample_1;SN=sample_2</td>
 <td class="sample-col">homo sapiens</td>
 <td class="sample-col">pooled</td>
-<td class="sample-col">pooled</td>
-<td class="data-col">run_1</td>
 <td class="data-col">TMT131C</td>
 <td class="data-col">file01.raw</td>
 </tr>
@@ -1390,11 +1275,10 @@ The <code>SN</code> key stands for "source name" and lists the <code>source name
 <div class="title">Tip</div>
 </td>
 <td class="content">
-For pooled samples (e.g., TMT reference channels), use <code>pooled</code> for individual-specific fields including <strong>biological replicate</strong>, age, sex, and individual. This clearly indicates that the value represents a mixture rather than a single sample. If all pooled samples share a value (e.g., all females, or age range 40Y-50Y), that shared value MAY be used instead.
+For pooled samples, use <code>pooled</code> for individual-specific fields (biological replicate, age, sex) to indicate a mixture rather than a single sample.
 </td>
 </tr>
 </table>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -2719,7 +2603,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-23 14:47:20 UTC
+Last updated 2026-01-23 15:50:35 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

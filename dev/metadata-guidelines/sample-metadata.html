@@ -20,7 +20,6 @@
 <li><a href="#_general_formatting_conventions">3. General Formatting Conventions</a>
 <ul class="sectlevel2">
 <li><a href="#_capitalization_rules">3.1. Capitalization Rules</a></li>
-<li><a href="#_reserved_values">3.2. Reserved Values</a></li>
 </ul>
 </li>
 <li><a href="#_organism">4. Organism</a></li>
@@ -36,26 +35,16 @@
 <li><a href="#disease-annotation">9. Disease</a>
 <ul class="sectlevel2">
 <li><a href="#_healthy_samples_normal_vs_healthy_vs_control">9.1. Healthy Samples: normal vs healthy vs control</a></li>
-<li><a href="#_disease_state_vs_experimental_role">9.2. Disease State vs Experimental Role</a></li>
-<li><a href="#_disease_examples">9.3. Disease Examples</a></li>
-<li><a href="#_animal_disease_models">9.4. Animal Disease Models</a></li>
+<li><a href="#_disease_examples">9.2. Disease Examples</a></li>
 </ul>
 </li>
-<li><a href="#phenotype-annotation">10. Phenotype</a>
-<ul class="sectlevel2">
-<li><a href="#_key_distinction_disease_vs_phenotype_vs_genotype">10.1. Key Distinction: Disease vs Phenotype vs Genotype</a></li>
-<li><a href="#_phenotype_categories">10.2. Phenotype Categories</a></li>
-<li><a href="#_phenotype_in_model_organisms">10.3. Phenotype in Model Organisms</a></li>
-<li><a href="#_when_not_to_use_phenotype">10.4. When NOT to Use Phenotype</a></li>
-<li><a href="#_proteomics_use_cases">10.5. Proteomics Use Cases</a></li>
-</ul>
-</li>
+<li><a href="#phenotype-annotation">10. Phenotype</a></li>
 <li><a href="#cell-type-annotation">11. Cell Type</a></li>
-<li><a href="#_depletion">12. Depletion</a></li>
-<li><a href="#_patient_derived_xenografts_pdx">13. Patient-Derived Xenografts (PDX)</a></li>
-<li><a href="#_synthetic_peptide_libraries">14. Synthetic Peptide Libraries</a></li>
-<li><a href="#_material_type">15. Material Type</a></li>
-<li><a href="#_ptm_enrichment">16. PTM Enrichment</a></li>
+<li><a href="#_material_type">12. Material Type</a></li>
+<li><a href="#_ptm_enrichment">13. PTM Enrichment</a></li>
+<li><a href="#_depletion">14. Depletion</a></li>
+<li><a href="#_patient_derived_xenografts_pdx">15. Patient-Derived Xenografts (PDX)</a></li>
+<li><a href="#_synthetic_peptide_libraries">16. Synthetic Peptide Libraries</a></li>
 <li><a href="#spiked-in-samples">17. Spiked-in Samples</a>
 <ul class="sectlevel2">
 <li><a href="#_example_spiked_peptide">17.1. Example: Spiked Peptide</a></li>
@@ -117,7 +106,7 @@
 <div class="sect2">
 <h3 id="_capitalization_rules"><a class="anchor" href="#_capitalization_rules"></a><a class="link" href="#_capitalization_rules">3.1. Capitalization Rules</a></h3>
 <div class="paragraph">
-<p>Most controlled vocabulary values should be <strong>lowercase</strong>:</p>
+<p>Most controlled vocabulary values are recommended to be <strong>lowercase</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -130,12 +119,6 @@
 <li>
 <p>Sex values: <code>male</code>, <code>female</code></p>
 </li>
-<li>
-<p>Developmental stages: <code>adult</code>, <code>embryonic</code></p>
-</li>
-<li>
-<p>Disease names (general): <code>breast carcinoma</code>, <code>type 2 diabetes mellitus</code></p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -143,9 +126,6 @@
 </div>
 <div class="ulist">
 <ul>
-<li>
-<p>Disease names with proper nouns: <code>Alzheimer disease</code>, <code>Parkinson disease</code></p>
-</li>
 <li>
 <p>Ancestry categories (geographic populations): <code>African</code>, <code>European</code>, <code>South Asian</code></p>
 </li>
@@ -162,62 +142,6 @@
 </td>
 <td class="content">
 Validators should normalize common capitalization variations (e.g., accept both <code>Homo sapiens</code> and <code>homo sapiens</code>), but submitters should use lowercase for consistency.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_reserved_values"><a class="anchor" href="#_reserved_values"></a><a class="link" href="#_reserved_values">3.2. Reserved Values</a></h3>
-<div class="paragraph">
-<p>The following reserved values can be used across multiple columns when specific data is unavailable:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">When to Use</th>
-<th class="tableblock halign-left valign-top">Example Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>not available</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Information was not collected or is unknown</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">age, sex, ancestry category, disease</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>not applicable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The field does not apply to this sample type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">organism part (for cell lines), cell type (for whole organism)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>anonymized</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Information exists but has been intentionally redacted for privacy protection (e.g., in clinical studies with de-identified patient data)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">age, sex, individual, ancestry category</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pooled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sample is pooled from multiple sources with different values</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">biological replicate, age, sex</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Use <code>anonymized</code> when the data exists but cannot be shared due to privacy requirements. This is distinct from <code>not available</code> (data was never collected) and provides important context for data reuse. For example, a clinical study may have patient ages recorded internally but publish the data with <code>anonymized</code> ages to protect patient identity.</p>
-</div>
 </td>
 </tr>
 </table>
@@ -261,26 +185,6 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10090">NCBITaxon:10090</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mouse</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">rattus norvegicus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10116">NCBITaxon:10116</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rat</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">danio rerio</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_7955">NCBITaxon:7955</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Zebrafish</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">drosophila melanogaster</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_7227">NCBITaxon:7227</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fruit fly</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis thaliana</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_3702">NCBITaxon:3702</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Thale cress</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -310,9 +214,6 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <div class="paragraph">
 <p>The <code>characteristics[tissue]</code> column should not be used as a replacement for <code>characteristics[organism part]</code>. When tissue-related columns are needed, they should be used alongside <code>characteristics[organism part]</code> for additional categorization (e.g., <code>characteristics[tissue supergroup]</code> for higher-level grouping).</p>
 </div>
-<div class="paragraph">
-<p>Always use <code>characteristics[organism part]</code> for specifying anatomical location or tissue type. Do not use <code>characteristics[tissue]</code> as a replacement.</p>
-</div>
 </td>
 </tr>
 </table>
@@ -332,11 +233,6 @@ Validators should normalize common capitalization variations (e.g., accept both 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">blood</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000178">UBERON:0000178</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Whole blood</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">blood plasma</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0001969">UBERON:0001969</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Blood plasma</p></td>
@@ -350,16 +246,6 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <td class="tableblock halign-left valign-top"><p class="tableblock">brain</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000955">UBERON:0000955</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Brain</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">heart</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000948">UBERON:0000948</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Heart</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">kidney</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002113">UBERON:0002113</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Kidney</p></td>
 </tr>
 </tbody>
 </table>
@@ -512,7 +398,7 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <p><strong>Column:</strong> <code>characteristics[sex]</code></p>
 </div>
 <div class="paragraph">
-<p><strong>Requirement:</strong> REQUIRED for human samples, OPTIONAL for other organisms.</p>
+<p><strong>Requirement:</strong> REQUIRED for human samples, OPTIONAL for other organisms. Values allowed are under PATO ontology: <a href="https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000047">PATO:0000047 - Biological Sex</a></p>
 </div>
 <div class="paragraph">
 <p><strong>Allowed values:</strong></p>
@@ -536,26 +422,6 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">female</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Female biological sex</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">intersex</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Intersex biological sex</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">anonymized</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sex has been intentionally redacted for privacy protection</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sex is unknown or not recorded</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sex doesn&#8217;t apply (e.g., pooled samples from mixed sexes)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pooled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Pooled samples from subjects of different sexes</p></td>
 </tr>
 </tbody>
 </table>
@@ -655,25 +521,20 @@ Use lowercase values. For cell lines, use the sex of the original donor if known
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p><strong><code>control</code></strong> - <strong>Avoid in disease field</strong></p>
-</div>
+<div id="WARNING" class="exampleblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>"Control" is an <strong>experimental design concept</strong>, not a disease state</p>
+<p>Avoid using "Control" as a disease state, it is an <strong>experimental design concept</strong>, not a disease state</p>
 </li>
 <li>
 <p>Ambiguous: a control could be healthy, vehicle-treated, time-zero, or even a different disease used for comparison</p>
 </li>
-<li>
-<p>The experimental role should be captured in <code>factor value[disease]</code>, not in <code>characteristics[disease]</code></p>
-</li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_disease_state_vs_experimental_role"><a class="anchor" href="#_disease_state_vs_experimental_role"></a><a class="link" href="#_disease_state_vs_experimental_role">9.2. Disease State vs Experimental Role</a></h3>
+</div>
 <div class="paragraph">
 <p>The <code>characteristics[disease]</code> column captures the <strong>actual disease state</strong> of the sample, while <code>factor value[disease]</code> indicates the <strong>experimental comparison groups</strong>:</p>
 </div>
@@ -738,7 +599,7 @@ Use lowercase values. For cell lines, use the sex of the original donor if known
 </div>
 </div>
 <div class="sect2">
-<h3 id="_disease_examples"><a class="anchor" href="#_disease_examples"></a><a class="link" href="#_disease_examples">9.3. Disease Examples</a></h3>
+<h3 id="_disease_examples"><a class="anchor" href="#_disease_examples"></a><a class="link" href="#_disease_examples">9.2. Disease Examples</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -768,76 +629,16 @@ Use lowercase values. For cell lines, use the sex of the original donor if known
 <td class="tableblock halign-left valign-top"><p class="tableblock">breast carcinoma</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004989">MONDO:0004989</a></p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alzheimer&#8217;s disease</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alzheimer disease</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004975">MONDO:0004975</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type 2 diabetes</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type 2 diabetes mellitus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0005148">MONDO:0005148</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">COVID-19</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">COVID-19</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0100096">MONDO:0100096</a></p></td>
-</tr>
 </tbody>
 </table>
-</div>
-<div class="sect2">
-<h3 id="_animal_disease_models"><a class="anchor" href="#_animal_disease_models"></a><a class="link" href="#_animal_disease_models">9.4. Animal Disease Models</a></h3>
-<div class="paragraph">
-<p>For animal disease models, use the human disease name to facilitate cross-species comparisons:</p>
-</div>
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="ellipsis-col">...</th>
-<th class="sample-col">characteristics[disease]</th>
-<th class="ellipsis-col">...</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">APP_PS1_sample1</td>
-<td class="sample-col">mus musculus</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">Alzheimer disease</td>
-<td class="ellipsis-col">...</td>
-</tr>
-<tr>
-<td class="sample-col">dbdb_sample1</td>
-<td class="sample-col">mus musculus</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">type 2 diabetes mellitus</td>
-<td class="ellipsis-col">...</td>
-</tr>
-<tr>
-<td class="sample-col">wildtype_sample1</td>
-<td class="sample-col">mus musculus</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">normal</td>
-<td class="ellipsis-col">...</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-</div>
-</div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<div class="title">Note</div>
+<div class="title">Tip</div>
 </td>
 <td class="content">
-APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease and type 2 diabetes respectively.
+For animal disease models, use the human disease name to facilitate cross-species comparisons.
 </td>
 </tr>
 </table>
@@ -852,7 +653,7 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 <p><strong>Column:</strong> <code>characteristics[phenotype]</code></p>
 </div>
 <div class="paragraph">
-<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO:0000001</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651">EFO:0000651</a></p>
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651">EFO:0000651</a></p>
 </div>
 <div class="paragraph">
 <p><strong>Requirement:</strong> Optional</p>
@@ -860,223 +661,61 @@ APP/PS1 and db/db are common mouse disease models for Alzheimer&#8217;s disease 
 <div class="paragraph">
 <p>Describes observable characteristics or traits of a sample that result from genotype, environment, and treatment interactions. Captures <strong>how the sample behaves or appears</strong>, not what disease it has.</p>
 </div>
-<div class="sect2">
-<h3 id="_key_distinction_disease_vs_phenotype_vs_genotype"><a class="anchor" href="#_key_distinction_disease_vs_phenotype_vs_genotype"></a><a class="link" href="#_key_distinction_disease_vs_phenotype_vs_genotype">10.1. Key Distinction: Disease vs Phenotype vs Genotype</a></h3>
-<div class="paragraph">
-<p>Understanding the relationship between these concepts is critical for accurate annotation:</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Column</th>
 <th class="tableblock halign-left valign-top">Purpose</th>
-<th class="tableblock halign-left valign-top">What it captures</th>
 <th class="tableblock halign-left valign-top">Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Health condition</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">What disease/pathology is present</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">"breast cancer", "normal", "Alzheimer disease"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"breast cancer", "Alzheimer disease"</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genotype]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genetic variant</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">What genetic variant is present</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">"KRAS G12D mutant", "wild type", "APP/PS1 transgenic"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"KRAS G12D mutant", "wild type"</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phenotype]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Observable trait</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">How the sample behaves/appears</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">"gefitinib sensitive", "high fat diet", "stress response"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"gefitinib sensitive", "HER2 positive"</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p><strong>Important:</strong> These are complementary, not mutually exclusive:</p>
+<p><strong>Common phenotype categories:</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>A sample can have a <strong>disease</strong> (Alzheimer&#8217;s) caused by a <strong>genotype</strong> (APP mutation) that results in a <strong>phenotype</strong> (amyloid accumulation)</p>
+<p><strong>Drug response:</strong> gefitinib sensitive, cisplatin resistant</p>
 </li>
 <li>
-<p>A sample can have a <strong>phenotype</strong> (drug resistant) without a known <strong>genotype</strong> cause</p>
+<p><strong>Molecular markers:</strong> HER2 positive, ER positive</p>
 </li>
 <li>
-<p>A sample can have a <strong>genotype</strong> (transgenic) without an obvious <strong>phenotype</strong></p>
+<p><strong>Expression states:</strong> overexpressing Neurogenin3, FOXP3 expression</p>
+</li>
+<li>
+<p><strong>Functional traits:</strong> undifferentiated, adipogenic</p>
+</li>
+<li>
+<p><strong>Environmental responses:</strong> high fat diet, heat shock response</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_phenotype_categories"><a class="anchor" href="#_phenotype_categories"></a><a class="link" href="#_phenotype_categories">10.2. Phenotype Categories</a></h3>
 <div class="paragraph">
-<p><strong>1. Drug Response Phenotypes</strong></p>
-</div>
-<div class="paragraph">
-<p>Used in pharmacoproteomics to describe drug sensitivity or resistance:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>characteristics[phenotype]: gefitinib sensitive
-characteristics[phenotype]: cisplatin resistant
-characteristics[phenotype]: tamoxifen resistant
-characteristics[phenotype]: sensitive to methotrexate</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>2. Molecular Marker Phenotypes</strong></p>
-</div>
-<div class="paragraph">
-<p>Used for biomarker status in precision medicine studies:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>characteristics[phenotype]: HER2 positive
-characteristics[phenotype]: ER positive
-characteristics[phenotype]: ALDH+
-characteristics[phenotype]: CD34 positive</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>3. Expression/Overexpression Phenotypes</strong></p>
-</div>
-<div class="paragraph">
-<p>Used to describe gene/protein expression characteristics:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>characteristics[phenotype]: overexpressing Neurogenin3
-characteristics[phenotype]: FOXP3 expression
-characteristics[phenotype]: RPS4 over-expression</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>4. Functional Phenotypes</strong></p>
-</div>
-<div class="paragraph">
-<p>Used for differentiation states and functional traits:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>characteristics[phenotype]: undifferentiated
-characteristics[phenotype]: adipogenic
-characteristics[phenotype]: high protein content</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>5. Environmental/Treatment Response Phenotypes</strong></p>
-</div>
-<div class="paragraph">
-<p>Used for model organism studies with environmental or dietary interventions:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>characteristics[phenotype]: high fat diet
-characteristics[phenotype]: caloric restriction
-characteristics[phenotype]: heat shock response
-characteristics[phenotype]: oxidative stress</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_phenotype_in_model_organisms"><a class="anchor" href="#_phenotype_in_model_organisms"></a><a class="link" href="#_phenotype_in_model_organisms">10.3. Phenotype in Model Organisms</a></h3>
-<div class="paragraph">
-<p>Phenotype is particularly important for model organism studies where the same genotype may produce different phenotypes under different conditions:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[genotype]</th>
-<th class="tableblock halign-left valign-top">characteristics[phenotype]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mouse_hfd_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">wild type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">high fat diet induced obesity</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mouse_ctrl_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">wild type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normal diet</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">zebrafish_hs_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">danio rerio</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">hsp70:GFP transgenic</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">heat shock response</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fly_stress_1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">drosophila melanogaster</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">wild type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">oxidative stress</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_when_not_to_use_phenotype"><a class="anchor" href="#_when_not_to_use_phenotype"></a><a class="link" href="#_when_not_to_use_phenotype">10.4. When NOT to Use Phenotype</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>❌ For disease names → Use <code>characteristics[disease]</code></p>
-</li>
-<li>
-<p>❌ For genetic variants → Use <code>characteristics[genotype]</code></p>
-</li>
-<li>
-<p>❌ For treatments applied → Use <code>characteristics[compound]</code> or <code>characteristics[treatment]</code></p>
-</li>
-<li>
-<p>❌ For basic sample properties → Use appropriate specific column (age, sex, etc.)</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_proteomics_use_cases"><a class="anchor" href="#_proteomics_use_cases"></a><a class="link" href="#_proteomics_use_cases">10.5. Proteomics Use Cases</a></h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Pharmacoproteomics:</strong> Compare proteomes of drug-sensitive vs. drug-resistant samples</p>
-</li>
-<li>
-<p><strong>Precision Medicine:</strong> Stratify samples by biomarker status (HER2+/HER2-, ER+/ER-)</p>
-</li>
-<li>
-<p><strong>Drug Response Studies:</strong> Identify proteomic signatures of treatment response</p>
-</li>
-<li>
-<p><strong>Stem Cell Research:</strong> Track proteomic changes during differentiation</p>
-</li>
-<li>
-<p><strong>Model Organism Studies:</strong> Characterize phenotypic responses to environmental conditions</p>
-</li>
-</ol>
-</div>
+<p><strong>When NOT to use phenotype:</strong> For disease names use <code>characteristics[disease]</code>, for genetic variants use <code>characteristics[genotype]</code>, for treatments use <code>characteristics[compound]</code> or <code>characteristics[treatment]</code>.</p>
 </div>
 </div>
 </div>
@@ -1132,84 +771,7 @@ characteristics[phenotype]: oxidative stress</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_depletion"><a class="anchor" href="#_depletion"></a><a class="link" href="#_depletion">12. Depletion</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>characteristics[depletion]</code></p>
-</div>
-<div class="paragraph">
-<p>For blood/plasma samples indicating abundant protein depletion.</p>
-</div>
-<div class="paragraph">
-<p>Values: <code>no depletion</code>, <code>depletion</code>, <code>not applicable</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_patient_derived_xenografts_pdx"><a class="anchor" href="#_patient_derived_xenografts_pdx"></a><a class="link" href="#_patient_derived_xenografts_pdx">13. Patient-Derived Xenografts (PDX)</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>characteristics[xenograft]</code></p>
-</div>
-<div class="paragraph">
-<p>When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.667%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">source name</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
-<th class="tableblock halign-left valign-top">characteristics[xenograft]</th>
-<th class="tableblock halign-left valign-top">characteristics[age]</th>
-<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">65Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pdx_001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pancreatic adenocarcinoma grown in nude mice</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">65Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_synthetic_peptide_libraries"><a class="anchor" href="#_synthetic_peptide_libraries"></a><a class="link" href="#_synthetic_peptide_libraries">14. Synthetic Peptide Libraries</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Column:</strong> <code>characteristics[synthetic peptide]</code></p>
-</div>
-<div class="paragraph">
-<p>Values: <code>synthetic</code> (sample is a synthetic peptide library), <code>not synthetic</code> (biological sample).</p>
-</div>
-<div class="paragraph">
-<p>For synthetic libraries, most sample metadata can be <code>not applicable</code>. The organism MAY be specified if the library was designed from specific species peptides.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_material_type"><a class="anchor" href="#_material_type"></a><a class="link" href="#_material_type">15. Material Type</a></h2>
+<h2 id="_material_type"><a class="anchor" href="#_material_type"></a><a class="link" href="#_material_type">12. Material Type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[material type]</code></p>
@@ -1357,7 +919,7 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_ptm_enrichment"><a class="anchor" href="#_ptm_enrichment"></a><a class="link" href="#_ptm_enrichment">16. PTM Enrichment</a></h2>
+<h2 id="_ptm_enrichment"><a class="anchor" href="#_ptm_enrichment"></a><a class="link" href="#_ptm_enrichment">13. PTM Enrichment</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Column:</strong> <code>characteristics[enrichment process]</code></p>
@@ -1387,6 +949,83 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_depletion"><a class="anchor" href="#_depletion"></a><a class="link" href="#_depletion">14. Depletion</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Column:</strong> <code>characteristics[depletion]</code></p>
+</div>
+<div class="paragraph">
+<p>For blood/plasma samples indicating abundant protein depletion.</p>
+</div>
+<div class="paragraph">
+<p>Values: <code>no depletion</code>, <code>depletion</code>, <code>not applicable</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_patient_derived_xenografts_pdx"><a class="anchor" href="#_patient_derived_xenografts_pdx"></a><a class="link" href="#_patient_derived_xenografts_pdx">15. Patient-Derived Xenografts (PDX)</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Column:</strong> <code>characteristics[xenograft]</code></p>
+</div>
+<div class="paragraph">
+<p>When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source name</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">characteristics[xenograft]</th>
+<th class="tableblock halign-left valign-top">characteristics[age]</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pdx_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pancreatic adenocarcinoma grown in nude mice</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synthetic_peptide_libraries"><a class="anchor" href="#_synthetic_peptide_libraries"></a><a class="link" href="#_synthetic_peptide_libraries">16. Synthetic Peptide Libraries</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Column:</strong> <code>characteristics[synthetic peptide]</code></p>
+</div>
+<div class="paragraph">
+<p>Values: <code>synthetic</code> (sample is a synthetic peptide library), <code>not synthetic</code> (biological sample).</p>
+</div>
+<div class="paragraph">
+<p>For synthetic libraries, most sample metadata can be <code>not applicable</code>. The organism MAY be specified if the library was designed from specific species peptides.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1680,7 +1319,7 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-23 14:47:20 UTC
+Last updated 2026-01-23 15:50:35 UTC
 </div>
 </div>
 </body>
