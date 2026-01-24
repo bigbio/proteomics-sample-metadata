@@ -19,7 +19,11 @@
 <li><a href="#status">1. Status of this Template</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
 <li><a href="#hierarchy">3. Template Hierarchy</a></li>
-<li><a href="#usage">4. Usage</a></li>
+<li><a href="#usage">4. Usage</a>
+<ul class="sectlevel2">
+<li><a href="#_file_header_format">4.1. File Header Format</a></li>
+</ul>
+</li>
 <li><a href="#checklist">5. SomaScan-Specific Columns</a>
 <ul class="sectlevel2">
 <li><a href="#_required_for_somascan">5.1. Required for SomaScan</a></li>
@@ -86,11 +90,41 @@
 <div class="sect1">
 <h2 id="usage"><a class="anchor" href="#usage"></a><a class="link" href="#usage">4. Usage</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_file_header_format"><a class="anchor" href="#_file_header_format"></a><a class="link" href="#_file_header_format">4.1. File Header Format</a></h3>
+<div class="paragraph">
+<p>Only list leaf templates in the header; parent templates are implied by inheritance (somascan inherits from affinity-proteomics).</p>
+</div>
+<div class="paragraph">
+<p><strong>Non-human samples:</strong></p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">#template=affinity-proteomics; version=v1.1.0
-#template=somascan; version=v1.0.0
-#template=human; version=v1.1.0  (optional, for human samples)</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs">#file_format=SDRF
+#version=v1.1.0
+#template=somascan
+#template_version=v1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Human samples:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">#file_format=SDRF
+#version=v1.1.0
+#template=human,somascan
+#template_version=v1.1.0,v1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Version simplification:</strong> If all templates share the same version, use a single value:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">#template=human,somascan
+#template_version=v1.1.0</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -442,7 +476,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template somascan</cod
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-24 12:05:57 UTC
+Last updated 2026-01-24 17:01:49 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

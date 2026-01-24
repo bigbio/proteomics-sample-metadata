@@ -40,7 +40,11 @@
 <ul class="sectlevel2">
 <li><a href="#sdrf-file-rules">7.1. Format rules</a></li>
 <li><a href="#reserved-words">7.2. Reserved words</a></li>
-<li><a href="#file-level-metadata">7.3. SDRF file-level metadata</a></li>
+<li><a href="#file-level-metadata">7.3. SDRF file-level metadata</a>
+<ul class="sectlevel3">
+<li><a href="#_template_inheritance_and_versioning_rules">7.3.1. Template Inheritance and Versioning Rules</a></li>
+</ul>
+</li>
 <li><a href="#column-headers">7.4. Table Column headers</a></li>
 <li><a href="#sdrf-file-standardization">7.5. Table Cell values</a></li>
 </ul>
@@ -72,15 +76,16 @@
 <li><a href="#_what_is_a_template">11.1. What is a Template?</a></li>
 <li><a href="#_template_layered_architecture">11.2. Template Layered Architecture</a></li>
 <li><a href="#_template_inheritance">11.3. Template Inheritance</a></li>
-<li><a href="#_choosing_templates">11.4. Choosing Templates</a></li>
-<li><a href="#_core_templates">11.5. Core Templates</a></li>
-<li><a href="#experiment-templates">11.6. Experiment-Type Templates</a></li>
-<li><a href="#extending-sdrf">11.7. Extending a Template</a>
+<li><a href="#_specifying_templates_in_file_headers">11.4. Specifying Templates in File Headers</a></li>
+<li><a href="#_choosing_templates">11.5. Choosing Templates</a></li>
+<li><a href="#_core_templates">11.6. Core Templates</a></li>
+<li><a href="#experiment-templates">11.7. Experiment-Type Templates</a></li>
+<li><a href="#extending-sdrf">11.8. Extending a Template</a>
 <ul class="sectlevel3">
-<li><a href="#_when_to_add_custom_columns">11.7.1. When to Add Custom Columns</a></li>
-<li><a href="#_rules_for_custom_columns">11.7.2. Rules for Custom Columns</a></li>
-<li><a href="#_common_additional_columns">11.7.3. Common Additional Columns</a></li>
-<li><a href="#_example_adding_study_specific_columns">11.7.4. Example: Adding Study-Specific Columns</a></li>
+<li><a href="#_when_to_add_custom_columns">11.8.1. When to Add Custom Columns</a></li>
+<li><a href="#_rules_for_custom_columns">11.8.2. Rules for Custom Columns</a></li>
+<li><a href="#_common_additional_columns">11.8.3. Common Additional Columns</a></li>
+<li><a href="#_example_adding_study_specific_columns">11.8.4. Example: Adding Study-Specific Columns</a></li>
 </ul>
 </li>
 </ul>
@@ -720,22 +725,22 @@ We added the prefix v to the version number to indicate that it is the version o
 </tr>
 <tr>
 <td><code>template</code></td>
-<td>Name of the template used</td>
-<td>ms-proteomics, human, cell-lines</td>
+<td>Template(s) used, comma-separated. Only list leaf templates; parent templates are implied by inheritance (e.g., crosslinking implies ms-proteomics)</td>
+<td>human,crosslinking</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000832">PRIDE:0000832</a></td>
 </tr>
 <tr>
 <td><code>template_version</code></td>
-<td>Version of the template</td>
-<td>v1.0.0</td>
+<td>Version(s) of the template(s). Use single value if all templates share the same version; comma-separated only when versions differ</td>
+<td>v1.1.0</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000833">PRIDE:0000833</a></td>
 </tr>
 <tr>
 <td><code>source</code></td>
-<td>Origin or creator of the file</td>
-<td>PRIDE, user-generated</td>
+<td>Tool or origin that generated the file. Replaces per-row <code>comment[tool metadata]</code> column</td>
+<td>lesSDRF v0.1.0, PRIDE</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C25683">NCIT:C25683</a></td>
 </tr>
@@ -756,11 +761,53 @@ We added the prefix v to the version number to indicate that it is the version o
 <pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#file_format=SDRF
 #version=v1.1.0
 #template=human
-#template_version=v1.0.0
-#source=PRIDE
+#template_version=v1.1.0
+#source=lesSDRF v0.1.0
 source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
 sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_template_inheritance_and_versioning_rules"><a class="anchor" href="#_template_inheritance_and_versioning_rules"></a><a class="link" href="#_template_inheritance_and_versioning_rules">7.3.1. Template Inheritance and Versioning Rules</a></h4>
+<div class="paragraph">
+<p><strong>Template inheritance:</strong> Only list leaf templates in the <code>#template</code> field. Parent templates are implied:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>crosslinking</code> inherits from <code>ms-proteomics</code> → use <code>#template=human,crosslinking</code> (not <code>ms-proteomics,human,crosslinking</code>)</p>
+</li>
+<li>
+<p><code>olink</code> inherits from <code>affinity-proteomics</code> → use <code>#template=human,olink</code> (not <code>affinity-proteomics,olink,human</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Version simplification:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If all templates share the same version, use a single value: <code>#template_version=v1.1.0</code></p>
+</li>
+<li>
+<p>Only use comma-separated versions when templates have different versions</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv"># Same version for all templates - use single value
+#template=human,crosslinking
+#template_version=v1.1.0
+
+# Different versions - list each (matching template order)
+#template=human,crosslinking
+#template_version=v1.1.0,v1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Source field:</strong> The <code>#source</code> header replaces the per-row <code>comment[tool metadata]</code> column. Use it to record the tool or origin that generated the SDRF file (e.g., <code>lesSDRF v0.1.0</code>, <code>PRIDE</code>, <code>user-generated</code>).</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -773,6 +820,7 @@ Header comments are OPTIONAL. SDRF files without header comments are still valid
 </td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1870,7 +1918,113 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 </div>
 </div>
 <div class="sect2">
-<h3 id="_choosing_templates"><a class="anchor" href="#_choosing_templates"></a><a class="link" href="#_choosing_templates">11.4. Choosing Templates</a></h3>
+<h3 id="_specifying_templates_in_file_headers"><a class="anchor" href="#_specifying_templates_in_file_headers"></a><a class="link" href="#_specifying_templates_in_file_headers">11.4. Specifying Templates in File Headers</a></h3>
+<div class="paragraph">
+<p>When declaring templates in the <code>#template</code> header field, follow these rules:</p>
+</div>
+<div class="paragraph">
+<p><strong>Rule 1: Only list leaf templates - parent templates are implied</strong></p>
+</div>
+<div class="paragraph">
+<p>Since child templates inherit from parents, you only need to list the most specific (leaf) template. The parent is automatically implied:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># CORRECT: crosslinking inherits from ms-proteomics
+#template=crosslinking
+
+# INCORRECT: don't list parent when child is present
+#template=ms-proteomics,crosslinking</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Rule 2: List templates from different branches</strong></p>
+</div>
+<div class="paragraph">
+<p>When combining templates from different branches of the hierarchy (e.g., organism + experiment), list both:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># Human sample with crosslinking experiment
+# - human is from the SAMPLE branch
+# - crosslinking is from the EXPERIMENT branch (inherits ms-proteomics)
+#template=human,crosslinking</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Rule 3: Version simplification</strong></p>
+</div>
+<div class="paragraph">
+<p>Use a single version if all templates share the same version. Only use comma-separated versions when templates have different versions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># All templates at v1.1.0 - use single value
+#template=human,crosslinking
+#template_version=v1.1.0
+
+# Different versions - list each (matching template order)
+#template=human,crosslinking
+#template_version=v1.1.0,v1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Common examples:</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Experiment Type</th>
+<th class="tableblock halign-left valign-top">Templates</th>
+<th class="tableblock halign-left valign-top">Header</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human MS proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human (inherits ms-proteomics)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse MS proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">vertebrates (inherits ms-proteomics)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=vertebrates</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Non-organism-specific MS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human crosslinking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human + crosslinking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,crosslinking</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recombinant protein crosslinking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">crosslinking only (no organism template)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=crosslinking</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human + olink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,olink</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human DIA with cell lines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human + dia-acquisition + cell-lines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,dia-acquisition,cell-lines</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_choosing_templates"><a class="anchor" href="#_choosing_templates"></a><a class="link" href="#_choosing_templates">11.5. Choosing Templates</a></h3>
 <div class="paragraph">
 <p>First, determine your proteomics technology and select the appropriate technology template:</p>
 </div>
@@ -1906,7 +2060,7 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 </table>
 </div>
 <div class="sect2">
-<h3 id="_core_templates"><a class="anchor" href="#_core_templates"></a><a class="link" href="#_core_templates">11.5. Core Templates</a></h3>
+<h3 id="_core_templates"><a class="anchor" href="#_core_templates"></a><a class="link" href="#_core_templates">11.6. Core Templates</a></h3>
 <div class="paragraph">
 <p>Add the appropriate sample template based on your sample organism:</p>
 </div>
@@ -1969,7 +2123,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="experiment-templates"><a class="anchor" href="#experiment-templates"></a><a class="link" href="#experiment-templates">11.6. Experiment-Type Templates</a></h3>
+<h3 id="experiment-templates"><a class="anchor" href="#experiment-templates"></a><a class="link" href="#experiment-templates">11.7. Experiment-Type Templates</a></h3>
 <div class="paragraph">
 <p>In addition to sample templates, SDRF-Proteomics provides specialized experiment-type templates. These templates extend the core templates with methodology-specific columns.</p>
 </div>
@@ -2006,7 +2160,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="extending-sdrf"><a class="anchor" href="#extending-sdrf"></a><a class="link" href="#extending-sdrf">11.7. Extending a Template</a></h3>
+<h3 id="extending-sdrf"><a class="anchor" href="#extending-sdrf"></a><a class="link" href="#extending-sdrf">11.8. Extending a Template</a></h3>
 <div class="paragraph">
 <p>Templates define the minimum required and recommended columns for a given experiment type. However, SDRF-Proteomics is designed to be <strong>extensible</strong>:</p>
 </div>
@@ -2021,7 +2175,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_when_to_add_custom_columns"><a class="anchor" href="#_when_to_add_custom_columns"></a><a class="link" href="#_when_to_add_custom_columns">11.7.1. When to Add Custom Columns</a></h4>
+<h4 id="_when_to_add_custom_columns"><a class="anchor" href="#_when_to_add_custom_columns"></a><a class="link" href="#_when_to_add_custom_columns">11.8.1. When to Add Custom Columns</a></h4>
 <div class="paragraph">
 <p>Add custom columns when your experiment requires metadata that is:</p>
 </div>
@@ -2043,7 +2197,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rules_for_custom_columns"><a class="anchor" href="#_rules_for_custom_columns"></a><a class="link" href="#_rules_for_custom_columns">11.7.2. Rules for Custom Columns</a></h4>
+<h4 id="_rules_for_custom_columns"><a class="anchor" href="#_rules_for_custom_columns"></a><a class="link" href="#_rules_for_custom_columns">11.8.2. Rules for Custom Columns</a></h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -2098,7 +2252,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect3">
-<h4 id="_common_additional_columns"><a class="anchor" href="#_common_additional_columns"></a><a class="link" href="#_common_additional_columns">11.7.3. Common Additional Columns</a></h4>
+<h4 id="_common_additional_columns"><a class="anchor" href="#_common_additional_columns"></a><a class="link" href="#_common_additional_columns">11.8.3. Common Additional Columns</a></h4>
 <div class="paragraph">
 <p>Beyond template requirements, many commonly used columns can enhance your SDRF file. For a comprehensive list of additional columns for sample metadata (treatment, time point, dose, BMI, smoking status, etc.) and data metadata (sample preparation, enrichment method, etc.), see:</p>
 </div>
@@ -2114,7 +2268,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect3">
-<h4 id="_example_adding_study_specific_columns"><a class="anchor" href="#_example_adding_study_specific_columns"></a><a class="link" href="#_example_adding_study_specific_columns">11.7.4. Example: Adding Study-Specific Columns</a></h4>
+<h4 id="_example_adding_study_specific_columns"><a class="anchor" href="#_example_adding_study_specific_columns"></a><a class="link" href="#_example_adding_study_specific_columns">11.8.4. Example: Adding Study-Specific Columns</a></h4>
 <div class="paragraph">
 <p>For a drug treatment time-course study, you might add columns beyond the template requirements:</p>
 </div>
@@ -2736,7 +2890,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-24 12:05:57 UTC
+Last updated 2026-01-24 17:01:49 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
