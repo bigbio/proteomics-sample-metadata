@@ -1356,6 +1356,16 @@ Experiment templates (organism-agnostic):
 4. Child templates **must not** weaken requirements (e.g., `required` → `optional`)
 5. Multiple templates can be combined (e.g., `ms-proteomics` + `human` + `crosslinking`)
 
+**Column requirement levels in templates:**
+
+Each column in a template has one of three requirement levels:
+
+* **REQUIRED**: The column **MUST** appear in the SDRF file. Validation will fail if this column is missing. Template header files (.sdrf.tsv) always include these columns.
+* **RECOMMENDED**: The column **SHOULD** appear in the SDRF file when applicable to the experiment. These columns are included in template header files and validation will generate warnings if missing.
+* **OPTIONAL**: The column **MAY** be included if relevant to the study. These columns are NOT included in template header files but are documented in the template checklist. Users can add them as needed.
+
+NOTE: When a column is marked as RECOMMENDED or OPTIONAL, it means users should evaluate whether the column applies to their specific experiment. For example, `characteristics[cell line]` is RECOMMENDED in the immunopeptidomics template because cell lines are commonly used, but tissue samples may use `not applicable`.
+
 TIP: **For developers and maintainers:** For detailed information on YAML template structure, validators, and LinkML schema, see the link:metadata-guidelines/template-definitions.html[Template Definitions Guidelines].
 
 === Choosing Templates

@@ -6,7 +6,13 @@ This guide explains how to build and maintain the SDRF-Proteomics documentation 
 
 ```
 proteomics-metadata-standard/
-├── build-docs.sh              # Unified build script (local & CI/CD)
+├── scripts/                   # Build and utility scripts
+│   ├── build-docs.sh          # Main build script (local & CI/CD)
+│   ├── build-asciidoc.sh      # AsciiDoc build helper
+│   ├── copy-assets.sh         # Asset copying helper
+│   ├── inject-headers.py      # Navigation header injection
+│   ├── transform-links.py     # SDRF link transformation
+│   └── add-dev-banner.sh      # Dev version banner
 ├── sdrf-proteomics/           # Main specification source
 │   ├── README.adoc            # Main specification (AsciiDoc)
 │   ├── tool-support.adoc      # Tool support page
@@ -62,19 +68,19 @@ The easiest way to build the documentation is using the provided build script. T
 
 ```bash
 # Build to default directory (demo_page/)
-./build-docs.sh
+./scripts/build-docs.sh
 
 # Build with a clean start (removes existing output)
-./build-docs.sh --clean
+./scripts/build-docs.sh --clean
 
 # Build to a specific directory
-./build-docs.sh docs
+./scripts/build-docs.sh docs
 
 # Build dev version (adds development banner)
-./build-docs.sh docs/dev --dev
+./scripts/build-docs.sh docs/dev --dev
 
 # Show help
-./build-docs.sh --help
+./scripts/build-docs.sh --help
 ```
 
 #### What the Build Script Does
@@ -201,10 +207,10 @@ To verify your local build matches the deployed version:
 
 ```bash
 # Build same as production
-./build-docs.sh --clean
+./scripts/build-docs.sh --clean
 
 # Build same as dev deployment
-./build-docs.sh --clean --dev
+./scripts/build-docs.sh --clean --dev
 ```
 
 ## Adding New Annotated Projects
@@ -271,7 +277,7 @@ If you see errors about missing commands:
 ### Build Output Differences
 
 If the local build looks different from the deployed version:
-1. Ensure you're using the build script (`./build-docs.sh`), not manual asciidoctor commands
+1. Ensure you're using the build script (`./scripts/build-docs.sh`), not manual asciidoctor commands
 2. Clear the output directory with `--clean`
 3. Check that you have the latest site assets (`git pull`)
 
@@ -287,7 +293,7 @@ If the local build looks different from the deployed version:
 ## Contributing
 
 1. Make changes to the appropriate AsciiDoc or HTML files
-2. Build locally and test: `./build-docs.sh --clean`
+2. Build locally and test: `./scripts/build-docs.sh --clean`
 3. View locally: `open demo_page/index.html`
 4. Create a pull request to the `dev` branch for review
 5. After approval and merge to dev, changes deploy to https://sdrf.quantms.org/dev/

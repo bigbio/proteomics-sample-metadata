@@ -1,5 +1,5 @@
 name: immunopeptidomics
-description: SDRF template for immunopeptidomics experiments (MHC-bound peptide identification). Extends ms-proteomics with immunopeptidomics-specific columns.
+description: SDRF template for immunopeptidomics experiments (MHC-bound peptide identification). Works with any organism - combine with appropriate sample template (human for HLA typing, vertebrates for H-2/MHC typing in mouse, etc.).
 version: 1.0.0-dev
 extends: ms-proteomics
 usable_alone: false
@@ -7,7 +7,7 @@ layer: experiment
 columns:
   - name: characteristics[cell line]
     description: Cell line used for immunopeptidome analysis
-    requirement: optional
+    requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
     validators:
@@ -55,23 +55,25 @@ columns:
           error_level: warning
           description: Enrichment method for immunopeptidome
 
-  - name: characteristics[HLA typing]
-    description: HLA alleles expressed by the sample
+  - name: characteristics[MHC allele]
+    description: MHC alleles expressed by the sample. Use HLA notation for human (HLA-A*02:01), H-2 notation for mouse (H-2Kb, H-2Db), or appropriate notation for other species.
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: pattern
         params:
-          pattern: ^HLA-[A-Z]+\*?\d+:\d+
-          description: HLA allele notation
+          pattern: ^(HLA-[A-Z]+\*?\d+:\d+|H-2[A-Z][a-z]?[0-9]*|not available|not applicable)
+          description: MHC allele notation (HLA for human, H-2 for mouse)
           examples:
             - HLA-A*02:01
             - HLA-B*07:02
-            - HLA-DRB1*01:01
+            - H-2Kb
+            - H-2Db
+            - H-2IAb
 
-  - name: characteristics[HLA typing method]
-    description: Method used for HLA typing
+  - name: characteristics[MHC typing method]
+    description: Method used for MHC/HLA typing
     requirement: optional
     allow_not_applicable: true
     allow_not_available: true
@@ -84,9 +86,12 @@ columns:
             - SSP typing
             - SBT typing
             - predicted from RNA-seq
+            - PCR-based genotyping
+            - inbred strain (known genotype)
             - not available
+            - not applicable
           error_level: warning
-          description: HLA typing method used
+          description: MHC typing method used
 
   - name: comment[cell number]
     description: Number of cells used for immunopeptidome extraction

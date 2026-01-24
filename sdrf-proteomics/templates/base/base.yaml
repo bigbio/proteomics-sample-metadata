@@ -128,6 +128,13 @@ columns:
     validators:
       - validator_name: single_cardinality_validator
         params: {}
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+            - pride
+          error_level: warning
+          description: The instrument should be a valid MS or PRIDE ontology term
 
   - name: comment[technical replicate]
     description: Identifier for the technical replicate (integer starting from 1)
@@ -141,3 +148,20 @@ columns:
     requirement: required
     allow_not_applicable: false
     allow_not_available: false
+
+  - name: comment[modification parameters]
+    description: Post-translational modifications searched
+    requirement: recommended
+    cardinality: multiple
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - unimod
+          error_level: warning
+          description: The modification parameters should be valid Unimod terms
+          examples:
+            - NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35
+            - NT=Carbamidomethyl;TA=C;MT=fixed;AC=UNIMOD:4

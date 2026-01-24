@@ -1,11 +1,12 @@
 name: single-cell
-description: SDRF template for single-cell proteomics (SCP) experiments. Extends ms-proteomics with single-cell-specific columns. Aligned with Nature Methods SCP guidelines (Gatto et al., 2023).
+description: SDRF template for single-cell proteomics (SCP) experiments. Works with any organism - combine with appropriate sample template (human, vertebrates, invertebrates, or plants). Aligned with Nature Methods SCP guidelines (Gatto et al., 2023).
 version: 1.0.0
 extends: ms-proteomics
 usable_alone: false
 layer: experiment
 columns:
-  # Sample characteristics inherited from ms-proteomics: organism, organism part, disease, cell type, biological replicate
+  # Core columns inherited from ms-proteomics/base: organism, organism part, cell type, biological replicate
+  # Disease and organism-specific columns come from sample templates (human, vertebrates, etc.)
 
   # ==========================================================================
   # REQUIRED COLUMNS (per Nature Methods SCP guidelines)
@@ -76,7 +77,7 @@ columns:
   # ==========================================================================
 
   - name: characteristics[individual]
-    description: Unique identifier for the donor/patient individual. Important for studies with multiple donors.
+    description: Unique identifier for the individual organism (human donor, mouse, etc.). Important for studies with multiple individuals to track biological variability.
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
@@ -84,12 +85,12 @@ columns:
       - validator_name: pattern
         params:
           pattern: ^[A-Za-z0-9_-]+$|^not available$|^not applicable$
-          description: Individual/patient/donor identifier
+          description: Individual organism identifier
           examples:
             - patient_001
+            - mouse_A
+            - animal_12
             - donor_A
-            - C1
-            - T1
 
   - name: comment[sample preparation batch]
     description: Batch identifier for sample preparation (plate, chip, processing batch). Critical for batch effect correction.

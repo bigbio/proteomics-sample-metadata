@@ -4,6 +4,8 @@ version: 1.1.0
 extends: base
 usable_alone: true
 layer: technology
+mutually_exclusive_with:
+  - ms-proteomics
 validators:
   - validator_name: min_columns
     params:
@@ -17,10 +19,12 @@ columns:
     validators:
       - validator_name: single_cardinality_validator
         params: {}
-      - validator_name: pattern
+      - validator_name: ontology
         params:
-          pattern: ^.+$
-          description: The instrument should describe the affinity platform used
+          ontologies:
+            - pride
+          error_level: error
+          description: The instrument should be a valid PRIDE ontology term for affinity platforms
           examples:
             - Olink Explore HT
             - Olink Signature Q100
