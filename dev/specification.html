@@ -718,17 +718,10 @@ We added the prefix v to the version number to indicate that it is the version o
 </tr>
 <tr>
 <td><code>template</code></td>
-<td>Template(s) used, comma-separated. Only list leaf templates; parent templates are implied by inheritance (e.g., crosslinking implies ms-proteomics)</td>
-<td>human,crosslinking</td>
+<td>Template declaration with version. Use one <code>#template</code> line per template. Format: <code>template_name,version=vX.Y.Z</code></td>
+<td>human,version=v1.1.0</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000832">PRIDE:0000832</a></td>
-</tr>
-<tr>
-<td><code>template_version</code></td>
-<td>Version(s) of the template(s). Use single value if all templates share the same version; comma-separated only when versions differ</td>
-<td>v1.1.0</td>
-<td><span class="optional-badge">OPTIONAL</span></td>
-<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000833">PRIDE:0000833</a></td>
 </tr>
 <tr>
 <td><code>source</code></td>
@@ -753,8 +746,7 @@ We added the prefix v to the version number to indicate that it is the version o
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#file_format=SDRF
 #version=v1.1.0
-#template=human
-#template_version=v1.1.0
+#template=human,version=v1.1.0
 #source=lesSDRF v0.1.0
 source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
 sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
@@ -763,40 +755,36 @@ sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 <div class="sect3">
 <h4 id="_template_inheritance_and_versioning_rules"><a class="anchor" href="#_template_inheritance_and_versioning_rules"></a><a class="link" href="#_template_inheritance_and_versioning_rules">7.3.1. Template Inheritance and Versioning Rules</a></h4>
 <div class="paragraph">
-<p><strong>Template inheritance:</strong> Only list leaf templates in the <code>#template</code> field. Parent templates are implied:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>crosslinking</code> inherits from <code>ms-proteomics</code> → use <code>#template=human,crosslinking</code> (not <code>ms-proteomics,human,crosslinking</code>)</p>
-</li>
-<li>
-<p><code>olink</code> inherits from <code>affinity-proteomics</code> → use <code>#template=human,olink</code> (not <code>affinity-proteomics,olink,human</code>)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Version simplification:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>If all templates share the same version, use a single value: <code>#template_version=v1.1.0</code></p>
-</li>
-<li>
-<p>Only use comma-separated versions when templates have different versions</p>
-</li>
-</ul>
+<p><strong>Template format:</strong> Each template is declared on its own line with its version:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv"># Same version for all templates - use single value
-#template=human,crosslinking
-#template_version=v1.1.0
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#template=template_name,version=vX.Y.Z</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Template inheritance:</strong> Only list leaf templates. Parent templates are implied by inheritance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv"># crosslinking inherits from ms-proteomics (no need to list ms-proteomics)
+#template=human,version=v1.1.0
+#template=crosslinking,version=v1.0.0
 
-# Different versions - list each (matching template order)
-#template=human,crosslinking
-#template_version=v1.1.0,v1.0.0</code></pre>
+# olink inherits from affinity-proteomics (no need to list affinity-proteomics)
+#template=human,version=v1.1.0
+#template=olink,version=v1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Independent versioning:</strong> Each template can have its own version, allowing templates to evolve independently:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv"># Templates at different versions
+#template=human,version=v1.2.0
+#template=crosslinking,version=v1.0.0
+#template=phosphoproteomics,version=v1.1.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -809,7 +797,7 @@ sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 <div class="title">Note</div>
 </td>
 <td class="content">
-Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., <code>file_format</code>, <code>template_version</code>) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
+Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., <code>file_format</code>) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
 </td>
 </tr>
 </table>
@@ -1924,41 +1912,40 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># CORRECT: crosslinking inherits from ms-proteomics
-#template=crosslinking
+#template=crosslinking,version=v1.0.0
 
 # INCORRECT: don't list parent when child is present
-#template=ms-proteomics,crosslinking</code></pre>
+#template=ms-proteomics,version=v1.1.0
+#template=crosslinking,version=v1.0.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p><strong>Rule 2: List templates from different branches</strong></p>
 </div>
 <div class="paragraph">
-<p>When combining templates from different branches of the hierarchy (e.g., organism + experiment), list both:</p>
+<p>When combining templates from different branches of the hierarchy (e.g., organism + experiment), list each on its own line with its version:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># Human sample with crosslinking experiment
 # - human is from the SAMPLE branch
 # - crosslinking is from the EXPERIMENT branch (inherits ms-proteomics)
-#template=human,crosslinking</code></pre>
+#template=human,version=v1.1.0
+#template=crosslinking,version=v1.0.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Rule 3: Version simplification</strong></p>
+<p><strong>Rule 3: Independent versioning</strong></p>
 </div>
 <div class="paragraph">
-<p>Use a single version if all templates share the same version. Only use comma-separated versions when templates have different versions:</p>
+<p>Each template is declared on its own line with its version, allowing templates to evolve independently:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs"># All templates at v1.1.0 - use single value
-#template=human,crosslinking
-#template_version=v1.1.0
-
-# Different versions - list each (matching template order)
-#template=human,crosslinking
-#template_version=v1.1.0,v1.0.0</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs"># Each template declares its own version
+#template=human,version=v1.2.0
+#template=crosslinking,version=v1.0.0
+#template=phosphoproteomics,version=v1.1.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1981,37 +1968,37 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human MS proteomics</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">human (inherits ms-proteomics)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mouse MS proteomics</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">vertebrates (inherits ms-proteomics)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=vertebrates</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=vertebrates,version=v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Non-organism-specific MS</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics only</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=ms-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=ms-proteomics,version=v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human crosslinking</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">human + crosslinking</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,crosslinking</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code> + <code>#template=crosslinking,version=v1.0.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Recombinant protein crosslinking</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">crosslinking only (no organism template)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=crosslinking</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=crosslinking,version=v1.0.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">human + olink</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,olink</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code> + <code>#template=olink,version=v1.0.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human DIA with cell lines</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">human + dia-acquisition + cell-lines</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,dia-acquisition,cell-lines</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code> + <code>#template=dia-acquisition,version=v1.0.0</code> + <code>#template=cell-lines,version=v1.0.0</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -2217,23 +2204,26 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 <p>Use lowercase for column names inside brackets</p>
 </li>
 <li>
-<p>Use descriptive, specific names (e.g., <code>characteristics[tumor grade]</code> not <code>characteristics[grade]</code>)</p>
+<p>Column names (text inside brackets) MUST be valid ontology terms - free text is not allowed</p>
 </li>
 <li>
-<p>Use ontology terms when they exist (e.g., <code>characteristics[patient bmi]</code> maps to EFO term)</p>
+<p>Use specific ontology terms (e.g., <code>characteristics[tumor grading]</code> from NCIT, not <code>characteristics[grade]</code>)</p>
+</li>
+<li>
+<p>Search the <a href="https://www.ebi.ac.uk/ols4/">EBI Ontology Lookup Service (OLS)</a> to find appropriate ontology terms for your column names</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Use controlled vocabularies when available:</strong></p>
+<p><strong>Use controlled vocabularies for cell values:</strong></p>
 <div class="ulist">
 <ul>
 <li>
-<p>Reference existing ontologies (EFO, MONDO, UBERON, etc.) for values</p>
+<p>Reference existing ontologies (EFO, MONDO, UBERON, etc.) for cell values when available</p>
 </li>
 <li>
-<p>Prefer standardized terms over free text when possible</p>
+<p>For cell values, ontology terms are recommended but free text is allowed when the exact term exists in EFO</p>
 </li>
 <li>
 <p>For new terms, follow the key=value format if ontology reference is needed</p>
@@ -2317,7 +2307,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 <div class="title">Tip</div>
 </td>
 <td class="content">
-When adding custom columns, check the <a href="metadata-guidelines/sdrf-terms.tsv">SDRF Terms Reference</a> and <a href="https://www.ebi.ac.uk/ols4/">EBI Ontology Lookup Service (OLS)</a> to find existing terms that match your metadata needs. Using standardized terms improves data interoperability.
+When adding custom columns, you MUST use valid ontology terms for column names. Check the <a href="metadata-guidelines/sdrf-terms.tsv">SDRF Terms Reference</a> and <a href="https://www.ebi.ac.uk/ols4/">EBI Ontology Lookup Service (OLS)</a> to find existing ontology terms that match your metadata needs. Free text column names are not allowed - each column name must be backed by an ontology term.
 </td>
 </tr>
 </table>
@@ -2799,7 +2789,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-24 17:12:35 UTC
+Last updated 2026-01-24 21:23:45 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
