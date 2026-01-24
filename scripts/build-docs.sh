@@ -228,9 +228,9 @@ cp site/sdrf-data.json "$OUTPUT_DIR/"
 echo "Adding navigation headers..."
 python3 scripts/inject-headers.py "$OUTPUT_DIR"
 
-# Transform SDRF links to use viewer
-echo "Transforming SDRF links..."
-python3 scripts/transform-links.py "$OUTPUT_DIR/specification.html"
+# Transform links (SDRF Explorer links and .adoc to .html)
+echo "Transforming links..."
+python3 scripts/transform-links.py "$OUTPUT_DIR"
 
 # Build search index
 echo "Building search index..."
