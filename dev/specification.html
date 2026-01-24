@@ -95,7 +95,14 @@
 </li>
 <li><a href="#ontologies-supported">13. Ontologies and Controlled Vocabularies</a></li>
 <li><a href="#example-annotated-datasets">14. Examples of Annotated Datasets</a></li>
-<li><a href="#_ongoing_template_discussions">15. Ongoing template discussions</a></li>
+<li><a href="#_templates_under_discussion">15. Templates Under Discussion</a>
+<ul class="sectlevel2">
+<li><a href="#_ms_imaging_datasets">15.1. MS-Imaging Datasets</a></li>
+<li><a href="#_derived_samples_patient_derived_xenografts">15.2. Derived Samples (Patient-Derived Xenografts)</a></li>
+<li><a href="#_turnover_and_tmt_datasets">15.3. Turnover and TMT Datasets</a></li>
+<li><a href="#_contributing_new_templates">15.4. Contributing New Templates</a></li>
+</ul>
+</li>
 <li><a href="#_intellectual_property_statement">16. Intellectual Property Statement</a></li>
 <li><a href="#_copyright_notice">17. Copyright Notice</a></li>
 <li><a href="#_how_to_cite">18. How to cite</a></li>
@@ -2561,10 +2568,105 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_ongoing_template_discussions"><a class="anchor" href="#_ongoing_template_discussions"></a><a class="link" href="#_ongoing_template_discussions">15. Ongoing template discussions</a></h2>
+<h2 id="_templates_under_discussion"><a class="anchor" href="#_templates_under_discussion"></a><a class="link" href="#_templates_under_discussion">15. Templates Under Discussion</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We have created a file in GitHub <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/templates-under-development.html">Ongoing template discussions</a> where we aggregate all the ongoing discussions about the format and new templates.</p>
+<p>This section describes templates that are actively under discussion. If you want to discuss a particular template, please create an <a href="https://github.com/bigbio/proteomics-metadata-standard/issues">issue on GitHub</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_ms_imaging_datasets"><a class="anchor" href="#_ms_imaging_datasets"></a><a class="link" href="#_ms_imaging_datasets">15.1. MS-Imaging Datasets</a></h3>
+<div class="paragraph">
+<p>Discussions about MS-Imaging representation can be found in <a href="https://github.com/bigbio/proteomics-metadata-standard/issues/451">issue #451</a>. Key considerations for MSI datasets:</p>
+</div>
+<div class="paragraph">
+<p><strong>Metadata that may not apply to MSI:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Reduction and Alkylation</strong>: For most MSI studies this would be "not applicable"</p>
+</li>
+<li>
+<p><strong>Fraction identifier</strong>: Never used in MSI - use "not applicable"</p>
+</li>
+<li>
+<p><strong>MS2/Database search terms</strong>: Not mandatory, can be ignored for MSI data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>MSI-specific considerations:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>File type</strong>: imzML is a composite format (imzML + ibd files). Current practice references only the imzML file.</p>
+</li>
+<li>
+<p><strong>Multiple samples per run</strong>: Multiple tissues can be placed on one slide. Samples are distinguished by position, requiring additional position identifiers or coordinates.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Potential additional MSI metadata columns:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Origin of cleavage agent</strong>: Important for calibration/QC (bovine vs. porcine trypsin)</p>
+</li>
+<li>
+<p><strong>Matrix</strong>: For MALDI experiments, matrix composition helps with peak removal</p>
+</li>
+<li>
+<p><strong>Ionization source</strong>: Customized sources may not match standard instrument terms</p>
+</li>
+<li>
+<p><strong>Analyte</strong>: MSI can measure phospholipids, N-glycans, and other analytes beyond peptides</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_derived_samples_patient_derived_xenografts"><a class="anchor" href="#_derived_samples_patient_derived_xenografts"></a><a class="link" href="#_derived_samples_patient_derived_xenografts">15.2. Derived Samples (Patient-Derived Xenografts)</a></h3>
+<div class="paragraph">
+<p>A prototype for derived samples is documented in the <a href="#derived-samples">[derived-samples]</a> section. Outstanding issues include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Full examples with multiple species and mixture types are needed</p>
+</li>
+<li>
+<p>Capturing relationships between samples (e.g., in xenografts, how to link the human tumor sample to the mouse host)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_turnover_and_tmt_datasets"><a class="anchor" href="#_turnover_and_tmt_datasets"></a><a class="link" href="#_turnover_and_tmt_datasets">15.3. Turnover and TMT Datasets</a></h3>
+<div class="paragraph">
+<p>Turnover experiments may contain multiple labels - for example, TMT for quantification combined with SILAC for turnover/differential expression. See <a href="./sdrf-explorer.html?view=PXD017710">PXD017710</a> for an example that was originally annotated as two independent datasets.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_contributing_new_templates"><a class="anchor" href="#_contributing_new_templates"></a><a class="link" href="#_contributing_new_templates">15.4. Contributing New Templates</a></h3>
+<div class="paragraph">
+<p>To contribute to template development or propose a new template:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open an <a href="https://github.com/bigbio/proteomics-metadata-standard/issues">issue on GitHub</a> describing the experiment type</p>
+</li>
+<li>
+<p>Discuss requirements with the community</p>
+</li>
+<li>
+<p>Submit a pull request following the established template structure</p>
+</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
@@ -2634,7 +2736,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-24 08:47:18 UTC
+Last updated 2026-01-24 10:05:35 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
