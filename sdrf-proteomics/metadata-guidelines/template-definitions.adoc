@@ -1,152 +1,283 @@
-= Template Definitions
+= SDRF-Proteomics Template Definitions Guide
 :toc: left
 :toc-title: Contents
+:toclevels: 3
 :icons: font
 :source-highlighter: highlight.js
+:sectnums:
 
 == Introduction
 
-This document describes the technical implementation of SDRF-Proteomics templates. Templates are implemented as YAML files that define validation rules, column requirements, and inheritance relationships. These YAML definitions are used by the https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] validator to check SDRF files for compliance.
+This document describes the technical implementation of SDRF-Proteomics templates for **developers and maintainers**. Templates are implemented as YAML files that define validation rules, column requirements, and inheritance relationships.
 
-Template files are located in the https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[templates] directory.
+These YAML definitions are used by the https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] validator to check SDRF files for compliance.
+
+**Template files location:** https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[sdrf-proteomics/templates/]
+
+== Template Architecture
+
+=== Layered Hierarchy
+
+Templates are organized in a layered hierarchy where each layer serves a specific purpose:
+
+[source]
+----
+base (construction artifact - not user-facing)
+│
+├── TECHNOLOGY LAYER (mutually exclusive)
+│   ├── ms-proteomics              # Mass spectrometry proteomics
+│   │   └── EXPERIMENT LAYER
+│   │       ├── dda-acquisition    # Data-dependent acquisition
+│   │       ├── dia-acquisition    # Data-independent acquisition
+│   │       ├── single-cell        # Single-cell proteomics
+│   │       ├── immunopeptidomics  # MHC peptide analysis
+│   │       ├── crosslinking       # XL-MS experiments
+│   │       └── metaproteomics     # Microbiome proteomics
+│   │
+│   └── affinity-proteomics        # Affinity-based proteomics
+│       └── EXPERIMENT LAYER
+│           ├── olink              # Olink PEA platform
+│           └── somascan           # SomaScan aptamer platform
+│
+└── SAMPLE LAYER (mutually exclusive)
+    ├── human                      # Human samples
+    ├── vertebrates                # Non-human vertebrates (mouse, rat, etc.)
+    ├── invertebrates              # Invertebrates (Drosophila, C. elegans)
+    └── plants                     # Plant samples (Arabidopsis, crops)
+
+cell-lines (EXPERIMENT layer - requires technology + sample)
+----
+
+=== Layer Definitions
+
+[cols="1,3,2", options="header"]
+|===
+| Layer | Purpose | Examples
+
+| `base`
+| Internal construction artifact with shared columns. Never used directly by users.
+| base
+
+| `technology`
+| Defines the proteomics technology. Exactly one required per SDRF.
+| ms-proteomics, affinity-proteomics
+
+| `sample`
+| Defines organism-specific sample metadata. One recommended per SDRF.
+| human, vertebrates, invertebrates, plants
+
+| `experiment`
+| Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.
+| dda-acquisition, single-cell, olink, cell-lines
+|===
+
+=== Mutual Exclusivity
+
+Some templates cannot be combined because they represent mutually exclusive concepts:
+
+[cols="2,2,3", options="header"]
+|===
+| Template A | Template B | Reason
+
+| ms-proteomics | affinity-proteomics | Different technologies
+| dda-acquisition | dia-acquisition | Different acquisition methods
+| somascan | olink | Different affinity platforms
+| human | vertebrates | Different organism types
+| human | invertebrates | Different organism types
+| human | plants | Different organism types
+| vertebrates | invertebrates | Different organism types
+| vertebrates | plants | Different organism types
+| invertebrates | plants | Different organism types
+|===
 
 == YAML Template Schema
 
-=== Template Schema Reference
-
-**Complete YAML template structure:**
+=== Complete Template Structure
 
 [source,yaml]
 ----
-# Template metadata (required)
-name: human                      # Unique template identifier
-description: Human SDRF template with human-specific metadata fields
-version: 1.1.0                   # Semantic version
+# =============================================================================
+# TEMPLATE METADATA (required)
+# =============================================================================
+name: human                        # Unique template identifier (used in --template flag)
+description: Human SDRF template   # Human-readable description
+version: 1.1.0                     # Semantic version (major.minor.patch)
 
-# Inheritance (optional)
-extends: base                    # Parent template to inherit from
-usable_alone: false              # Whether template can be used standalone
-layer: sample                    # Template layer: base, technology, sample, experiment
+# =============================================================================
+# INHERITANCE AND RELATIONSHIPS (optional)
+# =============================================================================
+extends: base                      # Parent template to inherit from
+usable_alone: false                # Can this template be used without others?
+layer: sample                      # Layer: base, technology, sample, experiment
 
-# Template-level validators (optional)
+# Mutual exclusivity - templates that cannot be combined with this one
+mutually_exclusive_with:
+  - vertebrates
+  - invertebrates
+  - plants
+
+# Required layers - for templates that need specific layer types
+requires:
+  - layer: technology              # Requires a technology template
+  - layer: sample                  # Requires a sample template
+
+# =============================================================================
+# TEMPLATE-LEVEL VALIDATORS (optional)
+# =============================================================================
 validators:
   - validator_name: min_columns
     params:
       min_columns: 12
+  - validator_name: trailing_whitespace_validator
+    params: {}
 
-# Column definitions
+# =============================================================================
+# COLUMN DEFINITIONS (required)
+# =============================================================================
 columns:
   - name: characteristics[disease]
     description: Disease state of the sample
-    requirement: required        # required | recommended | optional
-    type: string                 # string | integer
-    cardinality: single          # single | multiple
-    allow_not_applicable: true   # Allow "not applicable" value
-    allow_not_available: true    # Allow "not available" value
-    allow_pooled: false          # Allow "pooled" value (for replicates)
-    validators:                  # Column-level validators
+    requirement: required          # required | recommended | optional
+    type: string                   # string | integer (default: string)
+    cardinality: single            # single | multiple (default: single)
+    allow_not_applicable: true     # Allow "not applicable" value
+    allow_not_available: true      # Allow "not available" value
+    allow_pooled: false            # Allow "pooled" value (for replicates)
+    validators:
       - validator_name: ontology
         params:
-          ontologies: [mondo, efo]
-          error_level: warning
+          ontologies:
+            - mondo
+            - efo
+            - doid
+            - pato
+          error_level: warning     # error | warning
           description: The disease should be a valid ontology term
-          examples: [normal, breast cancer]
+          examples:
+            - normal
+            - breast cancer
+            - diabetes mellitus
 ----
 
-=== Template Properties
+=== Template Properties Reference
 
-[cols="2,1,5", options="header"]
+[cols="2,1,1,4", options="header"]
 |===
-| Property | Required | Description
+| Property | Required | Type | Description
 
 | `name`
 | Yes
-| Unique identifier for the template. Used in validation commands (e.g., `--template human`).
+| string
+| Unique template identifier. Used in validation commands (`--template human`).
 
 | `description`
 | Yes
-| Human-readable description of the template's purpose and target use case.
+| string
+| Human-readable description of the template's purpose.
 
 | `version`
 | Yes
+| string
 | Semantic version (e.g., `1.1.0`). Should match the specification version.
 
 | `extends`
 | No
-| Parent template to inherit columns and validators from. Creates a template hierarchy.
+| string
+| Parent template name. Child inherits all columns and validators.
 
 | `usable_alone`
 | No
-| Boolean. If `false`, must be combined with other templates (e.g., sample templates need technology templates). Default: `true`.
+| boolean
+| If `false`, must be combined with other templates. Default: `true`.
 
 | `layer`
 | No
-| Template layer in the hierarchy: `base`, `technology`, `sample`, or `experiment`. Used for validation and documentation.
+| string
+| Template layer: `base`, `technology`, `sample`, or `experiment`.
+
+| `mutually_exclusive_with`
+| No
+| list
+| Templates that cannot be combined with this one.
+
+| `requires`
+| No
+| list
+| Layer requirements (e.g., `- layer: technology`).
 
 | `validators`
 | No
-| List of template-level validators that apply to the entire SDRF file.
+| list
+| Template-level validators applied to the entire SDRF file.
 
 | `columns`
 | Yes
-| List of column definitions with validation rules.
+| list
+| Column definitions with validation rules.
 |===
 
-=== Column Properties
+=== Column Properties Reference
 
-[cols="2,1,5", options="header"]
+[cols="2,1,1,4", options="header"]
 |===
-| Property | Required | Description
+| Property | Required | Type | Description
 
 | `name`
 | Yes
-| Column header name exactly as it appears in the SDRF file (e.g., `characteristics[disease]`, `comment[label]`).
+| string
+| Column header exactly as in SDRF (e.g., `characteristics[disease]`).
 
 | `description`
 | Yes
-| Human-readable description of what the column contains and how to fill it.
+| string
+| What the column contains and how to fill it.
 
 | `requirement`
 | Yes
-| Requirement level: `required` (must be present), `recommended` (should be present), or `optional` (may be present).
+| string
+| `required` (must be present), `recommended` (should be present), `optional` (may be present).
 
 | `type`
 | No
-| Data type: `string` (default) or `integer`. Integers are validated as whole numbers.
+| string
+| Data type: `string` (default) or `integer`.
 
 | `cardinality`
 | No
-| Value cardinality: `single` (default, one value per cell) or `multiple` (semicolon-separated values allowed).
+| string
+| `single` (default) or `multiple` (semicolon-separated values).
 
 | `allow_not_applicable`
 | No
-| Boolean. Allow `not applicable` as a valid value when the column doesn't apply. Default: `false`.
+| boolean
+| Allow `not applicable` when column doesn't apply. Default: `false`.
 
 | `allow_not_available`
 | No
-| Boolean. Allow `not available` as a valid value when data is unknown. Default: `false`.
+| boolean
+| Allow `not available` when data is unknown. Default: `false`.
 
 | `allow_pooled`
 | No
-| Boolean. Allow `pooled` as a valid value (typically for biological replicate). Default: `false`.
+| boolean
+| Allow `pooled` value (for biological replicate). Default: `false`.
 
 | `validators`
 | No
-| List of validators to check column values.
+| list
+| Column-level validators for value checking.
 |===
 
 == Validator Reference
 
-Templates support both **template-level validators** (applied to the entire file) and **column-level validators** (applied to specific column values).
-
 === Template-Level Validators
 
-[cols="2,6", options="header"]
-|===
-| Validator | Description
+These validators apply to the entire SDRF file structure.
 
-| `min_columns`
-| Ensures the SDRF has at least a minimum number of columns.
+==== min_columns
+
+Ensures minimum column count.
+
 [source,yaml]
 ----
 - validator_name: min_columns
@@ -154,86 +285,98 @@ Templates support both **template-level validators** (applied to the entire file
     min_columns: 12
 ----
 
-| `trailing_whitespace_validator`
-| Checks for trailing whitespace in cell values.
+==== trailing_whitespace_validator
+
+Checks for trailing whitespace in cell values.
+
 [source,yaml]
 ----
 - validator_name: trailing_whitespace_validator
   params: {}
 ----
 
-| `column_order`
-| Validates that columns appear in the expected order (source name first, data file last, etc.).
+==== column_order
+
+Validates expected column order (source name first, data file last).
+
 [source,yaml]
 ----
 - validator_name: column_order
   params: {}
 ----
 
-| `empty_cells`
-| Checks for empty cells that should have values.
+==== empty_cells
+
+Checks for empty cells that should have values.
+
 [source,yaml]
 ----
 - validator_name: empty_cells
   params: {}
 ----
 
-| `combination_of_columns_no_duplicate_validator`
-| Ensures that combinations of specified columns are unique (no duplicate rows).
+==== combination_of_columns_no_duplicate_validator
+
+Ensures column combinations are unique (no duplicate rows).
+
 [source,yaml]
 ----
 - validator_name: combination_of_columns_no_duplicate_validator
   params:
-    column_name:              # Columns that must be unique (error)
+    column_name:              # Must be unique (error if duplicates)
       - source name
       - assay name
       - comment[label]
-    column_name_warning:      # Columns that should be unique (warning)
+    column_name_warning:      # Should be unique (warning if duplicates)
       - source name
       - assay name
 ----
-|===
 
 === Column-Level Validators
 
-[cols="2,6", options="header"]
-|===
-| Validator | Description
+These validators apply to individual column values.
 
-| `ontology`
-| Validates values against ontology terms. Supports multiple ontologies with fallback.
+==== ontology
+
+Validates values against ontology terms.
+
 [source,yaml]
 ----
 - validator_name: ontology
   params:
-    ontologies:           # Ontology prefixes to validate against
-      - mondo             # MONDO Disease Ontology
-      - efo               # Experimental Factor Ontology
-      - doid              # Disease Ontology
-    error_level: warning  # error (fail) or warning (report only)
-    description: The disease should be a valid ontology term
+    ontologies:              # List of ontology prefixes
+      - mondo
+      - efo
+      - doid
+    parent_term: MS:1000044  # Optional: restrict to children of this term
+    error_level: warning     # error or warning
+    description: Human-readable validation message
     examples:
       - normal
       - breast cancer
 ----
 
-| `pattern`
-| Validates values against a regular expression pattern.
+==== pattern
+
+Validates values against a regular expression.
+
 [source,yaml]
 ----
 - validator_name: pattern
   params:
-    pattern: ^(\d+[yYmMdD])+$   # Regex pattern
-    case_sensitive: false       # Optional: case sensitivity
+    pattern: ^(\d+[yYmMdD])+(-(\d+[yYmMdD])+)?$
+    case_sensitive: false    # Optional, default: true
     description: Age format like 45Y, 6M, 30Y6M
     examples:
       - 45Y
-      - 6M
       - 30Y6M
+      - 40Y-50Y
 ----
 
-| `values`
-| Validates values against a fixed list of allowed values.
+==== values
+
+Validates against a fixed list of allowed values.
+
 [source,yaml]
 ----
 - validator_name: values
@@ -248,71 +391,152 @@ Templates support both **template-level validators** (applied to the entire file
     description: Sex must be one of the allowed values
 ----
 
-| `single_cardinality_validator`
-| Ensures the cell contains only a single value (no semicolon-separated multiple values).
+==== single_cardinality_validator
+
+Ensures single value per cell (no semicolon-separated values).
+
 [source,yaml]
 ----
 - validator_name: single_cardinality_validator
   params: {}
 ----
-|===
 
-=== Supported Ontologies
+== Supported Ontologies
 
-The `ontology` validator supports the following ontology prefixes:
-
-[cols="1,3,2", options="header"]
+[cols="1,3,3", options="header"]
 |===
 | Prefix | Ontology | Common Use
 
 | `ncbitaxon` | NCBI Taxonomy | organism
-| `uberon` | Uberon Anatomy | organism part
+| `uberon` | Uberon Anatomy Ontology | organism part
 | `cl` | Cell Ontology | cell type
 | `clo` | Cell Line Ontology | cell line
-| `bto` | BRENDA Tissue Ontology | tissue, cell type
+| `bto` | BRENDA Tissue Ontology | tissue, cell type, cell line
 | `mondo` | MONDO Disease Ontology | disease
 | `efo` | Experimental Factor Ontology | disease, experimental factors
 | `doid` | Disease Ontology | disease
 | `pato` | Phenotype and Trait Ontology | phenotypes (including "normal")
-| `ms` | PSI-MS Ontology | instrument, cleavage agent, modifications
-| `pride` | PRIDE Ontology | acquisition method, labels
-| `hancestro` | Human Ancestry Ontology | ancestry category
-| `hsapdv` | Human Developmental Stages | developmental stage
-| `cellosaurus` | Cellosaurus | cell line identifiers
+| `ms` | PSI-MS Ontology | instrument, cleavage agent, mass analyzer
+| `pride` | PRIDE Ontology | acquisition method, labels, affinity instruments
+| `unimod` | UNIMOD | post-translational modifications
+| `xlmod` | XLMOD | crosslinking reagents
+| `hancestro` | Human Ancestry Ontology | ancestry category (human)
+| `hsapdv` | Human Developmental Stages | developmental stage (human)
+| `mmusdv` | Mouse Developmental Stages | developmental stage (mouse)
+| `fbdv` | FlyBase Developmental | developmental stage (Drosophila)
+| `wbls` | WormBase Life Stage | developmental stage (C. elegans)
+| `po` | Plant Ontology | plant tissues, developmental stages
+| `envo` | Environment Ontology | environmental samples (metaproteomics)
+| `gaz` | Gazetteer | geographic locations
+| `chebi` | ChEBI | chemical entities, treatments
 |===
 
-== Template Inheritance
+== Template Inheritance Rules
 
-Templates form a layered inheritance hierarchy. Child templates inherit all columns and validators from parent templates and can add new columns or strengthen requirements.
+When templates are combined, the following rules apply:
 
+=== Inheritance Behavior
+
+1. **Column inheritance**: Child templates inherit all columns from parent templates
+2. **Validator inheritance**: Child templates inherit all validators from parent templates
+3. **Column override**: Child templates can redefine inherited columns with stricter requirements
+
+=== Requirement Strengthening
+
+Child templates may **strengthen** but not weaken requirements:
+
+[cols="2,2,2", options="header"]
+|===
+| Parent Requirement | Allowed in Child | Not Allowed
+
+| `optional`
+| `optional`, `recommended`, `required`
+| -
+
+| `recommended`
+| `recommended`, `required`
+| `optional`
+
+| `required`
+| `required`
+| `optional`, `recommended`
+|===
+
+=== Multi-Template Combination
+
+When multiple templates are combined:
+
+1. All columns from all templates are included
+2. If the same column appears in multiple templates, the **strictest requirement** wins
+3. Validators are merged (all validators apply)
+4. Mutual exclusivity is checked first
+
+**Example valid combination:**
 [source]
 ----
-base                           # Core columns for all SDRF files
-├── ms-proteomics                    # Mass spectrometry technology
-│   ├── dda-acquisition       # DDA-specific columns
-│   ├── dia-acquisition       # DIA-specific columns
-│   └── crosslinking          # XL-MS-specific columns
-├── affinity-proteomics        # Affinity proteomics technology
-│   ├── olink                 # Olink PEA-specific columns
-│   └── somascan              # SomaScan-specific columns
-├── human                      # Human sample metadata
-├── vertebrates                # Vertebrate sample metadata
-├── invertebrates              # Invertebrate sample metadata
-├── plants                     # Plant sample metadata
-└── cell-lines                 # Cell line sample metadata
+ms-proteomics + human + dda-acquisition + cell-lines
+     ↓             ↓           ↓              ↓
+ technology    sample    experiment     experiment
 ----
 
-**Inheritance rules:**
+== Creating New Templates
 
-1. Child templates inherit all columns from parent templates
-2. Child templates may add new columns
-3. Child templates may promote `optional` → `recommended` → `required`
-4. Child templates **must not** weaken requirements (e.g., `required` → `optional`)
-5. Multiple templates can be combined (e.g., `ms-proteomics` + `human` + `crosslinking`)
+=== Checklist
+
+When creating a new template:
+
+1. [ ] Choose appropriate parent template (`extends`)
+2. [ ] Set correct layer (`layer`)
+3. [ ] Define mutual exclusivity if needed (`mutually_exclusive_with`)
+4. [ ] Use semantic versioning (`version`)
+5. [ ] Document all columns with clear descriptions
+6. [ ] Add appropriate validators (ontology, pattern, values)
+7. [ ] Include examples in validators
+8. [ ] Test with real SDRF files
+
+=== Best Practices
+
+- **Follow naming conventions**: Use lowercase with hyphens for template names
+- **Be specific in descriptions**: Include what values are expected and when to use `not applicable`
+- **Use ontologies when possible**: Prefer ontology validators over pattern validators for controlled vocabularies
+- **Provide examples**: Always include examples in validator definitions
+- **Document special cases**: Explain when `not applicable` or `not available` are appropriate
+
+=== Example: Creating an Experiment Template
+
+[source,yaml]
+----
+name: my-experiment
+description: SDRF template for my specific experiment type.
+  Extends ms-proteomics with experiment-specific columns.
+version: 1.0.0
+extends: ms-proteomics
+usable_alone: false
+layer: experiment
+
+columns:
+  - name: characteristics[my field]
+    description: Description of what this field captures
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - efo
+          error_level: warning
+          description: Should be a valid EFO term
+          examples:
+            - example value 1
+            - example value 2
+----
 
 == LinkML Schema
 
-For tools that require a formal schema language, a https://linkml.io/[LinkML] representation of the template schema is available at link:../templates/sdrf-template-schema.linkml.yaml[sdrf-template-schema.linkml.yaml].
+For tools requiring a formal schema language, a https://linkml.io/[LinkML] representation is available:
+
+**File:** link:../templates/sdrf-template-schema.linkml.yaml[sdrf-template-schema.linkml.yaml]
 
 LinkML provides:
 
@@ -320,7 +544,7 @@ LinkML provides:
 - Code generation for Python, Java, and other languages
 - Integration with semantic web tools
 
-**Example usage with LinkML:**
+**Usage examples:**
 
 [source,bash]
 ----
@@ -331,21 +555,34 @@ gen-json-schema sdrf-template-schema.linkml.yaml > sdrf-template-schema.json
 gen-python sdrf-template-schema.linkml.yaml > sdrf_template.py
 
 # Validate a template file against the schema
-linkml-validate -s sdrf-template-schema.linkml.yaml human.yaml
+linkml-validate -s sdrf-template-schema.linkml.yaml templates/human/human.yaml
 ----
 
-== Creating New Templates
+== Validation Commands
 
-When creating new templates, follow these guidelines:
+Validate SDRF files using sdrf-pipelines:
 
-1. **Follow the inheritance principle** - child templates must not weaken parent requirements
-2. **Use semantic versioning** - increment version numbers appropriately
-3. **Document all columns** - provide clear descriptions and examples
-4. **Use appropriate validators** - validate ontology terms, patterns, and allowed values
-5. **Test with real data** - validate templates against example SDRF files
+[source,bash]
+----
+# Install
+pip install sdrf-pipelines
+
+# Validate with single template
+parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv --template ms-proteomics
+
+# Validate with multiple templates
+parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv \
+  --template ms-proteomics \
+  --template human \
+  --template dda-acquisition
+
+# Check template compatibility
+parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition
+----
 
 == References
 
 - https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] - SDRF validation tool
 - https://linkml.io/[LinkML] - Linked data modeling language
-- https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Template files]
+- https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Template files on GitHub]
+- link:../specification.html[SDRF-Proteomics Specification]
