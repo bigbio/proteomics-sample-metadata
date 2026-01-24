@@ -1646,6 +1646,14 @@ endif::[]
 TIP: When adding custom columns, check the link:metadata-guidelines/sdrf-terms.tsv[SDRF Terms Reference] and https://www.ebi.ac.uk/ols4/[EBI Ontology Lookup Service (OLS)] to find existing terms that match your metadata needs. Using standardized terms improves data interoperability.
 
 [[study-variables]]
+=== Contributing New Templates
+
+To contribute to template development or propose a new template:
+
+1. Open an https://github.com/bigbio/proteomics-metadata-standard/issues[issue on GitHub] describing the experiment type
+2. Discuss requirements with the community
+3. Submit a pull request following the established template structure
+
 == Factor Values (Study Variables)
 
 Factor values identify the experimental variables being studied - the conditions you want to compare in your analysis. They highlight which sample characteristics are the focus of your experiment.
@@ -1926,51 +1934,6 @@ The following table provides links to example SDRF files for different experimen
 TIP: Use the link:sdrf-explorer.html[SDRF Explorer] to browse all {total_datasets}+ annotated datasets with filtering, statistics, and interactive viewing.
 
 A comprehensive collection of annotated projects is available at: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects Repository]
-
-== Templates Under Discussion
-
-This section describes templates that are actively under discussion. If you want to discuss a particular template, please create an https://github.com/bigbio/proteomics-metadata-standard/issues[issue on GitHub].
-
-=== MS-Imaging Datasets
-
-Discussions about MS-Imaging representation can be found in https://github.com/bigbio/proteomics-metadata-standard/issues/451[issue #451]. Key considerations for MSI datasets:
-
-**Metadata that may not apply to MSI:**
-
-- **Reduction and Alkylation**: For most MSI studies this would be "not applicable"
-- **Fraction identifier**: Never used in MSI - use "not applicable"
-- **MS2/Database search terms**: Not mandatory, can be ignored for MSI data
-
-**MSI-specific considerations:**
-
-- **File type**: imzML is a composite format (imzML + ibd files). Current practice references only the imzML file.
-- **Multiple samples per run**: Multiple tissues can be placed on one slide. Samples are distinguished by position, requiring additional position identifiers or coordinates.
-
-**Potential additional MSI metadata columns:**
-
-- **Origin of cleavage agent**: Important for calibration/QC (bovine vs. porcine trypsin)
-- **Matrix**: For MALDI experiments, matrix composition helps with peak removal
-- **Ionization source**: Customized sources may not match standard instrument terms
-- **Analyte**: MSI can measure phospholipids, N-glycans, and other analytes beyond peptides
-
-=== Derived Samples (Patient-Derived Xenografts)
-
-A prototype for derived samples is documented in the <<derived-samples>> section. Outstanding issues include:
-
-- Full examples with multiple species and mixture types are needed
-- Capturing relationships between samples (e.g., in xenografts, how to link the human tumor sample to the mouse host)
-
-=== Turnover and TMT Datasets
-
-Turnover experiments may contain multiple labels - for example, TMT for quantification combined with SILAC for turnover/differential expression. See https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD017710[PXD017710] for an example that was originally annotated as two independent datasets.
-
-=== Contributing New Templates
-
-To contribute to template development or propose a new template:
-
-1. Open an https://github.com/bigbio/proteomics-metadata-standard/issues[issue on GitHub] describing the experiment type
-2. Discuss requirements with the community
-3. Submit a pull request following the established template structure
 
 == Intellectual Property Statement
 
