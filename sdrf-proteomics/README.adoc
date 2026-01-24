@@ -147,7 +147,7 @@ ifndef::backend-html5[]
 _Blue: Sample metadata | Green: Data file metadata | Orange: Factor values_
 endif::[]
 
-NOTE: This minimal example shows a **mass spectrometry-based** proteomics experiment. For detailed requirements see the link:templates/ms-base.html[MS-Base template]. For **affinity-based proteomics** (Olink, SomaScan), different columns are required - see the link:templates/affinity-proteomics.html[Affinity-Proteomics template].
+NOTE: This minimal example shows a **mass spectrometry-based** proteomics experiment. For detailed requirements see the link:templates/ms-proteomics.html[MS-Proteomics template]. For **affinity-based proteomics** (Olink, SomaScan), different columns are required - see the link:templates/affinity-proteomics.html[Affinity-Proteomics template].
 
 === Key Concepts
 
@@ -174,7 +174,7 @@ IMPORTANT: SDRF-Proteomics does **not** aim to capture downstream analysis detai
 
 === Getting Started Steps
 
-1. Choose a <<templates,technology template>> based on your <<technology-type,technology type>>: `ms-base` for _proteomic profiling by mass spectrometry_, `affinity-proteomics` for _protein expression profiling by antibody/aptamer array_ (Olink, SomaScan)
+1. Choose a <<templates,technology template>> based on your <<technology-type,technology type>>: `ms-proteomics` for _proteomic profiling by mass spectrometry_, `affinity-proteomics` for _protein expression profiling by antibody/aptamer array_ (Olink, SomaScan)
 2. Add the appropriate <<templates,sample template>> for your organism (Human, Vertebrates, Invertebrates, Plants, or Cell-lines)
 3. Fill in sample metadata (characteristics columns)
 4. Fill in data file metadata (comment columns)
@@ -222,7 +222,7 @@ Each template has its own directory containing a detailed README.adoc with check
 
 image::images/sdrf-guidelines-structure.png[Logo]
 
-**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-base, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.
+**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.
 
 NOTE: The main specification is in the `sdrf-proteomics` directory. All templates are organized in `sdrf-proteomics/templates/`. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type. 
 
@@ -428,7 +428,7 @@ ifdef::backend-html5[]
 <tr>
 <td><code>template</code></td>
 <td>Name of the template used</td>
-<td>ms-base, human, cell-lines</td>
+<td>ms-proteomics, human, cell-lines</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000832">PRIDE:0000832</a></td>
 </tr>
@@ -465,7 +465,7 @@ ifndef::backend-html5[]
 
 |`file_format` |Identifier for the file format |SDRF |RECOMMENDED |PRIDE:0000831
 |`version` |SDRF-Proteomics specification version used |v1.1.0 |RECOMMENDED |NCIT:C25714
-|`template` |Name of the template used |ms-base, human, cell-lines |OPTIONAL |PRIDE:0000832
+|`template` |Name of the template used |ms-proteomics, human, cell-lines |OPTIONAL |PRIDE:0000832
 |`template_version` |Version of the template |v1.0.0 |OPTIONAL |PRIDE:0000833
 |`source` |Origin or creator of the file |PRIDE, user-generated |OPTIONAL |NCIT:C25683
 |`validation_hash` |Hash from validator certification |sha256:abc123... |OPTIONAL |PRIDE:0000834
@@ -577,7 +577,7 @@ ifndef::backend-html5[]
 |===
 endif::[]
 
-- **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:metadata-guidelines/data-file-metadata.html#_protein_modifications[Protein Modifications]):
+- **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:templates/ms-proteomics.html#_protein_modifications[Protein Modifications]):
 
   NT=Glu->pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E
 
@@ -1096,7 +1096,7 @@ endif::[]
 
 NOTE: This section applies to **mass spectrometry-based proteomics** experiments only. For affinity-based proteomics, these properties do not apply.
 
-For detailed documentation of sample preparation and MS/MS fragmentation properties, see the link:metadata-guidelines/data-file-metadata.html[Data File Metadata Guidelines]:
+For detailed documentation of sample preparation and MS/MS fragmentation properties, see the link:templates/ms-proteomics.html[MS-Proteomics Template]:
 
 - **Sample preparation**: depletion, reduction reagent, alkylation reagent
 - **Fractionation**: fractionation method (used with `comment[fraction identifier]`)
@@ -1118,13 +1118,13 @@ IMPORTANT: The _comment[proteomics data acquisition method]_ column is REQUIRED 
 
 You can find an example of a DIA experiment in the following link: https://github.com/bigbio/proteomics-metadata-standard/blob/master/annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv[DIA example]
 
-TIP: For DIA experiments, additional properties like MS1 scan range can be captured. See link:metadata-guidelines/data-file-metadata.html#_dia_scan_window[DIA Scan Window Limits] in the Data File Metadata Guidelines.
+TIP: For DIA experiments, additional properties like MS1 scan range can be captured. See link:templates/ms-proteomics.html#_dia_scan_window[DIA Scan Window Limits] in the MS-Proteomics Template.
 
-=== Data File Metadata Guidelines
+=== MS-Proteomics Template
 
 For detailed guidance on data file metadata, refer to the conventions document:
 
-* link:metadata-guidelines/data-file-metadata.html[Data File Metadata Guidelines] - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties
+* link:templates/ms-proteomics.html[MS-Proteomics Template] - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties
 
 [[additional-sdrf-rules]]
 == Additional SDRF Rules
@@ -1287,7 +1287,7 @@ Templates in SDRF-Proteomics follow a **layered architecture** that separates co
 
 |**TECHNOLOGY**
 |Minimum valid templates for data acquisition
-|link:templates/ms-base.html[ms-base], link:templates/affinity-proteomics.html[affinity-proteomics]
+|link:templates/ms-proteomics.html[ms-proteomics], link:templates/affinity-proteomics.html[affinity-proteomics]
 |**Yes** - these are the minimum valid SDRFs
 
 |**SAMPLE**
@@ -1305,7 +1305,7 @@ TIP: The **base** template is an internal construction artifact that defines sha
 
 **Key concepts:**
 
-- **Technology templates** (`ms-base` or `affinity-proteomics`) are **required** - you must use exactly one
+- **Technology templates** (`ms-proteomics` or `affinity-proteomics`) are **required** - you must use exactly one
 - **Sample templates** (`human`, `vertebrates`, etc.) are **recommended** but optional
 - **Experiment templates** provide additional methodology-specific columns
 - Templates can be **extended**: add custom columns beyond the template requirements for study-specific metadata
@@ -1323,14 +1323,14 @@ base (CONSTRUCTION ARTIFACT - not valid alone)
   │                   biological replicate, assay name, technology type,
   │                   instrument, technical replicate, data file
   │
-  ├── ms-base (MINIMUM VALID for MS proteomics)
+  ├── ms-proteomics (MINIMUM VALID for MS proteomics)
   │   │   Adds: acquisition method, cleavage agent, label, fraction identifier
   │   │
-  │   ├── dda-acquisition (extends ms-base with DDA-specific columns)
-  │   ├── dia-acquisition (extends ms-base with DIA-specific columns)
-  │   ├── crosslinking (extends ms-base with XL-MS columns)
-  │   ├── single-cell (extends ms-base with SCP columns)
-  │   └── immunopeptidomics (extends ms-base with MHC-MS columns)
+  │   ├── dda-acquisition (extends ms-proteomics with DDA-specific columns)
+  │   ├── dia-acquisition (extends ms-proteomics with DIA-specific columns)
+  │   ├── crosslinking (extends ms-proteomics with XL-MS columns)
+  │   ├── single-cell (extends ms-proteomics with SCP columns)
+  │   └── immunopeptidomics (extends ms-proteomics with MHC-MS columns)
   │
   └── affinity-proteomics (MINIMUM VALID for affinity proteomics)
       │   Adds: instrument, panel name, quantification unit, sample type
@@ -1354,7 +1354,7 @@ Experiment templates (organism-agnostic):
 2. Child templates may add new columns
 3. Child templates may promote `optional` → `recommended` → `required`
 4. Child templates **must not** weaken requirements (e.g., `required` → `optional`)
-5. Multiple templates can be combined (e.g., `ms-base` + `human` + `crosslinking`)
+5. Multiple templates can be combined (e.g., `ms-proteomics` + `human` + `crosslinking`)
 
 TIP: **For developers and maintainers:** For detailed information on YAML template structure, validators, and LinkML schema, see the link:metadata-guidelines/template-definitions.html[Template Definitions Guidelines].
 
@@ -1365,9 +1365,9 @@ First, determine your proteomics technology and select the appropriate technolog
 |===
 | Template | Use For | Documentation | Valid Alone?
 
-| **link:templates/ms-base.html[MS-Base]**
+| **link:templates/ms-proteomics.html[MS-Proteomics]**
 | All mass spectrometry-based proteomics (DDA, DIA, SRM/MRM/PRM)
-| link:templates/ms-base.html[Full documentation]
+| link:templates/ms-proteomics.html[Full documentation]
 | **Yes** - minimum for MS
 
 | **link:templates/affinity-proteomics.html[Affinity-Proteomics]**

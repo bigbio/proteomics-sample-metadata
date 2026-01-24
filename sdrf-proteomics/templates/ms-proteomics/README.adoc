@@ -1,7 +1,19 @@
-= SDRF-Proteomics: MS-Base Template
+= SDRF-Proteomics: MS-Proteomics Template
 :sectnums:
 :toc: left
 :doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 [[status]]
 == Status
@@ -13,7 +25,7 @@
 [[abstract]]
 == Abstract
 
-The MS-Base template is the **minimum valid SDRF template** for mass spectrometry-based proteomics experiments. It includes all columns necessary to describe an MS proteomics dataset.
+The MS-Proteomics template is the **minimum valid SDRF template** for mass spectrometry-based proteomics experiments. It includes all columns necessary to describe an MS proteomics dataset.
 
 This template is appropriate for:
 
@@ -28,7 +40,7 @@ This template is appropriate for:
 [source]
 ----
 base
-  └── ms-base (THIS TEMPLATE)
+  └── ms-proteomics (THIS TEMPLATE)
         │
         ├── dda-acquisition (DDA-specific columns)
         ├── dia-acquisition (DIA-specific columns)
@@ -178,6 +190,182 @@ ifndef::backend-html5[]
 |===
 endif::[]
 
+[[field-guidelines]]
+== Field Guidelines
+
+=== CV Term Format
+
+For data file metadata columns that reference ontology terms, use the structured CV term format:
+
+`NT={term name};AC={accession}`
+
+**Examples:**
+
+- Dissociation method: `NT=HCD;AC=PRIDE:0000590`
+- Instrument: `NT=Q Exactive HF;AC=MS:1002523`
+- Label: `NT=TMT126;AC=PRIDE:0000285`
+
+NOTE: Data file metadata benefits from the structured CV term format because these values are often extracted programmatically from instrument files.
+
+=== Label
+
+**Column:** `comment[label]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000514[PRIDE:0000514 - Sample label]
+
+Describes the isotopic label applied to each sample. All label values MUST be children of PRIDE:0000514 (label free sample, TMT, iTRAQ, SILAC, etc.). link:../../sdrf-explorer.html?view=PXD004683[Open example SDRF]
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">run1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">run1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+=== Cleavage Agents
+
+**Column:** `comment[cleavage agent details]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001045[PSI-MS - Cleavage agent name (MS:1001045)]
+
+**Format:** `NT=EnzymeName;AC=Accession`
+
+|===
+|Enzyme |Value |OLS Link
+
+|Trypsin |NT=Trypsin;AC=MS:1001251 |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001251[MS:1001251]
+|Trypsin/P |NT=Trypsin/P;AC=MS:1001313 |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001313[MS:1001313]
+|Lys-C |NT=Lys-C;AC=MS:1001309 |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001309[MS:1001309]
+|===
+
+For top-down/intact proteins, use `not applicable`. For multiple enzymes, add multiple columns. link:../../sdrf-explorer.html?view=PXD002395[Open example SDRF]
+
+=== Protein Modifications
+
+**Column:** `comment[modification parameters]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/unimod[UNIMOD] or https://www.ebi.ac.uk/ols4/ontologies/mod[PSI-MOD]
+
+**Format:** `NT=ModificationName;AC=Accession;MT=Type;TA=AminoAcid;PP=Position` link:../../sdrf-explorer.html?view=PXD001725[Open example SDRF]
+
+|===
+|Property |Key |Values
+
+|Name |NT |UNIMOD or PSI-MOD term name
+|Accession |AC |UNIMOD:X or MOD:X
+|Type |MT |`Fixed`, `Variable`
+|Target Amino Acid |TA |Single letter codes (e.g., `S,T,Y`)
+|Position |PP |`Anywhere`, `Protein N-term`, `Protein C-term`
+|===
+
+**Common modifications:**
+
+|===
+|Modification |Value |OLS Link
+
+|Carbamidomethyl (fixed) |NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C;PP=Anywhere |https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_4[UNIMOD:4]
+|Oxidation (variable) |NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M;PP=Anywhere |https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_35[UNIMOD:35]
+|Phosphorylation (variable) |NT=Phospho;AC=UNIMOD:21;MT=Variable;TA=S,T,Y;PP=Anywhere |https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_21[UNIMOD:21]
+|===
+
+=== Mass Tolerances
+
+**Columns:** `comment[precursor mass tolerance]`, `comment[fragment mass tolerance]`
+
+**Format:** `{value} {unit}` where unit is `Da` or `ppm`.
+
+|===
+|Precursor |Fragment |Instrument Type
+
+|10 ppm |20 ppm |Orbitrap MS1/MS2
+|20 ppm |0.6 Da |Orbitrap MS1, Ion trap MS2
+|===
+
+=== Fractionation
+
+**Column:** `comment[fractionation method]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[PRIDE - Fractionation method]
+
+Use with `comment[fraction identifier]` to number fractions.
+
+|===
+|Method |OLS Link
+
+|High-pH reversed-phase chromatography |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000564[PRIDE:0000564]
+|Strong cation-exchange chromatography |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000561[PRIDE:0000561]
+|===
+
+NOTE: For single-shot experiments without fractionation, this column can be omitted or set to `not applicable`. link:../../sdrf-explorer.html?view=MSV000078494[Open example SDRF]
+
+=== Dissociation Method
+
+**Column:** `comment[dissociation method]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044[PRIDE - dissociation method (MS:1000044)]
+
+All values MUST be children of MS:1000044 from the PRIDE ontology. Use the short acronyms (HCD, CID, ETD, etc.) as term names.
+
+|===
+|Term (Acronym) |OLS Link
+
+|HCD |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000590[PRIDE:0000590]
+|CID |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000591[PRIDE:0000591]
+|ETD |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000593[PRIDE:0000593]
+|EThcD |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000594[PRIDE:0000594]
+|===
+
+**CV term format:** `NT=HCD;AC=PRIDE:0000590` link:../../sdrf-explorer.html?view=PMID25043054[Open example SDRF]
+
+=== Collision Energy
+
+**Column:** `comment[collision energy]`
+
+**Format:** `{value} {unit}`
+
+|===
+|Format |Example |Description
+
+|Normalized |27 NCE |Normalized collision energy
+|Absolute |30 eV |Absolute energy in electron volts
+|Stepped |22 NCE;26 NCE;30 NCE |Multiple energies (semicolon-separated)
+|===
+
+TIP: For DIA experiments with stepped collision energy, see the link:../dia-acquisition/README.adoc[DIA template] for detailed guidance.
+
+=== Sample Preparation
+
+**Reduction Reagent:** `comment[reduction reagent]` - DTT, TCEP, beta-mercaptoethanol
+
+**Alkylation Reagent:** `comment[alkylation reagent]` - IAA, chloroacetamide
+
+**Depletion:** `comment[depletion]` - no depletion, depletion, depleted fraction, bound fraction
+
 [[usage]]
 == Usage
 
@@ -185,14 +373,14 @@ endif::[]
 
 [source]
 ----
-#template=ms-base; version=v1.1.0
+#template=ms-proteomics; version=v1.1.0
 ----
 
 === With Sample Metadata (Recommended)
 
 [source]
 ----
-#template=ms-base; version=v1.1.0
+#template=ms-proteomics; version=v1.1.0
 #template=human; version=v1.1.0
 ----
 
@@ -200,7 +388,7 @@ endif::[]
 
 [source]
 ----
-#template=ms-base; version=v1.1.0
+#template=ms-proteomics; version=v1.1.0
 #template=human; version=v1.1.0
 #template=dda-acquisition; version=v1.1.0
 ----
@@ -211,7 +399,7 @@ endif::[]
 [source,bash]
 ----
 pip install sdrf-pipelines
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template ms-base
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template ms-proteomics
 ----
 
 [[example]]
@@ -274,3 +462,10 @@ endif::[]
 * link:../dda-acquisition/README.adoc[DDA Acquisition] - DDA-specific columns
 * link:../dia-acquisition/README.adoc[DIA Acquisition] - DIA-specific columns
 * link:../human/README.adoc[Human Template] - Human sample metadata
+
+== Ontologies
+
+- PRIDE Ontology: https://www.ebi.ac.uk/ols4/ontologies/pride
+- PSI-MS Ontology: https://www.ebi.ac.uk/ols4/ontologies/ms
+- UNIMOD: https://www.ebi.ac.uk/ols4/ontologies/unimod
+- PSI-MOD: https://www.ebi.ac.uk/ols4/ontologies/mod
