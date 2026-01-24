@@ -1,13 +1,19 @@
 name: crosslinking
-description: SDRF template for crosslinking mass spectrometry (XL-MS) experiments. Extends ms-proteomics with crosslinking-specific columns.
-version: 1.0.0-dev
+description: SDRF template for crosslinking mass spectrometry (XL-MS) experiments. Extends ms-proteomics with crosslinking-specific columns for data analysis.
+version: 1.1.0
 extends: ms-proteomics
 usable_alone: false
 layer: experiment
 columns:
-  # Sample-level columns (characteristics)
-  - name: characteristics[crosslinking reagent]
-    description: Name of the cross-linking reagent used (identifies this as a crosslinking sample)
+  # =============================================================================
+  # REQUIRED COLUMNS - Essential for XL-MS data analysis
+  # =============================================================================
+
+  # Sample-level: indicates this is a crosslinked sample
+  - name: characteristics[enrichment process]
+    description: |
+      Indicates the sample enrichment strategy. For crosslinking experiments,
+      use "enrichment of cross-linked peptides" (PRIDE:0000838) to identify crosslinked samples.
     requirement: required
     allow_not_applicable: false
     allow_not_available: false
@@ -15,34 +21,106 @@ columns:
       - validator_name: ontology
         params:
           ontologies:
-            - xlmod
-            - chebi
-          error_level: warning
-          description: The crosslinking reagent should be a valid XLMOD or ChEBI term
+            - pride
+            - efo
+          parent_term: EFO:0009090
+          error_level: error
+          description: Enrichment type should be a child term of EFO:0009090 (enrichment process)
           examples:
-            - DSSO
-            - DSS
-            - BS3
-            - EDC
-            - DSBU
+            - enrichment of cross-linked peptides
+            - enrichment of phosphorylated protein
 
-  - name: characteristics[enrichment process]
-    description: Indicates if the sample was enriched for cross-linked peptides
+  # Data acquisition: crosslinker details
+  - name: comment[cross-linker]
+    description: |
+      Cross-linker compound with structured properties for analysis tools.
+      Format: NT=name;AC=accession;CL=cleavable;TA=targets;MH/ML=stub masses
+      Uses XLMOD ontology (parent term XLMOD:00004).
     requirement: required
     allow_not_applicable: false
     allow_not_available: false
     validators:
-      - validator_name: values
+      - validator_name: pattern
         params:
-          values:
-            - enrichment of cross-linked peptides
-            - not applicable
+          pattern: ^NT=.+;AC=(XLMOD|CHEBI|UNIMOD):\d+.*$
+          description: Should follow structured format with at least NT (name) and AC (accession from XLMOD, ChEBI, or UNIMOD)
+          examples:
+            - NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98
+            - NT=DSS;AC=XLMOD:02001;CL=no;TA=K,S,T,Y,nterm;SM=138.07
+            - NT=BS3;AC=XLMOD:02000;CL=no;TA=K,S,T,Y,nterm;SM=138.07
+            - NT=DSBU;AC=XLMOD:02011;CL=yes;TA=K,S,T,Y,nterm;MH=85.05;ML=111.03
+            - NT=EDC;AC=XLMOD:02009;CL=no;TA=K,D,E
+            - NT=SDA;AC=XLMOD:02005;CL=no;TA=K,S,T,Y,nterm
+
+  - name: comment[dissociation method]
+    description: |
+      Fragmentation method used in MS2. Critical for cleavable crosslinkers (DSSO, DSBU)
+      which generate diagnostic stub ions under specific fragmentation conditions.
+    requirement: required
+    allow_not_applicable: false
+    allow_not_available: false
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+            - pride
+          parent_term: MS:1000044
           error_level: error
-          description: Should indicate enrichment status
+          description: Dissociation method should be a child term of MS:1000044
+          examples:
+            - HCD
+            - CID
+            - ETD
+            - EThcD
+            - stepped HCD
+
+  # =============================================================================
+  # RECOMMENDED COLUMNS - Useful for analysis configuration
+  # =============================================================================
+
+  - name: comment[collision energy]
+    description: Collision energy used for fragmentation. Important for cleavable crosslinker analysis.
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?(%|eV)?$|^stepped\s+\d+(\.\d+)?[+-]\d+%?$|^normalized\s+\d+(\.\d+)?%?$
+          description: Energy value with optional unit, supports stepped collision energy
+          examples:
+            - 27
+            - 30%
+            - stepped 27+-6%
+            - normalized 27%
+
+  - name: comment[crosslink enrichment method]
+    description: Method used to enrich crosslinked peptides before MS analysis
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - pride
+            - ms
+          error_level: warning
+          description: Enrichment method (PRIDE:0000586)
+          examples:
+            - size exclusion chromatography
+            - strong cation exchange chromatography
+            - high-pH reversed-phase chromatography
+            - FAIMS
+
+  # =============================================================================
+  # OPTIONAL COLUMNS - Sample preparation details (not required for analysis)
+  # =============================================================================
 
   - name: characteristics[crosslink type]
-    description: Type of crosslinks being studied
-    requirement: required
+    description: Type of crosslinker chemistry (can be derived from reagent)
+    requirement: optional
     allow_not_applicable: false
     allow_not_available: false
     validators:
@@ -53,13 +131,13 @@ columns:
             - hetero-bifunctional
             - zero-length
             - photo-reactive
-            - cleavable
-          error_level: error
+            - MS-cleavable
+          error_level: warning
           description: Type of crosslinker chemistry
 
   - name: characteristics[crosslink distance]
-    description: Maximum Cα-Cα distance constraint provided by the crosslinker
-    requirement: recommended
+    description: Maximum Cα-Cα distance constraint provided by the crosslinker (for structural interpretation)
+    requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
@@ -72,9 +150,24 @@ columns:
             - 26.4 A
             - 11.4 A
 
+  - name: comment[crosslinker concentration]
+    description: Concentration of crosslinking reagent used
+    requirement: optional
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^\d+(\.\d+)?\s*(mM|uM|µM)$
+          description: Concentration with unit
+          examples:
+            - 2 mM
+            - 500 uM
+            - 1 mM
+
   - name: characteristics[crosslinking reaction time]
     description: Duration of the crosslinking reaction
-    requirement: recommended
+    requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
@@ -89,7 +182,7 @@ columns:
 
   - name: characteristics[crosslinking temperature]
     description: Temperature at which crosslinking was performed
-    requirement: recommended
+    requirement: optional
     allow_not_applicable: true
     allow_not_available: true
     validators:
@@ -103,51 +196,6 @@ columns:
             - 37 C
             - room temperature
 
-  # Data-level columns (comment)
-  - name: comment[cross-linking method]
-    description: MS-based cross-linking methodology used
-    requirement: required
-    allow_not_applicable: false
-    allow_not_available: false
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - cross-linking mass spectrometry
-            - hydrogen-deuterium exchange
-            - ion-mobility mass spectrometry
-          error_level: error
-          description: The cross-linking method type
-
-  - name: comment[cross-linker]
-    description: Cross-linker compound with structured properties
-    requirement: required
-    allow_not_applicable: false
-    allow_not_available: false
-    validators:
-      - validator_name: pattern
-        params:
-          pattern: ^NT=.+;AC=.+
-          description: Should follow key-value format with at least NT and AC
-          examples:
-            - NT=DSSO;AC=XLMOD:02126;TA=K;CL=yes;MH=54.01;ML=85.05
-            - NT=DSS;AC=XLMOD:02001;TA=K;CL=no;HM=156.08;SA=11.4
-
-  - name: comment[crosslinker concentration]
-    description: Concentration of crosslinking reagent used
-    requirement: recommended
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: pattern
-        params:
-          pattern: ^\d+(\.\d+)?\s*(mM|uM|µM)$
-          description: Concentration with unit
-          examples:
-            - 2 mM
-            - 500 uM
-            - 1 mM
-
   - name: comment[crosslinker to protein ratio]
     description: Molar ratio of crosslinker to protein
     requirement: optional
@@ -156,7 +204,7 @@ columns:
     validators:
       - validator_name: pattern
         params:
-          pattern: ^\d+:\d+
+          pattern: ^\d+:\d+.*$
           description: Ratio format
           examples:
             - 50:1
@@ -177,22 +225,3 @@ columns:
             - Tris-HCl
             - ammonium bicarbonate
             - glycine
-
-  - name: comment[crosslink enrichment method]
-    description: Method used to enrich crosslinked peptides
-    requirement: recommended
-    allow_not_applicable: true
-    allow_not_available: true
-    validators:
-      - validator_name: values
-        params:
-          values:
-            - size exclusion chromatography
-            - strong cation exchange
-            - affinity enrichment
-            - peptide SEC
-            - high-pH reversed phase
-            - FAIMS
-            - not applicable
-          error_level: warning
-          description: Enrichment method used
