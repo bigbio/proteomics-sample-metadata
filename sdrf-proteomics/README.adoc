@@ -1564,12 +1564,13 @@ Add custom columns when your experiment requires metadata that is:
 
 2. **Follow naming conventions:**
 ** Use lowercase for column names inside brackets
-** Use descriptive, specific names (e.g., `characteristics[tumor grade]` not `characteristics[grade]`)
-** Use ontology terms when they exist (e.g., `characteristics[patient bmi]` maps to EFO term)
+** Column names (text inside brackets) MUST be valid ontology terms - free text is not allowed
+** Use specific ontology terms (e.g., `characteristics[tumor grading]` from NCIT, not `characteristics[grade]`)
+** Search the https://www.ebi.ac.uk/ols4/[EBI Ontology Lookup Service (OLS)] to find appropriate ontology terms for your column names
 
-3. **Use controlled vocabularies when available:**
-** Reference existing ontologies (EFO, MONDO, UBERON, etc.) for values
-** Prefer standardized terms over free text when possible
+3. **Use controlled vocabularies for cell values:**
+** Reference existing ontologies (EFO, MONDO, UBERON, etc.) for cell values when available
+** For cell values, ontology terms are recommended but free text is allowed when the exact term exists in EFO
 ** For new terms, follow the key=value format if ontology reference is needed
 
 ==== Common Additional Columns
@@ -1643,7 +1644,7 @@ ifndef::backend-html5[]
 |===
 endif::[]
 
-TIP: When adding custom columns, check the link:metadata-guidelines/sdrf-terms.tsv[SDRF Terms Reference] and https://www.ebi.ac.uk/ols4/[EBI Ontology Lookup Service (OLS)] to find existing terms that match your metadata needs. Using standardized terms improves data interoperability.
+TIP: When adding custom columns, you MUST use valid ontology terms for column names. Check the link:metadata-guidelines/sdrf-terms.tsv[SDRF Terms Reference] and https://www.ebi.ac.uk/ols4/[EBI Ontology Lookup Service (OLS)] to find existing ontology terms that match your metadata needs. Free text column names are not allowed - each column name must be backed by an ontology term.
 
 [[study-variables]]
 === Contributing New Templates
