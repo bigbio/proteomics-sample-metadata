@@ -12,14 +12,13 @@ proteomics-metadata-standard/
 │   ├── tool-support.adoc      # Tool support page
 │   ├── metadata-guidelines/   # General metadata guidelines
 │   │   ├── sample-metadata.adoc
-│   │   ├── data-file-metadata.adoc
 │   │   └── sdrf-terms.tsv
 │   ├── templates/             # All templates (core + specialized)
 │   │   ├── human/             # Human template (includes clinical metadata)
 │   │   ├── vertebrates/       # Non-human vertebrates
 │   │   ├── invertebrates/     # Invertebrates (Drosophila, C. elegans)
 │   │   ├── plants/            # Plant organisms
-│   │   ├── default/           # Default template
+│   │   ├── ms-proteomics/     # MS proteomics template (base for MS experiments)
 │   │   ├── cell-lines/        # Cell line experiments
 │   │   ├── crosslinking/      # XL-MS experiments
 │   │   ├── immunopeptidomics/ # Immunopeptidomics

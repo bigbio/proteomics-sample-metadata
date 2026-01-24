@@ -169,11 +169,6 @@ def build_index(docs_dir, output_file):
             'section': 'Sample Metadata Guidelines'
         },
         {
-            'file': 'sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc',
-            'url': './metadata-guidelines/data-file-metadata.html',
-            'section': 'Data File Metadata Guidelines'
-        },
-        {
             'file': 'sdrf-proteomics/tool-support.adoc',
             'url': './tool-support.html',
             'section': 'Tool Support'

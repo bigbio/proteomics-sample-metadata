@@ -124,18 +124,6 @@ asciidoctor \
     -o sample-metadata.html \
     sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
 
-asciidoctor \
-    -D "$OUTPUT_DIR/metadata-guidelines" \
-    -a stylesheet=../css/style.css \
-    -a linkcss \
-    -a toc=left \
-    -a toclevels=3 \
-    -a sectanchors \
-    -a sectlinks \
-    --backend=html5 \
-    -o data-file-metadata.html \
-    sdrf-proteomics/metadata-guidelines/data-file-metadata.adoc
-
 # Check if human-sample-metadata.adoc exists and build it
 if [ -f "sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc" ]; then
     echo "Building human sample metadata guidelines..."

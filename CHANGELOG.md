@@ -26,11 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Immunopeptidomics (MHC/HLA)
   - Metaproteomics (environmental samples)
   - Single-cell proteomics
-- **Core templates in YAML format** for validation: default, human, vertebrates, invertebrates, plants.
+- **Core templates in YAML format** for validation: ms-proteomics, human, vertebrates, invertebrates, plants.
 - **Metadata guidelines documentation**:
   - Sample metadata guidelines (sample-metadata.adoc)
   - Human-specific metadata guidelines (human-sample-metadata.adoc)
-  - Data file metadata guidelines (data-file-metadata.adoc)
+  - MS data file metadata (in ms-proteomics template)
   - SDRF terms reference (sdrf-terms.tsv)
 - **Website infrastructure** (site/): homepage, SDRF explorer, terms reference, search functionality, CSS styling.
 - **PDF generation workflow** with custom theme for specification documents.
