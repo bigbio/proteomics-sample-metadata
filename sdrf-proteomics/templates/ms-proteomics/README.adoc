@@ -369,29 +369,43 @@ TIP: For DIA experiments with stepped collision energy, see the link:../dia-acqu
 [[usage]]
 == Usage
 
-=== Minimal MS Proteomics
+=== File Header Format
+
+Only list leaf templates in the header; parent templates are implied by inheritance.
+
+=== Minimal MS Proteomics (non-organism-specific)
 
 [source]
 ----
-#template=ms-proteomics; version=v1.1.0
+#file_format=SDRF
+#version=v1.1.0
+#template=ms-proteomics
+#template_version=v1.1.0
 ----
 
-=== With Sample Metadata (Recommended)
+=== Human Samples (Recommended)
 
 [source]
 ----
-#template=ms-proteomics; version=v1.1.0
-#template=human; version=v1.1.0
+#file_format=SDRF
+#version=v1.1.0
+#template=human
+#template_version=v1.1.0
 ----
+
+NOTE: The `human` template inherits from `ms-proteomics`, so you only need to specify `human`.
 
 === With Acquisition-Specific Parameters
 
 [source]
 ----
-#template=ms-proteomics; version=v1.1.0
-#template=human; version=v1.1.0
-#template=dda-acquisition; version=v1.1.0
+#file_format=SDRF
+#version=v1.1.0
+#template=human,dda-acquisition
+#template_version=v1.1.0
 ----
+
+**Version simplification:** Use a single version if all templates share the same version. Only use comma-separated versions when templates have different versions.
 
 [[validation]]
 == Validation

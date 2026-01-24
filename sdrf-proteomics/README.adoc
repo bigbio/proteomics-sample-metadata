@@ -427,22 +427,22 @@ ifdef::backend-html5[]
 </tr>
 <tr>
 <td><code>template</code></td>
-<td>Name of the template used</td>
-<td>ms-proteomics, human, cell-lines</td>
+<td>Template(s) used, comma-separated. Only list leaf templates; parent templates are implied by inheritance (e.g., crosslinking implies ms-proteomics)</td>
+<td>human,crosslinking</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000832">PRIDE:0000832</a></td>
 </tr>
 <tr>
 <td><code>template_version</code></td>
-<td>Version of the template</td>
-<td>v1.0.0</td>
+<td>Version(s) of the template(s). Use single value if all templates share the same version; comma-separated only when versions differ</td>
+<td>v1.1.0</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000833">PRIDE:0000833</a></td>
 </tr>
 <tr>
 <td><code>source</code></td>
-<td>Origin or creator of the file</td>
-<td>PRIDE, user-generated</td>
+<td>Tool or origin that generated the file. Replaces per-row <code>comment[tool metadata]</code> column</td>
+<td>lesSDRF v0.1.0, PRIDE</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C25683">NCIT:C25683</a></td>
 </tr>
@@ -465,9 +465,9 @@ ifndef::backend-html5[]
 
 |`file_format` |Identifier for the file format |SDRF |RECOMMENDED |PRIDE:0000831
 |`version` |SDRF-Proteomics specification version used |v1.1.0 |RECOMMENDED |NCIT:C25714
-|`template` |Name of the template used |ms-proteomics, human, cell-lines |OPTIONAL |PRIDE:0000832
-|`template_version` |Version of the template |v1.0.0 |OPTIONAL |PRIDE:0000833
-|`source` |Origin or creator of the file |PRIDE, user-generated |OPTIONAL |NCIT:C25683
+|`template` |Template(s) used, comma-separated. Only list leaf templates; parent templates are implied by inheritance |human,crosslinking |OPTIONAL |PRIDE:0000832
+|`template_version` |Version(s) of the template(s). Use single value if all same; comma-separated only when versions differ |v1.1.0 |OPTIONAL |PRIDE:0000833
+|`source` |Tool or origin that generated the file. Replaces per-row `comment[tool metadata]` column |lesSDRF v0.1.0 |OPTIONAL |NCIT:C25683
 |`validation_hash` |Hash from validator certification |sha256:abc123... |OPTIONAL |PRIDE:0000834
 |===
 endif::[]
@@ -479,11 +479,36 @@ Example of an SDRF file with header comments (simplified example showing only se
 #file_format=SDRF
 #version=v1.1.0
 #template=human
-#template_version=v1.0.0
-#source=PRIDE
+#template_version=v1.1.0
+#source=lesSDRF v0.1.0
 source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
 sample_1	homo sapiens	liver	normal	run_1	sample_1.raw
 ----
+
+==== Template Inheritance and Versioning Rules
+
+**Template inheritance:** Only list leaf templates in the `#template` field. Parent templates are implied:
+
+- `crosslinking` inherits from `ms-proteomics` → use `#template=human,crosslinking` (not `ms-proteomics,human,crosslinking`)
+- `olink` inherits from `affinity-proteomics` → use `#template=human,olink` (not `affinity-proteomics,olink,human`)
+
+**Version simplification:**
+
+- If all templates share the same version, use a single value: `#template_version=v1.1.0`
+- Only use comma-separated versions when templates have different versions
+
+[source,tsv]
+----
+# Same version for all templates - use single value
+#template=human,crosslinking
+#template_version=v1.1.0
+
+# Different versions - list each (matching template order)
+#template=human,crosslinking
+#template_version=v1.1.0,v1.0.0
+----
+
+**Source field:** The `#source` header replaces the per-row `comment[tool metadata]` column. Use it to record the tool or origin that generated the SDRF file (e.g., `lesSDRF v0.1.0`, `PRIDE`, `user-generated`).
 
 NOTE: Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., `file_format`, `template_version`) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
 
@@ -1367,6 +1392,84 @@ Each column in a template has one of three requirement levels:
 NOTE: When a column is marked as RECOMMENDED or OPTIONAL, it means users should evaluate whether the column applies to their specific experiment. For example, `characteristics[cell line]` is RECOMMENDED in the immunopeptidomics template because cell lines are commonly used, but tissue samples may use `not applicable`.
 
 TIP: **For developers and maintainers:** For detailed information on YAML template structure, validators, and LinkML schema, see the link:metadata-guidelines/template-definitions.adoc[Template Definitions Guidelines].
+
+=== Specifying Templates in File Headers
+
+When declaring templates in the `#template` header field, follow these rules:
+
+**Rule 1: Only list leaf templates - parent templates are implied**
+
+Since child templates inherit from parents, you only need to list the most specific (leaf) template. The parent is automatically implied:
+
+[source]
+----
+# CORRECT: crosslinking inherits from ms-proteomics
+#template=crosslinking
+
+# INCORRECT: don't list parent when child is present
+#template=ms-proteomics,crosslinking
+----
+
+**Rule 2: List templates from different branches**
+
+When combining templates from different branches of the hierarchy (e.g., organism + experiment), list both:
+
+[source]
+----
+# Human sample with crosslinking experiment
+# - human is from the SAMPLE branch
+# - crosslinking is from the EXPERIMENT branch (inherits ms-proteomics)
+#template=human,crosslinking
+----
+
+**Rule 3: Version simplification**
+
+Use a single version if all templates share the same version. Only use comma-separated versions when templates have different versions:
+
+[source]
+----
+# All templates at v1.1.0 - use single value
+#template=human,crosslinking
+#template_version=v1.1.0
+
+# Different versions - list each (matching template order)
+#template=human,crosslinking
+#template_version=v1.1.0,v1.0.0
+----
+
+**Common examples:**
+
+|===
+|Experiment Type |Templates |Header
+
+|Human MS proteomics
+|human (inherits ms-proteomics)
+|`#template=human`
+
+|Mouse MS proteomics
+|vertebrates (inherits ms-proteomics)
+|`#template=vertebrates`
+
+|Non-organism-specific MS
+|ms-proteomics only
+|`#template=ms-proteomics`
+
+|Human crosslinking
+|human + crosslinking
+|`#template=human,crosslinking`
+
+|Recombinant protein crosslinking
+|crosslinking only (no organism template)
+|`#template=crosslinking`
+
+|Human Olink
+|human + olink
+|`#template=human,olink`
+
+|Human DIA with cell lines
+|human + dia-acquisition + cell-lines
+|`#template=human,dia-acquisition,cell-lines`
+|===
 
 === Choosing Templates
 

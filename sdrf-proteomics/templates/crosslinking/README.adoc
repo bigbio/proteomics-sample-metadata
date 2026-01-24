@@ -104,6 +104,38 @@ For these non-biological samples:
 
 NOTE: The `characteristics[organism]` indicates the **proteome to search against**, not necessarily the biological origin of the sample. Use `characteristics[material type]` to clarify the sample nature.
 
+=== File Header Format
+
+SDRF files must include a header with template and version information. Only list leaf templates; parent templates are implied by inheritance (crosslinking inherits from ms-proteomics).
+
+**Non-biological samples** (recombinant proteins, synthetic constructs):
+
+[source]
+----
+#file_format=SDRF
+#version=v1.1.0
+#template=crosslinking
+#template_version=v1.0.0
+----
+
+**Human biological samples** (tissues, cell lines):
+
+[source]
+----
+#file_format=SDRF
+#version=v1.1.0
+#template=human,crosslinking
+#template_version=v1.1.0,v1.0.0
+----
+
+**Version simplification:** If all templates share the same version, use a single value:
+
+[source]
+----
+#template=human,crosslinking
+#template_version=v1.1.0
+---- Each template's version indicates which version of that specific template the file conforms to.
+
 === RECOMMENDED Columns
 
 |===

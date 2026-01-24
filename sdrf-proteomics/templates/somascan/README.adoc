@@ -44,11 +44,36 @@ base
 [[usage]]
 == Usage
 
+=== File Header Format
+
+Only list leaf templates in the header; parent templates are implied by inheritance (somascan inherits from affinity-proteomics).
+
+**Non-human samples:**
+
 [source]
 ----
-#template=affinity-proteomics; version=v1.1.0
-#template=somascan; version=v1.0.0
-#template=human; version=v1.1.0  (optional, for human samples)
+#file_format=SDRF
+#version=v1.1.0
+#template=somascan
+#template_version=v1.0.0
+----
+
+**Human samples:**
+
+[source]
+----
+#file_format=SDRF
+#version=v1.1.0
+#template=human,somascan
+#template_version=v1.1.0,v1.0.0
+----
+
+**Version simplification:** If all templates share the same version, use a single value:
+
+[source]
+----
+#template=human,somascan
+#template_version=v1.1.0
 ----
 
 [[checklist]]
