@@ -58,7 +58,7 @@
 <li><a href="#cv-term-format">9.1. CV Term Format for Data File Metadata</a></li>
 <li><a href="#sample-prep-fragmentation">9.2. Sample Preparation and Fragmentation (MS-based only)</a></li>
 <li><a href="#data-acquisition-method">9.3. Proteomics data acquisition method</a></li>
-<li><a href="#_data_file_metadata_guidelines">9.4. Data File Metadata Guidelines</a></li>
+<li><a href="#_ms_proteomics_template">9.4. MS-Proteomics Template</a></li>
 </ul>
 </li>
 <li><a href="#additional-sdrf-rules">10. Additional SDRF Rules</a>
@@ -259,7 +259,7 @@
 <div class="title">Note</div>
 </td>
 <td class="content">
-This minimal example shows a <strong>mass spectrometry-based</strong> proteomics experiment. For detailed requirements see the <a href="templates/ms-base.html">MS-Base template</a>. For <strong>affinity-based proteomics</strong> (Olink, SomaScan), different columns are required - see the <a href="templates/affinity-proteomics.html">Affinity-Proteomics template</a>.
+This minimal example shows a <strong>mass spectrometry-based</strong> proteomics experiment. For detailed requirements see the <a href="templates/ms-proteomics.html">MS-Proteomics template</a>. For <strong>affinity-based proteomics</strong> (Olink, SomaScan), different columns are required - see the <a href="templates/affinity-proteomics.html">Affinity-Proteomics template</a>.
 </td>
 </tr>
 </table>
@@ -332,7 +332,7 @@ SDRF-Proteomics does <strong>not</strong> aim to capture downstream analysis det
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Choose a <a href="#templates">technology template</a> based on your <a href="#technology-type">technology type</a>: <code>ms-base</code> for <em>proteomic profiling by mass spectrometry</em>, <code>affinity-proteomics</code> for <em>protein expression profiling by antibody/aptamer array</em> (Olink, SomaScan)</p>
+<p>Choose a <a href="#templates">technology template</a> based on your <a href="#technology-type">technology type</a>: <code>ms-proteomics</code> for <em>proteomic profiling by mass spectrometry</em>, <code>affinity-proteomics</code> for <em>protein expression profiling by antibody/aptamer array</em> (Olink, SomaScan)</p>
 </li>
 <li>
 <p>Add the appropriate <a href="#templates">sample template</a> for your organism (Human, Vertebrates, Invertebrates, Plants, or Cell-lines)</p>
@@ -423,7 +423,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-base, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
+<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -714,7 +714,7 @@ We added the prefix v to the version number to indicate that it is the version o
 <tr>
 <td><code>template</code></td>
 <td>Name of the template used</td>
-<td>ms-base, human, cell-lines</td>
+<td>ms-proteomics, human, cell-lines</td>
 <td><span class="optional-badge">OPTIONAL</span></td>
 <td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000832">PRIDE:0000832</a></td>
 </tr>
@@ -864,7 +864,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Key=value representation (Human and Computer readable)</strong>: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="metadata-guidelines/data-file-metadata.html#_protein_modifications">Protein Modifications</a>):</p>
+<p><strong>Key=value representation (Human and Computer readable)</strong>: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="templates/ms-proteomics.html#_protein_modifications">Protein Modifications</a>):</p>
 <div class="literalblock">
 <div class="content">
 <pre>NT=Glu-&gt;pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E</pre>
@@ -1440,7 +1440,7 @@ This section applies to <strong>mass spectrometry-based proteomics</strong> expe
 </table>
 </div>
 <div class="paragraph">
-<p>For detailed documentation of sample preparation and MS/MS fragmentation properties, see the <a href="metadata-guidelines/data-file-metadata.html">Data File Metadata Guidelines</a>:</p>
+<p>For detailed documentation of sample preparation and MS/MS fragmentation properties, see the <a href="templates/ms-proteomics.html">MS-Proteomics Template</a>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1509,21 +1509,21 @@ The <em>comment[proteomics data acquisition method]</em> column is REQUIRED for 
 <div class="title">Tip</div>
 </td>
 <td class="content">
-For DIA experiments, additional properties like MS1 scan range can be captured. See <a href="metadata-guidelines/data-file-metadata.html#_dia_scan_window">DIA Scan Window Limits</a> in the Data File Metadata Guidelines.
+For DIA experiments, additional properties like MS1 scan range can be captured. See <a href="templates/ms-proteomics.html#_dia_scan_window">DIA Scan Window Limits</a> in the MS-Proteomics Template.
 </td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_file_metadata_guidelines"><a class="anchor" href="#_data_file_metadata_guidelines"></a><a class="link" href="#_data_file_metadata_guidelines">9.4. Data File Metadata Guidelines</a></h3>
+<h3 id="_ms_proteomics_template"><a class="anchor" href="#_ms_proteomics_template"></a><a class="link" href="#_ms_proteomics_template">9.4. MS-Proteomics Template</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="metadata-guidelines/data-file-metadata.html">Data File Metadata Guidelines</a> - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties</p>
+<p><a href="templates/ms-proteomics.html">MS-Proteomics Template</a> - Detailed guidelines for labels, instruments, modifications, cleavage agents, mass tolerances, RAW file URIs, and other data file properties</p>
 </li>
 </ul>
 </div>
@@ -1707,7 +1707,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>TECHNOLOGY</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Minimum valid templates for data acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/ms-base.html">ms-base</a>, <a href="templates/affinity-proteomics.html">affinity-proteomics</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/ms-proteomics.html">ms-proteomics</a>, <a href="templates/affinity-proteomics.html">affinity-proteomics</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Yes</strong> - these are the minimum valid SDRFs</p></td>
 </tr>
 <tr>
@@ -1742,7 +1742,7 @@ The <strong>base</strong> template is an internal construction artifact that def
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Technology templates</strong> (<code>ms-base</code> or <code>affinity-proteomics</code>) are <strong>required</strong> - you must use exactly one</p>
+<p><strong>Technology templates</strong> (<code>ms-proteomics</code> or <code>affinity-proteomics</code>) are <strong>required</strong> - you must use exactly one</p>
 </li>
 <li>
 <p><strong>Sample templates</strong> (<code>human</code>, <code>vertebrates</code>, etc.) are <strong>recommended</strong> but optional</p>
@@ -1771,14 +1771,14 @@ The <strong>base</strong> template is an internal construction artifact that def
   │                   biological replicate, assay name, technology type,
   │                   instrument, technical replicate, data file
   │
-  ├── ms-base (MINIMUM VALID for MS proteomics)
+  ├── ms-proteomics (MINIMUM VALID for MS proteomics)
   │   │   Adds: acquisition method, cleavage agent, label, fraction identifier
   │   │
-  │   ├── dda-acquisition (extends ms-base with DDA-specific columns)
-  │   ├── dia-acquisition (extends ms-base with DIA-specific columns)
-  │   ├── crosslinking (extends ms-base with XL-MS columns)
-  │   ├── single-cell (extends ms-base with SCP columns)
-  │   └── immunopeptidomics (extends ms-base with MHC-MS columns)
+  │   ├── dda-acquisition (extends ms-proteomics with DDA-specific columns)
+  │   ├── dia-acquisition (extends ms-proteomics with DIA-specific columns)
+  │   ├── crosslinking (extends ms-proteomics with XL-MS columns)
+  │   ├── single-cell (extends ms-proteomics with SCP columns)
+  │   └── immunopeptidomics (extends ms-proteomics with MHC-MS columns)
   │
   └── affinity-proteomics (MINIMUM VALID for affinity proteomics)
       │   Adds: instrument, panel name, quantification unit, sample type
@@ -1814,7 +1814,7 @@ Experiment templates (organism-agnostic):
 <p>Child templates <strong>must not</strong> weaken requirements (e.g., <code>required</code> → <code>optional</code>)</p>
 </li>
 <li>
-<p>Multiple templates can be combined (e.g., <code>ms-base</code> + <code>human</code> + <code>crosslinking</code>)</p>
+<p>Multiple templates can be combined (e.g., <code>ms-proteomics</code> + <code>human</code> + <code>crosslinking</code>)</p>
 </li>
 </ol>
 </div>
@@ -1853,9 +1853,9 @@ Experiment templates (organism-agnostic):
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><a href="templates/ms-base.html">MS-Base</a></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><a href="templates/ms-proteomics.html">MS-Proteomics</a></strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">All mass spectrometry-based proteomics (DDA, DIA, SRM/MRM/PRM)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/ms-base.html">Full documentation</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/ms-proteomics.html">Full documentation</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Yes</strong> - minimum for MS</p></td>
 </tr>
 <tr>
@@ -2603,7 +2603,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-23 18:20:41 UTC
+Last updated 2026-01-24 06:34:00 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
