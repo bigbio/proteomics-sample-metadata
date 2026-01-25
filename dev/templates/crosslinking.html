@@ -434,8 +434,8 @@ The <code>characteristics[organism]</code> indicates the <strong>proteome to sea
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SM</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Spacer Mass</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED (if non-cleavable)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Full crosslinker mass (Da)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED (if non-cleavable, except zero-length)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full crosslinker mass (Da). For zero-length crosslinkers (e.g., EDC), SM=0 and can be omitted.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SM=138.07</p></td>
 </tr>
 </tbody>
@@ -445,16 +445,18 @@ The <code>characteristics[organism]</code> indicates the <strong>proteome to sea
 <h3 id="_common_crosslinker_examples"><a class="anchor" href="#_common_crosslinker_examples"></a><a class="link" href="#_common_crosslinker_examples">4.2. Common Crosslinker Examples</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs"># MS-cleavable crosslinkers
-NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98
-NT=DSBU;AC=XLMOD:02011;CL=yes;TA=K,S,T,Y,nterm;MH=85.05;ML=111.03
+<pre class="highlightjs highlight"><code class="language-none hljs"># MS-cleavable crosslinkers (Scout defaults)
+NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01056468;ML=85.98263585
+NT=DSBU;AC=XLMOD:02011;CL=yes;TA=K,S,T,Y,nterm;MH=85.05276381;ML=111.03202835
+NT=DSBSO;AC=XLMOD:02012;CL=yes;TA=K,S,T,Y,nterm;MH=54.01056;ML=236.0177
+NT=DSAU;AC=XLMOD:02013;CL=yes;TA=K,S,T,Y,nterm;MH=57.02146371;ML=83.00072827
 
 # Non-cleavable crosslinkers
 NT=DSS;AC=XLMOD:02001;CL=no;TA=K,S,T,Y,nterm;SM=138.07
 NT=BS3;AC=XLMOD:02000;CL=no;TA=K,S,T,Y,nterm;SM=138.07
 
-# Zero-length crosslinker
-NT=EDC;AC=XLMOD:02009;CL=no;TA=K,D,E
+# Zero-length crosslinker (SM=0 is implicit for zero-length)
+NT=EDC;AC=XLMOD:02009;CL=no;TA=K,D,E;SM=0
 
 # Photo-reactive crosslinker
 NT=SDA;AC=XLMOD:02005;CL=no;TA=K,S,T,Y,nterm</code></pre>
@@ -498,6 +500,22 @@ NT=SDA;AC=XLMOD:02005;CL=no;TA=K,S,T,Y,nterm</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">12.5 A</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">~30 A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DSBSO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Homo-bifunctional, NHS ester</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">K, S, T, Y, N-term</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10.3 A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">~25 A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DSAU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Homo-bifunctional, NHS ester</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">K, S, T, Y, N-term</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10.0 A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">~25 A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DSS</p></td>
@@ -766,7 +784,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv \
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-25 13:35:01 UTC
+Last updated 2026-01-25 16:54:47 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
