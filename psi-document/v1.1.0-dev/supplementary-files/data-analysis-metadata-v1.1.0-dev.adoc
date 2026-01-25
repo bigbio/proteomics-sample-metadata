@@ -1,0 +1,344 @@
+= Data Analysis Metadata Guidelines
+:revnumber: v1.1.0-dev
+:revdate: 2026-01-25
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Guideline
+
+This document provides information about the data analysis metadata guidelines for SDRF-Proteomics. These guidelines extend the core SDRF-Proteomics specification to capture computational analysis parameters that are essential for reproducibility and re-analysis of proteomics datasets.
+
+**Version 1.0.0** - 2024-01-15
+
+**Scope**: Bottom-up LC-MS proteomics experiments without labeling
+
+[[abstract]]
+== Abstract
+
+The Data Analysis Metadata Guidelines define standardized parameters to capture computational analysis settings in SDRF-Proteomics files. These guidelines address the critical need for reproducible data analysis by providing machine-readable descriptions of key analysis parameters, enabling transparent re-processing and validation of proteomics results.
+
+[[motivation]]
+== Motivation
+
+=== The Reproducibility Challenge
+
+Differently parametrized data analysis and usage of different software tools and algorithms often lead to substantially different results, creating significant challenges for the reproducibility of proteomics research findings.
+
+=== Objectives
+
+These guidelines tackle these challenges by:
+
+- **Standardizing Parameter Documentation**: Adding a set of generalized parameters to the SDRF file format to facilitate reproducing data analysis results
+- **Enabling Cross-Platform Analysis**: Providing standardized parameter descriptions that can be interpreted across different analysis pipelines
+- **Supporting Workflow Standardization**: Contributing to the standardization of data analysis workflows and their settings
+
+=== Development Context
+
+The collection and definition of these parameters has been developed as part of the ELIXIR Implementation Study and are currently focused on standard bottom-up LC-MS proteomics experiments without labeling.
+
+IMPORTANT: We acknowledge potential challenges with the transferability of data analysis parameters across different pipelines. This collection serves as a foundation for further standardization efforts in proteomics data analysis workflows.
+
+[[use-cases]]
+== Use Case Scenarios
+
+=== Reproducibility of Data Analysis
+The standardized parameters in the SDRF file make the main features of data analysis transparent and machine-readable, enabling:
+
+- Verification of analysis methods
+- Assessment of parameter choices
+- Comparison across studies
+
+=== Transparent Re-processing of Public Datasets
+By documenting key analysis parameters, re-analysis with different software tools or modified parameter values becomes more accessible and reliable.
+
+=== Workflow Integration
+Several computational workflows already benefit from this additional information:
+
+- https://github.com/bigbio/quantms[quantms]
+- https://github.com/wombat-p[WOMBAT-P]
+- Other SDRF-compatible analysis pipelines
+
+[[specification]]
+== Parameter Specification
+
+image::assets/SDRF_extended.svg[alt=SDRF Extended Diagram,width=640,height=480]
+
+**Figure 1**: Extended SDRF structure incorporating data analysis metadata parameters.
+
+All parameters, their types, and allowed values are formally specified in link:assets/param2sdrf.yml[param2sdrf.yml]. This specification file provides the authoritative definition for implementing these parameters in analysis pipelines.
+
+[[parameters]]
+== Parameter Categories
+
+The data analysis parameters are organized into three main categories reflecting the typical proteomics analysis workflow:
+
+[[identification-params]]
+=== Peptide and Protein Identification Parameters
+
+NOTE: Core identification parameters like variable and fixed modifications, precursor and fragment tolerances, and enzyme specifications are already part of the main SDRF-Proteomics specification and are not redefined here.
+
+The following parameters are commonly used in database search engines and may be transferable to other identification approaches such as _de novo_ sequencing:
+
+[cols="1,2,3"]
+|===
+|Short Name |SDRF Column Name |Description
+
+|fions
+|comment[forward ions]
+|N-terminal fragment ions used in scoring
+
+|rions
+|comment[reverse ions]
+|C-terminal fragment ions used in scoring
+
+|isotope_error_range
+|comment[isotope error range]
+|Allowed isotope offsets of the precursor mass
+
+|add_decoys
+|comment[add decoys]
+|Whether decoy sequences have been added to the database
+
+|num_hits
+|comment[num peptide hits]
+|Number of peptide hits reported per spectrum by the search engine
+
+|allowed_miscleavages
+|comment[allowed miscleavages]
+|Maximum number of allowed missed cleavage sites
+
+|min_precursor_charge
+|comment[minimum precursor charge]
+|Lowest allowed precursor charge state
+
+|max_precursor_charge
+|comment[maximum precursor charge]
+|Highest allowed precursor charge state
+
+|min_peptide_length
+|comment[minimum peptide length]
+|Minimum considered peptide length in amino acids
+
+|max_peptide_length
+|comment[maximum peptide length]
+|Maximum considered peptide length in amino acids
+
+|max_mods
+|comment[maximum allowed modifications]
+|Maximum number of modifications allowed per peptide
+
+|ident_fdr_psm
+|comment[fdr on psm level]
+|False discovery rate threshold for peptide-spectrum matches
+
+|ident_fdr_peptide
+|comment[fdr on peptide level]
+|False discovery rate threshold for peptide identifications
+
+|ident_fdr_protein
+|comment[fdr on protein level]
+|False discovery rate threshold for protein identifications
+|===
+
+[[quantification-params]]
+=== Peptide and Protein Quantification Parameters
+
+These parameters describe the quantification strategy and processing steps:
+
+[cols="1,2,3"]
+|===
+|Short Name |SDRF Column Name |Description
+
+|enable_match_between_runs
+|comment[run match between runs]
+|Whether match-between-runs feature alignment was performed
+
+|protein_inference
+|comment[protein inference method]
+|Algorithm or method used to infer proteins from peptide identifications
+
+|quantification_method
+|comment[quantification method]
+|Quantification approach (intensity-based, precursor area, MS2-based)
+
+|summarization_peptides
+|comment[summarization to peptides method]
+|Method used to summarize PSM values to peptide level
+
+|summarization_proteins
+|comment[summarization to proteins method]
+|Method used to summarize peptide values to protein level
+
+|min_num_peptides
+|comment[minimum number of peptides per protein]
+|Minimum number of unique peptides required for protein quantification
+
+|quant_transformation
+|comment[transformation of quantitative values]
+|Mathematical transformation applied to quantitative values (e.g., log2)
+
+|normalization_method
+|comment[normalization method]
+|Method used to normalize samples and remove systematic bias
+|===
+
+[[statistics-params]]
+=== Statistical Testing Parameters
+
+Parameters for differential analysis and statistical testing:
+
+NOTE: Detailed experimental design information (contrasts, batches) should be readable from the experimental design as captured in the main SDRF structure.
+
+[cols="1,2,3"]
+|===
+|Short Name |SDRF Column Name |Description
+
+|run_statistics
+|comment[run statistical tests]
+|Whether statistical analysis was performed to identify differentially regulated features
+
+|quant_fdr_method
+|comment[method for correction of multiple testing]
+|Method used for multiple testing correction (e.g., Benjamini-Hochberg)
+
+|quant_fdr_threshold
+|comment[threshold for statistical test fdr]
+|FDR threshold used to determine significantly differentially regulated features
+|===
+
+[[implementation]]
+== Implementation Guidelines
+
+=== Parameter Values and Types
+
+All parameter specifications are maintained in the `params2sdrf.yml` file, which defines:
+
+- Parameter names and SDRF column mappings
+- Data types (boolean, integer, float, string, class)
+- Allowed values for controlled vocabularies
+- Default values where applicable
+
+==== Example Parameter Definition
+
+[source,yaml]
+----
+- name: protein_inference
+  type: class
+  sdrf: protein inference method
+  default: unique
+  value:
+    - unique
+    - shared
+    - parsimonious
+    - other
+----
+
+The `type` field specifies the parameter data type:
+
+- **boolean**: True/false values
+- **integer**: Whole numbers
+- **float**: Decimal numbers  
+- **string**: Free text (use sparingly)
+- **class**: Controlled vocabulary with predefined values
+
+=== Usage in SDRF Files
+
+These parameters should be included as additional columns in SDRF files following the standard `comment[parameter name]` format. They typically appear after the core data file metadata columns.
+
+=== Example Implementation
+
+For a complete example of an SDRF file incorporating these metadata parameters, see link:assets/sdrf_local.tsv[sdrf_local.tsv].
+
+[[validation]]
+== Validation and Quality Control
+
+=== Required vs. Optional Parameters
+
+- **Core parameters**: Essential for basic reproducibility (FDR thresholds, quantification method)
+- **Recommended parameters**: Important for comprehensive analysis documentation
+- **Optional parameters**: Additional details that may be workflow-specific
+
+=== Validation Tools
+
+Tools supporting these guidelines should validate:
+
+1. Parameter names match the specification
+2. Values conform to allowed ranges/vocabularies
+3. Required parameters are present
+4. Parameter combinations are logically consistent
+
+[[extension-guidelines]]
+== Extension and Maintenance
+
+=== Adding New Parameters
+
+New parameters should be:
+
+1. Proposed through GitHub issues or pull requests
+2. Reviewed by the community for relevance and clarity
+3. Added to the `params2sdrf.yml` specification
+4. Documented with clear descriptions and allowed values
+
+=== Version Management
+
+Changes to parameter specifications follow semantic versioning:
+
+- **Major**: Breaking changes to parameter definitions
+- **Minor**: New parameters or non-breaking value additions
+- **Patch**: Documentation fixes and clarifications
+
+[[authors]]
+== Authors and Contributors
+
+**Primary Authors:**
+- Veit Schwämmle
+- David Bouyssié
+
+**Contributing Organizations:**
+- ELIXIR Implementation Study participants
+
+[[future-directions]]
+== Future Directions
+
+=== Planned Extensions
+
+- **Labeled Quantification**: Parameters for TMT, SILAC, and other labeling strategies
+- **DIA Analysis**: Data-independent acquisition specific parameters
+- **Cross-Linking**: Parameters for cross-linking mass spectrometry
+- **Top-Down Proteomics**: Intact protein analysis parameters
+
+=== Community Feedback
+
+We encourage community feedback on:
+
+- Additional parameters needed for specific workflows
+- Clarification of existing parameter definitions
+- Use cases not currently covered
+
+Please contribute through the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+
+[[references]]
+== References
+
+- ELIXIR Implementation Study documentation
+- SDRF-Proteomics core specification
+- Community feedback and use cases
+
+For the most current parameter specifications and examples, refer to the associated files in this directory and the main SDRF-Proteomics repository.

@@ -1,0 +1,567 @@
+= SDRF-Proteomics Quick Start Tutorial
+:revnumber: v1.1.0-dev
+:revdate: 2026-01-25
+:sectnums:
+:toc: left
+:doctype: book
+:xrefstyle: short
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+This tutorial will guide you through creating your first SDRF file step-by-step. By the end, you'll understand the format and have a working file for your experiment.
+
+**Estimated time:** 10-15 minutes
+
+== What is SDRF-Proteomics?
+
+SDRF (Sample and Data Relationship Format) is a simple **tab-separated file** (like Excel) that describes your proteomics experiment. It connects your biological samples to your mass spectrometry data files.
+
+=== The Core Concept
+
+Think of SDRF as a table where:
+
+- Each **row** = one sample-to-file relationship
+- Each **column** = one piece of information about that sample or file
+
+That's it! No programming, no complex formats -- just a spreadsheet.
+
+[NOTE]
+====
+**Why use SDRF?** When you submit data to repositories like PRIDE, SDRF ensures your experiment is fully described and can be reanalyzed by others. It's becoming a standard requirement for proteomics data submission.
+
+For complete details, see the link:README.adoc[full specification].
+====
+
+== Understanding Templates
+
+Templates are **pre-made SDRF files with the right columns already set up** for your experiment type. Instead of figuring out which columns you need, just pick a template and fill in your data.
+
+=== Core Templates (Organism-based)
+
+These define the basic biological information needed based on your organism:
+
+[cols="1,3"]
+|===
+|Template |Description
+
+|**human**
+|Includes columns for age, sex, ancestry. link:templates/human/[View template]
+
+|**vertebrates**
+|For mouse, rat, zebrafish, etc. link:templates/vertebrates/[View template]
+
+|**invertebrates**
+|For insects, worms, etc. link:templates/invertebrates/[View template]
+
+|**plants**
+|Includes plant-specific metadata. link:templates/plants/[View template]
+
+|===
+
+=== Specialized Templates (Experiment-based)
+
+Add extra columns for specific experimental workflows:
+
+[cols="1,3"]
+|===
+|Template |Description
+
+|**cell-lines**
+|Adds cell line identifiers and Cellosaurus accessions. link:templates/cell-lines/README.adoc[View template]
+
+|**dia-acquisition**
+|DIA-specific parameters. link:templates/dia-acquisition/README.adoc[View template]
+
+|**immunopeptidomics**
+|HLA typing and related metadata. link:templates/immunopeptidomics/README.adoc[View template]
+
+|**crosslinking**
+|XL-MS specific columns. link:templates/crosslinking/README.adoc[View template]
+
+|**single-cell**
+|Single-cell proteomics metadata. link:templates/single-cell/README.adoc[View template]
+|===
+
+TIP: You can combine templates! Start with a core template (e.g., "human") and add columns from specialized templates as needed.
+
+Download all templates from: https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[GitHub Templates]
+
+== Understanding Column Types
+
+SDRF columns follow a naming pattern that tells you what kind of information they contain:
+
+=== characteristics[...] -- Sample Metadata
+
+Describe the **biological sample**:
+
+- `characteristics[organism]` -- Species name
+- `characteristics[disease]` -- Disease or "normal"
+- `characteristics[organism part]` -- Tissue or organ
+
+See link:metadata-guidelines/sample-metadata.adoc[Sample Metadata Guidelines] for all available characteristics.
+
+=== comment[...] -- Data File Metadata
+
+Describe the **data file or MS run**:
+
+- `comment[data file]` -- Raw file name
+- `comment[instrument]` -- Mass spectrometer
+- `comment[label]` -- Labeling type
+
+See link:templates/ms-proteomics/README.adoc[MS-Proteomics Template] for all available comments.
+
+=== factor value[...] -- Experimental Variables
+
+The **experimental variable** you're comparing:
+
+- `factor value[disease]` -- Comparing disease states
+- `factor value[compound]` -- Drug treatment study
+- `factor value[time]` -- Time course experiment
+
+[IMPORTANT]
+====
+**Column names are case-sensitive and spacing matters!**
+
+- `characteristics[organism]` -- Correct
+- `Characteristics[organism]` -- Wrong (capital C)
+- `characteristics [organism]` -- Wrong (space before bracket)
+====
+
+== Step 1: Choose Your Template
+
+Answer this question to find your template:
+
+[cols="2,1,1"]
+|===
+|Your Sample Type |Template |Link
+
+|Human samples
+|**human**
+|link:templates/human/[Download]
+
+|Mouse, rat, zebrafish
+|**vertebrates**
+|link:templates/vertebrates/[Download]
+
+|Insects, worms
+|**invertebrates**
+|link:templates/invertebrates/[Download]
+
+|Plants
+|**plants**
+|link:templates/plants/[Download]
+
+|Cell lines
+|**cell-lines**
+|link:templates/cell-lines/README.adoc[Download]
+
+|Other / Not sure
+|**ms-proteomics**
+|link:templates/ms-proteomics/[Download]
+|===
+
+== Step 2: Fill in Sample Information
+
+Open your template in Excel, Google Sheets, or any spreadsheet software. For each sample, fill in:
+
+[cols="1,2,1,2"]
+|===
+|Column |What to Write |Example |Notes
+
+|`source name`
+|A unique identifier for your sample
+|patient_001
+|Must be unique across the file
+
+|`characteristics[organism]`
+|Species name (lowercase)
+|homo sapiens
+|Use scientific name from https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy]
+
+|`characteristics[organism part]`
+|Tissue or body part
+|liver
+|Use terms from https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
+
+|`characteristics[disease]`
+|Disease name, or "normal"
+|hepatocellular carcinoma
+|Use "normal" for healthy samples
+|===
+
+TIP: Don't stress about finding exact ontology terms. Write the common name (e.g., "liver", "breast cancer") and the validator will check it for you. You can always refine later.
+
+== Step 3: Fill in Data File Information
+
+For each row, also fill in information about the raw file:
+
+[cols="1,2,1,2"]
+|===
+|Column |What to Write |Example |Notes
+
+|`assay name`
+|A name for this MS run
+|run_001
+|Often same as source name
+
+|`comment[label]`
+|Type of labeling
+|label free sample
+|Or TMT126, TMT127N, etc.
+
+|`comment[instrument]`
+|Mass spectrometer used
+|Q Exactive HF
+|From https://www.ebi.ac.uk/ols4/ontologies/ms[PSI-MS ontology]
+
+|`comment[data file]`
+|Your raw file name
+|sample_001.raw
+|Exact filename including extension
+|===
+
+[NOTE]
+====
+**One row = one sample-to-file relationship.** In multiplexed experiments (TMT/iTRAQ), multiple samples share the same file, so you'll have multiple rows pointing to the same raw file. In fractionated experiments, one sample spans multiple files, so you'll have multiple rows for the same sample.
+
+For more details, see link:README.adoc#sdrf-file-rules[SDRF File Format] in the specification.
+====
+
+== Step 4: Define Your Experimental Variables
+
+Factor values tell analysis tools **what you're comparing** in your experiment. This is crucial for downstream analysis!
+
+=== What is a Factor Value?
+
+A factor value is the experimental variable you're studying. If your experiment compares cancer vs. healthy tissue, then `disease` is your factor. The values would be "hepatocellular carcinoma" and "normal".
+
+[cols="1,2,2"]
+|===
+|Experiment Type |Factor Value Column |Example Values
+
+|Disease vs. healthy
+|`factor value[disease]`
+|cancer, normal
+
+|Drug treatment
+|`factor value[compound]`
+|aspirin, DMSO
+
+|Time course
+|`factor value[time]`
+|0 hour, 6 hour, 24 hour
+
+|Tissue comparison
+|`factor value[organism part]`
+|liver, kidney, heart
+
+|Multiple variables
+|Multiple factor columns
+|Both disease AND time
+|===
+
+CAUTION: Factor values often duplicate information from characteristics columns -- and that's correct! The factor value explicitly marks which characteristic is the experimental variable.
+
+== Step 5: Validate Your File
+
+Save your file as `.sdrf.tsv` and validate it:
+
+=== Option 1: Command Line (Recommended)
+
+[source,bash]
+----
+# Install the validator
+pip install sdrf-pipelines
+
+# Validate your file
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+=== Option 2: Validate Against a Template
+
+[source,bash]
+----
+# Validate against a specific template
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
+----
+
+This checks that all required columns for your template are present.
+
+**Validation checks for:**
+
+- Correct column names and formatting
+- Valid ontology terms (organism, disease, etc.)
+- Required columns present
+- No empty cells where values are required
+
+For more validation options, see link:../tool-support.adoc[Tool Support].
+
+== Complete Example
+
+Here's a minimum valid SDRF file for a human liver cancer study, including all required columns from the human template:
+
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name
+|characteristics[organism]
+|characteristics[organism part]
+|characteristics[disease]
+|characteristics[biological replicate]
+|characteristics[age]
+|characteristics[sex]
+|assay name
+|technology type
+|comment[proteomics data acquisition method]
+|comment[label]
+|comment[instrument]
+|comment[cleavage agent details]
+|comment[fraction identifier]
+|comment[technical replicate]
+|comment[data file]
+|factor value[disease]
+
+|patient_001
+|homo sapiens
+|liver
+|hepatocellular carcinoma
+|1
+|55Y
+|male
+|run_001
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|patient_001.raw
+|hepatocellular carcinoma
+
+|patient_002
+|homo sapiens
+|liver
+|hepatocellular carcinoma
+|2
+|62Y
+|female
+|run_002
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|patient_002.raw
+|hepatocellular carcinoma
+
+|control_001
+|homo sapiens
+|liver
+|normal
+|1
+|48Y
+|male
+|run_003
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|control_001.raw
+|normal
+
+|control_002
+|homo sapiens
+|liver
+|normal
+|2
+|51Y
+|female
+|run_004
+|proteomic profiling by mass spectrometry
+|Data-dependent acquisition
+|label free sample
+|Q Exactive HF
+|NT=Trypsin;AC=MS:1001251
+|1
+|1
+|control_002.raw
+|normal
+|===
+
+**Required columns in this example:**
+
+- **Sample metadata:** source name, organism, organism part, disease, biological replicate, age, sex
+- **Data file metadata:** assay name, technology type, proteomics data acquisition method, label, instrument, cleavage agent, fraction identifier, technical replicate, data file
+- **Factor value:** the experimental variable being compared (disease)
+
+**What this example tells us:**
+
+- 2 biological replicates per condition (numbered 1-2 within each factor value group)
+- No fractionation (fraction identifier = 1 for all)
+- Single injection per sample (technical replicate = 1)
+- Label-free DDA proteomics with trypsin digestion on Q Exactive HF
+
+== Common Scenarios
+
+=== TMT/iTRAQ Multiplexed Samples
+
+For multiplexed experiments, multiple samples share the same raw file. Each sample gets its own row with a different label:
+
+[cols="1,1,1"]
+|===
+|source name |comment[label] |comment[data file]
+
+|sample_A |TMT126 |multiplex_1.raw
+|sample_B |TMT127N |multiplex_1.raw
+|sample_C |TMT127C |multiplex_1.raw
+|===
+
+For complete TMT/iTRAQ documentation, see link:README.adoc#row-uniqueness[Isobaric Labelling] in the specification.
+
+=== Fractionated Samples
+
+If you fractionated your sample before MS, add a `comment[fraction identifier]` column:
+
+[cols="1,1,1"]
+|===
+|source name |comment[fraction identifier] |comment[data file]
+
+|sample_001 |1 |sample_001_F01.raw
+|sample_001 |2 |sample_001_F02.raw
+|sample_001 |3 |sample_001_F03.raw
+|===
+
+For more details, see link:README.adoc#sample-prep-fragmentation[Fractions] in the specification.
+
+=== Technical Replicates
+
+Same sample run multiple times? Use the same source name with different assay names and data files:
+
+[cols="1,1,1,1"]
+|===
+|source name |assay name |comment[technical replicate] |comment[data file]
+
+|sample_001 |sample_001_rep1 |1 |sample_001_rep1.raw
+|sample_001 |sample_001_rep2 |2 |sample_001_rep2.raw
+|===
+
+=== Cell Line Experiments
+
+For cell lines, include the cell line name and Cellosaurus accession:
+
+[cols="1,1,1"]
+|===
+|source name |characteristics[cell line] |characteristics[cellosaurus accession]
+
+|hela_001 |HeLa |CVCL_0030
+|hek_001 |HEK293 |CVCL_0045
+|===
+
+Find accessions at https://www.cellosaurus.org/[Cellosaurus].
+
+For the complete cell lines template, see link:templates/cell-lines/README.adoc[Cell Lines Template].
+
+== Common Mistakes to Avoid
+
+[cols="1,1,2"]
+|===
+|Mistake |Correct |Explanation
+
+|`Source Name` (capitalized)
+|`source name` (lowercase)
+|Column names must be lowercase
+
+|`characteristics [organism]` (space)
+|`characteristics[organism]` (no space)
+|No space before the bracket
+
+|`control` for healthy samples
+|`normal` for healthy samples
+|Use "normal" for healthy tissue/samples
+
+|Empty cells
+|`not available` or `not applicable`
+|Never leave cells empty
+
+|`sourcename` (no space)
+|`source name` (with space)
+|Two words separated by a space
+|===
+
+== Finding the Right Terms (Ontologies)
+
+SDRF uses ontology terms to ensure consistency across datasets. Here's where to find them:
+
+[cols="1,2,2"]
+|===
+|For This Field |Look Here |Examples
+
+|Organism names
+|https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy]
+|homo sapiens, mus musculus
+
+|Tissue/organ names
+|https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON]
+|liver, brain, blood
+
+|Disease names
+|https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO]
+|breast cancer, diabetes
+
+|Cell types
+|https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology]
+|T cell, hepatocyte
+
+|Instruments & methods
+|https://www.ebi.ac.uk/ols4/ontologies/ms[PSI-MS]
+|Q Exactive, Orbitrap
+
+|Cell lines
+|https://www.cellosaurus.org/[Cellosaurus]
+|HeLa (CVCL_0030), HEK293
+|===
+
+TIP: Don't worry about finding the exact ontology term initially. Just write the common name (e.g., "liver", "breast cancer") and the validator will check it for you.
+
+== Getting Help
+
+=== Examples
+
+Browse real SDRF files from published datasets in ProteomeXchange:
+
+- https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects on GitHub]
+
+=== Questions
+
+- Open an issue on https://github.com/bigbio/proteomics-metadata-standard/issues[GitHub] to reach the bigbio team
+
+=== Full Documentation
+
+For advanced use cases and complete details:
+
+- link:README.adoc[Complete SDRF Specification]
+- link:metadata-guidelines/sample-metadata.adoc[Sample Metadata Guidelines]
+- link:templates/ms-proteomics/README.adoc[MS-Proteomics Template]
+
+== Next Steps
+
+Once you're comfortable with the basics:
+
+1. **Explore templates** for your specific experiment type: link:templates/[All Templates]
+2. **Read the metadata guidelines** for detailed field descriptions:
+   - link:metadata-guidelines/sample-metadata.adoc[Sample Metadata]
+   - link:templates/human/README.adoc[Human Sample Metadata]
+   - link:templates/ms-proteomics/README.adoc[Data File Metadata]
+3. **Learn about tool support** for converting SDRF to analysis pipelines: link:tool-support.adoc[Tool Support]
+4. **See the full specification** for advanced use cases: link:README.adoc[SDRF-Proteomics Specification]
