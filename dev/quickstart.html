@@ -25,11 +25,110 @@
 
     <main class="container quickstart-page">
         <!-- Introduction -->
-        <section class="hero" style="padding: 2rem 0;">
-            <h2>Learn SDRF-Proteomics by Building Your First File</h2>
-            <p>This tutorial will guide you through creating an SDRF file step-by-step. By the end, you'll understand the format and have a working file for your experiment.</p>
-            <p class="time-estimate"><strong>Estimated time:</strong> 10-15 minutes</p>
+        <section class="hero" style="padding: 1rem 0 1.5rem;">
+            <h2>Create Your SDRF File</h2>
+            <p>Answer a few questions about your experiment and we'll guide you to the right template and examples.</p>
         </section>
+
+        <!-- Interactive Wizard -->
+        <section class="wizard-section">
+            <div class="wizard-container">
+                <!-- Step 1: Acquisition Method -->
+                <div class="wizard-step" id="step-acquisition">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>What acquisition method did you use?</h3>
+                    </div>
+                    <div class="wizard-options">
+                        <button class="wizard-option" data-step="acquisition" data-value="dda" onclick="selectOption(this)">
+                            <span class="option-title">DDA</span>
+                            <span class="option-desc">Data-Dependent Acquisition</span>
+                        </button>
+                        <button class="wizard-option" data-step="acquisition" data-value="dia" onclick="selectOption(this)">
+                            <span class="option-title">DIA</span>
+                            <span class="option-desc">Data-Independent Acquisition</span>
+                        </button>
+                        <button class="wizard-option" data-step="acquisition" data-value="affinity" onclick="selectOption(this)">
+                            <span class="option-title">Affinity</span>
+                            <span class="option-desc">Olink, SomaScan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Labeling -->
+                <div class="wizard-step hidden" id="step-labeling">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>What labeling strategy?</h3>
+                    </div>
+                    <div class="wizard-options">
+                        <button class="wizard-option" data-step="labeling" data-value="label-free" onclick="selectOption(this)">
+                            <span class="option-title">Label-free</span>
+                            <span class="option-desc">No chemical labeling</span>
+                        </button>
+                        <button class="wizard-option" data-step="labeling" data-value="tmt" onclick="selectOption(this)">
+                            <span class="option-title">TMT / iTRAQ</span>
+                            <span class="option-desc">Isobaric labeling</span>
+                        </button>
+                        <button class="wizard-option" data-step="labeling" data-value="silac" onclick="selectOption(this)">
+                            <span class="option-title">SILAC</span>
+                            <span class="option-desc">Metabolic labeling</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Organism -->
+                <div class="wizard-step hidden" id="step-organism">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>What organism?</h3>
+                    </div>
+                    <div class="wizard-options">
+                        <button class="wizard-option" data-step="organism" data-value="human" onclick="selectOption(this)">
+                            <span class="option-title">Human</span>
+                            <span class="option-desc">Homo sapiens</span>
+                        </button>
+                        <button class="wizard-option" data-step="organism" data-value="mouse" onclick="selectOption(this)">
+                            <span class="option-title">Mouse / Rat</span>
+                            <span class="option-desc">Vertebrates</span>
+                        </button>
+                        <button class="wizard-option" data-step="organism" data-value="cell-line" onclick="selectOption(this)">
+                            <span class="option-title">Cell Lines</span>
+                            <span class="option-desc">HeLa, HEK293, etc.</span>
+                        </button>
+                        <button class="wizard-option" data-step="organism" data-value="other" onclick="selectOption(this)">
+                            <span class="option-title">Other</span>
+                            <span class="option-desc">Plants, bacteria, etc.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="wizard-result hidden" id="wizard-result">
+                    <div class="result-header">
+                        <span class="result-icon">&#10003;</span>
+                        <h3>Your Recommended Setup</h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-templates">
+                            <h4>Templates to use:</h4>
+                            <div class="template-tags" id="result-templates"></div>
+                        </div>
+                        <div class="result-examples">
+                            <h4>Example datasets:</h4>
+                            <ul id="result-examples"></ul>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#step-1-choose-your-template" class="btn btn-primary">Continue to Tutorial</a>
+                            <a href="./sdrf-explorer.html" class="btn btn-secondary" id="explorer-link">Browse More Examples</a>
+                            <button class="btn btn-outline" onclick="resetWizard()">Start Over</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="wizard-divider">
 
         <!-- What is SDRF -->
         <section class="section">
@@ -43,7 +142,6 @@
                     <li><strong>Each row</strong> = one sample-to-file relationship</li>
                     <li><strong>Each column</strong> = one piece of information about that sample or file</li>
                 </ul>
-                <p>That's it! No programming, no complex formats &mdash; just a spreadsheet.</p>
             </div>
 
             <div class="tip-box">
@@ -1130,7 +1228,315 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Wizard Styles */
+        .wizard-section {
+            margin-bottom: 2rem;
+        }
+        .wizard-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid var(--border, #e2e8f0);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .wizard-step {
+            margin-bottom: 1.5rem;
+        }
+        .wizard-step.hidden {
+            display: none;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--accent, #0969da);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .step-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text, #1e293b);
+        }
+        .wizard-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .wizard-option {
+            flex: 1;
+            min-width: 140px;
+            max-width: 200px;
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--border, #e2e8f0);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+        }
+        .wizard-option:hover {
+            border-color: var(--accent, #0969da);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .wizard-option.selected {
+            border-color: var(--accent, #0969da);
+            background: #eff6ff;
+        }
+        .option-title {
+            display: block;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text, #1e293b);
+            margin-bottom: 0.25rem;
+        }
+        .option-desc {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-light, #64748b);
+        }
+        .wizard-result {
+            background: white;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .wizard-result.hidden {
+            display: none;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-icon {
+            width: 24px;
+            height: 24px;
+            background: #22c55e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .result-header h3 {
+            margin: 0;
+            color: #166534;
+            font-size: 1.1rem;
+        }
+        .result-content {
+            display: grid;
+            gap: 1rem;
+        }
+        .result-templates h4,
+        .result-examples h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text, #1e293b);
+        }
+        .template-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .template-tag {
+            background: var(--accent, #0969da);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .template-tag:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+        .result-examples ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        .result-examples li {
+            margin: 0.25rem 0;
+        }
+        .result-examples a {
+            font-size: 0.9rem;
+        }
+        .result-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border, #e2e8f0);
+        }
+        .result-actions .btn {
+            font-size: 0.9rem;
+            padding: 0.6rem 1.25rem;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border, #d1d5db);
+            color: var(--text-light, #6b7280);
+        }
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+        .wizard-divider {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid var(--border-light, #e5e7eb);
+        }
+        @media (max-width: 600px) {
+            .wizard-options {
+                flex-direction: column;
+            }
+            .wizard-option {
+                max-width: none;
+            }
+        }
     </style>
+
+    <script>
+        // Wizard state
+        const wizardState = {
+            acquisition: null,
+            labeling: null,
+            organism: null
+        };
+
+        // Example datasets mapped by experiment type
+        const exampleDatasets = {
+            'dda-label-free-human': [
+                { name: 'PXD000561 - Human tissue proteome', url: 'https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000561' },
+                { name: 'PXD004452 - Human kidney disease', url: 'https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD004452' }
+            ],
+            'dda-label-free-mouse': [
+                { name: 'PXD001819 - Mouse brain proteome', url: 'https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD001819' }
+            ],
+            'dda-label-free-cell-line': [
+                { name: 'PXD000612 - HeLa cell line proteome', url: 'https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD000612' }
+            ],
+            'dda-tmt-human': [
+                { name: 'PXD010154 - TMT human plasma', url: 'https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD010154' }
+            ],
+            'dia-label-free-human': [
+                { name: 'PXD014194 - DIA human plasma', url: 'https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD014194' }
+            ],
+            'default': [
+                { name: 'Browse all examples', url: './sdrf-explorer.html' }
+            ]
+        };
+
+        function selectOption(button) {
+            const step = button.dataset.step;
+            const value = button.dataset.value;
+
+            // Update state
+            wizardState[step] = value;
+
+            // Update UI - mark selected
+            const stepElement = document.getElementById('step-' + step);
+            stepElement.querySelectorAll('.wizard-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            button.classList.add('selected');
+
+            // Show next step or results
+            setTimeout(() => {
+                if (step === 'acquisition') {
+                    if (value === 'affinity') {
+                        // Skip labeling for affinity
+                        wizardState.labeling = 'none';
+                        document.getElementById('step-organism').classList.remove('hidden');
+                    } else {
+                        document.getElementById('step-labeling').classList.remove('hidden');
+                    }
+                } else if (step === 'labeling') {
+                    document.getElementById('step-organism').classList.remove('hidden');
+                } else if (step === 'organism') {
+                    showResults();
+                }
+            }, 200);
+        }
+
+        function showResults() {
+            const resultDiv = document.getElementById('wizard-result');
+            const templatesDiv = document.getElementById('result-templates');
+            const examplesDiv = document.getElementById('result-examples');
+
+            // Determine templates
+            const templates = [];
+
+            // Technology template
+            if (wizardState.acquisition === 'dda') {
+                templates.push({ name: 'dda-acquisition', url: './templates/dda-acquisition.html' });
+            } else if (wizardState.acquisition === 'dia') {
+                templates.push({ name: 'dia-acquisition', url: './templates/dia-acquisition.html' });
+            } else if (wizardState.acquisition === 'affinity') {
+                templates.push({ name: 'affinity-proteomics', url: './templates/affinity-proteomics.html' });
+            }
+
+            // Organism template
+            if (wizardState.organism === 'human') {
+                templates.push({ name: 'human', url: './templates/human.html' });
+            } else if (wizardState.organism === 'mouse') {
+                templates.push({ name: 'vertebrates', url: './templates/vertebrates.html' });
+            } else if (wizardState.organism === 'cell-line') {
+                templates.push({ name: 'cell-lines', url: './templates/cell-lines.html' });
+            }
+
+            // Render templates
+            templatesDiv.innerHTML = templates.map(t =>
+                `<a href="${t.url}" class="template-tag">${t.name}</a>`
+            ).join('');
+
+            // Get examples
+            const key = `${wizardState.acquisition}-${wizardState.labeling}-${wizardState.organism}`;
+            const examples = exampleDatasets[key] || exampleDatasets['default'];
+
+            examplesDiv.innerHTML = examples.map(e =>
+                `<li><a href="${e.url}" target="_blank">${e.name}</a></li>`
+            ).join('');
+
+            // Update explorer link with filters
+            const explorerLink = document.getElementById('explorer-link');
+            let filterParams = [];
+            if (wizardState.organism === 'human') filterParams.push('organism=homo+sapiens');
+            if (wizardState.labeling === 'tmt') filterParams.push('label=TMT');
+            if (filterParams.length > 0) {
+                explorerLink.href = './sdrf-explorer.html?' + filterParams.join('&');
+            }
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        function resetWizard() {
+            wizardState.acquisition = null;
+            wizardState.labeling = null;
+            wizardState.organism = null;
+
+            document.querySelectorAll('.wizard-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            document.getElementById('step-labeling').classList.add('hidden');
+            document.getElementById('step-organism').classList.add('hidden');
+            document.getElementById('wizard-result').classList.add('hidden');
+        }
+    </script>
 
 </body>
 </html>
