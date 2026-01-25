@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardized proteomics data acquisition method terms across all annotated projects.
 - Updated enzyme.tsv file; removed enzyme regular expression requirement.
 - Small changes in typos and grammar throughout the specification.
+- :boom: three lines added as header the the `sdrf.tsv` format. Breaks loading of `.tsv` files as before. Need to skip first three lines
 
 ### Removed
 
