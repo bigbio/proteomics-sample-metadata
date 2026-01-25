@@ -54,27 +54,33 @@ columns:
     requirement: recommended
     allow_not_applicable: false
     allow_not_available: true
+    allow_anonymized: true
+    allow_pooled: true
     validators:
       - validator_name: pattern
         params:
           # Age format: number + unit (Y/M/D), optionally combined, with optional range
           # Examples: 45Y, 6M, 30Y6M, 30Y6M15D, 40Y-50Y, 1Y-2Y6M
-          # Also allows "not available" when age is unknown
-          pattern: ^(\d+[yYmMdD](\d+[yYmMdD])*(-\d+[yYmMdD](\d+[yYmMdD])*)?|not available)$
+          # Also allows "not available", "anonymized", or "pooled"
+          pattern: ^(\d+[yYmMdD](\d+[yYmMdD])*(-\d+[yYmMdD](\d+[yYmMdD])*)?|not available|anonymized|pooled)$
           case_sensitive: false
-          description: Age should be in format like 45Y, 6M, 30Y6M, or ranges like 40Y-50Y. Use "not available" if unknown.
+          description: Age should be in format like 45Y, 6M, 30Y6M, or ranges like 40Y-50Y. Use "not available" if unknown, "anonymized" if redacted, or "pooled" for pooled samples.
           examples:
             - 45Y
             - 6M
             - 30Y6M
             - 40Y-50Y
             - not available
+            - anonymized
+            - pooled
 
   - name: characteristics[sex]
     description: Biological sex of the donor
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
+    allow_anonymized: true
+    allow_pooled: true
     validators:
       - validator_name: values
         params:
@@ -84,8 +90,10 @@ columns:
             - intersex
             - not available
             - not applicable
+            - anonymized
+            - pooled
           error_level: error
-          description: Sex should be one of the allowed values
+          description: Sex should be one of the allowed values. Use "anonymized" if redacted or "pooled" for pooled samples.
 
   - name: characteristics[developmental stage]
     description: Developmental stage of the donor
@@ -111,12 +119,16 @@ columns:
     requirement: recommended
     allow_not_applicable: true
     allow_not_available: true
+    allow_anonymized: true
+    allow_pooled: true
     validators:
       - validator_name: pattern
         params:
-          pattern: ^[A-Za-z0-9_-]+$
-          description: Individual ID should be alphanumeric with underscores or hyphens
+          pattern: ^([A-Za-z0-9_-]+|not applicable|not available|anonymized|pooled)$
+          description: Individual ID should be alphanumeric with underscores or hyphens. Use "anonymized" if redacted or "pooled" for pooled samples.
           examples:
             - patient_001
             - donor-A1
             - subject_12
+            - anonymized
+            - pooled
