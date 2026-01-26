@@ -211,7 +211,7 @@ def main():
         dataset_labels = list(set([parse_ontology_term(l) for l in get_unique_values(rows, ['comment[label]'])]))
         dataset_acq = list(set([parse_ontology_term(a) for a in get_unique_values(rows, ['comment[proteomics data acquisition method]'])]))
 
-        # Determine experiment type (DDA/DIA)
+        # Determine experiment type (DDA/DIA/SRM)
         exp_type = 'Unknown'
         for acq in dataset_acq:
             if acq:
@@ -221,6 +221,9 @@ def main():
                     break
                 elif 'dda' in acq_lower or 'data-dependent' in acq_lower or 'data dependent' in acq_lower:
                     exp_type = 'DDA'
+                    break
+                elif 'srm' in acq_lower or 'mrm' in acq_lower or 'prm' in acq_lower or 'selected reaction monitoring' in acq_lower or 'multiple reaction monitoring' in acq_lower or 'parallel reaction monitoring' in acq_lower:
+                    exp_type = 'SRM/MRM'
                     break
 
         # Determine labeling type
