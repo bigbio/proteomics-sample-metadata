@@ -246,7 +246,7 @@ This is supported by research <<ref1>>.
 
 ```bash
 # Validate all SDRF files in a folder
-for f in annotated-projects/*/sdrf.tsv; do
+for f in annotated-projects/*/*.sdrf.tsv; do
   parse_sdrf validate-sdrf --sdrf_file "$f"
 done
 
