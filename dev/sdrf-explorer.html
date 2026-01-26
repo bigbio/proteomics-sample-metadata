@@ -240,7 +240,7 @@
                 <div class="filters-row">
                     <div class="filter-group">
                         <label>Search</label>
-                        <input type="text" id="searchInput" placeholder="Search datasets...">
+                        <input type="text" id="searchInput" placeholder="e.g., PXD001234, homo sapiens, cancer...">
                     </div>
                     <div class="filter-group">
                         <label>Organism</label>
@@ -252,6 +252,7 @@
                             <option value="">All Types</option>
                             <option value="DDA">DDA</option>
                             <option value="DIA">DIA</option>
+                            <option value="SRM/MRM">SRM/MRM</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -607,9 +608,9 @@
       "no cleavage": 10
     },
     "experiment_types": {
-      "DDA": 285,
-      "Unknown": 9,
-      "DIA": 4
+      "DDA": 291,
+      "SRM/MRM": 3,
+      "DIA": 5
     },
     "label_types": {
       "Label-free": 229,
@@ -1272,7 +1273,7 @@
       "instruments": [
         "3200 QTRAP"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "iTRAQ",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -1356,7 +1357,7 @@
       "instruments": [
         "TripleTOF 5600"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -2367,7 +2368,7 @@
       "instruments": [
         "TripleTOF 5600"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -2693,7 +2694,7 @@
       "instruments": [
         "TripleTOF 5600"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -5073,7 +5074,7 @@
         "Q Exactive Plus",
         "TSQ Quantiva"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -5653,7 +5654,7 @@
       "instruments": [
         "TSQ Vantage"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -6448,7 +6449,7 @@
       "instruments": [
         "Q Exactive"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "TMT",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -6624,7 +6625,7 @@
         "SCIEX instrument model",
         "TripleTOF 5600+"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -7191,7 +7192,7 @@
         "Q Exactive HF-X",
         "timsTOF Pro 2"
       ],
-      "experiment_type": "Unknown",
+      "experiment_type": "SRM/MRM",
       "label_type": "Label-free",
       "template": "ms-proteomics",
       "version": "v1.1.0"
@@ -7228,12 +7229,16 @@
 
         function renderStatsDashboard() {
             const stats = indexData.statistics;
+            // Count unique organisms with case-insensitive normalization
+            const uniqueOrganisms = new Set(Object.keys(stats.organisms).map(o => o.toLowerCase())).size;
+            const uniqueInstruments = new Set(Object.keys(stats.instruments).map(i => i.toLowerCase())).size;
+            const uniqueDiseases = new Set(Object.keys(stats.diseases).map(d => d.toLowerCase())).size;
             document.getElementById('statsDashboard').innerHTML = `
                 <div class="stat-card primary"><div class="stat-value">${stats.total_datasets.toLocaleString()}</div><div class="stat-label">Annotated Datasets</div></div>
                 <div class="stat-card primary"><div class="stat-value">${stats.total_samples.toLocaleString()}</div><div class="stat-label">Total Samples</div></div>
-                <div class="stat-card"><div class="stat-value">${Object.keys(stats.organisms).length}</div><div class="stat-label">Unique Organisms</div></div>
-                <div class="stat-card"><div class="stat-value">${Object.keys(stats.instruments).length}</div><div class="stat-label">Instruments</div></div>
-                <div class="stat-card"><div class="stat-value">${Object.keys(stats.diseases).length}</div><div class="stat-label">Diseases Studied</div></div>
+                <div class="stat-card"><div class="stat-value">${uniqueOrganisms}</div><div class="stat-label">Unique Organisms</div></div>
+                <div class="stat-card"><div class="stat-value">${uniqueInstruments}</div><div class="stat-label">Instruments</div></div>
+                <div class="stat-card"><div class="stat-value">${uniqueDiseases}</div><div class="stat-label">Diseases Studied</div></div>
             `;
         }
 

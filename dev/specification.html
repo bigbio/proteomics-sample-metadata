@@ -116,7 +116,7 @@
 <p>This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.</p>
 </div>
 <div class="paragraph">
-<p><strong>Version v1.1.0</strong> - 2025-01</p>
+<p><strong>Version v1.1.0</strong> - 2026-01</p>
 </div>
 </div>
 </div>
@@ -167,7 +167,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>The general description includes minimum information to describe the study overall: <a href="http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&amp;outputMode=XML">title, description, date of publication, type of experiment</a>. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (<strong>Figure 1</strong>) is mostly missing <a href="#ref1">[1]</a>.</p>
+<p>However, the information regarding the sample and its relation to the data files (<strong>Figure 1</strong>) is mostly missing in public repositories <a href="#ref1">[1]</a>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -189,7 +189,7 @@
 <h2 id="quick-start"><a class="anchor" href="#quick-start"></a><a class="link" href="#quick-start">4. Quick Start</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you&#8217;re new to SDRF-Proteomics, here&#8217;s a minimal example to get you started. An SDRF file is a tab-separated file where each row represents a sample-to-data-file relationship.</p>
+<p>If you&#8217;re new to SDRF-Proteomics, here&#8217;s a minimal example to get you started. Each row represents one sample-to-data-file relationship.</p>
 </div>
 <div class="sect2">
 <h3 id="_minimal_example"><a class="anchor" href="#_minimal_example"></a><a class="link" href="#_minimal_example">4.1. Minimal Example</a></h3>
@@ -248,6 +248,23 @@
 <td class="data-col">1</td>
 <td class="data-col">sample_2.raw</td>
 <td class="factor-col">hepatocellular carcinoma</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not available</td>
+<td class="sample-col">not available</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_3</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">sample_3.raw</td>
+<td class="factor-col">not available</td>
 </tr>
 </tbody>
 </table>
@@ -366,7 +383,7 @@ SDRF-Proteomics does <strong>not</strong> aim to capture downstream analysis det
 <h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">5. Validating SDRF Files</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The official validator for SDRF-Proteomics files is <strong>sdrf-pipelines</strong>, a Python tool that checks your SDRF file for errors and compliance with the specification.</p>
+<p>The official validator for SDRF-Proteomics files is <a href="https://github.com/bigbio/sdrf-pipelines"><strong>sdrf-pipelines</strong></a>, a Python tool that checks your SDRF file for errors and compliance with the specification.</p>
 </div>
 <div class="paragraph">
 <p>Installation:</p>
@@ -1736,8 +1753,8 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>BASE</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Construction artifact with shared columns</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="templates/base.html">base</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal construction artifact with shared columns (not user-facing)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>base</em> (internal only)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No - never use directly</p></td>
 </tr>
 <tr>
@@ -1767,7 +1784,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 <div class="title">Tip</div>
 </td>
 <td class="content">
-The <strong>base</strong> template is an internal construction artifact that defines shared columns inherited by all other templates. It should never be used directly by users. This specification document itself serves as the documentation for base template columns - all columns defined in the <a href="#from-sample-metadata">sample metadata</a> and <a href="#from-sample-data">data file metadata</a> sections are inherited by technology and sample templates.
+The <strong>base</strong> template is an internal construction artifact that should never be used directly by users. Start with a <strong>technology template</strong> instead: <a href="templates/ms-proteomics.html">ms-proteomics</a> for mass spectrometry experiments or <a href="templates/affinity-proteomics.html">affinity-proteomics</a> for Olink/SomaScan experiments. All columns defined in the <a href="#from-sample-metadata">sample metadata</a> and <a href="#from-sample-data">data file metadata</a> sections are inherited by these technology templates.
 </td>
 </tr>
 </table>
@@ -2789,7 +2806,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-26 10:24:27 UTC
+Last updated 2026-01-26 14:37:59 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
