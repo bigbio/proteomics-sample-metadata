@@ -24,7 +24,7 @@ endif::[]
 
 This document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.
 
-**Version v1.1.0** - 2025-01
+**Version v1.1.0** - 2026-01
 
 [[abstract]]
 == Abstract
@@ -50,7 +50,7 @@ Such heterogeneity often prevents data interpretation, reproducibility, and inte
 - (ii) the sample metadata and data files acquisition metadata.
 - (iii) The relation between the sample and the data files. The experimental design.
 
-The general description includes minimum information to describe the study overall: http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD016060.0-1&outputMode=XML[title, description, date of publication, type of experiment]. In ProteomeXchange partners this metadata is captured at the dataset level, in other omics resources this is captured as IDF file format (e.g. MAGE-TAB). Currently, all ProteomeXchange partners mandate this information for each dataset. However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing <<ref1>>.
+However, the information regarding the sample and its relation to the data files (**Figure 1**) is mostly missing in public repositories <<ref1>>.
 
 image::https://github.com/bigbio/proteomics-metadata-standard/raw/master/sdrf-proteomics/images/sample-metadata.png[]
 
@@ -63,7 +63,7 @@ This specification, which is a community effort, aims to provide a standard for 
 [[quick-start]]
 == Quick Start
 
-If you're new to SDRF-Proteomics, here's a minimal example to get you started. An SDRF file is a tab-separated file where each row represents a sample-to-data-file relationship.
+If you're new to SDRF-Proteomics, here's a minimal example to get you started. Each row represents one sample-to-data-file relationship.
 
 === Minimal Example
 
@@ -125,6 +125,23 @@ ifdef::backend-html5[]
 <td class="data-col">sample_2.raw</td>
 <td class="factor-col">hepatocellular carcinoma</td>
 </tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not available</td>
+<td class="sample-col">not available</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_3</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">1</td>
+<td class="data-col">1</td>
+<td class="data-col">sample_3.raw</td>
+<td class="factor-col">not available</td>
+</tr>
 </tbody>
 </table>
 <div class="sdrf-legend">
@@ -143,8 +160,9 @@ ifndef::backend-html5[]
 
 |sample_1 |homo sapiens |liver |normal |1 |run_1 |proteomic profiling by mass spectrometry |Data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |1 |sample_1.raw |normal
 |sample_2 |homo sapiens |liver |hepatocellular carcinoma |1 |run_2 |proteomic profiling by mass spectrometry |Data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |1 |sample_2.raw |hepatocellular carcinoma
+|sample_3 |homo sapiens |not available |not available |1 |run_3 |proteomic profiling by mass spectrometry |Data-dependent acquisition |label free sample |Q Exactive HF |NT=Trypsin;AC=MS:1001251 |1 |1 |sample_3.raw |not available
 |===
-_Blue: Sample metadata | Green: Data file metadata | Orange: Factor values_
+_Blue: Sample metadata | Green: Data file metadata | Orange: Factor values. Note: sample_3 demonstrates use of "not available" for unknown values._
 endif::[]
 
 NOTE: This minimal example shows a **mass spectrometry-based** proteomics experiment. For detailed requirements see the link:templates/ms-proteomics/README.adoc[MS-Proteomics template]. For **affinity-based proteomics** (Olink, SomaScan), different columns are required - see the link:templates/affinity-proteomics/README.adoc[Affinity-Proteomics template].
@@ -186,7 +204,7 @@ For detailed guidance, continue reading the full specification below.
 [[validation]]
 == Validating SDRF Files
 
-The official validator for SDRF-Proteomics files is **sdrf-pipelines**, a Python tool that checks your SDRF file for errors and compliance with the specification.
+The official validator for SDRF-Proteomics files is https://github.com/bigbio/sdrf-pipelines[**sdrf-pipelines**], a Python tool that checks your SDRF file for errors and compliance with the specification.
 
 Installation:
 
@@ -1306,8 +1324,8 @@ Templates in SDRF-Proteomics follow a **layered architecture** that separates co
 |Layer |Purpose |Templates |Valid Alone?
 
 |**BASE**
-|Construction artifact with shared columns
-|link:templates/base/README.adoc[base]
+|Internal construction artifact with shared columns (not user-facing)
+|_base_ (internal only)
 |No - never use directly
 
 |**TECHNOLOGY**
@@ -1326,7 +1344,7 @@ Templates in SDRF-Proteomics follow a **layered architecture** that separates co
 |No - must combine with TECHNOLOGY
 |===
 
-TIP: The **base** template is an internal construction artifact that defines shared columns inherited by all other templates. It should never be used directly by users. This specification document itself serves as the documentation for base template columns - all columns defined in the <<from-sample-metadata,sample metadata>> and <<from-sample-data,data file metadata>> sections are inherited by technology and sample templates.
+TIP: The **base** template is an internal construction artifact that should never be used directly by users. Start with a **technology template** instead: link:templates/ms-proteomics/README.adoc[ms-proteomics] for mass spectrometry experiments or link:templates/affinity-proteomics/README.adoc[affinity-proteomics] for Olink/SomaScan experiments. All columns defined in the <<from-sample-metadata,sample metadata>> and <<from-sample-data,data file metadata>> sections are inherited by these technology templates.
 
 **Key concepts:**
 
