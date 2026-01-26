@@ -110,6 +110,9 @@ The project is run by different groups:
 - Alexandra Naba (Department of Physiology and Biophysics, University of Illinois Chicago, USA)
 - Jonas Scheid (Department of Peptide-based Immunotherapy, University of Tübingen, Germany)
 - Joshua Klein (Program for Computational Biology, Boston University, USA)
+- Nithu Sara John (PRIDE Team, European Bioinformatics Institute - EMBL-EBI, U.K.)
+- Deepti Jaiswal Kundu (PRIDE Team, European Bioinformatics Institute - EMBL-EBI, U.K.)
+- Nandana Madhusoodanan (PRIDE Team, European Bioinformatics Institute - EMBL-EBI, U.K.)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
