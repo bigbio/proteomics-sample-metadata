@@ -19,13 +19,10 @@
 <li><a href="#status">1. Status of this document</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
 <li><a href="#motivation">3. Motivation</a></li>
-<li><a href="#quick-start">4. Quick Start</a>
+<li><a href="#quick-start">4. Understanding SDRF-Proteomics</a>
 <ul class="sectlevel2">
-<li><a href="#_minimal_example">4.1. Minimal Example</a></li>
-<li><a href="#_key_concepts">4.2. Key Concepts</a></li>
-<li><a href="#_format_requirements">4.3. Format Requirements</a></li>
-<li><a href="#_scope">4.4. Scope</a></li>
-<li><a href="#_getting_started_steps">4.5. Getting Started Steps</a></li>
+<li><a href="#_scope">4.1. Scope</a></li>
+<li><a href="#_getting_started_steps">4.2. Getting Started Steps</a></li>
 </ul>
 </li>
 <li><a href="#validation">5. Validating SDRF Files</a></li>
@@ -36,7 +33,7 @@
 <li><a href="#relationship-specifications">6.3. Relationship to other specifications</a></li>
 </ul>
 </li>
-<li><a href="#_sdrf_proteomics_specification">7. SDRF-Proteomics specification</a>
+<li><a href="#_sdrf_proteomics_detailed_specification">7. SDRF-Proteomics Detailed Specification</a>
 <ul class="sectlevel2">
 <li><a href="#sdrf-file-rules">7.1. Format rules</a></li>
 <li><a href="#reserved-words">7.2. Reserved words</a></li>
@@ -186,13 +183,30 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="quick-start"><a class="anchor" href="#quick-start"></a><a class="link" href="#quick-start">4. Quick Start</a></h2>
+<h2 id="quick-start"><a class="anchor" href="#quick-start"></a><a class="link" href="#quick-start">4. Understanding SDRF-Proteomics</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you&#8217;re new to SDRF-Proteomics, here&#8217;s a minimal example to get you started. Each row represents one sample-to-data-file relationship.</p>
+<p>The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The format is a tab-delimited file where each <strong>ROW</strong> corresponds to a relationship between a Sample and a Data file, each <strong>COLUMN</strong> corresponds to an attribute/property of the Sample, the Data file, or the Factor values, and the value in each <strong>CELL</strong> is the specific value of the property for a given Sample/Data file/Factor value.</p>
 </div>
-<div class="sect2">
-<h3 id="_minimal_example"><a class="anchor" href="#_minimal_example"></a><a class="link" href="#_minimal_example">4.1. Minimal Example</a></h3>
+<div class="paragraph">
+<p>The SDRF-Proteomics format contains three main sections:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The first section contains the <a href="#from-sample-metadata">sample metadata</a> using <code>characteristics[&#8230;&#8203;]</code> columns (e.g., organism, disease)</p>
+</li>
+<li>
+<p>The second section contains the <a href="#from-sample-data">data file metadata</a> using <code>comment[&#8230;&#8203;]</code> columns (e.g., instrument, label)</p>
+</li>
+<li>
+<p>The third section contains the <a href="#study-variables">factor values</a> using <code>factor value[&#8230;&#8203;]</code> columns to indicate variables under study</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each row links one sample to one data file. If you&#8217;re new to SDRF-Proteomics, here&#8217;s a minimal example to get you started:</p>
+</div>
 <div class="sdrf-example-table">
 <table>
 <thead>
@@ -286,28 +300,6 @@ This minimal example shows a <strong>mass spectrometry-based</strong> proteomics
 </tr>
 </table>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_key_concepts"><a class="anchor" href="#_key_concepts"></a><a class="link" href="#_key_concepts">4.2. Key Concepts</a></h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Sample metadata</strong> uses <code>characteristics[&#8230;&#8203;]</code> columns (e.g., organism, disease)</p>
-</li>
-<li>
-<p><strong>Data file metadata</strong> uses <code>comment[&#8230;&#8203;]</code> columns (e.g., instrument, label)</p>
-</li>
-<li>
-<p><strong>Factor values</strong> use <code>factor value[&#8230;&#8203;]</code> columns to indicate variables under study</p>
-</li>
-<li>
-<p>Each row links one sample to one data file</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_format_requirements"><a class="anchor" href="#_format_requirements"></a><a class="link" href="#_format_requirements">4.3. Format Requirements</a></h3>
 <div class="paragraph">
 <p>The SDRF-Proteomics format has the following core requirements:</p>
 </div>
@@ -330,9 +322,8 @@ This minimal example shows a <strong>mass spectrometry-based</strong> proteomics
 </li>
 </ul>
 </div>
-</div>
 <div class="sect2">
-<h3 id="_scope"><a class="anchor" href="#_scope"></a><a class="link" href="#_scope">4.4. Scope</a></h3>
+<h3 id="_scope"><a class="anchor" href="#_scope"></a><a class="link" href="#_scope">4.1. Scope</a></h3>
 <div class="paragraph">
 <p>The SDRF-Proteomics format aims to capture the <strong>sample metadata</strong> and its <strong>relationship with data files</strong> (e.g., raw files from mass spectrometers).</p>
 </div>
@@ -350,7 +341,7 @@ SDRF-Proteomics does <strong>not</strong> aim to capture downstream analysis det
 </div>
 </div>
 <div class="sect2">
-<h3 id="_getting_started_steps"><a class="anchor" href="#_getting_started_steps"></a><a class="link" href="#_getting_started_steps">4.5. Getting Started Steps</a></h3>
+<h3 id="_getting_started_steps"><a class="anchor" href="#_getting_started_steps"></a><a class="link" href="#_getting_started_steps">4.2. Getting Started Steps</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -523,75 +514,10 @@ We added the prefix v to the version number to indicate that it is the version o
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sdrf_proteomics_specification"><a class="anchor" href="#_sdrf_proteomics_specification"></a><a class="link" href="#_sdrf_proteomics_specification">7. SDRF-Proteomics specification</a></h2>
+<h2 id="_sdrf_proteomics_detailed_specification"><a class="anchor" href="#_sdrf_proteomics_detailed_specification"></a><a class="link" href="#_sdrf_proteomics_detailed_specification">7. SDRF-Proteomics Detailed Specification</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each <strong>ROW</strong> corresponds to a relationship between a Sample and a Data file (in an ms proteomics experiment the data file containing the mass spectra), each <strong>COLUMN</strong> corresponds to an attribute/property of the Sample, the Data file, or the Factor values; and the value in each <strong>CELL</strong> is the specific value of the property for a given Sample/Data file/Factor value (<strong>Figure 3</strong>).</p>
-</div>
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="sample-col">characteristics[...]</th>
-<th class="sample-col">characteristics[biological replicate]</th>
-<th class="data-col">assay name</th>
-<th class="data-col">technology type</th>
-<th class="data-col">comment[...]</th>
-<th class="data-col">comment[data file]</th>
-<th class="factor-col">factor value[...]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">sample_1</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">...</td>
-<td class="sample-col">1</td>
-<td class="data-col">run_1</td>
-<td class="data-col">proteomic profiling by mass spectrometry</td>
-<td class="data-col">...</td>
-<td class="data-col">sample_1.raw</td>
-<td class="factor-col">...</td>
-</tr>
-<tr>
-<td class="sample-col">sample_2</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">...</td>
-<td class="sample-col">2</td>
-<td class="data-col">run_2</td>
-<td class="data-col">proteomic profiling by mass spectrometry</td>
-<td class="data-col">...</td>
-<td class="data-col">sample_2.raw</td>
-<td class="factor-col">...</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comments)</span>
-<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Figure 3</strong>: SDRF-Proteomics in a nutshell. Each <strong>row</strong> links a sample to a data file. <strong>Columns</strong> represent sample properties (characteristics), data file properties (comments), or experimental variables (factor values).</p>
-</div>
-<div class="paragraph">
-<p>The SDRF-Proteomics format contains three main sections:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The first section contains the <a href="#from-sample-metadata">sample metadata</a>.</p>
-</li>
-<li>
-<p>The second section contains the <a href="#from-sample-data">data file metadata</a>.</p>
-</li>
-<li>
-<p>The third section contains the <a href="#study-variables">factor values</a> properties.</p>
-</li>
-</ul>
+<p>This section provides the detailed rules and requirements for the SDRF-Proteomics format.</p>
 </div>
 <div class="sect2">
 <h3 id="sdrf-file-rules"><a class="anchor" href="#sdrf-file-rules"></a><a class="link" href="#sdrf-file-rules">7.1. Format rules</a></h3>
@@ -2806,7 +2732,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-27 09:54:11 UTC
+Last updated 2026-01-27 10:56:16 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
