@@ -61,11 +61,17 @@ Here, we introduced the Sample and Data Relationship Format (SDRF-Proteomics) to
 This specification, which is a community effort, aims to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files.
 
 [[quick-start]]
-== Quick Start
+== Understanding SDRF-Proteomics
 
-If you're new to SDRF-Proteomics, here's a minimal example to get you started. Each row represents one sample-to-data-file relationship.
+The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The format is a tab-delimited file where each *ROW* corresponds to a relationship between a Sample and a Data file, each *COLUMN* corresponds to an attribute/property of the Sample, the Data file, or the Factor values, and the value in each **CELL** is the specific value of the property for a given Sample/Data file/Factor value.
 
-=== Minimal Example
+The SDRF-Proteomics format contains three main sections:
+
+- The first section contains the <<from-sample-metadata,sample metadata>> using `characteristics[...]` columns (e.g., organism, disease)
+- The second section contains the <<from-sample-data,data file metadata>> using `comment[...]` columns (e.g., instrument, label)
+- The third section contains the <<study-variables,factor values>> using `factor value[...]` columns to indicate variables under study
+
+Each row links one sample to one data file. If you're new to SDRF-Proteomics, here's a minimal example to get you started:
 
 ifdef::backend-html5[]
 ++++
@@ -166,15 +172,6 @@ _Blue: Sample metadata | Green: Data file metadata | Orange: Factor values. Note
 endif::[]
 
 NOTE: This minimal example shows a **mass spectrometry-based** proteomics experiment. For detailed requirements see the link:templates/ms-proteomics/README.adoc[MS-Proteomics template]. For **affinity-based proteomics** (Olink, SomaScan), different columns are required - see the link:templates/affinity-proteomics/README.adoc[Affinity-Proteomics template].
-
-=== Key Concepts
-
-1. **Sample metadata** uses `characteristics[...]` columns (e.g., organism, disease)
-2. **Data file metadata** uses `comment[...]` columns (e.g., instrument, label)
-3. **Factor values** use `factor value[...]` columns to indicate variables under study
-4. Each row links one sample to one data file
-
-=== Format Requirements
 
 The SDRF-Proteomics format has the following core requirements:
 
@@ -279,79 +276,9 @@ SDRF-Proteomics sample information can be embedded into mzTab metadata files. Th
 
 The SDRF-Proteomics aims to capture the sample metadata and its relationship with the data files (e.g. raw files from mass spectrometers). The SDRF-Proteomics do not aim to capture the downstream analysis part of the experimental design such as what samples should be compared, how they can be combined or parameters for the downstream analysis (FDR or p-values thresholds). The HUPO-PSI community will work in the future to include this information in other file formats such as mzTab or a new type of file format.
 
-== SDRF-Proteomics specification
+== SDRF-Proteomics Detailed Specification
 
-The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each *ROW* corresponds to a relationship between a Sample and a Data file (in an ms proteomics experiment the data file containing the mass spectra), each *COLUMN* corresponds to an attribute/property of the Sample, the Data file, or the Factor values; and the value in each **CELL** is the specific value of the property for a given Sample/Data file/Factor value (**Figure 3**).
-
-ifdef::backend-html5[]
-++++
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="sample-col">characteristics[...]</th>
-<th class="sample-col">characteristics[biological replicate]</th>
-<th class="data-col">assay name</th>
-<th class="data-col">technology type</th>
-<th class="data-col">comment[...]</th>
-<th class="data-col">comment[data file]</th>
-<th class="factor-col">factor value[...]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">sample_1</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">...</td>
-<td class="sample-col">1</td>
-<td class="data-col">run_1</td>
-<td class="data-col">proteomic profiling by mass spectrometry</td>
-<td class="data-col">...</td>
-<td class="data-col">sample_1.raw</td>
-<td class="factor-col">...</td>
-</tr>
-<tr>
-<td class="sample-col">sample_2</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">...</td>
-<td class="sample-col">2</td>
-<td class="data-col">run_2</td>
-<td class="data-col">proteomic profiling by mass spectrometry</td>
-<td class="data-col">...</td>
-<td class="data-col">sample_2.raw</td>
-<td class="factor-col">...</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comments)</span>
-<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
-</div>
-</div>
-++++
-endif::[]
-
-ifndef::backend-html5[]
-[%header,cols="1,1,1,1,1,1,1,1,1"]
-|===
-|source name |characteristics[organism] |characteristics[...] |characteristics[biological replicate] |assay name |technology type |comment[...] |comment[data file] |factor value[...]
-
-|sample_1 |homo sapiens |... |1 |run_1 |proteomic profiling by mass spectrometry |... |sample_1.raw |...
-|sample_2 |homo sapiens |... |2 |run_2 |proteomic profiling by mass spectrometry |... |sample_2.raw |...
-|===
-_Blue: Sample metadata (characteristics) | Green: Data file metadata (comments) | Orange: Factor values_
-endif::[]
-
-**Figure 3**: SDRF-Proteomics in a nutshell. Each *row* links a sample to a data file. *Columns* represent sample properties (characteristics), data file properties (comments), or experimental variables (factor values).
-
-The SDRF-Proteomics format contains three main sections:
-
-- The first section contains the <<from-sample-metadata,sample metadata>>.
-- The second section contains the <<from-sample-data,data file metadata>>.
-- The third section contains the <<study-variables,factor values>> properties.
+This section provides the detailed rules and requirements for the SDRF-Proteomics format.
 
 [[sdrf-file-rules]]
 === Format rules
