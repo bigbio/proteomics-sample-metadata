@@ -19,81 +19,73 @@
 <li><a href="#status">1. Status of this document</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
 <li><a href="#motivation">3. Motivation</a></li>
-<li><a href="#quick-start">4. Understanding SDRF-Proteomics</a></li>
+<li><a href="#quick-start">4. The SDRF-Proteomics Format</a>
+<ul class="sectlevel2">
+<li><a href="#versioning">4.1. Versioning</a></li>
+<li><a href="#sdrf-file-rules">4.2. Format rules</a></li>
+<li><a href="#reserved-words">4.3. Reserved words</a></li>
+<li><a href="#file-level-metadata">4.4. SDRF file-level metadata</a></li>
+<li><a href="#_specification_structure">4.5. Specification structure</a></li>
+<li><a href="#column-headers">4.6. Table Column headers</a></li>
+<li><a href="#sdrf-file-standardization">4.7. Table Cell values</a></li>
+</ul>
+</li>
 <li><a href="#validation">5. Validating SDRF Files</a></li>
-<li><a href="#_specification_structure">6. Specification structure</a>
+<li><a href="#from-sample-metadata">6. SDRF-Proteomics: Samples metadata</a>
 <ul class="sectlevel2">
-<li><a href="#versioning">6.1. Versioning</a></li>
+<li><a href="#biosamples-integration">6.1. BioSamples database integration</a></li>
+<li><a href="#sample-technical-biological-replicates">6.2. Encoding sample technical and biological replicates</a></li>
+<li><a href="#pooled-samples">6.3. Pooled samples</a></li>
+<li><a href="#_sample_metadata_guidelines">6.4. Sample Metadata Guidelines</a></li>
 </ul>
 </li>
-<li><a href="#_sdrf_proteomics_detailed_specification">7. SDRF-Proteomics Detailed Specification</a>
+<li><a href="#from-sample-data">7. SDRF-Proteomics: data files metadata</a>
 <ul class="sectlevel2">
-<li><a href="#sdrf-file-rules">7.1. Format rules</a></li>
-<li><a href="#reserved-words">7.2. Reserved words</a></li>
-<li><a href="#file-level-metadata">7.3. SDRF file-level metadata</a>
+<li><a href="#cv-term-format">7.1. CV Term Format for Data File Metadata</a></li>
+<li><a href="#sample-prep-fragmentation">7.2. Sample Preparation and Fragmentation (MS-based only)</a></li>
+<li><a href="#data-acquisition-method">7.3. Proteomics data acquisition method</a></li>
+<li><a href="#_ms_proteomics_template">7.4. MS-Proteomics Template</a></li>
+</ul>
+</li>
+<li><a href="#additional-sdrf-rules">8. Additional SDRF Rules</a>
+<ul class="sectlevel2">
+<li><a href="#column-cardinality">8.1. Column Cardinality</a></li>
+<li><a href="#row-uniqueness">8.2. Row Uniqueness Requirements</a></li>
+</ul>
+</li>
+<li><a href="#templates">9. Templates</a>
+<ul class="sectlevel2">
+<li><a href="#_what_is_a_template">9.1. What is a Template?</a></li>
+<li><a href="#_template_layered_architecture">9.2. Template Layered Architecture</a></li>
+<li><a href="#_template_inheritance">9.3. Template Inheritance</a></li>
+<li><a href="#_specifying_templates_in_file_headers">9.4. Specifying Templates in File Headers</a></li>
+<li><a href="#_choosing_templates">9.5. Choosing Templates</a></li>
+<li><a href="#_core_templates">9.6. Core Templates</a></li>
+<li><a href="#experiment-templates">9.7. Experiment-Type Templates</a></li>
+<li><a href="#extending-sdrf">9.8. Extending a Template</a>
 <ul class="sectlevel3">
-<li><a href="#_template_inheritance_and_versioning_rules">7.3.1. Template Inheritance and Versioning Rules</a></li>
+<li><a href="#_when_to_add_custom_columns">9.8.1. When to Add Custom Columns</a></li>
+<li><a href="#_rules_for_custom_columns">9.8.2. Rules for Custom Columns</a></li>
+<li><a href="#_common_additional_columns">9.8.3. Common Additional Columns</a></li>
+<li><a href="#_example_adding_study_specific_columns">9.8.4. Example: Adding Study-Specific Columns</a></li>
 </ul>
 </li>
-<li><a href="#column-headers">7.4. Table Column headers</a></li>
-<li><a href="#sdrf-file-standardization">7.5. Table Cell values</a></li>
+<li><a href="#study-variables">9.9. Contributing New Templates</a></li>
 </ul>
 </li>
-<li><a href="#from-sample-metadata">8. SDRF-Proteomics: Samples metadata</a>
+<li><a href="#_factor_values_study_variables">10. Factor Values (Study Variables)</a>
 <ul class="sectlevel2">
-<li><a href="#biosamples-integration">8.1. BioSamples database integration</a></li>
-<li><a href="#sample-technical-biological-replicates">8.2. Encoding sample technical and biological replicates</a></li>
-<li><a href="#pooled-samples">8.3. Pooled samples</a></li>
-<li><a href="#_sample_metadata_guidelines">8.4. Sample Metadata Guidelines</a></li>
+<li><a href="#_column_format">10.1. Column Format</a></li>
+<li><a href="#_when_to_use_factor_values">10.2. When to Use Factor Values</a></li>
+<li><a href="#_rules">10.3. Rules</a></li>
+<li><a href="#_example">10.4. Example</a></li>
 </ul>
 </li>
-<li><a href="#from-sample-data">9. SDRF-Proteomics: data files metadata</a>
-<ul class="sectlevel2">
-<li><a href="#cv-term-format">9.1. CV Term Format for Data File Metadata</a></li>
-<li><a href="#sample-prep-fragmentation">9.2. Sample Preparation and Fragmentation (MS-based only)</a></li>
-<li><a href="#data-acquisition-method">9.3. Proteomics data acquisition method</a></li>
-<li><a href="#_ms_proteomics_template">9.4. MS-Proteomics Template</a></li>
-</ul>
-</li>
-<li><a href="#additional-sdrf-rules">10. Additional SDRF Rules</a>
-<ul class="sectlevel2">
-<li><a href="#column-cardinality">10.1. Column Cardinality</a></li>
-<li><a href="#row-uniqueness">10.2. Row Uniqueness Requirements</a></li>
-</ul>
-</li>
-<li><a href="#templates">11. Templates</a>
-<ul class="sectlevel2">
-<li><a href="#_what_is_a_template">11.1. What is a Template?</a></li>
-<li><a href="#_template_layered_architecture">11.2. Template Layered Architecture</a></li>
-<li><a href="#_template_inheritance">11.3. Template Inheritance</a></li>
-<li><a href="#_specifying_templates_in_file_headers">11.4. Specifying Templates in File Headers</a></li>
-<li><a href="#_choosing_templates">11.5. Choosing Templates</a></li>
-<li><a href="#_core_templates">11.6. Core Templates</a></li>
-<li><a href="#experiment-templates">11.7. Experiment-Type Templates</a></li>
-<li><a href="#extending-sdrf">11.8. Extending a Template</a>
-<ul class="sectlevel3">
-<li><a href="#_when_to_add_custom_columns">11.8.1. When to Add Custom Columns</a></li>
-<li><a href="#_rules_for_custom_columns">11.8.2. Rules for Custom Columns</a></li>
-<li><a href="#_common_additional_columns">11.8.3. Common Additional Columns</a></li>
-<li><a href="#_example_adding_study_specific_columns">11.8.4. Example: Adding Study-Specific Columns</a></li>
-</ul>
-</li>
-<li><a href="#study-variables">11.9. Contributing New Templates</a></li>
-</ul>
-</li>
-<li><a href="#_factor_values_study_variables">12. Factor Values (Study Variables)</a>
-<ul class="sectlevel2">
-<li><a href="#_column_format">12.1. Column Format</a></li>
-<li><a href="#_when_to_use_factor_values">12.2. When to Use Factor Values</a></li>
-<li><a href="#_rules">12.3. Rules</a></li>
-<li><a href="#_example">12.4. Example</a></li>
-</ul>
-</li>
-<li><a href="#ontologies-supported">13. Ontologies and Controlled Vocabularies</a></li>
-<li><a href="#example-annotated-datasets">14. Examples of Annotated Datasets</a></li>
-<li><a href="#_intellectual_property_statement">15. Intellectual Property Statement</a></li>
-<li><a href="#_copyright_notice">16. Copyright Notice</a></li>
-<li><a href="#_how_to_cite">17. How to cite</a></li>
+<li><a href="#ontologies-supported">11. Ontologies and Controlled Vocabularies</a></li>
+<li><a href="#example-annotated-datasets">12. Examples of Annotated Datasets</a></li>
+<li><a href="#_intellectual_property_statement">13. Intellectual Property Statement</a></li>
+<li><a href="#_copyright_notice">14. Copyright Notice</a></li>
+<li><a href="#_how_to_cite">15. How to cite</a></li>
 <li><a href="#_references">References</a></li>
 </ul>
 </div>
@@ -176,7 +168,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="quick-start"><a class="anchor" href="#quick-start"></a><a class="link" href="#quick-start">4. Understanding SDRF-Proteomics</a></h2>
+<h2 id="quick-start"><a class="anchor" href="#quick-start"></a><a class="link" href="#quick-start">4. The SDRF-Proteomics Format</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The format is a tab-delimited file where each <strong>ROW</strong> corresponds to a relationship between a Sample and a Data file, each <strong>COLUMN</strong> corresponds to an attribute/property of the Sample, the Data file, or the Factor values, and the value in each <strong>CELL</strong> is the specific value of the property for a given Sample/Data file/Factor value.</p>
@@ -332,113 +324,14 @@ This minimal example shows a <strong>mass spectrometry-based</strong> proteomics
 </tr>
 </table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">5. Validating SDRF Files</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The official validator for SDRF-Proteomics files is <a href="https://github.com/bigbio/sdrf-pipelines"><strong>sdrf-pipelines</strong></a>, a Python tool that checks your SDRF file for errors and compliance with the specification.</p>
-</div>
-<div class="paragraph">
-<p>Installation:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Basic Validation:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Validate an SDRF file
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
-
-# Validate with a specific template
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For more information, visit: <a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines on GitHub</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_specification_structure"><a class="anchor" href="#_specification_structure"></a><a class="link" href="#_specification_structure">6. Specification structure</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This document describes the main specification of SDRF-Proteomics, the structure of the specification (<strong>Figure 2</strong>), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.html">The SDRF-Proteomics core specification</a>: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.</p>
-</li>
-<li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Templates</a>: All templates are organized in the <code>templates/</code> directory. This includes:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Core templates</strong> (organism-based): <a href="templates/human.html">human</a>, <a href="templates/vertebrates.html">vertebrates</a>, <a href="templates/invertebrates.html">invertebrates</a>, <a href="templates/plants.html">plants</a></p>
-</li>
-<li>
-<p><strong>Specialized templates</strong> (experiment-type): <a href="templates/cell-lines.html">cell-lines</a> (sample), <a href="templates/dda-acquisition.html">DDA acquisition</a> (data), <a href="templates/dia-acquisition.html">DIA acquisition</a> (data), <a href="templates/single-cell.html">single-cell</a> (mixed), <a href="templates/affinity-proteomics.html">affinity-proteomics</a> (data), <a href="templates/crosslinking.html">crosslinking</a> (data), <a href="templates/immunopeptidomics.html">immunopeptidomics</a> (mixed), <a href="templates/metaproteomics.html">metaproteomics</a> (mixed)</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Each template has its own directory containing a detailed README.adoc with checklists and examples, plus a template file ({name}-template.sdrf.tsv) with column headers. See the <a href="#templates">Templates</a> section.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/sdrf-guidelines-structure.png" alt="Logo">
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The main specification is in the <code>sdrf-proteomics</code> directory. All templates are organized in <code>sdrf-proteomics/templates/</code>. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.</p>
-</div>
-<div class="paragraph">
-<p>A set of examples and annotated projects from ProteomeXchange can be found here: <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects" class="bare">https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects</a></p>
-</div>
-<div class="paragraph">
-<p>Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - <a href="https://github.com/bigbio/sdrf-pipelines" class="bare">https://github.com/bigbio/sdrf-pipelines</a>). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.</p>
-</div>
 <div class="sect2">
-<h3 id="versioning"><a class="anchor" href="#versioning"></a><a class="link" href="#versioning">6.1. Versioning</a></h3>
+<h3 id="versioning"><a class="anchor" href="#versioning"></a><a class="link" href="#versioning">4.1. Versioning</a></h3>
 <div class="paragraph">
 <p>The SDRF-Proteomics specification uses <a href="https://semver.org/">Semantic Versioning</a> (MAJOR.MINOR.PATCH). Version numbers are prefixed with "v" (e.g., v1.1.0). Changes are proposed via GitHub pull requests to the dev branch.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_sdrf_proteomics_detailed_specification"><a class="anchor" href="#_sdrf_proteomics_detailed_specification"></a><a class="link" href="#_sdrf_proteomics_detailed_specification">7. SDRF-Proteomics Detailed Specification</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This section provides the detailed rules and requirements for the SDRF-Proteomics format.</p>
-</div>
 <div class="sect2">
-<h3 id="sdrf-file-rules"><a class="anchor" href="#sdrf-file-rules"></a><a class="link" href="#sdrf-file-rules">7.1. Format rules</a></h3>
+<h3 id="sdrf-file-rules"><a class="anchor" href="#sdrf-file-rules"></a><a class="link" href="#sdrf-file-rules">4.2. Format rules</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -448,7 +341,7 @@ The main specification is in the <code>sdrf-proteomics</code> directory. All tem
 <p><strong>Space sensitivity</strong>: The SDRF is sensitive to spaces in column names (<code>sourcename</code> ≠ <code>source name</code>). Column names must include appropriate spaces (e.g., <code>source name</code>, not <code>sourcename</code>) but must NOT have a space before the bracket (e.g., <code>characteristics[organism]</code>, not <code>characteristics [organism]</code>).</p>
 </li>
 <li>
-<p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#from-sample-metadata">Chapter 8</a>; then the data file metadata columns in <a href="#from-sample-data">Chapter 9</a>; followed by the factor values columns in <a href="#study-variables">Section 11.9</a>.</p>
+<p><strong>Column order</strong>: The SDRF columns follows some structure; first the sample metadata columns in <a href="#from-sample-metadata">Chapter 6</a>; then the data file metadata columns in <a href="#from-sample-data">Chapter 7</a>; followed by the factor values columns in <a href="#study-variables">Section 9.9</a>.</p>
 </li>
 <li>
 <p><strong>Extension</strong>: The extension of the SDRF file SHOULD be <strong>sdrf.tsv (preferred)</strong> or .txt.</p>
@@ -457,7 +350,7 @@ The main specification is in the <code>sdrf-proteomics</code> directory. All tem
 </div>
 </div>
 <div class="sect2">
-<h3 id="reserved-words"><a class="anchor" href="#reserved-words"></a><a class="link" href="#reserved-words">7.2. Reserved words</a></h3>
+<h3 id="reserved-words"><a class="anchor" href="#reserved-words"></a><a class="link" href="#reserved-words">4.3. Reserved words</a></h3>
 <div class="paragraph">
 <p>There are general scenarios where cell values cannot be provided with actual data. The following reserved words MUST be used in these cases:</p>
 </div>
@@ -522,7 +415,7 @@ The main specification is in the <code>sdrf-proteomics</code> directory. All tem
 </table>
 </div>
 <div class="sect2">
-<h3 id="file-level-metadata"><a class="anchor" href="#file-level-metadata"></a><a class="link" href="#file-level-metadata">7.3. SDRF file-level metadata</a></h3>
+<h3 id="file-level-metadata"><a class="anchor" href="#file-level-metadata"></a><a class="link" href="#file-level-metadata">4.4. SDRF file-level metadata</a></h3>
 <div class="paragraph">
 <p>Since version 1.1.0, SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by other omics formats such as VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.</p>
 </div>
@@ -601,7 +494,7 @@ The main specification is in the <code>sdrf-proteomics</code> directory. All tem
 </tbody>
 </table>
 <div class="paragraph">
-<p>Example of an SDRF file with header comments (simplified example showing only select columns; see <a href="#templates">Chapter 11</a> for complete required columns):</p>
+<p>Example of an SDRF file with header comments (simplified example showing only select columns; see <a href="#templates">Chapter 9</a> for complete required columns):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -613,43 +506,42 @@ source name	characteristics[organism]	characteristics[organism part]	characteris
 sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_template_inheritance_and_versioning_rules"><a class="anchor" href="#_template_inheritance_and_versioning_rules"></a><a class="link" href="#_template_inheritance_and_versioning_rules">7.3.1. Template Inheritance and Versioning Rules</a></h4>
-<div class="paragraph">
-<p><strong>Template format:</strong> Each template is declared on its own line with its version:</p>
 </div>
-<div class="listingblock">
+<div class="sect2">
+<h3 id="_specification_structure"><a class="anchor" href="#_specification_structure"></a><a class="link" href="#_specification_structure">4.5. Specification structure</a></h3>
+<div class="paragraph">
+<p>This document describes the main specification of SDRF-Proteomics, the structure of the specification (<strong>Figure 2</strong>), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.html">The SDRF-Proteomics core specification</a>: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.</p>
+</li>
+<li>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Templates</a>: All templates are organized in the <code>templates/</code> directory. This includes:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Core templates</strong> (organism-based): <a href="templates/human.html">human</a>, <a href="templates/vertebrates.html">vertebrates</a>, <a href="templates/invertebrates.html">invertebrates</a>, <a href="templates/plants.html">plants</a></p>
+</li>
+<li>
+<p><strong>Specialized templates</strong> (experiment-type): <a href="templates/cell-lines.html">cell-lines</a> (sample), <a href="templates/dda-acquisition.html">DDA acquisition</a> (data), <a href="templates/dia-acquisition.html">DIA acquisition</a> (data), <a href="templates/single-cell.html">single-cell</a> (mixed), <a href="templates/affinity-proteomics.html">affinity-proteomics</a> (data), <a href="templates/crosslinking.html">crosslinking</a> (data), <a href="templates/immunopeptidomics.html">immunopeptidomics</a> (mixed), <a href="templates/metaproteomics.html">metaproteomics</a> (mixed)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each template has its own directory containing a detailed README.adoc with checklists and examples, plus a template file ({name}-template.sdrf.tsv) with column headers. See the <a href="#templates">Templates</a> section.</p>
+</div>
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#template=template_name,version=vX.Y.Z</code></pre>
+<img src="images/sdrf-guidelines-structure.png" alt="Logo">
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Template inheritance:</strong> Only list leaf templates. Parent templates are implied by inheritance:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv"># crosslinking inherits from ms-proteomics (no need to list ms-proteomics)
-#template=human,version=v1.1.0
-#template=crosslinking,version=v1.0.0
-
-# olink inherits from affinity-proteomics (no need to list affinity-proteomics)
-#template=human,version=v1.1.0
-#template=olink,version=v1.0.0</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Independent versioning:</strong> Each template can have its own version, allowing templates to evolve independently:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv"># Templates at different versions
-#template=human,version=v1.2.0
-#template=crosslinking,version=v1.0.0
-#template=phosphoproteomics,version=v1.1.0</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Source field:</strong> The <code>#source</code> header replaces the per-row <code>comment[tool metadata]</code> column. Use it to record the tool or origin that generated the SDRF file (e.g., <code>lesSDRF v0.1.0</code>, <code>PRIDE</code>, <code>user-generated</code>).</p>
+<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -658,15 +550,23 @@ sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 <div class="title">Note</div>
 </td>
 <td class="content">
-Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., <code>file_format</code>) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
+The main specification is in the <code>sdrf-proteomics</code> directory. All templates are organized in <code>sdrf-proteomics/templates/</code>. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type.
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.</p>
+</div>
+<div class="paragraph">
+<p>A set of examples and annotated projects from ProteomeXchange can be found here: <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects" class="bare">https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects</a></p>
+</div>
+<div class="paragraph">
+<p>Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - <a href="https://github.com/bigbio/sdrf-pipelines" class="bare">https://github.com/bigbio/sdrf-pipelines</a>). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">7.4. Table Column headers</a></h3>
+<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">4.6. Table Column headers</a></h3>
 <div class="paragraph">
 <p>Depending on each section the column headers (property names) will be prefixed with the following prefixes:</p>
 </div>
@@ -693,14 +593,14 @@ Header comments are OPTIONAL. SDRF files without header comments are still valid
 <div class="title">Note</div>
 </td>
 <td class="content">
-A list of all controlled vocabularies and ontologies supported are in the <a href="#ontologies-supported">Chapter 13</a> section. On each section we also provide a list of properties that are supported.
+A list of all controlled vocabularies and ontologies supported are in the <a href="#ontologies-supported">Chapter 11</a> section. On each section we also provide a list of properties that are supported.
 </td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">7.5. Table Cell values</a></h3>
+<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">4.7. Table Cell values</a></h3>
 <div class="paragraph">
 <p>The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.</p>
 </div>
@@ -774,7 +674,38 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </div>
 </div>
 <div class="sect1">
-<h2 id="from-sample-metadata"><a class="anchor" href="#from-sample-metadata"></a><a class="link" href="#from-sample-metadata">8. SDRF-Proteomics: Samples metadata</a></h2>
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">5. Validating SDRF Files</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The official validator for SDRF-Proteomics files is <a href="https://github.com/bigbio/sdrf-pipelines"><strong>sdrf-pipelines</strong></a>, a Python tool that checks your SDRF file for errors and compliance with the specification.</p>
+</div>
+<div class="paragraph">
+<p>Installation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Basic Validation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Validate an SDRF file
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+
+# Validate with a specific template
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more information, visit: <a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines on GitHub</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="from-sample-metadata"><a class="anchor" href="#from-sample-metadata"></a><a class="link" href="#from-sample-metadata">6. SDRF-Proteomics: Samples metadata</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Sample metadata section provides information about the samples of origin and their characteristics. Each sample contains a <em>source name</em> (unique identifier) and a set of <em>characteristics</em> columns. The first column of the file should be the <em>source name</em> and the following columns should be the characteristics of the sample. For example, for any proteomics experiment (human, vertebrate, cell line), the following characteristics should be provided:</p>
@@ -864,13 +795,13 @@ Each characteristic name in the column header SHOULD be a CV term from the EFO o
 <div class="title">Important</div>
 </td>
 <td class="content">
-Multiple values (columns) for the same <code>characteristics</code> term are allowed in SDRF-Proteomics (see <a href="#column-cardinality">Section 10.1</a>). However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g., "immunophenotype".
+Multiple values (columns) for the same <code>characteristics</code> term are allowed in SDRF-Proteomics (see <a href="#column-cardinality">Section 8.1</a>). However, it is RECOMMENDED not to use the same column in the same file. If you have multiple phenotypes, you can specify what it refers to or use another more specific term, e.g., "immunophenotype".
 </td>
 </tr>
 </table>
 </div>
 <div class="sect2">
-<h3 id="biosamples-integration"><a class="anchor" href="#biosamples-integration"></a><a class="link" href="#biosamples-integration">8.1. BioSamples database integration</a></h3>
+<h3 id="biosamples-integration"><a class="anchor" href="#biosamples-integration"></a><a class="link" href="#biosamples-integration">6.1. BioSamples database integration</a></h3>
 <div class="paragraph">
 <p><a href="https://www.ebi.ac.uk/biosamples/">BioSamples</a> provides persistent identifiers for biological samples that enable cross-database linking <a href="#ref5">[5]</a>. Use the optional <em>characteristics[biosample accession number]</em> column to link samples to BioSamples entries (EBI format: SAMEA*, NCBI format: SAMN*).</p>
 </div>
@@ -939,7 +870,7 @@ BioSample accession numbers from NCBI follow the format <code>SAMNxxxxxxxxxx</co
 </div>
 </div>
 <div class="sect2">
-<h3 id="sample-technical-biological-replicates"><a class="anchor" href="#sample-technical-biological-replicates"></a><a class="link" href="#sample-technical-biological-replicates">8.2. Encoding sample technical and biological replicates</a></h3>
+<h3 id="sample-technical-biological-replicates"><a class="anchor" href="#sample-technical-biological-replicates"></a><a class="link" href="#sample-technical-biological-replicates">6.2. Encoding sample technical and biological replicates</a></h3>
 <div class="paragraph">
 <p>SDRF-Proteomics uses two columns to track replicates <a href="#ref4">[4]</a>:</p>
 </div>
@@ -1101,7 +1032,7 @@ Both <em>characteristics[biological replicate]</em> and <em>comment[technical re
 </div>
 </div>
 <div class="sect2">
-<h3 id="pooled-samples"><a class="anchor" href="#pooled-samples"></a><a class="link" href="#pooled-samples">8.3. Pooled samples</a></h3>
+<h3 id="pooled-samples"><a class="anchor" href="#pooled-samples"></a><a class="link" href="#pooled-samples">6.3. Pooled samples</a></h3>
 <div class="paragraph">
 <p>When multiple samples are pooled into one (e.g., TMT/iTRAQ reference channels for normalization), use the <em>characteristics[pooled sample]</em> column to indicate pooling status. Allowed values:</p>
 </div>
@@ -1179,7 +1110,7 @@ For pooled samples, use <code>pooled</code> for individual-specific fields (biol
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sample_metadata_guidelines"><a class="anchor" href="#_sample_metadata_guidelines"></a><a class="link" href="#_sample_metadata_guidelines">8.4. Sample Metadata Guidelines</a></h3>
+<h3 id="_sample_metadata_guidelines"><a class="anchor" href="#_sample_metadata_guidelines"></a><a class="link" href="#_sample_metadata_guidelines">6.4. Sample Metadata Guidelines</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on annotating sample metadata, refer to the following conventions documents:</p>
 </div>
@@ -1197,13 +1128,13 @@ For pooled samples, use <code>pooled</code> for individual-specific fields (biol
 </div>
 </div>
 <div class="sect1">
-<h2 id="from-sample-data"><a class="anchor" href="#from-sample-data"></a><a class="link" href="#from-sample-data">9. SDRF-Proteomics: data files metadata</a></h2>
+<h2 id="from-sample-data"><a class="anchor" href="#from-sample-data"></a><a class="link" href="#from-sample-data">7. SDRF-Proteomics: data files metadata</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The connection between samples and data files is done using properties annotated with the <code>comment</code> prefix. All properties referring to a data file (e.g., MS run file) are annotated with the category <code>comment</code>. This differentiates data file properties from sample properties (characteristics).</p>
 </div>
 <div class="sect2">
-<h3 id="cv-term-format"><a class="anchor" href="#cv-term-format"></a><a class="link" href="#cv-term-format">9.1. CV Term Format for Data File Metadata</a></h3>
+<h3 id="cv-term-format"><a class="anchor" href="#cv-term-format"></a><a class="link" href="#cv-term-format">7.1. CV Term Format for Data File Metadata</a></h3>
 <div class="paragraph">
 <p>For data file metadata (<code>comment</code> columns) that reference ontology terms, use the structured format: <code>NT={term name};AC={accession}</code></p>
 </div>
@@ -1323,7 +1254,7 @@ For pooled samples, use <code>pooled</code> for individual-specific fields (biol
 </div>
 </div>
 <div class="sect2">
-<h3 id="sample-prep-fragmentation"><a class="anchor" href="#sample-prep-fragmentation"></a><a class="link" href="#sample-prep-fragmentation">9.2. Sample Preparation and Fragmentation (MS-based only)</a></h3>
+<h3 id="sample-prep-fragmentation"><a class="anchor" href="#sample-prep-fragmentation"></a><a class="link" href="#sample-prep-fragmentation">7.2. Sample Preparation and Fragmentation (MS-based only)</a></h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1354,7 +1285,7 @@ This section applies to <strong>mass spectrometry-based proteomics</strong> expe
 </div>
 </div>
 <div class="sect2">
-<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">9.3. Proteomics data acquisition method</a></h3>
+<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">7.3. Proteomics data acquisition method</a></h3>
 <div class="paragraph">
 <p>Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the <em>comment[proteomics data acquisition method]</em> column. The values MUST be children of the PRIDE ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659">proteomics data acquisition method (PRIDE:0000659)</a>. The following values are commonly used:</p>
 </div>
@@ -1413,7 +1344,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_ms_proteomics_template"><a class="anchor" href="#_ms_proteomics_template"></a><a class="link" href="#_ms_proteomics_template">9.4. MS-Proteomics Template</a></h3>
+<h3 id="_ms_proteomics_template"><a class="anchor" href="#_ms_proteomics_template"></a><a class="link" href="#_ms_proteomics_template">7.4. MS-Proteomics Template</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
@@ -1428,10 +1359,10 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect1">
-<h2 id="additional-sdrf-rules"><a class="anchor" href="#additional-sdrf-rules"></a><a class="link" href="#additional-sdrf-rules">10. Additional SDRF Rules</a></h2>
+<h2 id="additional-sdrf-rules"><a class="anchor" href="#additional-sdrf-rules"></a><a class="link" href="#additional-sdrf-rules">8. Additional SDRF Rules</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="column-cardinality"><a class="anchor" href="#column-cardinality"></a><a class="link" href="#column-cardinality">10.1. Column Cardinality</a></h3>
+<h3 id="column-cardinality"><a class="anchor" href="#column-cardinality"></a><a class="link" href="#column-cardinality">8.1. Column Cardinality</a></h3>
 <div class="paragraph">
 <p>Some columns can appear multiple times for the same sample. The cardinality rules are:</p>
 </div>
@@ -1476,7 +1407,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">10.2. Row Uniqueness Requirements</a></h3>
+<h3 id="row-uniqueness"><a class="anchor" href="#row-uniqueness"></a><a class="link" href="#row-uniqueness">8.2. Row Uniqueness Requirements</a></h3>
 <div class="paragraph">
 <p>SDRF files must satisfy specific uniqueness constraints to ensure data integrity and enable proper indexing by analysis tools.</p>
 </div>
@@ -1563,10 +1494,10 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </div>
 </div>
 <div class="sect1">
-<h2 id="templates"><a class="anchor" href="#templates"></a><a class="link" href="#templates">11. Templates</a></h2>
+<h2 id="templates"><a class="anchor" href="#templates"></a><a class="link" href="#templates">9. Templates</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_what_is_a_template"><a class="anchor" href="#_what_is_a_template"></a><a class="link" href="#_what_is_a_template">11.1. What is a Template?</a></h3>
+<h3 id="_what_is_a_template"><a class="anchor" href="#_what_is_a_template"></a><a class="link" href="#_what_is_a_template">9.1. What is a Template?</a></h3>
 <div class="paragraph">
 <p>A <strong>template</strong> in SDRF-Proteomics is a predefined set of metadata columns (both required and recommended) that ensures consistent and complete annotation for a specific type of experiment or sample. Templates serve the same purpose as <strong>metadata checklists</strong>, <strong>minimum information standards</strong> (like MIAPE), or <strong>validation schemas</strong> in other data standards—they define what information must be captured to make a dataset FAIR (Findable, Accessible, Interoperable, Reusable).</p>
 </div>
@@ -1575,7 +1506,7 @@ For multiplexed experiments (e.g., TMT, iTRAQ), multiple SDRF rows will share th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_template_layered_architecture"><a class="anchor" href="#_template_layered_architecture"></a><a class="link" href="#_template_layered_architecture">11.2. Template Layered Architecture</a></h3>
+<h3 id="_template_layered_architecture"><a class="anchor" href="#_template_layered_architecture"></a><a class="link" href="#_template_layered_architecture">9.2. Template Layered Architecture</a></h3>
 <div class="paragraph">
 <p>Templates in SDRF-Proteomics follow a <strong>layered architecture</strong> that separates concerns:</p>
 </div>
@@ -1657,7 +1588,7 @@ The <strong>base</strong> template is an internal construction artifact that sho
 </div>
 </div>
 <div class="sect2">
-<h3 id="_template_inheritance"><a class="anchor" href="#_template_inheritance"></a><a class="link" href="#_template_inheritance">11.3. Template Inheritance</a></h3>
+<h3 id="_template_inheritance"><a class="anchor" href="#_template_inheritance"></a><a class="link" href="#_template_inheritance">9.3. Template Inheritance</a></h3>
 <div class="paragraph">
 <p>Templates form a layered inheritance hierarchy. Child templates inherit all columns and validators from parent templates and can add new columns or strengthen requirements.</p>
 </div>
@@ -1760,7 +1691,7 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 </div>
 </div>
 <div class="sect2">
-<h3 id="_specifying_templates_in_file_headers"><a class="anchor" href="#_specifying_templates_in_file_headers"></a><a class="link" href="#_specifying_templates_in_file_headers">11.4. Specifying Templates in File Headers</a></h3>
+<h3 id="_specifying_templates_in_file_headers"><a class="anchor" href="#_specifying_templates_in_file_headers"></a><a class="link" href="#_specifying_templates_in_file_headers">9.4. Specifying Templates in File Headers</a></h3>
 <div class="paragraph">
 <p>When declaring templates in the <code>#template</code> header field, follow these rules:</p>
 </div>
@@ -1865,7 +1796,7 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 </table>
 </div>
 <div class="sect2">
-<h3 id="_choosing_templates"><a class="anchor" href="#_choosing_templates"></a><a class="link" href="#_choosing_templates">11.5. Choosing Templates</a></h3>
+<h3 id="_choosing_templates"><a class="anchor" href="#_choosing_templates"></a><a class="link" href="#_choosing_templates">9.5. Choosing Templates</a></h3>
 <div class="paragraph">
 <p>First, determine your proteomics technology and select the appropriate technology template:</p>
 </div>
@@ -1901,7 +1832,7 @@ When a column is marked as RECOMMENDED or OPTIONAL, it means users should evalua
 </table>
 </div>
 <div class="sect2">
-<h3 id="_core_templates"><a class="anchor" href="#_core_templates"></a><a class="link" href="#_core_templates">11.6. Core Templates</a></h3>
+<h3 id="_core_templates"><a class="anchor" href="#_core_templates"></a><a class="link" href="#_core_templates">9.6. Core Templates</a></h3>
 <div class="paragraph">
 <p>Add the appropriate sample template based on your sample organism:</p>
 </div>
@@ -1964,7 +1895,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="experiment-templates"><a class="anchor" href="#experiment-templates"></a><a class="link" href="#experiment-templates">11.7. Experiment-Type Templates</a></h3>
+<h3 id="experiment-templates"><a class="anchor" href="#experiment-templates"></a><a class="link" href="#experiment-templates">9.7. Experiment-Type Templates</a></h3>
 <div class="paragraph">
 <p>In addition to sample templates, SDRF-Proteomics provides specialized experiment-type templates. These templates extend the core templates with methodology-specific columns.</p>
 </div>
@@ -2001,7 +1932,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect2">
-<h3 id="extending-sdrf"><a class="anchor" href="#extending-sdrf"></a><a class="link" href="#extending-sdrf">11.8. Extending a Template</a></h3>
+<h3 id="extending-sdrf"><a class="anchor" href="#extending-sdrf"></a><a class="link" href="#extending-sdrf">9.8. Extending a Template</a></h3>
 <div class="paragraph">
 <p>Templates define the minimum required and recommended columns for a given experiment type. However, SDRF-Proteomics is designed to be <strong>extensible</strong>:</p>
 </div>
@@ -2016,7 +1947,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_when_to_add_custom_columns"><a class="anchor" href="#_when_to_add_custom_columns"></a><a class="link" href="#_when_to_add_custom_columns">11.8.1. When to Add Custom Columns</a></h4>
+<h4 id="_when_to_add_custom_columns"><a class="anchor" href="#_when_to_add_custom_columns"></a><a class="link" href="#_when_to_add_custom_columns">9.8.1. When to Add Custom Columns</a></h4>
 <div class="paragraph">
 <p>Add custom columns when your experiment requires metadata that is:</p>
 </div>
@@ -2038,7 +1969,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rules_for_custom_columns"><a class="anchor" href="#_rules_for_custom_columns"></a><a class="link" href="#_rules_for_custom_columns">11.8.2. Rules for Custom Columns</a></h4>
+<h4 id="_rules_for_custom_columns"><a class="anchor" href="#_rules_for_custom_columns"></a><a class="link" href="#_rules_for_custom_columns">9.8.2. Rules for Custom Columns</a></h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -2052,7 +1983,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 <p><code>comment[&#8230;&#8203;]</code> - For technical or protocol-related metadata (data acquisition, processing)</p>
 </li>
 <li>
-<p><code>factor value[&#8230;&#8203;]</code> - For experimental variables (see <a href="#study-variables">Section 11.9</a>)</p>
+<p><code>factor value[&#8230;&#8203;]</code> - For experimental variables (see <a href="#study-variables">Section 9.9</a>)</p>
 </li>
 </ul>
 </div>
@@ -2096,7 +2027,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect3">
-<h4 id="_common_additional_columns"><a class="anchor" href="#_common_additional_columns"></a><a class="link" href="#_common_additional_columns">11.8.3. Common Additional Columns</a></h4>
+<h4 id="_common_additional_columns"><a class="anchor" href="#_common_additional_columns"></a><a class="link" href="#_common_additional_columns">9.8.3. Common Additional Columns</a></h4>
 <div class="paragraph">
 <p>Beyond template requirements, many commonly used columns can enhance your SDRF file. For a comprehensive list of additional columns for sample metadata (treatment, time point, dose, BMI, smoking status, etc.) and data metadata (sample preparation, enrichment method, etc.), see:</p>
 </div>
@@ -2112,7 +2043,7 @@ The <a href="metadata-guidelines/sample-metadata.html#cell-type-annotation">char
 </div>
 </div>
 <div class="sect3">
-<h4 id="_example_adding_study_specific_columns"><a class="anchor" href="#_example_adding_study_specific_columns"></a><a class="link" href="#_example_adding_study_specific_columns">11.8.4. Example: Adding Study-Specific Columns</a></h4>
+<h4 id="_example_adding_study_specific_columns"><a class="anchor" href="#_example_adding_study_specific_columns"></a><a class="link" href="#_example_adding_study_specific_columns">9.8.4. Example: Adding Study-Specific Columns</a></h4>
 <div class="paragraph">
 <p>For a drug treatment time-course study, you might add columns beyond the template requirements:</p>
 </div>
@@ -2176,7 +2107,7 @@ When adding custom columns, you MUST use valid ontology terms for column names. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="study-variables"><a class="anchor" href="#study-variables"></a><a class="link" href="#study-variables">11.9. Contributing New Templates</a></h3>
+<h3 id="study-variables"><a class="anchor" href="#study-variables"></a><a class="link" href="#study-variables">9.9. Contributing New Templates</a></h3>
 <div class="paragraph">
 <p>To contribute to template development or propose a new template:</p>
 </div>
@@ -2197,19 +2128,19 @@ When adding custom columns, you MUST use valid ontology terms for column names. 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_factor_values_study_variables"><a class="anchor" href="#_factor_values_study_variables"></a><a class="link" href="#_factor_values_study_variables">12. Factor Values (Study Variables)</a></h2>
+<h2 id="_factor_values_study_variables"><a class="anchor" href="#_factor_values_study_variables"></a><a class="link" href="#_factor_values_study_variables">10. Factor Values (Study Variables)</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Factor values identify the experimental variables being studied - the conditions you want to compare in your analysis. They highlight which sample characteristics are the focus of your experiment.</p>
 </div>
 <div class="sect2">
-<h3 id="_column_format"><a class="anchor" href="#_column_format"></a><a class="link" href="#_column_format">12.1. Column Format</a></h3>
+<h3 id="_column_format"><a class="anchor" href="#_column_format"></a><a class="link" href="#_column_format">10.1. Column Format</a></h3>
 <div class="paragraph">
 <p><code>factor value[{variable name}]</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_when_to_use_factor_values"><a class="anchor" href="#_when_to_use_factor_values"></a><a class="link" href="#_when_to_use_factor_values">12.2. When to Use Factor Values</a></h3>
+<h3 id="_when_to_use_factor_values"><a class="anchor" href="#_when_to_use_factor_values"></a><a class="link" href="#_when_to_use_factor_values">10.2. When to Use Factor Values</a></h3>
 <div class="paragraph">
 <p>Use factor values to indicate:</p>
 </div>
@@ -2240,7 +2171,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 </div>
 <div class="sect2">
-<h3 id="_rules"><a class="anchor" href="#_rules"></a><a class="link" href="#_rules">12.3. Rules</a></h3>
+<h3 id="_rules"><a class="anchor" href="#_rules"></a><a class="link" href="#_rules">10.3. Rules</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2256,7 +2187,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example"><a class="anchor" href="#_example"></a><a class="link" href="#_example">12.4. Example</a></h3>
+<h3 id="_example"><a class="anchor" href="#_example"></a><a class="link" href="#_example">10.4. Example</a></h3>
 <div class="paragraph">
 <p>In an experiment comparing tumor vs. normal tissue across different cancer stages:</p>
 </div>
@@ -2315,7 +2246,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 </div>
 <div class="sect1">
-<h2 id="ontologies-supported"><a class="anchor" href="#ontologies-supported"></a><a class="link" href="#ontologies-supported">13. Ontologies and Controlled Vocabularies</a></h2>
+<h2 id="ontologies-supported"><a class="anchor" href="#ontologies-supported"></a><a class="link" href="#ontologies-supported">11. Ontologies and Controlled Vocabularies</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>SDRF-Proteomics uses ontologies and controlled vocabularies (CVs) to standardize metadata values. The following ontologies are supported:</p>
@@ -2500,7 +2431,7 @@ Use <code>normal</code> (not "control") in the disease field for healthy samples
 </div>
 </div>
 <div class="sect1">
-<h2 id="example-annotated-datasets"><a class="anchor" href="#example-annotated-datasets"></a><a class="link" href="#example-annotated-datasets">14. Examples of Annotated Datasets</a></h2>
+<h2 id="example-annotated-datasets"><a class="anchor" href="#example-annotated-datasets"></a><a class="link" href="#example-annotated-datasets">12. Examples of Annotated Datasets</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following table provides links to example SDRF files for different experiment types. Click "View in Explorer" to open the SDRF file in the interactive viewer.</p>
@@ -2585,7 +2516,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_intellectual_property_statement"><a class="anchor" href="#_intellectual_property_statement"></a><a class="link" href="#_intellectual_property_statement">15. Intellectual Property Statement</a></h2>
+<h2 id="_intellectual_property_statement"><a class="anchor" href="#_intellectual_property_statement"></a><a class="link" href="#_intellectual_property_statement">13. Intellectual Property Statement</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The PSI takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Copies of claims of rights made available for publication and any assurances of licenses to be made available or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the PSI Chair.</p>
@@ -2596,7 +2527,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_copyright_notice"><a class="anchor" href="#_copyright_notice"></a><a class="link" href="#_copyright_notice">16. Copyright Notice</a></h2>
+<h2 id="_copyright_notice"><a class="anchor" href="#_copyright_notice"></a><a class="link" href="#_copyright_notice">14. Copyright Notice</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Copyright &#169; Proteomics Standards Initiative (2020). All Rights Reserved.</p>
@@ -2613,7 +2544,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_how_to_cite"><a class="anchor" href="#_how_to_cite"></a><a class="link" href="#_how_to_cite">17. How to cite</a></h2>
+<h2 id="_how_to_cite"><a class="anchor" href="#_how_to_cite"></a><a class="link" href="#_how_to_cite">15. How to cite</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Please cite this document as:</p>
@@ -2650,7 +2581,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-27 13:45:34 UTC
+Last updated 2026-01-27 13:54:44 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
