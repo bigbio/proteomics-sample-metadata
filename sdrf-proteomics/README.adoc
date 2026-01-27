@@ -61,7 +61,7 @@ Here, we introduced the Sample and Data Relationship Format (SDRF-Proteomics) to
 This specification, which is a community effort, aims to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files.
 
 [[quick-start]]
-== Understanding SDRF-Proteomics
+== The SDRF-Proteomics Format
 
 The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The format is a tab-delimited file where each *ROW* corresponds to a relationship between a Sample and a Data file, each *COLUMN* corresponds to an attribute/property of the Sample, the Data file, or the Factor values, and the value in each **CELL** is the specific value of the property for a given Sample/Data file/Factor value.
 
@@ -188,63 +188,12 @@ For a step-by-step tutorial on creating your first SDRF file, see the link:quick
 Throughout this specification, the keywords "MUST", "REQUIRED", "SHOULD", "RECOMMENDED", and "OPTIONAL" are interpreted as described in https://www.rfc-editor.org/rfc/rfc2119[RFC 2119].
 ====
 
-[[validation]]
-== Validating SDRF Files
-
-The official validator for SDRF-Proteomics files is https://github.com/bigbio/sdrf-pipelines[**sdrf-pipelines**], a Python tool that checks your SDRF file for errors and compliance with the specification.
-
-Installation:
-
-[source,bash]
-----
-pip install sdrf-pipelines
-----
-
-Basic Validation:
-
-[source,bash]
-----
-# Validate an SDRF file
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
-
-# Validate with a specific template
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
-----
-
-For more information, visit: https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines on GitHub]
-
-== Specification structure
-
-This document describes the main specification of SDRF-Proteomics, the structure of the specification (**Figure 2**), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:
-
-* https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
-
-* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Templates]: All templates are organized in the `templates/` directory. This includes:
-- **Core templates** (organism-based): link:templates/human/README.adoc[human], link:templates/vertebrates/README.adoc[vertebrates], link:templates/invertebrates/README.adoc[invertebrates], link:templates/plants/README.adoc[plants]
-- **Specialized templates** (experiment-type): link:templates/cell-lines/README.adoc[cell-lines] (sample), link:templates/dda-acquisition/README.adoc[DDA acquisition] (data), link:templates/dia-acquisition/README.adoc[DIA acquisition] (data), link:templates/single-cell/README.adoc[single-cell] (mixed), link:templates/affinity-proteomics/README.adoc[affinity-proteomics] (data), link:templates/crosslinking/README.adoc[crosslinking] (data), link:templates/immunopeptidomics/README.adoc[immunopeptidomics] (mixed), link:templates/metaproteomics/README.adoc[metaproteomics] (mixed)
-
-Each template has its own directory containing a detailed README.adoc with checklists and examples, plus a template file ({name}-template.sdrf.tsv) with column headers. See the <<templates,Templates>> section.
-
-image::images/sdrf-guidelines-structure.png[Logo]
-
-**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.
-
-NOTE: The main specification is in the `sdrf-proteomics` directory. All templates are organized in `sdrf-proteomics/templates/`. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type. 
-
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.
-
-A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
-
-Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
-
 [[versioning]]
 === Versioning
 
 The SDRF-Proteomics specification uses https://semver.org/[Semantic Versioning] (MAJOR.MINOR.PATCH). Version numbers are prefixed with "v" (e.g., v1.1.0). Changes are proposed via GitHub pull requests to the dev branch.
 
-== SDRF-Proteomics Detailed Specification
 
-This section provides the detailed rules and requirements for the SDRF-Proteomics format.
 
 [[sdrf-file-rules]]
 === Format rules
@@ -387,41 +336,29 @@ source name	characteristics[organism]	characteristics[organism part]	characteris
 sample_1	homo sapiens	liver	normal	run_1	sample_1.raw
 ----
 
-==== Template Inheritance and Versioning Rules
+=== Specification structure
 
-**Template format:** Each template is declared on its own line with its version:
+This document describes the main specification of SDRF-Proteomics, the structure of the specification (**Figure 2**), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:
 
-[source,tsv]
-----
-#template=template_name,version=vX.Y.Z
-----
+* https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.adoc[The SDRF-Proteomics core specification]: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.
 
-**Template inheritance:** Only list leaf templates. Parent templates are implied by inheritance:
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Templates]: All templates are organized in the `templates/` directory. This includes:
+- **Core templates** (organism-based): link:templates/human/README.adoc[human], link:templates/vertebrates/README.adoc[vertebrates], link:templates/invertebrates/README.adoc[invertebrates], link:templates/plants/README.adoc[plants]
+- **Specialized templates** (experiment-type): link:templates/cell-lines/README.adoc[cell-lines] (sample), link:templates/dda-acquisition/README.adoc[DDA acquisition] (data), link:templates/dia-acquisition/README.adoc[DIA acquisition] (data), link:templates/single-cell/README.adoc[single-cell] (mixed), link:templates/affinity-proteomics/README.adoc[affinity-proteomics] (data), link:templates/crosslinking/README.adoc[crosslinking] (data), link:templates/immunopeptidomics/README.adoc[immunopeptidomics] (mixed), link:templates/metaproteomics/README.adoc[metaproteomics] (mixed)
 
-[source,tsv]
-----
-# crosslinking inherits from ms-proteomics (no need to list ms-proteomics)
-#template=human,version=v1.1.0
-#template=crosslinking,version=v1.0.0
+Each template has its own directory containing a detailed README.adoc with checklists and examples, plus a template file ({name}-template.sdrf.tsv) with column headers. See the <<templates,Templates>> section.
 
-# olink inherits from affinity-proteomics (no need to list affinity-proteomics)
-#template=human,version=v1.1.0
-#template=olink,version=v1.0.0
-----
+image::images/sdrf-guidelines-structure.png[Logo]
 
-**Independent versioning:** Each template can have its own version, allowing templates to evolve independently:
+**Figure 2**: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.
 
-[source,tsv]
-----
-# Templates at different versions
-#template=human,version=v1.2.0
-#template=crosslinking,version=v1.0.0
-#template=phosphoproteomics,version=v1.1.0
-----
+NOTE: The main specification is in the `sdrf-proteomics` directory. All templates are organized in `sdrf-proteomics/templates/`. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type. 
 
-**Source field:** The `#source` header replaces the per-row `comment[tool metadata]` column. Use it to record the tool or origin that generated the SDRF file (e.g., `lesSDRF v0.1.0`, `PRIDE`, `user-generated`).
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.
 
-NOTE: Header comments are OPTIONAL. SDRF files without header comments are still valid. When present, header comments provide valuable provenance information and enable tools to handle version-specific features appropriately. Header property names use underscores (e.g., `file_format`) rather than spaces to maintain consistency with the tab-delimited nature of SDRF files and avoid ambiguity when parsing.
+A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
+
+Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
 
 [[column-headers]]
 === Table Column headers
@@ -516,6 +453,31 @@ endif::[]
 - **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:templates/ms-proteomics.html#_protein_modifications[Protein Modifications]):
 
   NT=Glu->pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E
+
+[[validation]]
+== Validating SDRF Files
+
+The official validator for SDRF-Proteomics files is https://github.com/bigbio/sdrf-pipelines[**sdrf-pipelines**], a Python tool that checks your SDRF file for errors and compliance with the specification.
+
+Installation:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+----
+
+Basic Validation:
+
+[source,bash]
+----
+# Validate an SDRF file
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+
+# Validate with a specific template
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
+----
+
+For more information, visit: https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines on GitHub]
 
 [[from-sample-metadata]]
 == SDRF-Proteomics: Samples metadata
