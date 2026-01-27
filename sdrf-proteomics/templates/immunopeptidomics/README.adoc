@@ -34,7 +34,7 @@ This document provides a template for annotating immunopeptidomics experiments i
 
 Immunopeptidomics focuses on the identification of peptides presented by major histocompatibility complex (MHC) molecules on the cell surface. These MHC-bound peptides are essential for understanding T-cell immune responses, antigen presentation, tumor-associated antigens for cancer immunotherapy, and vaccine development.
 
-Immunopeptidomics experiments have unique characteristics: specialized MHC enrichment methods, naturally processed short peptides (8-15 aa for MHC-I, 13-25 aa for MHC-II), HLA polymorphism requiring typing information, and no enzymatic digestion. This template defines the additional metadata requirements for annotating immunopeptidomics datasets.
+Immunopeptidomics experiments have unique characteristics: specialized MHC enrichment methods, naturally processed short peptides (8-15 aa for MHC-I, 12-30 aa for MHC-II), MHC polymorphism requiring typing information, and no enzymatic digestion. This template defines the additional metadata requirements for annotating immunopeptidomics datasets.
 
 [[connections]]
 == Connections to Other Omics Fields
@@ -73,13 +73,13 @@ The following columns are REQUIRED for immunopeptidomics experiments in addition
 |Method used to enrich for MHC-bound peptides from cell surface
 |1
 |EFO, PRIDE CV
-|immunoaffinity purification, mild acid elution, anti-pan HLA class I antibody (W6/32)
+|immunoaffinity purification, immunoaffinity purification (iodoacetamide), mild acid elution, anti-pan MHC class I antibody (W6/32)
 
 |characteristics[MHC class]
 |Class of MHC molecules being studied
 |1
 |Controlled vocabulary
-|MHC class I, MHC class II, MHC class I and II
+|MHC class I, MHC class II, MHC class I and II, non-canonical
 |===
 
 === Recommended Columns
@@ -89,17 +89,17 @@ The following columns are RECOMMENDED for immunopeptidomics experiments:
 |===
 |Column Name |Description |Cardinality |Ontology/CV |Example Values
 
-|characteristics[HLA typing]
-|HLA allelic composition of the sample following IMGT/HLA nomenclature
+|characteristics[MHC typing]
+|MHC allelic composition of the sample following appropriate nomenclature (IMGT/HLA for human)
 |0..*
-|IMGT/HLA nomenclature
-|HLA-A*02:01, HLA-B*07:02, HLA-C*07:02
+|IMGT/HLA nomenclature for human, appropriate nomenclature for other species
+|HLA-A*02:01, HLA-B*07:02, HLA-C*07:02, H-2Kb, H-2Db
 
-|characteristics[HLA typing method]
-|Method used to determine HLA alleles
+|characteristics[MHC typing method]
+|Method used to determine MHC alleles
 |0..1
 |Free text or controlled vocabulary
-|sequence-based typing, PCR-SSO, NGS-based HLA typing, inferred from mass spectrometry
+|sequence-based typing, PCR-SSO, NGS-based typing, inferred from mass spectrometry
 
 |comment[cell number]
 |Number of cells used for immunopeptidome extraction
@@ -122,7 +122,7 @@ The following columns are RECOMMENDED for immunopeptidomics experiments:
 |comment[antibody used]
 |Specific antibody clone used for immunoaffinity purification
 |0..1
-|Free text or controlled vocabulary
+|Free text or MRO (MHC Restriction Ontology) (https://www.ebi.ac.uk/ols4/ontologies/mro)
 |W6/32 (pan-HLA class I), L243 (HLA-DR), BB7.2 (HLA-A2)
 
 |comment[MHC binding prediction]
@@ -143,35 +143,37 @@ For samples that include an additional enzymatic digestion step (e.g., for datab
 
 - Annotate the enzyme used following standard SDRF-Proteomics conventions
 
-[[hla-annotation]]
-== HLA Typing Annotation
+[[mhc-annotation]]
+== MHC Typing Annotation
 
-HLA typing information is critical for immunopeptidomics data interpretation. When annotating HLA types:
+MHC typing information is critical for immunopeptidomics data interpretation. When annotating MHC types:
 
 === Nomenclature
 
-Follow the IMGT/HLA nomenclature standard:
+Follow the appropriate MHC nomenclature standard for your organism:
+
+**For Human (HLA):**
 
 - Format: `HLA-Gene*Allele_group:Protein`
 - Example: `HLA-A*02:01`
 
-For multiple alleles, use multiple `characteristics[HLA typing]` columns or separate alleles with semicolons:
+For multiple alleles, use multiple `characteristics[MHC typing]` columns or separate alleles with semicolons:
 
 |===
-|source name |characteristics[HLA typing] |characteristics[HLA typing] |characteristics[HLA typing]
+|source name |characteristics[MHC typing] |characteristics[MHC typing] |characteristics[MHC typing]
 |sample_001 |HLA-A*02:01 |HLA-A*03:01 |HLA-B*07:02
 |===
 
 Or alternatively:
 
 |===
-|source name |characteristics[HLA typing]
+|source name |characteristics[MHC typing]
 |sample_001 |HLA-A*02:01;HLA-A*03:01;HLA-B*07:02;HLA-B*44:02;HLA-C*07:02;HLA-C*05:01
 |===
 
 === Resolution Levels
 
-HLA types can be reported at different resolution levels:
+For human HLA types, different resolution levels can be reported:
 
 - **Two-field** (protein level): `HLA-A*02:01` - RECOMMENDED minimum
 - **Three-field** (synonymous variants): `HLA-A*02:01:01`
@@ -179,9 +181,9 @@ HLA types can be reported at different resolution levels:
 
 Use the highest resolution available from your typing method.
 
-=== Unknown HLA Types
+=== Unknown MHC Types
 
-When HLA typing is not available:
+When MHC typing is not available:
 
 - Use `not available` if typing was not performed
 - Use `not determined` if typing was attempted but failed
@@ -200,12 +202,13 @@ ifndef::env-github[]
 <th class="sample-col">source name</th>
 <th class="sample-col">characteristics[cell line]</th>
 <th class="sample-col">characteristics[MHC class]</th>
-<th class="sample-col">characteristics[HLA typing]</th>
+<th class="sample-col">characteristics[MHC typing]</th>
 <th class="ellipsis-col">...</th>
 <th class="data-col">comment[cell number]</th>
 <th class="data-col">comment[antibody used]</th>
 <th class="data-col">comment[cleavage agent details]</th>
 <th class="data-col">comment[data file]</th>
+<th class="data-col">factor value[cell line]</th>
 </tr>
 </thead>
 <tbody>
@@ -219,6 +222,7 @@ ifndef::env-github[]
 <td class="data-col">W6/32</td>
 <td class="data-col">not applicable</td>
 <td class="data-col">JY_rep1.raw</td>
+<td class="data-col">JY</td>
 </tr>
 <tr>
 <td class="sample-col">JY_cells_rep2</td>
@@ -230,6 +234,7 @@ ifndef::env-github[]
 <td class="data-col">W6/32</td>
 <td class="data-col">not applicable</td>
 <td class="data-col">JY_rep2.raw</td>
+<td class="data-col">JY</td>
 </tr>
 </tbody>
 </table>
@@ -243,10 +248,10 @@ endif::[]
 
 ifdef::env-github[]
 |===
-|source name |characteristics[cell line] |characteristics[MHC class] |characteristics[HLA typing] |... |comment[cell number] |comment[antibody used] |comment[cleavage agent details] |comment[data file]
+|source name |characteristics[cell line] |characteristics[MHC class] |characteristics[MHC typing] |... |comment[cell number] |comment[antibody used] |comment[cleavage agent details] |comment[data file] |factor value[cell line]
 
-|JY_cells_rep1 |JY |MHC class I |HLA-A*02:01;HLA-B*07:02;HLA-C*07:02 |... |1e8 cells |W6/32 |not applicable |JY_rep1.raw
-|JY_cells_rep2 |JY |MHC class I |HLA-A*02:01;HLA-B*07:02;HLA-C*07:02 |... |1e8 cells |W6/32 |not applicable |JY_rep2.raw
+|JY_cells_rep1 |JY |MHC class I |HLA-A*02:01;HLA-B*07:02;HLA-C*07:02 |... |1e8 cells |W6/32 |not applicable |JY_rep1.raw |JY
+|JY_cells_rep2 |JY |MHC class I |HLA-A*02:01;HLA-B*07:02;HLA-C*07:02 |... |1e8 cells |W6/32 |not applicable |JY_rep2.raw |JY
 |===
 endif::[]
 
@@ -257,7 +262,7 @@ NOTE: The `...` column indicates omitted columns (organism, disease, immunopepti
 
 1. **Always specify MHC class**: Indicate whether the experiment targets MHC class I, class II, or both.
 
-2. **Provide HLA typing when available**: HLA information is essential for interpreting binding motifs and comparing datasets.
+2. **Provide MHC typing when available**: MHC information is essential for interpreting binding motifs and comparing datasets.
 
 3. **Document enrichment protocol details**: Include antibody clone names, elution conditions, and any modifications to standard protocols.
 
@@ -297,7 +302,11 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template immunopeptido
 [[authors]]
 == Authors and Maintainers
 
-This template was developed by the SDRF-Proteomics community with contributions from immunopeptidomics researchers.
+This template was developed by the SDRF-Proteomics community with contributions from immunopeptidomics researchers:
+
+- [Yasset Priverol](https://github.com/ypriverol)
+- [Jonas Scheid](https://github.com/jonasscheid)
+- [Joshua Klein](https://github.com/mobiusklein)
 
 For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
 
