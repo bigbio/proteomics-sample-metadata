@@ -18,16 +18,19 @@
 <ul class="sectlevel1">
 <li><a href="#status">1. Status of this document</a></li>
 <li><a href="#abstract">2. Abstract</a></li>
-<li><a href="#motivation">3. Motivation</a></li>
+<li><a href="#motivation">3. Motivation</a>
+<ul class="sectlevel2">
+<li><a href="#_specification_structure">3.1. Specification structure</a></li>
+</ul>
+</li>
 <li><a href="#quick-start">4. The SDRF-Proteomics Format</a>
 <ul class="sectlevel2">
 <li><a href="#versioning">4.1. Versioning</a></li>
 <li><a href="#sdrf-file-rules">4.2. Format rules</a></li>
 <li><a href="#reserved-words">4.3. Reserved words</a></li>
 <li><a href="#file-level-metadata">4.4. SDRF file-level metadata</a></li>
-<li><a href="#_specification_structure">4.5. Specification structure</a></li>
-<li><a href="#column-headers">4.6. Table Column headers</a></li>
-<li><a href="#sdrf-file-standardization">4.7. Table Cell values</a></li>
+<li><a href="#column-headers">4.5. Table Column headers</a></li>
+<li><a href="#sdrf-file-standardization">4.6. Table Cell values</a></li>
 </ul>
 </li>
 <li><a href="#validation">5. Validating SDRF Files</a></li>
@@ -164,6 +167,23 @@
 </div>
 <div class="paragraph">
 <p>This specification, which is a community effort, aims to provide a standard for the proteomics community to annotate the sample metadata and its relation to the data files.</p>
+</div>
+<div class="sect2">
+<h3 id="_specification_structure"><a class="anchor" href="#_specification_structure"></a><a class="link" href="#_specification_structure">3.1. Specification structure</a></h3>
+<div class="paragraph">
+<p>SDRF-Proteomics uses a two-tier system: this <strong>core specification</strong> defines the format rules, and <strong><a href="#templates">templates</a></strong> provide metadata checklists for specific experiment types (<strong>Figure 2</strong>). Templates are organized in the <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">templates/</a> directory, each with documentation and example files.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/sdrf-guidelines-structure.png" alt="Logo">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by sample templates (human, vertebrates, etc.) and experiment-type templates (crosslinking, immunopeptidomics, etc.).</p>
+</div>
+<div class="paragraph">
+<p>The official repository is <a href="https://github.com/bigbio/proteomics-metadata-standard">GitHub</a>, where you can find <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects">annotated example projects</a> and the official validator <a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines</a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -508,65 +528,7 @@ sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_specification_structure"><a class="anchor" href="#_specification_structure"></a><a class="link" href="#_specification_structure">4.5. Specification structure</a></h3>
-<div class="paragraph">
-<p>This document describes the main specification of SDRF-Proteomics, the structure of the specification (<strong>Figure 2</strong>), how to contribute, and extend the specification. SDRF-Proteomics uses a three-tier system for organizing metadata requirements:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/sdrf-proteomics/README.html">The SDRF-Proteomics core specification</a>: This document contains the main specification, requirements and rules for the SDRF-Proteomics format. It also includes the notational conventions and the relationship to other specifications.</p>
-</li>
-<li>
-<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Templates</a>: All templates are organized in the <code>templates/</code> directory. This includes:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Core templates</strong> (organism-based): <a href="templates/human.html">human</a>, <a href="templates/vertebrates.html">vertebrates</a>, <a href="templates/invertebrates.html">invertebrates</a>, <a href="templates/plants.html">plants</a></p>
-</li>
-<li>
-<p><strong>Specialized templates</strong> (experiment-type): <a href="templates/cell-lines.html">cell-lines</a> (sample), <a href="templates/dda-acquisition.html">DDA acquisition</a> (data), <a href="templates/dia-acquisition.html">DIA acquisition</a> (data), <a href="templates/single-cell.html">single-cell</a> (mixed), <a href="templates/affinity-proteomics.html">affinity-proteomics</a> (data), <a href="templates/crosslinking.html">crosslinking</a> (data), <a href="templates/immunopeptidomics.html">immunopeptidomics</a> (mixed), <a href="templates/metaproteomics.html">metaproteomics</a> (mixed)</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Each template has its own directory containing a detailed README.adoc with checklists and examples, plus a template file ({name}-template.sdrf.tsv) with column headers. See the <a href="#templates">Templates</a> section.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/sdrf-guidelines-structure.png" alt="Logo">
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Figure 2</strong>: SDRF-Proteomics specification structure. The main specification defines the core rules and is extended by technology templates (ms-proteomics, affinity-proteomics), sample templates (human, vertebrates, etc.), and specialized experiment-type templates.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The main specification is in the <code>sdrf-proteomics</code> directory. All templates are organized in <code>sdrf-proteomics/templates/</code>. Templates are extensions of the core specification and should follow all the rules and requirements in the main specification. Each template includes its own detailed documentation with checklists, examples, and annotation guidelines specific to that template type.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The official website for SDRF-Proteomics project is <a href="https://github.com/bigbio/proteomics-metadata-standard" class="bare">https://github.com/bigbio/proteomics-metadata-standard</a>. New use cases, changes to the specification and examples can be added by using Pull requests or issues in GitHub to reach the bigbio team.</p>
-</div>
-<div class="paragraph">
-<p>A set of examples and annotated projects from ProteomeXchange can be found here: <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects" class="bare">https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects</a></p>
-</div>
-<div class="paragraph">
-<p>Multiple tools have been implemented to validate, annotate and convert SDRF-Proteomics files. The official validator of SDRF-Proteomics is sdrf-pipelines (Python - <a href="https://github.com/bigbio/sdrf-pipelines" class="bare">https://github.com/bigbio/sdrf-pipelines</a>). This tool allows to validate an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">4.6. Table Column headers</a></h3>
+<h3 id="column-headers"><a class="anchor" href="#column-headers"></a><a class="link" href="#column-headers">4.5. Table Column headers</a></h3>
 <div class="paragraph">
 <p>Depending on each section the column headers (property names) will be prefixed with the following prefixes:</p>
 </div>
@@ -600,7 +562,7 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 </div>
 </div>
 <div class="sect2">
-<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">4.7. Table Cell values</a></h3>
+<h3 id="sdrf-file-standardization"><a class="anchor" href="#sdrf-file-standardization"></a><a class="link" href="#sdrf-file-standardization">4.6. Table Cell values</a></h3>
 <div class="paragraph">
 <p>The value for each property, (e.g. characteristics, comment, factor value) corresponding to each sample or data file can be represented in multiple ways.</p>
 </div>
@@ -2581,7 +2543,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-27 13:54:44 UTC
+Last updated 2026-01-27 15:06:27 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
