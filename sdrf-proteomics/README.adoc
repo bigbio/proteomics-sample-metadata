@@ -150,38 +150,32 @@ There are general scenarios where cell values cannot be provided with actual dat
 [[file-level-metadata]]
 === SDRF file-level metadata
 
-Since version 1.1.0, SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by other omics formats such as VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.
+Since version 1.1.0, SDRF-Proteomics supports file-level metadata using dedicated columns. These columns provide information about the SDRF file itself, such as the specification version, template(s) used, annotation tool, and validation status. This column-based approach maintains compatibility with spreadsheet applications (Excel, Google Sheets) and existing data processing tools.
 
-Header comments MUST:
-
-- Start with `#` (single hash) followed by a key-value pair
-- Appear at the very beginning of the file, before the column header row
-- Use the format `#key=value`
-
-The following header fields are supported:
+The following metadata columns are supported:
 
 [cols="2,4,2,1,2", options="header"]
 |===
-|Key |Description |Example |Requirement |Ontology Term
+|Column |Description |Example Value |Requirement |Ontology Term
 
-|`file_format` |Identifier for the file format |SDRF |RECOMMENDED |PRIDE:0000831
-|`version` |SDRF-Proteomics specification version used |v1.1.0 |RECOMMENDED |NCIT:C25714
-|`template` |Template declaration with version. Use one `#template` line per template. Format: `template_name,version=vX.Y.Z` |human,version=v1.1.0 |OPTIONAL |PRIDE:0000832
-|`source` |Tool or origin that generated the file. Replaces per-row `comment[tool metadata]` column |lesSDRF v0.1.0 |OPTIONAL |NCIT:C25683
-|`validation_hash` |Hash from validator certification |sha256:abc123... |OPTIONAL |PRIDE:0000834
+|`comment[sdrf version]` |SDRF-Proteomics specification version used. Should follow semantic versioning format (vMAJOR.MINOR.PATCH) |v1.1.0 |RECOMMENDED |PRIDE:0000839
+|`comment[sdrf template]` |Template name and version used for annotation. Format: `NT=template_name;version=vX.Y.Z`. Multiple templates can be specified using multiple columns with the same name. |NT=human;version=v1.1.0 |OPTIONAL |PRIDE:0000832
+|`comment[sdrf annotation tool]` |Software tool, script, or method used to generate or annotate the SDRF file. Format: `NT=tool_name;version=vX.Y.Z` |NT=lesSDRF;version=v0.1.0 |OPTIONAL |PRIDE:0000840
+|`comment[sdrf validation hash]` |Cryptographic hash (e.g., SHA-256) generated after successful validation |sha256:abc123... |OPTIONAL |PRIDE:0000834
 |===
 
-Example of an SDRF file with header comments (simplified example showing only select columns; see <<templates>> for complete required columns):
+NOTE: When combining multiple templates (e.g., `human` + `ms-proteomics`), use multiple `comment[sdrf template]` columns, one per template. The value in each row should be identical for all samples in the file.
+
+Example of an SDRF file with metadata columns (simplified example showing only select columns; see <<templates>> for complete required columns):
 
 [source,tsv]
 ----
-#file_format=SDRF
-#version=v1.1.0
-#template=human,version=v1.1.0
-#source=lesSDRF v0.1.0
-source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
-sample_1	homo sapiens	liver	normal	run_1	sample_1.raw
+source name	characteristics[organism]	characteristics[disease]	assay name	comment[data file]	comment[sdrf version]	comment[sdrf template]	comment[sdrf template]	comment[sdrf annotation tool]
+sample_1	homo sapiens	normal	run_1	sample_1.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0
+sample_2	homo sapiens	breast cancer	run_2	sample_2.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0
 ----
+
+TIP: For backward compatibility, some tools may still support the older header comment format (`#key=value`). However, the column-based format is the recommended approach for new SDRF files as it is easier to edit in spreadsheet applications and supports per-sample provenance tracking when merging files.
 
 [[column-headers]]
 === Table Column headers
@@ -455,25 +449,25 @@ Templates follow a layered hierarchy:
 
 Child templates inherit all columns from parents and may add new columns or strengthen requirements (e.g., `optional` → `required`).
 
-=== Specifying Templates in File Headers
+=== Specifying Templates in SDRF Files
 
-Declare templates using `#template` headers. Only list leaf templates (parents are implied):
+Declare templates using `comment[sdrf template]` columns. Only list leaf templates (parents are implied). When using multiple templates, add multiple columns with the same name. The format follows the key=value pattern: `NT=template_name;version=vX.Y.Z`
 
-[source]
+[source,tsv]
 ----
-#template=human,version=v1.1.0
-#template=crosslinking,version=v1.0.0
+source name	...	comment[sdrf template]	comment[sdrf template]
+sample_1	...	NT=human;version=v1.1.0	NT=crosslinking;version=v1.0.0
 ----
 
 **Common examples:**
 
 |===
-|Experiment Type |Header
+|Experiment Type |Template Columns
 
-|Human MS proteomics |`#template=human,version=v1.1.0`
-|Mouse MS proteomics |`#template=vertebrates,version=v1.1.0`
-|Human crosslinking |`#template=human,version=v1.1.0` + `#template=crosslinking,version=v1.0.0`
-|Human Olink |`#template=human,version=v1.1.0` + `#template=olink,version=v1.0.0`
+|Human MS proteomics |`comment[sdrf template]` = `NT=human;version=v1.1.0`
+|Mouse MS proteomics |`comment[sdrf template]` = `NT=vertebrates;version=v1.1.0`
+|Human crosslinking |Two columns: `NT=human;version=v1.1.0` + `NT=crosslinking;version=v1.0.0`
+|Human Olink |Two columns: `NT=human;version=v1.1.0` + `NT=olink;version=v1.0.0`
 |===
 
 === Available Templates
