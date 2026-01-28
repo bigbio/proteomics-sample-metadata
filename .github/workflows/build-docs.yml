@@ -63,6 +63,10 @@ jobs:
         run: |
           python3 scripts/transform-links.py ${{ steps.set-output-dir.outputs.output_dir }}
 
+      - name: Transform SDRF example tables
+        run: |
+          python3 scripts/transform-sdrf-tables.py ${{ steps.set-output-dir.outputs.output_dir }}
+
       - name: Build search index
         run: |
           python3 site/build-search-index.py . ${{ steps.set-output-dir.outputs.output_dir }}/search-index.json
