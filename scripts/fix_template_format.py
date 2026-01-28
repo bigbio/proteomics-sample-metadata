@@ -3,6 +3,10 @@
 Fix template format in already-migrated SDRF files.
 Converts from: template_name,version=vX.Y.Z
 To: NT=template_name;version=vX.Y.Z
+
+Both formats are now valid:
+- NT=name;version=vX.Y.Z (key=value format)
+- name vX.Y.Z (simple format)
 """
 
 import os
@@ -15,7 +19,7 @@ def fix_template_format(file_path: Path) -> bool:
     with open(file_path, encoding="utf-8") as f:
         content = f.read()
 
-    # Pattern to match old format: word,version=vX.Y.Z
+    # Pattern to match comma format: word,version=vX.Y.Z -> NT=word;version=vX.Y.Z
     old_pattern = r'\b([\w-]+),version=(v[\d.]+[\w.-]*)'
     new_format = r'NT=\1;version=\2'
 
