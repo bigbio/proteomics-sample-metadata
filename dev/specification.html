@@ -56,7 +56,7 @@
 <li><a href="#templates">10. Templates</a>
 <ul class="sectlevel2">
 <li><a href="#_template_architecture">10.1. Template Architecture</a></li>
-<li><a href="#_specifying_templates_in_file_headers">10.2. Specifying Templates in File Headers</a></li>
+<li><a href="#_specifying_templates_in_sdrf_files">10.2. Specifying Templates in SDRF Files</a></li>
 <li><a href="#_available_templates">10.3. Available Templates</a></li>
 <li><a href="#_extending_templates">10.4. Extending Templates</a></li>
 <li><a href="#_contributing_new_templates">10.5. Contributing New Templates</a></li>
@@ -419,26 +419,10 @@
 <div class="sect2">
 <h3 id="file-level-metadata"><a class="anchor" href="#file-level-metadata"></a><a class="link" href="#file-level-metadata">5.4. SDRF file-level metadata</a></h3>
 <div class="paragraph">
-<p>Since version 1.1.0, SDRF-Proteomics supports optional file-level metadata using header comments at the beginning of the file. These header comments provide information about the SDRF file itself, such as the format version, template used, and validation status. This approach is inspired by other omics formats such as VCF (Variant Call Format) file headers and is fully compatible with pandas and other tabular data processing tools.</p>
+<p>Since version 1.1.0, SDRF-Proteomics supports file-level metadata using dedicated columns. These columns provide information about the SDRF file itself, such as the specification version, template(s) used, annotation tool, and validation status. This column-based approach maintains compatibility with spreadsheet applications (Excel, Google Sheets) and existing data processing tools.</p>
 </div>
 <div class="paragraph">
-<p>Header comments MUST:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Start with <code>#</code> (single hash) followed by a key-value pair</p>
-</li>
-<li>
-<p>Appear at the very beginning of the file, before the column header row</p>
-</li>
-<li>
-<p>Use the format <code>#key=value</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The following header fields are supported:</p>
+<p>The following metadata columns are supported:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -450,63 +434,77 @@
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Column</th>
 <th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Example Value</th>
 <th class="tableblock halign-left valign-top">Requirement</th>
 <th class="tableblock halign-left valign-top">Ontology Term</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>file_format</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier for the file format</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SDRF</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000831</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SDRF-Proteomics specification version used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf version]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SDRF-Proteomics specification version used. Should follow semantic versioning format (vMAJOR.MINOR.PATCH)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RECOMMENDED</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C25714</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000839</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Template declaration with version. Use one <code>#template</code> line per template. Format: <code>template_name,version=vX.Y.Z</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">human,version=v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template name and version used for annotation. Two formats are supported: key=value format (<code>NT=name;version=vX.Y.Z</code>) or simple format (<code>name vX.Y.Z</code>). Multiple templates can be specified using multiple columns.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=human;version=v1.1.0 or human v1.1.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000832</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tool or origin that generated the file. Replaces per-row <code>comment[tool metadata]</code> column</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">lesSDRF v0.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf annotation tool]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Software tool, script, or method used to generate or annotate the SDRF file. Two formats are supported: key=value format (<code>NT=name;version=vX.Y.Z</code>) or simple format (<code>name vX.Y.Z</code>).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=lesSDRF;version=v0.1.0 or lesSDRF v0.1.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NCIT:C25683</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000840</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>validation_hash</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hash from validator certification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf validation hash]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cryptographic hash (e.g., SHA-256) generated after successful validation</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sha256:abc123&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000834</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+When combining multiple templates (e.g., <code>human</code> + <code>ms-proteomics</code>), use multiple <code>comment[sdrf template]</code> columns, one per template. The value in each row should be identical for all samples in the file.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Example of an SDRF file with header comments (simplified example showing only select columns; see <a href="#templates">Chapter 10</a> for complete required columns):</p>
+<p>Example of an SDRF file with metadata columns (simplified example showing only select columns; see <a href="#templates">Chapter 10</a> for complete required columns):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">#file_format=SDRF
-#version=v1.1.0
-#template=human,version=v1.1.0
-#source=lesSDRF v0.1.0
-source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	assay name	comment[data file]
-sample_1	homo sapiens	liver	normal	run_1	sample_1.raw</code></pre>
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	characteristics[organism]	characteristics[disease]	assay name	comment[data file]	comment[sdrf version]	comment[sdrf template]	comment[sdrf template]	comment[sdrf annotation tool]
+sample_1	homo sapiens	normal	run_1	sample_1.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0
+sample_2	homo sapiens	breast cancer	run_2	sample_2.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0</code></pre>
 </div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+For backward compatibility, some tools may still support the older header comment format (<code>#key=value</code>). However, the column-based format is the recommended approach for new SDRF files as it is easier to edit in spreadsheet applications and supports per-sample provenance tracking when merging files.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -1246,14 +1244,24 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 </div>
 </div>
 <div class="sect2">
-<h3 id="_specifying_templates_in_file_headers"><a class="anchor" href="#_specifying_templates_in_file_headers"></a><a class="link" href="#_specifying_templates_in_file_headers">10.2. Specifying Templates in File Headers</a></h3>
+<h3 id="_specifying_templates_in_sdrf_files"><a class="anchor" href="#_specifying_templates_in_sdrf_files"></a><a class="link" href="#_specifying_templates_in_sdrf_files">10.2. Specifying Templates in SDRF Files</a></h3>
 <div class="paragraph">
-<p>Declare templates using <code>#template</code> headers. Only list leaf templates (parents are implied):</p>
+<p>Declare templates using <code>comment[sdrf template]</code> columns. Only list leaf templates (parents are implied). When using multiple templates, add multiple columns with the same name. Two formats are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Key=value format: <code>NT=template_name;version=vX.Y.Z</code></p>
+</li>
+<li>
+<p>Simple format: <code>template_name vX.Y.Z</code></p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">#template=human,version=v1.1.0
-#template=crosslinking,version=v1.0.0</code></pre>
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	...	comment[sdrf template]	comment[sdrf template]
+sample_1	...	NT=human;version=v1.1.0	NT=crosslinking;version=v1.0.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1267,25 +1275,25 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Experiment Type</th>
-<th class="tableblock halign-left valign-top">Header</th>
+<th class="tableblock halign-left valign-top">Template Columns</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human MS proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code> = <code>NT=human;version=v1.1.0</code> or <code>human v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mouse MS proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=vertebrates,version=v1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code> = <code>NT=vertebrates;version=v1.1.0</code> or <code>vertebrates v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human crosslinking</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code> + <code>#template=crosslinking,version=v1.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>NT=human;version=v1.1.0</code> + <code>NT=crosslinking;version=v1.0.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>#template=human,version=v1.1.0</code> + <code>#template=olink,version=v1.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>NT=human;version=v1.1.0</code> + <code>NT=olink;version=v1.0.0</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -1850,7 +1858,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-28 08:37:47 UTC
+Last updated 2026-01-28 10:07:36 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
