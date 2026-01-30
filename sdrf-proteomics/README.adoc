@@ -159,8 +159,8 @@ The following metadata columns are supported:
 |Column |Description |Example Value |Requirement |Ontology Term
 
 |`comment[sdrf version]` |SDRF-Proteomics specification version used. Should follow semantic versioning format (vMAJOR.MINOR.PATCH) |v1.1.0 |RECOMMENDED |PRIDE:0000839
-|`comment[sdrf template]` |Template name and version used for annotation. Two formats are supported: key=value format (`NT=name;version=vX.Y.Z`) or simple format (`name vX.Y.Z`). Multiple templates can be specified using multiple columns. |NT=human;version=v1.1.0 or human v1.1.0 |OPTIONAL |PRIDE:0000832
-|`comment[sdrf annotation tool]` |Software tool, script, or method used to generate or annotate the SDRF file. Two formats are supported: key=value format (`NT=name;version=vX.Y.Z`) or simple format (`name vX.Y.Z`). |NT=lesSDRF;version=v0.1.0 or lesSDRF v0.1.0 |OPTIONAL |PRIDE:0000840
+|`comment[sdrf template]` |Template name and version used for annotation. Two formats are supported: simple format (`name vX.Y.Z`) or key=value format (`NT=name;VV=vX.Y.Z`). Multiple templates can be specified using multiple columns. |human v1.1.0 or NT=human;VV=v1.1.0 |OPTIONAL |PRIDE:0000832
+|`comment[sdrf annotation tool]` |Software tool, script, or method used to generate or annotate the SDRF file. Two formats are supported: simple format (`name vX.Y.Z`) or key=value format (`NT=name;VV=vX.Y.Z`). |lesSDRF v0.1.0 or NT=lesSDRF;VV=v0.1.0 |OPTIONAL |PRIDE:0000840
 |`comment[sdrf validation hash]` |Cryptographic hash (e.g., SHA-256) generated after successful validation |sha256:abc123... |OPTIONAL |PRIDE:0000834
 |===
 
@@ -171,8 +171,8 @@ Example of an SDRF file with metadata columns (simplified example showing only s
 [source,tsv]
 ----
 source name	characteristics[organism]	characteristics[disease]	assay name	comment[data file]	comment[sdrf version]	comment[sdrf template]	comment[sdrf template]	comment[sdrf annotation tool]
-sample_1	homo sapiens	normal	run_1	sample_1.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0
-sample_2	homo sapiens	breast cancer	run_2	sample_2.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0
+sample_1	homo sapiens	normal	run_1	sample_1.raw	v1.1.0	human v1.1.0	ms-proteomics v1.1.0	lesSDRF v0.1.0
+sample_2	homo sapiens	breast cancer	run_2	sample_2.raw	v1.1.0	human v1.1.0	ms-proteomics v1.1.0	lesSDRF v0.1.0
 ----
 
 TIP: For backward compatibility, some tools may still support the older header comment format (`#key=value`). However, the column-based format is the recommended approach for new SDRF files as it is easier to edit in spreadsheet applications and supports per-sample provenance tracking when merging files.
@@ -453,13 +453,13 @@ Child templates inherit all columns from parents and may add new columns or stre
 
 Declare templates using `comment[sdrf template]` columns. Only list leaf templates (parents are implied). When using multiple templates, add multiple columns with the same name. Two formats are supported:
 
-- Key=value format: `NT=template_name;version=vX.Y.Z`
-- Simple format: `template_name vX.Y.Z`
+- Simple format (preferred): `template_name vX.Y.Z`
+- Key=value format: `NT=template_name;VV=vX.Y.Z`
 
 [source,tsv]
 ----
 source name	...	comment[sdrf template]	comment[sdrf template]
-sample_1	...	NT=human;version=v1.1.0	NT=crosslinking;version=v1.0.0
+sample_1	...	human v1.1.0	crosslinking v1.0.0
 ----
 
 **Common examples:**
@@ -467,10 +467,10 @@ sample_1	...	NT=human;version=v1.1.0	NT=crosslinking;version=v1.0.0
 |===
 |Experiment Type |Template Columns
 
-|Human MS proteomics |`comment[sdrf template]` = `NT=human;version=v1.1.0` or `human v1.1.0`
-|Mouse MS proteomics |`comment[sdrf template]` = `NT=vertebrates;version=v1.1.0` or `vertebrates v1.1.0`
-|Human crosslinking |Two columns: `NT=human;version=v1.1.0` + `NT=crosslinking;version=v1.0.0`
-|Human Olink |Two columns: `NT=human;version=v1.1.0` + `NT=olink;version=v1.0.0`
+|Human MS proteomics |`comment[sdrf template]` = `human v1.1.0`
+|Mouse MS proteomics |`comment[sdrf template]` = `vertebrates v1.1.0`
+|Human crosslinking |Two columns: `human v1.1.0` + `crosslinking v1.0.0`
+|Human Olink |Two columns: `human v1.1.0` + `olink v1.0.0`
 |===
 
 === Available Templates
