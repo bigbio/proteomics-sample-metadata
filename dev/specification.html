@@ -451,15 +451,15 @@
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Template name and version used for annotation. Two formats are supported: key=value format (<code>NT=name;version=vX.Y.Z</code>) or simple format (<code>name vX.Y.Z</code>). Multiple templates can be specified using multiple columns.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=human;version=v1.1.0 or human v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template name and version used for annotation. Two formats are supported: simple format (<code>name vX.Y.Z</code>) or key=value format (<code>NT=name;VV=vX.Y.Z</code>). Multiple templates can be specified using multiple columns.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human v1.1.0 or NT=human;VV=v1.1.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000832</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf annotation tool]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Software tool, script, or method used to generate or annotate the SDRF file. Two formats are supported: key=value format (<code>NT=name;version=vX.Y.Z</code>) or simple format (<code>name vX.Y.Z</code>).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NT=lesSDRF;version=v0.1.0 or lesSDRF v0.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Software tool, script, or method used to generate or annotate the SDRF file. Two formats are supported: simple format (<code>name vX.Y.Z</code>) or key=value format (<code>NT=name;VV=vX.Y.Z</code>).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lesSDRF v0.1.0 or NT=lesSDRF;VV=v0.1.0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE:0000840</p></td>
 </tr>
@@ -490,8 +490,8 @@ When combining multiple templates (e.g., <code>human</code> + <code>ms-proteomic
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	characteristics[organism]	characteristics[disease]	assay name	comment[data file]	comment[sdrf version]	comment[sdrf template]	comment[sdrf template]	comment[sdrf annotation tool]
-sample_1	homo sapiens	normal	run_1	sample_1.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0
-sample_2	homo sapiens	breast cancer	run_2	sample_2.raw	v1.1.0	NT=human;version=v1.1.0	NT=ms-proteomics;version=v1.1.0	NT=lesSDRF;version=v0.1.0</code></pre>
+sample_1	homo sapiens	normal	run_1	sample_1.raw	v1.1.0	human v1.1.0	ms-proteomics v1.1.0	lesSDRF v0.1.0
+sample_2	homo sapiens	breast cancer	run_2	sample_2.raw	v1.1.0	human v1.1.0	ms-proteomics v1.1.0	lesSDRF v0.1.0</code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -1251,17 +1251,17 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 <div class="ulist">
 <ul>
 <li>
-<p>Key=value format: <code>NT=template_name;version=vX.Y.Z</code></p>
+<p>Simple format (preferred): <code>template_name vX.Y.Z</code></p>
 </li>
 <li>
-<p>Simple format: <code>template_name vX.Y.Z</code></p>
+<p>Key=value format: <code>NT=template_name;VV=vX.Y.Z</code></p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	...	comment[sdrf template]	comment[sdrf template]
-sample_1	...	NT=human;version=v1.1.0	NT=crosslinking;version=v1.0.0</code></pre>
+sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1281,19 +1281,19 @@ sample_1	...	NT=human;version=v1.1.0	NT=crosslinking;version=v1.0.0</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human MS proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code> = <code>NT=human;version=v1.1.0</code> or <code>human v1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code> = <code>human v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mouse MS proteomics</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code> = <code>NT=vertebrates;version=v1.1.0</code> or <code>vertebrates v1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code> = <code>vertebrates v1.1.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human crosslinking</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>NT=human;version=v1.1.0</code> + <code>NT=crosslinking;version=v1.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>human v1.1.0</code> + <code>crosslinking v1.0.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>NT=human;version=v1.1.0</code> + <code>NT=olink;version=v1.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>human v1.1.0</code> + <code>olink v1.0.0</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -1858,7 +1858,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-29 16:42:11 UTC
+Last updated 2026-01-30 10:20:53 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
