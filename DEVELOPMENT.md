@@ -290,6 +290,75 @@ If the local build looks different from the deployed version:
 | Dev banner missing | Use `--dev` flag when building |
 | Search not working | Ensure `search-index.json` was generated |
 
+## SDRF Editor Integration
+
+The website includes an embedded SDRF Editor at `/sdrf-editor.html`. The editor is loaded from the [sdrfedit](https://github.com/bigbio/sdrfedit) repository via jsDelivr CDN.
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  sdrfedit repo (bigbio/sdrfedit)                                │
+│                                                                  │
+│  Developer workflow:                                             │
+│  1. Make changes to editor source code                           │
+│  2. npm run build -- --configuration=production                  │
+│  3. git add dist/ && git commit && git push to main              │
+│                                                                  │
+│  The dist/ folder is committed:                                  │
+│  dist/sdrf-editor/browser/                                       │
+│  ├── main.js                                                     │
+│  ├── polyfills.js                                                │
+│  └── styles.css                                                  │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+              jsDelivr CDN (automatic, no deployment needed)
+              https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@main/...
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  proteomics-metadata-standard                                    │
+│                                                                  │
+│  site/sdrf-editor.html loads the editor:                         │
+│  <script src="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@main/ │
+│               dist/sdrf-editor/browser/main.js" type="module">   │
+│                                                                  │
+│  When this repo is rebuilt, it pulls the latest editor version   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Updating the Editor
+
+When changes are made to the sdrfedit repository:
+
+1. **sdrfedit maintainer** builds and commits the `dist/` folder to main
+2. **jsDelivr** automatically serves the new files (cached ~24 hours)
+3. **This website** gets the updated editor on next rebuild/redeploy
+
+To force an immediate update, the specification website needs to be rebuilt:
+- Push to `dev` branch → triggers rebuild → pulls latest editor
+- Push to `master` branch → triggers rebuild → pulls latest editor
+
+### Editor Files
+
+| File | Purpose |
+|------|---------|
+| `site/sdrf-editor.html` | Editor page (loads Angular app from jsDelivr) |
+| `scripts/copy-assets.sh` | Copies editor page during build |
+| `scripts/inject-headers.py` | Adds Editor link to navigation |
+
+### Testing Editor Changes Locally
+
+To test editor changes before publishing:
+
+```bash
+# In sdrfedit repo
+cd ../sdrfedit
+npm run build -- --configuration=production
+
+# Serve locally and update sdrf-editor.html to point to local files
+# (temporarily change jsDelivr URLs to local paths for testing)
+```
+
 ## Contributing
 
 1. Make changes to the appropriate AsciiDoc or HTML files

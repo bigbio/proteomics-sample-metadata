@@ -32,4 +32,7 @@ cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/"
 # Copy SDRF Explorer
 cp site/sdrf-explorer.html "$OUTPUT_DIR/"
 
+# Copy SDRF Editor page (editor JS/CSS loaded from GitHub Pages)
+cp site/sdrf-editor.html "$OUTPUT_DIR/"
+
 echo "Assets copied successfully!"
