@@ -369,39 +369,37 @@ TIP: For DIA experiments with stepped collision energy, see the link:../dia-acqu
 [[usage]]
 == Usage
 
-=== File Header Format
+=== File Metadata Columns
 
-Only list leaf templates in the header; parent templates are implied by inheritance.
+SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance. Place these columns at the end of the file.
 
 === Minimal MS Proteomics (non-organism-specific)
 
-[source]
-----
-#file_format=SDRF
-#version=v1.1.0
-#template=ms-proteomics,version=v1.1.0
-----
+|===
+|... |comment[sdrf version] |comment[sdrf template]
+
+|... |v1.1.0 |ms-proteomics v1.1.0
+|===
 
 === Human Samples (Recommended)
 
-[source]
-----
-#file_format=SDRF
-#version=v1.1.0
-#template=human,version=v1.1.0
-----
+|===
+|... |comment[sdrf version] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0
+|===
 
 NOTE: The `human` template inherits from `ms-proteomics`, so you only need to specify `human`.
 
-=== With Acquisition-Specific Parameters
+=== With Acquisition-Specific Parameters (multiple templates)
 
-[source]
-----
-#file_format=SDRF
-#version=v1.1.0
-#template=human,version=v1.1.0
-#template=dda-acquisition,version=v1.1.0
-----
+When using multiple templates, add multiple `comment[sdrf template]` columns:
+
+|===
+|... |comment[sdrf version] |comment[sdrf template] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0 |dda-acquisition v1.1.0
+|===
 
 Each template declares its own version, allowing templates to evolve independently.
 

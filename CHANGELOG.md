@@ -29,12 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Core templates in YAML format** for validation: ms-proteomics, human, vertebrates, invertebrates, plants.
 - **Metadata guidelines documentation**:
   - Sample metadata guidelines (sample-metadata.adoc)
-  - Human-specific metadata guidelines (human-sample-metadata.adoc)
+  - Human-specific metadata guidelines (templates/human/README.adoc)
   - MS data file metadata (in ms-proteomics template)
   - SDRF terms reference (sdrf-terms.tsv)
 - **Website infrastructure** (site/): homepage, SDRF explorer, terms reference, search functionality, CSS styling.
 - **PDF generation workflow** with custom theme for specification documents.
-- File-level metadata support using header comments (#key=value format) for capturing SDRF version, template, and provenance information.
+- File-level metadata support using dedicated columns (`comment[sdrf version]`, `comment[sdrf template]`, `comment[sdrf annotation tool]`) for capturing SDRF version, template, and provenance information.
 - Row uniqueness requirements documentation (renamed to "Additional SDRF Rules"):
   - Error-level: source name + assay name + comment[label] must be unique.
   - Warning-level: source name + assay name should be unique.
@@ -53,7 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardized proteomics data acquisition method terms across all annotated projects.
 - Updated enzyme.tsv file; removed enzyme regular expression requirement.
 - Small changes in typos and grammar throughout the specification.
-- :boom: three lines added as header the the `sdrf.tsv` format. Breaks loading of `.tsv` files as before. Need to skip first three lines
 
 ### Removed
 

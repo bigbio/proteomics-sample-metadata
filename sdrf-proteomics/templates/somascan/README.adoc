@@ -44,28 +44,25 @@ base
 [[usage]]
 == Usage
 
-=== File Header Format
+=== File Metadata Columns
 
-Only list leaf templates in the header; parent templates are implied by inheritance (somascan inherits from affinity-proteomics).
+SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance (somascan inherits from affinity-proteomics). Place these columns at the end of the file.
 
 **Non-human samples:**
 
-[source]
-----
-#file_format=SDRF
-#version=v1.1.0
-#template=somascan,version=v1.0.0
-----
+|===
+|... |comment[sdrf version] |comment[sdrf template]
 
-**Human samples:**
+|... |v1.1.0 |somascan v1.0.0
+|===
 
-[source]
-----
-#file_format=SDRF
-#version=v1.1.0
-#template=human,version=v1.1.0
-#template=somascan,version=v1.0.0
-----
+**Human samples** - use multiple template columns:
+
+|===
+|... |comment[sdrf version] |comment[sdrf template] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0 |somascan v1.0.0
+|===
 
 [[checklist]]
 == SomaScan-Specific Columns
