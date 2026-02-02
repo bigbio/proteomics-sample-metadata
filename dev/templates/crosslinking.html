@@ -23,7 +23,7 @@
 <li><a href="#_required_columns">3.1. REQUIRED Columns</a></li>
 <li><a href="#_column_type_distinction">3.2. Column Type Distinction</a></li>
 <li><a href="#_template_selection_when_to_apply_human_template">3.3. Template Selection: When to Apply Human Template</a></li>
-<li><a href="#_file_header_format">3.4. File Header Format</a></li>
+<li><a href="#_file_metadata_columns">3.4. File Metadata Columns</a></li>
 <li><a href="#_recommended_columns">3.5. RECOMMENDED Columns</a></li>
 <li><a href="#_optional_columns_sample_preparation_details">3.6. OPTIONAL Columns (Sample Preparation Details)</a></li>
 </ul>
@@ -231,31 +231,61 @@ The <code>characteristics[organism]</code> indicates the <strong>proteome to sea
 </div>
 </div>
 <div class="sect2">
-<h3 id="_file_header_format"><a class="anchor" href="#_file_header_format"></a><a class="link" href="#_file_header_format">3.4. File Header Format</a></h3>
+<h3 id="_file_metadata_columns"><a class="anchor" href="#_file_metadata_columns"></a><a class="link" href="#_file_metadata_columns">3.4. File Metadata Columns</a></h3>
 <div class="paragraph">
-<p>SDRF files must include a header with template and version information. Only list leaf templates; parent templates are implied by inheritance (crosslinking inherits from ms-proteomics).</p>
+<p>SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance (crosslinking inherits from ms-proteomics). Place these columns at the end of the file.</p>
 </div>
 <div class="paragraph">
 <p><strong>Non-biological samples</strong> (recombinant proteins, synthetic constructs):</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">#file_format=SDRF
-#version=v1.1.0
-#template=crosslinking,version=v1.0.0</code></pre>
-</div>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">crosslinking v1.0.0</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p><strong>Human biological samples</strong> (tissues, cell lines):</p>
+<p><strong>Human biological samples</strong> (tissues, cell lines) - use multiple template columns:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">#file_format=SDRF
-#version=v1.1.0
-#template=human,version=v1.1.0
-#template=crosslinking,version=v1.0.0</code></pre>
-</div>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">crosslinking v1.0.0</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>Each template&#8217;s version indicates which version of that specific template the file conforms to.</p>
 </div>
@@ -784,7 +814,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv \
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-02 14:13:58 UTC
+Last updated 2026-02-02 14:38:50 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
