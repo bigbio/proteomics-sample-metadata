@@ -1,0 +1,539 @@
+= SDRF-Proteomics: Metaproteomics Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides guidelines for annotating metaproteomics experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with metaproteomics-specific metadata fields.
+
+**Status:** Draft - This template is under active development and may change significantly.
+
+**Version:** 1.0.0-dev - 2026-01
+
+[[abstract]]
+== Abstract
+
+Metaproteomics is the study of proteins expressed by microbial communities, analyzing complex samples containing proteins from many different organisms simultaneously. Key applications include gut microbiome characterization, environmental microbiology, host-microbiome interactions, and industrial biotechnology.
+
+Metaproteomics experiments have unique characteristics: multi-organism samples, complex sample matrices, databases constructed from metagenomics data, taxonomic attribution challenges, and critical environmental context metadata. This template defines the additional metadata requirements for annotating metaproteomics datasets.
+
+[[connections]]
+== Connections to Other Omics Fields
+
+Metaproteomics data is typically integrated with:
+
+- **Metagenomics**: For database construction and taxonomic context
+- **Metatranscriptomics**: For gene expression correlation
+- **16S/ITS amplicon sequencing**: For community composition
+- **Metabolomics**: For functional interpretation
+- **Environmental databases**: ENVO, MIxS standards
+
+When available, linking to related omics datasets is highly RECOMMENDED.
+
+[[additional-ontologies]]
+== Additional Ontologies
+
+In addition to the ontologies supported by the core SDRF-Proteomics specification, metaproteomics templates utilize:
+
+- **Environment Ontology (ENVO)**: For environmental sample classification (http://www.obofoundry.org/ontology/envo.html)
+- **Gazetteer (GAZ)**: For geographic locations
+- **MIxS**: Minimum Information about any (x) Sequence standards
+- **NCBI Taxonomy**: For organism classification
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for metaproteomics experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for metaproteomics experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[environmental sample type]
+|Type of environmental or biological sample being analyzed
+|1
+|ENVO, EFO
+|soil, marine sediment, human gut, wastewater, rhizosphere, oral cavity, skin
+
+|characteristics[sample collection method]
+|Method used to collect the sample
+|1
+|Controlled vocabulary or free text
+|grab sample, core sampling, swab collection, filtration, fecal collection, biopsy
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for metaproteomics experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[geographic location]
+|Geographic location where sample was collected
+|0..1
+|GAZ or free text with coordinates
+|Baltic Sea, Amazon rainforest, lat:52.5 lon:13.4, GAZ:00002459
+
+|characteristics[collection date]
+|Date when sample was collected
+|0..1
+|ISO 8601 date format
+|2024-03-15, 2024-03, March 2024
+
+|characteristics[depth]
+|Depth at which sample was collected (for water/sediment)
+|0..1
+|Numeric value with unit
+|10 m, 0-5 cm, surface
+
+|characteristics[altitude]
+|Altitude/elevation for terrestrial samples
+|0..1
+|Numeric value with unit
+|500 m, 1200 m above sea level
+
+|characteristics[temperature]
+|Environmental temperature at collection
+|0..1
+|Numeric value with unit (Celsius)
+|25 C, 4 C, 37 C
+
+|characteristics[pH]
+|pH of the sample or environment
+|0..1
+|Numeric value
+|7.4, 5.5, 8.2
+
+|characteristics[host organism]
+|Host organism for host-associated microbiomes
+|0..1
+|NCBITaxon
+|homo sapiens, mus musculus, zea mays
+
+|characteristics[host disease]
+|Disease state of host if applicable
+|0..1
+|MONDO, EFO
+|inflammatory bowel disease, normal, colorectal cancer
+
+|characteristics[host age]
+|Age of host organism
+|0..1
+|Standard age format
+|45Y, 8W, 3M
+
+|comment[database search strategy]
+|Strategy for sequence database construction
+|0..1
+|Free text description
+|matched metagenome, RefSeq bacteria, GTDB, UniRef90, custom assembly
+
+|comment[metagenome accession]
+|Accession number for associated metagenome data
+|0..1
+|Database accession
+|SRR12345678, ERR12345678, PRJNA123456
+
+|comment[sample storage]
+|How sample was stored before processing
+|0..1
+|Free text description
+|flash frozen, -80C, RNAlater, 4C for 24h
+|===
+
+=== Environmental Context Columns
+
+==== Aquatic Samples
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[water body type]
+|Type of water body
+|ocean, lake, river, estuary, pond
+
+|characteristics[salinity]
+|Salinity measurement
+|35 PSU, freshwater, brackish
+
+|characteristics[dissolved oxygen]
+|Dissolved oxygen concentration
+|8.5 mg/L, hypoxic, anoxic
+
+|characteristics[chlorophyll]
+|Chlorophyll concentration if measured
+|2.5 ug/L
+
+|characteristics[sampling depth zone]
+|Ecological depth zone
+|epipelagic, mesopelagic, benthic
+|===
+
+==== Soil Samples
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[soil type]
+|Soil classification
+|sandy loam, clay, peat
+
+|characteristics[soil horizon]
+|Soil horizon sampled
+|A horizon, O horizon, B horizon
+
+|characteristics[land use]
+|Land use type
+|agricultural, forest, urban, grassland
+
+|characteristics[vegetation]
+|Dominant vegetation
+|deciduous forest, corn field, prairie
+|===
+
+==== Host-Associated Samples
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[body site]
+|Specific body site for host-associated samples
+|stool, oral cavity, skin, vaginal
+
+|characteristics[host diet]
+|Diet information for host
+|omnivore, vegan, western diet, high-fiber
+
+|characteristics[antibiotic treatment]
+|Recent antibiotic exposure
+|none, amoxicillin 7 days prior, broad-spectrum
+|===
+
+[[organism-annotation]]
+== Organism Annotation in Metaproteomics
+
+The `characteristics[organism]` column presents a unique challenge in metaproteomics because samples contain multiple organisms. Several approaches are supported:
+
+=== Option 1: Use "metagenome" or Environment-Specific Term
+
+For samples where the community composition is unknown or highly complex:
+
+|===
+|characteristics[organism] |Example Samples
+
+|metagenome
+|General environmental samples
+
+|human gut metagenome
+|Human fecal samples, gut biopsies
+
+|soil metagenome
+|Soil samples
+
+|marine metagenome
+|Ocean water, marine sediment
+
+|mouse gut metagenome
+|Mouse fecal samples
+|===
+
+These terms have corresponding NCBITaxon identifiers (e.g., NCBITaxon:749906 for "gut metagenome").
+
+=== Option 2: Specify Host Organism
+
+For host-associated microbiomes where host context is important:
+
+|===
+|characteristics[organism] |characteristics[microbiome source]
+
+|homo sapiens
+|gut microbiome
+
+|mus musculus
+|gut microbiome
+
+|arabidopsis thaliana
+|rhizosphere microbiome
+|===
+
+=== Option 3: Multiple Organism Columns
+
+For controlled or known communities (e.g., defined consortia, mock communities):
+
+|===
+|characteristics[organism] |characteristics[organism] |characteristics[organism]
+
+|escherichia coli
+|bacteroides fragilis
+|lactobacillus acidophilus
+|===
+
+NOTE: The approach should be chosen based on the experimental context and database search strategy used.
+
+[[database-annotation]]
+== Database Search Strategy Annotation
+
+Metaproteomics database construction is critical and should be documented:
+
+|===
+|Strategy |Description |When to Use
+
+|Matched metagenome
+|Database from metagenome of same sample
+|When metagenome sequencing was performed
+
+|Reference database
+|Public reference database (RefSeq, UniProt)
+|When no metagenome available
+
+|Custom assembly
+|De novo assembled from sample metagenome
+|For novel environments
+
+|GTDB/UHGG
+|Genome-resolved metagenome databases
+|For gut microbiome studies
+
+|Hybrid approach
+|Combination of reference and sample-specific
+|Complex communities with some known members
+|===
+
+Document the strategy in `comment[database search strategy]`.
+
+[[mock-communities]]
+== Mock Community Samples
+
+For defined/mock microbial communities used as standards:
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[mock community]
+|Identifier or name of mock community standard
+|ZymoBIOMICS Microbial Community Standard, ATCC MSA-1000
+
+|characteristics[mock community composition]
+|Description of community composition
+|8 bacteria + 2 yeasts at defined ratios, even mix of 10 species
+
+|comment[expected organism list]
+|List of organisms expected in mock community
+|E. coli;B. subtilis;S. cerevisiae;L. fermentum
+|===
+
+[[example-sdrf]]
+== Example SDRF Files
+
+=== Human Gut Microbiome Example
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[environmental sample type]</th>
+<th class="sample-col">characteristics[host disease]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[database search strategy]</th>
+<th class="data-col">comment[metagenome accession]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">subject_001_stool</td>
+<td class="sample-col">human gut metagenome</td>
+<td class="sample-col">human gut</td>
+<td class="sample-col">inflammatory bowel disease</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">matched metagenome</td>
+<td class="data-col">SRR12345678</td>
+<td class="data-col">IBD_001.raw</td>
+</tr>
+<tr>
+<td class="sample-col">subject_002_stool</td>
+<td class="sample-col">human gut metagenome</td>
+<td class="sample-col">human gut</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">matched metagenome</td>
+<td class="data-col">SRR12345679</td>
+<td class="data-col">healthy_002.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |characteristics[organism] |characteristics[environmental sample type] |characteristics[host disease] |... |comment[database search strategy] |comment[metagenome accession] |comment[data file]
+
+|subject_001_stool |human gut metagenome |human gut |inflammatory bowel disease |... |matched metagenome |SRR12345678 |IBD_001.raw
+|subject_002_stool |human gut metagenome |human gut |normal |... |matched metagenome |SRR12345679 |healthy_002.raw
+|===
+endif::[]
+
+=== Environmental Sample Example
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[environmental sample type]</th>
+<th class="sample-col">characteristics[geographic location]</th>
+<th class="sample-col">characteristics[depth]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[database search strategy]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">baltic_station1_summer</td>
+<td class="sample-col">marine metagenome</td>
+<td class="sample-col">marine sediment</td>
+<td class="sample-col">Baltic Sea</td>
+<td class="sample-col">50 m</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">GTDB marine subset</td>
+<td class="data-col">baltic_sed_001.raw</td>
+</tr>
+<tr>
+<td class="sample-col">soil_farm_plot1</td>
+<td class="sample-col">soil metagenome</td>
+<td class="sample-col">agricultural soil</td>
+<td class="sample-col">Iowa, USA</td>
+<td class="sample-col">0-10 cm</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">custom assembly</td>
+<td class="data-col">soil_plot1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |characteristics[organism] |characteristics[environmental sample type] |characteristics[geographic location] |characteristics[depth] |... |comment[database search strategy] |comment[data file]
+
+|baltic_station1_summer |marine metagenome |marine sediment |Baltic Sea |50 m |... |GTDB marine subset |baltic_sed_001.raw
+|soil_farm_plot1 |soil metagenome |agricultural soil |Iowa, USA |0-10 cm |... |custom assembly |soil_plot1.raw
+|===
+endif::[]
+
+[[quality-considerations]]
+== Quality Control Annotations
+
+For metaproteomics, consider documenting:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[biomass estimation]
+|Estimated microbial biomass in sample
+|1e9 cells/g, high biomass, low biomass
+
+|comment[host contamination]
+|Level of host protein contamination if known
+|low (<5%), moderate (5-20%), high (>20%)
+
+|comment[contaminant database]
+|Contaminant databases used in search
+|cRAP, MaxQuant contaminants
+|===
+
+[[best-practices]]
+== Best Practices for Metaproteomics Annotation
+
+1. **Use appropriate organism terms**: Choose between metagenome terms, host organism, or explicit multi-organism annotation based on your experimental design.
+
+2. **Document database strategy**: The sequence database used dramatically affects results - always document construction strategy.
+
+3. **Link to metagenomics data**: When available, provide accession numbers for related metagenome/metatranscriptome data.
+
+4. **Include environmental context**: Geographic location, collection date, and environmental parameters enhance data reusability.
+
+5. **Specify host information**: For host-associated microbiomes, document host species, health status, and relevant metadata.
+
+6. **Note sample handling**: Storage conditions and processing time can affect community composition.
+
+7. **Consider MIxS standards**: Align with Minimum Information about any (x) Sequence standards where applicable.
+
+8. **Use controlled vocabularies**: Prefer ENVO terms for environmental classification and NCBITaxon for organisms.
+
+[[template-file]]
+== Template File
+
+The metaproteomics SDRF template file is available in this directory:
+
+- link:metaproteomics-template.sdrf.tsv[metaproteomics-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+Metaproteomics SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+NOTE: Metaproteomics-specific validation rules are under development.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from metaproteomics researchers.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+
+[[references]]
+== References
+
+- Wilmes P, Bond PL. (2004) The application of two-dimensional polyacrylamide gel electrophoresis and downstream analyses to a mixed community of prokaryotic microorganisms. Environmental Microbiology.
+- Muth T, et al. (2015) The MetaProteomeAnalyzer: a powerful open-source software suite for metaproteomics data analysis and interpretation. Journal of Proteome Research.
+- Chatterjee S, et al. (2023) A comprehensive and scalable database search system for metaproteomics. Nature Communications.
+- ENVO: Environment Ontology (http://www.obofoundry.org/ontology/envo.html)
+- MIxS: Minimum Information about any (x) Sequence (https://genomicsstandardsconsortium.github.io/mixs/)
