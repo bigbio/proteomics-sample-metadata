@@ -232,6 +232,10 @@ python3 scripts/inject-headers.py "$OUTPUT_DIR"
 echo "Transforming links..."
 python3 scripts/transform-links.py "$OUTPUT_DIR"
 
+# Transform SDRF example tables (add column styling)
+echo "Transforming SDRF example tables..."
+python3 scripts/transform-sdrf-tables.py "$OUTPUT_DIR"
+
 # Build search index
 echo "Building search index..."
 python3 site/build-search-index.py . "$OUTPUT_DIR/search-index.json"

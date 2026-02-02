@@ -29,7 +29,7 @@ The SDRF-Proteomics file captures the Sample to Data information that is missing
 
 ## Final PSI specification
 
-The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/SDRF_Proteomics_Specification_v1.0.0.pdf)
+The final HUPO-PSI specification is: [SDRF HUPO-PSI](psi-document/v1.0.0/SDRF_Proteomics_Specification_v1.0.0.pdf)
 
 ## How to contribute
 
@@ -66,9 +66,8 @@ You can read more about the validator [here](https://github.com/bigbio/sdrf-pipe
 
 ## 30 Minutes Guide to SDRF-Proteomics
 
-We have created a 30-minute Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally, the following materials are relevant for new users:
+We have created a 30-minute Guide to the file format in [the github repository](https://github.com/bigbio/proteomics-metadata-standard/wiki). Additionally, the following material is relevant for new users:
 
-- [Introduction to SDRF-Proteomics - Slides](https://github.com/bigbio/proteomics-metadata-standard/raw/master/additional-documentation/presentation-20200313.pptx)
 - [Introduction to SDRF-Proteomics - YouTube Video](https://www.youtube.com/watch?v=TMDu_yTzYQM)
 
 

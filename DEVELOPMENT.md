@@ -12,6 +12,7 @@ proteomics-metadata-standard/
 │   ├── copy-assets.sh         # Asset copying helper
 │   ├── inject-headers.py      # Navigation header injection
 │   ├── transform-links.py     # SDRF link transformation
+│   ├── transform-sdrf-tables.py # SDRF example table styling
 │   └── add-dev-banner.sh      # Dev version banner
 ├── sdrf-proteomics/           # Main specification source
 │   ├── README.adoc            # Main specification (AsciiDoc)
@@ -91,8 +92,9 @@ The easiest way to build the documentation is using the provided build script. T
 4. **Builds SDRF Explorer index** from annotated-projects
 5. **Injects navigation headers** into all generated HTML pages
 6. **Transforms SDRF links** to use the SDRF Explorer viewer
-7. **Builds search index** for site-wide search functionality
-8. **Adds dev banner** (when using `--dev` flag)
+7. **Transforms SDRF example tables** to add color-coded column styling
+8. **Builds search index** for site-wide search functionality
+9. **Adds dev banner** (when using `--dev` flag)
 
 ### Manual Build (Advanced)
 
