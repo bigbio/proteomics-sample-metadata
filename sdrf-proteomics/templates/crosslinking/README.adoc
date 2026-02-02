@@ -1,0 +1,504 @@
+= SDRF-Proteomics: Crosslinking Mass Spectrometry Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating crosslinking mass spectrometry (XL-MS) experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any sample template (human, vertebrates, etc.) to capture crosslinking-specific metadata.
+
+**Type:** Experiment Template (used in combination with sample templates)
+
+**Status:** Stable
+
+**Version:** 1.0.0 - 2026-01
+
+[[abstract]]
+== Abstract
+
+Crosslinking mass spectrometry (XL-MS) uses chemical reagents to covalently link amino acid residues in close spatial proximity, providing information for protein structure determination, protein-protein interaction mapping, complex characterization, and integrative structural biology.
+
+This template is designed with **data analysis in mind**. The REQUIRED columns capture the minimum metadata needed to configure XL-MS search engines like Scout, xiSEARCH, pLink2, or MeroX. Sample preparation details (reaction time, temperature, concentration) are captured as OPTIONAL columns for reproducibility documentation.
+[[checklist]]
+== Column Checklist
+
+=== REQUIRED Columns
+
+These columns are essential for configuring XL-MS analysis workflows:
+
+|===
+|Column Name |Type |Description |Example Values
+
+|characteristics[enrichment process]
+|Sample
+|Indicates the sample was enriched for crosslinked peptides (https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000838[PRIDE:0000838]). This is a sample-level property.
+|enrichment of cross-linked peptides
+
+|comment[cross-linker]
+|Data acquisition
+|Cross-linker compound with structured properties for analysis tools. Uses XLMOD ontology (parent term XLMOD:00004). Format: NT=name;AC=accession;CL=cleavable;TA=targets;MH/ML=stub masses
+|NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98
+
+|comment[dissociation method]
+|Data acquisition
+|Fragmentation method used in MS2. Critical for cleavable crosslinkers (DSSO, DSBU) which generate diagnostic stub ions.
+|HCD, CID, ETD, EThcD, stepped HCD
+|===
+
+NOTE: Columns inherited from ms-proteomics are also required: `comment[cleavage agent details]`, `comment[instrument]`, `comment[label]`, `comment[fraction identifier]`.
+
+=== Column Type Distinction
+
+- **`characteristics[...]`** = Sample properties (what IS the sample)
+- **`comment[...]`** = Data acquisition properties (how was data acquired)
+
+For crosslinking:
+
+- `characteristics[enrichment process]` = the sample underwent enrichment for crosslinked peptides (PRIDE:0000838, sample property)
+- `comment[cross-linker]` = which crosslinker was used and its properties (data acquisition)
+
+=== Template Selection: When to Apply Human Template
+
+The **human template** should only be applied to **biological human samples** (tissues, cell lines, body fluids). It should NOT be applied to:
+
+- **Recombinant protein standards** with human sequences
+- **Synthetic protein mixtures** for benchmarking
+- **In-vitro crosslinked purified proteins**
+
+For these non-biological samples:
+
+|===
+|Sample Type |Templates |characteristics[organism] |characteristics[material type]
+
+|Human tissue/cells
+|ms-proteomics, crosslinking, **human**
+|homo sapiens
+|tissue, cell line
+
+|Recombinant protein standard
+|ms-proteomics, crosslinking
+|homo sapiens
+|recombinant protein
+
+|Synthetic benchmark
+|ms-proteomics, crosslinking
+|homo sapiens (or source species)
+|synthetic construct
+|===
+
+NOTE: The `characteristics[organism]` indicates the **proteome to search against**, not necessarily the biological origin of the sample. Use `characteristics[material type]` to clarify the sample nature.
+
+=== File Metadata Columns
+
+SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance (crosslinking inherits from ms-proteomics). Place these columns at the end of the file.
+
+**Non-biological samples** (recombinant proteins, synthetic constructs):
+
+|===
+|... |comment[sdrf version] |comment[sdrf template]
+
+|... |v1.1.0 |crosslinking v1.0.0
+|===
+
+**Human biological samples** (tissues, cell lines) - use multiple template columns:
+
+|===
+|... |comment[sdrf version] |comment[sdrf template] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0 |crosslinking v1.0.0
+|===
+
+Each template's version indicates which version of that specific template the file conforms to.
+
+=== RECOMMENDED Columns
+
+|===
+|Column Name |Description |Example Values
+
+|comment[collision energy]
+|Collision energy used for fragmentation. Important for cleavable crosslinker analysis.
+|27, 30%, stepped 27+-6%
+
+|comment[crosslink enrichment method]
+|Method used to enrich crosslinked peptides before MS analysis.
+|size exclusion chromatography, strong cation exchange chromatography, FAIMS
+
+|comment[modification parameters]
+|Post-translational modifications (inherited from base template).
+|NT=Carbamidomethyl;AC=UNIMOD:4;TA=C;MT=Fixed
+|===
+
+=== OPTIONAL Columns (Sample Preparation Details)
+
+These columns document sample preparation for reproducibility but are not required for analysis:
+
+|===
+|Column Name |Description |Example Values
+
+|characteristics[crosslink type]
+|Type of crosslinker chemistry (derivable from reagent).
+|homo-bifunctional, hetero-bifunctional, zero-length, MS-cleavable
+
+|characteristics[crosslink distance]
+|Maximum Ca-Ca distance constraint (for structural interpretation).
+|30 A, 26.4 A, 11.4 A
+
+|characteristics[enrichment process]
+|Whether sample was enriched for crosslinked peptides.
+|enrichment of cross-linked peptides, no enrichment
+
+|comment[crosslinker concentration]
+|Concentration of crosslinking reagent used.
+|2 mM, 500 uM, 1 mM
+
+|characteristics[crosslinking reaction time]
+|Duration of the crosslinking reaction.
+|30 min, 1 h, 45 min
+
+|characteristics[crosslinking temperature]
+|Temperature at which crosslinking was performed.
+|25 C, 4 C, room temperature
+
+|comment[crosslinker to protein ratio]
+|Molar ratio of crosslinker to protein.
+|50:1, 100:1
+
+|comment[quenching reagent]
+|Reagent used to quench the crosslinking reaction.
+|Tris-HCl, ammonium bicarbonate, glycine
+|===
+
+[[crosslinker-annotation]]
+== Crosslinker Annotation Format
+
+The `comment[cross-linker]` column uses a structured key-value format that enables automated analysis configuration. The accession should reference terms from the XLMOD ontology (parent term https://www.ebi.ac.uk/ols4/ontologies/xlmod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FXLMOD_00004[XLMOD:00004 - cross-linker]):
+
+[source]
+----
+NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98
+----
+
+=== Key-Value Properties
+
+|===
+|Key |Property |Status |Description |Example
+
+|NT
+|Name
+|REQUIRED
+|Cross-linker name
+|NT=DSSO
+
+|AC
+|Accession
+|REQUIRED
+|XLMOD or ChEBI accession
+|AC=XLMOD:02010
+
+|CL
+|Cleavable
+|REQUIRED
+|MS-cleavable (yes/no)
+|CL=yes
+
+|TA
+|Target Amino Acids
+|RECOMMENDED
+|Residues targeted by crosslinker
+|TA=K,S,T,Y,nterm
+
+|MH
+|Heavy Stub Mass
+|REQUIRED (if cleavable)
+|Mass of heavy fragment (Da)
+|MH=54.01
+
+|ML
+|Light Stub Mass
+|REQUIRED (if cleavable)
+|Mass of light fragment (Da)
+|ML=85.98
+
+|SM
+|Spacer Mass
+|REQUIRED (if non-cleavable, except zero-length)
+|Full crosslinker mass (Da). For zero-length crosslinkers (e.g., EDC), SM=0 and can be omitted.
+|SM=138.07
+|===
+
+=== Common Crosslinker Examples
+
+[source]
+----
+# MS-cleavable crosslinkers (Scout defaults)
+NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01056468;ML=85.98263585
+NT=DSBU;AC=XLMOD:02011;CL=yes;TA=K,S,T,Y,nterm;MH=85.05276381;ML=111.03202835
+NT=DSBSO;AC=XLMOD:02012;CL=yes;TA=K,S,T,Y,nterm;MH=54.01056;ML=236.0177
+NT=DSAU;AC=XLMOD:02013;CL=yes;TA=K,S,T,Y,nterm;MH=57.02146371;ML=83.00072827
+
+# Non-cleavable crosslinkers
+NT=DSS;AC=XLMOD:02001;CL=no;TA=K,S,T,Y,nterm;SM=138.07
+NT=BS3;AC=XLMOD:02000;CL=no;TA=K,S,T,Y,nterm;SM=138.07
+
+# Zero-length crosslinker (SM=0 is implicit for zero-length)
+NT=EDC;AC=XLMOD:02009;CL=no;TA=K,D,E;SM=0
+
+# Photo-reactive crosslinker
+NT=SDA;AC=XLMOD:02005;CL=no;TA=K,S,T,Y,nterm
+----
+
+=== Crosslinker Reference Table
+
+|===
+|Crosslinker |Type |Target Residues |Cleavable |Spacer Arm |Max Ca-Ca
+
+|DSSO
+|Homo-bifunctional, NHS ester
+|K, S, T, Y, N-term
+|Yes
+|10.3 A
+|~26 A
+
+|DSBU
+|Homo-bifunctional, NHS ester
+|K, S, T, Y, N-term
+|Yes
+|12.5 A
+|~30 A
+
+|DSBSO
+|Homo-bifunctional, NHS ester
+|K, S, T, Y, N-term
+|Yes
+|10.3 A
+|~25 A
+
+|DSAU
+|Homo-bifunctional, NHS ester
+|K, S, T, Y, N-term
+|Yes
+|10.0 A
+|~25 A
+
+|DSS
+|Homo-bifunctional, NHS ester
+|K, S, T, Y, N-term
+|No
+|11.4 A
+|~30 A
+
+|BS3
+|Homo-bifunctional, NHS ester (water-soluble)
+|K, S, T, Y, N-term
+|No
+|11.4 A
+|~30 A
+
+|EDC
+|Zero-length
+|D, E to K
+|No
+|0 A
+|~15 A
+
+|SDA
+|Photo-reactive
+|K + any
+|No
+|3.9 A
+|~20 A
+|===
+
+[[example-project]]
+== Example Project
+
+A complete annotated crosslinking dataset is available:
+
+**PXD042173** - Proteome-scale recombinant standard datasets for XL-MS
+
+- **Crosslinker:** DSSO (MS-cleavable)
+- **Instrument:** Orbitrap Fusion Lumos with FAIMS
+- **Enrichment:** Strong cation exchange chromatography
+- **Fragmentation:** Stepped HCD (27+-6%)
+- **Material Type:** Recombinant protein standard (not a biological sample)
+
+link:../../sdrf-explorer.html?view=PXD042173[Open in SDRF Viewer] | link:../../../annotated-projects/PXD042173/PXD042173.sdrf.tsv[Download SDRF file]
+
+[[example-sdrf]]
+== Example SDRF Structure
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[material type]</th>
+<th class="sample-col">characteristics[enrichment process]</th>
+<th class="data-col">comment[cross-linker]</th>
+<th class="data-col">comment[dissociation method]</th>
+<th class="data-col">comment[collision energy]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">batch1_sample1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">recombinant protein</td>
+<td class="sample-col">enrichment of cross-linked peptides</td>
+<td class="data-col">NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98</td>
+<td class="data-col">HCD</td>
+<td class="data-col">stepped 27+-6%</td>
+<td class="data-col">sample1_fraction1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">batch1_sample2</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">recombinant protein</td>
+<td class="sample-col">enrichment of cross-linked peptides</td>
+<td class="data-col">NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98</td>
+<td class="data-col">HCD</td>
+<td class="data-col">stepped 27+-6%</td>
+<td class="data-col">sample1_fraction2.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data acquisition metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[material type] |characteristics[enrichment process] |comment[cross-linker] |comment[dissociation method] |comment[collision energy] |comment[data file]
+
+|batch1_sample1
+|homo sapiens
+|recombinant protein
+|enrichment of cross-linked peptides
+|NT=DSSO;AC=XLMOD:02010;CL=yes;...
+|HCD
+|stepped 27+-6%
+|sample1_fraction1.raw
+
+|batch1_sample2
+|homo sapiens
+|recombinant protein
+|enrichment of cross-linked peptides
+|NT=DSSO;AC=XLMOD:02010;CL=yes;...
+|HCD
+|stepped 27+-6%
+|sample1_fraction2.raw
+|===
+endif::[]
+
+[[analysis-tool-mapping]]
+== Mapping to Analysis Tools
+
+This section shows how SDRF columns map to parameters in common XL-MS search engines:
+
+=== Scout
+
+|===
+|SDRF Column |Scout Parameter |Notes
+
+|comment[cross-linker] (NT)
+|CXLReagent.Name
+|Crosslinker name
+
+|comment[cross-linker] (TA)
+|CXLReagent.Targets
+|Target residues (K, S, T, Y)
+
+|comment[cross-linker] (MH)
+|CXLReagent.HeavyFragment
+|Heavy stub mass for cleavable XL
+
+|comment[cross-linker] (ML)
+|CXLReagent.LightFragment
+|Light stub mass for cleavable XL
+
+|comment[cleavage agent details]
+|Enzyme
+|Trypsin, Lys-C, etc.
+
+|comment[modification parameters]
+|StaticModifications, VariableModifications
+|Carbamidomethyl, Oxidation, etc.
+|===
+
+=== xiSEARCH
+
+|===
+|SDRF Column |xiSEARCH Parameter |Notes
+
+|comment[cross-linker]
+|crosslinker: definition
+|Full crosslinker config
+
+|comment[dissociation method]
+|Fragment ions considered
+|HCD enables stub ion detection
+
+|comment[cleavage agent details]
+|digestion: config
+|Enzyme definition
+
+|comment[modification parameters]
+|modification: config
+|Fixed and variable mods
+|===
+
+[[validation]]
+== Validation
+
+Crosslinking SDRF files should be validated using sdrf-pipelines:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+
+# Validate with crosslinking template
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv \
+  --template ms-proteomics \
+  --template crosslinking
+
+# For human samples
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv \
+  --template ms-proteomics \
+  --template human \
+  --template crosslinking
+----
+
+[[references]]
+== References
+
+- Leitner A, et al. (2016) Crosslinking and Mass Spectrometry: An Integrated Technology to Understand the Structure and Function of Molecular Machines. Trends in Biochemical Sciences.
+- O'Reilly FJ, Rappsilber J. (2018) Cross-linking mass spectrometry: methods and applications in structural, molecular and systems biology. Nature Structural & Molecular Biology.
+- Iacobucci C, et al. (2019) A cross-linking/mass spectrometry workflow based on MS-cleavable cross-linkers and the MeroX software. Nature Protocols.
+- XLMOD database: https://www.ebi.ac.uk/ols4/ontologies/xlmod
+- Scout: https://github.com/diogobor/Scout
+- xiSEARCH: https://www.rappsilberlab.org/software/xisearch/

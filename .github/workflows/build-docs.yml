@@ -1,24 +1,109 @@
-name: build adocs
+name: Build and Deploy Documentation
 
 on:
   push:
     branches:
-    - master
+      - master
+      - dev
+  workflow_dispatch:
+
 jobs:
-  adoc_build:
+  build-docs:
     runs-on: ubuntu-latest
-    name: Asciidoctoring the docs to pretty HTML!
+    name: Build AsciiDoc documentation site
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Get build container
-      id: adocbuild
-      uses: tonynv/asciidoctor-action@master
-      with:
-          program: "asciidoctor -D docs -a stylesheet=style.css --backend=html5 -o index.html sdrf-proteomics/README.adoc && echo 'proteomics-sample-metadata.bigbio.io' > docs/CNAME"
-    - name: Deploy docs to ghpages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: ./docs/
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install Asciidoctor
+        run: |
+          gem install asciidoctor
+          gem install asciidoctor-diagram
+
+      - name: Set output directory based on branch
+        id: set-output-dir
+        run: |
+          if [ "${{ github.ref_name }}" == "master" ]; then
+            echo "output_dir=docs" >> $GITHUB_OUTPUT
+            echo "base_url=" >> $GITHUB_OUTPUT
+          else
+            echo "output_dir=docs/dev" >> $GITHUB_OUTPUT
+            echo "base_url=/dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create output directory
+        run: mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Build AsciiDoc documentation
+        run: |
+          chmod +x scripts/build-asciidoc.sh
+          ./scripts/build-asciidoc.sh ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Copy static assets
+        run: |
+          chmod +x scripts/copy-assets.sh
+          ./scripts/copy-assets.sh ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Build SDRF Explorer index
+        run: |
+          python3 site/build-sdrf-index.py
+          cp site/sdrf-data.json ${{ steps.set-output-dir.outputs.output_dir }}/
+
+      - name: Inject navigation headers
+        run: |
+          python3 scripts/inject-headers.py ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Transform SDRF links to viewer
+        run: |
+          python3 scripts/transform-links.py ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Transform SDRF example tables
+        run: |
+          python3 scripts/transform-sdrf-tables.py ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Build search index
+        run: |
+          python3 site/build-search-index.py . ${{ steps.set-output-dir.outputs.output_dir }}/search-index.json
+
+      - name: Add version banner for dev branch
+        if: github.ref_name == 'dev'
+        run: |
+          chmod +x scripts/add-dev-banner.sh
+          ./scripts/add-dev-banner.sh ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Checkout gh-pages branch for merging
+        if: github.ref_name == 'dev'
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages-existing
+
+      - name: Merge dev docs into existing gh-pages
+        if: github.ref_name == 'dev'
+        run: |
+          # Copy existing gh-pages content (master version)
+          mkdir -p final-docs
+          cp -r gh-pages-existing/* final-docs/ 2>/dev/null || true
+          # Remove old dev folder if exists
+          rm -rf final-docs/dev
+          # Copy new dev docs
+          cp -r docs/dev final-docs/dev
+          # Move final-docs to docs for deployment
+          rm -rf docs
+          mv final-docs docs
+
+      - name: Add CNAME for custom domain
+        run: echo 'sdrf.quantms.org' > docs/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/

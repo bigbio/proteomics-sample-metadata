@@ -1,0 +1,493 @@
+= Sample Metadata Guidelines
+:revnumber: v1.1.0-dev
+:revdate: 2026-01-25
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Introduction
+
+This document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).
+
+For human-specific metadata (disease staging, comorbidities, treatment history), see link:../templates/human/README.adoc[Human Template].
+
+**Version 1.1.0** - 2026-01
+
+== Best Practices
+
+1. **Use lowercase** for all controlled vocabulary values (except proper nouns in disease names).
+2. **Use ontology terms** mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).
+3. **Be consistent** with format across all samples in a dataset.
+4. **Document unknowns** using `not available` (unknown) or `not applicable` (not relevant) - never leave cells empty.
+5. **Validate before submission** using sdrf-pipelines to check ontology mappings.
+
+== General Formatting Conventions
+
+=== Capitalization Rules
+
+Most controlled vocabulary values are recommended to be **lowercase**:
+
+- Organism names: `homo sapiens`, `mus musculus`
+- Organism parts: `blood`, `liver`, `brain`
+- Sex values: `male`, `female`
+
+**Exceptions** (retain proper noun capitalization):
+
+- Ancestry categories (geographic populations): `African`, `European`, `South Asian`
+- Cell line names: `HeLa`, `HEK293`, `K562`
+
+NOTE: Validators should normalize common capitalization variations (e.g., accept both `Homo sapiens` and `homo sapiens`), but submitters should use lowercase for consistency.
+
+== Organism
+
+**Column:** `characteristics[organism]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy (NCBITaxon)]
+
+Use the scientific name in lowercase. The validator will map to the correct ontology term.
+
+|===
+|Value |NCBITaxon ID |Description
+
+|homo sapiens |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_9606[NCBITaxon:9606] |Human
+|mus musculus |https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCBITaxon_10090[NCBITaxon:10090] |Mouse
+|===
+
+== Organism Part / Tissue
+
+**Column:** `characteristics[organism part]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] for mammals/vertebrates, https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)] for plants, https://www.ebi.ac.uk/ols4/ontologies/fbbt[FlyBase Anatomy (FBbt)] for Drosophila.
+
+Use lowercase for all values. For cell line samples, use `not applicable` or specify the tissue of origin (e.g., `cervix` for HeLa).
+
+[NOTE]
+====
+**Do NOT use `characteristics[tissue]`** - Use `characteristics[organism part]` instead.
+
+The `characteristics[tissue]` column should not be used as a replacement for `characteristics[organism part]`. When tissue-related columns are needed, they should be used alongside `characteristics[organism part]` for additional categorization (e.g., `characteristics[tissue supergroup]` for higher-level grouping).
+====
+
+|===
+|Value |UBERON ID |Description
+
+|blood plasma |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0001969[UBERON:0001969] |Blood plasma
+|liver |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0002107[UBERON:0002107] |Liver tissue
+|brain |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000955[UBERON:0000955] |Brain
+|heart |https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUBERON_0000948[UBERON:0000948] |Heart
+|===
+
+[[age-annotation]]
+== Age
+
+**Column:** `characteristics[age]`
+
+**Format:** `{Number}{Unit}` where Unit is: `Y` (Years), `M` (Months), `W` (Weeks), `D` (Days).
+
+=== Age Formats
+
+|===
+|Age Type |Format |Example |Description
+
+|Exact age |`{Number}{Unit}` |`40Y` |40 years old
+|Exact age |`{Number}{Unit}` |`8W` |8 weeks old
+|Age range |`{Lower}{Unit}-{Upper}{Unit}` |`40Y-50Y` |Between 40 and 50 years
+|Greater than |`>{Number}{Unit}` |`>18Y` |Older than 18 years
+|Less than |`<{Number}{Unit}` |`<65Y` |Younger than 65 years
+|Greater or equal |`>={Number}{Unit}` |`>=21Y` |21 years or older
+|===
+
+[IMPORTANT]
+====
+**When exact age is unavailable:** If age cannot be determined precisely, consider using:
+
+1. **Age ranges** (e.g., `40Y-50Y`) when approximate age is known
+2. **Comparison operators** (e.g., `>18Y`) when only bounds are known
+3. **link:#developmental-stage[Developmental stage]** (e.g., `adult`, `juvenile`, `embryonic`) when age is unknown but developmental stage can be inferred from other metadata
+
+Developmental stage is useful for animal studies, pooled samples, or historical samples where exact age is unavailable.
+====
+
+[[sex-annotation]]
+== Sex
+
+**Column:** `characteristics[sex]`
+
+**Requirement:** REQUIRED for human samples, OPTIONAL for other organisms. Values allowed are under PATO ontology: https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000047[PATO:0000047 - Biological Sex] 
+
+**Allowed values:**
+
+|===
+|Value |Description
+
+|male |Male biological sex
+|female |Female biological sex
+|===
+
+NOTE: For cell lines, use the sex of the original donor if known (e.g., `female` for HeLa cells), otherwise use `not available`. Use `anonymized` when the information exists but has been redacted for privacy reasons (e.g., clinical studies with de-identified data).
+
+[[developmental-stage]]
+== Developmental Stage
+
+**Column:** `characteristics[developmental stage]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+
+|===
+|Value |Description
+
+|adult |Sexually mature organism
+|embryonic |Pre-birth/pre-hatching
+|===
+
+For model organisms, use specific stages when applicable: `embryonic day 14` (mouse E14), `24 hpf` (zebrafish 24 hours post fertilization).
+
+[[disease-annotation]]
+== Disease
+
+**Column:** `characteristics[disease]`
+
+**Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology] (preferred), https://www.ebi.ac.uk/efo/[EFO], https://disease-ontology.org/[Human Disease Ontology (DOID)]
+
+=== Healthy Samples: normal vs healthy vs control
+
+For samples without disease, the terminology matters for standardization:
+
+**`normal`** (PATO:0000461) - **Recommended**
+
+- Standard term in pathology ("normal tissue" vs "tumor tissue")
+- Well-defined ontology mapping to PATO:0000461
+- Widely used in existing proteomics datasets
+
+**`healthy`** (SIO:001012) - **Accepted alternative**
+
+- More intuitive for clinical/human samples
+- Has valid ontology support (Semanticscience Integrated Ontology)
+- Validators should accept both `normal` and `healthy`
+
+[[WARNING]]
+====
+- Avoid using "Control" as a disease state, it is an **experimental design concept**, not a disease state
+- Ambiguous: a control could be healthy, vehicle-treated, time-zero, or even a different disease used for comparison
+====    
+
+The `characteristics[disease]` column captures the **actual disease state** of the sample, while `factor value[disease]` indicates the **experimental comparison groups**:
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="ellipsis-col">...</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="ellipsis-col">...</th>
+<th class="factor-col">factor value[disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">healthy_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">normal</td>
+</tr>
+<tr>
+<td class="sample-col">tumor_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">breast carcinoma</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">breast carcinoma</td>
+</tr>
+<tr>
+<td class="sample-col">adjacent_1</td>
+<td class="ellipsis-col">...</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="factor-col">normal</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor value</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+|===
+|source name |... |characteristics[disease] |... |factor value[disease]
+
+|healthy_1 |... |normal |... |normal
+|tumor_1 |... |breast carcinoma |... |breast carcinoma
+|adjacent_1 |... |normal |... |normal
+|===
+endif::[]
+
+In this example:
+
+- `healthy_1`: Healthy control sample from a healthy individual
+- `tumor_1`: Disease case sample (tumor tissue)
+- `adjacent_1`: Adjacent normal tissue from a cancer patient
+
+Both `healthy_1` and `adjacent_1` have `normal` as their disease state (no tumor cells), but they come from different individuals. The experimental design and comparison groups are defined by the factor values.
+
+=== Disease Examples
+
+|===
+|Disease |SDRF Value |Ontology Link
+
+|Healthy/no disease |normal |https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]
+|Healthy (alternative) |healthy |https://www.ebi.ac.uk/ols4/ontologies/sio/classes/http%253A%252F%252Fsemanticscience.org%252Fresource%252FSIO_001012[SIO:001012]
+|Breast cancer |breast carcinoma |https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMONDO_0004989[MONDO:0004989]
+|===
+
+TIP: For animal disease models, use the human disease name to facilitate cross-species comparisons. 
+
+[[phenotype-annotation]]
+== Phenotype
+
+**Column:** `characteristics[phenotype]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000651[EFO:0000651]
+
+**Requirement:** Optional
+
+Describes observable characteristics or traits of a sample that result from genotype, environment, and treatment interactions. Captures **how the sample behaves or appears**, not what disease it has.
+
+|===
+|Column |Purpose |Example
+
+|`characteristics[disease]` |What disease/pathology is present |"breast cancer", "Alzheimer disease"
+|`characteristics[genotype]` |What genetic variant is present |"KRAS G12D mutant", "wild type"
+|`characteristics[phenotype]` |How the sample behaves/appears |"gefitinib sensitive", "HER2 positive"
+|===
+
+**Common phenotype categories:**
+
+* **Drug response:** gefitinib sensitive, cisplatin resistant
+* **Molecular markers:** HER2 positive, ER positive
+* **Expression states:** overexpressing Neurogenin3, FOXP3 expression
+* **Functional traits:** undifferentiated, adipogenic
+* **Environmental responses:** high fat diet, heat shock response
+
+**When NOT to use phenotype:** For disease names use `characteristics[disease]`, for genetic variants use `characteristics[genotype]`, for treatments use `characteristics[compound]` or `characteristics[treatment]`.
+
+[[cell-type-annotation]]
+== Cell Type
+
+**Column:** `characteristics[cell type]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
+
+For cell lines, optionally include the cell type of origin.
+
+|===
+|Value |CL Link
+
+|epithelial cell |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000066[CL:0000066]
+|T cell |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000084[CL:0000084]
+|B cell |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000236[CL:0000236]
+|macrophage |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000235[CL:0000235]
+|fibroblast |https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000057[CL:0000057]
+|===
+
+For detailed immune cell studies, use specific subtypes: https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000624[CD4-positive, alpha-beta T cell (CL:0000624)], https://www.ebi.ac.uk/ols4/ontologies/cl/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FCL_0000815[regulatory T cell (CL:0000815)].
+
+== Material Type
+
+**Column:** `characteristics[material type]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000837[PRIDE:0000837]
+
+Material type describes the nature of the biological material being analyzed.
+
+**Requirement:** Optional
+
+**Allowed values:**
+
+|===
+|Value |Description |When to Use
+
+|tissue |Solid tissue sample from an organism |Biopsies, surgical specimens, autopsy samples
+|cell |Individual cells or cell suspensions |FACS-sorted cells, primary cell cultures, dissociated tissue
+|cell line |Established immortalized cell line |HeLa, HEK293, A549, etc.
+|organism part |A part of an organism's anatomy |Organ samples, body fluids (when not whole tissue)
+|whole organism |Complete organism sample |Single-celled organisms, small model organisms (C. elegans, yeast)
+|synthetic |Artificially synthesized material |Synthetic peptide libraries, recombinant proteins
+|===
+
+**Special values:**
+
+- `not available`: When material type is unknown
+- `not applicable`: When the concept doesn't apply (e.g., for computational datasets)
+
+**Examples:**
+
+|===
+|Sample Type |characteristics[material type] |characteristics[organism part] |characteristics[cell line]
+
+|Liver biopsy |tissue |liver |not applicable
+|HeLa cells |cell line |cervix |HeLa
+|Sorted T cells |cell |blood |not applicable
+|Mouse whole brain |tissue |brain |not applicable
+|E. coli culture |whole organism |not applicable |not applicable
+|Synthetic peptides |synthetic |not applicable |not applicable
+|===
+
+NOTE: For cell line samples, use `cell line` as the material type. The specific cell line name goes in `characteristics[cell line]`. The tissue of origin can be specified in `characteristics[organism part]`.
+
+=== Additional Sample-Related Columns
+
+[cols="2,4,2,2,1", options="header"]
+|===
+|Column |Description |Example Values |When to Use |Example
+
+|`characteristics[treatment]`
+|Treatment applied to the sample
+|dexamethasone, vehicle control, untreated
+|Drug treatment studies
+|link:../sdrf-explorer.html?view=PXD017291[PXD017291]
+
+|`characteristics[time point]`
+|Time of sample collection
+|0h, 24h, 7d, baseline
+|Time-course experiments
+|link:../sdrf-explorer.html?view=PXD007555[PXD007555]
+
+|`characteristics[dose]`
+|Dose of treatment if applicable
+|10 mg/kg, 100 nM, high dose
+|Dose-response studies
+|—
+
+|`characteristics[patient bmi]`
+|Body mass index (for human studies)
+|25.3 kg/m2, 30.1 kg/m2
+|Metabolic or obesity-related studies
+|link:../sdrf-explorer.html?view=PXD005780[PXD005780]
+
+|`characteristics[smoking status]`
+|Smoking history of the patient
+|never smoked, current smoker, former smoker
+|Lung or cardiovascular studies
+|—
+|===
+
+For additional columns, see the link:sdrf-terms.tsv[SDRF Terms Reference] and the link:../templates/human/README.adoc[Human Template]. 
+
+== PTM Enrichment
+
+**Column:** `characteristics[enrichment process]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+
+|===
+|Value |Description
+
+|enrichment of phosphorylated Protein |Phosphoproteomics enrichment
+|not applicable |No PTM enrichment performed
+|===
+
+== Depletion
+
+**Column:** `characteristics[depletion]`
+
+For blood/plasma samples indicating abundant protein depletion.
+
+Values: `no depletion`, `depletion`, `not applicable`.
+
+== Patient-Derived Xenografts (PDX)
+
+**Column:** `characteristics[xenograft]`
+
+When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[xenograft]</th>
+<th class="sample-col">characteristics[age]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">tumor_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">65Y</td>
+</tr>
+<tr>
+<td class="sample-col">pdx_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">pancreatic adenocarcinoma grown in nude mice</td>
+<td class="sample-col">65Y</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+== Synthetic Peptide Libraries
+
+**Column:** `characteristics[synthetic peptide]`
+
+Values: `synthetic` (sample is a synthetic peptide library), `not synthetic` (biological sample).
+
+For synthetic libraries, most sample metadata can be `not applicable`. The organism MAY be specified if the library was designed from specific species peptides.
+
+[[spiked-in-samples]]
+== Spiked-in Samples
+
+**Column:** `characteristics[spiked compound]`
+
+For samples spiked with peptides, proteins, or mixtures (e.g., for quantification standards or retention time alignment), use key-value pairs:
+
+|===
+|Key |Meaning |Example |Required for
+
+|CT |Compound type |peptide, protein, mixture |All
+|QY |Quantity |10 fmol, 20 nmol |All
+|PS |Peptide sequence |PEPTIDESEQ |Peptides
+|AC |UniProt accession |A9WZ33 |Proteins
+|CN |Compound name |iRT mixture |Optional
+|CV |Compound vendor |Biognosys |Mixtures (required)
+|===
+
+**Example:** `characteristics[spiked compound]: CT=peptide;PS=PEPTIDESEQ;QY=10 fmol`
+
+The injected mass of the main sample SHOULD be specified in `characteristics[mass]`. For multiple spiked components, repeat the column. If the spiked component is another biological sample (e.g., _E. coli_ lysate), annotate it in its own row with `characteristics[mass]` specified for both components.
+
+== Ontologies
+
+- MONDO Disease Ontology: https://mondo.monarchinitiative.org/
+- Cell Ontology (CL): https://obofoundry.org/ontology/cl.html
+- UBERON Anatomy Ontology: https://obofoundry.org/ontology/uberon.html
+- PATO Phenotype Ontology: https://obofoundry.org/ontology/pato.html
+- NCBI Taxonomy: https://www.ncbi.nlm.nih.gov/taxonomy
+- EFO Experimental Factor Ontology: https://www.ebi.ac.uk/efo/

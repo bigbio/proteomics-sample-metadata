@@ -1,0 +1,268 @@
+= SDRF-Proteomics: Tool Support
+:sectnums:
+:toc: left
+:doctype: book
+:xrefstyle: short
+:figure-caption: Figure
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[introduction]]
+== Introduction
+
+This document provides an overview of tools that support the SDRF-Proteomics format. These tools are developed by the community to help researchers create, validate, and use SDRF files in their proteomics workflows.
+
+The tools are organized into three categories:
+
+* **Annotators**: Tools for creating and editing SDRF files
+* **Validators**: Tools for validating SDRF files against the specification
+* **Analysis Tools**: Proteomics analysis pipelines that accept SDRF as input
+
+[[annotators]]
+== Annotators
+
+Annotator tools help researchers create SDRF files from scratch or from existing metadata. These tools typically provide user-friendly interfaces to guide users through the annotation process.
+
+[[lessdrf]]
+=== lesSDRF
+
+https://lessdrf.streamlit.app/[lesSDRF] is a web-based tool for creating SDRF files with minimal effort.
+
+|===
+|Feature |Description
+
+|**Type**
+|Web application
+
+|**URL**
+|https://lessdrf.streamlit.app/
+
+|**Description**
+|A streamlined web interface for creating SDRF-Proteomics files. The tool guides users through the annotation process with an intuitive form-based interface, reducing the complexity of manual SDRF creation.
+
+|**Key Features**
+a|
+* Interactive web-based interface
+* Template-based annotation
+* Real-time validation feedback
+* Export to SDRF-Proteomics format
+
+|**Publication**
+|Claeys T, Van Den Bossche T, Perez-Riverol Y, Gevaert K, Vizcaíno JA, Martens L. https://www.nature.com/articles/s41467-023-42543-5[lesSDRF is more: maximizing the value of proteomics data through streamlined metadata annotation]. Nature Communications 14, 6743 (2023).
+|===
+
+[[cupcake]]
+=== CupCAKE
+
+https://cupcake-vanilla-demo.proteo.nexus/[CupCAKE] (Curation Portal for Curation, Annotation, and Knowledge Extraction) is a comprehensive platform for proteomics data annotation.
+
+|===
+|Feature |Description
+
+|**Type**
+|Web application
+
+|**Demo URL**
+|https://cupcake-vanilla-demo.proteo.nexus/
+
+|**Demo Credentials**
+|Username: `demo` / Password: `demo123`
+
+|**Description**
+|CupCAKE provides a web-based platform for annotating proteomics datasets with standardized metadata. It supports SDRF-Proteomics format and helps users create well-annotated sample metadata files.
+
+|**Key Features**
+a|
+* Web-based annotation interface
+* Support for multiple proteomics templates (human, vertebrates, plants, cell-lines, etc.)
+* Integration with ontology services (OLS, Cellosaurus)
+* Batch annotation capabilities
+* SDRF file export and validation
+* Project management and collaboration features
+|===
+
+.Testing CupCAKE
+To try CupCAKE with the demo instance:
+
+1. Navigate to https://cupcake-vanilla-demo.proteo.nexus/
+2. Log in with username `demo` and password `demo123`
+3. Create a new project or explore existing annotated datasets
+4. Use the annotation interface to create SDRF files with guided templates
+5. Export your annotations in SDRF-Proteomics format
+
+[[validators]]
+== Validators
+
+Validator tools check SDRF files against the SDRF-Proteomics specification to ensure they are correctly formatted and contain all required information.
+
+[[sdrf-pipelines]]
+=== sdrf-pipelines
+
+https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] is the official validation tool for SDRF-Proteomics files.
+
+|===
+|Feature |Description
+
+|**Type**
+|Python command-line tool / library
+
+|**Repository**
+|https://github.com/bigbio/sdrf-pipelines
+
+|**Installation**
+|`pip install sdrf-pipelines`
+
+|**Description**
+|The official SDRF-Proteomics validator developed by the community. It validates SDRF files against the specification, checks ontology terms, and ensures data consistency.
+
+|**Key Features**
+a|
+* Command-line interface for batch validation
+* Python library for programmatic access
+* Template-specific validation rules
+* Ontology term validation via OLS
+* Detailed error reporting
+
+|**Publication**
+|Dai C., et al. https://www.nature.com/articles/s41467-021-26111-3[A proteomics sample metadata representation for multiomics integration and big data analysis]. Nature Communications 12, 5854 (2021).
+|===
+
+.Basic Usage
+[source,bash]
+----
+# Install the validator
+pip install sdrf-pipelines
+
+# Validate an SDRF file
+parse_sdrf validate-sdrf --sdrf_file sample.sdrf.tsv
+
+# Validate with a specific template
+parse_sdrf validate-sdrf --sdrf_file sample.sdrf.tsv --template human
+----
+
+[[analysis-tools]]
+== Analysis Tools
+
+These tools use SDRF files as input for proteomics data analysis, enabling automated and reproducible workflows.
+
+[[quantms]]
+=== quantms
+
+https://quantms.org/[quantms] is a comprehensive proteomics analysis pipeline that uses SDRF-Proteomics for experiment annotation.
+
+|===
+|Feature |Description
+
+|**Type**
+|Nextflow pipeline
+
+|**Website**
+|https://quantms.org/
+
+|**Repository**
+|https://github.com/bigbio/quantms
+
+|**Description**
+|quantms is a Nextflow-based pipeline for quantitative mass spectrometry data analysis. It uses SDRF-Proteomics files to automatically configure the analysis workflow, including sample grouping, labeling schemes, and experimental design.
+
+|**Key Features**
+a|
+* Automated workflow configuration from SDRF
+* Support for label-free and labeled quantification (TMT, iTRAQ)
+* DDA and DIA analysis support
+* Reproducible analysis with containerized tools
+* Cloud-ready deployment
+
+|**Publication**
+|Dai C, Pfeuffer J, Wang H, et al. https://www.nature.com/articles/s41592-024-02343-1[quantms: a cloud-based pipeline for quantitative proteomics enables the reanalysis of public proteomics data]. Nature Methods 21, 1603–1607 (2024).
+|===
+
+.SDRF Integration
+The quantms pipeline reads the SDRF file to automatically:
+
+* Extract sample-to-file mappings
+* Configure labeling channels for multiplexed experiments
+* Set up experimental factors for statistical analysis
+* Apply appropriate search parameters based on metadata
+
+[[wombat]]
+=== Wombat-P
+
+https://github.com/wombat-p[Wombat-P] (WOrkflow Metrics, Benchmarking and AnalyTics in Proteomics) is a platform for automated benchmarking and comparison of proteomics workflows.
+
+|===
+|Feature |Description
+
+|**Type**
+|Nextflow-based benchmarking platform
+
+|**Repository**
+|https://github.com/wombat-p
+
+|**Description**
+|Wombat-P provides automated benchmarking and comparison of commonly used bottom-up label-free proteomics workflows. It simplifies the processing of public data by utilizing SDRF-Proteomics as input, streamlining the analysis of annotated local or public ProteomeXchange datasets.
+
+|**Key Features**
+a|
+* Automated workflow benchmarking
+* SDRF-based experiment configuration
+* Integration with common proteomics tools
+* Modular and extensible architecture
+* Quality metrics computation
+
+|**Publication**
+|Bouyssié D, Altıner P, Capella-Gutierrez S, et al. https://pubs.acs.org/doi/10.1021/acs.jproteome.3c00636[WOMBAT-P: Benchmarking Label-Free Proteomics Data Analysis Workflows]. Journal of Proteome Research 23(1), 418-429 (2024).
+|===
+
+[[maxquant]]
+=== MaxQuant
+
+https://www.maxquant.org/[MaxQuant] is a widely used proteomics software platform with integrated SDRF metadata support.
+
+|===
+|Feature |Description
+
+|**Type**
+|Desktop application
+
+|**Website**
+|https://www.maxquant.org/
+
+|**Description**
+|MaxQuant is a quantitative proteomics software package designed for analyzing large mass spectrometric datasets. It includes integrated SDRF metadata support, providing a user-friendly way to export metadata in SDRF format for standardized data annotation and repository submission.
+
+|**Key Features**
+a|
+* SDRF-compliant metadata export
+* User-friendly metadata annotation interface
+* Integrated with MaxQuant analysis workflow
+* Facilitates ProteomeXchange submissions
+
+|**Publication**
+|Viegener W, Urazbakhtin S, Ferretti D, et al. https://www.nature.com/articles/s41467-025-64089-4[Facilitating analysis and dissemination of proteomics data through metadata integration in MaxQuant]. Nature Communications 16, 8421 (2025).
+|===
+
+[[contributing]]
+== Contributing Tools
+
+If you have developed a tool that supports SDRF-Proteomics and would like to have it listed here, please:
+
+1. Open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository]
+2. Provide a description of your tool, its main features, and how it supports SDRF-Proteomics
+3. Include links to the tool's website and/or repository
+
+We welcome contributions from the community to expand the SDRF-Proteomics ecosystem.
+
+[[resources]]
+== Additional Resources
+
+* link:README.adoc[SDRF-Proteomics Specification]
+* https://github.com/bigbio/proteomics-metadata-standard[GitHub Repository]
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Project Examples]

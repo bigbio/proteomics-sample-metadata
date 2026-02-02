@@ -1,0 +1,481 @@
+= SDRF-Proteomics: MS-Proteomics Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0 - 2026-01
+
+[[abstract]]
+== Abstract
+
+The MS-Proteomics template is the **minimum valid SDRF template** for mass spectrometry-based proteomics experiments. It includes all columns necessary to describe an MS proteomics dataset.
+
+This template is appropriate for:
+
+* DDA (Data-Dependent Acquisition) proteomics
+* DIA (Data-Independent Acquisition) proteomics
+* Targeted proteomics (SRM/MRM/PRM)
+* Any experiment using mass spectrometry for protein/peptide detection
+
+[[hierarchy]]
+== Template Hierarchy
+
+[source]
+----
+base
+  └── ms-proteomics (THIS TEMPLATE)
+        │
+        ├── dda-acquisition (DDA-specific columns)
+        ├── dia-acquisition (DIA-specific columns)
+        ├── crosslinking (XL-MS columns)
+        ├── single-cell (SCP columns)
+        └── immunopeptidomics (MHC-MS columns)
+----
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns (from base)
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the biological sample</td>
+</tr>
+<tr>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species (NCBI Taxonomy)</td>
+</tr>
+<tr>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Anatomical part</td>
+</tr>
+<tr>
+<td><code>characteristics[cell type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Cell type</td>
+</tr>
+<tr>
+<td><code>characteristics[biological replicate]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological replicate number</td>
+</tr>
+<tr>
+<td><code>assay name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the MS run</td>
+</tr>
+<tr>
+<td><code>technology type</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>"proteomic profiling by mass spectrometry"</td>
+</tr>
+<tr>
+<td><code>comment[technical replicate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Technical replicate number</td>
+</tr>
+<tr>
+<td><code>comment[data file]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Raw data file name</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,3", options="header"]
+|===
+|Column Name |Requirement |Description
+
+|source name |REQUIRED |Unique identifier for the biological sample
+|characteristics[organism] |REQUIRED |Species (NCBI Taxonomy)
+|characteristics[organism part] |REQUIRED |Anatomical part
+|characteristics[cell type] |RECOMMENDED |Cell type
+|characteristics[biological replicate] |REQUIRED |Biological replicate number
+|assay name |REQUIRED |Unique identifier for the MS run
+|technology type |REQUIRED |"proteomic profiling by mass spectrometry"
+|comment[technical replicate] |RECOMMENDED |Technical replicate number
+|comment[data file] |REQUIRED |Raw data file name
+|===
+endif::[]
+
+=== MS-Specific Columns
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Mass spectrometer used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">MS</a></td>
+<td>Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro</td>
+</tr>
+<tr>
+<td><code>comment[proteomics data acquisition method]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>MS acquisition method</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE</a></td>
+<td>Data-dependent acquisition, Data-independent acquisition</td>
+</tr>
+<tr>
+<td><code>comment[cleavage agent details]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Enzyme used for digestion</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">MS</a></td>
+<td>NT=Trypsin;AC=MS:1001251</td>
+</tr>
+<tr>
+<td><code>comment[label]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Labeling strategy</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE</a></td>
+<td>label free sample, TMT126, SILAC heavy</td>
+</tr>
+<tr>
+<td><code>comment[fraction identifier]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Fraction number (1 for non-fractionated)</td>
+<td>—</td>
+<td>1, 2, 3</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
+|===
+|Column Name |Requirement |Description |Ontology |Example Values
+
+|comment[instrument] |REQUIRED |Mass spectrometer used |MS |Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro
+|comment[proteomics data acquisition method] |REQUIRED |MS acquisition method |PRIDE |Data-dependent acquisition, Data-independent acquisition
+|comment[cleavage agent details] |REQUIRED |Enzyme used for digestion |MS |NT=Trypsin;AC=MS:1001251
+|comment[label] |REQUIRED |Labeling strategy |PRIDE |label free sample, TMT126, SILAC heavy
+|comment[fraction identifier] |REQUIRED |Fraction number (1 for non-fractionated) |— |1, 2, 3
+|===
+endif::[]
+
+[[field-guidelines]]
+== Field Guidelines
+
+=== CV Term Format
+
+For data file metadata columns that reference ontology terms, use the structured CV term format:
+
+`NT={term name};AC={accession}`
+
+**Examples:**
+
+- Dissociation method: `NT=HCD;AC=PRIDE:0000590`
+- Instrument: `NT=Q Exactive HF;AC=MS:1002523`
+- Label: `NT=TMT126;AC=PRIDE:0000285`
+
+NOTE: Data file metadata benefits from the structured CV term format because these values are often extracted programmatically from instrument files.
+
+=== Label
+
+**Column:** `comment[label]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000514[PRIDE:0000514 - Sample label]
+
+Describes the isotopic label applied to each sample. All label values MUST be children of PRIDE:0000514 (label free sample, TMT, iTRAQ, SILAC, etc.). link:../../sdrf-explorer.html?view=PXD004683[Open example SDRF]
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">run1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">run1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+=== Cleavage Agents
+
+**Column:** `comment[cleavage agent details]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001045[PSI-MS - Cleavage agent name (MS:1001045)]
+
+**Format:** `NT=EnzymeName;AC=Accession`
+
+|===
+|Enzyme |Value |OLS Link
+
+|Trypsin |NT=Trypsin;AC=MS:1001251 |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001251[MS:1001251]
+|Trypsin/P |NT=Trypsin/P;AC=MS:1001313 |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001313[MS:1001313]
+|Lys-C |NT=Lys-C;AC=MS:1001309 |https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001309[MS:1001309]
+|===
+
+For top-down/intact proteins, use `not applicable`. For multiple enzymes, add multiple columns. link:../../sdrf-explorer.html?view=PXD002395[Open example SDRF]
+
+=== Protein Modifications
+
+**Column:** `comment[modification parameters]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/unimod[UNIMOD] or https://www.ebi.ac.uk/ols4/ontologies/mod[PSI-MOD]
+
+**Format:** `NT=ModificationName;AC=Accession;MT=Type;TA=AminoAcid;PP=Position` link:../../sdrf-explorer.html?view=PXD001725[Open example SDRF]
+
+|===
+|Property |Key |Values
+
+|Name |NT |UNIMOD or PSI-MOD term name
+|Accession |AC |UNIMOD:X or MOD:X
+|Type |MT |`Fixed`, `Variable`
+|Target Amino Acid |TA |Single letter codes (e.g., `S,T,Y`)
+|Position |PP |`Anywhere`, `Protein N-term`, `Protein C-term`
+|===
+
+**Common modifications:**
+
+|===
+|Modification |Value |OLS Link
+
+|Carbamidomethyl (fixed) |NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C;PP=Anywhere |https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_4[UNIMOD:4]
+|Oxidation (variable) |NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M;PP=Anywhere |https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_35[UNIMOD:35]
+|Phosphorylation (variable) |NT=Phospho;AC=UNIMOD:21;MT=Variable;TA=S,T,Y;PP=Anywhere |https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_21[UNIMOD:21]
+|===
+
+=== Mass Tolerances
+
+**Columns:** `comment[precursor mass tolerance]`, `comment[fragment mass tolerance]`
+
+**Format:** `{value} {unit}` where unit is `Da` or `ppm`.
+
+|===
+|Precursor |Fragment |Instrument Type
+
+|10 ppm |20 ppm |Orbitrap MS1/MS2
+|20 ppm |0.6 Da |Orbitrap MS1, Ion trap MS2
+|===
+
+=== Fractionation
+
+**Column:** `comment[fractionation method]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550[PRIDE - Fractionation method]
+
+Use with `comment[fraction identifier]` to number fractions.
+
+|===
+|Method |OLS Link
+
+|High-pH reversed-phase chromatography |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000564[PRIDE:0000564]
+|Strong cation-exchange chromatography |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000561[PRIDE:0000561]
+|===
+
+NOTE: For single-shot experiments without fractionation, this column can be omitted or set to `not applicable`. link:../../sdrf-explorer.html?view=MSV000078494[Open example SDRF]
+
+=== Dissociation Method
+
+**Column:** `comment[dissociation method]`
+
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044[PRIDE - dissociation method (MS:1000044)]
+
+All values MUST be children of MS:1000044 from the PRIDE ontology. Use the short acronyms (HCD, CID, ETD, etc.) as term names.
+
+|===
+|Term (Acronym) |OLS Link
+
+|HCD |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000590[PRIDE:0000590]
+|CID |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000591[PRIDE:0000591]
+|ETD |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000593[PRIDE:0000593]
+|EThcD |https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000594[PRIDE:0000594]
+|===
+
+**CV term format:** `NT=HCD;AC=PRIDE:0000590` link:../../sdrf-explorer.html?view=PMID25043054[Open example SDRF]
+
+=== Collision Energy
+
+**Column:** `comment[collision energy]`
+
+**Format:** `{value} {unit}`
+
+|===
+|Format |Example |Description
+
+|Normalized |27 NCE |Normalized collision energy
+|Absolute |30 eV |Absolute energy in electron volts
+|Stepped |22 NCE;26 NCE;30 NCE |Multiple energies (semicolon-separated)
+|===
+
+TIP: For DIA experiments with stepped collision energy, see the link:../dia-acquisition/README.adoc[DIA template] for detailed guidance.
+
+=== Sample Preparation
+
+**Reduction Reagent:** `comment[reduction reagent]` - DTT, TCEP, beta-mercaptoethanol
+
+**Alkylation Reagent:** `comment[alkylation reagent]` - IAA, chloroacetamide
+
+**Depletion:** `comment[depletion]` - no depletion, depletion, depleted fraction, bound fraction
+
+[[usage]]
+== Usage
+
+=== File Metadata Columns
+
+SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance. Place these columns at the end of the file.
+
+=== Minimal MS Proteomics (non-organism-specific)
+
+|===
+|... |comment[sdrf version] |comment[sdrf template]
+
+|... |v1.1.0 |ms-proteomics v1.1.0
+|===
+
+=== Human Samples (Recommended)
+
+|===
+|... |comment[sdrf version] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0
+|===
+
+NOTE: The `human` template inherits from `ms-proteomics`, so you only need to specify `human`.
+
+=== With Acquisition-Specific Parameters (multiple templates)
+
+When using multiple templates, add multiple `comment[sdrf template]` columns:
+
+|===
+|... |comment[sdrf version] |comment[sdrf template] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0 |dda-acquisition v1.1.0
+|===
+
+Each template declares its own version, allowing templates to evolve independently.
+
+[[validation]]
+== Validation
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template ms-proteomics
+----
+
+[[example]]
+== Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_1</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">sample1.raw</td>
+</tr>
+</tbody>
+</table>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[biological replicate] |assay name |technology type |comment[instrument] |comment[proteomics data acquisition method] |comment[cleavage agent details] |comment[label] |comment[fraction identifier] |comment[data file]
+
+|sample_1 |homo sapiens |liver |1 |run_1 |proteomic profiling by mass spectrometry |Q Exactive HF |Data-dependent acquisition |NT=Trypsin;AC=MS:1001251 |label free sample |1 |sample1.raw
+|===
+endif::[]
+
+[[related]]
+== Related Templates
+
+* link:../../README.adoc[Main Specification] - Core SDRF-Proteomics documentation
+* link:../dda-acquisition/README.adoc[DDA Acquisition] - DDA-specific columns
+* link:../dia-acquisition/README.adoc[DIA Acquisition] - DIA-specific columns
+* link:../human/README.adoc[Human Template] - Human sample metadata
+
+== Ontologies
+
+- PRIDE Ontology: https://www.ebi.ac.uk/ols4/ontologies/pride
+- PSI-MS Ontology: https://www.ebi.ac.uk/ols4/ontologies/ms
+- UNIMOD: https://www.ebi.ac.uk/ols4/ontologies/unimod
+- PSI-MOD: https://www.ebi.ac.uk/ols4/ontologies/mod

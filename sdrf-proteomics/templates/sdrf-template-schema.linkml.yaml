@@ -1,0 +1,377 @@
+# SDRF Template Schema - LinkML Representation
+# This schema defines the structure for SDRF proteomics template YAML files
+# See: https://linkml.io/
+
+id: https://github.com/bigbio/proteomics-metadata-standard/sdrf-template-schema
+name: sdrf-template-schema
+title: SDRF Proteomics Template Schema
+description: >-
+  LinkML schema for defining SDRF proteomics template validation rules.
+  Templates define column requirements, validators, and inheritance relationships
+  for Sample and Data Relationship Format (SDRF) files in proteomics.
+license: Apache-2.0
+version: 1.1.0
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sdrf: https://github.com/bigbio/proteomics-metadata-standard/
+  schema: http://schema.org/
+  OBI: http://purl.obolibrary.org/obo/OBI_
+  EFO: http://www.ebi.ac.uk/efo/EFO_
+
+default_prefix: sdrf
+default_range: string
+
+imports:
+  - linkml:types
+
+# =============================================================================
+# ENUMERATIONS
+# =============================================================================
+
+enums:
+  RequirementLevel:
+    description: Column requirement levels
+    permissible_values:
+      required:
+        description: Column must be present in the SDRF file
+      recommended:
+        description: Column should be present for complete metadata
+      optional:
+        description: Column may be present for additional context
+
+  TemplateLayer:
+    description: Template layers in the inheritance hierarchy
+    permissible_values:
+      base:
+        description: Core template with shared columns
+      technology:
+        description: Technology-specific template (MS or affinity)
+      sample:
+        description: Sample/organism-specific template
+      experiment:
+        description: Experiment methodology-specific template
+
+  ColumnType:
+    description: Data types for column values
+    permissible_values:
+      string:
+        description: Free text or controlled vocabulary string
+      integer:
+        description: Whole number value
+
+  Cardinality:
+    description: Value cardinality for column cells
+    permissible_values:
+      single:
+        description: Single value per cell
+      multiple:
+        description: Multiple semicolon-separated values allowed
+
+  ErrorLevel:
+    description: Severity level for validation failures
+    permissible_values:
+      error:
+        description: Validation failure that must be fixed
+      warning:
+        description: Validation issue that should be reviewed
+
+  ValidatorType:
+    description: Available validator types
+    permissible_values:
+      ontology:
+        description: Validate against ontology terms
+      pattern:
+        description: Validate against regex pattern
+      values:
+        description: Validate against fixed value list
+      single_cardinality_validator:
+        description: Ensure single value per cell
+      min_columns:
+        description: Ensure minimum column count
+      trailing_whitespace_validator:
+        description: Check for trailing whitespace
+      column_order:
+        description: Validate column ordering
+      empty_cells:
+        description: Check for empty cells
+      combination_of_columns_no_duplicate_validator:
+        description: Ensure unique column combinations
+
+  OntologyPrefix:
+    description: Supported ontology prefixes for validation
+    permissible_values:
+      ncbitaxon:
+        description: NCBI Taxonomy (organism)
+      uberon:
+        description: Uberon Anatomy Ontology (organism part)
+      cl:
+        description: Cell Ontology (cell type)
+      clo:
+        description: Cell Line Ontology (cell line)
+      bto:
+        description: BRENDA Tissue Ontology (tissue, cell type)
+      mondo:
+        description: MONDO Disease Ontology (disease)
+      efo:
+        description: Experimental Factor Ontology (disease, experimental factors)
+      doid:
+        description: Disease Ontology (disease)
+      pato:
+        description: Phenotype and Trait Ontology (phenotypes)
+      ms:
+        description: PSI-MS Ontology (instrument, modifications)
+      pride:
+        description: PRIDE Ontology (acquisition method, labels)
+      hancestro:
+        description: Human Ancestry Ontology (ancestry)
+      hsapdv:
+        description: Human Developmental Stages (developmental stage)
+      cellosaurus:
+        description: Cellosaurus (cell line identifiers)
+      unimod:
+        description: Unimod (protein modifications)
+
+# =============================================================================
+# CLASSES
+# =============================================================================
+
+classes:
+  Template:
+    description: >-
+      Root class representing an SDRF template definition.
+      Templates define validation rules for SDRF files.
+    attributes:
+      name:
+        description: Unique template identifier used in validation commands
+        range: string
+        required: true
+        identifier: true
+        pattern: "^[a-z][a-z0-9-]*$"
+        examples:
+          - value: human
+          - value: ms-proteomics
+          - value: crosslinking
+
+      description:
+        description: Human-readable description of the template purpose
+        range: string
+        required: true
+
+      version:
+        description: Semantic version of the template (should match spec version)
+        range: string
+        required: true
+        pattern: "^\\d+\\.\\d+\\.\\d+(-[a-z0-9]+)?$"
+        examples:
+          - value: "1.1.0"
+          - value: "1.0.0-dev"
+
+      extends:
+        description: Parent template to inherit columns and validators from
+        range: string
+        required: false
+        examples:
+          - value: base
+          - value: ms-proteomics
+
+      usable_alone:
+        description: Whether template can be used without other templates
+        range: boolean
+        required: false
+        ifabsent: "true"
+
+      layer:
+        description: Template layer in the inheritance hierarchy
+        range: TemplateLayer
+        required: false
+
+      validators:
+        description: Template-level validators applied to entire SDRF file
+        range: Validator
+        multivalued: true
+        required: false
+        inlined: true
+        inlined_as_list: true
+
+      columns:
+        description: Column definitions with validation rules
+        range: Column
+        multivalued: true
+        required: true
+        inlined: true
+        inlined_as_list: true
+
+  Column:
+    description: >-
+      Definition of an SDRF column including requirements and validation rules.
+    attributes:
+      name:
+        description: >-
+          Column header name exactly as it appears in the SDRF file.
+          Uses format: characteristics[term], comment[term], or plain name.
+        range: string
+        required: true
+        examples:
+          - value: "source name"
+          - value: "characteristics[organism]"
+          - value: "comment[label]"
+
+      description:
+        description: Human-readable description of column contents and usage
+        range: string
+        required: true
+
+      requirement:
+        description: Whether the column is required, recommended, or optional
+        range: RequirementLevel
+        required: true
+
+      type:
+        description: Data type for column values
+        range: ColumnType
+        required: false
+        ifabsent: string(string)
+
+      cardinality:
+        description: Whether single or multiple values are allowed per cell
+        range: Cardinality
+        required: false
+        ifabsent: string(single)
+
+      allow_not_applicable:
+        description: Allow "not applicable" as valid value
+        range: boolean
+        required: false
+        ifabsent: "false"
+
+      allow_not_available:
+        description: Allow "not available" as valid value
+        range: boolean
+        required: false
+        ifabsent: "false"
+
+      allow_pooled:
+        description: Allow "pooled" as valid value (typically for biological replicate)
+        range: boolean
+        required: false
+        ifabsent: "false"
+
+      validators:
+        description: Column-level validators for value checking
+        range: Validator
+        multivalued: true
+        required: false
+        inlined: true
+        inlined_as_list: true
+
+  Validator:
+    description: >-
+      Validation rule that checks SDRF content for compliance.
+      Can be applied at template level (entire file) or column level (specific values).
+    attributes:
+      validator_name:
+        description: Type of validator to apply
+        range: ValidatorType
+        required: true
+
+      params:
+        description: Validator-specific parameters
+        range: ValidatorParams
+        required: true
+        inlined: true
+
+  ValidatorParams:
+    description: >-
+      Parameters for validators. Different validators use different subsets.
+      This is a flexible container for all possible validator parameters.
+    attributes:
+      # For min_columns validator
+      min_columns:
+        description: Minimum number of columns required
+        range: integer
+        required: false
+
+      # For ontology validator
+      ontologies:
+        description: List of ontology prefixes to validate against
+        range: OntologyPrefix
+        multivalued: true
+        required: false
+
+      error_level:
+        description: Severity level for validation failures
+        range: ErrorLevel
+        required: false
+        ifabsent: string(error)
+
+      # For pattern validator
+      pattern:
+        description: Regular expression pattern for validation
+        range: string
+        required: false
+        examples:
+          - value: "^\\d+$"
+          - value: "^[A-Za-z0-9_-]+$"
+
+      case_sensitive:
+        description: Whether pattern matching is case sensitive
+        range: boolean
+        required: false
+        ifabsent: "true"
+
+      # For values validator
+      values:
+        description: List of allowed values
+        range: string
+        multivalued: true
+        required: false
+
+      # For combination_of_columns_no_duplicate_validator
+      column_name:
+        description: Column names that must have unique combinations (error level)
+        range: string
+        multivalued: true
+        required: false
+
+      column_name_warning:
+        description: Column names that should have unique combinations (warning level)
+        range: string
+        multivalued: true
+        required: false
+
+      # Documentation fields (used for all validators)
+      description:
+        description: Human-readable description of the validation rule
+        range: string
+        required: false
+
+      examples:
+        description: Example valid values
+        range: string
+        multivalued: true
+        required: false
+
+# =============================================================================
+# SCHEMA METADATA
+# =============================================================================
+
+slots:
+  name:
+    description: Identifier name
+    range: string
+
+  description:
+    description: Human-readable description
+    range: string
+
+  version:
+    description: Semantic version
+    range: string
+
+types:
+  semver:
+    uri: xsd:string
+    base: str
+    description: Semantic version string (e.g., 1.0.0)
+    pattern: "^\\d+\\.\\d+\\.\\d+(-[a-z0-9]+)?$"

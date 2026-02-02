@@ -1,0 +1,1657 @@
+= SDRF-Proteomics: Human Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status
+
+**Status:** Released
+
+**Version:** 1.1.0 - 2026-01
+
+[[abstract]]
+== Abstract
+
+The human template provides standardized metadata fields for human proteomics experiments. It extends the base template with clinical and demographic metadata required for human samples.
+
+This template is appropriate for:
+
+* Clinical proteomics studies
+* Healthy human donor samples
+* Cancer and disease biomarker studies
+* Drug treatment and pharmacoproteomics studies
+
+[[extends]]
+== Template Hierarchy
+
+[source]
+----
+base (construction artifact)
+  └── human (SAMPLE layer - must combine with TECHNOLOGY template)
+----
+
+The human template extends the **base** template, adding disease annotation and human-specific clinical metadata fields.
+
+[IMPORTANT]
+====
+The human template **cannot be used alone**. You must combine it with a technology template:
+
+* `ms-proteomics` + `human` - For MS-based proteomics of human samples
+* `affinity-proteomics` + `human` - For affinity proteomics (Olink, SomaScan) of human samples
+====
+
+[[checklist]]
+== Checklist
+
+=== Inherited Columns
+
+All columns from the base template are inherited (source name, organism, organism part, biological replicate, assay name, technology type, instrument, technical replicate, data file). Technology-specific columns (cleavage agent, label, fraction identifier, etc.) come from the technology template (`ms-proteomics` or `affinity-proteomics`).
+
+=== Human-Specific Columns
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Section</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>characteristics[disease]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Disease state of the sample</td>
+<td><a href="../metadata-guidelines/sample-metadata.html#disease-annotation">Sample Metadata</a></td>
+</tr>
+<tr>
+<td><code>characteristics[age]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Age of the donor at sample collection</td>
+<td><a href="../metadata-guidelines/sample-metadata.html#age-annotation">Sample Metadata</a></td>
+</tr>
+<tr>
+<td><code>characteristics[sex]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological sex of the donor</td>
+<td><a href="../metadata-guidelines/sample-metadata.html#sex-annotation">Sample Metadata</a></td>
+</tr>
+<tr>
+<td><code>characteristics[individual]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Unique identifier for the donor</td>
+<td><a href="#individual-identifier">Individual Identifier</a></td>
+</tr>
+<tr>
+<td><code>characteristics[ancestry category]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Ancestry or ethnic background</td>
+<td><a href="#ancestry-category">Ancestry Category</a></td>
+</tr>
+<tr>
+<td><code>characteristics[developmental stage]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Developmental stage (adult, fetal, etc.)</td>
+<td><a href="../metadata-guidelines/sample-metadata.html#developmental-stage">Sample Metadata</a></td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
+|===
+|Column Name |Requirement |Description |Section
+
+|characteristics[disease] |REQUIRED |Disease state of the sample |Sample Metadata
+|characteristics[age] |REQUIRED |Age of the donor at sample collection |Sample Metadata
+|characteristics[sex] |REQUIRED |Biological sex of the donor |Sample Metadata
+|characteristics[individual] |RECOMMENDED |Unique identifier for the donor |Individual Identifier
+|characteristics[ancestry category] |RECOMMENDED |Ancestry or ethnic background |Ancestry Category
+|characteristics[developmental stage] |OPTIONAL |Developmental stage (adult, fetal, etc.) |Sample Metadata
+|===
+endif::[]
+
+=== Clinical Study Columns (Optional)
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Section</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>characteristics[pre-existing condition]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Pre-existing medical conditions</td>
+<td><a href="#pre-existing-condition">Pre-existing Condition</a></td>
+</tr>
+<tr>
+<td><code>characteristics[disease staging]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Disease stage (I, II, III, IV)</td>
+<td><a href="#disease-staging">Disease Staging</a></td>
+</tr>
+<tr>
+<td><code>characteristics[clinical data]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Clinical measurements (e.g., glucose level)</td>
+<td><a href="#clinical-data">Clinical Data</a></td>
+</tr>
+<tr>
+<td><code>characteristics[tumor stage]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>TNM staging for cancer</td>
+<td><a href="#tumor-stage-tnm-staging">Tumor Stage</a></td>
+</tr>
+<tr>
+<td><code>characteristics[tumor grade]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Tumor differentiation grade</td>
+<td><a href="#tumor-grading">Tumor Grading</a></td>
+</tr>
+<tr>
+<td><code>characteristics[treatment]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Treatment administered</td>
+<td><a href="#treatment">Treatment</a></td>
+</tr>
+<tr>
+<td><code>characteristics[compound]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Drug or compound used</td>
+<td><a href="#compound">Compound</a></td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
+|===
+|Column Name |Requirement |Description |Section
+
+|characteristics[pre-existing condition] |OPTIONAL |Pre-existing medical conditions |Pre-existing Condition
+|characteristics[disease staging] |OPTIONAL |Disease stage (I, II, III, IV) |Disease Staging
+|characteristics[clinical data] |OPTIONAL |Clinical measurements (e.g., glucose level) |Clinical Data
+|characteristics[tumor stage] |OPTIONAL |TNM staging for cancer |Tumor Stage
+|characteristics[tumor grade] |OPTIONAL |Tumor differentiation grade |Tumor Grading
+|characteristics[treatment] |OPTIONAL |Treatment administered |Treatment
+|characteristics[compound] |OPTIONAL |Drug or compound used |Compound
+|===
+endif::[]
+
+[[validation]]
+== Validation
+
+Validate SDRF files using sdrf-pipelines:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human
+----
+
+[[examples]]
+== Example
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[age]</th>
+<th class="sample-col">characteristics[sex]</th>
+<th class="sample-col">characteristics[individual]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment[data file]</th>
+<th class="factor-col">factor value[disease]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">hepatocellular carcinoma</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">55Y</td>
+<td class="sample-col">male</td>
+<td class="sample-col">P001</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_001</td>
+<td class="data-col">patient_001.raw</td>
+<td class="factor-col">hepatocellular carcinoma</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">hepatocellular carcinoma</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">62Y</td>
+<td class="sample-col">female</td>
+<td class="sample-col">P002</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_002</td>
+<td class="data-col">patient_002.raw</td>
+<td class="factor-col">hepatocellular carcinoma</td>
+</tr>
+<tr>
+<td class="sample-col">control_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">48Y</td>
+<td class="sample-col">male</td>
+<td class="sample-col">C001</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_003</td>
+<td class="data-col">control_001.raw</td>
+<td class="factor-col">normal</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+<span class="legend-item"><span class="legend-color factor-bg"></span> Factor values</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1,1,1,1,1,1,1,1,1"]
+|===
+|source name |characteristics[organism] |characteristics[disease] |characteristics[organism part] |characteristics[age] |characteristics[sex] |characteristics[individual] |characteristics[biological replicate] |assay name |comment[data file] |factor value[disease]
+
+|patient_001 |homo sapiens |hepatocellular carcinoma |liver |55Y |male |P001 |1 |run_001 |patient_001.raw |hepatocellular carcinoma
+|patient_002 |homo sapiens |hepatocellular carcinoma |liver |62Y |female |P002 |1 |run_002 |patient_002.raw |hepatocellular carcinoma
+|control_001 |homo sapiens |normal |liver |48Y |male |C001 |1 |run_003 |control_001.raw |normal
+|===
+endif::[]
+
+== Detailed Column Guidelines
+
+This section provides detailed guidelines for each human-specific metadata column, organized by category:
+
+* <<general-human-metadata>> - Basic donor/patient information
+* <<clinical-specific-terms>> - Clinical study metadata
+* <<cancer-specific-terms>> - Tumor characterization
+* <<sampling-site>> - Anatomical location specificity
+* <<phenotype-and-biomarkers>> - Biomarker annotations
+* <<treatment-and-perturbation-metadata>> - Drug treatments
+
+[[general-human-metadata]]
+== General Human Metadata
+
+This section describes basic metadata columns applicable to all human samples, including healthy donors and patients.
+
+=== Individual Identifier
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[individual]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000542">EFO:0000542</a></td>
+<td class="req-recommended">Recommended</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[individual]` |EFO:0000542 |Recommended
+|===
+endif::[]
+
+**Format:** Alphanumeric pseudonymized identifier (e.g., `patient_001`, `P023455`, `donor_1`).
+
+IMPORTANT: Never use actual patient names. Use pseudonymized identifiers only. Consider GDPR, HIPAA regulations.
+
+Enables tracking of:
+
+* Biological replicates from the same individual
+* Matched samples (tumor/normal pairs from same patient)
+* Longitudinal samples (same patient over time)
+* Family/pedigree studies
+
+**Examples:**
+[source]
+----
+characteristics[individual]: patient_001
+characteristics[individual]: individual 234
+characteristics[individual]: donor_1
+----
+
+When multiple samples come from the same patient, use consistent identifier:
+
+ifdef::backend-html5[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[individual]</th>
+<th class="sample-col">characteristics[organism part]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_001</td>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">tumor</td>
+</tr>
+<tr>
+<td class="sample-col">sample_002</td>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">adjacent normal</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[%header,cols="1,1,1"]
+|===
+|source name |characteristics[individual] |characteristics[organism part]
+
+|sample_001 |patient_001 |tumor
+|sample_002 |patient_001 |adjacent normal
+|===
+endif::[]
+
+=== Ancestry Category
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[ancestry category]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/hancestro">HANCESTRO</a></td>
+<td class="req-recommended">Recommended</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[ancestry category]` |HANCESTRO |Recommended
+|===
+endif::[]
+
+|===
+|Value |HANCESTRO ID |Description
+
+|African |HANCESTRO:0010 |African ancestry
+|European |HANCESTRO:0005 |European ancestry
+|East Asian |HANCESTRO:0009 |East Asian ancestry
+|South Asian |HANCESTRO:0006 |South Asian ancestry
+|American |HANCESTRO:0013 |American ancestry (Indigenous peoples of the Americas)
+|===
+
+NOTE: Ancestry category values retain proper noun capitalization (e.g., `African`, `European`) since they refer to geographic populations. This is an exception to the general lowercase rule for controlled vocabulary terms. Use the short form (e.g., `African`) rather than the full label (e.g., `African ancestry`).
+
+Use `not available` when ancestry is unknown, `not applicable` for non-human samples or cell lines where ancestry doesn't apply.
+
+=== Body Measurements
+
+|===
+|Column |Ontology |Format |Example
+
+|`characteristics[body mass index]` |EFO:0004340 |Numeric (kg/m²) |25.5
+|`characteristics[weight]` |EFO:0004324 |{value} kg |70 kg
+|`characteristics[height]` |EFO:0004339 |{value} cm |175 cm
+|===
+
+=== Sampling Time Point
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[sampling time point]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000688">EFO:0000688</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[sampling time point]` |EFO:0000688 |Optional
+|===
+endif::[]
+
+For longitudinal studies, indicates when sample was collected relative to a reference point.
+
+Values: `baseline`, `week 1`, `day 7`, `post-treatment`, `follow-up`.
+
+[[clinical-specific-terms]]
+== Clinical-Specific Terms
+
+This section describes columns for capturing clinical metadata in human studies, applicable to patient samples regardless of disease type.
+
+=== Pre-existing Condition
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[pre-existing condition]</code></td>
+<td><a href="https://mondo.monarchinitiative.org/">MONDO</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[pre-existing condition]` |MONDO |Optional
+|===
+endif::[]
+
+Comorbidities or pre-existing medical conditions. For multiple conditions, use multiple columns (preferred) or semicolon-separated values.
+
+|===
+|Condition |SDRF Value |MONDO ID
+
+|High blood pressure |hypertension |MONDO:0005044
+|Diabetes |type 2 diabetes mellitus |MONDO:0005148
+|Heart disease |coronary artery disease |MONDO:0005010
+|Obesity |obesity |MONDO:0011122
+|===
+
+=== Disease Staging
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[disease staging]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO:0000410</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[disease staging]` |NCIT, EFO:0000410 |Optional
+|===
+endif::[]
+
+Disease staging captures overall disease progression, including cancer staging, chronic disease phases, and severity classifications.
+
+|===
+|Value |NCIT ID |Description |Use Case
+
+|stage I |NCIT:C27966 |Early localized disease |Solid tumors
+|stage II |? |Locally advanced disease |Solid tumors (use disease-specific staging)
+|stage III |NCIT:C27970 |Regional spread |Solid tumors
+|stage IV |NCIT:C27971 |Distant metastasis |Solid tumors
+|chronic phase |? |Stable chronic disease |Leukemia, chronic conditions (use disease-specific terms)
+|end stage |? |Terminal disease phase |End-stage organ failure (use disease-specific terms)
+|===
+
+NOTE: Some staging terms like "stage II", "chronic phase", and "end stage" do not have generic NCIT codes. For these, use disease-specific staging terms when available (e.g., NCIT:C3175 for Chronic Phase CML).
+
+**Examples:**
+[source]
+----
+characteristics[disease staging]: chronic phase
+characteristics[disease staging]: end stage
+characteristics[disease staging]: stage 1
+characteristics[disease staging]: mild inflammation
+----
+
+Use `not available` when staging is unknown, `not applicable` for non-disease samples.
+
+=== Clinical Data
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[clinical data]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0030083">EFO:0030083</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[clinical data]` |EFO:0030083 |Optional
+|===
+endif::[]
+
+Free-text or structured clinical details about samples that don't fit into other structured fields. Use this column for receptor status, treatment history, surgical details, and other clinical annotations.
+
+NOTE: Use the term `clinical data` (EFO:0030083) rather than `clinical information` to align with EFO ontology.
+
+**Examples:**
+[source]
+----
+characteristics[clinical data]: breast reduction mammoplasty tissue explant
+characteristics[clinical data]: lesional
+characteristics[clinical data]: estrogen-receptor-positive, progesterone-receptor-positive, epidermal growth-factor-2-negative
+characteristics[clinical data]: no cytogenetic response to imatinib
+----
+
+**Best Practice:** Consider using structured columns (e.g., separate columns for ER/PR/HER2 status) when possible. Use `clinical data` for additional context that doesn't fit elsewhere.
+
+=== Clinical History
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[clinical history]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000352">EFO:0000352</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[clinical history]` |EFO:0000352 |Optional
+|===
+endif::[]
+
+Captures relevant medical history information for the patient.
+
+[[cancer-specific-terms]]
+== Cancer-Specific Terms
+
+This section describes columns specific to cancer proteomics studies. These terms are distinct from general clinical staging and provide detailed tumor characterization.
+
+=== Tumor Stage (TNM Staging)
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[tumor stage]</code><br><small>Alt: <code>characteristics[TNM staging]</code></small></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0004925">EFO:0004925</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[tumor stage]` (alt: `characteristics[TNM staging]`) |NCIT, EFO:0004925 |Optional
+|===
+endif::[]
+
+TNM staging describes the extent of cancer spread. Format: `T{0-4}N{0-3}M{0-1}` where T = tumor size/extent, N = lymph node involvement, M = distant metastasis. Prefix `p` indicates pathological staging (post-surgery), `c` indicates clinical staging.
+
+|===
+|Value |Description |Staging Type
+
+|T1N0M0 |Small tumor, no lymph nodes, no metastasis |Clinical or pathological
+|pT2pN1M0 |Pathological staging after surgery |Pathological
+|Type IV |Stage IV disease |Roman numeral notation
+|IIB |Stage IIB |Roman numeral with substage
+|===
+
+**Examples:**
+[source]
+----
+characteristics[tumor stage]: Type IV
+characteristics[tumor stage]: IIB
+characteristics[tumor stage]: T3N0M0
+----
+
+=== Tumor Grading
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[tumor grading]</code><br><small>Alt: <code>characteristics[tumor grade]</code></small></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT:C28076</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[tumor grading]` (alt: `characteristics[tumor grade]`) |NCIT:C28076 |Optional
+|===
+endif::[]
+
+Histological tumor grade describes how abnormal cancer cells look under a microscope. Grade correlates with tumor aggressiveness.
+
+|===
+|Value |NCIT ID |Description
+
+|grade 1 |NCIT:C28077 |Well differentiated (low grade)
+|grade 2 |NCIT:C28078 |Moderately differentiated (intermediate grade)
+|grade 3 |NCIT:C28079 |Poorly differentiated (high grade)
+|grade 4 |NCIT:C28082 |Undifferentiated (high grade)
+|===
+
+**Examples:**
+[source]
+----
+characteristics[tumor grading]: grade 2
+characteristics[tumor grading]: grade 3
+----
+
+=== Metastasis Site
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[metastasis site]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0009708">EFO:0009708</a>, UBERON</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[metastasis site]` |EFO:0009708, UBERON |Optional
+|===
+endif::[]
+
+Location where cancer has spread from the primary site.
+
+|===
+|Value |Description
+
+|lymph node |Metastasis to lymph nodes
+|liver |Hepatic metastasis
+|lung |Pulmonary metastasis
+|bone |Bone metastasis
+|brain |Brain metastasis
+|pleura |Pleural metastasis
+|===
+
+=== Tumor Size and Mass
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[tumor size]</code><br><small>Alt: <code>characteristics[tumor mass]</code></small></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0004134">EFO:0004134</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007062">EFO:0007062</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[tumor size]` (alt: `characteristics[tumor mass]`) |EFO:0004134, EFO:0007062 |Optional
+|===
+endif::[]
+
+**Format:** `{value} {unit}` (e.g., `2.5 cm`, `15 mm`, `50 g`)
+
+=== Biopsy Site
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[biopsy site]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000288">EFO:0000288</a>, UBERON</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[biopsy site]` |EFO:0000288, UBERON |Optional
+|===
+endif::[]
+
+Specific anatomical location where biopsy was performed.
+
+**Examples:** `left leg`, `right breast`, `Brodmann area 46`, `liver segment 7`
+
+=== Survival Time
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[survival time]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000714">EFO:0000714</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[survival time]` |EFO:0000714 |Optional
+|===
+endif::[]
+
+**Format:** `{value} {unit}` (e.g., `24 months`, `3 years`)
+
+Used for survival analysis studies to track patient outcomes.
+
+=== Last Follow Up
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[last follow up]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0007058">EFO:0007058</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[last follow up]` |EFO:0007058 |Optional
+|===
+endif::[]
+
+**Format:** `{value} {unit}` (e.g., `12 months`, `2 years`)
+
+Time of last clinical follow-up for longitudinal studies.
+
+=== Mitotic Rate
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[mitotic rate]</code></td>
+<td>—</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[mitotic rate]` |— |Optional
+|===
+endif::[]
+
+Number of mitoses per high-power field. Used for histological grading in some cancer types.
+
+=== Cancer Subtype Classifications
+
+**Breast cancer subtype** (`characteristics[breast cancer subtype]`):
+
+|===
+|Value |NCIT ID |Description
+
+|luminal A |NCIT:C53554 |ER+/PR+, HER2-, low Ki67
+|luminal B |NCIT:C53555 |ER+/PR+, HER2+/- , high Ki67
+|HER2-enriched |NCIT:C53556 |ER-/PR-, HER2+
+|triple-negative |NCIT:C71732 |ER-/PR-/HER2-
+|===
+
+**Other cancer-specific staging systems:**
+
+* `characteristics[Dukes stage]` - Colorectal cancer staging (A, B, C, D)
+* `characteristics[Ann Arbor stage]` - Lymphoma staging (I, II, III, IV)
+* `characteristics[Gleason score]` - Prostate cancer grading
+* `characteristics[Weiss grade]` - Adrenal cortical carcinoma (low, high)
+
+[[sampling-site]]
+== Sampling Site
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[sampling site]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0000688">EFO:0000688</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[sampling site]` |EFO:0000688, UBERON, BTO |Optional
+|===
+endif::[]
+
+Specifies the exact sampling location within an organ or tissue, providing more detail than `characteristics[organism part]`. This column is critical for cancer proteomics studies to distinguish tumor tissue from normal tissue.
+
+=== Relationship with `characteristics[organism part]`
+
+These two columns work together to provide hierarchical anatomical information:
+
+* **`characteristics[organism part]`** = General anatomical structure (e.g., "breast", "liver", "heart")
+* **`characteristics[sampling site]`** = Specific location or context within that structure (e.g., "tumor", "normal tissue adjacent to tumor", "left ventricle")
+
+=== When to Use Sampling Site
+
+Use `characteristics[sampling site]` when you need to specify:
+
+* **Tumor vs. normal distinction** - Critical for matched tumor/normal studies
+* **Specific anatomical sub-regions** - e.g., "left ventricle" within "heart"
+* **Disease-specific locations** - e.g., "adenoma" within "colorectum"
+* **Developmental zones** - e.g., "root differentiation zone" (for plant studies)
+
+=== Usage Patterns
+
+**Pattern 1: Cancer Studies (Tumor/Normal/Adjacent)**
+
+|===
+|characteristics[organism part] |characteristics[sampling site] |Use Case
+
+|breast |tumor |Primary tumor tissue
+|breast |normal tissue adjacent to tumor |Adjacent normal tissue (may have field effects)
+|breast |tumor-distant section |Normal tissue from same organ, distant from tumor
+|colorectum |tumor |Colorectal tumor
+|colorectum |normal tissue |Normal colorectal tissue
+|liver |normal tissue |Unaffected liver tissue
+|===
+
+**Examples:**
+[source]
+----
+characteristics[organism part]: breast
+characteristics[sampling site]: tumor-distant section
+
+characteristics[organism part]: colorectum
+characteristics[sampling site]: normal tissue adjacent to tumor
+----
+
+**Pattern 2: Anatomical Sub-Regions**
+
+|===
+|characteristics[organism part] |characteristics[sampling site] |Use Case
+
+|heart |left ventricle |Specific heart chamber
+|brain |frontal cortex |Specific brain region
+|cerebellum |posterior inferior cerebellum |Detailed cerebellar location
+|colonic mucosa |sigmoid colon |Specific colon region
+|===
+
+=== Annotation Preferences
+
+There are two valid approaches for anatomical annotation:
+
+**Option 1: Most specific level in organism part (preferred for simple cases)**
+
+When no additional context is needed, use the most specific anatomical term directly:
+
+[source]
+----
+characteristics[organism part]: left ventricle
+characteristics[organism part]: cerebral cortex
+characteristics[organism part]: sigmoid colon
+----
+
+**Option 2: General + sampling site (preferred for complex cases)**
+
+When you need additional context (e.g., tumor vs. normal), use both columns:
+
+[source]
+----
+characteristics[organism part]: heart
+characteristics[sampling site]: left ventricle
+
+characteristics[organism part]: breast
+characteristics[sampling site]: tumor
+----
+
+**Guidelines:**
+
+1. **Prefer most specific level** in `organism part` when simple anatomical annotation is sufficient
+2. **Use `sampling site`** when you need to capture tumor/normal distinction, disease context, or other qualitative information
+3. **Do NOT use multiple organism part columns** - This pattern is not recommended
+4. Use lowercase for all values
+
+[[phenotype-and-biomarkers]]
+== Phenotype and Biomarkers
+
+For general phenotype annotation guidelines applicable to all organisms, see link:../../metadata-guidelines/sample-metadata.adoc#phenotype-annotation[Sample Metadata Guidelines - Phenotype].
+
+This section focuses on **human-specific biomarker applications** of the phenotype column.
+
+=== Clinical Biomarkers
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[phenotype]</code></td>
+<td>PATO, HP</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[phenotype]` |PATO, HP |Optional
+|===
+endif::[]
+
+In clinical proteomics, phenotype is commonly used to capture biomarker status for patient stratification:
+
+|===
+|Biomarker Type |Example Values |Clinical Application
+
+|Hormone receptor status |ER positive, PR negative |Breast cancer treatment selection
+|Growth factor receptors |HER2 positive, EGFR positive |Targeted therapy eligibility
+|Immune markers |PD-L1 high, CD8+ infiltrating |Immunotherapy response prediction
+|Stem cell markers |CD34 positive, ALDH+ |Stem cell identification
+|===
+
+**Examples:**
+[source]
+----
+characteristics[phenotype]: HER2 positive
+characteristics[phenotype]: ER positive
+characteristics[phenotype]: triple negative
+characteristics[phenotype]: PD-L1 high expression
+----
+
+=== Drug Response in Human Studies
+
+For pharmacoproteomics and precision medicine studies:
+
+[source]
+----
+characteristics[phenotype]: gefitinib sensitive
+characteristics[phenotype]: cisplatin resistant
+characteristics[phenotype]: tamoxifen resistant
+characteristics[phenotype]: imatinib responder
+----
+
+=== Genotype for Human Variants
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[genotype]</code></td>
+<td>EFO</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[genotype]` |EFO |Optional
+|===
+endif::[]
+
+For human genetic variants, use genotype to capture specific mutations:
+
+[source]
+----
+characteristics[genotype]: BRCA1 mutation carrier
+characteristics[genotype]: KRAS G12D mutant
+characteristics[genotype]: wild type
+characteristics[genotype]: TP53 R175H
+----
+
+=== Biomarker vs Genotype vs Phenotype
+
+|===
+|Concept |Column |Example |Use Case
+
+|Genetic mutation |`characteristics[genotype]` |BRCA1 mutation |Known genetic variant
+|Protein expression status |`characteristics[phenotype]` |HER2 positive |Biomarker measured by IHC/proteomics
+|Drug sensitivity |`characteristics[phenotype]` |cisplatin resistant |Functional drug response
+|===
+
+[[treatment-and-perturbation-metadata]]
+== Treatment and Perturbation Metadata
+
+This section describes columns for capturing drug treatment, compound exposure, and perturbation information. These fields are critical for pharmacoproteomics studies and treatment comparison experiments.
+
+=== Treatment
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[treatment]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[treatment]` |NCIT |Optional
+|===
+endif::[]
+
+General treatment or intervention applied to samples. Use for treatment categories when more general than specific compounds.
+
+|===
+|Value |NCIT ID |Description
+
+|chemotherapy |NCIT:C15632 |Chemical drug treatment
+|immunotherapy |NCIT:C15262 |Immune-based treatment
+|radiation therapy |NCIT:C15313 |Radiation-based treatment
+|surgery |NCIT:C17173 |Surgical intervention
+|untreated |NCIT:C48660 |No treatment applied
+|===
+
+**Examples:**
+[source]
+----
+characteristics[treatment]: untreated
+characteristics[treatment]: Mycobacterium tuberculosis H37Rv whole cell lysate
+characteristics[treatment]: LPS stimulation
+----
+
+Use `untreated` for no treatment, `not available` when unknown.
+
+=== Compound
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[compound]</code></td>
+<td><a href="https://www.ebi.ac.uk/chebi/">ChEBI</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT</a>, EFO</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[compound]` |ChEBI, NCIT, EFO |Optional
+|===
+endif::[]
+
+Chemical compound, drug, or biological agent applied to samples. Use ChEBI ontology for standardized compound identification.
+
+|===
+|Compound |ChEBI ID |Drug Class
+
+|doxorubicin |CHEBI:28748 |Anthracycline chemotherapy
+|cisplatin |CHEBI:27899 |Platinum chemotherapy
+|tamoxifen |CHEBI:41774 |Selective estrogen receptor modulator
+|dexamethasone |CHEBI:41879 |Glucocorticoid
+|none |EFO:0001461 |Control (no compound)
+|===
+
+**Examples:**
+[source]
+----
+characteristics[compound]: tamoxifen (CHEBI_41774)
+characteristics[compound]: dexamethasone
+characteristics[compound]: none (EFO:0001461)
+characteristics[compound]: lipopolysaccharide
+characteristics[compound]: interferon gamma
+----
+
+**Best Practice:** Include ChEBI accession in format `compound_name (CHEBI:XXXXX)` when available.
+
+=== Dose
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[dose]</code></td>
+<td>UO</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[dose]` |UO |Optional
+|===
+endif::[]
+
+**Format:** `{value} {unit}`
+
+|===
+|Concentration Unit |Example |Use Case
+
+|nanomolar |100 nanomolar |Cell culture experiments
+|micromolar |10 micromolar |In vitro studies
+|millimolar |1 millimolar |High concentration studies
+|mg/kg |5 mg/kg |Animal studies (body weight-based)
+|ng/ml |50 ng/ml |Serum/media concentration
+|μg/ml |10 μg/ml |Protein/antibody concentration
+|===
+
+**Examples:**
+[source]
+----
+characteristics[dose]: 100 nanomolar
+characteristics[dose]: 10 micromolar
+characteristics[dose]: 50 nanogram per millilitre
+----
+
+=== Treatment Time
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[treatment time]</code></td>
+<td>UO</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[treatment time]` |UO |Optional
+|===
+endif::[]
+
+**Format:** `{value} {unit}` where unit is hour, day, week, month (or h, d, w abbreviations)
+
+Duration of treatment exposure.
+
+|===
+|Value |Description
+
+|24 hour |One day treatment
+|4 hours |Short-term treatment
+|5 days |Multi-day treatment
+|2 weeks |Extended treatment
+|===
+
+**Examples:**
+[source]
+----
+characteristics[treatment time]: 24 hour
+characteristics[treatment time]: 4 hours
+characteristics[treatment time]: 5 days
+----
+
+=== Treatment Status
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[treatment status]</code></td>
+<td>—</td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[treatment status]` |— |Optional
+|===
+endif::[]
+
+Values: `pre-treatment`, `on treatment`, `post-treatment`, `treatment naive`.
+
+=== Treatment Response
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[treatment response]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT:C50995</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[treatment response]` |NCIT:C50995 |Optional
+|===
+endif::[]
+
+|===
+|Value |NCIT ID |Description
+
+|complete response |NCIT:C4870 |No detectable disease (complete remission)
+|partial response |NCIT:C18058 |Tumor size reduced (partial remission)
+|stable disease |NCIT:C18213 |No significant change
+|progressive disease |NCIT:C17747 |Disease progression
+|===
+
+=== Genetic Modification
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[genetic modification]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[genetic modification]` |EFO |Optional
+|===
+endif::[]
+
+Describes the method or type of genetic modification applied to samples (particularly relevant for engineered cell lines and model organisms).
+
+NOTE: This is distinct from `characteristics[genotype]` which describes WHAT variant is present. `genetic modification` describes HOW the modification was done.
+
+|===
+|Value |EFO ID |Description
+
+|gene knock out |EFO:0000506 |Complete gene deletion
+|gene knock down |EFO:0000513 |Gene expression reduction (siRNA, shRNA)
+|gene overexpression |EFO:0000514 |Increased gene expression
+|transfection |EFO:0000515 |DNA introduction (non-viral)
+|transduction |EFO:0000516 |DNA introduction (viral)
+|wild type genotype |EFO:0005168 |No genetic modification
+|===
+
+**Examples:**
+[source]
+----
+characteristics[genetic modification]: gene knock out (EFO:0000506)
+characteristics[genetic modification]: AML1-ETO fusion gene transduction
+characteristics[genetic modification]: transduction of hTERT, HPVE6
+characteristics[genotype]: DNMT3a R882 mutant
+characteristics[genotype]: wild type genotype
+----
+
+=== Complete Treatment Annotation Example
+
+For comprehensive pharmacoproteomics annotation, combine compound, dose, and treatment time:
+
+|===
+|source name |characteristics[compound] |characteristics[dose] |characteristics[treatment time] |characteristics[phenotype]
+
+|sample_treated_1 |tamoxifen (CHEBI:41774) |1 micromolar |48 hour |tamoxifen sensitive
+|sample_treated_2 |tamoxifen (CHEBI:41774) |1 micromolar |48 hour |tamoxifen resistant
+|sample_control |none (EFO:0001461) |not applicable |not applicable |control
+|===
+
+== Best Practices
+
+=== General Guidelines
+
+1. **Protect privacy** - Never include identifiable patient information. Use pseudonymized identifiers only.
+2. **Use ontology terms** - Prefer MONDO for diseases, NCIT for staging/treatments, ChEBI for compounds, PATO for phenotypes.
+3. **Be consistent** - Use the same format for all samples in a dataset.
+4. **Document unknowns** - Use `not available` rather than leaving cells empty.
+5. **Include temporal context** - Specify when measurements were taken relative to treatment.
+6. **Ensure regulatory compliance** - Follow GDPR, HIPAA, and other data protection regulations.
+
+=== Clinical Proteomics Best Practices
+
+1. **Separate disease from staging** - Use `characteristics[disease]` for the condition and `characteristics[disease staging]` for progression.
+2. **Use sampling site for tumor/normal** - Distinguish tissue types using `characteristics[sampling site]` (e.g., "tumor", "normal tissue adjacent to tumor").
+3. **Track matched samples** - Use consistent `characteristics[individual]` identifiers for samples from the same patient.
+4. **Document treatment context** - Combine `characteristics[compound]`, `characteristics[dose]`, and `characteristics[treatment time]` for complete treatment annotation.
+5. **Use phenotype for biomarkers** - Capture molecular markers and drug response status in `characteristics[phenotype]`.
+
+=== Cancer-Specific Best Practices
+
+1. **Avoid embedding staging in disease** - Don't use "high grade serous ovarian cancer" in disease column; use separate staging columns.
+2. **Use standard staging systems** - Prefer TNM notation for solid tumors, Ann Arbor for lymphomas.
+3. **Include grading when available** - Tumor grade provides important prognostic information.
+4. **Document metastasis** - Use `characteristics[metastasis site]` for metastatic samples.
+
+== Additional Terms
+
+This section contains optional metadata terms that may be useful in specific contexts.
+
+=== Smoking Status
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[smoking status]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT:C19796</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[smoking status]` |NCIT:C19796 |Optional
+|===
+endif::[]
+
+|===
+|Value |NCIT ID |Description
+
+|never smoker |NCIT:C65108 |Never smoked
+|former smoker |NCIT:C65107 |Previously smoked, now quit
+|current smoker |NCIT:C65106 |Currently smoking
+|===
+
+=== Menopausal Status
+
+ifdef::backend-html5[]
+++++
+<table class="term-metadata-table">
+<tr>
+<th>Term</th>
+<th>Ontology</th>
+<th>Requirement</th>
+</tr>
+<tr>
+<td><code>characteristics[menopausal status]</code></td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncit">NCIT:C16151</a></td>
+<td class="req-optional">Optional</td>
+</tr>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="1,1,1"]
+|===
+|Term |Ontology |Requirement
+
+|`characteristics[menopausal status]` |NCIT:C16151 |Optional
+|===
+endif::[]
+
+For female patients. Values: `pre-menopausal`, `peri-menopausal`, `post-menopausal`.
+
+== References
+
+=== Disease and Clinical Ontologies
+- MONDO Disease Ontology: https://mondo.monarchinitiative.org/
+- NCI Thesaurus (NCIT): https://ncithesaurus.nci.nih.gov/
+- EFO Experimental Factor Ontology: https://www.ebi.ac.uk/efo/
+
+=== Anatomy and Cell Ontologies
+- UBERON Anatomy Ontology: https://obofoundry.org/ontology/uberon.html
+- Cell Ontology (CL): https://obofoundry.org/ontology/cl.html
+
+=== Phenotype and Quality Ontologies
+- PATO Phenotype Ontology: https://obofoundry.org/ontology/pato.html
+
+=== Chemical and Treatment Ontologies
+- ChEBI Chemical Entities: https://www.ebi.ac.uk/chebi/
+
+=== Population and Ancestry
+- Human Ancestry Ontology (HANCESTRO): https://www.ebi.ac.uk/ols4/ontologies/hancestro
+
+=== Staging Systems
+- TNM Classification: AJCC Cancer Staging Manual
+- Ann Arbor Staging: Lymphoma staging system

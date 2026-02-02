@@ -1,0 +1,443 @@
+= SDRF-Proteomics: Data-independent acquisition (DIA) Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating Data-independent acquisition (DIA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DIA-specific metadata.
+
+**Type:** Experiment-type Template (used in combination with core templates)
+
+**Status:** Released
+
+**Version:** 1.1.0 - 2026-01
+
+[[abstract]]
+== Abstract
+
+Data-independent acquisition (DIA) is a mass spectrometry acquisition strategy where all precursor ions within a specified m/z range are fragmented systematically, regardless of their intensity. Unlike Data-dependent acquisition (DDA), DIA provides comprehensive and reproducible proteome coverage, reduced missing values across samples, and better quantitative accuracy. Popular DIA methods include SWATH-MS, MSE, All-Ion Fragmentation (AIF), and various windowed DIA approaches.
+
+DIA experiments have unique characteristics: predefined m/z isolation windows, scan window ranges, stepped collision energies, and spectral library requirements. This template captures the acquisition parameters essential for DIA data analysis and reproducibility.
+
+[[connections]]
+== Connections to Analysis Pipelines
+
+DIA data is typically analyzed using specialized software:
+
+- **DIA-NN**: Deep learning-based DIA analysis
+- **Spectronaut**: Commercial DIA analysis platform
+- **OpenSWATH**: Open-source targeted analysis
+- **MaxDIA**: MaxQuant's DIA module
+- **EncyclopeDIA**: Chromatogram library search
+- **Skyline**: Targeted quantification
+
+When documenting DIA experiments, noting the intended or used analysis software is RECOMMENDED.
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for DIA experiments.
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for DIA experiments (in addition to the core SDRF-Proteomics requirements):
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology/CV</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[scan window lower limit]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Lower m/z limit of the DIA scan range</td>
+<td>Numeric value (m/z)</td>
+<td>400, 350</td>
+</tr>
+<tr>
+<td><code>comment[scan window upper limit]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Upper m/z limit of the DIA scan range</td>
+<td>Numeric value (m/z)</td>
+<td>1200, 1650</td>
+</tr>
+<tr>
+<td><code>comment[isolation window width]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Width of DIA isolation windows</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000828">PSI-MS (MS:1000828)</a></td>
+<td>25, 8, variable</td>
+</tr>
+<tr>
+<td><code>comment[number of isolation windows]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Total number of DIA windows per cycle</td>
+<td>Numeric value</td>
+<td>32, 64, 100</td>
+</tr>
+<tr>
+<td><code>comment[collision energy]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Collision energy used for fragmentation (can have multiple for stepped CE)</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000045">PSI-MS (MS:1000045)</a></td>
+<td>27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE</td>
+</tr>
+<tr>
+<td><code>comment[dissociation method]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Fragmentation method used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044">PRIDE (MS:1000044)</a></td>
+<td>NT=HCD;AC=PRIDE:0000590</td>
+</tr>
+<tr>
+<td><code>comment[MS2 mass analyzer]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Mass analyzer used for MS2 acquisition</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000443">PSI-MS (MS:1000443)</a></td>
+<td>NT=Orbitrap;AC=MS:1000484</td>
+</tr>
+<tr>
+<td><code>comment[cycle time]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Time to complete one DIA cycle</td>
+<td>Numeric value with unit</td>
+<td>3.2 s, 2.8 s</td>
+</tr>
+<tr>
+<td><code>comment[spectral library]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Spectral library used for analysis</td>
+<td>Free text or accession</td>
+<td>project-specific library, Pan-Human library, PRIDE:PXD000001</td>
+</tr>
+<tr>
+<td><code>comment[DIA method]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Specific DIA method variant (child of PRIDE:0000450)</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450">PRIDE (PRIDE:0000450)</a></td>
+<td>NT=SWATH-MS;AC=PRIDE:0000451, diaPASEF, scanning SWATH</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
+|===
+|Column Name |Requirement |Description |Ontology/CV |Example Values
+
+|comment[scan window lower limit] |RECOMMENDED |Lower m/z limit of the DIA scan range |Numeric value (m/z) |400, 350
+|comment[scan window upper limit] |RECOMMENDED |Upper m/z limit of the DIA scan range |Numeric value (m/z) |1200, 1650
+|comment[isolation window width] |RECOMMENDED |Width of DIA isolation windows |PSI-MS (MS:1000828) |25, 8, variable
+|comment[number of isolation windows] |RECOMMENDED |Total number of DIA windows per cycle |Numeric value |32, 64, 100
+|comment[collision energy] |RECOMMENDED |Collision energy used for fragmentation |PSI-MS (MS:1000045) |27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE
+|comment[dissociation method] |RECOMMENDED |Fragmentation method used |PRIDE (MS:1000044) |NT=HCD;AC=PRIDE:0000590
+|comment[MS2 mass analyzer] |RECOMMENDED |Mass analyzer used for MS2 acquisition |PSI-MS (MS:1000443) |NT=Orbitrap;AC=MS:1000484
+|comment[cycle time] |RECOMMENDED |Time to complete one DIA cycle |Numeric value with unit |3.2 s, 2.8 s
+|comment[spectral library] |RECOMMENDED |Spectral library used for analysis |Free text or accession |project-specific library, Pan-Human library, PRIDE:PXD000001
+|comment[DIA method] |RECOMMENDED |Specific DIA method variant |PRIDE (PRIDE:0000450) |NT=SWATH-MS;AC=PRIDE:0000451, diaPASEF, scanning SWATH
+|===
+endif::[]
+
+NOTE: The parent term for all DIA methods is https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450[Data-independent acquisition (PRIDE:0000450)]. Use `comment[DIA method]` to specify the specific variant when known. Check the https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Controlled Vocabulary] for available terms.
+
+=== Optional Columns
+
+The following columns are OPTIONAL but commonly used:
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology/CV</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[precursor mass tolerance]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass tolerance for precursor ions in database search</td>
+<td>Numeric value with unit</td>
+<td>10 ppm, 20 ppm</td>
+</tr>
+<tr>
+<td><code>comment[fragment mass tolerance]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass tolerance for fragment ions in database search</td>
+<td>Numeric value with unit</td>
+<td>0.02 Da, 20 ppm</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
+|===
+|Column Name |Requirement |Description |Ontology/CV |Example Values
+
+|comment[precursor mass tolerance] |OPTIONAL |Mass tolerance for precursor ions in database search |Numeric value with unit |10 ppm, 20 ppm
+|comment[fragment mass tolerance] |OPTIONAL |Mass tolerance for fragment ions in database search |Numeric value with unit |0.02 Da, 20 ppm
+|===
+endif::[]
+
+[[stepped-collision-energy]]
+== Stepped Collision Energy
+
+Many DIA methods use stepped or ramped collision energies to improve fragmentation coverage. Document this using multiple `comment[collision energy]` columns or semicolon-separated values:
+
+=== Multiple Columns Approach
+
+|===
+|comment[collision energy] |comment[collision energy] |comment[collision energy]
+
+|22 NCE
+|26 NCE
+|30 NCE
+|===
+
+=== Semicolon-Separated Approach
+
+|===
+|comment[collision energy]
+
+|22 NCE;26 NCE;30 NCE
+|===
+
+Both approaches are valid. Use the approach that best fits your workflow.
+
+[[isolation-window-schemes]]
+== Isolation Window Schemes
+
+DIA methods vary in their isolation window strategies:
+
+|===
+|Scheme |Description |How to Document
+
+|Fixed windows
+|Equal-width windows across mass range
+|comment[isolation window width] = 25
+
+|Variable windows
+|Windows optimized for ion density
+|comment[isolation window width] = variable; provide method file reference
+
+|Overlapping windows
+|Windows with m/z overlap
+|Note in comment[DIA method] or separate documentation
+
+|Scanning/sliding windows
+|Continuous scanning approach
+|comment[DIA method] = scanning SWATH
+|===
+
+For complex schemes, reference the instrument method file in `comment[method file]` if available.
+
+[[dia-variants]]
+== DIA Method Variants
+
+Common DIA acquisition methods and their characteristics:
+
+|===
+|Method |PRIDE CV |Vendor/Origin |Key Features |Example Annotation
+
+|SWATH-MS
+|PRIDE:0000451
+|SCIEX
+|Fixed or variable windows, typically 25-100 windows
+|NT=SWATH-MS;AC=PRIDE:0000451
+
+|MSE
+|PRIDE:0000452
+|Waters
+|All-ion fragmentation, alternating low/high energy
+|NT=MSE;AC=PRIDE:0000452
+
+|All ion fragmentation (AIF)
+|PRIDE:0000453
+|Thermo
+|All-ion fragmentation approach
+|NT=All ion fragmentation;AC=PRIDE:0000453
+
+|diaPASEF
+|(pending)
+|Bruker
+|Ion mobility-enhanced DIA
+|diaPASEF
+
+|boxcar DIA
+|(pending)
+|Various
+|Multiplexed acquisition with notched windows
+|boxcar DIA
+
+|Scanning SWATH
+|(pending)
+|SCIEX
+|Continuously scanning isolation window
+|scanning SWATH
+|===
+
+NOTE: Methods marked as "(pending)" do not yet have PRIDE CV accessions. Use the free text name until official terms are available.
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a DIA proteomics experiment:
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[scan window lower limit]</th>
+<th class="data-col">comment[scan window upper limit]</th>
+<th class="data-col">comment[DIA method]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">plasma_sample_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">Data-independent acquisition</td>
+<td class="data-col">350</td>
+<td class="data-col">1650</td>
+<td class="data-col">SWATH-MS</td>
+<td class="data-col">plasma_001.raw</td>
+</tr>
+<tr>
+<td class="sample-col">plasma_sample_002</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">Data-independent acquisition</td>
+<td class="data-col">350</td>
+<td class="data-col">1650</td>
+<td class="data-col">SWATH-MS</td>
+<td class="data-col">plasma_002.raw</td>
+</tr>
+<tr>
+<td class="sample-col">plasma_sample_003</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">type 2 diabetes mellitus</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">Data-independent acquisition</td>
+<td class="data-col">350</td>
+<td class="data-col">1650</td>
+<td class="data-col">SWATH-MS</td>
+<td class="data-col">plasma_003.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |characteristics[organism] |characteristics[disease] |... |comment[proteomics data acquisition method] |comment[scan window lower limit] |comment[scan window upper limit] |comment[DIA method] |comment[data file]
+
+|plasma_sample_001 |homo sapiens |normal |... |Data-independent acquisition |350 |1650 |SWATH-MS |plasma_001.raw
+|plasma_sample_002 |homo sapiens |normal |... |Data-independent acquisition |350 |1650 |SWATH-MS |plasma_002.raw
+|plasma_sample_003 |homo sapiens |type 2 diabetes mellitus |... |Data-independent acquisition |350 |1650 |SWATH-MS |plasma_003.raw
+|===
+endif::[]
+
+NOTE: The `...` column indicates omitted columns (organism part, biological replicate, technology type, label, instrument, cleavage agent, fraction identifier, technical replicate, isolation window width, collision energy, mass tolerances, dissociation method).
+
+[[diaPASEF-example]]
+== diaPASEF Example
+
+For ion mobility-enhanced DIA (diaPASEF), additional columns may be relevant:
+
+|===
+|Column Name |Description |Example Values
+
+|comment[ion mobility]
+|Ion mobility separation used
+|TIMS, FAIMS, not applicable
+
+|comment[1/K0 range]
+|Ion mobility range
+|0.6-1.6 1/K0
+|===
+
+[[best-practices]]
+== Best Practices for DIA Annotation
+
+1. **Always specify acquisition method**: Use `comment[proteomics data acquisition method]` with the PRIDE CV term for DIA.
+
+2. **Document scan range**: Include `comment[scan window lower limit]` and `comment[scan window upper limit]` for reproducibility.
+
+3. **Report isolation window details**: Document window width and number of windows when known.
+
+4. **Include collision energy**: Document all collision energies used, especially for stepped CE methods.
+
+5. **Note the DIA variant**: Use `comment[DIA method]` to specify SWATH-MS, diaPASEF, MSE, etc.
+
+6. **Reference spectral libraries**: If using a spectral library, document it in `comment[spectral library]`.
+
+7. **Report mass tolerances**: These are essential for data reanalysis.
+
+8. **Consider instrument-specific parameters**: Different platforms may have unique parameters worth documenting.
+
+[[template-file]]
+== Template File
+
+The DIA SDRF template file is available in this directory:
+
+- link:dia-acquisition-template.sdrf.tsv[dia-acquisition-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+DIA SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+NOTE: DIA-specific validation rules are under development.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from DIA proteomics researchers.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+

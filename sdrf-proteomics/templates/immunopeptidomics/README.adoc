@@ -1,0 +1,319 @@
+= SDRF-Proteomics: Immunopeptidomics Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating immunopeptidomics experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture immunopeptidomics-specific metadata.
+
+**Type:** Specialized Template (used in combination with core templates)
+
+**Status:** Draft - This template is under active development and may change significantly.
+
+**Version:** 1.0.0-dev - 2026-01
+
+[[abstract]]
+== Abstract
+
+Immunopeptidomics focuses on the identification of peptides presented by major histocompatibility complex (MHC) molecules on the cell surface. These MHC-bound peptides are essential for understanding T-cell immune responses, antigen presentation, tumor-associated antigens for cancer immunotherapy, and vaccine development.
+
+Immunopeptidomics experiments have unique characteristics: specialized MHC enrichment methods, naturally processed short peptides (8-15 aa for MHC-I, 12-30 aa for MHC-II), MHC polymorphism requiring typing information, and no enzymatic digestion. This template defines the additional metadata requirements for annotating immunopeptidomics datasets.
+
+[[connections]]
+== Connections to Other Omics Fields
+
+Immunopeptidomics data is often integrated with:
+
+- **Genomics/Exome sequencing**: For neoantigen identification in cancer research
+- **Transcriptomics**: To correlate peptide presentation with gene expression
+- **HLA typing databases**: IMGT/HLA database for allele information
+- **Immunological databases**: IEDB (Immune Epitope Database) for epitope information
+
+When available, linking SDRF files to related genomic or transcriptomic data through BioSamples accession numbers is highly RECOMMENDED.
+
+[[additional-ontologies]]
+== Additional Ontologies
+
+In addition to the ontologies supported by the core SDRF-Proteomics specification, immunopeptidomics templates utilize:
+
+- **IMGT/HLA nomenclature**: For HLA allele naming (https://www.ebi.ac.uk/ipd/imgt/hla/)
+- **MHC Restriction Ontology (MRO)**: For MHC molecule classification
+- **Vaccine Ontology (VO)**: For immunization-related terms when applicable
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for immunopeptidomics experiments.
+
+=== Required Columns
+
+The following columns are REQUIRED for immunopeptidomics experiments in addition to the core SDRF-Proteomics requirements:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[immunopeptidome enrichment method]
+|Method used to enrich for MHC-bound peptides from cell surface
+|1
+|EFO, PRIDE CV
+|immunoaffinity purification, immunoaffinity purification (iodoacetamide), mild acid elution, anti-pan MHC class I antibody (W6/32)
+
+|characteristics[MHC class]
+|Class of MHC molecules being studied
+|1
+|Controlled vocabulary
+|MHC class I, MHC class II, MHC class I and II, non-canonical
+|===
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for immunopeptidomics experiments:
+
+|===
+|Column Name |Description |Cardinality |Ontology/CV |Example Values
+
+|characteristics[MHC typing]
+|MHC allelic composition of the sample following appropriate nomenclature (IMGT/HLA for human)
+|0..*
+|IMGT/HLA nomenclature for human, appropriate nomenclature for other species
+|HLA-A*02:01, HLA-B*07:02, HLA-C*07:02, H-2Kb, H-2Db
+
+|characteristics[MHC typing method]
+|Method used to determine MHC alleles
+|0..1
+|Free text or controlled vocabulary
+|sequence-based typing, PCR-SSO, NGS-based typing, inferred from mass spectrometry
+
+|comment[cell number]
+|Number of cells used for immunopeptidome extraction
+|0..1
+|Numeric value with unit
+|1e8 cells, 5e7 cells, 2e9 cells
+
+|comment[tissue mass]
+|Mass of tissue used for immunopeptidome extraction when applicable
+|0..1
+|Numeric value with unit
+|500 mg, 1 g
+
+|comment[elution conditions]
+|Conditions used for peptide elution from MHC molecules
+|0..1
+|Free text description
+|0.1% TFA at room temperature, 10% acetic acid, mild acid elution pH 2.5
+
+|comment[antibody used]
+|Specific antibody clone used for immunoaffinity purification
+|0..1
+|Free text or MRO (MHC Restriction Ontology) (https://www.ebi.ac.uk/ols4/ontologies/mro)
+|W6/32 (pan-HLA class I), L243 (HLA-DR), BB7.2 (HLA-A2)
+
+|comment[MHC binding prediction]
+|Whether MHC binding predictions were performed and with which tool
+|0..1
+|Free text description
+|NetMHCpan 4.1, MHCflurry 2.0, not performed
+|===
+
+=== Sample Preparation Context
+
+Immunopeptidomics samples often do NOT use enzymatic digestion. When no enzyme is used:
+
+- Set `comment[cleavage agent details]` to `not applicable`
+- This indicates peptides were naturally processed
+
+For samples that include an additional enzymatic digestion step (e.g., for database construction):
+
+- Annotate the enzyme used following standard SDRF-Proteomics conventions
+
+[[mhc-annotation]]
+== MHC Typing Annotation
+
+MHC typing information is critical for immunopeptidomics data interpretation. When annotating MHC types:
+
+=== Nomenclature
+
+Follow the appropriate MHC nomenclature standard for your organism:
+
+**For Human (HLA):**
+
+- Format: `HLA-Gene*Allele_group:Protein`
+- Example: `HLA-A*02:01`
+
+For multiple alleles, use multiple `characteristics[MHC typing]` columns or separate alleles with semicolons:
+
+|===
+|source name |characteristics[MHC typing] |characteristics[MHC typing] |characteristics[MHC typing]
+|sample_001 |HLA-A*02:01 |HLA-A*03:01 |HLA-B*07:02
+|===
+
+Or alternatively:
+
+|===
+|source name |characteristics[MHC typing]
+|sample_001 |HLA-A*02:01;HLA-A*03:01;HLA-B*07:02;HLA-B*44:02;HLA-C*07:02;HLA-C*05:01
+|===
+
+=== Resolution Levels
+
+For human HLA types, different resolution levels can be reported:
+
+- **Two-field** (protein level): `HLA-A*02:01` - RECOMMENDED minimum
+- **Three-field** (synonymous variants): `HLA-A*02:01:01`
+- **Four-field** (intronic variants): `HLA-A*02:01:01:01`
+
+Use the highest resolution available from your typing method.
+
+=== Unknown MHC Types
+
+When MHC typing is not available:
+
+- Use `not available` if typing was not performed
+- Use `not determined` if typing was attempted but failed
+
+[[example-sdrf]]
+== Example SDRF File
+
+A minimal example for an immunopeptidomics experiment:
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[cell line]</th>
+<th class="sample-col">characteristics[MHC class]</th>
+<th class="sample-col">characteristics[MHC typing]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[cell number]</th>
+<th class="data-col">comment[antibody used]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[data file]</th>
+<th class="data-col">factor value[cell line]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">JY_cells_rep1</td>
+<td class="sample-col">JY</td>
+<td class="sample-col">MHC class I</td>
+<td class="sample-col">HLA-A*02:01;HLA-B*07:02;HLA-C*07:02</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">1e8 cells</td>
+<td class="data-col">W6/32</td>
+<td class="data-col">not applicable</td>
+<td class="data-col">JY_rep1.raw</td>
+<td class="data-col">JY</td>
+</tr>
+<tr>
+<td class="sample-col">JY_cells_rep2</td>
+<td class="sample-col">JY</td>
+<td class="sample-col">MHC class I</td>
+<td class="sample-col">HLA-A*02:01;HLA-B*07:02;HLA-C*07:02</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">1e8 cells</td>
+<td class="data-col">W6/32</td>
+<td class="data-col">not applicable</td>
+<td class="data-col">JY_rep2.raw</td>
+<td class="data-col">JY</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |characteristics[cell line] |characteristics[MHC class] |characteristics[MHC typing] |... |comment[cell number] |comment[antibody used] |comment[cleavage agent details] |comment[data file] |factor value[cell line]
+
+|JY_cells_rep1 |JY |MHC class I |HLA-A*02:01;HLA-B*07:02;HLA-C*07:02 |... |1e8 cells |W6/32 |not applicable |JY_rep1.raw |JY
+|JY_cells_rep2 |JY |MHC class I |HLA-A*02:01;HLA-B*07:02;HLA-C*07:02 |... |1e8 cells |W6/32 |not applicable |JY_rep2.raw |JY
+|===
+endif::[]
+
+NOTE: The `...` column indicates omitted columns (organism, disease, immunopeptidome enrichment method, biological replicate, assay name, technology type, fraction identifier, label, instrument).
+
+[[best-practices]]
+== Best Practices for Immunopeptidomics Annotation
+
+1. **Always specify MHC class**: Indicate whether the experiment targets MHC class I, class II, or both.
+
+2. **Provide MHC typing when available**: MHC information is essential for interpreting binding motifs and comparing datasets.
+
+3. **Document enrichment protocol details**: Include antibody clone names, elution conditions, and any modifications to standard protocols.
+
+4. **Report cell or tissue quantities**: This information is crucial for assessing sensitivity and comparing yields across experiments.
+
+5. **Link to patient/sample metadata**: Use `characteristics[individual]` and `characteristics[biosample accession number]` when working with clinical samples.
+
+6. **Note when enzyme is not used**: Set cleavage agent to "not applicable" for naturally processed immunopeptides.
+
+7. **Consider factor values**: Use `factor value` columns to indicate the experimental variables under study (e.g., disease state, treatment, cell type).
+
+[[annotated-examples]]
+== Annotated Project Examples
+
+Examples of immunopeptidomics datasets annotated with SDRF-Proteomics:
+
+- https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD002255[PXD002255] - Immunopeptidome analysis
+
+[[template-file]]
+== Template File
+
+The immunopeptidomics SDRF template file is available in this directory:
+
+- link:immunopeptidomics-template.sdrf.tsv[immunopeptidomics-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+Immunopeptidomics SDRF files should be validated using the sdrf-pipelines tool with the immunopeptidomics template:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template immunopeptidomics
+----
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community with contributions from immunopeptidomics researchers:
+
+- [Yasset Priverol](https://github.com/ypriverol)
+- [Jonas Scheid](https://github.com/jonasscheid)
+- [Joshua Klein](https://github.com/mobiusklein)
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+
+[[references]]
+== References
+
+- Bassani-Sternberg M, et al. (2015) Mass spectrometry-based antigen discovery for cancer immunotherapy. Current Opinion in Immunology.
+- Purcell AW, et al. (2019) Mass spectrometry-based identification of MHC-bound peptides for immunopeptidomics. Nature Protocols.
+- IEDB: Immune Epitope Database (https://www.iedb.org/)
+- IMGT/HLA Database (https://www.ebi.ac.uk/ipd/imgt/hla/)

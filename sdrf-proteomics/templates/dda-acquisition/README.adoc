@@ -1,0 +1,380 @@
+= SDRF-Proteomics: Data-dependent acquisition (DDA) Template
+:sectnums:
+:toc: left
+:doctype: book
+//only works on some backends, not HTML
+:showcomments:
+//use style like Section 1 when referencing within the document.
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+//GitHub specific settings
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides a template for annotating Data-dependent acquisition (DDA) mass spectrometry experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture DDA-specific metadata.
+
+**Type:** Experiment-type Template (used in combination with core templates)
+
+**Status:** Released
+
+**Version:** 1.1.0 - 2026-01
+
+[[abstract]]
+== Abstract
+
+Data-dependent acquisition (DDA) is the most widely used mass spectrometry acquisition strategy for proteomics. This template captures acquisition-specific parameters that affect data quality and reproducibility: dissociation method, collision energy, fractionation, modification parameters, mass tolerances, and MS2 mass analyzer.
+
+[[checklist]]
+== Checklist
+
+This section defines the metadata columns required and recommended for DDA experiments.
+
+=== Recommended Columns
+
+The following columns are RECOMMENDED for DDA experiments (in addition to the core SDRF-Proteomics requirements):
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology/CV</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[dissociation method]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Fragmentation method used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044">PRIDE (MS:1000044)</a></td>
+<td>NT=HCD;AC=PRIDE:0000590</td>
+</tr>
+<tr>
+<td><code>comment[modification parameters]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Post-translational modifications searched</td>
+<td><a href="https://www.unimod.org/">UNIMOD</a></td>
+<td>NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35;PP=Anywhere</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
+|===
+|Column Name |Requirement |Description |Ontology/CV |Example Values
+
+|comment[dissociation method] |RECOMMENDED |Fragmentation method used |PRIDE (MS:1000044) |NT=HCD;AC=PRIDE:0000590
+|comment[modification parameters] |RECOMMENDED |Post-translational modifications searched |UNIMOD |NT=Oxidation;MT=Variable;TA=M;AC=UNIMOD:35;PP=Anywhere
+|===
+endif::[]
+
+=== Optional Columns
+
+The following columns are OPTIONAL but commonly used:
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology/CV</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[collision energy]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Collision energy used for fragmentation</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000045">PSI-MS (MS:1000045)</a></td>
+<td>27, 30, normalized 27</td>
+</tr>
+<tr>
+<td><code>comment[fractionation method]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Method used to fractionate the sample before MS</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000550">PRIDE (PRIDE:0000550)</a></td>
+<td>NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564</td>
+</tr>
+<tr>
+<td><code>comment[precursor mass tolerance]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass tolerance for precursor ions in database search</td>
+<td>Numeric value with unit</td>
+<td>10 ppm, 20 ppm</td>
+</tr>
+<tr>
+<td><code>comment[fragment mass tolerance]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass tolerance for fragment ions in database search</td>
+<td>Numeric value with unit</td>
+<td>0.02 Da, 20 ppm</td>
+</tr>
+<tr>
+<td><code>comment[MS2 mass analyzer]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass analyzer used for MS2 acquisition</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000443">PSI-MS (MS:1000443)</a></td>
+<td>NT=orbitrap;AC=MS:1000484</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
+|===
+|Column Name |Requirement |Description |Ontology/CV |Example Values
+
+|comment[collision energy] |OPTIONAL |Collision energy used for fragmentation |PSI-MS (MS:1000045) |27, 30, normalized 27
+|comment[fractionation method] |OPTIONAL |Method used to fractionate the sample before MS |PRIDE (PRIDE:0000550) |NT=High-pH reversed-phase chromatography;AC=PRIDE:0000564
+|comment[precursor mass tolerance] |OPTIONAL |Mass tolerance for precursor ions in database search |Numeric value with unit |10 ppm, 20 ppm
+|comment[fragment mass tolerance] |OPTIONAL |Mass tolerance for fragment ions in database search |Numeric value with unit |0.02 Da, 20 ppm
+|comment[MS2 mass analyzer] |OPTIONAL |Mass analyzer used for MS2 acquisition |PSI-MS (MS:1000443) |NT=orbitrap;AC=MS:1000484
+|===
+endif::[]
+
+NOTE: For data file metadata (comment columns), use the full CV term format `NT={name};AC={accession}` when possible. This format enables automated validation and software can often determine these values from raw files.
+
+[[example-sdrf]]
+== Example SDRF File
+
+A complete example for a fractionated DDA proteomics experiment:
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[dissociation method]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">liver_sample_001</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">DDA_liver001_F01</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">HCD</td>
+<td class="data-col">liver001_F01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">liver_sample_001</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">DDA_liver001_F02</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">2</td>
+<td class="data-col">HCD</td>
+<td class="data-col">liver001_F02.raw</td>
+</tr>
+<tr>
+<td class="sample-col">liver_sample_002</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">DDA_liver002_F01</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">HCD</td>
+<td class="data-col">liver002_F01.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |... |assay name |comment[proteomics data acquisition method] |comment[label] |comment[fraction identifier] |comment[dissociation method] |comment[data file]
+
+|liver_sample_001 |... |DDA_liver001_F01 |Data-dependent acquisition |label free sample |1 |HCD |liver001_F01.raw
+|liver_sample_001 |... |DDA_liver001_F02 |Data-dependent acquisition |label free sample |2 |HCD |liver001_F02.raw
+|liver_sample_002 |... |DDA_liver002_F01 |Data-dependent acquisition |label free sample |1 |HCD |liver002_F01.raw
+|===
+endif::[]
+
+NOTE: The `...` column indicates omitted core columns (organism, organism part, disease, biological replicate, technology type, instrument, cleavage agent, modification parameters, etc.).
+
+[[single-shot-example]]
+== Single-Shot DDA Example
+
+For high-throughput or clinical samples without fractionation:
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[dissociation method]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">plasma_001</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">plasma001_run1</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">Orbitrap Exploris 480</td>
+<td class="data-col">HCD</td>
+<td class="data-col">plasma_001.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |... |assay name |comment[proteomics data acquisition method] |comment[label] |comment[instrument] |comment[dissociation method] |comment[data file]
+
+|plasma_001 |... |plasma001_run1 |Data-dependent acquisition |label free sample |Orbitrap Exploris 480 |HCD |plasma_001.raw
+|===
+endif::[]
+
+NOTE: For single-shot experiments, `comment[fractionation method]` can be omitted or set to `not applicable`.
+
+[[tmt-dda-example]]
+== TMT-Labeled DDA Example
+
+For isobaric labeling experiments (TMT, iTRAQ):
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[dissociation method]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_A_rep1</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">TMT_set1_F01</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">1</td>
+<td class="data-col">HCD</td>
+<td class="data-col">TMT_set1_F01.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_B_rep1</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">TMT_set1_F01</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">1</td>
+<td class="data-col">HCD</td>
+<td class="data-col">TMT_set1_F01.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+|===
+|source name |... |assay name |comment[proteomics data acquisition method] |comment[label] |comment[fraction identifier] |comment[dissociation method] |comment[data file]
+
+|sample_A_rep1 |... |TMT_set1_F01 |Data-dependent acquisition |TMT126 |1 |HCD |TMT_set1_F01.raw
+|sample_B_rep1 |... |TMT_set1_F01 |Data-dependent acquisition |TMT127N |1 |HCD |TMT_set1_F01.raw
+|===
+endif::[]
+
+NOTE: For TMT experiments, multiple samples share the same raw file. Use `comment[label]` to distinguish channels. TMT quantification can use MS2 or MS3 acquisition—for MS3-based TMT, use https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000646[PRIDE:0000646 (MS3 spectra)].
+
+[[best-practices]]
+== Best Practices for DDA Annotation
+
+1. **Always specify acquisition method**: Use `comment[proteomics data acquisition method]` with `Data-dependent acquisition`.
+
+2. **Document fragmentation method**: Use `comment[dissociation method]` to specify HCD, CID, ETD, or EThcD—these produce different fragmentation patterns and affect peptide identification.
+
+3. **Include modification parameters**: Document all searched PTMs using `comment[modification parameters]` with UNIMOD accessions.
+
+4. **Document fractionation**: Include `comment[fractionation method]` and properly number fractions with `comment[fraction identifier]`.
+
+5. **Report collision energy**: Include `comment[collision energy]` when available, as it affects fragmentation quality.
+
+6. **Specify MS2 analyzer**: Use `comment[MS2 mass analyzer]` for hybrid instruments (e.g., Orbitrap vs ion trap MS2).
+
+7. **Report mass tolerances when known**: `comment[precursor mass tolerance]` and `comment[fragment mass tolerance]` aid data reanalysis.
+
+[[template-file]]
+== Template File
+
+The DDA SDRF template file is available in this directory:
+
+- link:dda-acquisition-template.sdrf.tsv[dda-acquisition-template.sdrf.tsv]
+
+[[validation]]
+== Validation
+
+DDA SDRF files should be validated using the sdrf-pipelines tool:
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+----
+
+NOTE: DDA-specific validation rules are under development.
+
+[[authors]]
+== Authors and Maintainers
+
+This template was developed by the SDRF-Proteomics community.
+
+For questions or suggestions, please open an issue on the https://github.com/bigbio/proteomics-metadata-standard[GitHub repository].
+
