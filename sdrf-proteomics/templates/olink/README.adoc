@@ -1,0 +1,303 @@
+= SDRF-Proteomics: Olink Template
+:sectnums:
+:toc: left
+:doctype: book
+:showcomments:
+:xrefstyle: short
+:figure-caption: Figure
+:pdf-page-size: A4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[[status]]
+== Status of this Template
+
+This document provides guidelines for annotating Olink Proximity Extension Assay (PEA) experiments in SDRF-Proteomics format.
+
+**Type:** Platform-Specific Template (extends affinity-proteomics)
+
+**Status:** Released
+
+**Version:** 1.0.0 - 2026-01
+
+[[abstract]]
+== Abstract
+
+Olink proteomics uses Proximity Extension Assay (PEA) technology to measure protein levels in biological samples. This template extends the affinity-proteomics template with Olink-specific metadata fields for panel information, NPX normalization, and quality control.
+
+[[hierarchy]]
+== Template Hierarchy
+
+[source]
+----
+base
+  └── affinity-proteomics
+        └── olink (THIS TEMPLATE)
+----
+
+[[usage]]
+== Usage
+
+=== File Metadata Columns
+
+SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance (olink inherits from affinity-proteomics). Place these columns at the end of the file.
+
+**Non-human samples:**
+
+|===
+|... |comment[sdrf version] |comment[sdrf template]
+
+|... |v1.1.0 |olink v1.0.0
+|===
+
+**Human samples** - use multiple template columns:
+
+|===
+|... |comment[sdrf version] |comment[sdrf template] |comment[sdrf template]
+
+|... |v1.1.0 |human v1.1.0 |olink v1.0.0
+|===
+
+[[checklist]]
+== Olink-Specific Columns
+
+In addition to all columns from link:../affinity-proteomics/README.adoc[affinity-proteomics], the following Olink-specific columns are available:
+
+=== Required for Olink
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[olink panel]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Specific Olink panel name</td>
+<td>Target 96 Inflammation, Explore 384 Cardiometabolic, Explore 1536</td>
+</tr>
+<tr>
+<td><code>comment[olink platform]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Olink instrument/platform version</td>
+<td>Olink Target 96, Olink Explore 384, Olink Explore HT</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
+|===
+|Column |Requirement |Description |Example Values
+
+|comment[olink panel] |REQUIRED |Specific Olink panel name |Target 96 Inflammation, Explore 1536
+|comment[olink platform] |REQUIRED |Olink instrument/platform version |Olink Target 96, Olink Explore HT
+|===
+endif::[]
+
+=== Recommended for Olink
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[NPX normalization]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Normalization method applied to NPX values</td>
+<td>plate control normalized, intensity normalized, bridge normalized</td>
+</tr>
+<tr>
+<td><code>comment[QC warning]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Quality control warnings if any</td>
+<td>QC pass, below LOD, plate effect warning</td>
+</tr>
+<tr>
+<td><code>comment[olink lot number]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Reagent lot number for traceability</td>
+<td>lot_2023_001, B12345</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,2", options="header"]
+|===
+|Column |Requirement |Description |Example Values
+
+|comment[NPX normalization] |RECOMMENDED |Normalization method applied |plate control normalized, intensity normalized
+|comment[QC warning] |OPTIONAL |Quality control warnings |QC pass, below LOD
+|comment[olink lot number] |OPTIONAL |Reagent lot number |lot_2023_001
+|===
+endif::[]
+
+[[olink-panels]]
+== Olink Panels
+
+=== Target 96 Panels
+
+Individual panels measuring 92 proteins each:
+
+* Target 96 Inflammation
+* Target 96 Cardiovascular II
+* Target 96 Cardiovascular III
+* Target 96 Neurology
+* Target 96 Oncology II
+* Target 96 Oncology III
+* Target 96 Metabolism
+
+=== Explore Panels
+
+High-throughput panels:
+
+* Olink Explore 384 (384 proteins)
+* Olink Explore 1536 (1536 proteins)
+* Olink Explore 3072 (3072 proteins)
+* Olink Explore HT (5400+ proteins)
+
+[[technology-type]]
+== Technology Type
+
+For Olink experiments, use:
+
+`technology type` = `protein expression profiling by antibody array`
+
+[[quantification]]
+== Quantification
+
+Olink uses **NPX (Normalized Protein eXpression)** units:
+
+* NPX is a log2 scale relative quantification
+* Higher NPX = higher protein concentration
+* NPX values are comparable within a study after proper normalization
+* Cross-study comparisons require bridge normalization
+
+Always set:
+
+`comment[quantification unit]` = `NPX`
+
+[[example]]
+== Example SDRF
+
+ifndef::env-github[]
+++++
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[olink panel]</th>
+<th class="data-col">comment[olink platform]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[NPX normalization]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">rheumatoid arthritis</td>
+<td class="data-col">XB6</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">NPX</td>
+<td class="data-col">plate control normalized</td>
+<td class="data-col">olink_npx.csv</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">normal</td>
+<td class="data-col">XB65</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">NPX</td>
+<td class="data-col">plate control normalized</td>
+<td class="data-col">olink_npx.csv</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+++++
+endif::[]
+
+ifdef::env-github[]
+[cols="1,1,1,1,1,1,1,1,1,1,1,1", options="header"]
+|===
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |assay name |technology type |comment[instrument] |comment[olink panel] |comment[olink platform] |comment[quantification unit] |comment[NPX normalization] |comment[data file]
+
+|patient_001 |homo sapiens |blood plasma |rheumatoid arthritis |XB6 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 1536 |Olink Explore HT |NPX |plate control normalized |olink_npx.csv
+|patient_002 |homo sapiens |blood plasma |normal |XB65 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 1536 |Olink Explore HT |NPX |plate control normalized |olink_npx.csv
+|===
+endif::[]
+
+[[data-files]]
+== Data File Formats
+
+Olink data files typically contain:
+
+* **NPX CSV/Excel**: Normalized protein expression values
+* **Parquet**: Large datasets in efficient columnar format
+
+The `assay name` column must match the **Sample ID** column in the Olink output file.
+
+[[validation]]
+== Validation
+
+[source,bash]
+----
+pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template olink
+----
+
+[[template-file]]
+== Template File
+
+- link:olink-template.sdrf.tsv[olink-template.sdrf.tsv]
+
+[[related-templates]]
+== Related Templates
+
+* link:../affinity-proteomics/README.adoc[Affinity Proteomics] - Parent template
+* link:../human/README.adoc[Human Template] - Human sample metadata
+
+[[references]]
+== References
+
+- Assarsson E, et al. (2014) Homogenous 96-plex PEA immunoassay exhibiting high sensitivity, specificity, and excellent scalability. PLoS ONE.
+- Olink Proteomics: https://www.olink.com/
+- Olink NPX Documentation: https://olink.com/content/uploads/2023/06/npx-data-format-user-guide.pdf
