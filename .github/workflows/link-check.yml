@@ -1,0 +1,43 @@
+name: Check Links
+
+on:
+  push:
+    branches: [master, dev]
+    paths:
+      - '**/*.md'
+      - '**/*.adoc'
+      - '.github/workflows/link-check.yml'
+      - '.lycheeignore'
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '**/*.adoc'
+      - '.github/workflows/link-check.yml'
+      - '.lycheeignore'
+  # Allow manual triggering
+  workflow_dispatch:
+  # Run weekly to catch stale links
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2.2.0
+        with:
+          # Check markdown and AsciiDoc files
+          args: >-
+            --verbose
+            --no-progress
+            --timeout 20
+            --max-concurrency 10
+            '**/*.md'
+            '**/*.adoc'
+          fail: true
