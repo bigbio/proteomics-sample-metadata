@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Vertebrates Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: Vertebrates Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#extends">3. Template Hierarchy</a></li>
+<li><a href="#checklist">4. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_inherited_columns">4.1. Inherited Columns</a></li>
+<li><a href="#_vertebrates_specific_columns">4.2. Vertebrates-Specific Columns</a></li>
+</ul>
+</li>
+<li><a href="#common-organisms">5. Common Vertebrate Organisms</a></li>
+<li><a href="#developmental-stages">6. Developmental Stages</a></li>
+<li><a href="#validation">7. Validation</a></li>
+<li><a href="#examples">8. Examples</a>
+<ul class="sectlevel2">
+<li><a href="#_mouse_study_example">8.1. Mouse Study Example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Status:</strong> Released</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The vertebrates template provides standardized metadata fields for non-human vertebrate proteomics experiments. This includes mammals (mouse, rat, etc.), birds, fish, reptiles, and amphibians.</p>
+</div>
+<div class="paragraph">
+<p>This template is appropriate for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Mouse and rat proteomics studies</p>
+</li>
+<li>
+<p>Model organism research (zebrafish, Xenopus)</p>
+</li>
+<li>
+<p>Livestock and agricultural animal studies</p>
+</li>
+<li>
+<p>Wildlife and comparative proteomics</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="extends"><a class="anchor" href="#extends"></a><a class="link" href="#extends">3. Template Hierarchy</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">base (construction artifact)
+  └── vertebrates (SAMPLE layer - must combine with TECHNOLOGY template)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The vertebrates template extends the <strong>base</strong> template, adding disease annotation and vertebrate-specific fields.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The vertebrates template <strong>cannot be used alone</strong>. You must combine it with a technology template:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ms-proteomics</code> + <code>vertebrates</code> - For MS-based proteomics of vertebrate samples</p>
+</li>
+<li>
+<p><code>affinity-proteomics</code> + <code>vertebrates</code> - For affinity proteomics of vertebrate samples</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">4. Checklist</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_inherited_columns"><a class="anchor" href="#_inherited_columns"></a><a class="link" href="#_inherited_columns">4.1. Inherited Columns</a></h3>
+<div class="paragraph">
+<p>All columns from the base template are inherited (source name, organism, organism part, biological replicate, assay name, technology type, instrument, technical replicate, data file). Technology-specific columns come from the technology template (<code>ms-proteomics</code> or <code>affinity-proteomics</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_vertebrates_specific_columns"><a class="anchor" href="#_vertebrates_specific_columns"></a><a class="link" href="#_vertebrates_specific_columns">4.2. Vertebrates-Specific Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>characteristics[disease]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Disease state of the sample</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/doid">DOID</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/pato">PATO</a></td>
+<td>normal, breast cancer, diabetes mellitus</td>
+</tr>
+<tr>
+<td><code>characteristics[developmental stage]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Developmental stage of the organism</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a></td>
+<td>adult, embryo, juvenile, larval stage</td>
+</tr>
+<tr>
+<td><code>characteristics[strain/breed]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Strain or breed of the organism</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBITaxon</a></td>
+<td>C57BL/6, Sprague-Dawley, BALB/c</td>
+</tr>
+<tr>
+<td><code>characteristics[sex]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Biological sex of the organism</td>
+<td>—</td>
+<td>male, female, hermaphrodite, not available, not applicable</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="common-organisms"><a class="anchor" href="#common-organisms"></a><a class="link" href="#common-organisms">5. Common Vertebrate Organisms</a></h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Common Name</th>
+<th class="tableblock halign-left valign-top">Scientific Name</th>
+<th class="tableblock halign-left valign-top">NCBITaxon ID</th>
+<th class="tableblock halign-left valign-top">Common Strains/Breeds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon:10090</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C57BL/6, BALB/c, 129S1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rat</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rattus norvegicus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon:10116</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sprague-Dawley, Wistar, Lewis</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zebrafish</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Danio rerio</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon:7955</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AB, TL, WIK</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pig</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sus scrofa</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon:9823</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Large White, Duroc</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chicken</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gallus gallus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon:9031</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Xenopus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Xenopus laevis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon:8355</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="developmental-stages"><a class="anchor" href="#developmental-stages"></a><a class="link" href="#developmental-stages">6. Developmental Stages</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Common developmental stage terms for vertebrates:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Stage</th>
+<th class="tableblock halign-left valign-top">EFO/UBERON Term</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adult</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EFO:0001272</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sexually mature organism</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">embryo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UBERON:0000068</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organism in early development</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">juvenile</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EFO:0001303</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post-embryonic, pre-adult</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">neonate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EFO:0001375</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Newborn</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fetus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UBERON:0000323</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Late embryonic stage (mammals)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">7. Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Validate SDRF files using sdrf-pipelines:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+sdrf_validate --sdrf_file your_file.sdrf.tsv --template vertebrates</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="examples"><a class="anchor" href="#examples"></a><a class="link" href="#examples">8. Examples</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_mouse_study_example"><a class="anchor" href="#_mouse_study_example"></a><a class="link" href="#_mouse_study_example">8.1. Mouse Study Example</a></h3>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[developmental stage]</th>
+<th class="sample-col">characteristics[strain/breed]</th>
+<th class="sample-col">characteristics[sex]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">male</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">male</td>
+<td class="sample-col">2</td>
+</tr>
+<tr>
+<td class="sample-col">sample_3</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">female</td>
+<td class="sample-col">1</td>
+</tr>
+<tr>
+<td class="sample-col">sample_4</td>
+<td class="sample-col">mus musculus</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">adult</td>
+<td class="sample-col">C57BL/6</td>
+<td class="sample-col">female</td>
+<td class="sample-col">2</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-02 18:21:00 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>

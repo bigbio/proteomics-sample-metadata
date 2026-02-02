@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Immunopeptidomics Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: Immunopeptidomics Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#connections">3. Connections to Other Omics Fields</a></li>
+<li><a href="#additional-ontologies">4. Additional Ontologies</a></li>
+<li><a href="#checklist">5. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_columns">5.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">5.2. Recommended Columns</a></li>
+<li><a href="#_sample_preparation_context">5.3. Sample Preparation Context</a></li>
+</ul>
+</li>
+<li><a href="#mhc-annotation">6. MHC Typing Annotation</a>
+<ul class="sectlevel2">
+<li><a href="#_nomenclature">6.1. Nomenclature</a></li>
+<li><a href="#_resolution_levels">6.2. Resolution Levels</a></li>
+<li><a href="#_unknown_mhc_types">6.3. Unknown MHC Types</a></li>
+</ul>
+</li>
+<li><a href="#example-sdrf">7. Example SDRF File</a></li>
+<li><a href="#best-practices">8. Best Practices for Immunopeptidomics Annotation</a></li>
+<li><a href="#annotated-examples">9. Annotated Project Examples</a></li>
+<li><a href="#template-file">10. Template File</a></li>
+<li><a href="#validation">11. Validation</a></li>
+<li><a href="#authors">12. Authors and Maintainers</a></li>
+<li><a href="#references">13. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides a template for annotating immunopeptidomics experiments in SDRF-Proteomics format. This template defines additional columns that can be combined with any core template (human, vertebrates, etc.) to capture immunopeptidomics-specific metadata.</p>
+</div>
+<div class="paragraph">
+<p><strong>Type:</strong> Specialized Template (used in combination with core templates)</p>
+</div>
+<div class="paragraph">
+<p><strong>Status:</strong> Draft - This template is under active development and may change significantly.</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0-dev - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Immunopeptidomics focuses on the identification of peptides presented by major histocompatibility complex (MHC) molecules on the cell surface. These MHC-bound peptides are essential for understanding T-cell immune responses, antigen presentation, tumor-associated antigens for cancer immunotherapy, and vaccine development.</p>
+</div>
+<div class="paragraph">
+<p>Immunopeptidomics experiments have unique characteristics: specialized MHC enrichment methods, naturally processed short peptides (8-15 aa for MHC-I, 12-30 aa for MHC-II), MHC polymorphism requiring typing information, and no enzymatic digestion. This template defines the additional metadata requirements for annotating immunopeptidomics datasets.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="connections"><a class="anchor" href="#connections"></a><a class="link" href="#connections">3. Connections to Other Omics Fields</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Immunopeptidomics data is often integrated with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Genomics/Exome sequencing</strong>: For neoantigen identification in cancer research</p>
+</li>
+<li>
+<p><strong>Transcriptomics</strong>: To correlate peptide presentation with gene expression</p>
+</li>
+<li>
+<p><strong>HLA typing databases</strong>: IMGT/HLA database for allele information</p>
+</li>
+<li>
+<p><strong>Immunological databases</strong>: IEDB (Immune Epitope Database) for epitope information</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When available, linking SDRF files to related genomic or transcriptomic data through BioSamples accession numbers is highly RECOMMENDED.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">4. Additional Ontologies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the ontologies supported by the core SDRF-Proteomics specification, immunopeptidomics templates utilize:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>IMGT/HLA nomenclature</strong>: For HLA allele naming (<a href="https://www.ebi.ac.uk/ipd/imgt/hla/" class="bare">https://www.ebi.ac.uk/ipd/imgt/hla/</a>)</p>
+</li>
+<li>
+<p><strong>MHC Restriction Ontology (MRO)</strong>: For MHC molecule classification</p>
+</li>
+<li>
+<p><strong>Vaccine Ontology (VO)</strong>: For immunization-related terms when applicable</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section defines the metadata columns required and recommended for immunopeptidomics experiments.</p>
+</div>
+<div class="sect2">
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">5.1. Required Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are REQUIRED for immunopeptidomics experiments in addition to the core SDRF-Proteomics requirements:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[immunopeptidome enrichment method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to enrich for MHC-bound peptides from cell surface</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EFO, PRIDE CV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">immunoaffinity purification, immunoaffinity purification (iodoacetamide), mild acid elution, anti-pan MHC class I antibody (W6/32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC class]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class of MHC molecules being studied</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MHC class I, MHC class II, MHC class I and II, non-canonical</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.2. Recommended Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are RECOMMENDED for immunopeptidomics experiments:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC typing]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MHC allelic composition of the sample following appropriate nomenclature (IMGT/HLA for human)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IMGT/HLA nomenclature for human, appropriate nomenclature for other species</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HLA-A*02:01, HLA-B*07:02, HLA-C*07:02, H-2Kb, H-2Db</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC typing method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine MHC alleles</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text or controlled vocabulary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sequence-based typing, PCR-SSO, NGS-based typing, inferred from mass spectrometry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cell number]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of cells used for immunopeptidome extraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1e8 cells, 5e7 cells, 2e9 cells</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[tissue mass]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass of tissue used for immunopeptidome extraction when applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 mg, 1 g</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[elution conditions]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Conditions used for peptide elution from MHC molecules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1% TFA at room temperature, 10% acetic acid, mild acid elution pH 2.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[antibody used]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific antibody clone used for immunoaffinity purification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text or MRO (MHC Restriction Ontology) (<a href="https://www.ebi.ac.uk/ols4/ontologies/mro" class="bare">https://www.ebi.ac.uk/ols4/ontologies/mro</a>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W6/32 (pan-HLA class I), L243 (HLA-DR), BB7.2 (HLA-A2)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[MHC binding prediction]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether MHC binding predictions were performed and with which tool</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NetMHCpan 4.1, MHCflurry 2.0, not performed</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_sample_preparation_context"><a class="anchor" href="#_sample_preparation_context"></a><a class="link" href="#_sample_preparation_context">5.3. Sample Preparation Context</a></h3>
+<div class="paragraph">
+<p>Immunopeptidomics samples often do NOT use enzymatic digestion. When no enzyme is used:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set <code>comment[cleavage agent details]</code> to <code>not applicable</code></p>
+</li>
+<li>
+<p>This indicates peptides were naturally processed</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For samples that include an additional enzymatic digestion step (e.g., for database construction):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Annotate the enzyme used following standard SDRF-Proteomics conventions</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mhc-annotation"><a class="anchor" href="#mhc-annotation"></a><a class="link" href="#mhc-annotation">6. MHC Typing Annotation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MHC typing information is critical for immunopeptidomics data interpretation. When annotating MHC types:</p>
+</div>
+<div class="sect2">
+<h3 id="_nomenclature"><a class="anchor" href="#_nomenclature"></a><a class="link" href="#_nomenclature">6.1. Nomenclature</a></h3>
+<div class="paragraph">
+<p>Follow the appropriate MHC nomenclature standard for your organism:</p>
+</div>
+<div class="paragraph">
+<p><strong>For Human (HLA):</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Format: <code>HLA-Gene*Allele_group:Protein</code></p>
+</li>
+<li>
+<p>Example: <code>HLA-A*02:01</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For multiple alleles, use multiple <code>characteristics[MHC typing]</code> columns or separate alleles with semicolons:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">source name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC typing]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC typing]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC typing]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HLA-A*02:01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HLA-A*03:01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HLA-B*07:02</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Or alternatively:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">source name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[MHC typing]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample_001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HLA-A*02:01;HLA-A*03:01;HLA-B*07:02;HLA-B*44:02;HLA-C*07:02;HLA-C*05:01</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_resolution_levels"><a class="anchor" href="#_resolution_levels"></a><a class="link" href="#_resolution_levels">6.2. Resolution Levels</a></h3>
+<div class="paragraph">
+<p>For human HLA types, different resolution levels can be reported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Two-field</strong> (protein level): <code>HLA-A*02:01</code> - RECOMMENDED minimum</p>
+</li>
+<li>
+<p><strong>Three-field</strong> (synonymous variants): <code>HLA-A*02:01:01</code></p>
+</li>
+<li>
+<p><strong>Four-field</strong> (intronic variants): <code>HLA-A*02:01:01:01</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Use the highest resolution available from your typing method.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_unknown_mhc_types"><a class="anchor" href="#_unknown_mhc_types"></a><a class="link" href="#_unknown_mhc_types">6.3. Unknown MHC Types</a></h3>
+<div class="paragraph">
+<p>When MHC typing is not available:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>not available</code> if typing was not performed</p>
+</li>
+<li>
+<p>Use <code>not determined</code> if typing was attempted but failed</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">7. Example SDRF File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A minimal example for an immunopeptidomics experiment:</p>
+</div>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[cell line]</th>
+<th class="sample-col">characteristics[MHC class]</th>
+<th class="sample-col">characteristics[MHC typing]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[cell number]</th>
+<th class="data-col">comment[antibody used]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[data file]</th>
+<th class="data-col">factor value[cell line]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">JY_cells_rep1</td>
+<td class="sample-col">JY</td>
+<td class="sample-col">MHC class I</td>
+<td class="sample-col">HLA-A*02:01;HLA-B*07:02;HLA-C*07:02</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">1e8 cells</td>
+<td class="data-col">W6/32</td>
+<td class="data-col">not applicable</td>
+<td class="data-col">JY_rep1.raw</td>
+<td class="data-col">JY</td>
+</tr>
+<tr>
+<td class="sample-col">JY_cells_rep2</td>
+<td class="sample-col">JY</td>
+<td class="sample-col">MHC class I</td>
+<td class="sample-col">HLA-A*02:01;HLA-B*07:02;HLA-C*07:02</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">1e8 cells</td>
+<td class="data-col">W6/32</td>
+<td class="data-col">not applicable</td>
+<td class="data-col">JY_rep2.raw</td>
+<td class="data-col">JY</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>&#8230;&#8203;</code> column indicates omitted columns (organism, disease, immunopeptidome enrichment method, biological replicate, assay name, technology type, fraction identifier, label, instrument).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">8. Best Practices for Immunopeptidomics Annotation</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Always specify MHC class</strong>: Indicate whether the experiment targets MHC class I, class II, or both.</p>
+</li>
+<li>
+<p><strong>Provide MHC typing when available</strong>: MHC information is essential for interpreting binding motifs and comparing datasets.</p>
+</li>
+<li>
+<p><strong>Document enrichment protocol details</strong>: Include antibody clone names, elution conditions, and any modifications to standard protocols.</p>
+</li>
+<li>
+<p><strong>Report cell or tissue quantities</strong>: This information is crucial for assessing sensitivity and comparing yields across experiments.</p>
+</li>
+<li>
+<p><strong>Link to patient/sample metadata</strong>: Use <code>characteristics[individual]</code> and <code>characteristics[biosample accession number]</code> when working with clinical samples.</p>
+</li>
+<li>
+<p><strong>Note when enzyme is not used</strong>: Set cleavage agent to "not applicable" for naturally processed immunopeptides.</p>
+</li>
+<li>
+<p><strong>Consider factor values</strong>: Use <code>factor value</code> columns to indicate the experimental variables under study (e.g., disease state, treatment, cell type).</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="annotated-examples"><a class="anchor" href="#annotated-examples"></a><a class="link" href="#annotated-examples">9. Annotated Project Examples</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Examples of immunopeptidomics datasets annotated with SDRF-Proteomics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="./sdrf-explorer.html?view=PXD002255">PXD002255</a> - Immunopeptidome analysis</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">10. Template File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The immunopeptidomics SDRF template file is available in this directory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="immunopeptidomics-template.sdrf.tsv">immunopeptidomics-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">11. Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Immunopeptidomics SDRF files should be validated using the sdrf-pipelines tool with the immunopeptidomics template:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template immunopeptidomics</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">12. Authors and Maintainers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template was developed by the SDRF-Proteomics community with contributions from immunopeptidomics researchers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>[Yasset Priverol](<a href="https://github.com/ypriverol" class="bare">https://github.com/ypriverol</a>)</p>
+</li>
+<li>
+<p>[Jonas Scheid](<a href="https://github.com/jonasscheid" class="bare">https://github.com/jonasscheid</a>)</p>
+</li>
+<li>
+<p>[Joshua Klein](<a href="https://github.com/mobiusklein" class="bare">https://github.com/mobiusklein</a>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For questions or suggestions, please open an issue on the <a href="https://github.com/bigbio/proteomics-metadata-standard">GitHub repository</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">13. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Bassani-Sternberg M, et al. (2015) Mass spectrometry-based antigen discovery for cancer immunotherapy. Current Opinion in Immunology.</p>
+</li>
+<li>
+<p>Purcell AW, et al. (2019) Mass spectrometry-based identification of MHC-bound peptides for immunopeptidomics. Nature Protocols.</p>
+</li>
+<li>
+<p>IEDB: Immune Epitope Database (<a href="https://www.iedb.org/" class="bare">https://www.iedb.org/</a>)</p>
+</li>
+<li>
+<p>IMGT/HLA Database (<a href="https://www.ebi.ac.uk/ipd/imgt/hla/" class="bare">https://www.ebi.ac.uk/ipd/imgt/hla/</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-02 18:21:00 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
