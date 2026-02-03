@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Single Cell Proteomics Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: Single Cell Proteomics Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#guidelines">2. Alignment with Community Guidelines</a></li>
+<li><a href="#abstract">3. Abstract</a></li>
+<li><a href="#connections">4. Connections to Other Omics Fields</a></li>
+<li><a href="#additional-ontologies">5. Additional Ontologies</a></li>
+<li><a href="#checklist">6. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_columns">6.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">6.2. Recommended Columns</a></li>
+<li><a href="#_optional_columns_flow_cytometry_data">6.3. Optional Columns - Flow Cytometry Data</a></li>
+<li><a href="#_optional_columns_cell_state_and_quality">6.4. Optional Columns - Cell State and Quality</a></li>
+<li><a href="#_optional_columns_model_organisms">6.5. Optional Columns - Model Organisms</a></li>
+<li><a href="#_optional_columns_carrier_and_multiplexing_scope_ms_type_methods">6.6. Optional Columns - Carrier and Multiplexing (SCoPE-MS type methods)</a></li>
+<li><a href="#_optional_columns_batch_and_technical_tracking">6.7. Optional Columns - Batch and Technical Tracking</a></li>
+<li><a href="#_optional_columns_spatial_information">6.8. Optional Columns - Spatial Information</a></li>
+</ul>
+</li>
+<li><a href="#sample-type">7. Sample Type Classification</a></li>
+<li><a href="#cell-identifier">8. Cell Identifier Annotation</a>
+<ul class="sectlevel2">
+<li><a href="#_naming_conventions">8.1. Naming Conventions</a></li>
+<li><a href="#_uniqueness_requirements">8.2. Uniqueness Requirements</a></li>
+</ul>
+</li>
+<li><a href="#multiplexed-scp">9. Multiplexed Single Cell Proteomics Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_scope_ms_and_similar_methods">9.1. SCoPE-MS and Similar Methods</a></li>
+<li><a href="#_carrier_and_reference_channels">9.2. Carrier and Reference Channels</a></li>
+</ul>
+</li>
+<li><a href="#label-free-scp">10. Label-Free Single Cell Proteomics Checklist</a></li>
+<li><a href="#example-sdrf">11. Example SDRF File</a></li>
+<li><a href="#quality-metrics">12. Quality Control Annotations</a></li>
+<li><a href="#best-practices">13. Best Practices for Single Cell Proteomics Annotation</a></li>
+<li><a href="#template-file">14. Template File</a></li>
+<li><a href="#validation">15. Validation</a></li>
+<li><a href="#authors">16. Authors and Maintainers</a></li>
+<li><a href="#references">17. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides guidelines for annotating single cell proteomics (SCP) experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with single-cell-specific metadata fields.</p>
+</div>
+<div class="paragraph">
+<p><strong>Status:</strong> Released - This template is aligned with community guidelines and stable for production use.</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="guidelines"><a class="anchor" href="#guidelines"></a><a class="link" href="#guidelines">2. Alignment with Community Guidelines</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template is aligned with the <strong>Nature Methods single-cell proteomics guidelines</strong>:</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Gatto L, Aebersold R, Cox J, et al. (2023). <strong>Initial recommendations for performing, benchmarking and reporting single-cell proteomics experiments.</strong> <em>Nature Methods</em>, 20(3), 375-386. <a href="https://doi.org/10.1038/s41592-023-01785-3" class="bare">https://doi.org/10.1038/s41592-023-01785-3</a></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The metadata columns and requirements in this template follow the recommendations from this community consensus paper for standardizing SCP experiment reporting.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">3. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Single cell proteomics (SCP) characterizes the proteome at the level of individual cells, providing insights into cellular heterogeneity, rare cell populations, cellular state transitions, and protein expression dynamics at single-cell resolution.</p>
+</div>
+<div class="paragraph">
+<p>SCP experiments have unique characteristics: cell isolation methods (FACS, microfluidics, cellenONE), ultra-low sample input (picogram to nanogram), carrier proteome strategies, cell-level metadata requirements, and high-throughput multiplexing (SCoPE-MS, TMT). This template defines the additional metadata requirements for annotating single cell proteomics datasets.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="connections"><a class="anchor" href="#connections"></a><a class="link" href="#connections">4. Connections to Other Omics Fields</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Single cell proteomics data is often integrated with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Single-cell RNA sequencing (scRNA-seq)</strong>: For multi-omic cellular characterization</p>
+</li>
+<li>
+<p><strong>Single-cell ATAC-seq</strong>: For chromatin accessibility correlation</p>
+</li>
+<li>
+<p><strong>Spatial transcriptomics</strong>: When cells have spatial context</p>
+</li>
+<li>
+<p><strong>Flow cytometry data</strong>: For pre-sorting characterization (FSC, SSC, sorting markers)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When available, linking to related single-cell omics datasets through BioSamples accession numbers or shared cell identifiers is highly RECOMMENDED.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">5. Additional Ontologies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the ontologies supported by the core SDRF-Proteomics specification, single cell proteomics templates utilize:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Cell Ontology (CL)</strong>: For cell type classification (<a href="https://obofoundry.org/ontology/cl.html" class="bare">https://obofoundry.org/ontology/cl.html</a>)</p>
+</li>
+<li>
+<p><strong>Human Cell Atlas ontologies</strong>: For standardized cell annotations</p>
+</li>
+<li>
+<p><strong>EDAM ontology</strong>: For bioinformatics data types and operations</p>
+</li>
+<li>
+<p><strong>Human/Mouse Developmental Stage ontologies (HsapDv, MmusDv)</strong>: For developmental stage annotation</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">6. Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section defines the metadata columns required and recommended for single cell proteomics experiments, following the Nature Methods SCP guidelines.</p>
+</div>
+<div class="sect2">
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">6.1. Required Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are REQUIRED for single cell proteomics experiments in addition to the core SDRF-Proteomics requirements:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Controlled Values</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Classification of the sample - distinguishes single cells from carriers, references, and controls. <strong>Critical for proper data analysis.</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single cell, carrier, reference, empty, negative control, bulk control, not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single cell, carrier, reference, empty</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[single cell isolation method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Technique used to isolate individual cells</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FACS, cellenONE, CellenONE, microfluidics, laser capture microdissection, LCM, manual picking, nanoPOTS, droplet microfluidics, acoustic droplet ejection, not applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FACS, cellenONE, laser capture microdissection</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell identifier]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for each single cell within the experiment. Required per SCP guidelines for tracking cells through analysis.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alphanumeric identifier (use <code>carrier</code>, <code>reference</code>, <code>empty</code> for non-single-cell samples)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell_001, SC_A1, well_B3, barcode_ATCGATCG, carrier, reference</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">6.2. Recommended Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are RECOMMENDED for single cell proteomics experiments per the Nature Methods guidelines:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[individual]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for the donor/patient individual. Important for studies with multiple donors.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alphanumeric identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001, donor_A, C1, T1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample preparation batch]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Batch identifier for sample preparation (plate, chip, processing batch). <strong>Critical for batch effect correction.</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate1, plate2, chip_A, batch_20220601</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[cells per well]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of cells per well/reaction. Use 1 for true single cells, higher numbers for small pools.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1, 5, 10, 100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[developmental stage]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of the organism at sample collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EFO, HsapDv, MmusDv, UBERON</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adult, embryonic stage, fetal stage, neonate</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns_flow_cytometry_data"><a class="anchor" href="#_optional_columns_flow_cytometry_data"></a><a class="link" href="#_optional_columns_flow_cytometry_data">6.3. Optional Columns - Flow Cytometry Data</a></h3>
+<div class="paragraph">
+<p>Per the Nature Methods guidelines, flow cytometry data should be reported when available:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[forward scatter]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forward scatter (FSC) value from flow cytometry - proxy for cell size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">316.0, 250, not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[side scatter]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Side scatter (SSC) value from flow cytometry - proxy for cell granularity/complexity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">301.0, 184, not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sorting marker]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Markers used for cell sorting/selection with optional intensity values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CD45+, GFP+, CD3+CD4+, CD34:APC-Cy7-A=276.0, PI-</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns_cell_state_and_quality"><a class="anchor" href="#_optional_columns_cell_state_and_quality"></a><a class="link" href="#_optional_columns_cell_state_and_quality">6.4. Optional Columns - Cell State and Quality</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell viability]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Viability status of the cell at isolation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">live, viable, dead, unknown</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell cycle phase]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cell cycle phase if determined (e.g., by FACS or computational inference)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">G1, S, G2, G2/M, M, G0, not determined</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[cell diameter]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Physical diameter of the isolated cell if measured (in micrometers)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15 um, 20.5 um, 12 μm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[single cell quality]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quality assessment of the single cell preparation (pass/fail based on QC criteria)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pass, fail, OK, not OK</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns_model_organisms"><a class="anchor" href="#_optional_columns_model_organisms"></a><a class="link" href="#_optional_columns_model_organisms">6.5. Optional Columns - Model Organisms</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[genotype]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genotype of the organism (especially for model organisms)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wild type genotype, Pitx2-/-, GFP+, daf-2(e1370)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[strain]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strain or genetic background of model organisms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C57BL/6, BALB/c, CD1, Sprague-Dawley</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns_carrier_and_multiplexing_scope_ms_type_methods"><a class="anchor" href="#_optional_columns_carrier_and_multiplexing_scope_ms_type_methods"></a><a class="link" href="#_optional_columns_carrier_and_multiplexing_scope_ms_type_methods">6.6. Optional Columns - Carrier and Multiplexing (SCoPE-MS type methods)</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[carrier proteome]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description of carrier proteome used in carrier-assisted SCP methods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">200x HeLa carrier, 100 ng bovine serum albumin, no carrier</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[carrier channel]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT/iTRAQ channel used for carrier proteome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT131C, TMT126, not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[reference channel]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT/iTRAQ channel used for reference/booster sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT127N, TMT134N, not applicable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns_batch_and_technical_tracking"><a class="anchor" href="#_optional_columns_batch_and_technical_tracking"></a><a class="link" href="#_optional_columns_batch_and_technical_tracking">6.7. Optional Columns - Batch and Technical Tracking</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[LC batch]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Liquid chromatography batch identifier for batch effect tracking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC1, LC2, column_A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[acquisition date]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date and time of MS data acquisition (ISO 8601 format recommended)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022-06-01_18:28:37, 2022-06-01, 20220601</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_optional_columns_spatial_information"><a class="anchor" href="#_optional_columns_spatial_information"></a><a class="link" href="#_optional_columns_spatial_information">6.8. Optional Columns - Spatial Information</a></h3>
+<div class="paragraph">
+<p>For spatially-resolved single-cell proteomics (e.g., laser capture microdissection from tissue):</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[spatial coordinates]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X,Y coordinates if cells were isolated from a spatial context</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X=100;Y=250, X=50.5;Y=120.3, not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[tissue section]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tissue section identifier for spatially resolved single-cell proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">section_001, slide_A_section_3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sample-type"><a class="anchor" href="#sample-type"></a><a class="link" href="#sample-type">7. Sample Type Classification</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>comment[sample type]</code> column is critical for distinguishing the different sample types commonly used in SCP experiments:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Sample Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single cell</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An individual cell isolated for proteomics analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The primary analyte in SCP experiments</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">carrier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carrier proteome channel (e.g., 200x HeLa lysate) used to boost signal in carrier-assisted methods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCoPE-MS, SCoPE2, and similar methods</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reference</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference channel used for normalization across runs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT-based experiments requiring cross-run normalization</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Control well with no cells - used to estimate background and noise</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QC for cell isolation efficiency</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">negative control</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Negative control sample to assess technical artifacts</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method validation and QC</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bulk control</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bulk sample (many cells) for comparison with single-cell data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Benchmarking single-cell vs. bulk measurements</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cell-identifier"><a class="anchor" href="#cell-identifier"></a><a class="link" href="#cell-identifier">8. Cell Identifier Annotation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each cell in a single cell proteomics experiment MUST have a unique identifier. The <code>characteristics[cell identifier]</code> serves as the primary cell-level identifier within the dataset.</p>
+</div>
+<div class="sect2">
+<h3 id="_naming_conventions"><a class="anchor" href="#_naming_conventions"></a><a class="link" href="#_naming_conventions">8.1. Naming Conventions</a></h3>
+<div class="paragraph">
+<p>Recommended naming conventions for cell identifiers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Well-based</strong>: <code>well_A01</code>, <code>plate1_A01</code>, <code>96wp_A01</code></p>
+</li>
+<li>
+<p><strong>Sequential</strong>: <code>cell_001</code>, <code>cell_002</code>, <code>SC_0001</code></p>
+</li>
+<li>
+<p><strong>Barcode-based</strong>: <code>barcode_ATCGATCG</code> (for methods using molecular barcodes)</p>
+</li>
+<li>
+<p><strong>Combined</strong>: <code>plate1_well_A01_cell1</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For non-single-cell channels, use descriptive identifiers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Carrier</strong>: <code>carrier</code></p>
+</li>
+<li>
+<p><strong>Reference</strong>: <code>reference</code></p>
+</li>
+<li>
+<p><strong>Empty</strong>: <code>empty</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uniqueness_requirements"><a class="anchor" href="#_uniqueness_requirements"></a><a class="link" href="#_uniqueness_requirements">8.2. Uniqueness Requirements</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Cell identifiers MUST be unique within the SDRF file</p>
+</li>
+<li>
+<p>When combining multiple plates/batches, include batch information in the identifier</p>
+</li>
+<li>
+<p>The combination of <code>source name</code> + <code>assay name</code> + <code>comment[label]</code> + <code>characteristics[cell identifier]</code> should uniquely identify each row</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="multiplexed-scp"><a class="anchor" href="#multiplexed-scp"></a><a class="link" href="#multiplexed-scp">9. Multiplexed Single Cell Proteomics Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Many SCP methods use TMT or similar labeling to multiplex multiple cells in a single MS run. For these experiments:</p>
+</div>
+<div class="sect2">
+<h3 id="_scope_ms_and_similar_methods"><a class="anchor" href="#_scope_ms_and_similar_methods"></a><a class="link" href="#_scope_ms_and_similar_methods">9.1. SCoPE-MS and Similar Methods</a></h3>
+<div class="sdrf-example-table"><table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1112%;">
+</colgroup>
+<thead>
+<tr>
+<th class="sample-col tableblock halign-left valign-top">source name</th>
+<th class="data-col tableblock halign-left valign-top">comment[sample type]</th>
+<th class="sample-col tableblock halign-left valign-top">characteristics[cell identifier]</th>
+<th class="sample-col tableblock halign-left valign-top">characteristics[individual]</th>
+<th class="sample-col tableblock halign-left valign-top">characteristics[cell type]</th>
+<th class="data-col tableblock halign-left valign-top">comment[sample preparation batch]</th>
+<th class="data-col tableblock halign-left valign-top">comment[label]</th>
+<th class="data-col tableblock halign-left valign-top">comment[carrier channel]</th>
+<th class="data-col tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">PBMC_patient1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">single cell</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">cell_001</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">T cell</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">plate1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT127N</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">run001.raw</p></td>
+</tr>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">PBMC_patient1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">single cell</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">cell_002</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">B cell</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">plate1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT127C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">run001.raw</p></td>
+</tr>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">PBMC_patient1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">single cell</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">cell_003</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">patient_001</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">monocyte</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">plate1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT128N</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">run001.raw</p></td>
+</tr>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">carrier_reference</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">carrier</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">carrier</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">mixed</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">plate1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">run001.raw</p></td>
+</tr>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">empty_well</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">plate1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT126</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TMT131C</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">run001.raw</p></td>
+</tr>
+</tbody>
+</table><div class="sdrf-legend"><div class="legend-item"><span class="legend-color sample"></span>Sample metadata</div><div class="legend-item"><span class="legend-color data"></span>Data file metadata</div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_carrier_and_reference_channels"><a class="anchor" href="#_carrier_and_reference_channels"></a><a class="link" href="#_carrier_and_reference_channels">9.2. Carrier and Reference Channels</a></h3>
+<div class="paragraph">
+<p>When using carrier proteome strategies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>comment[sample type]</code> to clearly indicate which rows are carriers, references, or single cells</p>
+</li>
+<li>
+<p>Annotate the carrier channel with <code>comment[carrier channel]</code></p>
+</li>
+<li>
+<p>Use <code>characteristics[cell identifier]</code> = <code>carrier</code>, <code>reference</code>, or <code>empty</code> for non-single-cell channels</p>
+</li>
+<li>
+<p>Set <code>characteristics[cell type]</code> to <code>mixed</code> or specify the carrier source for carrier channels</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="label-free-scp"><a class="anchor" href="#label-free-scp"></a><a class="link" href="#label-free-scp">10. Label-Free Single Cell Proteomics Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For label-free SCP methods (nanoPOTS, direct injection, etc.):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set <code>comment[label]</code> to <code>label free sample</code></p>
+</li>
+<li>
+<p>Each cell corresponds to one MS run</p>
+</li>
+<li>
+<p>Cell identifier still required for tracking</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="sdrf-example-table"><table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="sample-col tableblock halign-left valign-top">source name</th>
+<th class="data-col tableblock halign-left valign-top">comment[sample type]</th>
+<th class="sample-col tableblock halign-left valign-top">characteristics[cell identifier]</th>
+<th class="sample-col tableblock halign-left valign-top">characteristics[individual]</th>
+<th class="sample-col tableblock halign-left valign-top">characteristics[cell type]</th>
+<th class="data-col tableblock halign-left valign-top">assay name</th>
+<th class="data-col tableblock halign-left valign-top">comment[label]</th>
+<th class="data-col tableblock halign-left valign-top">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">tissue_section_1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">single cell</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">cell_LCM_001</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">donor_A</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">epithelial cell</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">LCM_cell_001_run</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">cell001.raw</p></td>
+</tr>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">tissue_section_1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">single cell</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">cell_LCM_002</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">donor_A</p></td>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">stromal cell</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">LCM_cell_002_run</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">label free sample</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">cell002.raw</p></td>
+</tr>
+</tbody>
+</table><div class="sdrf-legend"><div class="legend-item"><span class="legend-color sample"></span>Sample metadata</div><div class="legend-item"><span class="legend-color data"></span>Data file metadata</div></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">11. Example SDRF File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A complete example for a TMT-based single cell proteomics experiment aligned with Nature Methods guidelines:</p>
+</div>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">comment[sample type]</th>
+<th class="sample-col">characteristics[cell identifier]</th>
+<th class="sample-col">characteristics[individual]</th>
+<th class="sample-col">characteristics[cell type]</th>
+<th class="sample-col">characteristics[forward scatter]</th>
+<th class="sample-col">characteristics[side scatter]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[sample preparation batch]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">PBMC_donor1</td>
+<td class="sample-col">single cell</td>
+<td class="sample-col">cell_T001</td>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">T cell</td>
+<td class="sample-col">316.0</td>
+<td class="sample-col">301.0</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">batch1_set1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">PBMC_donor1</td>
+<td class="sample-col">single cell</td>
+<td class="sample-col">cell_B001</td>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">B cell</td>
+<td class="sample-col">250.0</td>
+<td class="sample-col">184.0</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
+<td class="data-col">TMT127C</td>
+<td class="data-col">batch1_set1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">carrier_HeLa</td>
+<td class="sample-col">carrier</td>
+<td class="sample-col">carrier</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">epithelial cell</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
+<td class="data-col">TMT131C</td>
+<td class="data-col">batch1_set1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">empty_control</td>
+<td class="sample-col">empty</td>
+<td class="sample-col">empty</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">plate1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">batch1_set1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>&#8230;&#8203;</code> column indicates omitted columns (organism, disease, biological replicate, assay name, technology type, carrier proteome, fraction identifier, cleavage agent details, instrument).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quality-metrics"><a class="anchor" href="#quality-metrics"></a><a class="link" href="#quality-metrics">12. Quality Control Annotations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For single cell proteomics, the following quality-related annotations are RECOMMENDED:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[proteins identified]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of proteins identified per cell (post-analysis)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500, 1200, 2500</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[peptides identified]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of peptides identified per cell (post-analysis)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1500, 3500, 8000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[MS2 identification rate]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Percentage of MS2 spectra resulting in identifications</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25%, 40%, 55%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[missing value percentage]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Percentage of missing values for this cell</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30%, 45%, 60%</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+These columns may be added after data analysis and are not required at submission time.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">13. Best Practices for Single Cell Proteomics Annotation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following the Nature Methods SCP guidelines:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Always classify sample types</strong>: Use <code>comment[sample type]</code> to distinguish single cells from carriers, references, and controls.</p>
+</li>
+<li>
+<p><strong>Provide unique cell identifiers</strong>: Each cell MUST have a unique identifier enabling tracking through analysis.</p>
+</li>
+<li>
+<p><strong>Document isolation method</strong>: Specify the exact technique used for cell isolation (FACS, LCM, cellenONE, etc.).</p>
+</li>
+<li>
+<p><strong>Track individual/donor information</strong>: Use <code>characteristics[individual]</code> to identify which donor/patient each cell came from.</p>
+</li>
+<li>
+<p><strong>Record batch information</strong>: Document <code>comment[sample preparation batch]</code> and <code>comment[LC batch]</code> for batch effect correction.</p>
+</li>
+<li>
+<p><strong>Include flow cytometry data when available</strong>: Report FSC, SSC, and sorting marker values.</p>
+</li>
+<li>
+<p><strong>Annotate carrier channels</strong>: When using carrier proteome, clearly identify which channels contain carrier vs. single cells.</p>
+</li>
+<li>
+<p><strong>Include cell type information</strong>: Annotate cell types using Cell Ontology terms when possible.</p>
+</li>
+<li>
+<p><strong>Report cell numbers</strong>: Use <code>comment[cells per well]</code> to indicate whether measurements are truly single cells or small pools.</p>
+</li>
+<li>
+<p><strong>Use factor values</strong>: Use <code>factor value</code> columns to indicate experimental variables (treatment, time point, cell type comparisons).</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">14. Template File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The single cell proteomics SDRF template file is available in this directory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="single-cell-template.sdrf.tsv">single-cell-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">15. Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Single cell proteomics SDRF files should be validated using the sdrf-pipelines tool:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template single-cell</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">16. Authors and Maintainers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template was developed by the SDRF-Proteomics community with contributions from single cell proteomics researchers, aligned with the Nature Methods SCP consensus guidelines.</p>
+</div>
+<div class="paragraph">
+<p>For questions or suggestions, please open an issue on the <a href="https://github.com/bigbio/proteomics-metadata-standard">GitHub repository</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">17. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Gatto L, Aebersold R, Cox J, et al.</strong> (2023). Initial recommendations for performing, benchmarking and reporting single-cell proteomics experiments. <em>Nature Methods</em>, 20(3), 375-386. <a href="https://doi.org/10.1038/s41592-023-01785-3" class="bare">https://doi.org/10.1038/s41592-023-01785-3</a></p>
+</li>
+<li>
+<p>Slavov N. (2021) Single-cell protein analysis by mass spectrometry. <em>Current Opinion in Chemical Biology</em>.</p>
+</li>
+<li>
+<p>Specht H, et al. (2021) Single-cell proteomic and transcriptomic analysis of macrophage heterogeneity using SCoPE2. <em>Genome Biology</em>.</p>
+</li>
+<li>
+<p>Kelly RT. (2020) Single-cell Proteomics: Progress and Prospects. <em>Molecular &amp; Cellular Proteomics</em>.</p>
+</li>
+<li>
+<p>Budnik B, et al. (2018) SCoPE-MS: mass spectrometry of single mammalian cells quantifies proteome heterogeneity during cell differentiation. <em>Genome Biology</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-03 23:05:03 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
