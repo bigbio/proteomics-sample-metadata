@@ -78,7 +78,7 @@
             overflow: hidden;
         }
 
-        app-root {
+        sdrf-editor {
             display: block;
             width: 100%;
             height: 100%;
@@ -124,7 +124,7 @@
         }
 
         /* Hide loading when app is ready */
-        app-root:not(:empty) + .editor-loading {
+        sdrf-editor:not(:empty) + .editor-loading {
             display: none;
         }
 
@@ -194,7 +194,7 @@
 
         <div class="editor-container">
             <!-- Angular app mounts here -->
-            <app-root></app-root>
+            <sdrf-editor></sdrf-editor>
 
             <!-- Loading indicator (hidden when app loads) -->
             <div class="editor-loading" id="editor-loading">
@@ -210,6 +210,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Preload critical chunks for faster loading -->
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@5a36266/dist/sdrf-editor/browser/chunk-PX34FNJO.js">
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@5a36266/dist/sdrf-editor/browser/chunk-KAWQVD33.js">
 
     <!-- Load Angular app from jsDelivr CDN (serves directly from GitHub repo) -->
     <script src="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@5a36266/dist/sdrf-editor/browser/polyfills.js" type="module" onerror="showError()"></script>
@@ -227,7 +231,7 @@
 
         // Hide loading after timeout if app doesn't load
         setTimeout(() => {
-            const appRoot = document.querySelector('app-root');
+            const appRoot = document.querySelector('sdrf-editor');
             if (appRoot && appRoot.children.length === 0) {
                 showError();
             }
