@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Affinity Proteomics Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: Affinity Proteomics Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#key-differences">3. Key Differences from MS-Based Proteomics</a>
+<ul class="sectlevel2">
+<li><a href="#_data_file_structure">3.1. Data File Structure</a></li>
+<li><a href="#_technology_type">3.2. Technology Type</a></li>
+<li><a href="#_assay_name_purpose">3.3. Assay Name Purpose</a></li>
+<li><a href="#_columns_not_applicable">3.4. Columns NOT Applicable</a></li>
+</ul>
+</li>
+<li><a href="#hierarchy">4. Template Hierarchy</a></li>
+<li><a href="#checklist">5. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_columns">5.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">5.2. Recommended Columns</a></li>
+</ul>
+</li>
+<li><a href="#technology-types">6. Technology Type Values</a></li>
+<li><a href="#data-file-structure">7. Understanding the Data File Structure</a>
+<ul class="sectlevel2">
+<li><a href="#_one_data_file_multiple_rows">7.1. One Data File, Multiple Rows</a></li>
+<li><a href="#_assay_name_sample_id">7.2. Assay Name = Sample ID</a></li>
+</ul>
+</li>
+<li><a href="#special-cases">8. Handling Special Cases</a>
+<ul class="sectlevel2">
+<li><a href="#_pooled_samples">8.1. Pooled Samples</a></li>
+<li><a href="#_control_samples">8.2. Control Samples</a></li>
+</ul>
+</li>
+<li><a href="#example-olink">9. Example: Olink Proteomics</a></li>
+<li><a href="#example-somascan">10. Example: SomaScan Proteomics</a></li>
+<li><a href="#example-controls">11. Example: With Controls</a></li>
+<li><a href="#platforms">12. Platform-Specific Information</a>
+<ul class="sectlevel2">
+<li><a href="#_quantification_units">12.1. Quantification Units</a></li>
+<li><a href="#_common_instruments">12.2. Common Instruments</a></li>
+<li><a href="#_data_file_formats">12.3. Data File Formats</a></li>
+</ul>
+</li>
+<li><a href="#best-practices">13. Best Practices</a></li>
+<li><a href="#validation">14. Validation</a></li>
+<li><a href="#template-file">15. Template File</a></li>
+<li><a href="#related-templates">16. Related Templates</a></li>
+<li><a href="#references">17. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides guidelines for annotating affinity-based proteomics experiments in SDRF-Proteomics format.</p>
+</div>
+<div class="paragraph">
+<p><strong>Type:</strong> Technology Template</p>
+</div>
+<div class="paragraph">
+<p><strong>Status:</strong> Released</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Affinity proteomics uses affinity-based capture methods (antibodies, aptamers, or other reagents) to detect and quantify proteins. Unlike mass spectrometry-based proteomics, these methods typically produce a single data file per study containing measurements for all samples across all targeted proteins.</p>
+</div>
+<div class="paragraph">
+<p>This template covers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Olink</strong> - Proximity Extension Assay (PEA)</p>
+</li>
+<li>
+<p><strong>SomaScan</strong> - Aptamer-based protein profiling</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="key-differences"><a class="anchor" href="#key-differences"></a><a class="link" href="#key-differences">3. Key Differences from MS-Based Proteomics</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Understanding these differences is critical for correct SDRF annotation.</p>
+</div>
+<div class="sect2">
+<h3 id="_data_file_structure"><a class="anchor" href="#_data_file_structure"></a><a class="link" href="#_data_file_structure">3.1. Data File Structure</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">MS-Based Proteomics</th>
+<th class="tableblock halign-left valign-top">Affinity Proteomics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Each row = one sample-to-raw-file relationship</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Each row = one sample in a shared data file</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Multiple raw files (one per sample or fraction)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>One data file per study</strong> containing all samples</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Each sample typically has its own data file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Same data file appears in multiple rows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_technology_type"><a class="anchor" href="#_technology_type"></a><a class="link" href="#_technology_type">3.2. Technology Type</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">MS-Based</th>
+<th class="tableblock halign-left valign-top">Affinity-Based</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>proteomic profiling by mass spectrometry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>protein expression profiling by antibody array</code> or <code>protein expression profiling by aptamer array</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_assay_name_purpose"><a class="anchor" href="#_assay_name_purpose"></a><a class="link" href="#_assay_name_purpose">3.3. Assay Name Purpose</a></h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In affinity proteomics, <code>assay name</code> serves a different purpose than in MS-based proteomics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>MS-based</strong>: Unique identifier for each MS run/data file</p>
+</li>
+<li>
+<p><strong>Affinity-based</strong>: <strong>Sample ID from the platform data file</strong> - this is the critical linking column that connects SDRF rows to samples in the shared data file</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_columns_not_applicable"><a class="anchor" href="#_columns_not_applicable"></a><a class="link" href="#_columns_not_applicable">3.4. Columns NOT Applicable</a></h3>
+<div class="paragraph">
+<p>The following MS-specific columns should <strong>NOT</strong> be included in affinity proteomics SDRF files:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>comment[proteomics data acquisition method]</code> - No MS acquisition</p>
+</li>
+<li>
+<p><code>comment[label]</code> - No isotopic labeling</p>
+</li>
+<li>
+<p><code>comment[cleavage agent details]</code> - No protein digestion</p>
+</li>
+<li>
+<p><code>comment[fraction identifier]</code> - Typically no fractionation</p>
+</li>
+<li>
+<p><code>comment[modification parameters]</code> - Not relevant</p>
+</li>
+<li>
+<p><code>comment[precursor mass tolerance]</code> / <code>comment[fragment mass tolerance]</code> - No MS tolerances</p>
+</li>
+<li>
+<p><code>comment[dissociation method]</code> / <code>comment[collision energy]</code> - No MS/MS</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hierarchy"><a class="anchor" href="#hierarchy"></a><a class="link" href="#hierarchy">4. Template Hierarchy</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">base
+  └── affinity-proteomics (THIS TEMPLATE)
+        ├── olink (Olink-specific columns)
+        └── somascan (SomaScan-specific columns)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Checklist</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">5.1. Required Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the biological sample</td>
+<td>patient_001_plasma, sample_A</td>
+</tr>
+<tr>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species (NCBI Taxonomy)</td>
+<td>homo sapiens</td>
+</tr>
+<tr>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Anatomical part or sample type</td>
+<td>blood plasma, blood serum, CSF</td>
+</tr>
+<tr>
+<td><code>characteristics[disease]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Disease state (use "normal" for healthy)</td>
+<td>rheumatoid arthritis, normal</td>
+</tr>
+<tr>
+<td><code>characteristics[biological replicate]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological replicate number or "pooled"</td>
+<td>1, 2, pooled, not available</td>
+</tr>
+<tr>
+<td><code>assay name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td><strong>Sample ID from platform data file</strong> - critical linking column</td>
+<td>XB6, Sample_ID_1, L14_NIST</td>
+</tr>
+<tr>
+<td><code>technology type</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Must be affinity-specific technology type</td>
+<td>protein expression profiling by antibody array</td>
+</tr>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Affinity platform/instrument</td>
+<td>Olink Explore HT, SomaScan Assay 7K</td>
+</tr>
+<tr>
+<td><code>comment[data file]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Single data file name (same for all rows)</td>
+<td>olink_npx.csv, somascan_results.adat</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.2. Recommended Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[sample type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Sample classification from platform</td>
+<td>sample, sample_control, negative_control, plate_control</td>
+</tr>
+<tr>
+<td><code>comment[plate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Plate identifier for batch effect analysis</td>
+<td>1, 2, plate_A</td>
+</tr>
+<tr>
+<td><code>comment[panel name]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Commercial panel name</td>
+<td>Olink Explore 3072, SomaScan 7K</td>
+</tr>
+<tr>
+<td><code>comment[panel version]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Panel version</td>
+<td>v4.1, 2023-01</td>
+</tr>
+<tr>
+<td><code>comment[quantification unit]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Platform-specific measurement unit</td>
+<td>NPX, RFU, MFI, pg/mL</td>
+</tr>
+<tr>
+<td><code>comment[technical replicate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Technical replicate number</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="technology-types"><a class="anchor" href="#technology-types"></a><a class="link" href="#technology-types">6. Technology Type Values</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use the appropriate technology type for your platform:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Platform</th>
+<th class="tableblock halign-left valign-top">Technology Type Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink (PEA)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>protein expression profiling by antibody array</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>protein expression profiling by aptamer array</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="data-file-structure"><a class="anchor" href="#data-file-structure"></a><a class="link" href="#data-file-structure">7. Understanding the Data File Structure</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_one_data_file_multiple_rows"><a class="anchor" href="#_one_data_file_multiple_rows"></a><a class="link" href="#_one_data_file_multiple_rows">7.1. One Data File, Multiple Rows</a></h3>
+<div class="paragraph">
+<p>In affinity proteomics, <strong>one data file contains all samples</strong>. The SDRF reflects this:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Same <code>comment[data file]</code> value for all rows</p>
+</li>
+<li>
+<p><code>assay name</code> (Sample ID) distinguishes different samples</p>
+</li>
+<li>
+<p>Multiple rows may exist for the same sample (one per protein measured, if tracking at that granularity)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">source name  | assay name   | comment[data file]
+sample_1     | Sample_ID_1  | olink_npx.csv
+sample_2     | Sample_ID_2  | olink_npx.csv
+sample_3     | Sample_ID_3  | olink_npx.csv</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_assay_name_sample_id"><a class="anchor" href="#_assay_name_sample_id"></a><a class="link" href="#_assay_name_sample_id">7.2. Assay Name = Sample ID</a></h3>
+<div class="paragraph">
+<p>The <code>assay name</code> column contains the <strong>Sample ID from the platform data file</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>This is the key that links SDRF rows to the data file</p>
+</li>
+<li>
+<p>Each unique Sample ID in the data file = one unique <code>assay name</code> in SDRF</p>
+</li>
+<li>
+<p>Must match exactly what appears in the platform output</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="special-cases"><a class="anchor" href="#special-cases"></a><a class="link" href="#special-cases">8. Handling Special Cases</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_pooled_samples"><a class="anchor" href="#_pooled_samples"></a><a class="link" href="#_pooled_samples">8.1. Pooled Samples</a></h3>
+<div class="paragraph">
+<p>For samples pooled from multiple individuals:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[individual]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pooled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pooled (or age range if known, e.g., "40Y-50Y")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sex]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pooled (if mixed) or specific value if all same sex</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[biological replicate]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pooled</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_control_samples"><a class="anchor" href="#_control_samples"></a><a class="link" href="#_control_samples">8.2. Control Samples</a></h3>
+<div class="paragraph">
+<p>For negative controls, plate controls, and other QC samples:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[disease]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[age]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sex]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[individual]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not applicable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">negative_control, plate_control, sample_control</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-olink"><a class="anchor" href="#example-olink"></a><a class="link" href="#example-olink">9. Example: Olink Proteomics</a></h2>
+<div class="sectionbody">
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[panel name]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">rheumatoid arthritis</td>
+<td class="sample-col">1</td>
+<td class="data-col">XB6</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
+<td class="data-col">NPX</td>
+<td class="data-col">olink_npx.csv</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">normal</td>
+<td class="sample-col">2</td>
+<td class="data-col">XB65</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
+<td class="data-col">NPX</td>
+<td class="data-col">olink_npx.csv</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-somascan"><a class="anchor" href="#example-somascan"></a><a class="link" href="#example-somascan">10. Example: SomaScan Proteomics</a></h2>
+<div class="sectionbody">
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[panel name]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">subject_A</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood serum</td>
+<td class="sample-col">type 2 diabetes mellitus</td>
+<td class="data-col">Sample_001</td>
+<td class="data-col">protein expression profiling by aptamer array</td>
+<td class="data-col">SomaScan Assay 7K</td>
+<td class="data-col">SomaScan 7K v4.1</td>
+<td class="data-col">RFU</td>
+<td class="data-col">somascan_results.adat</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-controls"><a class="anchor" href="#example-controls"></a><a class="link" href="#example-controls">11. Example: With Controls</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For experiments that include various control types:</p>
+</div>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">comment[sample type]</th>
+<th class="data-col">comment[plate]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">cardiovascular disease</td>
+<td class="data-col">L14_P001</td>
+<td class="data-col">sample</td>
+<td class="data-col">2</td>
+<td class="data-col">olink_reveal.parquet</td>
+</tr>
+<tr>
+<td class="sample-col">pool_control</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">not applicable</td>
+<td class="data-col">L14_NIST</td>
+<td class="data-col">sample_control</td>
+<td class="data-col">2</td>
+<td class="data-col">olink_reveal.parquet</td>
+</tr>
+<tr>
+<td class="sample-col">neg_ctrl</td>
+<td class="sample-col">not applicable</td>
+<td class="sample-col">not applicable</td>
+<td class="data-col">L14_NEG1</td>
+<td class="data-col">negative_control</td>
+<td class="data-col">2</td>
+<td class="data-col">olink_reveal.parquet</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="platforms"><a class="anchor" href="#platforms"></a><a class="link" href="#platforms">12. Platform-Specific Information</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_quantification_units"><a class="anchor" href="#_quantification_units"></a><a class="link" href="#_quantification_units">12.1. Quantification Units</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Platform</th>
+<th class="tableblock halign-left valign-top">Quantification Unit</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NPX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized Protein eXpression (log2 scale)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RFU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relative Fluorescence Units</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_common_instruments"><a class="anchor" href="#_common_instruments"></a><a class="link" href="#_common_instruments">12.2. Common Instruments</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Platform</th>
+<th class="tableblock halign-left valign-top">Instrument Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Explore HT, Olink Signature Q100, Olink Flex</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan Assay 7K, SomaScan Assay 11K</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_data_file_formats"><a class="anchor" href="#_data_file_formats"></a><a class="link" href="#_data_file_formats">12.3. Data File Formats</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 50%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Platform</th>
+<th class="tableblock halign-left valign-top">Typical Format</th>
+<th class="tableblock halign-left valign-top">Extension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Excel, CSV, or Parquet with NPX values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.xlsx, .csv, .parquet</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ADAT format (proprietary) or CSV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.adat, .csv</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">13. Best Practices</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Use platform Sample IDs as assay name</strong>: The <code>assay name</code> must match exactly what appears in the platform data file to enable proper linking.</p>
+</li>
+<li>
+<p><strong>Specify technology type correctly</strong>: Always use affinity-specific technology types, never MS technology types for non-MS platforms.</p>
+</li>
+<li>
+<p><strong>Document quantification units</strong>: Different platforms use different scales - always specify (NPX, RFU, MFI, pg/mL).</p>
+</li>
+<li>
+<p><strong>Include plate information</strong>: For multi-plate experiments, <code>comment[plate]</code> is important for batch effect analysis.</p>
+</li>
+<li>
+<p><strong>Classify samples properly</strong>: Use <code>comment[sample type]</code> to distinguish biological samples from controls.</p>
+</li>
+<li>
+<p><strong>Handle pooled samples correctly</strong>: Use "pooled" for individual-specific fields when samples are pooled.</p>
+</li>
+<li>
+<p><strong>Mark controls appropriately</strong>: Use "not applicable" for sample characteristics of controls where the value doesn&#8217;t apply.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">14. Validation</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template affinity-proteomics</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+MS-specific validations (label, cleavage agent, etc.) do not apply to affinity proteomics.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">15. Template File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The affinity proteomics SDRF template file is available in this directory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="affinity-proteomics-template.sdrf.tsv">affinity-proteomics-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="related-templates"><a class="anchor" href="#related-templates"></a><a class="link" href="#related-templates">16. Related Templates</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="olink.html">Olink Template</a> - Olink-specific columns (NPX normalization, QC warnings)</p>
+</li>
+<li>
+<p><a href="somascan.html">SomaScan Template</a> - SomaScan-specific columns (menu version, matrix)</p>
+</li>
+<li>
+<p><a href="human.html">Human Template</a> - Human sample metadata (can be combined)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">17. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Assarsson E, et al. (2014) Homogenous 96-plex PEA immunoassay exhibiting high sensitivity, specificity, and excellent scalability. PLoS ONE.</p>
+</li>
+<li>
+<p>Gold L, et al. (2010) Aptamer-based multiplexed proteomic technology for biomarker discovery. PLoS ONE.</p>
+</li>
+<li>
+<p>Olink Proteomics: <a href="https://www.olink.com/" class="bare">https://www.olink.com/</a></p>
+</li>
+<li>
+<p>SomaLogic: <a href="https://somalogic.com/" class="bare">https://somalogic.com/</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-04 22:10:56 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>

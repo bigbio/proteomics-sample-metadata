@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Metaproteomics Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: Metaproteomics Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#connections">3. Connections to Other Omics Fields</a></li>
+<li><a href="#additional-ontologies">4. Additional Ontologies</a></li>
+<li><a href="#checklist">5. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_required_columns">5.1. Required Columns</a></li>
+<li><a href="#_recommended_columns">5.2. Recommended Columns</a></li>
+<li><a href="#_environmental_context_columns">5.3. Environmental Context Columns</a>
+<ul class="sectlevel3">
+<li><a href="#_aquatic_samples">5.3.1. Aquatic Samples</a></li>
+<li><a href="#_soil_samples">5.3.2. Soil Samples</a></li>
+<li><a href="#_host_associated_samples">5.3.3. Host-Associated Samples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#organism-annotation">6. Organism Annotation in Metaproteomics</a>
+<ul class="sectlevel2">
+<li><a href="#_option_1_use_metagenome_or_environment_specific_term">6.1. Option 1: Use "metagenome" or Environment-Specific Term</a></li>
+<li><a href="#_option_2_specify_host_organism">6.2. Option 2: Specify Host Organism</a></li>
+<li><a href="#_option_3_multiple_organism_columns">6.3. Option 3: Multiple Organism Columns</a></li>
+</ul>
+</li>
+<li><a href="#database-annotation">7. Database Search Strategy Annotation</a></li>
+<li><a href="#mock-communities">8. Mock Community Samples</a></li>
+<li><a href="#example-sdrf">9. Example SDRF Files</a>
+<ul class="sectlevel2">
+<li><a href="#_human_gut_microbiome_example">9.1. Human Gut Microbiome Example</a></li>
+<li><a href="#_environmental_sample_example">9.2. Environmental Sample Example</a></li>
+</ul>
+</li>
+<li><a href="#quality-considerations">10. Quality Control Annotations</a></li>
+<li><a href="#best-practices">11. Best Practices for Metaproteomics Annotation</a></li>
+<li><a href="#template-file">12. Template File</a></li>
+<li><a href="#validation">13. Validation</a></li>
+<li><a href="#authors">14. Authors and Maintainers</a></li>
+<li><a href="#references">15. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides guidelines for annotating metaproteomics experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with metaproteomics-specific metadata fields.</p>
+</div>
+<div class="paragraph">
+<p><strong>Status:</strong> Draft - This template is under active development and may change significantly.</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0-dev - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Metaproteomics is the study of proteins expressed by microbial communities, analyzing complex samples containing proteins from many different organisms simultaneously. Key applications include gut microbiome characterization, environmental microbiology, host-microbiome interactions, and industrial biotechnology.</p>
+</div>
+<div class="paragraph">
+<p>Metaproteomics experiments have unique characteristics: multi-organism samples, complex sample matrices, databases constructed from metagenomics data, taxonomic attribution challenges, and critical environmental context metadata. This template defines the additional metadata requirements for annotating metaproteomics datasets.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="connections"><a class="anchor" href="#connections"></a><a class="link" href="#connections">3. Connections to Other Omics Fields</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Metaproteomics data is typically integrated with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Metagenomics</strong>: For database construction and taxonomic context</p>
+</li>
+<li>
+<p><strong>Metatranscriptomics</strong>: For gene expression correlation</p>
+</li>
+<li>
+<p><strong>16S/ITS amplicon sequencing</strong>: For community composition</p>
+</li>
+<li>
+<p><strong>Metabolomics</strong>: For functional interpretation</p>
+</li>
+<li>
+<p><strong>Environmental databases</strong>: ENVO, MIxS standards</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When available, linking to related omics datasets is highly RECOMMENDED.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">4. Additional Ontologies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the ontologies supported by the core SDRF-Proteomics specification, metaproteomics templates utilize:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Environment Ontology (ENVO)</strong>: For environmental sample classification (<a href="http://www.obofoundry.org/ontology/envo.html" class="bare">http://www.obofoundry.org/ontology/envo.html</a>)</p>
+</li>
+<li>
+<p><strong>Gazetteer (GAZ)</strong>: For geographic locations</p>
+</li>
+<li>
+<p><strong>MIxS</strong>: Minimum Information about any (x) Sequence standards</p>
+</li>
+<li>
+<p><strong>NCBI Taxonomy</strong>: For organism classification</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Checklist</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section defines the metadata columns required and recommended for metaproteomics experiments.</p>
+</div>
+<div class="sect2">
+<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">5.1. Required Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are REQUIRED for metaproteomics experiments in addition to the core SDRF-Proteomics requirements:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[environmental sample type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of environmental or biological sample being analyzed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ENVO, EFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">soil, marine sediment, human gut, wastewater, rhizosphere, oral cavity, skin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sample collection method]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to collect the sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary or free text</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grab sample, core sampling, swab collection, filtration, fecal collection, biopsy</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.2. Recommended Columns</a></h3>
+<div class="paragraph">
+<p>The following columns are RECOMMENDED for metaproteomics experiments:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Ontology/CV</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[geographic location]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Geographic location where sample was collected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GAZ or free text with coordinates</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Baltic Sea, Amazon rainforest, lat:52.5 lon:13.4, GAZ:00002459</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[collection date]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date when sample was collected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ISO 8601 date format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-03-15, 2024-03, March 2024</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[depth]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Depth at which sample was collected (for water/sediment)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 m, 0-5 cm, surface</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[altitude]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Altitude/elevation for terrestrial samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 m, 1200 m above sea level</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[temperature]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Environmental temperature at collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit (Celsius)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 C, 4 C, 37 C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[pH]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pH of the sample or environment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.4, 5.5, 8.2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host organism]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host organism for host-associated microbiomes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens, mus musculus, zea mays</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host disease]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of host if applicable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO, EFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">inflammatory bowel disease, normal, colorectal cancer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host age]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age of host organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standard age format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">45Y, 8W, 3M</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[database search strategy]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strategy for sequence database construction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">matched metagenome, RefSeq bacteria, GTDB, UniRef90, custom assembly</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[metagenome accession]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accession number for associated metagenome data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database accession</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SRR12345678, ERR12345678, PRJNA123456</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample storage]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">How sample was stored before processing</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">flash frozen, -80C, RNAlater, 4C for 24h</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_environmental_context_columns"><a class="anchor" href="#_environmental_context_columns"></a><a class="link" href="#_environmental_context_columns">5.3. Environmental Context Columns</a></h3>
+<div class="sect3">
+<h4 id="_aquatic_samples"><a class="anchor" href="#_aquatic_samples"></a><a class="link" href="#_aquatic_samples">5.3.1. Aquatic Samples</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[water body type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of water body</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ocean, lake, river, estuary, pond</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[salinity]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Salinity measurement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35 PSU, freshwater, brackish</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[dissolved oxygen]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved oxygen concentration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8.5 mg/L, hypoxic, anoxic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[chlorophyll]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chlorophyll concentration if measured</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 ug/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sampling depth zone]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ecological depth zone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">epipelagic, mesopelagic, benthic</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_soil_samples"><a class="anchor" href="#_soil_samples"></a><a class="link" href="#_soil_samples">5.3.2. Soil Samples</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[soil type]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil classification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sandy loam, clay, peat</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[soil horizon]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil horizon sampled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A horizon, O horizon, B horizon</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[land use]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Land use type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">agricultural, forest, urban, grassland</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[vegetation]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dominant vegetation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deciduous forest, corn field, prairie</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_host_associated_samples"><a class="anchor" href="#_host_associated_samples"></a><a class="link" href="#_host_associated_samples">5.3.3. Host-Associated Samples</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[body site]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific body site for host-associated samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stool, oral cavity, skin, vaginal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host diet]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diet information for host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">omnivore, vegan, western diet, high-fiber</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[antibiotic treatment]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recent antibiotic exposure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none, amoxicillin 7 days prior, broad-spectrum</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="organism-annotation"><a class="anchor" href="#organism-annotation"></a><a class="link" href="#organism-annotation">6. Organism Annotation in Metaproteomics</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>characteristics[organism]</code> column presents a unique challenge in metaproteomics because samples contain multiple organisms. Several approaches are supported:</p>
+</div>
+<div class="sect2">
+<h3 id="_option_1_use_metagenome_or_environment_specific_term"><a class="anchor" href="#_option_1_use_metagenome_or_environment_specific_term"></a><a class="link" href="#_option_1_use_metagenome_or_environment_specific_term">6.1. Option 1: Use "metagenome" or Environment-Specific Term</a></h3>
+<div class="paragraph">
+<p>For samples where the community composition is unknown or highly complex:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">Example Samples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">General environmental samples</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human gut metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human fecal samples, gut biopsies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">soil metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil samples</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">marine metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ocean water, marine sediment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mouse gut metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse fecal samples</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>These terms have corresponding NCBITaxon identifiers (e.g., NCBITaxon:749906 for "gut metagenome").</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_option_2_specify_host_organism"><a class="anchor" href="#_option_2_specify_host_organism"></a><a class="link" href="#_option_2_specify_host_organism">6.2. Option 2: Specify Host Organism</a></h3>
+<div class="paragraph">
+<p>For host-associated microbiomes where host context is important:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[microbiome source]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gut microbiome</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gut microbiome</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis thaliana</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rhizosphere microbiome</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_option_3_multiple_organism_columns"><a class="anchor" href="#_option_3_multiple_organism_columns"></a><a class="link" href="#_option_3_multiple_organism_columns">6.3. Option 3: Multiple Organism Columns</a></h3>
+<div class="paragraph">
+<p>For controlled or known communities (e.g., defined consortia, mock communities):</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+<th class="tableblock halign-left valign-top">characteristics[organism]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">escherichia coli</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bacteroides fragilis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lactobacillus acidophilus</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The approach should be chosen based on the experimental context and database search strategy used.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="database-annotation"><a class="anchor" href="#database-annotation"></a><a class="link" href="#database-annotation">7. Database Search Strategy Annotation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Metaproteomics database construction is critical and should be documented:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Strategy</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matched metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database from metagenome of same sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When metagenome sequencing was performed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public reference database (RefSeq, UniProt)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When no metagenome available</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custom assembly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">De novo assembled from sample metagenome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For novel environments</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GTDB/UHGG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genome-resolved metagenome databases</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For gut microbiome studies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hybrid approach</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Combination of reference and sample-specific</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Complex communities with some known members</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Document the strategy in <code>comment[database search strategy]</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mock-communities"><a class="anchor" href="#mock-communities"></a><a class="link" href="#mock-communities">8. Mock Community Samples</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For defined/mock microbial communities used as standards:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[mock community]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier or name of mock community standard</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ZymoBIOMICS Microbial Community Standard, ATCC MSA-1000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[mock community composition]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description of community composition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8 bacteria + 2 yeasts at defined ratios, even mix of 10 species</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[expected organism list]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of organisms expected in mock community</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">E. coli;B. subtilis;S. cerevisiae;L. fermentum</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">9. Example SDRF Files</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_human_gut_microbiome_example"><a class="anchor" href="#_human_gut_microbiome_example"></a><a class="link" href="#_human_gut_microbiome_example">9.1. Human Gut Microbiome Example</a></h3>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[environmental sample type]</th>
+<th class="sample-col">characteristics[host disease]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[database search strategy]</th>
+<th class="data-col">comment[metagenome accession]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">subject_001_stool</td>
+<td class="sample-col">human gut metagenome</td>
+<td class="sample-col">human gut</td>
+<td class="sample-col">inflammatory bowel disease</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">matched metagenome</td>
+<td class="data-col">SRR12345678</td>
+<td class="data-col">IBD_001.raw</td>
+</tr>
+<tr>
+<td class="sample-col">subject_002_stool</td>
+<td class="sample-col">human gut metagenome</td>
+<td class="sample-col">human gut</td>
+<td class="sample-col">normal</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">matched metagenome</td>
+<td class="data-col">SRR12345679</td>
+<td class="data-col">healthy_002.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_environmental_sample_example"><a class="anchor" href="#_environmental_sample_example"></a><a class="link" href="#_environmental_sample_example">9.2. Environmental Sample Example</a></h3>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[environmental sample type]</th>
+<th class="sample-col">characteristics[geographic location]</th>
+<th class="sample-col">characteristics[depth]</th>
+<th class="ellipsis-col">...</th>
+<th class="data-col">comment[database search strategy]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">baltic_station1_summer</td>
+<td class="sample-col">marine metagenome</td>
+<td class="sample-col">marine sediment</td>
+<td class="sample-col">Baltic Sea</td>
+<td class="sample-col">50 m</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">GTDB marine subset</td>
+<td class="data-col">baltic_sed_001.raw</td>
+</tr>
+<tr>
+<td class="sample-col">soil_farm_plot1</td>
+<td class="sample-col">soil metagenome</td>
+<td class="sample-col">agricultural soil</td>
+<td class="sample-col">Iowa, USA</td>
+<td class="sample-col">0-10 cm</td>
+<td class="ellipsis-col">...</td>
+<td class="data-col">custom assembly</td>
+<td class="data-col">soil_plot1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quality-considerations"><a class="anchor" href="#quality-considerations"></a><a class="link" href="#quality-considerations">10. Quality Control Annotations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For metaproteomics, consider documenting:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[biomass estimation]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Estimated microbial biomass in sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1e9 cells/g, high biomass, low biomass</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[host contamination]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Level of host protein contamination if known</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">low (&lt;5%), moderate (5-20%), high (&gt;20%)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment[contaminant database]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contaminant databases used in search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cRAP, MaxQuant contaminants</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">11. Best Practices for Metaproteomics Annotation</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Use appropriate organism terms</strong>: Choose between metagenome terms, host organism, or explicit multi-organism annotation based on your experimental design.</p>
+</li>
+<li>
+<p><strong>Document database strategy</strong>: The sequence database used dramatically affects results - always document construction strategy.</p>
+</li>
+<li>
+<p><strong>Link to metagenomics data</strong>: When available, provide accession numbers for related metagenome/metatranscriptome data.</p>
+</li>
+<li>
+<p><strong>Include environmental context</strong>: Geographic location, collection date, and environmental parameters enhance data reusability.</p>
+</li>
+<li>
+<p><strong>Specify host information</strong>: For host-associated microbiomes, document host species, health status, and relevant metadata.</p>
+</li>
+<li>
+<p><strong>Note sample handling</strong>: Storage conditions and processing time can affect community composition.</p>
+</li>
+<li>
+<p><strong>Consider MIxS standards</strong>: Align with Minimum Information about any (x) Sequence standards where applicable.</p>
+</li>
+<li>
+<p><strong>Use controlled vocabularies</strong>: Prefer ENVO terms for environmental classification and NCBITaxon for organisms.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">12. Template File</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The metaproteomics SDRF template file is available in this directory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="metaproteomics-template.sdrf.tsv">metaproteomics-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">13. Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Metaproteomics SDRF files should be validated using the sdrf-pipelines tool:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Metaproteomics-specific validation rules are under development.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">14. Authors and Maintainers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This template was developed by the SDRF-Proteomics community with contributions from metaproteomics researchers.</p>
+</div>
+<div class="paragraph">
+<p>For questions or suggestions, please open an issue on the <a href="https://github.com/bigbio/proteomics-metadata-standard">GitHub repository</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">15. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Wilmes P, Bond PL. (2004) The application of two-dimensional polyacrylamide gel electrophoresis and downstream analyses to a mixed community of prokaryotic microorganisms. Environmental Microbiology.</p>
+</li>
+<li>
+<p>Muth T, et al. (2015) The MetaProteomeAnalyzer: a powerful open-source software suite for metaproteomics data analysis and interpretation. Journal of Proteome Research.</p>
+</li>
+<li>
+<p>Chatterjee S, et al. (2023) A comprehensive and scalable database search system for metaproteomics. Nature Communications.</p>
+</li>
+<li>
+<p>ENVO: Environment Ontology (<a href="http://www.obofoundry.org/ontology/envo.html" class="bare">http://www.obofoundry.org/ontology/envo.html</a>)</p>
+</li>
+<li>
+<p>MIxS: Minimum Information about any (x) Sequence (<a href="https://genomicsstandardsconsortium.github.io/mixs/" class="bare">https://genomicsstandardsconsortium.github.io/mixs/</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-04 22:10:56 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
