@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: MS-Proteomics Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: MS-Proteomics Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#hierarchy">3. Template Hierarchy</a></li>
+<li><a href="#checklist">4. Checklist</a>
+<ul class="sectlevel2">
+<li><a href="#_inherited_columns_from_base">4.1. Inherited Columns (from base)</a></li>
+<li><a href="#_ms_specific_columns">4.2. MS-Specific Columns</a></li>
+</ul>
+</li>
+<li><a href="#field-guidelines">5. Field Guidelines</a>
+<ul class="sectlevel2">
+<li><a href="#_cv_term_format">5.1. CV Term Format</a></li>
+<li><a href="#_label">5.2. Label</a></li>
+<li><a href="#_cleavage_agents">5.3. Cleavage Agents</a></li>
+<li><a href="#_protein_modifications">5.4. Protein Modifications</a></li>
+<li><a href="#_mass_tolerances">5.5. Mass Tolerances</a></li>
+<li><a href="#_fractionation">5.6. Fractionation</a></li>
+<li><a href="#_dissociation_method">5.7. Dissociation Method</a></li>
+<li><a href="#_collision_energy">5.8. Collision Energy</a></li>
+<li><a href="#_sample_preparation">5.9. Sample Preparation</a></li>
+</ul>
+</li>
+<li><a href="#usage">6. Usage</a>
+<ul class="sectlevel2">
+<li><a href="#_file_metadata_columns">6.1. File Metadata Columns</a></li>
+<li><a href="#_minimal_ms_proteomics_non_organism_specific">6.2. Minimal MS Proteomics (non-organism-specific)</a></li>
+<li><a href="#_human_samples_recommended">6.3. Human Samples (Recommended)</a></li>
+<li><a href="#_with_acquisition_specific_parameters_multiple_templates">6.4. With Acquisition-Specific Parameters (multiple templates)</a></li>
+</ul>
+</li>
+<li><a href="#validation">7. Validation</a></li>
+<li><a href="#example">8. Example</a></li>
+<li><a href="#related">9. Related Templates</a></li>
+<li><a href="#_ontologies">10. Ontologies</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Status:</strong> Released</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The MS-Proteomics template is the <strong>minimum valid SDRF template</strong> for mass spectrometry-based proteomics experiments. It includes all columns necessary to describe an MS proteomics dataset.</p>
+</div>
+<div class="paragraph">
+<p>This template is appropriate for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>DDA (Data-Dependent Acquisition) proteomics</p>
+</li>
+<li>
+<p>DIA (Data-Independent Acquisition) proteomics</p>
+</li>
+<li>
+<p>Targeted proteomics (SRM/MRM/PRM)</p>
+</li>
+<li>
+<p>Any experiment using mass spectrometry for protein/peptide detection</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hierarchy"><a class="anchor" href="#hierarchy"></a><a class="link" href="#hierarchy">3. Template Hierarchy</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">base
+  └── ms-proteomics (THIS TEMPLATE)
+        │
+        ├── dda-acquisition (DDA-specific columns)
+        ├── dia-acquisition (DIA-specific columns)
+        ├── crosslinking (XL-MS columns)
+        ├── single-cell (SCP columns)
+        └── immunopeptidomics (MHC-MS columns)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">4. Checklist</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_inherited_columns_from_base"><a class="anchor" href="#_inherited_columns_from_base"></a><a class="link" href="#_inherited_columns_from_base">4.1. Inherited Columns (from base)</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the biological sample</td>
+</tr>
+<tr>
+<td><code>characteristics[organism]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Species (NCBI Taxonomy)</td>
+</tr>
+<tr>
+<td><code>characteristics[organism part]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Anatomical part</td>
+</tr>
+<tr>
+<td><code>characteristics[cell type]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Cell type</td>
+</tr>
+<tr>
+<td><code>characteristics[biological replicate]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Biological replicate number</td>
+</tr>
+<tr>
+<td><code>assay name</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Unique identifier for the MS run</td>
+</tr>
+<tr>
+<td><code>technology type</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>"proteomic profiling by mass spectrometry"</td>
+</tr>
+<tr>
+<td><code>comment[technical replicate]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Technical replicate number</td>
+</tr>
+<tr>
+<td><code>comment[data file]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Raw data file name</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ms_specific_columns"><a class="anchor" href="#_ms_specific_columns"></a><a class="link" href="#_ms_specific_columns">4.2. MS-Specific Columns</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Mass spectrometer used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">MS</a></td>
+<td>Q Exactive HF, Orbitrap Fusion Lumos, timsTOF Pro</td>
+</tr>
+<tr>
+<td><code>comment[proteomics data acquisition method]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>MS acquisition method</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE</a></td>
+<td>Data-dependent acquisition, Data-independent acquisition</td>
+</tr>
+<tr>
+<td><code>comment[cleavage agent details]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Enzyme used for digestion</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms">MS</a></td>
+<td>NT=Trypsin;AC=MS:1001251</td>
+</tr>
+<tr>
+<td><code>comment[label]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Labeling strategy</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride">PRIDE</a></td>
+<td>label free sample, TMT126, SILAC heavy</td>
+</tr>
+<tr>
+<td><code>comment[fraction identifier]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Fraction number (1 for non-fractionated)</td>
+<td>—</td>
+<td>1, 2, 3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="field-guidelines"><a class="anchor" href="#field-guidelines"></a><a class="link" href="#field-guidelines">5. Field Guidelines</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_cv_term_format"><a class="anchor" href="#_cv_term_format"></a><a class="link" href="#_cv_term_format">5.1. CV Term Format</a></h3>
+<div class="paragraph">
+<p>For data file metadata columns that reference ontology terms, use the structured CV term format:</p>
+</div>
+<div class="paragraph">
+<p><code>NT={term name};AC={accession}</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Examples:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Dissociation method: <code>NT=HCD;AC=PRIDE:0000590</code></p>
+</li>
+<li>
+<p>Instrument: <code>NT=Q Exactive HF;AC=MS:1002523</code></p>
+</li>
+<li>
+<p>Label: <code>NT=TMT126;AC=PRIDE:0000285</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Data file metadata benefits from the structured CV term format because these values are often extracted programmatically from instrument files.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_label"><a class="anchor" href="#_label"></a><a class="link" href="#_label">5.2. Label</a></h3>
+<div class="paragraph">
+<p><strong>Column:</strong> <code>comment[label]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000514">PRIDE:0000514 - Sample label</a></p>
+</div>
+<div class="paragraph">
+<p>Describes the isotopic label applied to each sample. All label values MUST be children of PRIDE:0000514 (label free sample, TMT, iTRAQ, SILAC, etc.). <a href="../../sdrf-explorer.html?view=PXD004683">Open example SDRF</a></p>
+</div>
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="data-col">TMT126</td>
+<td class="data-col">run1.raw</td>
+</tr>
+<tr>
+<td class="sample-col">sample_2</td>
+<td class="data-col">TMT127N</td>
+<td class="data-col">run1.raw</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cleavage_agents"><a class="anchor" href="#_cleavage_agents"></a><a class="link" href="#_cleavage_agents">5.3. Cleavage Agents</a></h3>
+<div class="paragraph">
+<p><strong>Column:</strong> <code>comment[cleavage agent details]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001045">PSI-MS - Cleavage agent name (MS:1001045)</a></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>NT=EnzymeName;AC=Accession</code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Enzyme</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">OLS Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trypsin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001251">MS:1001251</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trypsin/P</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin/P;AC=MS:1001313</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001313">MS:1001313</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lys-C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Lys-C;AC=MS:1001309</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1001309">MS:1001309</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For top-down/intact proteins, use <code>not applicable</code>. For multiple enzymes, add multiple columns. <a href="../../sdrf-explorer.html?view=PXD002395">Open example SDRF</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_protein_modifications"><a class="anchor" href="#_protein_modifications"></a><a class="link" href="#_protein_modifications">5.4. Protein Modifications</a></h3>
+<div class="paragraph">
+<p><strong>Column:</strong> <code>comment[modification parameters]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/unimod">UNIMOD</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/mod">PSI-MOD</a></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>NT=ModificationName;AC=Accession;MT=Type;TA=AminoAcid;PP=Position</code> <a href="../../sdrf-explorer.html?view=PXD001725">Open example SDRF</a></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIMOD or PSI-MOD term name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accession</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIMOD:X or MOD:X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Fixed</code>, <code>Variable</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target Amino Acid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Single letter codes (e.g., <code>S,T,Y</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Position</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Anywhere</code>, <code>Protein N-term</code>, <code>Protein C-term</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Common modifications:</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Modification</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">OLS Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carbamidomethyl (fixed)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Carbamidomethyl;AC=UNIMOD:4;MT=Fixed;TA=C;PP=Anywhere</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_4">UNIMOD:4</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Oxidation (variable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Oxidation;AC=UNIMOD:35;MT=Variable;TA=M;PP=Anywhere</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_35">UNIMOD:35</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phosphorylation (variable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Phospho;AC=UNIMOD:21;MT=Variable;TA=S,T,Y;PP=Anywhere</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/unimod/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FUNIMOD_21">UNIMOD:21</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_mass_tolerances"><a class="anchor" href="#_mass_tolerances"></a><a class="link" href="#_mass_tolerances">5.5. Mass Tolerances</a></h3>
+<div class="paragraph">
+<p><strong>Columns:</strong> <code>comment[precursor mass tolerance]</code>, <code>comment[fragment mass tolerance]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>{value} {unit}</code> where unit is <code>Da</code> or <code>ppm</code>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Precursor</th>
+<th class="tableblock halign-left valign-top">Fragment</th>
+<th class="tableblock halign-left valign-top">Instrument Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20 ppm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orbitrap MS1/MS2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20 ppm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6 Da</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orbitrap MS1, Ion trap MS2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_fractionation"><a class="anchor" href="#_fractionation"></a><a class="link" href="#_fractionation">5.6. Fractionation</a></h3>
+<div class="paragraph">
+<p><strong>Column:</strong> <code>comment[fractionation method]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FPRIDE_0000550">PRIDE - Fractionation method</a></p>
+</div>
+<div class="paragraph">
+<p>Use with <code>comment[fraction identifier]</code> to number fractions.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">OLS Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High-pH reversed-phase chromatography</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000564">PRIDE:0000564</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strong cation-exchange chromatography</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000561">PRIDE:0000561</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For single-shot experiments without fractionation, this column can be omitted or set to <code>not applicable</code>. <a href="../../sdrf-explorer.html?view=MSV000078494">Open example SDRF</a>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dissociation_method"><a class="anchor" href="#_dissociation_method"></a><a class="link" href="#_dissociation_method">5.7. Dissociation Method</a></h3>
+<div class="paragraph">
+<p><strong>Column:</strong> <code>comment[dissociation method]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Ontology:</strong> <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044">PRIDE - dissociation method (MS:1000044)</a></p>
+</div>
+<div class="paragraph">
+<p>All values MUST be children of MS:1000044 from the PRIDE ontology. Use the short acronyms (HCD, CID, ETD, etc.) as term names.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Term (Acronym)</th>
+<th class="tableblock halign-left valign-top">OLS Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000590">PRIDE:0000590</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000591">PRIDE:0000591</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ETD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000593">PRIDE:0000593</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EThcD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000594">PRIDE:0000594</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>CV term format:</strong> <code>NT=HCD;AC=PRIDE:0000590</code> <a href="../../sdrf-explorer.html?view=PMID25043054">Open example SDRF</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_collision_energy"><a class="anchor" href="#_collision_energy"></a><a class="link" href="#_collision_energy">5.8. Collision Energy</a></h3>
+<div class="paragraph">
+<p><strong>Column:</strong> <code>comment[collision energy]</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>{value} {unit}</code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized collision energy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Absolute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 eV</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Absolute energy in electron volts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stepped</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22 NCE;26 NCE;30 NCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Multiple energies (semicolon-separated)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+For DIA experiments with stepped collision energy, see the <a href="dia-acquisition.html">DIA template</a> for detailed guidance.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sample_preparation"><a class="anchor" href="#_sample_preparation"></a><a class="link" href="#_sample_preparation">5.9. Sample Preparation</a></h3>
+<div class="paragraph">
+<p><strong>Reduction Reagent:</strong> <code>comment[reduction reagent]</code> - DTT, TCEP, beta-mercaptoethanol</p>
+</div>
+<div class="paragraph">
+<p><strong>Alkylation Reagent:</strong> <code>comment[alkylation reagent]</code> - IAA, chloroacetamide</p>
+</div>
+<div class="paragraph">
+<p><strong>Depletion:</strong> <code>comment[depletion]</code> - no depletion, depletion, depleted fraction, bound fraction</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="usage"><a class="anchor" href="#usage"></a><a class="link" href="#usage">6. Usage</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_file_metadata_columns"><a class="anchor" href="#_file_metadata_columns"></a><a class="link" href="#_file_metadata_columns">6.1. File Metadata Columns</a></h3>
+<div class="paragraph">
+<p>SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance. Place these columns at the end of the file.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_minimal_ms_proteomics_non_organism_specific"><a class="anchor" href="#_minimal_ms_proteomics_non_organism_specific"></a><a class="link" href="#_minimal_ms_proteomics_non_organism_specific">6.2. Minimal MS Proteomics (non-organism-specific)</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics v1.1.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_human_samples_recommended"><a class="anchor" href="#_human_samples_recommended"></a><a class="link" href="#_human_samples_recommended">6.3. Human Samples (Recommended)</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human v1.1.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>human</code> template inherits from <code>ms-proteomics</code>, so you only need to specify <code>human</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_with_acquisition_specific_parameters_multiple_templates"><a class="anchor" href="#_with_acquisition_specific_parameters_multiple_templates"></a><a class="link" href="#_with_acquisition_specific_parameters_multiple_templates">6.4. With Acquisition-Specific Parameters (multiple templates)</a></h3>
+<div class="paragraph">
+<p>When using multiple templates, add multiple <code>comment[sdrf template]</code> columns:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dda-acquisition v1.1.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Each template declares its own version, allowing templates to evolve independently.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">7. Validation</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template ms-proteomics</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example"><a class="anchor" href="#example"></a><a class="link" href="#example">8. Example</a></h2>
+<div class="sectionbody">
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[biological replicate]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[proteomics data acquisition method]</th>
+<th class="data-col">comment[cleavage agent details]</th>
+<th class="data-col">comment[label]</th>
+<th class="data-col">comment[fraction identifier]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">sample_1</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">liver</td>
+<td class="sample-col">1</td>
+<td class="data-col">run_1</td>
+<td class="data-col">proteomic profiling by mass spectrometry</td>
+<td class="data-col">Q Exactive HF</td>
+<td class="data-col">Data-dependent acquisition</td>
+<td class="data-col">NT=Trypsin;AC=MS:1001251</td>
+<td class="data-col">label free sample</td>
+<td class="data-col">1</td>
+<td class="data-col">sample1.raw</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="related"><a class="anchor" href="#related"></a><a class="link" href="#related">9. Related Templates</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../specification.html">Main Specification</a> - Core SDRF-Proteomics documentation</p>
+</li>
+<li>
+<p><a href="dda-acquisition.html">DDA Acquisition</a> - DDA-specific columns</p>
+</li>
+<li>
+<p><a href="dia-acquisition.html">DIA Acquisition</a> - DIA-specific columns</p>
+</li>
+<li>
+<p><a href="human.html">Human Template</a> - Human sample metadata</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ontologies"><a class="anchor" href="#_ontologies"></a><a class="link" href="#_ontologies">10. Ontologies</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>PRIDE Ontology: <a href="https://www.ebi.ac.uk/ols4/ontologies/pride" class="bare">https://www.ebi.ac.uk/ols4/ontologies/pride</a></p>
+</li>
+<li>
+<p>PSI-MS Ontology: <a href="https://www.ebi.ac.uk/ols4/ontologies/ms" class="bare">https://www.ebi.ac.uk/ols4/ontologies/ms</a></p>
+</li>
+<li>
+<p>UNIMOD: <a href="https://www.ebi.ac.uk/ols4/ontologies/unimod" class="bare">https://www.ebi.ac.uk/ols4/ontologies/unimod</a></p>
+</li>
+<li>
+<p>PSI-MOD: <a href="https://www.ebi.ac.uk/ols4/ontologies/mod" class="bare">https://www.ebi.ac.uk/ols4/ontologies/mod</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-04 22:11:47 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
