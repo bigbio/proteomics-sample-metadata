@@ -149,10 +149,46 @@ IMPORTANT: The validator only recognizes templates present in the official `sdrf
 
 When a base template is updated, community template maintainers are responsible for testing compatibility and releasing updated versions via pull request. The validator SHOULD emit a warning when a community template references a base template version older than the latest available.
 
+== Feature Lifecycle Policy
+
+This section details the policy for the introduction, testing, stabilization, and eventual removal of features (fields, ontologies, validation rules).
+
+=== Feature Categorization
+
+Features within the specification are categorized based on their intended audience and visibility. This categorization dictates the strictness of the stability guarantees applied during the lifecycle.
+
+==== Background Features
+Background features consist of properties primarily consumed by software pipelines, validators, or scripts that do not get rendered in a table. Examples include validation hash columns. These features are rarely inspected manually by end-users. Changes to background features follow the standard lifecycle, and deprecation requires appropriate updates to technical documentation and validator warnings.
+
+==== Display Features
+Display features are those that are rendered in the tabulated table (e.g., column names, value syntax). To avoid causing confusion, any changes that require the user to relearn the format should be carefully considered and given a large grace period (minimum 12 months) where both old and new formats coexist, ideally with converter tooling. Proposals affecting display features require discussion with the wider community.
+
+=== Feature Lifecycle Stages
+
+The lifecycle of a feature proceeds through six distinct stages:
+
+==== 1. Introduction
+The Introduction stage represents the proposal phase. A contributor creates a GitHub Issue describing the use case and providing examples. The feature is categorized (Background vs. Display) and undergoes community review. Once approved, a Pull Request is drafted.
+
+==== 2. Test
+Features in the Test stage are experimental, implemented in a feature branch. This stage is strictly for internal testing. Features in this state can change frequently.
+
+==== 3. Unstable
+Features in this stage are merged into the `dev` branch and documented but are not yet recommended for public use. They are subject to change without notice.
+
+==== 4. Stable
+Features in this stage are included in a numbered stable release and are recommended for production use. Stable features are protected by backward compatibility guarantees. The official validator enforces rules for stable features.
+
+==== 5. Deprecation
+Deprecation indicates that a feature is close to end-of-life. It remains valid to ensure backward compatibility, but its use is discouraged. The validator issues a warning.
+* **Background Features:** Deprecation period of at least one Minor version cycle or 6 months.
+* **Display Features:** Deprecation period of at least two Minor version cycles or 12 months.
+
+==== 6. Removal
+Removal is the final stage where a feature is designated as obsolete. Removed features are no longer valid, and their presence triggers a validation error. Removal is a breaking change and occurs only in a Major version release.
+
 [[deprecation-policy]]
 == Deprecation Policy
-
-For a comprehensive overview of how features move through their lifecycle (Introduction, Test, Unstable, Stable, Deprecation, Removal), please refer to the link:feature_lifecycle.adoc[Feature Lifecycle Policy].
 
 === Core Principle: Versions Are Immutable
 
