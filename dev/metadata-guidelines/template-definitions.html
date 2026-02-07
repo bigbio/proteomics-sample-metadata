@@ -61,16 +61,21 @@
 <li><a href="#_multi_template_combination">6.3. Multi-Template Combination</a></li>
 </ul>
 </li>
-<li><a href="#_creating_new_templates">7. Creating New Templates</a>
+<li><a href="#_creating_a_new_template_step_by_step_guide">7. Creating a New Template: Step-by-Step Guide</a>
 <ul class="sectlevel2">
-<li><a href="#_checklist">7.1. Checklist</a></li>
-<li><a href="#_best_practices">7.2. Best Practices</a></li>
-<li><a href="#_example_creating_an_experiment_template">7.3. Example: Creating an Experiment Template</a></li>
+<li><a href="#_step_1_choose_the_parent_template">7.1. Step 1: Choose the Parent Template</a></li>
+<li><a href="#_step_2_create_the_directory_structure">7.2. Step 2: Create the Directory Structure</a></li>
+<li><a href="#_step_3_write_the_yaml_schema">7.3. Step 3: Write the YAML Schema</a></li>
+<li><a href="#_step_4_create_an_example_sdrf_file">7.4. Step 4: Create an Example SDRF File</a></li>
+<li><a href="#_step_5_create_the_documentation">7.5. Step 5: Create the Documentation</a></li>
+<li><a href="#_step_6_test_locally">7.6. Step 6: Test Locally</a></li>
+<li><a href="#_step_7_submit_a_pull_request">7.7. Step 7: Submit a Pull Request</a></li>
+<li><a href="#_quick_reference_template_yaml_checklist">7.8. Quick Reference: Template YAML Checklist</a></li>
+<li><a href="#_best_practices">7.9. Best Practices</a></li>
 </ul>
 </li>
-<li><a href="#_linkml_schema">8. LinkML Schema</a></li>
-<li><a href="#_validation_commands">9. Validation Commands</a></li>
-<li><a href="#_references">10. References</a></li>
+<li><a href="#_validation_commands">8. Validation Commands</a></li>
+<li><a href="#_references">9. References</a></li>
 </ul>
 </div>
 </div>
@@ -846,141 +851,367 @@ columns:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_creating_new_templates"><a class="anchor" href="#_creating_new_templates"></a><a class="link" href="#_creating_new_templates">7. Creating New Templates</a></h2>
+<h2 id="_creating_a_new_template_step_by_step_guide"><a class="anchor" href="#_creating_a_new_template_step_by_step_guide"></a><a class="link" href="#_creating_a_new_template_step_by_step_guide">7. Creating a New Template: Step-by-Step Guide</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_checklist"><a class="anchor" href="#_checklist"></a><a class="link" href="#_checklist">7.1. Checklist</a></h3>
 <div class="paragraph">
-<p>When creating a new template:</p>
+<p>This section walks through creating a new YAML template from scratch. The example creates a hypothetical <code>top-down</code> template for top-down proteomics experiments.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>[ ] Choose appropriate parent template (<code>extends</code>)</p>
-</li>
-<li>
-<p>[ ] Set correct layer (<code>layer</code>)</p>
-</li>
-<li>
-<p>[ ] Define mutual exclusivity if needed (<code>mutually_exclusive_with</code>)</p>
-</li>
-<li>
-<p>[ ] Use semantic versioning (<code>version</code>)</p>
-</li>
-<li>
-<p>[ ] Document all columns with clear descriptions</p>
-</li>
-<li>
-<p>[ ] Add appropriate validators (ontology, pattern, values)</p>
-</li>
-<li>
-<p>[ ] Include examples in validators</p>
-</li>
-<li>
-<p>[ ] Test with real SDRF files</p>
-</li>
-</ol>
+<div class="sect2">
+<h3 id="_step_1_choose_the_parent_template"><a class="anchor" href="#_step_1_choose_the_parent_template"></a><a class="link" href="#_step_1_choose_the_parent_template">7.1. Step 1: Choose the Parent Template</a></h3>
+<div class="paragraph">
+<p>Every template (except <code>base</code>) must extend a parent. Choose based on where your template fits in the hierarchy:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 42.8571%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">You are defining&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">Extend</th>
+<th class="tableblock halign-left valign-top">Layer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new proteomics technology (rare)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new organism type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new MS experiment type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new affinity experiment type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>affinity-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For our example, top-down proteomics is a mass spectrometry technique, so we extend <code>ms-proteomics</code> and use the <code>experiment</code> layer.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">7.2. Best Practices</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Follow naming conventions</strong>: Use lowercase with hyphens for template names</p>
-</li>
-<li>
-<p><strong>Be specific in descriptions</strong>: Include what values are expected and when to use <code>not applicable</code></p>
-</li>
-<li>
-<p><strong>Use ontologies when possible</strong>: Prefer ontology validators over pattern validators for controlled vocabularies</p>
-</li>
-<li>
-<p><strong>Provide examples</strong>: Always include examples in validator definitions</p>
-</li>
-<li>
-<p><strong>Document special cases</strong>: Explain when <code>not applicable</code> or <code>not available</code> are appropriate</p>
-</li>
-</ul>
+<h3 id="_step_2_create_the_directory_structure"><a class="anchor" href="#_step_2_create_the_directory_structure"></a><a class="link" href="#_step_2_create_the_directory_structure">7.2. Step 2: Create the Directory Structure</a></h3>
+<div class="paragraph">
+<p>Templates live in the <a href="https://github.com/bigbio/sdrf-templates">sdrf-templates</a> repository. Each template has a versioned directory:</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_example_creating_an_experiment_template"><a class="anchor" href="#_example_creating_an_experiment_template"></a><a class="link" href="#_example_creating_an_experiment_template">7.3. Example: Creating an Experiment Template</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">name: my-experiment
-description: SDRF template for my specific experiment type.
-  Extends ms-proteomics with experiment-specific columns.
-version: 1.0.0
+<pre class="highlightjs highlight"><code class="language-none hljs">sdrf-templates/
+└── top-down/
+    └── 1.0.0-dev/
+        ├── top-down.yaml         # Template schema (required)
+        └── top-down.sdrf.tsv     # Example SDRF file (required)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use the <code>-dev</code> suffix for the initial version until the template is reviewed and accepted by the community.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_write_the_yaml_schema"><a class="anchor" href="#_step_3_write_the_yaml_schema"></a><a class="link" href="#_step_3_write_the_yaml_schema">7.3. Step 3: Write the YAML Schema</a></h3>
+<div class="paragraph">
+<p>Start with the template metadata, then define the columns your experiment type needs. Only define columns that are <strong>new or different</strong> from the parent — inherited columns from <code>ms-proteomics</code> do not need to be repeated.</p>
+</div>
+<div class="listingblock">
+<div class="title">top-down/1.0.0-dev/top-down.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ===========================================================================
+# TEMPLATE METADATA
+# ===========================================================================
+name: top-down
+description: &gt;
+  SDRF template for top-down proteomics experiments where intact proteins
+  are analyzed without prior enzymatic digestion. Extends ms-proteomics
+  with top-down-specific columns for intact mass analysis.
+version: 1.0.0-dev
 extends: ms-proteomics
 usable_alone: false
 layer: experiment
 
+# ===========================================================================
+# COLUMN DEFINITIONS — only columns new or changed from parent
+# ===========================================================================
 columns:
-  - name: characteristics[my field]
-    description: Description of what this field captures
-    requirement: required
-    allow_not_applicable: false
+
+  # --- New column: protein separation method ---
+  - name: comment[protein separation method]
+    description: &gt;
+      Method used to separate intact proteins before MS analysis
+      (e.g., GELFrEE, SEC, RPLC, CZE). Use "not applicable" if no
+      separation was performed (direct infusion).
+    requirement: recommended
+    allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: ontology
         params:
           ontologies:
-            - efo
+            - ms
+            - pride
           error_level: warning
-          description: Should be a valid EFO term
+          description: &gt;
+            Protein separation method should be a valid PSI-MS or PRIDE
+            ontology term.
           examples:
-            - example value 1
-            - example value 2</code></pre>
+            - size exclusion chromatography
+            - gel electrophoresis
+            - capillary zone electrophoresis
+            - reversed-phase liquid chromatography
+            - not applicable
+
+  # --- New column: intact mass range ---
+  - name: comment[precursor mass range]
+    description: &gt;
+      The mass range of intact protein precursors analyzed, in Daltons.
+      Format: "min-max Da" (e.g., "5000-50000 Da").
+    requirement: optional
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^(\d+-\d+\s*Da|not available)$
+          case_sensitive: false
+          description: &gt;
+            Precursor mass range in format "min-max Da".
+          examples:
+            - 5000-50000 Da
+            - 10000-100000 Da
+            - not available
+
+  # --- Override inherited column: make cleavage agent "not applicable" ---
+  # In top-down experiments, proteins are not digested, so the cleavage
+  # agent column should always be "not applicable". We override the
+  # inherited column to make this explicit.
+  - name: comment[cleavage agent details]
+    description: &gt;
+      Cleavage agent is not applicable for top-down experiments where
+      intact proteins are analyzed. Use "not applicable".
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - not applicable
+          error_level: warning
+          description: &gt;
+            Top-down experiments analyze intact proteins. Cleavage agent
+            should be "not applicable".</code></pre>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_linkml_schema"><a class="anchor" href="#_linkml_schema"></a><a class="link" href="#_linkml_schema">8. LinkML Schema</a></h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>For tools requiring a formal schema language, a <a href="https://linkml.io/">LinkML</a> representation is available:</p>
-</div>
-<div class="paragraph">
-<p><strong>File:</strong> <a href="../templates/sdrf-template-schema.linkml.yaml">sdrf-template-schema.linkml.yaml</a></p>
-</div>
-<div class="paragraph">
-<p>LinkML provides:</p>
+<p>Key points demonstrated in this example:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Formal type definitions compatible with JSON Schema, SHACL, and OWL</p>
+<p><strong>New columns</strong> (<code>comment[protein separation method]</code>, <code>comment[precursor mass range]</code>) are defined with their own validators.</p>
 </li>
 <li>
-<p>Code generation for Python, Java, and other languages</p>
+<p><strong>Overriding an inherited column</strong> (<code>comment[cleavage agent details]</code>) restricts the parent&#8217;s definition — in this case, forcing the value to "not applicable" since top-down experiments don&#8217;t use enzymatic digestion.</p>
 </li>
 <li>
-<p>Integration with semantic web tools</p>
+<p><strong>Descriptions explain the "why"</strong> — not just what the field is, but when to use <code>not applicable</code> and what format to follow.</p>
+</li>
+<li>
+<p><strong>Examples are always provided</strong> in validators — they serve as documentation and can be used by tools to generate autocomplete suggestions.</p>
 </li>
 </ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_create_an_example_sdrf_file"><a class="anchor" href="#_step_4_create_an_example_sdrf_file"></a><a class="link" href="#_step_4_create_an_example_sdrf_file">7.4. Step 4: Create an Example SDRF File</a></h3>
 <div class="paragraph">
-<p><strong>Usage examples:</strong></p>
+<p>Every template must include an example <code>.sdrf.tsv</code> file that passes validation. This file demonstrates correct usage and serves as a starting point for users.</p>
+</div>
+<div class="listingblock">
+<div class="title">top-down/1.0.0-dev/top-down.sdrf.tsv (tab-separated)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-tsv hljs" data-lang="tsv">source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	characteristics[biological replicate]	assay name	technology type	comment[proteomics data acquisition method]	comment[label]	comment[instrument]	comment[cleavage agent details]	comment[fraction identifier]	comment[technical replicate]	comment[data file]	comment[protein separation method]	comment[precursor mass range]	factor value[disease]
+sample_1	homo sapiens	heart	normal	1	run_1	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	LTQ Orbitrap Elite	not applicable	1	1	sample_1.raw	gel electrophoresis	10000-100000 Da	normal
+sample_2	homo sapiens	heart	dilated cardiomyopathy	1	run_2	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	LTQ Orbitrap Elite	not applicable	1	1	sample_2.raw	gel electrophoresis	10000-100000 Da	dilated cardiomyopathy</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_5_create_the_documentation"><a class="anchor" href="#_step_5_create_the_documentation"></a><a class="link" href="#_step_5_create_the_documentation">7.5. Step 5: Create the Documentation</a></h3>
+<div class="paragraph">
+<p>Add a <code>README.adoc</code> file in the specification repository under <code>sdrf-proteomics/templates/top-down/</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">sdrf-proteomics/templates/top-down/README.adoc (outline)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Top-Down Proteomics Template
+
+== Overview
+[describe when to use this template]
+
+== Columns
+[table of columns with requirement levels, descriptions, and examples]
+
+== Examples
+[link to the example SDRF file]
+
+== See Also
+* link:../../README.adoc[SDRF-Proteomics Specification]
+* link:../ms-proteomics/README.adoc[MS-Proteomics Template] (parent)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_6_test_locally"><a class="anchor" href="#_step_6_test_locally"></a><a class="link" href="#_step_6_test_locally">7.6. Step 6: Test Locally</a></h3>
+<div class="paragraph">
+<p>Before submitting, validate your example file against your template:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Generate JSON Schema from LinkML
-gen-json-schema sdrf-template-schema.linkml.yaml &gt; sdrf-template-schema.json
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Install or upgrade the validator
+pip install sdrf-pipelines
 
-# Generate Python dataclasses
-gen-python sdrf-template-schema.linkml.yaml &gt; sdrf_template.py
-
-# Validate a template file against the schema
-linkml-validate -s sdrf-template-schema.linkml.yaml templates/human/human.yaml</code></pre>
+# Validate the example SDRF file with the new template
+parse_sdrf validate-sdrf \
+  --sdrf_file top-down/1.0.0-dev/top-down.sdrf.tsv \
+  --template ms-proteomics \
+  --custom_template top-down/1.0.0-dev/top-down.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check that:</p>
+</div>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> The example file passes validation with no errors.</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> All required columns from the parent template are present.</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> New columns validate correctly (ontology terms resolve, patterns match).</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> The <code>not applicable</code> and <code>not available</code> values work where expected.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_7_submit_a_pull_request"><a class="anchor" href="#_step_7_submit_a_pull_request"></a><a class="link" href="#_step_7_submit_a_pull_request">7.7. Step 7: Submit a Pull Request</a></h3>
+<div class="paragraph">
+<p>Submit the template to the <a href="https://github.com/bigbio/sdrf-templates">sdrf-templates</a> repository via pull request. The PR must include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The YAML schema file (<code>top-down/1.0.0-dev/top-down.yaml</code>).</p>
+</li>
+<li>
+<p>The example SDRF file (<code>top-down/1.0.0-dev/top-down.sdrf.tsv</code>).</p>
+</li>
+<li>
+<p>A PR description explaining: what experiment type the template covers, why it is needed, and which parent it extends.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The corresponding <code>README.adoc</code> documentation goes into a separate PR to the <a href="https://github.com/bigbio/proteomics-metadata-standard">specification repository</a> under <code>sdrf-proteomics/templates/top-down/</code>.</p>
+</div>
+<div class="paragraph">
+<p>Once reviewed and merged, the template appears in the <code>templates.yaml</code> manifest and becomes available to all users of sdrf-pipelines. The <code>-dev</code> suffix is removed when the template is promoted to a stable release (e.g., <code>1.0.0</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_quick_reference_template_yaml_checklist"><a class="anchor" href="#_quick_reference_template_yaml_checklist"></a><a class="link" href="#_quick_reference_template_yaml_checklist">7.8. Quick Reference: Template YAML Checklist</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Checklist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lowercase with hyphens. Unique across all templates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">One or two sentences. Mention what it extends and what experiment type it covers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>X.Y.Z-dev</code> for new templates. Remove <code>-dev</code> after community review.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must be an existing template name (<code>ms-proteomics</code>, <code>affinity-proteomics</code>, or <code>base</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>layer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">One of: <code>technology</code>, <code>sample</code>, <code>experiment</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usable_alone</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almost always <code>false</code> for experiment and sample layer templates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>columns</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only define columns that are <strong>new</strong> or that <strong>override</strong> a parent column. Do not repeat inherited columns unchanged.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validators</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>ontology</code> for controlled vocabularies, <code>pattern</code> for structured text, <code>values</code> for fixed lists. Always include <code>examples</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved words</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set <code>allow_not_applicable</code>, <code>allow_not_available</code>, <code>allow_pooled</code>, <code>allow_anonymized</code> as appropriate for each column.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">7.9. Best Practices</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Only define what is new.</strong> Inherited columns from the parent template do not need to be repeated. Only add a column to your template if it is new or if you need to override the parent&#8217;s definition (e.g., change <code>requirement</code> from <code>optional</code> to <code>required</code>, or restrict allowed values).</p>
+</li>
+<li>
+<p><strong>Use ontologies over patterns.</strong> Prefer <code>ontology</code> validators for fields where controlled vocabulary terms exist. Use <code>pattern</code> validators only for structured free text (ages, mass ranges, file names).</p>
+</li>
+<li>
+<p><strong>Provide clear descriptions.</strong> Explain not just what the field is, but when to use <code>not applicable</code> vs <code>not available</code>, and give format guidance.</p>
+</li>
+<li>
+<p><strong>Always include examples.</strong> Examples in validators serve as documentation and help tools generate suggestions.</p>
+</li>
+<li>
+<p><strong>Test with real data.</strong> Your example SDRF should represent a realistic experiment, not a toy file. If possible, base it on a real public dataset.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_validation_commands"><a class="anchor" href="#_validation_commands"></a><a class="link" href="#_validation_commands">9. Validation Commands</a></h2>
+<h2 id="_validation_commands"><a class="anchor" href="#_validation_commands"></a><a class="link" href="#_validation_commands">8. Validation Commands</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Validate SDRF files using sdrf-pipelines:</p>
@@ -1006,15 +1237,12 @@ parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition</code
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">10. References</a></h2>
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">9. References</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
 <p><a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines</a> - SDRF validation tool</p>
-</li>
-<li>
-<p><a href="https://linkml.io/">LinkML</a> - Linked data modeling language</p>
 </li>
 <li>
 <p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Template files on GitHub</a></p>
@@ -1029,7 +1257,7 @@ parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition</code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-07 07:23:07 UTC
+Last updated 2026-02-07 09:48:51 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
