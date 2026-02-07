@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF-Proteomics: Olink Template</title>
+<link rel="stylesheet" href="./../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header book toc2 toc-left">
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF-Proteomics: Olink Template</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#status">1. Status of this Template</a></li>
+<li><a href="#abstract">2. Abstract</a></li>
+<li><a href="#hierarchy">3. Template Hierarchy</a></li>
+<li><a href="#usage">4. Usage</a>
+<ul class="sectlevel2">
+<li><a href="#_file_metadata_columns">4.1. File Metadata Columns</a></li>
+</ul>
+</li>
+<li><a href="#checklist">5. Olink-Specific Columns</a>
+<ul class="sectlevel2">
+<li><a href="#_required_for_olink">5.1. Required for Olink</a></li>
+<li><a href="#_recommended_for_olink">5.2. Recommended for Olink</a></li>
+</ul>
+</li>
+<li><a href="#olink-panels">6. Olink Panels</a>
+<ul class="sectlevel2">
+<li><a href="#_target_96_panels">6.1. Target 96 Panels</a></li>
+<li><a href="#_explore_panels">6.2. Explore Panels</a></li>
+</ul>
+</li>
+<li><a href="#technology-type">7. Technology Type</a></li>
+<li><a href="#quantification">8. Quantification</a></li>
+<li><a href="#example">9. Example SDRF</a></li>
+<li><a href="#data-files">10. Data File Formats</a></li>
+<li><a href="#validation">11. Validation</a></li>
+<li><a href="#template-file">12. Template File</a></li>
+<li><a href="#related-templates">13. Related Templates</a></li>
+<li><a href="#references">14. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides guidelines for annotating Olink Proximity Extension Assay (PEA) experiments in SDRF-Proteomics format.</p>
+</div>
+<div class="paragraph">
+<p><strong>Type:</strong> Platform-Specific Template (extends affinity-proteomics)</p>
+</div>
+<div class="paragraph">
+<p><strong>Status:</strong> Released</p>
+</div>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 - 2026-01</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Olink proteomics uses Proximity Extension Assay (PEA) technology to measure protein levels in biological samples. This template extends the affinity-proteomics template with Olink-specific metadata fields for panel information, NPX normalization, and quality control.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hierarchy"><a class="anchor" href="#hierarchy"></a><a class="link" href="#hierarchy">3. Template Hierarchy</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">base
+  └── affinity-proteomics
+        └── olink (THIS TEMPLATE)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="usage"><a class="anchor" href="#usage"></a><a class="link" href="#usage">4. Usage</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_file_metadata_columns"><a class="anchor" href="#_file_metadata_columns"></a><a class="link" href="#_file_metadata_columns">4.1. File Metadata Columns</a></h3>
+<div class="paragraph">
+<p>SDRF files SHOULD include metadata columns to specify version and template information. Only list leaf templates; parent templates are implied by inheritance (olink inherits from affinity-proteomics). Place these columns at the end of the file.</p>
+</div>
+<div class="paragraph">
+<p><strong>Non-human samples:</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">olink v1.0.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Human samples</strong> - use multiple template columns:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">comment[sdrf version]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+<th class="tableblock halign-left valign-top">comment[sdrf template]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human v1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">olink v1.0.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Olink-Specific Columns</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to all columns from <a href="affinity-proteomics.html">affinity-proteomics</a>, the following Olink-specific columns are available:</p>
+</div>
+<div class="sect2">
+<h3 id="_required_for_olink"><a class="anchor" href="#_required_for_olink"></a><a class="link" href="#_required_for_olink">5.1. Required for Olink</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[olink panel]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Specific Olink panel name</td>
+<td>Target 96 Inflammation, Explore 384 Cardiometabolic, Explore 1536</td>
+</tr>
+<tr>
+<td><code>comment[olink platform]</code></td>
+<td><span class="required-badge">REQUIRED</span></td>
+<td>Olink instrument/platform version</td>
+<td>Olink Target 96, Olink Explore 384, Olink Explore HT</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_recommended_for_olink"><a class="anchor" href="#_recommended_for_olink"></a><a class="link" href="#_recommended_for_olink">5.2. Recommended for Olink</a></h3>
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[NPX normalization]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Normalization method applied to NPX values</td>
+<td>plate control normalized, intensity normalized, bridge normalized</td>
+</tr>
+<tr>
+<td><code>comment[QC warning]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Quality control warnings if any</td>
+<td>QC pass, below LOD, plate effect warning</td>
+</tr>
+<tr>
+<td><code>comment[olink lot number]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Reagent lot number for traceability</td>
+<td>lot_2023_001, B12345</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="olink-panels"><a class="anchor" href="#olink-panels"></a><a class="link" href="#olink-panels">6. Olink Panels</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_target_96_panels"><a class="anchor" href="#_target_96_panels"></a><a class="link" href="#_target_96_panels">6.1. Target 96 Panels</a></h3>
+<div class="paragraph">
+<p>Individual panels measuring 92 proteins each:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Target 96 Inflammation</p>
+</li>
+<li>
+<p>Target 96 Cardiovascular II</p>
+</li>
+<li>
+<p>Target 96 Cardiovascular III</p>
+</li>
+<li>
+<p>Target 96 Neurology</p>
+</li>
+<li>
+<p>Target 96 Oncology II</p>
+</li>
+<li>
+<p>Target 96 Oncology III</p>
+</li>
+<li>
+<p>Target 96 Metabolism</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_explore_panels"><a class="anchor" href="#_explore_panels"></a><a class="link" href="#_explore_panels">6.2. Explore Panels</a></h3>
+<div class="paragraph">
+<p>High-throughput panels:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Olink Explore 384 (384 proteins)</p>
+</li>
+<li>
+<p>Olink Explore 1536 (1536 proteins)</p>
+</li>
+<li>
+<p>Olink Explore 3072 (3072 proteins)</p>
+</li>
+<li>
+<p>Olink Explore HT (5400+ proteins)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="technology-type"><a class="anchor" href="#technology-type"></a><a class="link" href="#technology-type">7. Technology Type</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For Olink experiments, use:</p>
+</div>
+<div class="paragraph">
+<p><code>technology type</code> = <code>protein expression profiling by antibody array</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quantification"><a class="anchor" href="#quantification"></a><a class="link" href="#quantification">8. Quantification</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Olink uses <strong>NPX (Normalized Protein eXpression)</strong> units:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NPX is a log2 scale relative quantification</p>
+</li>
+<li>
+<p>Higher NPX = higher protein concentration</p>
+</li>
+<li>
+<p>NPX values are comparable within a study after proper normalization</p>
+</li>
+<li>
+<p>Cross-study comparisons require bridge normalization</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Always set:</p>
+</div>
+<div class="paragraph">
+<p><code>comment[quantification unit]</code> = <code>NPX</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example"><a class="anchor" href="#example"></a><a class="link" href="#example">9. Example SDRF</a></h2>
+<div class="sectionbody">
+<div class="sdrf-example-table">
+<table>
+<thead>
+<tr>
+<th class="sample-col">source name</th>
+<th class="sample-col">characteristics[organism]</th>
+<th class="sample-col">characteristics[organism part]</th>
+<th class="sample-col">characteristics[disease]</th>
+<th class="data-col">assay name</th>
+<th class="data-col">technology type</th>
+<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[olink panel]</th>
+<th class="data-col">comment[olink platform]</th>
+<th class="data-col">comment[quantification unit]</th>
+<th class="data-col">comment[NPX normalization]</th>
+<th class="data-col">comment[data file]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col">patient_001</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">rheumatoid arthritis</td>
+<td class="data-col">XB6</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">NPX</td>
+<td class="data-col">plate control normalized</td>
+<td class="data-col">olink_npx.csv</td>
+</tr>
+<tr>
+<td class="sample-col">patient_002</td>
+<td class="sample-col">homo sapiens</td>
+<td class="sample-col">blood plasma</td>
+<td class="sample-col">normal</td>
+<td class="data-col">XB65</td>
+<td class="data-col">protein expression profiling by antibody array</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">Olink Explore 1536</td>
+<td class="data-col">Olink Explore HT</td>
+<td class="data-col">NPX</td>
+<td class="data-col">plate control normalized</td>
+<td class="data-col">olink_npx.csv</td>
+</tr>
+</tbody>
+</table>
+<div class="sdrf-legend">
+<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="data-files"><a class="anchor" href="#data-files"></a><a class="link" href="#data-files">10. Data File Formats</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Olink data files typically contain:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NPX CSV/Excel</strong>: Normalized protein expression values</p>
+</li>
+<li>
+<p><strong>Parquet</strong>: Large datasets in efficient columnar format</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>assay name</code> column must match the <strong>Sample ID</strong> column in the Olink output file.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">11. Validation</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template olink</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">12. Template File</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="olink-template.sdrf.tsv">olink-template.sdrf.tsv</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="related-templates"><a class="anchor" href="#related-templates"></a><a class="link" href="#related-templates">13. Related Templates</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="affinity-proteomics.html">Affinity Proteomics</a> - Parent template</p>
+</li>
+<li>
+<p><a href="human.html">Human Template</a> - Human sample metadata</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">14. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Assarsson E, et al. (2014) Homogenous 96-plex PEA immunoassay exhibiting high sensitivity, specificity, and excellent scalability. PLoS ONE.</p>
+</li>
+<li>
+<p>Olink Proteomics: <a href="https://www.olink.com/" class="bare">https://www.olink.com/</a></p>
+</li>
+<li>
+<p>Olink NPX Documentation: <a href="https://olink.com/knowledge/documents" class="bare">https://olink.com/knowledge/documents</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-02-07 07:23:07 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>

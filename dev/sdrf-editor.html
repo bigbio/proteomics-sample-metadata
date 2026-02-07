@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDRF Editor - Create and Edit SDRF Files</title>
+    <!-- Load editor styles from jsDelivr CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@dev/dist/sdrf-editor/browser/styles.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        sdrf-editor {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Loading state */
+        .editor-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #6c757d;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .editor-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e9ecef;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hide loading when app is ready */
+        sdrf-editor:not(:empty) + .editor-loading {
+            display: none;
+        }
+
+        /* Error state */
+        .editor-error {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #6c757d;
+            text-align: center;
+            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .editor-error h3 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+
+        .editor-error p {
+            margin-bottom: 1.5rem;
+            max-width: 500px;
+        }
+
+        .editor-error a {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .editor-error a:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Angular app mounts here -->
+    <sdrf-editor></sdrf-editor>
+
+    <!-- Loading indicator (hidden when app loads) -->
+    <div class="editor-loading" id="editor-loading">
+        <div class="editor-loading-spinner"></div>
+        <p>Loading SDRF Editor...</p>
+    </div>
+
+    <!-- Error message (shown if loading fails) -->
+    <div class="editor-error" id="editor-error">
+        <h3>Failed to load editor</h3>
+        <p>The SDRF Editor could not be loaded. This might be due to a network issue.</p>
+        <a href="https://github.com/bigbio/sdrfedit" target="_blank">View on GitHub</a>
+    </div>
+
+    <!-- Preload critical chunks for faster loading -->
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@dev/dist/sdrf-editor/browser/chunk-OYZGYKHQ.js">
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@dev/dist/sdrf-editor/browser/chunk-KAWQVD33.js">
+
+    <!-- Load Angular app from jsDelivr CDN -->
+    <script src="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@dev/dist/sdrf-editor/browser/polyfills.js" type="module" onerror="showError()"></script>
+    <script src="https://cdn.jsdelivr.net/gh/bigbio/sdrfedit@dev/dist/sdrf-editor/browser/main.js" type="module" onerror="showError()"></script>
+
+    <script>
+        function showError() {
+            document.getElementById('editor-loading').style.display = 'none';
+            document.getElementById('editor-error').style.display = 'flex';
+        }
+
+        // Hide loading after timeout if app doesn't load
+        setTimeout(() => {
+            const appRoot = document.querySelector('sdrf-editor');
+            if (appRoot && appRoot.children.length === 0) {
+                showError();
+            }
+        }, 15000);
+    </script>
+</body>
+</html>
