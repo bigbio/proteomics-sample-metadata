@@ -479,84 +479,262 @@ ms-proteomics + human + dda-acquisition + cell-lines
  technology    sample    experiment     experiment
 ----
 
-== Creating New Templates
+== Creating a New Template: Step-by-Step Guide
 
-=== Checklist
+This section walks through creating a new YAML template from scratch. The example creates a hypothetical `top-down` template for top-down proteomics experiments.
 
-When creating a new template:
+=== Step 1: Choose the Parent Template
 
-1. [ ] Choose appropriate parent template (`extends`)
-2. [ ] Set correct layer (`layer`)
-3. [ ] Define mutual exclusivity if needed (`mutually_exclusive_with`)
-4. [ ] Use semantic versioning (`version`)
-5. [ ] Document all columns with clear descriptions
-6. [ ] Add appropriate validators (ontology, pattern, values)
-7. [ ] Include examples in validators
-8. [ ] Test with real SDRF files
+Every template (except `base`) must extend a parent. Choose based on where your template fits in the hierarchy:
 
-=== Best Practices
+[cols="2,3,2", options="header"]
+|===
+| You are defining... | Extend | Layer
 
-- **Follow naming conventions**: Use lowercase with hyphens for template names
-- **Be specific in descriptions**: Include what values are expected and when to use `not applicable`
-- **Use ontologies when possible**: Prefer ontology validators over pattern validators for controlled vocabularies
-- **Provide examples**: Always include examples in validator definitions
-- **Document special cases**: Explain when `not applicable` or `not available` are appropriate
+| A new proteomics technology (rare)
+| `base`
+| `technology`
 
-=== Example: Creating an Experiment Template
+| A new organism type
+| `base`
+| `sample`
 
+| A new MS experiment type
+| `ms-proteomics`
+| `experiment`
+
+| A new affinity experiment type
+| `affinity-proteomics`
+| `experiment`
+|===
+
+For our example, top-down proteomics is a mass spectrometry technique, so we extend `ms-proteomics` and use the `experiment` layer.
+
+=== Step 2: Create the Directory Structure
+
+Templates live in the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository. Each template has a versioned directory:
+
+[source]
+----
+sdrf-templates/
+└── top-down/
+    └── 1.0.0-dev/
+        ├── top-down.yaml         # Template schema (required)
+        └── top-down.sdrf.tsv     # Example SDRF file (required)
+----
+
+Use the `-dev` suffix for the initial version until the template is reviewed and accepted by the community.
+
+=== Step 3: Write the YAML Schema
+
+Start with the template metadata, then define the columns your experiment type needs. Only define columns that are **new or different** from the parent — inherited columns from `ms-proteomics` do not need to be repeated.
+
+.top-down/1.0.0-dev/top-down.yaml
 [source,yaml]
 ----
-name: my-experiment
-description: SDRF template for my specific experiment type.
-  Extends ms-proteomics with experiment-specific columns.
-version: 1.0.0
+# ===========================================================================
+# TEMPLATE METADATA
+# ===========================================================================
+name: top-down
+description: >
+  SDRF template for top-down proteomics experiments where intact proteins
+  are analyzed without prior enzymatic digestion. Extends ms-proteomics
+  with top-down-specific columns for intact mass analysis.
+version: 1.0.0-dev
 extends: ms-proteomics
 usable_alone: false
 layer: experiment
 
+# ===========================================================================
+# COLUMN DEFINITIONS — only columns new or changed from parent
+# ===========================================================================
 columns:
-  - name: characteristics[my field]
-    description: Description of what this field captures
-    requirement: required
-    allow_not_applicable: false
+
+  # --- New column: protein separation method ---
+  - name: comment[protein separation method]
+    description: >
+      Method used to separate intact proteins before MS analysis
+      (e.g., GELFrEE, SEC, RPLC, CZE). Use "not applicable" if no
+      separation was performed (direct infusion).
+    requirement: recommended
+    allow_not_applicable: true
     allow_not_available: true
     validators:
       - validator_name: ontology
         params:
           ontologies:
-            - efo
+            - ms
+            - pride
           error_level: warning
-          description: Should be a valid EFO term
+          description: >
+            Protein separation method should be a valid PSI-MS or PRIDE
+            ontology term.
           examples:
-            - example value 1
-            - example value 2
+            - size exclusion chromatography
+            - gel electrophoresis
+            - capillary zone electrophoresis
+            - reversed-phase liquid chromatography
+            - not applicable
+
+  # --- New column: intact mass range ---
+  - name: comment[precursor mass range]
+    description: >
+      The mass range of intact protein precursors analyzed, in Daltons.
+      Format: "min-max Da" (e.g., "5000-50000 Da").
+    requirement: optional
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^(\d+-\d+\s*Da|not available)$
+          case_sensitive: false
+          description: >
+            Precursor mass range in format "min-max Da".
+          examples:
+            - 5000-50000 Da
+            - 10000-100000 Da
+            - not available
+
+  # --- Override inherited column: make cleavage agent "not applicable" ---
+  # In top-down experiments, proteins are not digested, so the cleavage
+  # agent column should always be "not applicable". We override the
+  # inherited column to make this explicit.
+  - name: comment[cleavage agent details]
+    description: >
+      Cleavage agent is not applicable for top-down experiments where
+      intact proteins are analyzed. Use "not applicable".
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - not applicable
+          error_level: warning
+          description: >
+            Top-down experiments analyze intact proteins. Cleavage agent
+            should be "not applicable".
 ----
 
-== LinkML Schema
+Key points demonstrated in this example:
 
-For tools requiring a formal schema language, a https://linkml.io/[LinkML] representation is available:
+* **New columns** (`comment[protein separation method]`, `comment[precursor mass range]`) are defined with their own validators.
+* **Overriding an inherited column** (`comment[cleavage agent details]`) restricts the parent's definition — in this case, forcing the value to "not applicable" since top-down experiments don't use enzymatic digestion.
+* **Descriptions explain the "why"** — not just what the field is, but when to use `not applicable` and what format to follow.
+* **Examples are always provided** in validators — they serve as documentation and can be used by tools to generate autocomplete suggestions.
 
-**File:** link:../templates/sdrf-template-schema.linkml.yaml[sdrf-template-schema.linkml.yaml]
+=== Step 4: Create an Example SDRF File
 
-LinkML provides:
+Every template must include an example `.sdrf.tsv` file that passes validation. This file demonstrates correct usage and serves as a starting point for users.
 
-- Formal type definitions compatible with JSON Schema, SHACL, and OWL
-- Code generation for Python, Java, and other languages
-- Integration with semantic web tools
+.top-down/1.0.0-dev/top-down.sdrf.tsv (tab-separated)
+[source,tsv]
+----
+source name	characteristics[organism]	characteristics[organism part]	characteristics[disease]	characteristics[biological replicate]	assay name	technology type	comment[proteomics data acquisition method]	comment[label]	comment[instrument]	comment[cleavage agent details]	comment[fraction identifier]	comment[technical replicate]	comment[data file]	comment[protein separation method]	comment[precursor mass range]	factor value[disease]
+sample_1	homo sapiens	heart	normal	1	run_1	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	LTQ Orbitrap Elite	not applicable	1	1	sample_1.raw	gel electrophoresis	10000-100000 Da	normal
+sample_2	homo sapiens	heart	dilated cardiomyopathy	1	run_2	proteomic profiling by mass spectrometry	data-dependent acquisition	label free sample	LTQ Orbitrap Elite	not applicable	1	1	sample_2.raw	gel electrophoresis	10000-100000 Da	dilated cardiomyopathy
+----
 
-**Usage examples:**
+=== Step 5: Create the Documentation
+
+Add a `README.adoc` file in the specification repository under `sdrf-proteomics/templates/top-down/`:
+
+.sdrf-proteomics/templates/top-down/README.adoc (outline)
+[source,asciidoc]
+----
+= Top-Down Proteomics Template
+
+== Overview
+[describe when to use this template]
+
+== Columns
+[table of columns with requirement levels, descriptions, and examples]
+
+== Examples
+[link to the example SDRF file]
+
+== See Also
+* link:../../README.adoc[SDRF-Proteomics Specification]
+* link:../ms-proteomics/README.adoc[MS-Proteomics Template] (parent)
+----
+
+=== Step 6: Test Locally
+
+Before submitting, validate your example file against your template:
 
 [source,bash]
 ----
-# Generate JSON Schema from LinkML
-gen-json-schema sdrf-template-schema.linkml.yaml > sdrf-template-schema.json
+# Install or upgrade the validator
+pip install sdrf-pipelines
 
-# Generate Python dataclasses
-gen-python sdrf-template-schema.linkml.yaml > sdrf_template.py
-
-# Validate a template file against the schema
-linkml-validate -s sdrf-template-schema.linkml.yaml templates/human/human.yaml
+# Validate the example SDRF file with the new template
+parse_sdrf validate-sdrf \
+  --sdrf_file top-down/1.0.0-dev/top-down.sdrf.tsv \
+  --template ms-proteomics \
+  --custom_template top-down/1.0.0-dev/top-down.yaml
 ----
+
+Check that:
+
+* [ ] The example file passes validation with no errors.
+* [ ] All required columns from the parent template are present.
+* [ ] New columns validate correctly (ontology terms resolve, patterns match).
+* [ ] The `not applicable` and `not available` values work where expected.
+
+=== Step 7: Submit a Pull Request
+
+Submit the template to the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository via pull request. The PR must include:
+
+1. The YAML schema file (`top-down/1.0.0-dev/top-down.yaml`).
+2. The example SDRF file (`top-down/1.0.0-dev/top-down.sdrf.tsv`).
+3. A PR description explaining: what experiment type the template covers, why it is needed, and which parent it extends.
+
+The corresponding `README.adoc` documentation goes into a separate PR to the https://github.com/bigbio/proteomics-metadata-standard[specification repository] under `sdrf-proteomics/templates/top-down/`.
+
+Once reviewed and merged, the template appears in the `templates.yaml` manifest and becomes available to all users of sdrf-pipelines. The `-dev` suffix is removed when the template is promoted to a stable release (e.g., `1.0.0`).
+
+=== Quick Reference: Template YAML Checklist
+
+[cols="1,3", options="header"]
+|===
+| Field | Checklist
+
+| `name`
+| Lowercase with hyphens. Unique across all templates.
+
+| `description`
+| One or two sentences. Mention what it extends and what experiment type it covers.
+
+| `version`
+| Use `X.Y.Z-dev` for new templates. Remove `-dev` after community review.
+
+| `extends`
+| Must be an existing template name (`ms-proteomics`, `affinity-proteomics`, or `base`).
+
+| `layer`
+| One of: `technology`, `sample`, `experiment`.
+
+| `usable_alone`
+| Almost always `false` for experiment and sample layer templates.
+
+| `columns`
+| Only define columns that are **new** or that **override** a parent column. Do not repeat inherited columns unchanged.
+
+| Validators
+| Use `ontology` for controlled vocabularies, `pattern` for structured text, `values` for fixed lists. Always include `examples`.
+
+| Reserved words
+| Set `allow_not_applicable`, `allow_not_available`, `allow_pooled`, `allow_anonymized` as appropriate for each column.
+|===
+
+=== Best Practices
+
+- **Only define what is new.** Inherited columns from the parent template do not need to be repeated. Only add a column to your template if it is new or if you need to override the parent's definition (e.g., change `requirement` from `optional` to `required`, or restrict allowed values).
+- **Use ontologies over patterns.** Prefer `ontology` validators for fields where controlled vocabulary terms exist. Use `pattern` validators only for structured free text (ages, mass ranges, file names).
+- **Provide clear descriptions.** Explain not just what the field is, but when to use `not applicable` vs `not available`, and give format guidance.
+- **Always include examples.** Examples in validators serve as documentation and help tools generate suggestions.
+- **Test with real data.** Your example SDRF should represent a realistic experiment, not a toy file. If possible, base it on a real public dataset.
 
 == Validation Commands
 
@@ -583,6 +761,5 @@ parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition
 == References
 
 - https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] - SDRF validation tool
-- https://linkml.io/[LinkML] - Linked data modeling language
 - https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Template files on GitHub]
 - link:../README.adoc[SDRF-Proteomics Specification]
