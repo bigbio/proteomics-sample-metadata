@@ -1,0 +1,44 @@
+= SDRF-Proteomics Feature Lifecycle Policy
+:sectnums:
+:toc: left
+
+This document details the feature lifecycle policy for the SDRF-Proteomics standard for the introduction, testing, stabilization, and eventual removal of different features, for example, fields, ontology, template, config and validation rules.
+
+== Versioning
+
+The SDRF-Proteomics standard adheres to **Semantic Versioning** (SemVer). The version format is `MAJOR.MINOR.PATCH`. Major versions (`X.0.0`) are reserved for breaking changes. Minor versions (`1.X.0`) introduce new, backward-compatible features, such as additional stable fields or templates. Patch versions (`1.1.X`) are utilized for bug fixes, clarifications, and transient changes that do not alter the validation logic for compliant files.
+
+== Feature Categorization
+
+Features within the specification are categorized based on their intended audience and visibility. This categorization dictates the strictness of the stability guarantees applied during the lifecycle.
+
+=== Background Features
+Background features consist of properties primarily consumed by software pipelines, validators, or scripts that do not get rendered in a table. Examples include the way a validation hash column content might be handled. These features are rarely inspected manually by end-users. Changes to background features follow the standard lifecycle, and deprecation requires appropriate updates to technical documentation and validator warnings.
+
+=== Display Features
+
+Display features are those that are rendered in the tabulated table. These include column name, value syntax and format. To avoid causing confusion, any changes that make the user have to relearn the format and syntax should be carefully considered before implemented and should be given a large grace period where both old and new format can coexist with converter tooling ready. Proposals affecting display features require discussion with the wider community of users.
+
+== Feature Lifecycle Stages
+
+The lifecycle of a feature in the SDRF-Proteomics specification proceeds through six distinct stages.
+
+=== Introduction
+The Introduction stage represents the proposal phase of a new feature. The process begins when a contributor creates a GitHub Issue describing the use case and providing examples. During this phase, the feature is categorized as either a Background Feature or a Display Feature. The proposal undergoes community review. Once the proposal is approved, a Pull Request is drafted with the necessary specification changes.
+
+=== Test
+Features in the Test stage are experimental. They are implemented in a feature branch. This stage is strictly for internal testing by developers and contributors. Features in this state can change very frequently.
+
+=== Unstable
+Features in this stage can be merged in the dev branch and can be documented in the specification. However, they are not yet recommended for public use. Unstable features are subject to change without notice, and their behavior may not be consistent across different versions of the standard.
+
+=== Stable
+Features in this stage can be seen as ready for wider adoption by the community. Features in this stage are included in a numbered stable release and are recommended for all public dataset submissions and production use. Stable features are protected by backward compatibility guarantees and any converter if necessary need to be also available for the user. The official validator enforces the rules for stable features by default.
+
+=== Deprecation
+Deprecation indicates that a feature is close to end of life with its purpose either replaced by other or has been superseded by a better alternative. While the feature remains valid to ensure backward compatibility with existing files, its use is discouraged in new datasets. The validator issues a warning when a deprecated feature is encountered.
+
+The duration of the deprecation period depends on the feature category. Background features remain in the Deprecation stage for a minimum of one Minor version cycle or six months. Display features require a longer grace period of at least two Minor version cycles or twelve months to prevent user confusion and allow sufficient time for visualization tools to adapt.
+
+=== Removal
+Removal represents the final stage where a feature is designated as obsolete. Removed features are no longer valid under the current version of the standard, and their presence in a file will trigger a validation error. The removal of a feature is a breaking change and therefore occurs only in a Major version release.
