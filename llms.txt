@@ -1,0 +1,119 @@
+# SDRF-Proteomics
+
+> SDRF-Proteomics is a HUPO-PSI community standard defining a tab-delimited file format for capturing sample-to-data-file relationships in proteomics experiments. It standardizes sample metadata (organism, disease, tissue), technical metadata (instrument, labels, enzymes), and experimental design (factor values) to enable automated reprocessing and reuse of public proteomics datasets. Compatible with MAGE-TAB SDRF from transcriptomics.
+
+## Specification
+
+- sdrf-proteomics/README.adoc - Core specification: format rules, column headers, cell values, templates, factor values, ontologies
+  - sdrf-proteomics/quickstart.adoc - Quick Start Tutorial (10-15 min)
+  - sdrf-proteomics/metadata-guidelines/sample-metadata.adoc - Sample Metadata Guidelines: age, sex, disease, organism part, cell type
+  - sdrf-proteomics/metadata-guidelines/template-definitions.adoc - Template Definitions Guide (for developers)
+  - sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv - SDRF Terms Reference: all column terms with ontology mappings
+  - sdrf-proteomics/metadata-guidelines/enzymes.tsv - Enzymes Reference: cleavage agents with ontology accessions
+- psi-document/v1.0.0/SDRF_Proteomics_Specification_v1.0.0.pdf - Official HUPO-PSI specification (PDF, v1.0.0)
+- psi-document/v1.1.0-dev/sdrf-proteomics-specification-v1.1.0-dev.pdf - Development specification (PDF, v1.1.0-dev)
+
+## Templates
+
+- sdrf-proteomics/templates/ms-proteomics/README.adoc - MS-Proteomics: labels, instruments, modifications, cleavage agents
+- sdrf-proteomics/templates/affinity-proteomics/README.adoc - Affinity Proteomics: Olink and SomaScan
+- sdrf-proteomics/templates/human/README.adoc - Human: disease, age, sex, ancestry, disease staging
+- sdrf-proteomics/templates/vertebrates/README.adoc - Vertebrates: mouse, rat, zebrafish
+- sdrf-proteomics/templates/invertebrates/README.adoc - Invertebrates: Drosophila, C. elegans
+- sdrf-proteomics/templates/plants/README.adoc - Plants: Arabidopsis, crops
+- sdrf-proteomics/templates/cell-lines/README.adoc - Cell Lines: Cellosaurus integration
+- sdrf-proteomics/templates/dda-acquisition/README.adoc - DDA Acquisition: dissociation method, collision energy
+- sdrf-proteomics/templates/dia-acquisition/README.adoc - DIA Acquisition: scan windows, isolation width
+- sdrf-proteomics/templates/single-cell/README.adoc - Single-Cell Proteomics: cell isolation, carrier proteome
+- sdrf-proteomics/templates/immunopeptidomics/README.adoc - Immunopeptidomics: MHC class, HLA typing
+- sdrf-proteomics/templates/crosslinking/README.adoc - Crosslinking MS: crosslinker reagents
+- sdrf-proteomics/templates/metaproteomics/README.adoc - Metaproteomics: environmental and microbiome samples
+- sdrf-proteomics/templates/olink/README.adoc - Olink: proximity extension assays
+- sdrf-proteomics/templates/somascan/README.adoc - SomaScan: aptamer-based proteomics
+
+## Template YAML Schemas (sdrf-templates submodule)
+
+Machine-readable YAML definitions used by sdrf-pipelines for validation. Each template has a `.yaml` schema and an optional `.sdrf.tsv` example file. Templates follow a layered hierarchy: base → technology → sample/experiment.
+
+- sdrf-proteomics/sdrf-templates/templates.yaml - Template manifest: all templates with latest versions, inheritance, and layer metadata
+- sdrf-proteomics/sdrf-templates/base/1.1.0/base.yaml - Base template (internal, not user-facing): shared columns inherited by all templates
+  - sdrf-proteomics/sdrf-templates/base/1.1.0/base.sdrf.tsv - Base example
+- sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml - MS-Proteomics (technology layer): minimum valid template for any MS experiment
+  - sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.sdrf.tsv - MS-Proteomics example
+- sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.yaml - Affinity Proteomics (technology layer): Olink, SomaScan base
+  - sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.sdrf.tsv - Affinity Proteomics example
+- sdrf-proteomics/sdrf-templates/human/1.1.0/human.yaml - Human (sample layer): disease, age, sex, ancestry
+  - sdrf-proteomics/sdrf-templates/human/1.1.0/human.sdrf.tsv - Human example
+- sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.yaml - Vertebrates (sample layer): mouse, rat, zebrafish, etc.
+  - sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.sdrf.tsv - Vertebrates example
+- sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.yaml - Invertebrates (sample layer): Drosophila, C. elegans
+  - sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.sdrf.tsv - Invertebrates example
+- sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.yaml - Plants (sample layer): Arabidopsis, crops
+  - sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.sdrf.tsv - Plants example
+- sdrf-proteomics/sdrf-templates/cell-lines/1.1.0/cell-lines.yaml - Cell Lines (experiment layer): Cellosaurus integration
+  - sdrf-proteomics/sdrf-templates/cell-lines/1.1.0/cell-lines.sdrf.tsv - Cell Lines example
+- sdrf-proteomics/sdrf-templates/dda-acquisition/1.1.0/dda-acquisition.yaml - DDA Acquisition (experiment layer): dissociation method, collision energy
+  - sdrf-proteomics/sdrf-templates/dda-acquisition/1.1.0/dda-acquisition.sdrf.tsv - DDA example
+- sdrf-proteomics/sdrf-templates/dia-acquisition/1.1.0/dia-acquisition.yaml - DIA Acquisition (experiment layer): scan windows, isolation width
+  - sdrf-proteomics/sdrf-templates/dia-acquisition/1.1.0/dia-acquisition.sdrf.tsv - DIA example
+- sdrf-proteomics/sdrf-templates/crosslinking/1.1.0/crosslinking.yaml - Crosslinking MS (experiment layer): crosslinker reagents
+  - sdrf-proteomics/sdrf-templates/crosslinking/1.1.0/crosslinking.sdrf.tsv - Crosslinking example
+- sdrf-proteomics/sdrf-templates/single-cell/1.0.0/single-cell.yaml - Single-Cell (experiment layer): cell isolation, carrier proteome
+  - sdrf-proteomics/sdrf-templates/single-cell/1.0.0/single-cell.sdrf.tsv - Single-Cell example
+- sdrf-proteomics/sdrf-templates/immunopeptidomics/1.0.0-dev/immunopeptidomics.yaml - Immunopeptidomics (experiment layer): MHC class, HLA typing
+- sdrf-proteomics/sdrf-templates/metaproteomics/1.0.0-dev/metaproteomics.yaml - Metaproteomics (experiment layer): environmental and microbiome samples
+  - sdrf-proteomics/sdrf-templates/metaproteomics/1.0.0-dev/metaproteomics.sdrf.tsv - Metaproteomics example
+- sdrf-proteomics/sdrf-templates/olink/1.0.0/olink.yaml - Olink (experiment layer): proximity extension assays
+  - sdrf-proteomics/sdrf-templates/olink/1.0.0/olink.sdrf.tsv - Olink example
+- sdrf-proteomics/sdrf-templates/somascan/1.0.0/somascan.yaml - SomaScan (experiment layer): aptamer-based proteomics
+  - sdrf-proteomics/sdrf-templates/somascan/1.0.0/somascan.sdrf.tsv - SomaScan example
+
+## Tools
+
+- sdrf-proteomics/tool-support.adoc - Tool Support Overview: annotators, validators, analysis tools
+  - https://github.com/bigbio/sdrf-pipelines - sdrf-pipelines: official Python CLI/library for SDRF validation
+  - https://lessdrf.streamlit.app/ - lesSDRF: web-based SDRF creation tool
+  - https://cupcake-vanilla-demo.proteo.nexus/ - CupCAKE: web annotation platform with ontology integration
+  - https://quantms.org/ - quantms: Nextflow pipeline for quantitative proteomics
+  - https://www.maxquant.org/ - MaxQuant: desktop proteomics software with SDRF export
+  - https://github.com/wombat-p - Wombat-P: benchmarking platform for proteomics workflows
+
+## Examples
+
+- examples/core/PXD002137/PXD002137.sdrf.tsv - Core example: label-free
+- examples/core/PXD004684/PXD004684.sdrf.tsv - Core example: TMT labeled
+- examples/core/PXD006482/PXD006482.sdrf.tsv - Core example: SILAC
+- examples/core/PXD008934/PXD008934.sdrf.tsv - Core example: human proteome
+- examples/core/PDC000126/PDC000126.sdrf.tsv - Core example: PDC dataset
+- examples/use-cases/crosslinking.sdrf.tsv - Use case: crosslinking MS
+- examples/use-cases/immunopeptidomics.sdrf.tsv - Use case: immunopeptidomics
+- examples/use-cases/single-cell.sdrf.tsv - Use case: single-cell proteomics
+
+## Annotated Projects
+
+- annotated-projects/ - 250+ public proteomics datasets annotated in SDRF format
+  - annotated-projects/PXD008934/PXD008934.sdrf.tsv - Label-free quantification
+  - annotated-projects/PXD017710/PXD017710.sdrf.tsv - TMT-labeled quantitative proteomics
+  - annotated-projects/PXD000612/PXD000612.sdrf.tsv - SILAC-based quantification
+  - annotated-projects/PXD018830/PXD018830-DIA.sdrf.tsv - Data-independent acquisition
+  - annotated-projects/PXD000759/PXD000759.sdrf.tsv - Phosphoproteomics
+  - annotated-projects/PXD001819/PXD001819.sdrf.tsv - Cell line proteomics
+
+## Publications
+
+- https://www.nature.com/articles/s41467-021-26111-3 - Dai et al. (2021) Nat Commun: A proteomics sample metadata representation for multiomics integration
+- https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376 - Perez-Riverol et al. (2020) J Proteome Res: Towards a sample metadata standard in public proteomics repositories
+
+## Project
+
+- README.md - Project overview and contributor list
+- CHANGELOG.md - Version history and changes
+- CITATION.cff - Citation metadata
+- LICENSE - GNU General Public License
+- DEVELOPMENT.md - Building the documentation website locally
+
+## Optional
+
+- https://github.com/bigbio/proteomics-metadata-standard/wiki - 30-Minute Guide to SDRF-Proteomics
+- https://www.youtube.com/watch?v=TMDu_yTzYQM - Introduction to SDRF-Proteomics (video)
+- https://www.psidev.info/sdrf-sample-data-relationship-format - HUPO-PSI official page
