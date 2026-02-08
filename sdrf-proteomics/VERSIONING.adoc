@@ -1,0 +1,509 @@
+= SDRF-Proteomics Versioning and Deprecation Policy
+:sectnums:
+:toc: left
+:doctype: book
+:xrefstyle: short
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Introduction
+
+This document defines the versioning strategy and deprecation policy for the SDRF-Proteomics ecosystem. It covers the specification itself, YAML templates, ontology validators, and how changes propagate to previously validated SDRF files. The goal is to provide a clear, predictable schedule for all breaking changes so that data submitters, repository curators, tool developers, and analysis pipeline maintainers can plan upgrades accordingly.
+
+This policy applies starting with SDRF-Proteomics v1.1.0.
+
+== Version Tracks
+
+The SDRF-Proteomics ecosystem has three independently versioned components. Each follows https://semver.org/[Semantic Versioning] (MAJOR.MINOR.PATCH) but they are released on separate schedules.
+
+[cols="2,2,3,2", options="header"]
+|===
+| Component | Repository | What it defines | Example version
+
+| **Specification**
+| https://github.com/bigbio/proteomics-metadata-standard[proteomics-metadata-standard]
+| Format rules, column semantics, ontology requirements, and the normative text
+| v1.1.0
+
+| **Templates**
+| https://github.com/bigbio/sdrf-templates[sdrf-templates] (submodule)
+| YAML schemas defining required/recommended/optional columns per experiment type
+| human v1.1.0
+
+| **Validator**
+| https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines]
+| CLI/library that checks SDRF files against templates and the specification
+| sdrf-pipelines 0.1.0
+|===
+
+=== Semantic Versioning Definitions
+
+Each component uses MAJOR.MINOR.PATCH with the following meanings:
+
+[cols="1,4,4", options="header"]
+|===
+| Level | Meaning | Examples
+
+| **MAJOR**
+| Breaking changes that make previously valid SDRF files invalid, remove required columns, or change core format rules.
+| Removing a required column; changing the TSV structure; renaming reserved words.
+
+| **MINOR**
+| Backward-compatible additions. Previously valid files remain valid. New optional/recommended columns, new templates, or relaxed requirements.
+| Adding a new template; making a required column optional; adding a new recommended column.
+
+| **PATCH**
+| Bug fixes, documentation clarifications, ontology term corrections. No schema or validation changes.
+| Fixing a typo in a column description; correcting an ontology accession; updating examples.
+|===
+
+=== Version Compatibility Matrix
+
+Each specification version declares which template versions and validator versions are compatible. This is tracked in a compatibility matrix maintained in the repository:
+
+[cols="2,2,2", options="header"]
+|===
+| Specification | Templates | Validator (minimum)
+
+| v1.0.0
+| 1.0.x
+| sdrf-pipelines 0.0.x
+
+| v1.1.0
+| 1.0.x, 1.1.x
+| sdrf-pipelines 0.1.x
+|===
+
+NOTE: A template version `X.Y.Z` is compatible with any specification version that shares the same MAJOR version and has a MINOR version >= the template's MINOR version.
+
+== Template Versioning
+
+=== Independent Template Versions
+
+Templates are versioned independently of the specification and of each other. A template at version `1.1.0` can coexist with another template at `1.0.0`. The `templates.yaml` manifest tracks the latest version and all available versions for each template.
+
+=== SDRF File Version Declaration
+
+SDRF files SHOULD declare the versions they were validated against using the file-level metadata columns:
+
+[source,tsv]
+----
+comment[sdrf version]	comment[sdrf template]	comment[sdrf template]
+v1.1.0	human v1.1.0	ms-proteomics v1.1.0
+----
+
+This enables parsers and validators to apply the correct rules for the declared version, even if newer versions exist.
+
+NOTE: If the `comment[sdrf version]` or `comment[sdrf template]` columns are absent, the validator MUST assume the **latest available specification and template versions** and validate accordingly. A warning SHOULD be emitted recommending that submitters declare explicit versions to ensure reproducible validation over time.
+
+=== Template Inheritance and Updates
+
+Templates follow a layered hierarchy where child templates inherit from parent templates (see link:metadata-guidelines/template-definitions.adoc[Template Definitions Guide]). When a parent template is updated, the following rules apply:
+
+[cols="2,4,2", options="header"]
+|===
+| Scenario | What happens | Action required
+
+| Parent adds an OPTIONAL column
+| Child automatically inherits the new column. Previously valid files remain valid.
+| None.
+
+| Parent adds a RECOMMENDED column
+| Child inherits the column as recommended. Validators emit a warning for files missing the column. Previously valid files remain valid (warning only).
+| None (but annotation encouraged).
+
+| Parent adds a REQUIRED column
+| **Breaking change.** Child must release a new MAJOR version. A deprecation period applies (see <<deprecation-policy>>).
+| Update files during the transition period.
+
+| Parent removes a column
+| **Breaking change.** Column is first deprecated in a MINOR release, then removed in the next MAJOR release.
+| Migrate files during the transition period.
+
+| Parent changes a column's requirement level
+| `optional` → `recommended` is non-breaking (MINOR). `optional` → `required` or `recommended` → `required` is breaking (MAJOR with deprecation period).
+| Follow the deprecation timeline.
+|===
+
+=== Community Templates
+
+Community-contributed templates MUST be submitted via pull request to the official https://github.com/bigbio/sdrf-templates[sdrf-templates] repository. Templates that exist only in external repositories or local copies are **not recognized** by the specification and will not be supported by the validator. This ensures that every template receives community review, follows consistent quality standards, and remains maintained over time.
+
+Community-contributed templates MUST:
+
+1. Be submitted as a pull request to the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository. The PR must include the YAML schema, an example `.sdrf.tsv` file, and documentation (a `README.adoc` in the corresponding `templates/` directory).
+2. Extend an official template using the `extends` field.
+3. Follow the same YAML schema structure defined in the link:metadata-guidelines/template-definitions.adoc[Template Definitions Guide].
+4. Use the `-dev` suffix for pre-release versions (e.g., `1.0.0-dev`) until the template has been reviewed and accepted by the core team.
+5. Declare their `spec_compatibility` range (see <<deprecation-policy>>).
+
+Once merged, community templates become part of the official template catalog and appear in the `templates.yaml` manifest. The original contributors are expected to help maintain the template, but the core team assumes responsibility for ensuring compatibility with future specification releases.
+
+IMPORTANT: The validator only recognizes templates present in the official `sdrf-templates` repository. Using `comment[sdrf template]` to reference a template name that does not exist in the catalog will produce a validation warning.
+
+When a base template is updated, community template maintainers are responsible for testing compatibility and releasing updated versions via pull request. The validator SHOULD emit a warning when a community template references a base template version older than the latest available.
+
+== Feature Lifecycle Policy
+
+This section details the policy for the introduction, testing, stabilization, and eventual removal of features (fields, ontologies, validation rules).
+
+=== Feature Categorization
+
+Features within the specification are categorized based on their intended audience and visibility. This categorization dictates the strictness of the stability guarantees applied during the lifecycle.
+
+==== Background Features
+Background features consist of properties primarily consumed by software pipelines, validators, or scripts that do not get rendered in a table. Examples include validation hash columns. These features are rarely inspected manually by end-users. Changes to background features follow the standard lifecycle, and deprecation requires appropriate updates to technical documentation and validator warnings.
+
+==== Display Features
+Display features are those that are rendered in the tabulated table (e.g., column names, value syntax). To avoid causing confusion, any changes that require the user to relearn the format should be carefully considered and given a large grace period (minimum 12 months) where both old and new formats coexist, ideally with converter tooling. Proposals affecting display features require discussion with the wider community.
+
+=== Feature Lifecycle Stages
+
+The lifecycle of a feature proceeds through six distinct stages:
+
+==== 1. Introduction
+The Introduction stage represents the proposal phase. A contributor creates a GitHub Issue describing the use case and providing examples. The feature is categorized (Background vs. Display) and undergoes community review. Once approved, a Pull Request is drafted.
+
+==== 2. Test
+Features in the Test stage are experimental, implemented in a feature branch. This stage is strictly for internal testing. Features in this state can change frequently.
+
+==== 3. Unstable
+Features in this stage are merged into the `dev` branch and documented but are not yet recommended for public use. They are subject to change without notice.
+
+==== 4. Stable
+Features in this stage are included in a numbered stable release and are recommended for production use. Stable features are protected by backward compatibility guarantees. The official validator enforces rules for stable features.
+
+==== 5. Deprecation
+Deprecation indicates that a feature is close to end-of-life. It remains valid to ensure backward compatibility, but its use is discouraged. The validator issues a warning.
+* **Background Features:** Deprecation period of at least one Minor version cycle or 6 months.
+* **Display Features:** Deprecation period of at least two Minor version cycles or 12 months.
+
+==== 6. Removal
+Removal is the final stage where a feature is designated as obsolete. Removed features are no longer valid, and their presence triggers a validation error. Removal is a breaking change and occurs only in a Major version release.
+
+[[deprecation-policy]]
+== Deprecation Policy
+
+=== Core Principle: Versions Are Immutable
+
+Once a template version is released (e.g., `human/1.1.0/human.yaml`), it is never modified or deleted. Changes go into a **new version** (e.g., `human/1.2.0/human.yaml`). This means:
+
+* An SDRF file that was valid under `human v1.1.0` will always be valid under `human v1.1.0`.
+* The validator loads whichever template version the file declares.
+* No special deprecation metadata is added to template YAML files — each version is its own complete, self-contained truth.
+
+There is no `deprecated:` flag, no `spec_compatibility:` range, and no deprecation schedule file. The mechanism is simply: **old versions stay, new versions are added, and the validator picks the right one.**
+
+=== How It Works in Practice
+
+Suppose `characteristics[biological replicate]` is `required` in `human v1.1.0` and becomes `optional` in `human v1.2.0`:
+
+[cols="2,3", options="header"]
+|===
+| SDRF file declares | What happens
+
+| `comment[sdrf template]` = `human v1.1.0`
+| Validator loads `human/1.1.0/human.yaml`. Column is required. **File is validated under old rules.**
+
+| `comment[sdrf template]` = `human v1.2.0`
+| Validator loads `human/1.2.0/human.yaml`. Column is optional. **File is validated under new rules.**
+
+| No `comment[sdrf template]` column
+| Validator uses the **latest** template version (v1.2.0). Column is optional. A warning recommends declaring an explicit version.
+|===
+
+That is the entire deprecation mechanism. No YAML annotations, no extra tooling. The template versions do all the work.
+
+=== How Changes Are Communicated
+
+Changes are communicated through three channels. Each serves a different audience and timeline:
+
+==== 1. GitHub Issues (before the change)
+
+Every change that affects existing SDRF files starts as a **GitHub issue** in the https://github.com/bigbio/proteomics-sample-metadata[specification repository]. The issue describes the proposal, the rationale, and the impact. Community members comment and vote. No change is merged without community input.
+
+Issues that propose breaking changes MUST remain open for a minimum of **60 days** before being accepted, to give the community time to respond.
+
+==== 2. CHANGELOG (at the time of the change)
+
+When the change is accepted and a new version is released, the `CHANGELOG.md` records:
+
+* What changed (e.g., "column X moved from required to optional").
+* Why it changed (link to the GitHub issue).
+* Which template versions are affected (e.g., "human v1.2.0, vertebrates v1.2.0").
+* What users need to do (e.g., "update your `comment[sdrf template]` to `human v1.2.0`; or keep `human v1.1.0` if you need the old behavior").
+
+The CHANGELOG is the permanent human-readable record of all changes.
+
+==== 3. Validator Messages (after the change)
+
+The validator (sdrf-pipelines) is how most users discover that a newer version exists. Each sdrf-pipelines release ships with the full catalog of template versions. When it validates a file, it compares the declared template version to the latest available and reports:
+
+[source]
+----
+INFO: Template 'human v1.2.0' is available.
+  Your file uses 'human v1.1.0' and is valid under that version.
+  See CHANGELOG for what changed: https://github.com/bigbio/.../CHANGELOG.md
+----
+
+The validator **never fails** a file that is valid under its declared version. It only emits INFO messages pointing to newer versions. The user decides when to upgrade.
+
+=== Grace Period for Breaking Changes
+
+Not all changes are equal. The grace period depends on the severity:
+
+[cols="2,3,2", options="header"]
+|===
+| Change type | Examples | Grace period
+
+| **Non-breaking** (new MINOR version)
+| New optional column added; new template created; requirement relaxed (required → optional).
+| None needed. Old files remain valid. New version is available immediately.
+
+| **Breaking** (new MAJOR version)
+| Required column removed; column renamed; reserved word changed; template structure reorganized.
+| **Minimum 12 months.** The change is announced in a MINOR release. The old template version continues to work. The breaking change only takes effect in the next MAJOR release.
+|===
+
+In practice:
+
+* **MINOR releases** never break existing files. They only add new template versions alongside old ones. Users upgrade at their own pace.
+* **MAJOR releases** are the only point where old template versions may stop being shipped with the validator. They happen at most **once per year** and are announced at least one full MINOR release cycle in advance.
+* **Between MAJOR releases**, every template version ever released continues to work.
+
+IMPORTANT: A MAJOR release does not delete old template files from the sdrf-templates repository — they remain in the git history and can always be retrieved. It only means the validator stops bundling them by default. Users can still validate against old templates by providing the YAML file path directly.
+
+=== What the Validator Reports
+
+[cols="2,1,3", options="header"]
+|===
+| Situation | Level | Example
+
+| File is valid under its declared version; a newer version exists.
+| **INFO**
+| `INFO: 'human v1.2.0' is available. Your file uses 'human v1.1.0' and is valid.`
+
+| File declares no version; validated against latest.
+| **WARNING**
+| `WARNING: No 'comment[sdrf template]' found. Validating against latest 'human v1.2.0'. Declare a version for reproducible validation.`
+
+| File declares a version not bundled with this validator release.
+| **ERROR**
+| `ERROR: Template 'human v0.9.0' is not available in sdrf-pipelines 0.2.0. Available versions: 1.0.0, 1.1.0, 1.2.0. To validate against 'human v0.9.0', use sdrf-pipelines 0.0.x (pip install "sdrf-pipelines<0.1.0"). To upgrade your file to the latest template, run: parse_sdrf migrate --to human:1.1.0`
+|===
+
+When a template version is no longer bundled, the validator MUST tell the user **which older validator version still supports it** and how to install it. This ensures that no file is ever left without a validation path — even if the current validator has moved on.
+
+=== Role of sdrf-pipelines Releases
+
+Each sdrf-pipelines release declares which template versions it ships with. This is the coupling point between the validator and the templates:
+
+[cols="2,3", options="header"]
+|===
+| sdrf-pipelines version | Bundled template versions
+
+| 0.1.x
+| human 1.0.0, 1.1.0; ms-proteomics 1.0.0, 1.1.0; ...
+
+| 0.2.x
+| human 1.0.0, 1.1.0, 1.2.0; ms-proteomics 1.0.0, 1.1.0, 1.2.0; ...
+
+| 1.0.0 (MAJOR)
+| human 1.1.0, 1.2.0; ms-proteomics 1.1.0, 1.2.0; ... _(v1.0.0 templates dropped)_
+|===
+
+This means:
+
+* **Upgrading sdrf-pipelines within a MINOR series** never removes old templates. Your existing files keep validating.
+* **Upgrading sdrf-pipelines to a new MAJOR version** may drop the oldest template versions. The release notes list exactly which versions are dropped and how to migrate.
+* **Pinning your sdrf-pipelines version** guarantees reproducible validation. If you don't upgrade the validator, nothing changes for you.
+
+=== Reannotation of Public Datasets
+
+While old template versions are preserved for backward compatibility, the long-term goal of the SDRF-Proteomics community is to **move public datasets forward** to the latest specification version. Richer, more consistent metadata benefits everyone — it enables better reanalysis, cross-dataset integration, and automated pipeline configuration.
+
+We encourage:
+
+* **Data repositories** (PRIDE, ProteomicsDB, MassIVE) to periodically reannotate their SDRF files to the latest templates, adding newly recommended columns and updating ontology terms.
+* **Data submitters** to use the latest template versions when creating new SDRF files, rather than targeting old versions for convenience.
+* **Community contributors** to help reannotate existing public datasets in the https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[annotated-projects] collection via pull requests.
+* **Pipeline developers** to support and encourage the latest SDRF version in their tools, while gracefully handling older versions.
+
+The validator's INFO messages (pointing users to newer template versions) are intentionally designed to nudge the ecosystem forward without forcing immediate action. Over time, the expectation is that most public SDRF files will converge on the latest version, and that older versions will become increasingly rare in practice — even though they remain technically valid.
+
+TIP: When a new specification version is released, the core team will open a tracking issue listing public datasets that would benefit from reannotation. Community members can claim datasets and submit updated SDRF files via pull request.
+
+=== Summary
+
+The deprecation policy is built on three things that already exist — template versions, sdrf-pipelines releases, and the CHANGELOG — with no extra metadata or tooling:
+
+1. **Template versions are immutable.** Old versions stay. New versions are added alongside them. The validator loads whichever version the file declares.
+2. **Communication happens through GitHub issues, CHANGELOG, and validator INFO messages.** Users are never surprised — they see what changed and decide when to upgrade.
+3. **Only sdrf-pipelines MAJOR releases can drop old template versions**, and they happen at most once per year with advance notice. Between MAJOR releases, every file keeps working. When a template is dropped, the validator tells the user which older validator version still supports it.
+4. **The community actively reannotates public datasets** to keep the ecosystem moving forward. Backward compatibility is a safety net, not an excuse to stay on old versions indefinitely.
+
+== Ontology Versioning
+
+=== Ontology Updates Are Non-Breaking
+
+Ontology updates (new terms added, term labels changed, terms deprecated) are treated as **non-breaking changes** because:
+
+1. SDRF files store ontology term *names* (and optionally accessions), not ontology version references.
+2. Validators resolve terms against the latest available ontology version.
+3. A term that was valid when the SDRF was created remains valid even if the ontology evolves.
+
+=== Handling Deprecated Ontology Terms
+
+When an ontology deprecates a term that is used in SDRF files:
+
+1. The validator emits a **warning** (not an error) suggesting the replacement term.
+2. The deprecated term remains accepted for validation for at least **2 years** after the ontology deprecation.
+3. The validator's `--strict` mode can optionally reject deprecated ontology terms.
+
+=== Ontology Version Pinning
+
+For reproducibility, the validator SHOULD support an `--ontology-date` flag that validates against ontology releases as of a specific date. This ensures that validation results are reproducible even as ontologies evolve.
+
+== Validator Behavior
+
+=== Version-Aware Validation
+
+The validator (sdrf-pipelines) MUST support version-aware validation:
+
+[source,bash]
+----
+# Validate against a specific specification version
+parse_sdrf validate-sdrf --sdrf_file data.sdrf.tsv --spec-version v1.1.0
+
+# Validate using the version declared in the file (comment[sdrf version])
+parse_sdrf validate-sdrf --sdrf_file data.sdrf.tsv --use-declared-version
+
+# Validate with strict mode (reject all deprecated features)
+parse_sdrf validate-sdrf --sdrf_file data.sdrf.tsv --strict
+
+# Validate with legacy mode (accept removed features from previous major version)
+parse_sdrf validate-sdrf --sdrf_file data.sdrf.tsv --legacy v1.0.0
+----
+
+=== Validation Output Levels
+
+The validator uses four severity levels for version-related messages:
+
+[cols="1,3,3", options="header"]
+|===
+| Level | When used | Example message
+
+| **INFO**
+| Feature announced for future deprecation.
+| `INFO: characteristics[biological replicate] will become optional in v1.3.0`
+
+| **DEPRECATION**
+| Feature is deprecated but still valid.
+| `DEPRECATION: characteristics[biological replicate] is deprecated since v1.1.0. It will become optional in v1.3.0.`
+
+| **WARNING**
+| Deprecated feature in enforcement phase, or ontology term deprecated.
+| `WARNING: characteristics[biological replicate] is no longer required as of v1.3.0. Consider removing it if values are inferrable from source name.`
+
+| **ERROR**
+| Removed feature, or validation failure.
+| `ERROR: Column "old_column_name" was removed in v2.0.0. Use "new_column_name" instead.`
+|===
+
+=== Validation Hash and Provenance
+
+When validation succeeds, the validator can write a `comment[sdrf validation hash]` column containing a SHA-256 hash of the file content at validation time, along with the validator version and specification version. This provides an audit trail showing when and how the file was validated.
+
+[source,tsv]
+----
+comment[sdrf validation hash]
+sha256:a1b2c3...;validator=sdrf-pipelines:0.1.0;spec=v1.1.0
+----
+
+== Release Process
+
+=== Specification Releases
+
+1. All changes are proposed via pull requests to the `dev` branch.
+2. Each PR must be labeled with its change type: `breaking`, `feature`, `fix`, `deprecation`.
+3. The `CHANGELOG.md` is updated with every merged PR.
+4. MINOR releases happen on an approximate **6-month cadence** (not strictly scheduled, but targeting twice per year).
+5. MAJOR releases happen only when accumulated breaking changes warrant it, with a minimum **12-month gap** between MAJOR releases.
+
+=== Template Releases
+
+1. Templates are released independently via the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository.
+2. The `templates.yaml` manifest is auto-generated on each merge to the master branch.
+3. Template releases follow the specification's semantic versioning rules.
+4. A template MINOR release MUST NOT introduce breaking changes relative to its parent specification version.
+
+=== Validator Releases
+
+1. The validator (sdrf-pipelines) is released via PyPI.
+2. Each validator release specifies the specification versions it supports.
+3. The validator MUST support at least the current and previous MINOR specification version.
+
+== Migration Guide Template
+
+When a breaking change is introduced, a migration guide MUST be provided. The guide follows this structure:
+
+[source,asciidoc]
+----
+=== Migrating from vX.Y to vX.Z
+
+**What changed:** [description]
+
+**Why:** [rationale]
+
+**Who is affected:** [submitters / curators / tool developers / all]
+
+**What to do:**
+
+1. [Step-by-step migration instructions]
+2. [Automated migration command, if available]
+
+**Automated migration:**
+
+  parse_sdrf migrate --from vX.Y --to vX.Z --sdrf_file data.sdrf.tsv
+
+**Timeline:** Deprecated in vX.Y, enforced in vX.Z, removed in vA.0.0.
+----
+
+== Summary of Key Guarantees
+
+[cols="1,3", options="header"]
+|===
+| Guarantee | Description
+
+| **No surprise breakage**
+| User-facing breaking changes require at least 2 MINOR releases (12 months minimum) of deprecation warnings before enforcement.
+
+| **Version pinning**
+| SDRF files that declare `comment[sdrf version]` are always validated against the rules of that version, not the latest.
+
+| **Backward compatibility within MAJOR**
+| Any SDRF file valid under v1.0.0 remains valid under any v1.x release. Breaking changes only happen at MAJOR boundaries.
+
+| **Ontology stability**
+| Deprecated ontology terms remain accepted for at least 2 years. Ontology updates never cause validation errors.
+
+| **Migration tooling**
+| Every breaking change includes a `parse_sdrf migrate` command to automate file updates.
+
+| **Machine-readable schedules**
+| The deprecation schedule and template compatibility information are machine-readable YAML, enabling automated monitoring by CI pipelines.
+|===
+
+== See Also
+
+* link:README.adoc[SDRF-Proteomics Core Specification] — see <<versioning>> section
+* link:metadata-guidelines/template-definitions.adoc[Template Definitions Guide] — YAML schema structure
+* link:open-issues.adoc[Open Issues and Future Decisions] — active community discussions
+* https://semver.org/[Semantic Versioning 2.0.0]
+* https://github.com/bigbio/proteomics-sample-metadata/issues/771[Issue #771: Versioning strategy discussion]

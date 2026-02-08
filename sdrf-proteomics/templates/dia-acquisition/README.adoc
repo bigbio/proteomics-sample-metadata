@@ -88,48 +88,6 @@ ifdef::backend-html5[]
 <td>25, 8, variable</td>
 </tr>
 <tr>
-<td><code>comment[number of isolation windows]</code></td>
-<td><span class="recommended-badge">RECOMMENDED</span></td>
-<td>Total number of DIA windows per cycle</td>
-<td>Numeric value</td>
-<td>32, 64, 100</td>
-</tr>
-<tr>
-<td><code>comment[collision energy]</code></td>
-<td><span class="recommended-badge">RECOMMENDED</span></td>
-<td>Collision energy used for fragmentation (can have multiple for stepped CE)</td>
-<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000045">PSI-MS (MS:1000045)</a></td>
-<td>27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE</td>
-</tr>
-<tr>
-<td><code>comment[dissociation method]</code></td>
-<td><span class="recommended-badge">RECOMMENDED</span></td>
-<td>Fragmentation method used</td>
-<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044">PRIDE (MS:1000044)</a></td>
-<td>NT=HCD;AC=PRIDE:0000590</td>
-</tr>
-<tr>
-<td><code>comment[MS2 mass analyzer]</code></td>
-<td><span class="recommended-badge">RECOMMENDED</span></td>
-<td>Mass analyzer used for MS2 acquisition</td>
-<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000443">PSI-MS (MS:1000443)</a></td>
-<td>NT=Orbitrap;AC=MS:1000484</td>
-</tr>
-<tr>
-<td><code>comment[cycle time]</code></td>
-<td><span class="recommended-badge">RECOMMENDED</span></td>
-<td>Time to complete one DIA cycle</td>
-<td>Numeric value with unit</td>
-<td>3.2 s, 2.8 s</td>
-</tr>
-<tr>
-<td><code>comment[spectral library]</code></td>
-<td><span class="recommended-badge">RECOMMENDED</span></td>
-<td>Spectral library used for analysis</td>
-<td>Free text or accession</td>
-<td>project-specific library, Pan-Human library, PRIDE:PXD000001</td>
-</tr>
-<tr>
 <td><code>comment[DIA method]</code></td>
 <td><span class="recommended-badge">RECOMMENDED</span></td>
 <td>Specific DIA method variant (child of PRIDE:0000450)</td>
@@ -149,13 +107,73 @@ ifndef::backend-html5[]
 |comment[scan window lower limit] |RECOMMENDED |Lower m/z limit of the DIA scan range |Numeric value (m/z) |400, 350
 |comment[scan window upper limit] |RECOMMENDED |Upper m/z limit of the DIA scan range |Numeric value (m/z) |1200, 1650
 |comment[isolation window width] |RECOMMENDED |Width of DIA isolation windows |PSI-MS (MS:1000828) |25, 8, variable
-|comment[number of isolation windows] |RECOMMENDED |Total number of DIA windows per cycle |Numeric value |32, 64, 100
-|comment[collision energy] |RECOMMENDED |Collision energy used for fragmentation |PSI-MS (MS:1000045) |27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE
-|comment[dissociation method] |RECOMMENDED |Fragmentation method used |PRIDE (MS:1000044) |NT=HCD;AC=PRIDE:0000590
-|comment[MS2 mass analyzer] |RECOMMENDED |Mass analyzer used for MS2 acquisition |PSI-MS (MS:1000443) |NT=Orbitrap;AC=MS:1000484
-|comment[cycle time] |RECOMMENDED |Time to complete one DIA cycle |Numeric value with unit |3.2 s, 2.8 s
-|comment[spectral library] |RECOMMENDED |Spectral library used for analysis |Free text or accession |project-specific library, Pan-Human library, PRIDE:PXD000001
 |comment[DIA method] |RECOMMENDED |Specific DIA method variant |PRIDE (PRIDE:0000450) |NT=SWATH-MS;AC=PRIDE:0000451, diaPASEF, scanning SWATH
+|===
+endif::[]
+
+NOTE: The parent term for all DIA methods is https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450[Data-independent acquisition (PRIDE:0000450)]. Use `comment[DIA method]` to specify the specific variant when known. Check the https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE Controlled Vocabulary] for available terms.
+
+=== Optional Columns
+
+The following columns are OPTIONAL but commonly used:
+
+ifdef::backend-html5[]
+++++
+<table class="tableblock frame-all grid-all stretch requirements-table">
+<thead>
+<tr><th>Column</th><th>Requirement</th><th>Description</th><th>Ontology/CV</th><th>Example Values</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>comment[collision energy]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Collision energy used for fragmentation (can have multiple for stepped CE)</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000045">PSI-MS (MS:1000045)</a></td>
+<td>27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE</td>
+</tr>
+<tr>
+<td><code>comment[dissociation method]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Fragmentation method used</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000044">PRIDE (MS:1000044)</a></td>
+<td>NT=HCD;AC=PRIDE:0000590</td>
+</tr>
+<tr>
+<td><code>comment[MS2 mass analyzer]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass analyzer used for MS2 acquisition</td>
+<td><a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000443">PSI-MS (MS:1000443)</a></td>
+<td>NT=Orbitrap;AC=MS:1000484</td>
+</tr>
+<tr>
+<td><code>comment[precursor mass tolerance]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass tolerance for precursor ions in database search</td>
+<td>Numeric value with unit</td>
+<td>10 ppm, 20 ppm</td>
+</tr>
+<tr>
+<td><code>comment[fragment mass tolerance]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Mass tolerance for fragment ions in database search</td>
+<td>Numeric value with unit</td>
+<td>0.02 Da, 20 ppm</td>
+</tr>
+</tbody>
+</table>
+++++
+endif::[]
+
+ifndef::backend-html5[]
+[cols="2,1,2,1,2", options="header"]
+|===
+|Column Name |Requirement |Description |Ontology/CV |Example Values
+
+|comment[collision energy] |OPTIONAL |Collision energy used for fragmentation |PSI-MS (MS:1000045) |27 NCE, 30 eV, 22 NCE;26 NCE;30 NCE
+|comment[dissociation method] |OPTIONAL |Fragmentation method used |PRIDE (MS:1000044) |NT=HCD;AC=PRIDE:0000590
+|comment[MS2 mass analyzer] |OPTIONAL |Mass analyzer used for MS2 acquisition |PSI-MS (MS:1000443) |NT=Orbitrap;AC=MS:1000484
+|comment[precursor mass tolerance] |OPTIONAL |Mass tolerance for precursor ions in database search |Numeric value with unit |10 ppm, 20 ppm
+|comment[fragment mass tolerance] |OPTIONAL |Mass tolerance for fragment ions in database search |Numeric value with unit |0.02 Da, 20 ppm
 |===
 endif::[]
 
