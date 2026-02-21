@@ -7,6 +7,7 @@
 ![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
 ![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
 ![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard)
+[![llms.txt](https://flat.badgen.net/static/llms.txt/available/blue)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/llms.txt)
 
 ## Improving metadata annotation of Proteomics datasets
 
