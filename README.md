@@ -7,7 +7,7 @@
 ![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-sample-metadata)
 ![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-sample-metadata)
 ![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-sample-metadata)
-[![llms.txt](https://flat.badgen.net/static/llms.txt/available/blue)](https://github.com/bigbio/proteomics-sample-metadata/blob/master/llms.txt)
+[![llms.txt](https://flat.badgen.net/static/llms.txt/available/blue)](llms.txt)
 
 ## Improving metadata annotation of Proteomics datasets
 
