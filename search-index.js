@@ -5,35 +5,35 @@ const SEARCH_INDEX = [
     "content": "// suppress inspection \"GrazieInspection\" for whole file\nSample and Data Relationship Format for Proteomics (SDRF-Proteomics)\n\n//only works on some backends, not HTML\n\n//use style like Section 1 when referencing within the document.\n\n//GitHub specific settings\n\nStatus of this document\n\nThis document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.\n\nVersion v1.1.0 - 2026-01\n\nAbstract\n\nThe Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).\n\nFurther detailed information, including any updates to this document, implementations, and examples is available at SDRF GitHub Repository. The official PSI web page for the document is: HUPO-PSI SDRF.\n\nMotivation\n\nPublic proteomics data is valuable, but sample metadata is often missing or stored inconsistently across repositories (e.g., CPTAC uses Excel files, ProteomicsDB captures minimal properties) . This heterogeneity prevents reproducibility and cross-dataset integration.\n\nSDRF-Proteomics addresses this by providing a standard tab-delimited format to capture (Figure 1):\n\n- Sample metadata and characteristics\n- Data file acquisition parameters\n- Sample-to-file relationships (experimental design)\n\nFigure 1: SDRF-Proteomics captures sample information and its relationship to data files.\n\nThe format is fully compatible with MAGE-TAB SDRF, enabling integration with transcriptomics metadata standards.\n\nSpecification structure\n\nSDRF-Proteomics uses a two-tier system: this core specification defines the format rules, and ** provide metadata checklists for specific experiment types (Figure 2). Templates are organized in the",
     "url": "./specification.html",
     "section": "Core Specification",
-    "keywords": "technical replicate file your organism cleavage agent PRIDE:0000832 source name HANCESTRO dia_scan organism part sdrf validation hash PRIDE:0000839 CLO modification parameters label PATO:0000461 data file EFO factor value disease instrument characteristics sdrf annotation tool pooled sample proteomics data acquisition method PRIDE:0000840 age comment individual PRIDE:0000834 protein cell type fraction identifier sample CL PATO sex tissue ... DOID sdrf template UBERON assay name developmental stage MS disease staging biosample accession number MS:1001251 MONDO PRIDE:0000659 BTO cell line technology type MS:1000484 NCIT biological replicate sdrf version cleavage agent details PRIDE:0000590 exclamation"
+    "keywords": "organism part cell line PRIDE:0000839 file your MS:1001251 sex sdrf template pooled sample organism BTO technical replicate data file MS:1000484 DOID cleavage agent details cleavage agent PRIDE:0000834 instrument technology type exclamation biological replicate sdrf annotation tool comment CL sdrf validation hash PATO:0000461 PRIDE:0000590 disease staging sample fraction identifier EFO biosample accession number PRIDE:0000659 PRIDE:0000832 modification parameters factor value individual cell type age NCIT dia_scan MONDO label developmental stage sdrf version UBERON source name characteristics disease CLO tissue protein ... PATO MS PRIDE:0000840 proteomics data acquisition method assay name HANCESTRO"
   },
   {
     "title": "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)",
     "content": "// suppress inspection \"GrazieInspection\" for whole file\nSample and Data Relationship Format for Proteomics (SDRF-Proteomics)\n\n//only works on some backends, not HTML\n\n//use style like Section 1 when referencing within the document.\n\n//GitHub specific settings\n\nStatus of this document\n\nThis document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.\n\nVersion v1.1.0 - 2026-01\n\nAbstract\n\nThe Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).\n\nFurther detailed information, including any updates to this document, implementations, and examples is available at SDRF GitHub Repository. The official PSI web page for the document is: HUPO-PSI SDRF.\n\nMotivation\n\nPublic proteomics data is valuable, but sample metadata is often missing or stored inconsistently across repositories (e.g., CPTAC uses Excel files, ProteomicsDB captures minimal properties) . This heterogeneity prevents reproducibility and cross-dataset integration.\n\nSDRF-Proteomics addresses this by providing a standard tab-delimited format to capture (Figure 1):\n\n- Sample metadata and characteristics\n- Data file acquisition parameters\n- Sample-to-file relationships (experimental design)\n\nFigure 1: SDRF-Proteomics captures sample information and its relationship to data files.\n\nThe format is fully compatible with MAGE-TAB SDRF, enabling integration with transcriptomics metadata standards.\n\nSpecification structure\n\nSDRF-Proteomics uses a two-tier system: this core specification defines the format rules, and ** provide metadata checklists for specific experiment types (Figure 2). Templates are organized in the",
     "url": "./specification.html#sample-and-data-relationship-format-for-proteomics-sdrf-proteomics",
     "section": "Core Specification",
-    "keywords": "technical replicate organism cleavage agent PRIDE:0000832 source name HANCESTRO organism part sdrf validation hash PRIDE:0000839 CLO modification parameters label PATO:0000461 data file EFO factor value disease instrument sdrf annotation tool pooled sample proteomics data acquisition method PRIDE:0000840 age comment individual PRIDE:0000834 cell type fraction identifier sex CL PATO tissue ... DOID sdrf template UBERON assay name developmental stage MS disease staging biosample accession number MS:1001251 MONDO PRIDE:0000659 BTO cell line technology type MS:1000484 NCIT biological replicate sdrf version cleavage agent details PRIDE:0000590"
+    "keywords": "organism part cell line PRIDE:0000839 sex MS:1001251 sdrf template pooled sample organism BTO technical replicate data file MS:1000484 DOID cleavage agent details cleavage agent PRIDE:0000834 instrument technology type biological replicate sdrf annotation tool comment CL sdrf validation hash PATO:0000461 PRIDE:0000590 disease staging fraction identifier EFO biosample accession number PRIDE:0000659 PRIDE:0000832 modification parameters factor value individual cell type age NCIT MONDO label developmental stage sdrf version UBERON source name disease CLO tissue ... PATO MS PRIDE:0000840 proteomics data acquisition method assay name HANCESTRO"
   },
   {
     "title": "Sample Metadata Guidelines",
     "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[organism]\n\nOntology: NCBI Taxonomy (NCBITaxon)\n\nUse the scientific name in lowercase. The validator will map to the correct ontology term.\n\nValue |NCBITaxon ID |Description\n\nhomo sapiens |NCBITaxon:9606 |Human\nmus musculus |NCBITaxon:10090 |Mouse\n\nOrganism Part / Tissue\n\nColumn: characteristics[organism part]\n\nOntology: UBERON for mammals/vertebrates, Plant Ontology (PO) for plants, FlyBase Anatomy (FBbt) for Drosophila.\n\nUse lowercase for all values. For cell line samples, use not applicable or specify the tissue of origin (e.g., cervix for HeLa).\n\n[NOTE]\n====\nDo ",
     "url": "./metadata-guidelines/sample-metadata.html",
     "section": "Sample Metadata Guidelines",
-    "keywords": "UBERON:0000955 CL:0000815 treatment phenotype enrichment process CL:0000235 organism material type source name EFO:0000651 organism part CL:0000066 time point PRIDE:0000837 CL:0000084 MONDO:0004989 depletion PATO:0000461 factor value EFO CL:0000624 disease spiked compound UBERON:0001969 age UBERON:0000948 individual sex cell type patient bmi CL PATO synthetic peptide smoking status UBERON:0002107 tissue DOID CL:0000057 UBERON developmental stage dose MONDO PATO:0000047 cell line tissue supergroup xenograft SIO:001012 genotype CL:0000236 exclamation compound mass"
+    "keywords": "CL:0000057 organism part depletion material type cell line MONDO:0004989 UBERON:0001969 UBERON:0002107 sex spiked compound tissue supergroup organism DOID CL:0000084 CL:0000236 mass treatment CL:0000815 PATO:0000047 exclamation CL enrichment process PATO:0000461 CL:0000624 dose EFO CL:0000066 factor value individual genotype age cell type time point EFO:0000651 MONDO developmental stage SIO:001012 phenotype patient bmi UBERON compound source name disease tissue synthetic peptide PRIDE:0000837 UBERON:0000955 UBERON:0000948 PATO smoking status xenograft CL:0000235"
   },
   {
     "title": "Sample Metadata Guidelines",
     "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[organism]\n\nOntology: NCBI Taxonomy (NCBITaxon)\n\nUse the scientific name in lowercase. The validator will map to the correct ontology term.\n\nValue |NCBITaxon ID |Description\n\nhomo sapiens |NCBITaxon:9606 |Human\nmus musculus |NCBITaxon:10090 |Mouse\n\nOrganism Part / Tissue\n\nColumn: characteristics[organism part]\n\nOntology: UBERON for mammals/vertebrates, Plant Ontology (PO) for plants, FlyBase Anatomy (FBbt) for Drosophila.\n\nUse lowercase for all values. For cell line samples, use not applicable or specify the tissue of origin (e.g., cervix for HeLa).\n\n[NOTE]\n====\nDo ",
     "url": "./metadata-guidelines/sample-metadata.html#sample-metadata-guidelines",
     "section": "Sample Metadata Guidelines",
-    "keywords": "UBERON:0000955 CL:0000815 treatment phenotype enrichment process CL:0000235 organism material type source name EFO:0000651 organism part CL:0000066 time point PRIDE:0000837 CL:0000084 MONDO:0004989 depletion PATO:0000461 factor value EFO CL:0000624 disease spiked compound UBERON:0001969 age UBERON:0000948 individual sex cell type patient bmi CL PATO synthetic peptide smoking status UBERON:0002107 tissue DOID CL:0000057 UBERON developmental stage dose MONDO PATO:0000047 cell line tissue supergroup xenograft SIO:001012 genotype CL:0000236 compound mass"
+    "keywords": "CL:0000057 organism part depletion material type cell line MONDO:0004989 UBERON:0001969 UBERON:0002107 sex spiked compound tissue supergroup organism DOID CL:0000084 CL:0000236 mass treatment CL:0000815 PATO:0000047 CL enrichment process PATO:0000461 CL:0000624 dose EFO CL:0000066 factor value individual genotype age cell type time point EFO:0000651 MONDO developmental stage SIO:001012 phenotype patient bmi UBERON compound source name disease tissue synthetic peptide PRIDE:0000837 UBERON:0000955 UBERON:0000948 PATO smoking status xenograft CL:0000235"
   },
   {
     "title": "SDRF-Proteomics: Tool Support",
     "content": "SDRF-Proteomics: Tool Support\n\n//GitHub specific settings\n\nIntroduction\n\nThis document provides an overview of tools that support the SDRF-Proteomics format. These tools are developed by the community to help researchers create, validate, and use SDRF files in their proteomics workflows.\n\nThe tools are organized into three categories:\n\n* Annotators: Tools for creating and editing SDRF files\n* Validators: Tools for validating SDRF files against the specification\n* Analysis Tools: Proteomics analysis pipelines that accept SDRF as input\n\nAnnotators\n\nAnnotator tools help researchers create SDRF files from scratch or from existing metadata. These tools typically provide user-friendly interfaces to guide users through the annotation process.\n\nlesSDRF\n\nlesSDRF is a web-based tool for creating SDRF files with minimal effort.\n\nFeature |Description\n\nType\nWeb application\n\nURL\n\nDescription\nA streamlined web interface for creating SDRF-Proteomics files. The tool guides users through the annotation process with an intuitive form-based interface, reducing the complexity of manual SDRF creation.\n\nKey Features\na|\n* Interactive web-based interface\n* Template-based annotation\n* Real-time validation feedback\n* Export to SDRF-Proteomics format\n\nPublication\nClaeys T, Van Den Bossche T, Perez-Riverol Y, Gevaert K, Vizca\u00edno JA, Martens L. lesSDRF is more: maximizing the value of proteomics data through streamlined metadata annotation. Nature Communications 14, 6743 (2023).\n\nCupCAKE\n\nCupCAKE (Curation Portal for Curation, Annotation, and Knowledge Extraction) is a comprehensive platform for proteomics data annotation.\n\nFeature |Description\n\nType\nWeb application\n\nDemo URL\n\nDemo Credentials\nUsername: demo / Password: demo123\n\nDescription\nCupCAKE provides a web-based platform for annotating proteomics datasets with standardized metadata. It supports SDRF-Proteomics format and helps users create well-annotated sample metadata files.\n\nKey Features\na|\n* Web-based annotation interface\n* Support fo",
     "url": "./tool-support.html",
     "section": "Tool Support",
-    "keywords": "exclamation label"
+    "keywords": "label exclamation"
   },
   {
     "title": "SDRF-Proteomics: Tool Support",
@@ -580,6 +580,62 @@ const SEARCH_INDEX = [
     "url": "./sdrf-terms.html#fragment-mass-tolerance",
     "section": "SDRF Terms Reference",
     "keywords": "fragment mass tolerance dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: precursor min mz",
+    "content": "precursor min mz comment dia-acquisition, dda-acquisition numeric (m/z)",
+    "url": "./sdrf-terms.html#precursor-min-mz",
+    "section": "SDRF Terms Reference",
+    "keywords": "precursor min mz dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: precursor max mz",
+    "content": "precursor max mz comment dia-acquisition, dda-acquisition numeric (m/z)",
+    "url": "./sdrf-terms.html#precursor-max-mz",
+    "section": "SDRF Terms Reference",
+    "keywords": "precursor max mz dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: precursor min charge",
+    "content": "precursor min charge comment dia-acquisition, dda-acquisition integer",
+    "url": "./sdrf-terms.html#precursor-min-charge",
+    "section": "SDRF Terms Reference",
+    "keywords": "precursor min charge dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: precursor max charge",
+    "content": "precursor max charge comment dia-acquisition, dda-acquisition integer",
+    "url": "./sdrf-terms.html#precursor-max-charge",
+    "section": "SDRF Terms Reference",
+    "keywords": "precursor max charge dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: min retention time",
+    "content": "min retention time comment dia-acquisition, dda-acquisition numeric (minutes)",
+    "url": "./sdrf-terms.html#min-retention-time",
+    "section": "SDRF Terms Reference",
+    "keywords": "min retention time dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: max retention time",
+    "content": "max retention time comment dia-acquisition, dda-acquisition numeric (minutes)",
+    "url": "./sdrf-terms.html#max-retention-time",
+    "section": "SDRF Terms Reference",
+    "keywords": "max retention time dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: min ion mobility",
+    "content": "min ion mobility comment dia-acquisition, dda-acquisition numeric (1/K0 or Vs/cm2)",
+    "url": "./sdrf-terms.html#min-ion-mobility",
+    "section": "SDRF Terms Reference",
+    "keywords": "min ion mobility dia-acquisition, dda-acquisition"
+  },
+  {
+    "title": "Column: max ion mobility",
+    "content": "max ion mobility comment dia-acquisition, dda-acquisition numeric (1/K0 or Vs/cm2)",
+    "url": "./sdrf-terms.html#max-ion-mobility",
+    "section": "SDRF Terms Reference",
+    "keywords": "max ion mobility dia-acquisition, dda-acquisition"
   },
   {
     "title": "Column: passage number",
