@@ -117,7 +117,7 @@ For the complete versioning strategy — including template versioning, ontology
 [[reserved-words]]
 === Reserved words
 
-There are general scenarios where cell values cannot be provided with actual data. The following reserved words MUST be used in these cases:
+There are general scenarios where cell values cannot be provided with actual data. The following reserved words MUST be used in these cases. Reserved words MUST be all lowercase (e.g., `not available`, NOT `Not Available` or `Not available`):
 
 - **not available**: In some cases, the column is mandatory in the format, but for some samples the corresponding value is unknown or could not be determined. In those cases, users SHOULD use *not available*.
 - **not applicable**: In some cases, the column is mandatory, but for some samples the corresponding value or concept does not apply. In those cases, users SHOULD use *not applicable*.
@@ -258,9 +258,9 @@ The value for each property, (e.g. characteristics, comment, factor value) corre
 
 - **Ontology url (Computer readable)**: Users can provide the corresponding URI (Uniform Resource Identifier) of the ontology/CV term as a value. This is recommended for enriched files where the user does not want to use intermediate tools to map from free text to ontology/CV terms.
 
-- **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see link:templates/ms-proteomics.html#_protein_modifications[Protein Modifications]):
+- **Key=value representation (Human and Computer readable)**: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. The key order MUST be `NT` (name) first, followed by `AC` (accession), then any additional keys. An example of key value pairs is post-translational modification (see link:templates/ms-proteomics.html#_protein_modifications[Protein Modifications]):
 
-  NT=Glu->pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E
+  NT=Glu->pyro-Glu;AC=Unimod:27;MT=fixed;PP=Anywhere;TA=E
 
 [[validation]]
 == Validating SDRF Files
@@ -420,6 +420,8 @@ For detailed documentation of sample preparation and MS/MS fragmentation propert
 - **Fractionation**: fractionation method (used with `comment[fraction identifier]`)
 - **Fragmentation**: collision energy, dissociation method
 
+NOTE: For HCD (Higher-energy C-trap Dissociation), the canonical accession is https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000422[MS:1000422 - beam-type collision-induced dissociation]. Use `NT=beam-type collision-induced dissociation;AC=MS:1000422` or the short label `HCD`. Do not use PRIDE:0000590 or MS:1002481.
+
 [[data-acquisition-method]]
 === Proteomics data acquisition method
 
@@ -501,6 +503,38 @@ Templates follow a layered hierarchy:
 
 Child templates inherit all columns from parents and may add new columns or strengthen requirements (e.g., `optional` → `required`).
 
+=== Template Combination Rules
+
+Templates within the same layer are **mutually exclusive** - you MUST choose exactly one from each applicable layer:
+
+|===
+|Layer |Mutually Exclusive Templates |Rule
+
+|TECHNOLOGY
+|`ms-proteomics` vs `affinity-proteomics`
+|Choose one (REQUIRED)
+
+|SAMPLE
+|`human` vs `vertebrates` vs `invertebrates` vs `plants`
+|Choose one based on organism (RECOMMENDED)
+
+|EXPERIMENT (acquisition)
+|`dda-acquisition` vs `dia-acquisition`
+|Choose one based on method (OPTIONAL)
+
+|EXPERIMENT (affinity platform)
+|`olink` vs `somascan`
+|Choose one if using affinity-proteomics (OPTIONAL)
+|===
+
+Templates from different layers can be freely combined. Common valid combinations:
+
+- `ms-proteomics` + `human` + `dda-acquisition` (human DDA proteomics)
+- `ms-proteomics` + `human` + `immunopeptidomics` (human immunopeptidomics)
+- `ms-proteomics` + `vertebrates` + `cell-lines` (mouse cell line proteomics)
+- `ms-proteomics` + `human` + `crosslinking` (human crosslinking MS)
+- `affinity-proteomics` + `human` + `olink` (human Olink)
+
 === Specifying Templates in SDRF Files
 
 Declare templates using `comment[sdrf template]` columns. Only list leaf templates (parents are implied). When using multiple templates, add multiple columns with the same name. Two formats are supported:
@@ -544,7 +578,7 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0
 - link:templates/dia-acquisition/README.adoc[DIA Acquisition] - scan windows, isolation width, spectral library
 - link:templates/cell-lines/README.adoc[Cell Lines] - Cellosaurus integration
 - link:templates/single-cell/README.adoc[Single-Cell] - cell isolation, carrier proteome
-- link:templates/immunopeptidomics/README.adoc[Immunopeptidomics] - MHC class, MHC typing
+- link:templates/immunopeptidomics/README.adoc[Immunopeptidomics] - MHC protein complex, MHC typing
 - link:templates/crosslinking/README.adoc[Crosslinking MS] - crosslinker reagents
 - link:templates/metaproteomics/README.adoc[Metaproteomics] - environmental sample type
 
