@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start Tutorial - SDRF-Proteomics</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav">
+                <a href="./index.html">Home</a>
+                <a href="./specification.html">Specification</a>
+                <a href="./index.html#metadata-guidelines">Metadata Guidelines</a>
+                <a href="./index.html#templates">Templates</a>
+                <a href="./index.html#tools">Tools</a>
+                <a href="./sdrf-explorer.html">Explorer</a>
+                <a href="./index.html#contributors">Contributors</a>
+                <a href="/dev/" class="version-link">Dev Version</a>
+                <a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container quickstart-page">
+        <!-- Introduction -->
+        <section class="hero" style="padding: 1rem 0 1.5rem;">
+            <h2>Create Your SDRF File</h2>
+            <p>Answer a few questions about your experiment and we'll guide you to the right template and examples.</p>
+        </section>
+
+        <!-- Interactive Wizard -->
+        <section class="wizard-section">
+            <div class="wizard-container">
+                <!-- Step 1: Acquisition Method -->
+                <div class="wizard-step" id="step-acquisition">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>What acquisition method did you use?</h3>
+                    </div>
+                    <div class="wizard-options">
+                        <button class="wizard-option" data-step="acquisition" data-value="dda" onclick="selectOption(this)">
+                            <span class="option-title">DDA</span>
+                            <span class="option-desc">Data-Dependent Acquisition</span>
+                        </button>
+                        <button class="wizard-option" data-step="acquisition" data-value="dia" onclick="selectOption(this)">
+                            <span class="option-title">DIA</span>
+                            <span class="option-desc">Data-Independent Acquisition</span>
+                        </button>
+                        <button class="wizard-option" data-step="acquisition" data-value="affinity" onclick="selectOption(this)">
+                            <span class="option-title">Affinity</span>
+                            <span class="option-desc">Olink, SomaScan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Labeling -->
+                <div class="wizard-step hidden" id="step-labeling">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>What labeling strategy?</h3>
+                    </div>
+                    <div class="wizard-options">
+                        <button class="wizard-option" data-step="labeling" data-value="label-free" onclick="selectOption(this)">
+                            <span class="option-title">Label-free</span>
+                            <span class="option-desc">No chemical labeling</span>
+                        </button>
+                        <button class="wizard-option" data-step="labeling" data-value="tmt" onclick="selectOption(this)">
+                            <span class="option-title">TMT / iTRAQ</span>
+                            <span class="option-desc">Isobaric labeling</span>
+                        </button>
+                        <button class="wizard-option" data-step="labeling" data-value="silac" onclick="selectOption(this)">
+                            <span class="option-title">SILAC</span>
+                            <span class="option-desc">Metabolic labeling</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Organism -->
+                <div class="wizard-step hidden" id="step-organism">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>What organism?</h3>
+                    </div>
+                    <div class="wizard-options">
+                        <button class="wizard-option" data-step="organism" data-value="human" onclick="selectOption(this)">
+                            <span class="option-title">Human</span>
+                            <span class="option-desc">Homo sapiens</span>
+                        </button>
+                        <button class="wizard-option" data-step="organism" data-value="mouse" onclick="selectOption(this)">
+                            <span class="option-title">Mouse / Rat</span>
+                            <span class="option-desc">Vertebrates</span>
+                        </button>
+                        <button class="wizard-option" data-step="organism" data-value="cell-line" onclick="selectOption(this)">
+                            <span class="option-title">Cell Lines</span>
+                            <span class="option-desc">HeLa, HEK293, etc.</span>
+                        </button>
+                        <button class="wizard-option" data-step="organism" data-value="other" onclick="selectOption(this)">
+                            <span class="option-title">Other</span>
+                            <span class="option-desc">Plants, bacteria, etc.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="wizard-result hidden" id="wizard-result">
+                    <div class="result-header">
+                        <span class="result-icon">&#10003;</span>
+                        <h3>Your Recommended Setup</h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-templates">
+                            <h4>Templates to use:</h4>
+                            <div class="template-tags" id="result-templates"></div>
+                        </div>
+                        <div class="result-examples">
+                            <h4>Example datasets:</h4>
+                            <ul id="result-examples"></ul>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#step-1-choose-your-template" class="btn btn-primary">Continue to Tutorial</a>
+                            <a href="./sdrf-explorer.html" class="btn btn-secondary" id="explorer-link">Browse More Examples</a>
+                            <button class="btn btn-outline" onclick="resetWizard()">Start Over</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="wizard-divider">
+
+        <!-- What is SDRF -->
+        <section class="section">
+            <h2>What is SDRF?</h2>
+            <p>SDRF (Sample and Data Relationship Format) is a simple <strong>tab-separated file</strong> (like Excel) that describes your proteomics experiment. It connects your biological samples to your mass spectrometry data files.</p>
+
+            <div class="concept-box">
+                <h4>The Core Concept</h4>
+                <p>Think of SDRF as a table where:</p>
+                <ul>
+                    <li><strong>Each row</strong> = one sample-to-file relationship</li>
+                    <li><strong>Each column</strong> = one piece of information about that sample or file</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>Why use SDRF?</strong> When you submit data to repositories like PRIDE, SDRF ensures your experiment is fully described and can be reanalyzed by others. It's becoming a standard requirement for proteomics data submission.
+                <a href="./specification.html#motivation" class="learn-more">Learn more in the specification &rarr;</a>
+            </div>
+        </section>
+
+        <!-- Find Similar Examples -->
+        <section class="section">
+            <h2>Learn from Real Examples</h2>
+            <p>The best way to learn is by example. Browse real SDRF files from published proteomics datasets and use them as templates for your own experiments.</p>
+
+            <div class="tip-box tip-info">
+                <strong>Tip:</strong> Find datasets similar to yours by organism, instrument, or acquisition method. You can view the complete SDRF structure and use it as a starting point.
+                <a href="./sdrf-explorer.html" class="btn btn-primary" style="display: inline-block; margin-top: 0.75rem;">Browse Examples in SDRF Explorer &rarr;</a>
+            </div>
+        </section>
+
+        <!-- Understanding Templates -->
+        <section class="section">
+            <h2>Step 1: Choose Your Template</h2>
+            <p>Templates are <strong>pre-made SDRF files with the right columns already set up</strong> for your experiment type. Pick one based on your organism and experiment:</p>
+
+            <div class="template-grid">
+                <div class="template-section">
+                    <h4>Core Templates (by organism)</h4>
+                    <table class="templates-table">
+                        <thead>
+                            <tr>
+                                <th>Your Samples</th>
+                                <th>Template</th>
+                                <th>Includes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Human samples</td>
+                                <td><a href="./templates/human.html"><strong>human</strong></a></td>
+                                <td>age, sex, ancestry, ethnicity</td>
+                            </tr>
+                            <tr>
+                                <td>Mouse, rat, zebrafish</td>
+                                <td><a href="./templates/vertebrates.html"><strong>vertebrates</strong></a></td>
+                                <td>developmental stage, strain</td>
+                            </tr>
+                            <tr>
+                                <td>Insects, worms</td>
+                                <td><a href="./templates/invertebrates.html"><strong>invertebrates</strong></a></td>
+                                <td>developmental stage</td>
+                            </tr>
+                            <tr>
+                                <td>Plants</td>
+                                <td><a href="./templates/plants.html"><strong>plants</strong></a></td>
+                                <td>cultivar, growth conditions</td>
+                            </tr>
+                            <tr>
+                                <td>Other / Not sure</td>
+                                <td><a href="./templates/ms-proteomics.html"><strong>ms-proteomics</strong></a></td>
+                                <td>minimal required columns</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="template-section">
+                    <h4>Specialized Templates (by experiment type)</h4>
+                    <table class="templates-table">
+                        <thead>
+                            <tr>
+                                <th>Experiment Type</th>
+                                <th>Template</th>
+                                <th>Adds</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cell line studies</td>
+                                <td><a href="./templates/cell-lines.html"><strong>cell-lines</strong></a></td>
+                                <td>cell line name, Cellosaurus ID</td>
+                            </tr>
+                            <tr>
+                                <td>DIA acquisition</td>
+                                <td><a href="./templates/dia-acquisition.html"><strong>dia-acquisition</strong></a></td>
+                                <td>DIA isolation window</td>
+                            </tr>
+                            <tr>
+                                <td>Immunopeptidomics</td>
+                                <td><a href="./templates/immunopeptidomics.html"><strong>immunopeptidomics</strong></a></td>
+                                <td>HLA alleles, MHC class</td>
+                            </tr>
+                            <tr>
+                                <td>Cross-linking MS</td>
+                                <td><a href="./templates/crosslinking.html"><strong>crosslinking</strong></a></td>
+                                <td>crosslinker, cleavability</td>
+                            </tr>
+                            <tr>
+                                <td>Single-cell proteomics</td>
+                                <td><a href="./templates/single-cell.html"><strong>single-cell</strong></a></td>
+                                <td>single cell identifier</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> You can combine templates! Start with a core template (e.g., "human") and add columns from specialized templates as needed.
+            </div>
+        </section>
+
+        <!-- Column Types Explanation -->
+        <section class="section">
+            <h2>Step 2: Understand Column Types</h2>
+            <p>SDRF columns follow a naming pattern that tells you what kind of information they contain:</p>
+
+            <div class="column-types-grid">
+                <div class="column-type sample-highlight">
+                    <h4>characteristics[...]</h4>
+                    <p>Describe the <strong>biological sample</strong></p>
+                    <code>characteristics[organism]</code>
+                    <code>characteristics[disease]</code>
+                    <code>characteristics[organism part]</code>
+                    <span class="column-label">Sample Metadata</span>
+                </div>
+                <div class="column-type data-highlight">
+                    <h4>comment[...]</h4>
+                    <p>Describe the <strong>data file or MS run</strong></p>
+                    <code>comment[data file]</code>
+                    <code>comment[instrument]</code>
+                    <code>comment[label]</code>
+                    <span class="column-label">Data File Metadata</span>
+                </div>
+                <div class="column-type factor-highlight">
+                    <h4>factor value[...]</h4>
+                    <p>The <strong>experimental variable</strong> you're comparing</p>
+                    <code>factor value[disease]</code>
+                    <code>factor value[compound]</code>
+                    <code>factor value[time]</code>
+                    <span class="column-label">What You're Studying</span>
+                </div>
+            </div>
+
+            <div class="tip-box tip-warning">
+                <strong>Important:</strong> Column names are case-sensitive and spacing matters!
+                <ul style="margin: 0.5rem 0 0 1.5rem;">
+                    <li><code>characteristics[organism]</code> &mdash; Correct</li>
+                    <li><code>Characteristics[organism]</code> &mdash; Wrong (capital C)</li>
+                    <li><code>characteristics [organism]</code> &mdash; Wrong (space before bracket)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Fill Sample Information -->
+        <section class="section">
+            <h2>Step 3: Fill in Sample Information</h2>
+            <p>Open your template in Excel, Google Sheets, or any spreadsheet software. For each sample, fill in the biological information:</p>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>What to Write</th>
+                        <th>Example</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>source name</code></td>
+                        <td>A unique identifier for your biological sample</td>
+                        <td>patient_001</td>
+                        <td>Unique to the sample; repeats for fractions/replicates</td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics[organism]</code></td>
+                        <td>Species name (lowercase)</td>
+                        <td>homo sapiens</td>
+                        <td>Use scientific name from <a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon" target="_blank">NCBI Taxonomy</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics[organism part]</code></td>
+                        <td>Tissue or body part</td>
+                        <td>liver</td>
+                        <td>Use terms from <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon" target="_blank">UBERON</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>characteristics[disease]</code></td>
+                        <td>Disease name, or "normal"</td>
+                        <td>hepatocellular carcinoma</td>
+                        <td>Use "normal" for healthy samples</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> Don't stress about finding exact ontology terms. Write the common name (e.g., "liver", "breast cancer") and the validator will check it for you. You can always refine later.
+            </div>
+        </section>
+
+        <!-- Data File Information -->
+        <section class="section">
+            <h2>Step 4: Add Data File Information</h2>
+            <p>For each row, also specify information about the raw file and how it was acquired:</p>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>What to Write</th>
+                        <th>Example</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>assay name</code></td>
+                        <td>A name for this MS run</td>
+                        <td>run_001</td>
+                        <td>Often same as source name</td>
+                    </tr>
+                    <tr>
+                        <td><code>comment[label]</code></td>
+                        <td>Type of labeling</td>
+                        <td>label free sample</td>
+                        <td>Or TMT126, TMT127N, etc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>comment[instrument]</code></td>
+                        <td>Mass spectrometer used</td>
+                        <td>Q Exactive HF</td>
+                        <td>From <a href="https://www.ebi.ac.uk/ols4/ontologies/ms" target="_blank">PSI-MS ontology</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>comment[data file]</code></td>
+                        <td>Your raw file name</td>
+                        <td>sample_001.raw</td>
+                        <td>Exact filename including extension</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box tip-info">
+                <strong>One row = one sample-to-file relationship.</strong> In multiplexed experiments (TMT/iTRAQ), multiple samples share the same file, so you'll have multiple rows pointing to the same raw file. In fractionated experiments, one sample spans multiple files, so you'll have multiple rows for the same sample.
+                <a href="./specification.html#sdrf-file-rules" class="learn-more">More about SDRF structure &rarr;</a>
+            </div>
+        </section>
+
+        <!-- Factor Values -->
+        <section class="section">
+            <h2>Step 5: Define Your Experimental Variables</h2>
+            <p>Factor values tell analysis tools <strong>what you're comparing</strong> in your experiment. This is crucial for downstream analysis!</p>
+
+            <div class="concept-box">
+                <h4>What is a Factor Value?</h4>
+                <p>A factor value is the experimental variable you're studying. If your experiment compares cancer vs. healthy tissue, then <code>disease</code> is your factor. The values would be "hepatocellular carcinoma" and "normal".</p>
+            </div>
+
+            <table class="templates-table">
+                <thead>
+                    <tr>
+                        <th>Experiment Type</th>
+                        <th>Factor Value Column</th>
+                        <th>Example Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Disease vs. healthy</td>
+                        <td><code>factor value[disease]</code></td>
+                        <td>cancer, normal</td>
+                    </tr>
+                    <tr>
+                        <td>Drug treatment</td>
+                        <td><code>factor value[compound]</code></td>
+                        <td>aspirin, DMSO</td>
+                    </tr>
+                    <tr>
+                        <td>Time course</td>
+                        <td><code>factor value[time]</code></td>
+                        <td>0 hour, 6 hour, 24 hour</td>
+                    </tr>
+                    <tr>
+                        <td>Tissue comparison</td>
+                        <td><code>factor value[organism part]</code></td>
+                        <td>liver, kidney, heart</td>
+                    </tr>
+                    <tr>
+                        <td>Multiple variables</td>
+                        <td>Multiple factor columns</td>
+                        <td>Both disease AND time</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box tip-warning">
+                <strong>Common mistake:</strong> Factor values often duplicate information from characteristics columns &mdash; and that's correct! The factor value explicitly marks which characteristic is the experimental variable.
+            </div>
+        </section>
+
+        <!-- Complete Example with Explanation -->
+        <section class="section">
+            <h2>Complete Example</h2>
+            <p>Here's a minimum valid SDRF file for a human liver cancer study, including all required columns from the human template:</p>
+
+            <div class="table-wrapper" style="overflow-x: auto;">
+                <table class="sdrf-example sdrf-example-full">
+                    <thead>
+                        <tr>
+                            <th class="sample-col">source name</th>
+                            <th class="sample-col">characteristics[organism]</th>
+                            <th class="sample-col">characteristics[organism part]</th>
+                            <th class="sample-col">characteristics[disease]</th>
+                            <th class="sample-col">characteristics[biological replicate]</th>
+                            <th class="sample-col">characteristics[age]</th>
+                            <th class="sample-col">characteristics[sex]</th>
+                            <th class="data-col">assay name</th>
+                            <th class="data-col">technology type</th>
+                            <th class="data-col">comment[proteomics data acquisition method]</th>
+                            <th class="data-col">comment[label]</th>
+                            <th class="data-col">comment[instrument]</th>
+                            <th class="data-col">comment[cleavage agent details]</th>
+                            <th class="data-col">comment[fraction identifier]</th>
+                            <th class="data-col">comment[technical replicate]</th>
+                            <th class="data-col">comment[data file]</th>
+                            <th class="factor-col">factor value[disease]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>patient_001</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>hepatocellular carcinoma</td>
+                            <td>1</td>
+                            <td>55Y</td>
+                            <td>male</td>
+                            <td>run_001</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>patient_001.raw</td>
+                            <td>hepatocellular carcinoma</td>
+                        </tr>
+                        <tr>
+                            <td>patient_002</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>hepatocellular carcinoma</td>
+                            <td>2</td>
+                            <td>62Y</td>
+                            <td>female</td>
+                            <td>run_002</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>patient_002.raw</td>
+                            <td>hepatocellular carcinoma</td>
+                        </tr>
+                        <tr>
+                            <td>control_001</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>normal</td>
+                            <td>1</td>
+                            <td>48Y</td>
+                            <td>male</td>
+                            <td>run_003</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>control_001.raw</td>
+                            <td>normal</td>
+                        </tr>
+                        <tr>
+                            <td>control_002</td>
+                            <td>homo sapiens</td>
+                            <td>liver</td>
+                            <td>normal</td>
+                            <td>2</td>
+                            <td>51Y</td>
+                            <td>female</td>
+                            <td>run_004</td>
+                            <td>proteomic profiling by mass spectrometry</td>
+                            <td>Data-dependent acquisition</td>
+                            <td>label free sample</td>
+                            <td>Q Exactive HF</td>
+                            <td>NT=Trypsin;AC=MS:1001251</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>control_002.raw</td>
+                            <td>normal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="scroll-hint">Scroll horizontally to see all columns &rarr;</p>
+            <div class="sdrf-legend" style="margin-top: 1rem;">
+                <span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata (characteristics)</span>
+                <span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata (comment)</span>
+                <span class="legend-item"><span class="legend-color factor-bg"></span> Experimental variable (factor value)</span>
+            </div>
+
+            <div class="example-explanation">
+                <h4>Required columns in this example:</h4>
+                <ul>
+                    <li><strong>Sample metadata:</strong> source name, organism, organism part, disease, biological replicate, age, sex</li>
+                    <li><strong>Data file metadata:</strong> assay name, technology type, proteomics data acquisition method, label, instrument, cleavage agent, fraction identifier, technical replicate, data file</li>
+                    <li><strong>Factor value:</strong> the experimental variable being compared (disease)</li>
+                </ul>
+                <h4>What this example tells us:</h4>
+                <ul>
+                    <li>2 biological replicates per condition (numbered 1-2 within each factor value group)</li>
+                    <li>No fractionation (fraction identifier = 1 for all)</li>
+                    <li>Single injection per sample (technical replicate = 1)</li>
+                    <li>Label-free DDA proteomics with trypsin digestion on Q Exactive HF</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Validation -->
+        <section class="section">
+            <h2>Step 6: Validate Your File</h2>
+            <p>Before submission, validate your SDRF to catch errors early:</p>
+
+            <div class="validation-options">
+                <div class="validation-option">
+                    <h4>Option 1: Command Line (Recommended)</h4>
+                    <div class="code-block">
+                        <pre><code># Install the validator
+pip install sdrf-pipelines
+
+# Validate your file
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
+                    </div>
+                    <p class="option-note">Best for batch validation and integration into pipelines.</p>
+                </div>
+
+                <div class="validation-option">
+                    <h4>Option 2: With Template Check</h4>
+                    <div class="code-block">
+                        <pre><code># Validate against a specific template
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code></pre>
+                    </div>
+                    <p class="option-note">Checks that all required columns for your template are present.</p>
+                </div>
+            </div>
+
+            <div class="tip-box tip-success">
+                <strong>Validation checks for:</strong>
+                <ul style="margin: 0.5rem 0 0 1.5rem;">
+                    <li>Correct column names and formatting</li>
+                    <li>Valid ontology terms (organism, disease, etc.)</li>
+                    <li>Required columns present</li>
+                    <li>No empty cells where values are required</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Common Scenarios -->
+        <section class="section">
+            <h2>Common Scenarios</h2>
+
+            <div class="scenario-accordion">
+                <details class="scenario">
+                    <summary><strong>TMT/iTRAQ Multiplexed Samples</strong></summary>
+                    <div class="scenario-content">
+                        <p>For multiplexed experiments, multiple samples share the same raw file. Each sample gets its own row with a different label:</p>
+                        <table class="mini-example">
+                            <tr>
+                                <th>source name</th>
+                                <th>comment[label]</th>
+                                <th>comment[data file]</th>
+                            </tr>
+                            <tr>
+                                <td>sample_A</td>
+                                <td>TMT126</td>
+                                <td>multiplex_1.raw</td>
+                            </tr>
+                            <tr>
+                                <td>sample_B</td>
+                                <td>TMT127N</td>
+                                <td>multiplex_1.raw</td>
+                            </tr>
+                            <tr>
+                                <td>sample_C</td>
+                                <td>TMT127C</td>
+                                <td>multiplex_1.raw</td>
+                            </tr>
+                        </table>
+                        <a href="./specification.html#row-uniqueness" class="learn-more">Full TMT documentation &rarr;</a>
+                    </div>
+                </details>
+
+                <details class="scenario">
+                    <summary><strong>Fractionated Samples</strong></summary>
+                    <div class="scenario-content">
+                        <p>If you fractionated your sample before MS, add a fraction identifier column:</p>
+                        <table class="mini-example">
+                            <tr>
+                                <th>source name</th>
+                                <th>comment[fraction identifier]</th>
+                                <th>comment[data file]</th>
+                            </tr>
+                            <tr>
+                                <td>sample_001</td>
+                                <td>1</td>
+                                <td>sample_001_F01.raw</td>
+                            </tr>
+                            <tr>
+                                <td>sample_001</td>
+                                <td>2</td>
+                                <td>sample_001_F02.raw</td>
+                            </tr>
+                            <tr>
+                                <td>sample_001</td>
+                                <td>3</td>
+                                <td>sample_001_F03.raw</td>
+                            </tr>
+                        </table>
+                        <a href="./specification.html#sample-prep-fragmentation" class="learn-more">Fractionation documentation &rarr;</a>
+                    </div>
+                </details>
+
+                <details class="scenario">
+                    <summary><strong>Technical Replicates</strong></summary>
+                    <div class="scenario-content">
+                        <p>Same sample run multiple times? Use the same source name with different assay names and data files:</p>
+                        <table class="mini-example">
+                            <tr>
+                                <th>source name</th>
+                                <th>assay name</th>
+                                <th>comment[technical replicate]</th>
+                                <th>comment[data file]</th>
+                            </tr>
+                            <tr>
+                                <td>sample_001</td>
+                                <td>sample_001_rep1</td>
+                                <td>1</td>
+                                <td>sample_001_rep1.raw</td>
+                            </tr>
+                            <tr>
+                                <td>sample_001</td>
+                                <td>sample_001_rep2</td>
+                                <td>2</td>
+                                <td>sample_001_rep2.raw</td>
+                            </tr>
+                        </table>
+                    </div>
+                </details>
+
+                <details class="scenario">
+                    <summary><strong>Cell Line Experiments</strong></summary>
+                    <div class="scenario-content">
+                        <p>For cell lines, include the cell line name and Cellosaurus accession:</p>
+                        <table class="mini-example">
+                            <tr>
+                                <th>source name</th>
+                                <th>characteristics[cell line]</th>
+                                <th>characteristics[cellosaurus accession]</th>
+                            </tr>
+                            <tr>
+                                <td>hela_001</td>
+                                <td>HeLa</td>
+                                <td>CVCL_0030</td>
+                            </tr>
+                            <tr>
+                                <td>hek_001</td>
+                                <td>HEK293</td>
+                                <td>CVCL_0045</td>
+                            </tr>
+                        </table>
+                        <p>Find accessions at <a href="https://www.cellosaurus.org/" target="_blank">Cellosaurus</a>.</p>
+                        <a href="./templates/cell-lines.html" class="learn-more">Cell lines template &rarr;</a>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Common Mistakes -->
+        <section class="section">
+            <h2>Common Mistakes to Avoid</h2>
+
+            <div class="mistakes-grid">
+                <div class="mistake-card">
+                    <div class="mistake-wrong">
+                        <span class="label">Wrong</span>
+                        <code>Source Name</code>
+                    </div>
+                    <div class="mistake-right">
+                        <span class="label">Correct</span>
+                        <code>source name</code>
+                    </div>
+                    <p class="mistake-explanation">Column names must be lowercase</p>
+                </div>
+
+                <div class="mistake-card">
+                    <div class="mistake-wrong">
+                        <span class="label">Wrong</span>
+                        <code>characteristics [organism]</code>
+                    </div>
+                    <div class="mistake-right">
+                        <span class="label">Correct</span>
+                        <code>characteristics[organism]</code>
+                    </div>
+                    <p class="mistake-explanation">No space before the bracket</p>
+                </div>
+
+                <div class="mistake-card">
+                    <div class="mistake-wrong">
+                        <span class="label">Wrong</span>
+                        <code>control</code> for healthy
+                    </div>
+                    <div class="mistake-right">
+                        <span class="label">Correct</span>
+                        <code>normal</code> for healthy
+                    </div>
+                    <p class="mistake-explanation">Use "normal" for healthy tissue/samples</p>
+                </div>
+
+                <div class="mistake-card">
+                    <div class="mistake-wrong">
+                        <span class="label">Wrong</span>
+                        Empty cells
+                    </div>
+                    <div class="mistake-right">
+                        <span class="label">Correct</span>
+                        <code>not available</code>
+                    </div>
+                    <p class="mistake-explanation">Never leave cells empty; use "not available" or "not applicable"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ontology Resources -->
+        <section class="section">
+            <h2>Finding the Right Terms</h2>
+            <p>SDRF uses ontology terms to ensure consistency. Here's where to find them:</p>
+
+            <div class="resource-grid">
+                <a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon" target="_blank" class="resource-card">
+                    <h4>NCBI Taxonomy</h4>
+                    <p>Organism names</p>
+                    <span class="example">homo sapiens, mus musculus</span>
+                </a>
+                <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon" target="_blank" class="resource-card">
+                    <h4>UBERON</h4>
+                    <p>Tissues and organs</p>
+                    <span class="example">liver, brain, blood</span>
+                </a>
+                <a href="https://www.ebi.ac.uk/ols4/ontologies/mondo" target="_blank" class="resource-card">
+                    <h4>MONDO</h4>
+                    <p>Disease names</p>
+                    <span class="example">breast cancer, diabetes</span>
+                </a>
+                <a href="https://www.ebi.ac.uk/ols4/ontologies/cl" target="_blank" class="resource-card">
+                    <h4>Cell Ontology</h4>
+                    <p>Cell types</p>
+                    <span class="example">T cell, hepatocyte</span>
+                </a>
+                <a href="https://www.ebi.ac.uk/ols4/ontologies/ms" target="_blank" class="resource-card">
+                    <h4>PSI-MS</h4>
+                    <p>Instruments & methods</p>
+                    <span class="example">Q Exactive, Orbitrap</span>
+                </a>
+                <a href="https://www.cellosaurus.org/" target="_blank" class="resource-card">
+                    <h4>Cellosaurus</h4>
+                    <p>Cell line identifiers</p>
+                    <span class="example">HeLa, HEK293</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Next Steps -->
+        <section class="section">
+            <h2>Next Steps</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Browse Examples</h4>
+                    <p>See real SDRF files from published datasets in ProteomeXchange</p>
+                    <a href="./sdrf-explorer.html">SDRF Explorer</a>
+                </div>
+                <div class="card">
+                    <h4>All SDRF Terms</h4>
+                    <p>Complete reference of all columns, their requirements, and valid values</p>
+                    <a href="./sdrf-terms.html">SDRF Terms Reference</a>
+                </div>
+                <div class="card">
+                    <h4>Full Specification</h4>
+                    <p>Detailed documentation for advanced use cases and edge cases</p>
+                    <a href="./specification.html">Read Specification</a>
+                </div>
+                <div class="card">
+                    <h4>Get Help</h4>
+                    <p>Questions? Open an issue on GitHub to reach the bigbio team</p>
+                    <a href="https://github.com/bigbio/proteomics-metadata-standard/issues" target="_blank">Ask a Question</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>SDRF-Proteomics is developed by the <a href="https://psidev.info/" target="_blank">HUPO-PSI</a> community.</p>
+            <p>Copyright &copy; Proteomics Standards Initiative. Licensed under <a href="https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE" target="_blank">Apache 2.0</a>.</p>
+        </div>
+    </footer>
+
+    <style>
+        .quickstart-page .section {
+            margin-bottom: 3rem;
+        }
+        .quickstart-page h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .time-estimate {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Concept and Tip Boxes */
+        .concept-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%);
+            border-left: 4px solid #2196F3;
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        .concept-box h4 {
+            margin: 0 0 0.75rem 0;
+            color: #1565C0;
+        }
+        .concept-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        .tip-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        .tip-box.tip-info {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+        .tip-box.tip-warning {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+        .tip-box.tip-success {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+        .tip-box ul {
+            margin: 0;
+        }
+        .learn-more {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #1565C0;
+            font-weight: 500;
+        }
+
+        /* Template Grid */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .template-section h4 {
+            margin: 0 0 0.75rem 0;
+            color: var(--primary-color);
+        }
+
+        /* Column Types */
+        .column-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .column-type {
+            padding: 1.25rem;
+            border-radius: 8px;
+            position: relative;
+        }
+        .column-type h4 {
+            margin: 0 0 0.5rem 0;
+        }
+        .column-type code {
+            display: block;
+            margin: 0.25rem 0;
+            font-size: 0.85rem;
+        }
+        .column-type .column-label {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        .sample-highlight {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+        }
+        .sample-highlight .column-label {
+            background: #1976D2;
+            color: white;
+        }
+        .data-highlight {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+        }
+        .data-highlight .column-label {
+            background: #388E3C;
+            color: white;
+        }
+        .factor-highlight {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+        }
+        .factor-highlight .column-label {
+            background: #F57C00;
+            color: white;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        /* Validation Options */
+        .validation-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .validation-option h4 {
+            margin: 0 0 0.75rem 0;
+        }
+        .option-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Scenarios */
+        .scenario-accordion {
+            margin: 1rem 0;
+        }
+        .scenario {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+        .scenario summary {
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+        .scenario summary:hover {
+            background: #f0f0f0;
+        }
+        .scenario-content {
+            padding: 1.25rem;
+        }
+        .mini-example {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin: 0.75rem 0;
+        }
+        .mini-example th, .mini-example td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .mini-example th {
+            background: #f5f5f5;
+        }
+
+        /* Mistakes Grid */
+        .mistakes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .mistake-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .mistake-wrong, .mistake-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .mistake-wrong .label {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .mistake-right .label {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .mistake-explanation {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0.5rem 0 0 0;
+        }
+
+        /* Resource Grid */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .resource-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+        }
+        .resource-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .resource-card h4 {
+            margin: 0 0 0.25rem 0;
+            color: var(--primary-color);
+        }
+        .resource-card p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .resource-card .example {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* SDRF Example Table */
+        .sdrf-example {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .sdrf-example th, .sdrf-example td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .sdrf-example.sdrf-example-full th {
+            white-space: nowrap;
+            font-size: 0.75rem;
+            padding: 0.4rem;
+        }
+        .sdrf-example.sdrf-example-full td {
+            white-space: nowrap;
+            font-size: 0.75rem;
+            padding: 0.4rem;
+        }
+        .sdrf-example .sample-col {
+            background-color: #e3f2fd;
+        }
+        .sdrf-example .data-col {
+            background-color: #e8f5e9;
+        }
+        .sdrf-example .factor-col {
+            background-color: #fff3e0;
+        }
+        .scroll-hint {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background-color: var(--primary-color, #1976D2);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #1565C0;
+        }
+        .sdrf-legend {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .legend-color.sample-bg {
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+        }
+        .legend-color.data-bg {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+        }
+        .legend-color.factor-bg {
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+        }
+
+        .example-explanation {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .example-explanation h4 {
+            margin: 0 0 0.5rem 0;
+        }
+        .example-explanation ul {
+            margin: 0 0 0 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Wizard Styles */
+        .wizard-section {
+            margin-bottom: 2rem;
+        }
+        .wizard-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid var(--border, #e2e8f0);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .wizard-step {
+            margin-bottom: 1.5rem;
+        }
+        .wizard-step.hidden {
+            display: none;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--accent, #0969da);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .step-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text, #1e293b);
+        }
+        .wizard-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .wizard-option {
+            flex: 1;
+            min-width: 140px;
+            max-width: 200px;
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--border, #e2e8f0);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+        }
+        .wizard-option:hover {
+            border-color: var(--accent, #0969da);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .wizard-option.selected {
+            border-color: var(--accent, #0969da);
+            background: #eff6ff;
+        }
+        .option-title {
+            display: block;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text, #1e293b);
+            margin-bottom: 0.25rem;
+        }
+        .option-desc {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-light, #64748b);
+        }
+        .wizard-result {
+            background: white;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .wizard-result.hidden {
+            display: none;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-icon {
+            width: 24px;
+            height: 24px;
+            background: #22c55e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .result-header h3 {
+            margin: 0;
+            color: #166534;
+            font-size: 1.1rem;
+        }
+        .result-content {
+            display: grid;
+            gap: 1rem;
+        }
+        .result-templates h4,
+        .result-examples h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text, #1e293b);
+        }
+        .template-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .template-tag {
+            background: var(--accent, #0969da);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .template-tag:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+        .result-examples ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        .result-examples li {
+            margin: 0.25rem 0;
+        }
+        .result-examples a {
+            font-size: 0.9rem;
+        }
+        .result-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border, #e2e8f0);
+        }
+        .result-actions .btn {
+            font-size: 0.9rem;
+            padding: 0.6rem 1.25rem;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border, #d1d5db);
+            color: var(--text-light, #6b7280);
+        }
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+        .wizard-divider {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid var(--border-light, #e5e7eb);
+        }
+        @media (max-width: 600px) {
+            .wizard-options {
+                flex-direction: column;
+            }
+            .wizard-option {
+                max-width: none;
+            }
+        }
+    </style>
+
+    <script>
+        // Wizard state
+        const wizardState = {
+            acquisition: null,
+            labeling: null,
+            organism: null
+        };
+
+        // Example datasets mapped by experiment type (using sdrf-explorer viewer)
+        const exampleDatasets = {
+            'dda-label-free-human': [
+                { name: 'PXD000561 - Human tissue proteome', url: './sdrf-explorer.html?view=PXD000561' },
+                { name: 'PXD004452 - Human kidney disease', url: './sdrf-explorer.html?view=PXD004452' }
+            ],
+            'dda-label-free-mouse': [
+                { name: 'PXD001819 - Mouse brain proteome', url: './sdrf-explorer.html?view=PXD001819' }
+            ],
+            'dda-label-free-cell-line': [
+                { name: 'PXD000612 - HeLa cell line proteome', url: './sdrf-explorer.html?view=PXD000612' }
+            ],
+            'dda-tmt-human': [
+                { name: 'PXD010154 - TMT human plasma', url: './sdrf-explorer.html?view=PXD010154' }
+            ],
+            'dia-label-free-human': [
+                { name: 'PXD014194 - DIA human plasma', url: './sdrf-explorer.html?view=PXD014194' }
+            ],
+            'default': [
+                { name: 'Browse all examples', url: './sdrf-explorer.html' }
+            ]
+        };
+
+        function selectOption(button) {
+            const step = button.dataset.step;
+            const value = button.dataset.value;
+
+            // Update state
+            wizardState[step] = value;
+
+            // Update UI - mark selected
+            const stepElement = document.getElementById('step-' + step);
+            stepElement.querySelectorAll('.wizard-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            button.classList.add('selected');
+
+            // Show next step or results
+            setTimeout(() => {
+                if (step === 'acquisition') {
+                    if (value === 'affinity') {
+                        // Skip labeling for affinity
+                        wizardState.labeling = 'none';
+                        document.getElementById('step-organism').classList.remove('hidden');
+                    } else {
+                        document.getElementById('step-labeling').classList.remove('hidden');
+                    }
+                } else if (step === 'labeling') {
+                    document.getElementById('step-organism').classList.remove('hidden');
+                } else if (step === 'organism') {
+                    showResults();
+                }
+            }, 200);
+        }
+
+        function showResults() {
+            const resultDiv = document.getElementById('wizard-result');
+            const templatesDiv = document.getElementById('result-templates');
+            const examplesDiv = document.getElementById('result-examples');
+
+            // Determine templates
+            const templates = [];
+
+            // Technology template
+            if (wizardState.acquisition === 'dda') {
+                templates.push({ name: 'dda-acquisition', url: './templates/dda-acquisition.html' });
+            } else if (wizardState.acquisition === 'dia') {
+                templates.push({ name: 'dia-acquisition', url: './templates/dia-acquisition.html' });
+            } else if (wizardState.acquisition === 'affinity') {
+                templates.push({ name: 'affinity-proteomics', url: './templates/affinity-proteomics.html' });
+            }
+
+            // Organism template
+            if (wizardState.organism === 'human') {
+                templates.push({ name: 'human', url: './templates/human.html' });
+            } else if (wizardState.organism === 'mouse') {
+                templates.push({ name: 'vertebrates', url: './templates/vertebrates.html' });
+            } else if (wizardState.organism === 'cell-line') {
+                templates.push({ name: 'cell-lines', url: './templates/cell-lines.html' });
+            }
+
+            // Render templates
+            templatesDiv.innerHTML = templates.map(t =>
+                `<a href="${t.url}" class="template-tag">${t.name}</a>`
+            ).join('');
+
+            // Get examples
+            const key = `${wizardState.acquisition}-${wizardState.labeling}-${wizardState.organism}`;
+            const examples = exampleDatasets[key] || exampleDatasets['default'];
+
+            examplesDiv.innerHTML = examples.map(e =>
+                `<li><a href="${e.url}">${e.name}</a></li>`
+            ).join('');
+
+            // Update explorer link with filters
+            const explorerLink = document.getElementById('explorer-link');
+            let filterParams = [];
+            if (wizardState.organism === 'human') filterParams.push('organism=homo+sapiens');
+            if (wizardState.labeling === 'tmt') filterParams.push('label=TMT');
+            if (filterParams.length > 0) {
+                explorerLink.href = './sdrf-explorer.html?' + filterParams.join('&');
+            }
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        function resetWizard() {
+            wizardState.acquisition = null;
+            wizardState.labeling = null;
+            wizardState.organism = null;
+
+            document.querySelectorAll('.wizard-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            document.getElementById('step-labeling').classList.add('hidden');
+            document.getElementById('step-organism').classList.add('hidden');
+            document.getElementById('wizard-result').classList.add('hidden');
+        }
+    </script>
+
+</body>
+</html>
