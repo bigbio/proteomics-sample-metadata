@@ -56,10 +56,11 @@
 <li><a href="#templates">10. Templates</a>
 <ul class="sectlevel2">
 <li><a href="#_template_architecture">10.1. Template Architecture</a></li>
-<li><a href="#_specifying_templates_in_sdrf_files">10.2. Specifying Templates in SDRF Files</a></li>
-<li><a href="#_available_templates">10.3. Available Templates</a></li>
-<li><a href="#_extending_templates">10.4. Extending Templates</a></li>
-<li><a href="#_contributing_new_templates">10.5. Contributing New Templates</a></li>
+<li><a href="#_template_combination_rules">10.2. Template Combination Rules</a></li>
+<li><a href="#_specifying_templates_in_sdrf_files">10.3. Specifying Templates in SDRF Files</a></li>
+<li><a href="#_available_templates">10.4. Available Templates</a></li>
+<li><a href="#_extending_templates">10.5. Extending Templates</a></li>
+<li><a href="#_contributing_new_templates">10.6. Contributing New Templates</a></li>
 </ul>
 </li>
 <li><a href="#_factor_values_study_variables">11. Factor Values (Study Variables)</a>
@@ -357,7 +358,7 @@
 <div class="sect2">
 <h3 id="reserved-words"><a class="anchor" href="#reserved-words"></a><a class="link" href="#reserved-words">5.3. Reserved words</a></h3>
 <div class="paragraph">
-<p>There are general scenarios where cell values cannot be provided with actual data. The following reserved words MUST be used in these cases:</p>
+<p>There are general scenarios where cell values cannot be provided with actual data. The following reserved words MUST be used in these cases. Reserved words MUST be all lowercase (e.g., <code>not available</code>, NOT <code>Not Available</code> or <code>Not available</code>):</p>
 </div>
 <div class="ulist">
 <ul>
@@ -610,10 +611,10 @@ A list of all controlled vocabularies and ontologies supported are in the <a hre
 <p><strong>Ontology url (Computer readable)</strong>: Users can provide the corresponding URI (Uniform Resource Identifier) of the ontology/CV term as a value. This is recommended for enriched files where the user does not want to use intermediate tools to map from free text to ontology/CV terms.</p>
 </li>
 <li>
-<p><strong>Key=value representation (Human and Computer readable)</strong>: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. An example of key value pairs is post-translational modification (see <a href="templates/ms-proteomics.html#_protein_modifications">Protein Modifications</a>):</p>
+<p><strong>Key=value representation (Human and Computer readable)</strong>: The current representation aims to provide a mechanism to represent the complete information of the ontology/CV term including Accession, Name and other additional properties. In the key=value pair representation, the Value of the property is represented as an Object with multiple properties, where the key is one of the properties of the object and the value is the corresponding value for the particular key. The key order MUST be <code>NT</code> (name) first, followed by <code>AC</code> (accession), then any additional keys. An example of key value pairs is post-translational modification (see <a href="templates/ms-proteomics.html#_protein_modifications">Protein Modifications</a>):</p>
 <div class="literalblock">
 <div class="content">
-<pre>NT=Glu-&gt;pyro-Glu;MT=fixed;PP=Anywhere;AC=Unimod:27;TA=E</pre>
+<pre>NT=Glu-&gt;pyro-Glu;AC=Unimod:27;MT=fixed;PP=Anywhere;TA=E</pre>
 </div>
 </div>
 </li>
@@ -1069,6 +1070,18 @@ This section applies to <strong>mass spectrometry-based proteomics</strong> expe
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For HCD (Higher-energy C-trap Dissociation), the canonical accession is <a href="https://www.ebi.ac.uk/ols4/ontologies/ms/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FMS_1000422">MS:1000422 - beam-type collision-induced dissociation</a>. Use <code>NT=beam-type collision-induced dissociation;AC=MS:1000422</code> or the short label <code>HCD</code>. Do not use PRIDE:0000590 or MS:1002481.
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">8.3. Proteomics data acquisition method</a></h3>
@@ -1273,7 +1286,71 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 </div>
 </div>
 <div class="sect2">
-<h3 id="_specifying_templates_in_sdrf_files"><a class="anchor" href="#_specifying_templates_in_sdrf_files"></a><a class="link" href="#_specifying_templates_in_sdrf_files">10.2. Specifying Templates in SDRF Files</a></h3>
+<h3 id="_template_combination_rules"><a class="anchor" href="#_template_combination_rules"></a><a class="link" href="#_template_combination_rules">10.2. Template Combination Rules</a></h3>
+<div class="paragraph">
+<p>Templates within the same layer are <strong>mutually exclusive</strong> - you MUST choose exactly one from each applicable layer:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Layer</th>
+<th class="tableblock halign-left valign-top">Mutually Exclusive Templates</th>
+<th class="tableblock halign-left valign-top">Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TECHNOLOGY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> vs <code>affinity-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose one (REQUIRED)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SAMPLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>human</code> vs <code>vertebrates</code> vs <code>invertebrates</code> vs <code>plants</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose one based on organism (RECOMMENDED)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXPERIMENT (acquisition)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dda-acquisition</code> vs <code>dia-acquisition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose one based on method (OPTIONAL)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXPERIMENT (affinity platform)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>olink</code> vs <code>somascan</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose one if using affinity-proteomics (OPTIONAL)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Templates from different layers can be freely combined. Common valid combinations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ms-proteomics</code> + <code>human</code> + <code>dda-acquisition</code> (human DDA proteomics)</p>
+</li>
+<li>
+<p><code>ms-proteomics</code> + <code>human</code> + <code>immunopeptidomics</code> (human immunopeptidomics)</p>
+</li>
+<li>
+<p><code>ms-proteomics</code> + <code>vertebrates</code> + <code>cell-lines</code> (mouse cell line proteomics)</p>
+</li>
+<li>
+<p><code>ms-proteomics</code> + <code>human</code> + <code>crosslinking</code> (human crosslinking MS)</p>
+</li>
+<li>
+<p><code>affinity-proteomics</code> + <code>human</code> + <code>olink</code> (human Olink)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_specifying_templates_in_sdrf_files"><a class="anchor" href="#_specifying_templates_in_sdrf_files"></a><a class="link" href="#_specifying_templates_in_sdrf_files">10.3. Specifying Templates in SDRF Files</a></h3>
 <div class="paragraph">
 <p>Declare templates using <code>comment[sdrf template]</code> columns. Only list leaf templates (parents are implied). When using multiple templates, add multiple columns with the same name. Two formats are supported:</p>
 </div>
@@ -1328,7 +1405,7 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_available_templates"><a class="anchor" href="#_available_templates"></a><a class="link" href="#_available_templates">10.3. Available Templates</a></h3>
+<h3 id="_available_templates"><a class="anchor" href="#_available_templates"></a><a class="link" href="#_available_templates">10.4. Available Templates</a></h3>
 <div class="paragraph">
 <p><strong>Sample templates</strong> (organism-specific):</p>
 </div>
@@ -1386,7 +1463,7 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 <p><a href="templates/single-cell.html">Single-Cell</a> - cell isolation, carrier proteome</p>
 </li>
 <li>
-<p><a href="templates/immunopeptidomics.html">Immunopeptidomics</a> - MHC class, MHC typing</p>
+<p><a href="templates/immunopeptidomics.html">Immunopeptidomics</a> - MHC protein complex, MHC typing</p>
 </li>
 <li>
 <p><a href="templates/crosslinking.html">Crosslinking MS</a> - crosslinker reagents</p>
@@ -1401,7 +1478,7 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_extending_templates"><a class="anchor" href="#_extending_templates"></a><a class="link" href="#_extending_templates">10.4. Extending Templates</a></h3>
+<h3 id="_extending_templates"><a class="anchor" href="#_extending_templates"></a><a class="link" href="#_extending_templates">10.5. Extending Templates</a></h3>
 <div class="paragraph">
 <p>You can add custom columns beyond template requirements for study-specific metadata. Rules:</p>
 </div>
@@ -1423,7 +1500,7 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_contributing_new_templates"><a class="anchor" href="#_contributing_new_templates"></a><a class="link" href="#_contributing_new_templates">10.5. Contributing New Templates</a></h3>
+<h3 id="_contributing_new_templates"><a class="anchor" href="#_contributing_new_templates"></a><a class="link" href="#_contributing_new_templates">10.6. Contributing New Templates</a></h3>
 <div class="paragraph">
 <p>To propose a new template, open an <a href="https://github.com/bigbio/proteomics-metadata-standard/issues">issue on GitHub</a> and submit a pull request.</p>
 </div>
@@ -1887,7 +1964,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-26 06:23:23 UTC
+Last updated 2026-02-26 18:43:49 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
