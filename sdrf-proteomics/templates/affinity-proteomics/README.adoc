@@ -130,9 +130,9 @@ ifdef::backend-html5[]
 <td>protein expression profiling by antibody array</td>
 </tr>
 <tr>
-<td><code>comment[instrument]</code></td>
+<td><code>comment[platform]</code></td>
 <td><span class="required-badge">REQUIRED</span></td>
-<td>Affinity platform/instrument</td>
+<td>Affinity proteomics platform</td>
 <td>Olink Explore HT, SomaScan Assay 7K</td>
 </tr>
 <tr>
@@ -140,12 +140,6 @@ ifdef::backend-html5[]
 <td><span class="required-badge">REQUIRED</span></td>
 <td>Single data file name (same for all rows)</td>
 <td>olink_npx.csv, somascan_results.adat</td>
-</tr>
-<tr>
-<td><code>characteristics[individual]</code></td>
-<td><span class="required-badge">REQUIRED</span></td>
-<td>Unique identifier for the donor individual</td>
-<td>sample_01, donor-A1, anonymized, pooled</td>
 </tr>
 <tr>
 <td><code>comment[technical replicate]</code></td>
@@ -170,9 +164,8 @@ ifndef::backend-html5[]
 |characteristics[biological replicate] |REQUIRED |Biological replicate number or "pooled" |1, 2, pooled
 |assay name |REQUIRED |**Sample ID from platform data file** |XB6, Sample_ID_1
 |technology type |REQUIRED |Must be affinity-specific |protein expression profiling by antibody array
-|comment[instrument] |REQUIRED |Affinity platform/instrument |Olink Explore HT
+|comment[platform] |REQUIRED |Affinity proteomics platform |Olink Explore HT, SomaScan Assay 7K
 |comment[data file] |REQUIRED |Single data file name |olink_npx.csv
-|characteristics[individual] |REQUIRED |Unique identifier for the donor individual |sample_01, anonymized, pooled
 |comment[technical replicate] |REQUIRED |Technical replicate number |1
 |===
 endif::[]
@@ -216,6 +209,18 @@ ifdef::backend-html5[]
 <td>Platform-specific measurement unit</td>
 <td>NPX, RFU, MFI, pg/mL</td>
 </tr>
+<tr>
+<td><code>comment[instrument]</code></td>
+<td><span class="optional-badge">OPTIONAL</span></td>
+<td>Instrument used for data acquisition (sequencer, reader)</td>
+<td>Illumina NovaSeq X</td>
+</tr>
+<tr>
+<td><code>characteristics[individual]</code></td>
+<td><span class="recommended-badge">RECOMMENDED</span></td>
+<td>Unique identifier for the donor individual</td>
+<td>sample_01, donor-A1, anonymized, pooled</td>
+</tr>
 </tbody>
 </table>
 ++++
@@ -227,10 +232,12 @@ ifndef::backend-html5[]
 |Column |Requirement |Description |Example Values
 
 |comment[sample type] |RECOMMENDED |Sample classification from platform |sample, quality control sample, negative_control, plate_control
-|comment[plate] |RECOMMENDED |Plate identifier for batch effects |1, 2, plate_A
+|comment[plate] |OPTIONAL |Plate identifier for batch effects |1, 2, plate_A
 |comment[panel name] |RECOMMENDED |Commercial panel name |Olink Explore 3072, SomaScan 7K
 |comment[panel version] |OPTIONAL |Panel version |v4.1, 2023-01
 |comment[quantification unit] |OPTIONAL |Measurement unit |NPX, RFU, MFI, pg/mL
+|comment[instrument] |OPTIONAL |Instrument used for data acquisition (sequencer, reader) |Illumina NovaSeq X
+|characteristics[individual] |RECOMMENDED |Unique identifier for the donor individual |sample_01, anonymized, pooled
 |===
 endif::[]
 
@@ -282,7 +289,7 @@ The following MS-specific columns should **NOT** be included in affinity proteom
 * `comment[proteomics data acquisition method]` - No MS acquisition
 * `comment[label]` - No isotopic labeling
 * `comment[cleavage agent details]` - No protein digestion
-* `comment[fraction identifier]` - Typically no fractionation
+* `comment[fraction identifier]` - Available as OPTIONAL for dilution series (see template), but not typically used
 * `comment[modification parameters]` - Not relevant
 * `comment[precursor mass tolerance]` / `comment[fragment mass tolerance]` - No MS tolerances
 * `comment[dissociation method]` / `comment[collision energy]` - No MS/MS
@@ -351,7 +358,7 @@ ifndef::env-github[]
 <th class="sample-col">characteristics[biological replicate]</th>
 <th class="data-col">assay name</th>
 <th class="data-col">technology type</th>
-<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[platform]</th>
 <th class="data-col">comment[panel name]</th>
 <th class="data-col">comment[quantification unit]</th>
 <th class="data-col">comment[data file]</th>
@@ -397,7 +404,7 @@ endif::[]
 ifdef::env-github[]
 [cols="1,1,1,1,1,1,1,1,1,1,1", options="header"]
 |===
-|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate] |assay name |technology type |comment[instrument] |comment[panel name] |comment[quantification unit] |comment[data file]
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |characteristics[biological replicate] |assay name |technology type |comment[platform] |comment[panel name] |comment[quantification unit] |comment[data file]
 
 |sample_01 |homo sapiens |blood plasma |rheumatoid arthritis |1 |XB6 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 1536 |NPX |olink_npx.csv
 |sample_02 |homo sapiens |blood plasma |normal |2 |XB65 |protein expression profiling by antibody array |Olink Explore HT |Olink Explore 1536 |NPX |olink_npx.csv
@@ -419,7 +426,7 @@ ifndef::env-github[]
 <th class="sample-col">characteristics[disease]</th>
 <th class="data-col">assay name</th>
 <th class="data-col">technology type</th>
-<th class="data-col">comment[instrument]</th>
+<th class="data-col">comment[platform]</th>
 <th class="data-col">comment[panel name]</th>
 <th class="data-col">comment[quantification unit]</th>
 <th class="data-col">comment[data file]</th>
@@ -451,7 +458,7 @@ endif::[]
 ifdef::env-github[]
 [cols="1,1,1,1,1,1,1,1,1,1", options="header"]
 |===
-|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |assay name |technology type |comment[instrument] |comment[panel name] |comment[quantification unit] |comment[data file]
+|source name |characteristics[organism] |characteristics[organism part] |characteristics[disease] |assay name |technology type |comment[platform] |comment[panel name] |comment[quantification unit] |comment[data file]
 
 |sample_01 |homo sapiens |blood serum |type 2 diabetes mellitus |Sample_001 |protein expression profiling by aptamer array |SomaScan Assay 7K |SomaScan 7K v4.1 |RFU |somascan_results.adat
 |===
@@ -535,13 +542,13 @@ endif::[]
 |SomaScan |RFU |Relative Fluorescence Units
 |===
 
-=== Common Instruments
+=== Platforms and Instruments
 
 [cols="1,2", options="header"]
 |===
 |Platform |Instrument Examples
 
-|Olink |Olink Explore HT, Olink Explore 1536, Olink Target 96, Olink Reveal
+|Olink |Olink Explore HT, Olink Explore 3072/384, Olink Target 96, Olink Reveal
 |SomaScan |SomaScan Assay 7K, SomaScan Assay 11K
 |===
 
