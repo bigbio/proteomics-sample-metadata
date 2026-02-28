@@ -29,7 +29,6 @@ base (construction artifact - not user-facing)
 ├── TECHNOLOGY LAYER (mutually exclusive)
 │   ├── ms-proteomics              # Mass spectrometry proteomics
 │   │   └── EXPERIMENT LAYER
-│   │       ├── dda-acquisition    # Data-dependent acquisition
 │   │       ├── dia-acquisition    # Data-independent acquisition
 │   │       ├── single-cell        # Single-cell proteomics
 │   │       ├── immunopeptidomics  # MHC peptide analysis
@@ -70,7 +69,7 @@ cell-lines (EXPERIMENT layer - requires technology + sample)
 
 | `experiment`
 | Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.
-| dda-acquisition, single-cell, olink, cell-lines
+| dia-acquisition, single-cell, olink, cell-lines
 |===
 
 === Mutual Exclusivity
@@ -82,7 +81,6 @@ Some templates cannot be combined because they represent mutually exclusive conc
 | Template A | Template B | Reason
 
 | ms-proteomics | affinity-proteomics | Different technologies
-| dda-acquisition | dia-acquisition | Different acquisition methods
 | somascan | olink | Different affinity platforms
 | human | vertebrates | Different organism types
 | human | invertebrates | Different organism types
@@ -476,7 +474,7 @@ When multiple templates are combined:
 **Example valid combination:**
 [source]
 ----
-ms-proteomics + human + dda-acquisition + cell-lines
+ms-proteomics + human + dia-acquisition + cell-lines
      ↓             ↓           ↓              ↓
  technology    sample    experiment     experiment
 ----
@@ -576,10 +574,10 @@ parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv --template ms-proteomics
 parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv \
   --template ms-proteomics \
   --template human \
-  --template dda-acquisition
+  --template dia-acquisition
 
 # Check template compatibility
-parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition
+parse_sdrf check-templates --templates ms-proteomics,human,dia-acquisition
 ----
 
 == References
