@@ -49,6 +49,12 @@
 <li><a href="#_pattern">4.2.2. pattern</a></li>
 <li><a href="#_values">4.2.3. values</a></li>
 <li><a href="#_single_cardinality_validator">4.2.4. single_cardinality_validator</a></li>
+<li><a href="#_number_with_unit">4.2.5. number_with_unit</a></li>
+<li><a href="#_accession">4.2.6. accession</a></li>
+<li><a href="#_identifier">4.2.7. identifier</a></li>
+<li><a href="#_date">4.2.8. date</a></li>
+<li><a href="#_structured_kv">4.2.9. structured_kv</a></li>
+<li><a href="#_semver">4.2.10. semver</a></li>
 </ul>
 </li>
 </ul>
@@ -90,7 +96,7 @@
 <p>These YAML definitions are used by the <a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines</a> validator to check SDRF files for compliance.</p>
 </div>
 <div class="paragraph">
-<p><strong>Template files location:</strong> <a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">sdrf-proteomics/templates/</a></p>
+<p><strong>Template files location:</strong> <a href="https://github.com/bigbio/sdrf-templates">sdrf-templates/</a></p>
 </div>
 </div>
 </div>
@@ -109,7 +115,6 @@
 ├── TECHNOLOGY LAYER (mutually exclusive)
 │   ├── ms-proteomics              # Mass spectrometry proteomics
 │   │   └── EXPERIMENT LAYER
-│   │       ├── dda-acquisition    # Data-dependent acquisition
 │   │       ├── dia-acquisition    # Data-independent acquisition
 │   │       ├── single-cell        # Single-cell proteomics
 │   │       ├── immunopeptidomics  # MHC peptide analysis
@@ -165,7 +170,7 @@ cell-lines (EXPERIMENT layer - requires technology + sample)</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">dda-acquisition, single-cell, olink, cell-lines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dia-acquisition, single-cell, olink, cell-lines</p></td>
 </tr>
 </tbody>
 </table>
@@ -193,11 +198,6 @@ cell-lines (EXPERIMENT layer - requires technology + sample)</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">affinity-proteomics</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Different technologies</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">dda-acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">dia-acquisition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Different acquisition methods</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">somascan</p></td>
@@ -604,8 +604,6 @@ columns:
       - male
       - female
       - intersex
-      - not available
-      - not applicable
     error_level: error
     description: Sex must be one of the allowed values</code></pre>
 </div>
@@ -620,6 +618,247 @@ columns:
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: single_cardinality_validator
   params: {}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_number_with_unit"><a class="anchor" href="#_number_with_unit"></a><a class="link" href="#_number_with_unit">4.2.5. number_with_unit</a></h4>
+<div class="paragraph">
+<p>Validates values in <code>&lt;number&gt; &lt;unit&gt;</code> format. Replaces complex regex patterns for fields like mass tolerance, temperature, concentration, and depth.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: number_with_unit
+  params:
+    units: [ppm, Da]             # Required: allowed unit strings
+    allow_negative: false         # Optional: allow negative numbers (default: false)
+    allow_decimal: true           # Optional: allow decimal numbers (default: true)
+    special_values: []            # Optional: extra allowed literals (e.g., "room temperature")
+    error_level: error            # error or warning
+    description: Mass tolerance with unit
+    examples:
+      - 10 ppm
+      - 0.5 Da</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Parameters:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>units</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of allowed unit strings (e.g., <code>[ppm, Da]</code>, <code>[mg, g]</code>, <code>[°C]</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_negative</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow negative numbers (useful for temperature)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_decimal</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow decimal numbers (e.g., <code>0.5</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>special_values</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional literal values accepted verbatim (e.g., <code>[room temperature]</code>)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>not available</code> and <code>not applicable</code> are handled automatically by the column-level <code>allow_not_available</code> and <code>allow_not_applicable</code> flags — do not add them to <code>special_values</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_accession"><a class="anchor" href="#_accession"></a><a class="link" href="#_accession">4.2.6. accession</a></h4>
+<div class="paragraph">
+<p>Validates accession identifiers with prefix + suffix format. Supports predefined formats or custom prefix/suffix patterns.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Predefined format (recommended for known databases)
+- validator_name: accession
+  params:
+    format: biosample             # Predefined format name
+    error_level: error
+    description: BioSample accession
+    examples:
+      - SAMN12345678
+      - SAMEA12345678
+      - SAMD1234567
+
+# Custom prefix + suffix
+- validator_name: accession
+  params:
+    prefix: "CVCL_"              # Literal or simple regex
+    suffix: "[A-Z0-9]+"          # Simple regex (default: \d+)
+    error_level: error</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Predefined formats:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Prefix</th>
+<th class="tableblock halign-left valign-top">Suffix</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>biosample</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SAM(N|EA|D)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\d+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SAMN12345678</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cellosaurus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CVCL_</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[A-Z0-9]+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVCL_0030</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>proteomexchange</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PXD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\d+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PXD000001</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_identifier"><a class="anchor" href="#_identifier"></a><a class="link" href="#_identifier">4.2.7. identifier</a></h4>
+<div class="paragraph">
+<p>Validates alphanumeric identifiers with optional special values. Useful for individual/patient IDs and cell identifiers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: identifier
+  params:
+    charset: "[A-Za-z0-9_-]"     # Character class (default: [A-Za-z0-9_-])
+    special_values: [anonymized, pooled]  # Extra allowed literals
+    error_level: error
+    description: Patient or individual identifier</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>charset</code> parameter accepts a regex character class. Common values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>[A-Za-z0-9_-]</code> (default) — alphanumeric with underscores and hyphens</p>
+</li>
+<li>
+<p><code>[A-Za-z0-9_.-]</code> — also allows dots (for cell identifiers)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_date"><a class="anchor" href="#_date"></a><a class="link" href="#_date">4.2.8. date</a></h4>
+<div class="paragraph">
+<p>Validates ISO 8601 dates at variable precision levels.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: date
+  params:
+    format: iso8601               # Currently the only supported format
+    precision: [year, month, day] # Allowed precision levels
+    error_level: warning
+    description: Sample collection date
+    examples:
+      - "2024"
+      - "2024-01"
+      - "2024-01-15"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>precision</code> list controls which granularity levels are accepted. For example, <code>[day]</code> would only accept full <code>YYYY-MM-DD</code> dates, while <code>[year, month, day]</code> accepts any level.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_structured_kv"><a class="anchor" href="#_structured_kv"></a><a class="link" href="#_structured_kv">4.2.9. structured_kv</a></h4>
+<div class="paragraph">
+<p>Validates semicolon-separated key=value pair formats. Useful for ontology-annotated values with <code>NT=name;AC=accession</code> structure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: structured_kv
+  params:
+    separator: ";"                # Separator between pairs (default: ";")
+    fields:                       # Required key=value definitions
+      - key: NT
+        value: ".+"               # Simple regex for the value
+      - key: AC
+        value: "(XLMOD|CHEBI|UNIMOD):\\d+"
+    error_level: error
+    description: "Cross-linker: NT=name;AC=ontology:accession"
+    examples:
+      - "NT=DSS;AC=XLMOD:02001"
+      - "NT=BS3;AC=XLMOD:02000"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each entry in <code>fields</code> defines a required key and a regex pattern for its value.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_semver"><a class="anchor" href="#_semver"></a><a class="link" href="#_semver">4.2.10. semver</a></h4>
+<div class="paragraph">
+<p>Validates semantic version strings.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: semver
+  params:
+    prefix: "v"                   # Optional prefix character
+    allow_prerelease: true        # Allow -alpha, -beta, -rc.1 suffixes (default: true)
+    error_level: error
+    description: SDRF specification version
+    examples:
+      - v1.1.0
+      - v1.0.0</code></pre>
 </div>
 </div>
 </div>
@@ -842,7 +1081,7 @@ columns:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">ms-proteomics + human + dda-acquisition + cell-lines
+<pre class="highlightjs highlight"><code class="language-none hljs">ms-proteomics + human + dia-acquisition + cell-lines
      ↓             ↓           ↓              ↓
  technology    sample    experiment     experiment</code></pre>
 </div>
@@ -1177,7 +1416,7 @@ parse_sdrf validate-sdrf \
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Validators</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>ontology</code> for controlled vocabularies, <code>pattern</code> for structured text, <code>values</code> for fixed lists. Always include <code>examples</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>ontology</code> for controlled vocabularies, <code>values</code> for fixed lists, and typed validators for common formats: <code>number_with_unit</code> for numeric values with units, <code>accession</code> for database identifiers, <code>identifier</code> for alphanumeric IDs, <code>date</code> for ISO dates, <code>structured_kv</code> for key=value formats, <code>semver</code> for version strings. Use <code>pattern</code> only for unique formats not covered by typed validators. Always include <code>examples</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Reserved words</p></td>
@@ -1194,7 +1433,7 @@ parse_sdrf validate-sdrf \
 <p><strong>Only define what is new.</strong> Inherited columns from the parent template do not need to be repeated. Only add a column to your template if it is new or if you need to override the parent&#8217;s definition (e.g., change <code>requirement</code> from <code>optional</code> to <code>required</code>, or restrict allowed values).</p>
 </li>
 <li>
-<p><strong>Use ontologies over patterns.</strong> Prefer <code>ontology</code> validators for fields where controlled vocabulary terms exist. Use <code>pattern</code> validators only for structured free text (ages, mass ranges, file names).</p>
+<p><strong>Use ontologies over patterns.</strong> Prefer <code>ontology</code> validators for fields where controlled vocabulary terms exist. Use typed validators (<code>number_with_unit</code>, <code>accession</code>, <code>identifier</code>, <code>date</code>, <code>structured_kv</code>, <code>semver</code>) for common structured formats. Use <code>pattern</code> validators only for unique formats not covered by typed validators.</p>
 </li>
 <li>
 <p><strong>Provide clear descriptions.</strong> Explain not just what the field is, but when to use <code>not applicable</code> vs <code>not available</code>, and give format guidance.</p>
@@ -1228,10 +1467,10 @@ parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv --template ms-proteomics
 parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv \
   --template ms-proteomics \
   --template human \
-  --template dda-acquisition
+  --template dia-acquisition
 
 # Check template compatibility
-parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition</code></pre>
+parse_sdrf check-templates --templates ms-proteomics,human,dia-acquisition</code></pre>
 </div>
 </div>
 </div>
@@ -1257,7 +1496,7 @@ parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition</code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-27 13:39:31 UTC
+Last updated 2026-02-28 09:14:41 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

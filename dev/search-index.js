@@ -5,28 +5,28 @@ const SEARCH_INDEX = [
     "content": "// suppress inspection \"GrazieInspection\" for whole file\nSample and Data Relationship Format for Proteomics (SDRF-Proteomics)\n\n//only works on some backends, not HTML\n\n//use style like Section 1 when referencing within the document.\n\n//GitHub specific settings\n\nStatus of this document\n\nThis document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.\n\nVersion v1.1.0 - 2026-01\n\nAbstract\n\nThe Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).\n\nFurther detailed information, including any updates to this document, implementations, and examples is available at SDRF GitHub Repository. The official PSI web page for the document is: HUPO-PSI SDRF.\n\nMotivation\n\nPublic proteomics data is valuable, but sample metadata is often missing or stored inconsistently across repositories (e.g., CPTAC uses Excel files, ProteomicsDB captures minimal properties) . This heterogeneity prevents reproducibility and cross-dataset integration.\n\nSDRF-Proteomics addresses this by providing a standard tab-delimited format to capture (Figure 1):\n\n- Sample metadata and characteristics\n- Data file acquisition parameters\n- Sample-to-file relationships (experimental design)\n\nFigure 1: SDRF-Proteomics captures sample information and its relationship to data files.\n\nThe format is fully compatible with MAGE-TAB SDRF, enabling integration with transcriptomics metadata standards.\n\nSpecification structure\n\nSDRF-Proteomics uses a two-tier system: this core specification defines the format rules, and ** provide metadata checklists for specific experiment types (Figure 2). Templates are organized in the",
     "url": "./specification.html",
     "section": "Core Specification",
-    "keywords": "cleavage agent details CLO DOID proteomics data acquisition method sdrf version sex MS assay name data file sdrf validation hash PRIDE:0000840 PRIDE:0000590 fraction identifier UBERON PRIDE:0000832 dia_scan technical replicate protein CL exclamation MS:1000484 developmental stage source name file your comment biological replicate modification parameters characteristics instrument factor value sdrf annotation tool MONDO BTO organism part disease biosample accession number label sdrf template PATO:0000461 technology type sample PRIDE:0000834 pooled sample MS:1000422 PRIDE:0000659 individual HANCESTRO organism disease staging cleavage agent MS:1002481 EFO tissue NCIT PRIDE:0000839 PATO ... cell line age cell type MS:1001251"
+    "keywords": "cell type ... technical replicate sdrf version MS age BTO HANCESTRO proteomics data acquisition method source name disease protein EFO DOID PATO:0000461 cell line technology type PRIDE:0000839 UBERON pooled sample cleavage agent PRIDE:0000659 sdrf validation hash factor value PRIDE:0000834 organism part disease staging PRIDE:0000590 MS:1002481 PRIDE:0000832 PATO sex exclamation individual file your label data file characteristics tissue developmental stage sdrf template biosample accession number MS:1000422 dia_scan MS:1001251 MONDO biological replicate CLO fraction identifier instrument sample cleavage agent details sdrf annotation tool modification parameters organism PRIDE:0000840 comment MS:1000484 NCIT assay name CL"
   },
   {
     "title": "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)",
     "content": "// suppress inspection \"GrazieInspection\" for whole file\nSample and Data Relationship Format for Proteomics (SDRF-Proteomics)\n\n//only works on some backends, not HTML\n\n//use style like Section 1 when referencing within the document.\n\n//GitHub specific settings\n\nStatus of this document\n\nThis document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.\n\nVersion v1.1.0 - 2026-01\n\nAbstract\n\nThe Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).\n\nFurther detailed information, including any updates to this document, implementations, and examples is available at SDRF GitHub Repository. The official PSI web page for the document is: HUPO-PSI SDRF.\n\nMotivation\n\nPublic proteomics data is valuable, but sample metadata is often missing or stored inconsistently across repositories (e.g., CPTAC uses Excel files, ProteomicsDB captures minimal properties) . This heterogeneity prevents reproducibility and cross-dataset integration.\n\nSDRF-Proteomics addresses this by providing a standard tab-delimited format to capture (Figure 1):\n\n- Sample metadata and characteristics\n- Data file acquisition parameters\n- Sample-to-file relationships (experimental design)\n\nFigure 1: SDRF-Proteomics captures sample information and its relationship to data files.\n\nThe format is fully compatible with MAGE-TAB SDRF, enabling integration with transcriptomics metadata standards.\n\nSpecification structure\n\nSDRF-Proteomics uses a two-tier system: this core specification defines the format rules, and ** provide metadata checklists for specific experiment types (Figure 2). Templates are organized in the",
     "url": "./specification.html#sample-and-data-relationship-format-for-proteomics-sdrf-proteomics",
     "section": "Core Specification",
-    "keywords": "cleavage agent details CLO DOID proteomics data acquisition method sdrf version sex MS assay name data file sdrf validation hash PRIDE:0000840 PRIDE:0000590 fraction identifier UBERON PRIDE:0000832 technical replicate CL MS:1000484 developmental stage source name comment biological replicate modification parameters factor value instrument sdrf annotation tool MONDO BTO organism part disease biosample accession number label sdrf template PATO:0000461 technology type PRIDE:0000834 pooled sample MS:1000422 PRIDE:0000659 individual HANCESTRO organism disease staging cleavage agent MS:1002481 EFO tissue NCIT PRIDE:0000839 PATO ... cell line age cell type MS:1001251"
+    "keywords": "cell type ... technical replicate sdrf version MS age BTO HANCESTRO proteomics data acquisition method source name disease EFO DOID PATO:0000461 cell line technology type PRIDE:0000839 UBERON pooled sample cleavage agent PRIDE:0000659 sdrf validation hash factor value PRIDE:0000834 organism part disease staging PRIDE:0000590 MS:1002481 PRIDE:0000832 PATO sex individual label data file tissue developmental stage sdrf template biosample accession number MS:1000422 MS:1001251 MONDO biological replicate CLO fraction identifier instrument cleavage agent details sdrf annotation tool modification parameters organism PRIDE:0000840 comment MS:1000484 NCIT assay name CL"
   },
   {
     "title": "Sample Metadata Guidelines",
     "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[organism]\n\nOntology: NCBI Taxonomy (NCBITaxon)\n\nUse the scientific name in lowercase. The validator will map to the correct ontology term.\n\nValue |NCBITaxon ID |Description\n\nhomo sapiens |NCBITaxon:9606 |Human\nmus musculus |NCBITaxon:10090 |Mouse\n\nOrganism Part / Tissue\n\nColumn: characteristics[organism part]\n\nOntology: UBERON for mammals/vertebrates, Plant Ontology (PO) for plants, FlyBase Anatomy (FBbt) for Drosophila.\n\nUse lowercase for all values. For cell line samples, use not applicable or specify the tissue of origin (e.g., cervix for HeLa).\n\n[NOTE]\n====\nDo ",
     "url": "./metadata-guidelines/sample-metadata.html",
     "section": "Sample Metadata Guidelines",
-    "keywords": "CL:0000057 UBERON:0000955 phenotype dose material type DOID genotype time point enrichment process sex CL:0000084 UBERON CL compound EFO:0000651 smoking status exclamation developmental stage source name MONDO:0004989 mass factor value MONDO UBERON:0002107 organism part disease treatment PATO:0000461 UBERON:0000948 CL:0000624 depletion xenograft cell type synthetic peptide CL:0000236 spiked compound individual CL:0000066 organism EFO tissue patient bmi UBERON:0001969 CL:0000235 tissue supergroup PATO cell line age CL:0000815 PATO:0000047 PRIDE:0000837"
+    "keywords": "cell type CL:0000815 PATO:0000047 mass age UBERON:0002107 patient bmi enrichment process source name disease material type EFO synthetic peptide CL:0000235 UBERON:0001969 PATO:0000461 DOID cell line dose UBERON CL:0000236 compound UBERON:0000955 depletion factor value PRIDE:0000837 CL:0000624 MONDO:0004989 organism part time point CL:0000084 PATO sex exclamation individual tissue CL:0000066 developmental stage smoking status spiked compound MONDO tissue supergroup xenograft treatment phenotype UBERON:0000948 CL:0000057 organism EFO:0000651 genotype CL"
   },
   {
     "title": "Sample Metadata Guidelines",
     "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[organism]\n\nOntology: NCBI Taxonomy (NCBITaxon)\n\nUse the scientific name in lowercase. The validator will map to the correct ontology term.\n\nValue |NCBITaxon ID |Description\n\nhomo sapiens |NCBITaxon:9606 |Human\nmus musculus |NCBITaxon:10090 |Mouse\n\nOrganism Part / Tissue\n\nColumn: characteristics[organism part]\n\nOntology: UBERON for mammals/vertebrates, Plant Ontology (PO) for plants, FlyBase Anatomy (FBbt) for Drosophila.\n\nUse lowercase for all values. For cell line samples, use not applicable or specify the tissue of origin (e.g., cervix for HeLa).\n\n[NOTE]\n====\nDo ",
     "url": "./metadata-guidelines/sample-metadata.html#sample-metadata-guidelines",
     "section": "Sample Metadata Guidelines",
-    "keywords": "CL:0000057 UBERON:0000955 phenotype dose material type DOID genotype time point enrichment process sex CL:0000084 UBERON CL compound EFO:0000651 smoking status developmental stage source name MONDO:0004989 mass factor value MONDO UBERON:0002107 organism part disease treatment PATO:0000461 UBERON:0000948 CL:0000624 depletion xenograft cell type synthetic peptide CL:0000236 spiked compound individual CL:0000066 organism EFO tissue patient bmi UBERON:0001969 CL:0000235 tissue supergroup PATO cell line age CL:0000815 PATO:0000047 PRIDE:0000837"
+    "keywords": "cell type CL:0000815 PATO:0000047 mass age UBERON:0002107 patient bmi enrichment process source name disease material type EFO synthetic peptide CL:0000235 UBERON:0001969 PATO:0000461 DOID cell line dose UBERON CL:0000236 compound UBERON:0000955 depletion factor value PRIDE:0000837 CL:0000624 MONDO:0004989 organism part time point CL:0000084 PATO sex individual tissue CL:0000066 developmental stage smoking status spiked compound MONDO tissue supergroup xenograft treatment phenotype UBERON:0000948 CL:0000057 organism EFO:0000651 genotype CL"
   },
   {
     "title": "SDRF-Proteomics: Tool Support",
@@ -44,66 +44,66 @@ const SEARCH_INDEX = [
   },
   {
     "title": "Column: source name",
-    "content": "source name anchor column base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition free text",
+    "content": "source name anchor column base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition free text",
     "url": "./sdrf-terms.html#source-name",
     "section": "SDRF Terms Reference",
-    "keywords": "source name base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "source name base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: assay name",
-    "content": "assay name anchor column base, ms-proteomics, affinity-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition free text",
+    "content": "assay name anchor column base, ms-proteomics, affinity-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition free text",
     "url": "./sdrf-terms.html#assay-name",
     "section": "SDRF Terms Reference",
-    "keywords": "assay name base, ms-proteomics, affinity-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "assay name base, ms-proteomics, affinity-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: technology type",
-    "content": "technology type anchor column base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition fixed: proteomic profiling by mass spectrometry, protein expression profiling by antibody array, protein expression profiling by aptamer array",
+    "content": "technology type anchor column base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition fixed: proteomic profiling by mass spectrometry, protein expression profiling by antibody array, protein expression profiling by aptamer array",
     "url": "./sdrf-terms.html#technology-type",
     "section": "SDRF Terms Reference",
-    "keywords": "technology type base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "technology type base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: organism",
-    "content": "organism characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition NCBITaxon",
+    "content": "organism characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition NCBITaxon",
     "url": "./sdrf-terms.html#organism",
     "section": "SDRF Terms Reference",
-    "keywords": "organism base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "organism base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: organism part",
-    "content": "organism part characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition UBERON, BTO",
+    "content": "organism part characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition UBERON, BTO",
     "url": "./sdrf-terms.html#organism-part",
     "section": "SDRF Terms Reference",
-    "keywords": "organism part base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "organism part base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: disease",
-    "content": "disease characteristics ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition, dda-acquisition MONDO, EFO, DOID, PATO",
+    "content": "disease characteristics ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition MONDO, EFO, DOID, PATO",
     "url": "./sdrf-terms.html#disease",
     "section": "SDRF Terms Reference",
-    "keywords": "disease ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition, dda-acquisition"
+    "keywords": "disease ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition"
   },
   {
     "title": "Column: cell type",
-    "content": "cell type characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition CL, BTO, CLO",
+    "content": "cell type characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition CL, BTO, CLO",
     "url": "./sdrf-terms.html#cell-type",
     "section": "SDRF Terms Reference",
-    "keywords": "cell type base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "cell type base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: material type",
-    "content": "material type characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition fixed: tissue, cell, cell line, organism part, whole organism, synthetic",
+    "content": "material type characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition fixed: tissue, cell, cell line, organism part, whole organism, synthetic",
     "url": "./sdrf-terms.html#material-type",
     "section": "SDRF Terms Reference",
-    "keywords": "material type base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "material type base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: biological replicate",
-    "content": "biological replicate characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition integer or pooled",
+    "content": "biological replicate characteristics base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition integer or pooled",
     "url": "./sdrf-terms.html#biological-replicate",
     "section": "SDRF Terms Reference",
-    "keywords": "biological replicate base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "biological replicate base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: ancestry category",
@@ -513,129 +513,129 @@ const SEARCH_INDEX = [
   },
   {
     "title": "Column: proteomics data acquisition method",
-    "content": "proteomics data acquisition method comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition PRIDE",
+    "content": "proteomics data acquisition method comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition PRIDE",
     "url": "./sdrf-terms.html#proteomics-data-acquisition-method",
     "section": "SDRF Terms Reference",
-    "keywords": "proteomics data acquisition method base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "proteomics data acquisition method base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: label",
-    "content": "label comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition PRIDE",
+    "content": "label comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition PRIDE",
     "url": "./sdrf-terms.html#label",
     "section": "SDRF Terms Reference",
-    "keywords": "label base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "label base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: instrument",
-    "content": "instrument comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition MS (PSI-MS)",
+    "content": "instrument comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition MS (PSI-MS)",
     "url": "./sdrf-terms.html#instrument",
     "section": "SDRF Terms Reference",
-    "keywords": "instrument base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "instrument base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: cleavage agent details",
-    "content": "cleavage agent details comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition MS (PSI-MS)",
+    "content": "cleavage agent details comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition MS (PSI-MS)",
     "url": "./sdrf-terms.html#cleavage-agent-details",
     "section": "SDRF Terms Reference",
-    "keywords": "cleavage agent details base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "cleavage agent details base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: fraction identifier",
-    "content": "fraction identifier comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition integer",
+    "content": "fraction identifier comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition integer",
     "url": "./sdrf-terms.html#fraction-identifier",
     "section": "SDRF Terms Reference",
-    "keywords": "fraction identifier base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "fraction identifier base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: technical replicate",
-    "content": "technical replicate comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition integer",
+    "content": "technical replicate comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition integer",
     "url": "./sdrf-terms.html#technical-replicate",
     "section": "SDRF Terms Reference",
-    "keywords": "technical replicate base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "technical replicate base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: data file",
-    "content": "data file comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition file name",
+    "content": "data file comment base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition file name",
     "url": "./sdrf-terms.html#data-file",
     "section": "SDRF Terms Reference",
-    "keywords": "data file base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "keywords": "data file base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition"
   },
   {
     "title": "Column: modification parameters",
-    "content": "modification parameters comment dia-acquisition, dda-acquisition Unimod, PSI-MOD",
+    "content": "modification parameters comment ms-proteomics, dia-acquisition Unimod, PSI-MOD",
     "url": "./sdrf-terms.html#modification-parameters",
     "section": "SDRF Terms Reference",
-    "keywords": "modification parameters dia-acquisition, dda-acquisition"
+    "keywords": "modification parameters ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: precursor mass tolerance",
-    "content": "precursor mass tolerance comment dia-acquisition, dda-acquisition pattern: number + ppm/Da",
+    "content": "precursor mass tolerance comment ms-proteomics, dia-acquisition pattern: number + ppm/Da",
     "url": "./sdrf-terms.html#precursor-mass-tolerance",
     "section": "SDRF Terms Reference",
-    "keywords": "precursor mass tolerance dia-acquisition, dda-acquisition"
+    "keywords": "precursor mass tolerance ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: fragment mass tolerance",
-    "content": "fragment mass tolerance comment dia-acquisition, dda-acquisition pattern: number + ppm/Da",
+    "content": "fragment mass tolerance comment ms-proteomics, dia-acquisition pattern: number + ppm/Da",
     "url": "./sdrf-terms.html#fragment-mass-tolerance",
     "section": "SDRF Terms Reference",
-    "keywords": "fragment mass tolerance dia-acquisition, dda-acquisition"
+    "keywords": "fragment mass tolerance ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: precursor min mz",
-    "content": "precursor min mz comment dia-acquisition, dda-acquisition numeric (m/z)",
+    "content": "precursor min mz comment ms-proteomics, dia-acquisition numeric (m/z)",
     "url": "./sdrf-terms.html#precursor-min-mz",
     "section": "SDRF Terms Reference",
-    "keywords": "precursor min mz dia-acquisition, dda-acquisition"
+    "keywords": "precursor min mz ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: precursor max mz",
-    "content": "precursor max mz comment dia-acquisition, dda-acquisition numeric (m/z)",
+    "content": "precursor max mz comment ms-proteomics, dia-acquisition numeric (m/z)",
     "url": "./sdrf-terms.html#precursor-max-mz",
     "section": "SDRF Terms Reference",
-    "keywords": "precursor max mz dia-acquisition, dda-acquisition"
+    "keywords": "precursor max mz ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: precursor min charge",
-    "content": "precursor min charge comment dia-acquisition, dda-acquisition integer",
+    "content": "precursor min charge comment ms-proteomics, dia-acquisition integer",
     "url": "./sdrf-terms.html#precursor-min-charge",
     "section": "SDRF Terms Reference",
-    "keywords": "precursor min charge dia-acquisition, dda-acquisition"
+    "keywords": "precursor min charge ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: precursor max charge",
-    "content": "precursor max charge comment dia-acquisition, dda-acquisition integer",
+    "content": "precursor max charge comment ms-proteomics, dia-acquisition integer",
     "url": "./sdrf-terms.html#precursor-max-charge",
     "section": "SDRF Terms Reference",
-    "keywords": "precursor max charge dia-acquisition, dda-acquisition"
+    "keywords": "precursor max charge ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: min retention time",
-    "content": "min retention time comment dia-acquisition, dda-acquisition numeric (minutes)",
+    "content": "min retention time comment ms-proteomics, dia-acquisition numeric (minutes)",
     "url": "./sdrf-terms.html#min-retention-time",
     "section": "SDRF Terms Reference",
-    "keywords": "min retention time dia-acquisition, dda-acquisition"
+    "keywords": "min retention time ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: max retention time",
-    "content": "max retention time comment dia-acquisition, dda-acquisition numeric (minutes)",
+    "content": "max retention time comment ms-proteomics, dia-acquisition numeric (minutes)",
     "url": "./sdrf-terms.html#max-retention-time",
     "section": "SDRF Terms Reference",
-    "keywords": "max retention time dia-acquisition, dda-acquisition"
+    "keywords": "max retention time ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: min ion mobility",
-    "content": "min ion mobility comment dia-acquisition, dda-acquisition numeric (1/K0 or Vs/cm2)",
+    "content": "min ion mobility comment ms-proteomics, dia-acquisition numeric (1/K0 or Vs/cm2)",
     "url": "./sdrf-terms.html#min-ion-mobility",
     "section": "SDRF Terms Reference",
-    "keywords": "min ion mobility dia-acquisition, dda-acquisition"
+    "keywords": "min ion mobility ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: max ion mobility",
-    "content": "max ion mobility comment dia-acquisition, dda-acquisition numeric (1/K0 or Vs/cm2)",
+    "content": "max ion mobility comment ms-proteomics, dia-acquisition numeric (1/K0 or Vs/cm2)",
     "url": "./sdrf-terms.html#max-ion-mobility",
     "section": "SDRF Terms Reference",
-    "keywords": "max ion mobility dia-acquisition, dda-acquisition"
+    "keywords": "max ion mobility ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: passage number",
@@ -807,24 +807,24 @@ const SEARCH_INDEX = [
   },
   {
     "title": "Column: collision energy",
-    "content": "collision energy comment dia-acquisition, dda-acquisition pattern: {value} {unit} where value is number with optional %, unit is NCE or eV. Stepped: {value} {unit};{value} {unit}",
+    "content": "collision energy comment ms-proteomics, dia-acquisition pattern: {value} {unit} where value is number with optional %, unit is NCE or eV. Stepped: {value} {unit};{value} {unit}",
     "url": "./sdrf-terms.html#collision-energy",
     "section": "SDRF Terms Reference",
-    "keywords": "collision energy dia-acquisition, dda-acquisition"
+    "keywords": "collision energy ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: dissociation method",
-    "content": "dissociation method comment dia-acquisition, dda-acquisition MS, PRIDE (children of MS:1000044)",
+    "content": "dissociation method comment ms-proteomics, dia-acquisition MS, PRIDE (children of MS:1000044)",
     "url": "./sdrf-terms.html#dissociation-method",
     "section": "SDRF Terms Reference",
-    "keywords": "dissociation method dia-acquisition, dda-acquisition"
+    "keywords": "dissociation method ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: MS2 mass analyzer",
-    "content": "MS2 mass analyzer comment dia-acquisition, dda-acquisition MS (PSI-MS)",
+    "content": "MS2 mass analyzer comment ms-proteomics, dia-acquisition MS (PSI-MS)",
     "url": "./sdrf-terms.html#ms2-mass-analyzer",
     "section": "SDRF Terms Reference",
-    "keywords": "MS2 mass analyzer dia-acquisition, dda-acquisition"
+    "keywords": "MS2 mass analyzer ms-proteomics, dia-acquisition"
   },
   {
     "title": "Column: DIA method",
@@ -835,9 +835,9 @@ const SEARCH_INDEX = [
   },
   {
     "title": "Column: fractionation method",
-    "content": "fractionation method comment dda-acquisition PRIDE (children of PRIDE:0000550)",
+    "content": "fractionation method comment ms-proteomics PRIDE (children of PRIDE:0000550)",
     "url": "./sdrf-terms.html#fractionation-method",
     "section": "SDRF Terms Reference",
-    "keywords": "fractionation method dda-acquisition"
+    "keywords": "fractionation method ms-proteomics"
   }
 ];
