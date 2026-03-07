@@ -26,25 +26,27 @@ Templates are organized in a layered hierarchy where each layer serves a specifi
 ----
 base (construction artifact - not user-facing)
 │
-├── TECHNOLOGY LAYER (mutually exclusive)
-│   ├── ms-proteomics              # Mass spectrometry proteomics
-│   │   └── EXPERIMENT LAYER
-│   │       ├── dia-acquisition    # Data-independent acquisition
-│   │       ├── single-cell        # Single-cell proteomics
-│   │       ├── immunopeptidomics  # MHC peptide analysis
-│   │       ├── crosslinking       # XL-MS experiments
-│   │       └── metaproteomics     # Microbiome proteomics
-│   │
-│   └── affinity-proteomics        # Affinity-based proteomics
-│       └── EXPERIMENT LAYER
-│           ├── olink              # Olink PEA platform
-│           └── somascan           # SomaScan aptamer platform
-│
-└── SAMPLE LAYER (mutually exclusive)
-    ├── human                      # Human samples
-    ├── vertebrates                # Non-human vertebrates (mouse, rat, etc.)
-    ├── invertebrates              # Invertebrates (Drosophila, C. elegans)
-    └── plants                     # Plant samples (Arabidopsis, crops)
+└── sample-metadata (intermediate - sample columns shared by all templates)
+    │
+    ├── TECHNOLOGY LAYER (mutually exclusive)
+    │   ├── ms-proteomics              # Mass spectrometry proteomics
+    │   │   └── EXPERIMENT LAYER
+    │   │       ├── dia-acquisition    # Data-independent acquisition
+    │   │       ├── single-cell        # Single-cell proteomics
+    │   │       ├── immunopeptidomics  # MHC peptide analysis
+    │   │       ├── crosslinking       # XL-MS experiments
+    │   │       └── metaproteomics     # Microbiome proteomics
+    │   │
+    │   └── affinity-proteomics        # Affinity-based proteomics
+    │       └── EXPERIMENT LAYER
+    │           ├── olink              # Olink PEA platform
+    │           └── somascan           # SomaScan aptamer platform
+    │
+    └── SAMPLE LAYER (mutually exclusive)
+        ├── human                      # Human samples
+        ├── vertebrates                # Non-human vertebrates (mouse, rat, etc.)
+        ├── invertebrates              # Invertebrates (Drosophila, C. elegans)
+        └── plants                     # Plant samples (Arabidopsis, crops)
 
 cell-lines (EXPERIMENT layer - requires technology + sample)
 ----
@@ -56,8 +58,12 @@ cell-lines (EXPERIMENT layer - requires technology + sample)
 | Layer | Purpose | Examples
 
 | `base`
-| Internal construction artifact with shared columns. Never used directly by users.
+| Internal construction artifact with infrastructure columns (source name, assay name, technology type, etc.). Never used directly by users.
 | base
+
+| `sample-metadata`
+| Intermediate template with sample-level columns shared by all templates (organism, organism part, cell type, biological replicate, pooled sample, disease, biosample accession). Extends `base`. Never used directly by users.
+| sample-metadata
 
 | `technology`
 | Defines the proteomics technology. Exactly one required per SDRF.
@@ -106,9 +112,9 @@ version: 1.1.0                     # Semantic version (major.minor.patch)
 # =============================================================================
 # INHERITANCE AND RELATIONSHIPS (optional)
 # =============================================================================
-extends: base                      # Parent template to inherit from
+extends: sample-metadata             # Parent template to inherit from
 usable_alone: false                # Can this template be used without others?
-layer: sample                      # Layer: base, technology, sample, experiment
+layer: sample                      # Layer: base, sample-metadata, technology, sample, experiment
 
 # Mutual exclusivity - templates that cannot be combined with this one
 mutually_exclusive_with:

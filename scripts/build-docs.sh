@@ -142,12 +142,12 @@ if [ -f "sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc" ]; then
         sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc
 fi
 
-# Build template definitions guide
-if [ -f "sdrf-proteomics/metadata-guidelines/template-definitions.adoc" ]; then
-    echo "Building template definitions guide..."
+# Build templates guide
+if [ -f "sdrf-proteomics/TEMPLATES.adoc" ]; then
+    echo "Building templates guide..."
     asciidoctor \
-        -D "$OUTPUT_DIR/metadata-guidelines" \
-        -a stylesheet=../css/style.css \
+        -D "$OUTPUT_DIR" \
+        -a stylesheet=css/style.css \
         -a linkcss \
         -a toc=left \
         -a toclevels=3 \
@@ -155,8 +155,8 @@ if [ -f "sdrf-proteomics/metadata-guidelines/template-definitions.adoc" ]; then
         -a sectlinks \
         -a source-highlighter=highlight.js \
         --backend=html5 \
-        -o template-definitions.html \
-        sdrf-proteomics/metadata-guidelines/template-definitions.adoc
+        -o TEMPLATES.html \
+        sdrf-proteomics/TEMPLATES.adoc
 fi
 
 # Build data analysis metadata guide

@@ -43,15 +43,15 @@ asciidoctor \
     -o sample-metadata.html \
     sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
 
-# Build template definitions guide
-if [ -f "sdrf-proteomics/metadata-guidelines/template-definitions.adoc" ]; then
-    echo "Building template definitions guide..."
+# Build templates guide
+if [ -f "sdrf-proteomics/TEMPLATES.adoc" ]; then
+    echo "Building templates guide..."
     asciidoctor \
-        -D "$OUTPUT_DIR/metadata-guidelines" \
-        -a stylesheet=../css/style.css \
+        -D "$OUTPUT_DIR" \
+        -a stylesheet=css/style.css \
         $ASCIIDOCTOR_OPTS \
-        -o template-definitions.html \
-        sdrf-proteomics/metadata-guidelines/template-definitions.adoc
+        -o TEMPLATES.html \
+        sdrf-proteomics/TEMPLATES.adoc
 fi
 
 # Build data analysis metadata guide

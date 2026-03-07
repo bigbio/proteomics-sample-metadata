@@ -19,14 +19,18 @@ endif::[]
 
 This document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).
 
-For human-specific metadata (disease staging, comorbidities, treatment history), see link:../templates/human/README.adoc[Human Template].
+For human-specific metadata (disease staging, comorbidities, treatment history), see https://github.com/bigbio/sdrf-templates/tree/main/human[Human Template].
 
 **Version 1.1.0** - 2026-01
+
+== Columns Beyond the YAML Templates
+
+The YAML templates define the most common columns with validators and requirement levels. However, not every recognised SDRF column needs a YAML definition. The file `TERMS.tsv` serves as a broader registry of column names, ontology mappings, and allowed values. Submitters may add any term listed in `TERMS.tsv` (e.g., `characteristics[xenograft]`, `characteristics[mass]`) to their SDRF file even if no YAML template includes it. Such columns will not be subject to template-level validation but remain part of the specification.
 
 == Best Practices
 
 1. **Use lowercase** for all controlled vocabulary values (except proper nouns in disease names).
-2. **Use ontology terms** mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).
+2. **Use ontology terms** mapped to MONDO (diseases), CL/BTO/CLO (cell types), UBERON (anatomy), PATO (phenotypes).
 3. **Be consistent** with format across all samples in a dataset.
 4. **Document unknowns** using `not available` (unknown) or `not applicable` (not relevant) - never leave cells empty.
 5. **Validate before submission** using sdrf-pipelines to check ontology mappings.
@@ -67,7 +71,7 @@ Use the scientific name in lowercase. The validator will map to the correct onto
 
 **Column:** `characteristics[organism part]`
 
-**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] for mammals/vertebrates, https://www.ebi.ac.uk/ols4/ontologies/po[Plant Ontology (PO)] for plants, https://www.ebi.ac.uk/ols4/ontologies/fbbt[FlyBase Anatomy (FBbt)] for Drosophila.
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO].
 
 Use lowercase for all values. For cell line samples, use `not applicable` or specify the tissue of origin (e.g., `cervix` for HeLa).
 
@@ -75,7 +79,7 @@ Use lowercase for all values. For cell line samples, use `not applicable` or spe
 ====
 **Do NOT use `characteristics[tissue]`** - Use `characteristics[organism part]` instead.
 
-The `characteristics[tissue]` column should not be used as a replacement for `characteristics[organism part]`. When tissue-related columns are needed, they should be used alongside `characteristics[organism part]` for additional categorization (e.g., `characteristics[tissue supergroup]` for higher-level grouping).
+The `characteristics[tissue]` column should not be used as a replacement for `characteristics[organism part]`.
 ====
 
 |===
@@ -101,6 +105,8 @@ The `characteristics[tissue]` column should not be used as a replacement for `ch
 
 |Exact age |`{Number}{Unit}` |`40Y` |40 years old
 |Exact age |`{Number}{Unit}` |`8W` |8 weeks old
+|Compound age |`{Y}{M}{W}{D}` |`30Y6M` |30 years and 6 months (strict order Y>M>W>D)
+|Compound age |`{Y}{M}{W}{D}` |`2Y3M1W` |2 years, 3 months, 1 week
 |Age range |`{Lower}{Unit}-{Upper}{Unit}` |`40Y-50Y` |Between 40 and 50 years
 |Greater than |`>{Number}{Unit}` |`>18Y` |Older than 18 years
 |Less than |`<{Number}{Unit}` |`<65Y` |Younger than 65 years
@@ -123,7 +129,7 @@ Developmental stage is useful for animal studies, pooled samples, or historical 
 
 **Column:** `characteristics[sex]`
 
-**Requirement:** REQUIRED for human samples, OPTIONAL for other organisms. Values allowed are under PATO ontology: https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000047[PATO:0000047 - Biological Sex] 
+**Requirement:** REQUIRED for human samples, RECOMMENDED for vertebrates, OPTIONAL for other organisms. Values allowed are under PATO ontology: https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000047[PATO:0000047 - Biological Sex]
 
 **Allowed values:**
 
@@ -132,6 +138,8 @@ Developmental stage is useful for animal studies, pooled samples, or historical 
 
 |male |Male biological sex
 |female |Female biological sex
+|intersex |Intersex biological sex
+|hermaphrodite |Hermaphrodite (for non-human organisms)
 |===
 
 NOTE: For cell lines, use the sex of the original donor if known (e.g., `female` for HeLa cells), otherwise use `not available`. Use `anonymized` when the information exists but has been redacted for privacy reasons (e.g., clinical studies with de-identified data).
@@ -141,7 +149,7 @@ NOTE: For cell lines, use the sex of the original donor if known (e.g., `female`
 
 **Column:** `characteristics[developmental stage]`
 
-**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
 
 |===
 |Value |Description
@@ -157,7 +165,7 @@ For model organisms, use specific stages when applicable: `embryonic day 14` (mo
 
 **Column:** `characteristics[disease]`
 
-**Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology] (preferred), https://www.ebi.ac.uk/efo/[EFO], https://disease-ontology.org/[Human Disease Ontology (DOID)]
+**Ontology:** https://mondo.monarchinitiative.org/[MONDO Disease Ontology] (preferred), https://www.ebi.ac.uk/efo/[EFO], https://disease-ontology.org/[Human Disease Ontology (DOID)], https://obofoundry.org/ontology/pato.html[PATO] (for `normal` — healthy samples)
 
 === Healthy Samples: normal vs healthy vs control
 
@@ -178,52 +186,6 @@ For samples without disease, the terminology matters for standardization:
 
 The `characteristics[disease]` column captures the **actual disease state** of the sample, while `factor value[disease]` indicates the **experimental comparison groups**:
 
-ifdef::backend-html5[]
-++++
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="ellipsis-col">...</th>
-<th class="sample-col">characteristics[disease]</th>
-<th class="ellipsis-col">...</th>
-<th class="factor-col">factor value[disease]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">healthy_1</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">normal</td>
-<td class="ellipsis-col">...</td>
-<td class="factor-col">normal</td>
-</tr>
-<tr>
-<td class="sample-col">tumor_1</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">breast carcinoma</td>
-<td class="ellipsis-col">...</td>
-<td class="factor-col">breast carcinoma</td>
-</tr>
-<tr>
-<td class="sample-col">adjacent_1</td>
-<td class="ellipsis-col">...</td>
-<td class="sample-col">normal</td>
-<td class="ellipsis-col">...</td>
-<td class="factor-col">normal</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-<span class="legend-item"><span class="legend-color factor-bg"></span> Factor value</span>
-</div>
-</div>
-++++
-endif::[]
-
-ifndef::backend-html5[]
 |===
 |source name |... |characteristics[disease] |... |factor value[disease]
 
@@ -231,7 +193,6 @@ ifndef::backend-html5[]
 |tumor_1 |... |breast carcinoma |... |breast carcinoma
 |adjacent_1 |... |normal |... |normal
 |===
-endif::[]
 
 In this example:
 
@@ -286,7 +247,7 @@ Describes observable characteristics or traits of a sample that result from geno
 
 **Column:** `characteristics[cell type]`
 
-**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)]
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)], https://www.ebi.ac.uk/ols4/ontologies/bto[BRENDA Tissue Ontology (BTO)], https://www.ebi.ac.uk/ols4/ontologies/clo[Cell Line Ontology (CLO)]
 
 For cell lines, optionally include the cell type of origin.
 
@@ -340,6 +301,7 @@ Material type describes the nature of the biological material being analyzed.
 |Sorted T cells |cell |blood |not applicable
 |Mouse whole brain |tissue |brain |not applicable
 |E. coli culture |whole organism |not applicable |not applicable
+|Plasma sample |organism part |blood |not applicable
 |Synthetic peptides |synthetic |not applicable |not applicable
 |===
 
@@ -357,49 +319,51 @@ NOTE: For cell line samples, use `cell line` as the material type. The specific 
 |Drug treatment studies
 |link:../sdrf-explorer.html?view=PXD017291[PXD017291]
 
-|`characteristics[time point]`
+|`characteristics[sampling time]`
 |Time of sample collection
-|0h, 24h, 7d, baseline
+|0 hour, 24 hour, 7 day
 |Time-course experiments
 |link:../sdrf-explorer.html?view=PXD007555[PXD007555]
 
 |`characteristics[dose]`
-|Dose of treatment if applicable
-|10 mg/kg, 100 nM, high dose
+|Dose of treatment if applicable. Prefer quantitative values (number + unit). Defined in https://github.com/bigbio/sdrf-templates/tree/main/clinical-metadata[clinical-metadata] template.
+|10 mg/kg, 100 nM, 50 uM
 |Dose-response studies
 |—
 
-|`characteristics[patient bmi]`
-|Body mass index (for human studies)
-|25.3 kg/m2, 30.1 kg/m2
+|`characteristics[body mass index]`
+|Body mass index (EFO:0004340). Defined in https://github.com/bigbio/sdrf-templates/tree/main/clinical-metadata[clinical-metadata] template.
+|24.5, 31.2, 18.7
 |Metabolic or obesity-related studies
 |link:../sdrf-explorer.html?view=PXD005780[PXD005780]
 
 |`characteristics[smoking status]`
-|Smoking history of the patient
-|never smoked, current smoker, former smoker
+|Smoking history of the patient (NCIT:C19796). Use child terms of NCIT:C19796. Defined in https://github.com/bigbio/sdrf-templates/tree/main/clinical-metadata[clinical-metadata] template.
+|never smoker, current smoker, former smoker
 |Lung or cardiovascular studies
 |—
 |===
 
-For additional columns, see the link:sdrf-terms.tsv[SDRF Terms Reference] and the link:../templates/human/README.adoc[Human Template]. 
+For additional columns, see the link:TERMS.tsv[SDRF Terms Reference] and the https://github.com/bigbio/sdrf-templates/tree/main/human[Human Template]. 
 
 == PTM Enrichment
 
 **Column:** `characteristics[enrichment process]`
 
-**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo[EFO]
+**Ontology:** https://www.ebi.ac.uk/ols4/ontologies/efo[EFO] and https://www.ebi.ac.uk/ols4/ontologies/pride[PRIDE] (children of https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0009090[EFO:0009090])
 
 |===
 |Value |Description
 
-|enrichment of phosphorylated Protein |Phosphoproteomics enrichment
+|enrichment of phosphorylated protein |Phosphoproteomics enrichment
 |not applicable |No PTM enrichment performed
 |===
 
 == Depletion
 
 **Column:** `characteristics[depletion]`
+
+**Template:** Defined in https://github.com/bigbio/sdrf-templates/tree/main/ms-proteomics[ms-proteomics] template.
 
 For blood/plasma samples indicating abundant protein depletion.
 
@@ -411,39 +375,12 @@ Values: `no depletion`, `depletion`, `not applicable`.
 
 When annotating PDX samples, metadata (age, sex) MUST refer to the original patient, not the host organism.
 
-ifdef::backend-html5[]
-++++
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="sample-col">characteristics[xenograft]</th>
-<th class="sample-col">characteristics[age]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">tumor_001</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">not applicable</td>
-<td class="sample-col">65Y</td>
-</tr>
-<tr>
-<td class="sample-col">pdx_001</td>
-<td class="sample-col">homo sapiens</td>
-<td class="sample-col">pancreatic adenocarcinoma grown in nude mice</td>
-<td class="sample-col">65Y</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-</div>
-</div>
-++++
-endif::[]
+|===
+|source name |characteristics[organism] |characteristics[xenograft] |characteristics[age]
+
+|tumor_001 |homo sapiens |not applicable |65Y
+|pdx_001 |homo sapiens |pancreatic adenocarcinoma grown in nude mice |65Y
+|===
 
 == Synthetic Peptide Libraries
 
@@ -479,6 +416,8 @@ The injected mass of the main sample SHOULD be specified in `characteristics[mas
 
 - MONDO Disease Ontology: https://mondo.monarchinitiative.org/
 - Cell Ontology (CL): https://obofoundry.org/ontology/cl.html
+- BRENDA Tissue Ontology (BTO): https://www.ebi.ac.uk/ols4/ontologies/bto
+- Cell Line Ontology (CLO): https://www.ebi.ac.uk/ols4/ontologies/clo
 - UBERON Anatomy Ontology: https://obofoundry.org/ontology/uberon.html
 - PATO Phenotype Ontology: https://obofoundry.org/ontology/pato.html
 - NCBI Taxonomy: https://www.ncbi.nlm.nih.gov/taxonomy

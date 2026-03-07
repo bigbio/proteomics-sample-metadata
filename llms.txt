@@ -7,7 +7,7 @@
 - sdrf-proteomics/README.adoc - Core specification: format rules, column headers, cell values, templates, factor values, ontologies
   - sdrf-proteomics/quickstart.adoc - Quick Start Tutorial (10-15 min)
   - sdrf-proteomics/metadata-guidelines/sample-metadata.adoc - Sample Metadata Guidelines: age, sex, disease, organism part, cell type
-  - sdrf-proteomics/metadata-guidelines/template-definitions.adoc - Template Definitions Guide (for developers)
+  - sdrf-proteomics/TEMPLATES.adoc - Templates Guide: template selection, YAML schema, validators, and developer reference
   - sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv - SDRF Terms Reference: all column terms with ontology mappings
 
 - sdrf-proteomics/VERSIONING.adoc - Versioning and Deprecation Policy: version tracks, template compatibility, deprecation lifecycle, transition timelines
@@ -34,22 +34,24 @@
 
 ## Template YAML Schemas (sdrf-templates submodule)
 
-Machine-readable YAML definitions used by sdrf-pipelines for validation. Each template has a `.yaml` schema and an optional `.sdrf.tsv` example file. Templates follow a layered hierarchy: base → technology → sample/experiment.
+Machine-readable YAML definitions used by sdrf-pipelines for validation. Each template has a `.yaml` schema and an optional `.sdrf.tsv` example file. Templates follow a layered hierarchy: base → sample-metadata → technology/sample/experiment.
 
 - sdrf-proteomics/sdrf-templates/templates.yaml - Template manifest: all templates with latest versions, inheritance, and layer metadata
-- sdrf-proteomics/sdrf-templates/base/1.1.0/base.yaml - Base template (internal, not user-facing): shared columns inherited by all templates
+- sdrf-proteomics/sdrf-templates/base/1.1.0/base.yaml - Base template (internal, not user-facing): infrastructure columns (source name, assay name, technology type, etc.)
   - sdrf-proteomics/sdrf-templates/base/1.1.0/base.sdrf.tsv - Base example
-- sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml - MS-Proteomics (technology layer): minimum valid template for any MS experiment
+- sdrf-proteomics/sdrf-templates/sample-metadata/1.1.0/sample-metadata.yaml - Sample-metadata template (intermediate, not user-facing): sample columns (organism, organism part, cell type, biological replicate, pooled sample, disease, biosample accession). Extends base.
+  - sdrf-proteomics/sdrf-templates/sample-metadata/1.1.0/sample-metadata.sdrf.tsv - Sample-metadata example
+- sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml - MS-Proteomics (technology layer): minimum valid template for any MS experiment. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.sdrf.tsv - MS-Proteomics example
-- sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.yaml - Affinity Proteomics (technology layer): Olink, SomaScan base
+- sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.yaml - Affinity Proteomics (technology layer): Olink, SomaScan base. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.sdrf.tsv - Affinity Proteomics example
-- sdrf-proteomics/sdrf-templates/human/1.1.0/human.yaml - Human (sample layer): disease, age, sex, ancestry
+- sdrf-proteomics/sdrf-templates/human/1.1.0/human.yaml - Human (sample layer): disease, age, sex, ancestry. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/human/1.1.0/human.sdrf.tsv - Human example
-- sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.yaml - Vertebrates (sample layer): mouse, rat, zebrafish, etc.
+- sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.yaml - Vertebrates (sample layer): mouse, rat, zebrafish, etc. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.sdrf.tsv - Vertebrates example
-- sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.yaml - Invertebrates (sample layer): Drosophila, C. elegans
+- sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.yaml - Invertebrates (sample layer): Drosophila, C. elegans. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.sdrf.tsv - Invertebrates example
-- sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.yaml - Plants (sample layer): Arabidopsis, crops
+- sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.yaml - Plants (sample layer): Arabidopsis, crops. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.sdrf.tsv - Plants example
 - sdrf-proteomics/sdrf-templates/cell-lines/1.1.0/cell-lines.yaml - Cell Lines (experiment layer): Cellosaurus integration
   - sdrf-proteomics/sdrf-templates/cell-lines/1.1.0/cell-lines.sdrf.tsv - Cell Lines example
