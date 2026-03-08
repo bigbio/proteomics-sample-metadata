@@ -10,34 +10,69 @@ from jinja2 import Environment, FileSystemLoader
 sys.path.insert(0, str(Path(__file__).parent))
 from resolve_templates import resolve_all
 
+REQUIREMENT_ORDER = {"required": 0, "recommended": 1, "optional": 2}
+
 
 def process_documentation(doc_text: str) -> str:
     """Convert documentation text to HTML.
 
+    Handles mixed blocks where paragraphs and list items can coexist:
     - Backtick-wrapped text (`text`) becomes <code>text</code>
     - Lines starting with '- ' become HTML list items
-    - Double newlines separate paragraphs
+    - Consecutive list lines are grouped into a single <ul>
+    - Other lines become paragraphs
+    - Double newlines separate blocks
     """
     if not doc_text:
         return ""
     # Convert backtick-wrapped text to <code>
     html = re.sub(r"`([^`]+)`", r"<code>\1</code>", doc_text.strip())
 
-    paragraphs = html.split("\n\n")
+    blocks = html.split("\n\n")
     result = []
-    for para in paragraphs:
-        lines = para.strip().split("\n")
-        # Check if this paragraph is a list
-        if all(line.strip().startswith("- ") for line in lines if line.strip()):
-            items = [
-                f"<li>{line.strip()[2:]}</li>" for line in lines if line.strip()
-            ]
-            result.append(f'<ul>{"".join(items)}</ul>')
-        else:
-            result.append(
-                f'<p>{" ".join(line.strip() for line in lines)}</p>'
-            )
+    for block in blocks:
+        lines = [line for line in block.strip().split("\n") if line.strip()]
+        if not lines:
+            continue
+
+        # Process line by line, grouping consecutive list items
+        current_list: list[str] = []
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith("- "):
+                current_list.append(stripped[2:])
+            else:
+                # Flush any pending list
+                if current_list:
+                    items = "".join(f"<li>{item}</li>" for item in current_list)
+                    result.append(f"<ul>{items}</ul>")
+                    current_list = []
+                result.append(f"<p>{stripped}</p>")
+
+        # Flush trailing list
+        if current_list:
+            items = "".join(f"<li>{item}</li>" for item in current_list)
+            result.append(f"<ul>{items}</ul>")
+
     return "\n".join(result)
+
+
+def sort_columns(columns: list[dict]) -> list[dict]:
+    """Sort columns by requirement level: required, recommended, optional."""
+    return sorted(
+        columns,
+        key=lambda c: REQUIREMENT_ORDER.get(c.get("requirement", "optional"), 2),
+    )
+
+
+def fix_jinja_reserved_keys(columns: list[dict]) -> list[dict]:
+    """Rename 'values' key in validator params to avoid Jinja2 dict.values() conflict."""
+    for col in columns:
+        if col.get("validators"):
+            for v in col["validators"]:
+                if v.get("params") and "values" in v["params"]:
+                    v["params"]["allowed_values"] = v["params"].pop("values")
+    return columns
 
 
 def main():
@@ -63,6 +98,13 @@ def main():
         resolved["documentation_html"] = process_documentation(
             resolved.get("documentation", "")
         )
+        # Sort columns by requirement level
+        resolved["all_columns"] = sort_columns(resolved["all_columns"])
+        resolved["own_columns"] = sort_columns(resolved["own_columns"])
+        resolved["inherited_columns"] = sort_columns(resolved["inherited_columns"])
+        # Fix Jinja2 reserved key conflicts
+        fix_jinja_reserved_keys(resolved["all_columns"])
+
         html = page_template.render(template=resolved)
         out_path = output_dir / f"{name}.html"
         with open(out_path, "w") as f:
