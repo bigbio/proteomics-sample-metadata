@@ -109,53 +109,24 @@ echo "Building tool support page..."
 asciidoctor \
     -D "$OUTPUT_DIR" \
     $ASCIIDOCTOR_OPTS \
-    -o tool-support.html \
+    -o tools.html \
     sdrf-proteomics/TOOLS.adoc
 
-# Build metadata guidelines
-echo "Building metadata guidelines..."
+# Build sample guidelines page
+echo "Building sample guidelines page..."
 asciidoctor \
-    -D "$OUTPUT_DIR/metadata-guidelines" \
-    -a stylesheet=../css/style.css \
-    -a linkcss \
-    -a toc=left \
-    -a toclevels=3 \
-    -a sectanchors \
-    -a sectlinks \
-    --backend=html5 \
-    -o sample-metadata.html \
-    sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
-
-# Check if human-sample-metadata.adoc exists and build it
-if [ -f "sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc" ]; then
-    echo "Building human sample metadata guidelines..."
-    asciidoctor \
-        -D "$OUTPUT_DIR/metadata-guidelines" \
-        -a stylesheet=../css/style.css \
-        -a linkcss \
-        -a toc=left \
-        -a toclevels=3 \
-        -a sectanchors \
-        -a sectlinks \
-        --backend=html5 \
-        -o human-sample-metadata.html \
-        sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc
-fi
+    -D "$OUTPUT_DIR" \
+    $ASCIIDOCTOR_OPTS \
+    -o sample-guidelines.html \
+    sdrf-proteomics/SAMPLE-GUIDELINES.adoc
 
 # Build templates guide
 if [ -f "sdrf-proteomics/TEMPLATES.adoc" ]; then
     echo "Building templates guide..."
     asciidoctor \
         -D "$OUTPUT_DIR" \
-        -a stylesheet=css/style.css \
-        -a linkcss \
-        -a toc=left \
-        -a toclevels=3 \
-        -a sectanchors \
-        -a sectlinks \
-        -a source-highlighter=highlight.js \
-        --backend=html5 \
-        -o TEMPLATES.html \
+        $ASCIIDOCTOR_OPTS \
+        -o templates.html \
         sdrf-proteomics/TEMPLATES.adoc
 fi
 
@@ -200,9 +171,10 @@ cp site/index.html "$OUTPUT_DIR/"
 cp site/sdrf-terms.html "$OUTPUT_DIR/"
 cp site/quickstart.html "$OUTPUT_DIR/"
 cp site/sdrf-explorer.html "$OUTPUT_DIR/"
+cp site/sdrf-editor.html "$OUTPUT_DIR/"
 
-# Copy SDRF terms TSV
-cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/"
+# Copy SDRF terms TSV (if present)
+cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/" 2>/dev/null || true
 
 # Auto-generate index.html template section from YAML
 echo "Updating index template section..."

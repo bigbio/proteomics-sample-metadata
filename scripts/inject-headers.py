@@ -55,11 +55,23 @@ def main():
         print(f"Injecting header into: {spec_file}")
         inject_header(str(spec_file), HEADERS['root'])
 
-    # Inject header into tool-support.html
-    tools_file = output_dir / "tool-support.html"
+    # Inject header into tools.html
+    tools_file = output_dir / "tools.html"
     if tools_file.exists():
         print(f"Injecting header into: {tools_file}")
         inject_header(str(tools_file), HEADERS['tools'])
+
+    # Inject header into sample-guidelines.html
+    sg_file = output_dir / "sample-guidelines.html"
+    if sg_file.exists():
+        print(f"Injecting header into: {sg_file}")
+        inject_header(str(sg_file), HEADERS['root'])
+
+    # Inject header into templates.html (templates guide)
+    tpl_guide = output_dir / "templates.html"
+    if tpl_guide.exists():
+        print(f"Injecting header into: {tpl_guide}")
+        inject_header(str(tpl_guide), HEADERS['root'])
 
     # Inject headers into metadata-guidelines pages
     guidelines_dir = output_dir / "metadata-guidelines"

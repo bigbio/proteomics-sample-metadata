@@ -8,28 +8,22 @@ This guide explains how to build and maintain the SDRF-Proteomics documentation 
 proteomics-metadata-standard/
 ├── scripts/                   # Build and utility scripts
 │   ├── build-docs.sh          # Main build script (local & CI/CD)
-│   ├── build-asciidoc.sh      # AsciiDoc build helper
-│   ├── copy-assets.sh         # Asset copying helper
+│   ├── build_template_pages.py # Generate per-template HTML from YAML
+│   ├── build_index_templates.py # Generate index.html template section
+│   ├── resolve_templates.py   # Template inheritance resolver
 │   ├── inject-headers.py      # Navigation header injection
-│   ├── transform-links.py     # SDRF link transformation
+│   ├── transform-links.py     # .adoc→.html link transformation
 │   ├── transform-sdrf-tables.py # SDRF example table styling
 │   └── add-dev-banner.sh      # Dev version banner
 ├── sdrf-proteomics/           # Main specification source
 │   ├── README.adoc            # Main specification (AsciiDoc)
-│   ├── tool-support.adoc      # Tool support page
-│   ├── metadata-guidelines/   # General metadata guidelines
-│   │   ├── sample-metadata.adoc
+│   ├── TOOLS.adoc             # Tool support page
+│   ├── TEMPLATES.adoc         # Templates guide
+│   ├── SAMPLE-GUIDELINES.adoc # Sample metadata guidelines
+│   ├── metadata-guidelines/   # Detailed metadata guidelines
+│   │   ├── data-analysis-metadata.adoc
 │   │   └── sdrf-terms.tsv
-│   ├── templates/             # All templates (core + specialized)
-│   │   ├── human/             # Human template (includes clinical metadata)
-│   │   ├── vertebrates/       # Non-human vertebrates
-│   │   ├── invertebrates/     # Invertebrates (Drosophila, C. elegans)
-│   │   ├── plants/            # Plant organisms
-│   │   ├── ms-proteomics/     # MS proteomics template (base for MS experiments)
-│   │   ├── cell-lines/        # Cell line experiments
-│   │   ├── crosslinking/      # XL-MS experiments
-│   │   ├── immunopeptidomics/ # Immunopeptidomics
-│   │   └── ...
+│   ├── sdrf-templates/        # YAML template definitions (submodule)
 │   └── images/                # Specification images
 ├── site/                      # Website assets and build scripts
 │   ├── css/style.css          # Main stylesheet
@@ -88,7 +82,7 @@ The easiest way to build the documentation is using the provided build script. T
 
 1. **Converts AsciiDoc to HTML** using Asciidoctor with proper styling options
 2. **Copies static assets** (CSS, JavaScript, images)
-3. **Copies static HTML pages** (index.html, quickstart.html, sdrf-explorer.html, sdrf-terms.html)
+3. **Copies static HTML pages** (index.html, quickstart.html, sdrf-explorer.html, sdrf-editor.html, sdrf-terms.html)
 4. **Builds SDRF Explorer index** from annotated-projects
 5. **Injects navigation headers** into all generated HTML pages
 6. **Transforms SDRF links** to use the SDRF Explorer viewer
@@ -345,7 +339,6 @@ To force an immediate update, the specification website needs to be rebuilt:
 | File | Purpose |
 |------|---------|
 | `site/sdrf-editor.html` | Editor page (loads Angular app from jsDelivr) |
-| `scripts/copy-assets.sh` | Copies editor page during build |
 | `scripts/inject-headers.py` | Adds Editor link to navigation |
 
 ### Testing Editor Changes Locally

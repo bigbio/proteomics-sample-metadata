@@ -12,7 +12,6 @@ with a legend below.
 import sys
 import re
 from pathlib import Path
-from html.parser import HTMLParser
 
 
 def classify_column(header_text: str) -> str:

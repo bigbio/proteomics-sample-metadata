@@ -218,134 +218,6 @@ When templates are combined, columns from all selected templates are merged. If 
 | SomaScan aptamer | `somascan` (inherits `affinity-proteomics`)
 |===
 
-== Key Columns Explained
-
-=== Sample Identity
-
-* **`source name`** (base): Unique sample identifier. One per biological sample. Required for every row.
-* **`assay name`** (base): Unique data acquisition run identifier. Links sample to instrument run.
-* **`characteristics[individual]`** (human, single-cell): Links multiple samples to the same donor/patient. Critical for matched tumor/normal designs, longitudinal studies, and single-cell experiments where multiple cells come from one donor.
-* **`characteristics[biological replicate]`** (sample-metadata): Integer starting from 1. Use `pooled` for pooled reference samples.
-* **`comment[sample type]`** (sample-metadata): Classifies the sample's role in multiplexed experiments. Values include: `single cell`, `reference`, `bridge`, `carrier`, `pooled`, `empty`, `quality control sample`, `negative control`, `positive control`, `bulk control`, `standard`, `calibrator`, `plate control`, `buffer control`.
-
-=== Disease and Clinical Context
-
-* **`characteristics[disease]`** (sample-metadata): See link:SAMPLE-GUIDELINES.adoc#disease-annotation[Disease annotation details]. Use `normal` (PATO:0000461) for healthy samples.
-* **`characteristics[disease staging]`** (oncology-metadata): General stage (I-IV). For cancer, use the specialized oncology-metadata columns.
-* **`characteristics[tumor stage]`** (oncology-metadata): TNM notation (e.g., T2N1M0). Prefix: p = pathological, c = clinical.
-* **Specialized staging systems** (oncology-metadata):
-** `characteristics[dukes stage]` — colorectal cancer (A, B, C, D)
-** `characteristics[ann arbor stage]` — lymphoma (I-IV with optional A/B/E/S suffix)
-** `characteristics[gleason score]` — prostate cancer (sum or components: 3+4, 4+3)
-** `characteristics[weiss grade]` — adrenal cortical carcinoma (low, high)
-
-=== Treatment Annotation
-
-* **`characteristics[treatment]`** (clinical-metadata): What was applied (drug name, stimulus). Use `untreated` for controls.
-* **`characteristics[compound]`** + **`characteristics[dose]`** + **`characteristics[exposure duration]`** (clinical-metadata): Detailed drug annotation. Use together for pharmacological studies.
-* **`characteristics[treatment status]`** (clinical-metadata): When sampled relative to treatment: `pre-treatment`, `on treatment`, `post-treatment`, `treatment naive`.
-* **`characteristics[treatment response]`** (clinical-metadata): Clinical response: `complete response`, `partial response`, `progressive disease`, `stable disease`.
-
-=== Organism and Demographics
-
-* **`characteristics[organism]`** (sample-metadata): NCBI Taxonomy species name, lowercase (e.g., `homo sapiens`, `mus musculus`).
-* **`characteristics[sex]`** (human, vertebrates): See link:SAMPLE-GUIDELINES.adoc#sex-annotation[Sex annotation details]. Values for human: `male`, `female`, `intersex`. Values for vertebrates: `male`, `female`, `hermaphrodite`.
-* **`characteristics[age]`** (human): See link:SAMPLE-GUIDELINES.adoc#age-annotation[Age format details]. Supports exact ages, compound ages, ranges, and comparison operators.
-* **`characteristics[ancestry category]`** (human): HANCESTRO terms (e.g., `European`, `African`, `East Asian`, `Hispanic or Latin American`).
-* **`characteristics[strain or breed]`** (vertebrates, invertebrates, plants): Strain/cultivar/ecotype. Required for invertebrates, recommended for vertebrates and plants.
-* **`characteristics[developmental stage]`**: See link:SAMPLE-GUIDELINES.adoc#developmental-stage[Developmental stage details]. Uses EFO ontology.
-
-=== Cell Line Metadata
-
-* **`characteristics[cell line]`** (cell-lines): Cell line name from CLO, BTO, or EFO (e.g., `HeLa`, `HEK293`, `MCF7`).
-* **`characteristics[cellosaurus accession]`** (cell-lines): Required. Format CVCL_#### (e.g., `CVCL_0030`).
-* **`characteristics[culture medium]`** (cell-lines): NCIT terms (e.g., `DMEM`, `RPMI 1640`).
-* **`comment[passage number]`** (cell-lines): Integer or range (e.g., `10`, `15-20`).
-
-=== MS-specific Columns
-
-* **`comment[instrument]`** (ms-proteomics): Mass spectrometer model. PSI-MS ontology terms (e.g., `Q Exactive HF`, `Orbitrap Fusion Lumos`, `timsTOF Pro`).
-* **`comment[label]`** (ms-proteomics): Labeling strategy. Required. Examples: `label free sample`, `TMT126`, `TMTpro126`, `iTRAQ114`, `SILAC light`, `SILAC heavy`.
-* **`comment[cleavage agent details]`** (ms-proteomics): Protease for digestion. Use ontology format: `NT=Trypsin;AC=MS:1001251`.
-* **`comment[proteomics data acquisition method]`** (ms-proteomics): Acquisition mode. Values: `data-dependent acquisition`, `data-independent acquisition`, `parallel reaction monitoring`, `selected reaction monitoring`.
-* **`comment[fraction identifier]`** (ms-proteomics): Integer. Use `1` for non-fractionated experiments. Required in ms-proteomics, optional in affinity-proteomics.
-* **`comment[modification parameters]`** (ms-proteomics): PTM search parameters. Unimod format: `NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35`. Multiple cardinality.
-
-=== DIA-specific Columns
-
-* **`comment[scan window lower limit]`** / **`comment[scan window upper limit]`** (dia-acquisition): m/z boundaries of the DIA scan window (e.g., `400` to `1200`).
-* **`comment[isolation window width]`** (dia-acquisition): Width of isolation windows in m/z (e.g., `25`, `8`, `4`).
-* **`comment[dia method]`** (dia-acquisition): Specific DIA variant (e.g., `SWATH-MS`, `diaPASEF`, `MSE`, `All ion fragmentation`).
-
-=== Crosslinking-specific Columns
-
-* **`comment[cross-linker]`** (crosslinking): Required. Structured format with linker identity and properties: `NT=DSS;AC=XLMOD:02001` or extended format `NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98`.
-* **`characteristics[enrichment process]`** (crosslinking): Recommended. Should be `enrichment of cross-linked peptides`.
-* **`comment[dissociation method]`** (crosslinking): Required (overridden from ms-proteomics recommended). Also tightens `allow_not_applicable` to false and `error_level` to error. Dissociation method critically affects cleavable linker stub ion generation.
-
-=== Immunopeptidomics-specific Columns
-
-* **`characteristics[mhc protein complex]`** (immunopeptidomics): Required. Type of MHC complex targeted (class I, class II, non-classical).
-* **`characteristics[immunopeptidome enrichment method]`** (immunopeptidomics): Required. Method used to enrich MHC-bound peptides. Values: `immunoaffinity purification`, `immunoaffinity purification (iodoacetamide)`, `mild acid elution`, `detergent lysis`.
-* **`characteristics[mhc typing]`** (immunopeptidomics): IPD-IMGT/HLA notation for human (e.g., `HLA-A*02:01`), H-2 notation for mouse (e.g., `H-2Kb`). Semicolons for multi-allele.
-* **`characteristics[antibody enrichment]`** (immunopeptidomics): Antibody clone used for immunoprecipitation (e.g., `W6/32`, `BB7.2`).
-
-=== Single-cell-specific Columns
-
-* **`characteristics[single cell isolation protocol]`** (single-cell): Required. Isolation method (e.g., `FACS`, `cellenONE`, `LCM`, `nanoPOTS`).
-* **`characteristics[cell identifier]`** (single-cell): Required. Unique per-cell label. Special values: `carrier`, `reference`, `empty`.
-* **`comment[cells per well]`** (single-cell): Number of cells. Use `1` for true single cells. Recommended for SCP.
-* **`comment[carrier channel]`** / **`comment[reference channel]`** (single-cell): TMT channels for carrier and reference in multiplexed SCP (e.g., `TMT131C`, `TMTpro134N`).
-
-=== Metaproteomics-specific Columns
-
-Metaproteomics templates extend `base` directly (not `sample-metadata`) and define MIxS-aligned sample metadata. When combined with `ms-proteomics`, the `sample-metadata` columns are excluded via the `excludes` mechanism. PRIDE ontology terms include MIxS cross-references (e.g., `MIXS:0001107` in their definitions).
-
-**Shared across all metaproteomics templates** (defined in `metaproteomics`):
-
-* **`characteristics[geographic location]`** (PRIDE:0000701, MIXS:0000010): GAZ terms or coordinates.
-* **`characteristics[collection date]`** (PRIDE:0000703, MIXS:0000011): ISO 8601 date when sample was collected.
-* **`characteristics[depth]`** (PRIDE:0000704, MIXS:0000018): Depth at which sample was collected.
-* **`characteristics[altitude]`** (PRIDE:0000705, MIXS:0000094): Altitude/elevation of sampling site.
-* **`characteristics[temperature]`** (PRIDE:0000706, MIXS:0000113): Temperature at sampling location.
-* **`characteristics[environmental medium]`** (PRIDE:0000710, MIXS:0000012): Environmental material (ENVO term).
-* **`comment[metagenome accession]`**: Matched metagenome dataset accession (e.g., `MGYA00001234`).
-
-**Human-gut-specific** (defined in `human-gut`, from PRIDE:0000674 children):
-
-* **`characteristics[host subject id]`** (PRIDE:0000680, MIXS:0000861): De-identified host identifier.
-* **`characteristics[host age]`** (PRIDE:0000681, MIXS:0000255): Host age at sampling.
-* **`characteristics[host disease status]`** (PRIDE:0000682, MIXS:0000031): Host disease diagnoses.
-* **`characteristics[host body site]`** (PRIDE:0000685, MIXS:0000867): Body site (UBERON term).
-* **`characteristics[host diet]`** (PRIDE:0000689, MIXS:0000869): Diet type.
-* **`characteristics[host body-mass index]`** (PRIDE:0000695, MIXS:0000317): BMI.
-* **`characteristics[gastrointestinal tract disorder]`** (PRIDE:0000677, MIXS:0000280): GI disorder history.
-
-**Soil-specific** (defined in `soil`, from PRIDE:0000828 children):
-
-* **`characteristics[soil type]`**: ENVO soil classification.
-* **`characteristics[soil horizon]`**: Soil horizon (O, A, B, C, E, R).
-* **`characteristics[land use]`**: Land use type.
-* **`characteristics[ph]`**: Soil pH.
-
-**Water-specific** (defined in `water`, from PRIDE:0000829 children):
-
-* **`characteristics[water body type]`**: ENVO water body type.
-* **`characteristics[salinity]`**: Salinity measurement.
-* **`characteristics[dissolved oxygen]`**: Dissolved oxygen concentration.
-* **`characteristics[chlorophyll]`**: Chlorophyll concentration.
-
-=== Affinity Proteomics Columns
-
-* **`comment[platform]`** (affinity-proteomics): Required. Platform name (e.g., `Olink Explore HT`, `SomaScan Assay 11K`).
-* **`comment[sample matrix]`** (affinity-proteomics): Biological input material (e.g., `serum`, `plasma`, `cerebrospinal fluid`).
-* **`comment[quantification unit]`** (affinity-proteomics): `NPX` for Olink, `RFU` for SomaScan.
-
-=== Data Files
-
-* **`comment[data file]`** (base): Raw data filename. Must match the filename in the data repository. Required.
-* **`comment[technical replicate]`** (base): Integer starting from 1. Required.
-
 == Format Conventions
 
 === Column Naming
@@ -1342,11 +1214,7 @@ Key points demonstrated in this example:
 
 Every template must include an example `.sdrf.tsv` file that passes validation. This file demonstrates correct usage and serves as a starting point for users.
 
-=== Step 5: Create the Documentation
-
-Add a `README.adoc` file in the specification repository under `sdrf-proteomics/templates/top-down/`.
-
-=== Step 6: Test Locally
+=== Step 5: Test Locally
 
 Before submitting, validate your example file against your template:
 
@@ -1369,7 +1237,7 @@ Check that:
 * [ ] New columns validate correctly (ontology terms resolve, patterns match).
 * [ ] The `not applicable` and `not available` values work where expected.
 
-=== Step 7: Submit a Pull Request
+=== Step 6: Submit a Pull Request
 
 Submit the template to the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository via pull request. The PR must include:
 
@@ -1377,9 +1245,7 @@ Submit the template to the https://github.com/bigbio/sdrf-templates[sdrf-templat
 2. The example SDRF file (`top-down/1.0.0-dev/top-down.sdrf.tsv`).
 3. A PR description explaining: what experiment type the template covers, why it is needed, and which parent it extends.
 
-The corresponding `README.adoc` documentation goes into a separate PR to the https://github.com/bigbio/proteomics-metadata-standard[specification repository] under `sdrf-proteomics/templates/top-down/`.
-
-Once reviewed and merged, the template appears in the `templates.yaml` manifest and becomes available to all users of sdrf-pipelines. The `-dev` suffix is removed when the template is promoted to a stable release (e.g., `1.0.0`).
+Once reviewed and merged, the template appears in the `templates.yaml` manifest and becomes available to all users of sdrf-pipelines. A documentation page is auto-generated from the YAML definition. The `-dev` suffix is removed when the template is promoted to a stable release (e.g., `1.0.0`).
 
 === Quick Reference: Template YAML Checklist
 
@@ -1465,37 +1331,6 @@ NT=ms-proteomics;VV=v1.1.0    NT=human;VV=v1.1.0
 ----
 
 Multiple template columns supported for combined templates.
-
-== Template Reference
-
-Each template's complete column definitions are in its YAML file. The YAML is the single source of truth — to modify a template, edit its YAML directly.
-
-[cols="2,4,1", options="header"]
-|===
-| Template | YAML source | Usable alone
-
-| base | link:sdrf-templates/base/1.1.0/base.yaml[sdrf-templates/base/1.1.0/base.yaml] | No
-| sample-metadata | link:sdrf-templates/sample-metadata/1.0.0/sample-metadata.yaml[sdrf-templates/sample-metadata/1.0.0/sample-metadata.yaml] | No
-| ms-proteomics | link:sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml[sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml] | Yes
-| affinity-proteomics | link:sdrf-templates/affinity-proteomics/1.0.0/affinity-proteomics.yaml[sdrf-templates/affinity-proteomics/1.0.0/affinity-proteomics.yaml] | Yes
-| human | link:sdrf-templates/human/1.1.0/human.yaml[sdrf-templates/human/1.1.0/human.yaml] | No
-| vertebrates | link:sdrf-templates/vertebrates/1.1.0/vertebrates.yaml[sdrf-templates/vertebrates/1.1.0/vertebrates.yaml] | No
-| invertebrates | link:sdrf-templates/invertebrates/1.1.0/invertebrates.yaml[sdrf-templates/invertebrates/1.1.0/invertebrates.yaml] | No
-| plants | link:sdrf-templates/plants/1.1.0/plants.yaml[sdrf-templates/plants/1.1.0/plants.yaml] | No
-| cell-lines | link:sdrf-templates/cell-lines/1.1.0/cell-lines.yaml[sdrf-templates/cell-lines/1.1.0/cell-lines.yaml] | No
-| clinical-metadata | link:sdrf-templates/clinical-metadata/1.0.0/clinical-metadata.yaml[sdrf-templates/clinical-metadata/1.0.0/clinical-metadata.yaml] | No
-| oncology-metadata | link:sdrf-templates/oncology-metadata/1.0.0/oncology-metadata.yaml[sdrf-templates/oncology-metadata/1.0.0/oncology-metadata.yaml] | No
-| dia-acquisition | link:sdrf-templates/dia-acquisition/1.1.0/dia-acquisition.yaml[sdrf-templates/dia-acquisition/1.1.0/dia-acquisition.yaml] | No
-| crosslinking | link:sdrf-templates/crosslinking/1.0.0/crosslinking.yaml[sdrf-templates/crosslinking/1.0.0/crosslinking.yaml] | No
-| immunopeptidomics | link:sdrf-templates/immunopeptidomics/1.0.0/immunopeptidomics.yaml[sdrf-templates/immunopeptidomics/1.0.0/immunopeptidomics.yaml] | No
-| single-cell | link:sdrf-templates/single-cell/1.0.0/single-cell.yaml[sdrf-templates/single-cell/1.0.0/single-cell.yaml] | No
-| metaproteomics | link:sdrf-templates/metaproteomics/1.0.0/metaproteomics.yaml[sdrf-templates/metaproteomics/1.0.0/metaproteomics.yaml] | No
-| human-gut | link:sdrf-templates/human-gut/1.0.0/human-gut.yaml[sdrf-templates/human-gut/1.0.0/human-gut.yaml] | No
-| soil | link:sdrf-templates/soil/1.0.0/soil.yaml[sdrf-templates/soil/1.0.0/soil.yaml] | No
-| water | link:sdrf-templates/water/1.0.0/water.yaml[sdrf-templates/water/1.0.0/water.yaml] | No
-| olink | link:sdrf-templates/olink/1.0.0/olink.yaml[sdrf-templates/olink/1.0.0/olink.yaml] | No
-| somascan | link:sdrf-templates/somascan/1.0.0/somascan.yaml[sdrf-templates/somascan/1.0.0/somascan.yaml] | No
-|===
 
 == References
 

@@ -67,18 +67,6 @@ def inject_section(html: str, section_html: str) -> str:
     return result
 
 
-def remove_broken_sections(html: str) -> str:
-    """Remove sections that link to pages that don't exist yet."""
-    # Remove the metadata-guidelines section (links to missing sample-metadata.html etc.)
-    html = re.sub(
-        r'<section\s+id="metadata-guidelines"[^>]*>.*?</section>',
-        "",
-        html,
-        flags=re.DOTALL,
-    )
-    return html
-
-
 def main() -> None:
     if len(sys.argv) != 3:
         print(
@@ -102,7 +90,6 @@ def main() -> None:
     # Read, inject, clean up, write
     html = index_path.read_text()
     html = inject_section(html, section_html)
-    html = remove_broken_sections(html)
     index_path.write_text(html)
 
     print(f"Injected {len(templates)} templates into {index_path}")
