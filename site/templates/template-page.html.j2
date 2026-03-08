@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ template.name }} - SDRF Template</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Template page specific styles */
+        .template-page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        /* Header badges */
+        .template-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .template-header h1 {
+            margin: 0 0 12px;
+            font-size: 2.25rem;
+        }
+
+        .header-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .badge-version {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-light);
+            background: var(--bg-alt);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .badge-layer {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-layer-sample {
+            background: #ddf4ff;
+            color: #0550ae;
+        }
+
+        .badge-layer-technology {
+            background: #dafbe1;
+            color: #116329;
+        }
+
+        .badge-layer-experiment {
+            background: #fff8c5;
+            color: #6a5700;
+        }
+
+        .badge-layer-internal {
+            background: var(--bg-alt);
+            color: var(--text-light);
+        }
+
+        .badge-usable {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #dafbe1;
+            color: #116329;
+        }
+
+        /* Sections */
+        .template-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .template-section h2 {
+            margin-top: 0;
+        }
+
+        /* Documentation rendering */
+        .doc-content p {
+            margin: 0.75em 0;
+        }
+
+        .doc-content ul {
+            margin: 0.75em 0;
+            padding-left: 1.5rem;
+        }
+
+        .doc-content li {
+            margin: 0.35em 0;
+        }
+
+        /* Inheritance chain breadcrumb */
+        .inheritance-chain {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0;
+            padding: 12px 16px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .inheritance-chain .chain-item {
+            color: var(--accent);
+        }
+
+        .inheritance-chain .chain-item.current {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .inheritance-chain .chain-separator {
+            margin: 0 8px;
+            color: var(--text-light);
+        }
+
+        /* Combination rules */
+        .combination-rules ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+
+        .combination-rules li {
+            margin: 0.5em 0;
+            font-size: 0.95rem;
+        }
+
+        /* Column toggle */
+        .column-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-btn {
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-alt);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .toggle-btn:hover {
+            background: #f0f3f6;
+            border-color: var(--accent);
+        }
+
+        /* Column table */
+        .columns-table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .columns-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .columns-table thead {
+            background: var(--bg-alt);
+        }
+
+        .columns-table th {
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .columns-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+
+        .columns-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .columns-table .col-name {
+            font-family: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        /* Inherited row styling */
+        .columns-table tr.inherited {
+            background: #fafbfc;
+        }
+
+        .columns-table tr.inherited td {
+            color: var(--text-light);
+        }
+
+        .columns-table tr.inherited .col-name {
+            color: var(--text-light);
+        }
+
+        /* Hidden class for toggle */
+        tr.hidden {
+            display: none;
+        }
+
+        /* Requirement badges in table */
+        .req-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .req-required {
+            background: #cf222e;
+            color: #ffffff;
+        }
+
+        .req-recommended {
+            background: #9a6700;
+            color: #ffffff;
+        }
+
+        .req-optional {
+            background: var(--bg-alt);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+
+        /* Source badge in table */
+        .source-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--bg-alt);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        /* Description cell */
+        .col-desc {
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        .col-desc .examples {
+            margin-top: 4px;
+            font-size: 0.78rem;
+            color: var(--text-light);
+        }
+
+        .col-desc .examples code {
+            font-size: 0.75rem;
+        }
+
+        /* Ontology link */
+        .ontology-link {
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Validator summary */
+        .validator-summary {
+            font-size: 0.78rem;
+            color: var(--text-light);
+        }
+
+        /* Contributors list */
+        .contributors-list {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+
+        .contributors-list li {
+            font-size: 0.9rem;
+            margin: 0.4em 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .template-page {
+                padding: 32px 20px;
+            }
+
+            .template-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .inheritance-chain {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="template-page">
+
+        {# ── 1. Header ── #}
+        <div class="template-header">
+            <h1>{{ template.name }}</h1>
+            <div class="header-badges">
+                {% if template.version %}
+                <span class="badge-version">v{{ template.version }}</span>
+                {% endif %}
+                {% if template.layer %}
+                <span class="badge-layer badge-layer-{{ template.layer }}">{{ template.layer }}</span>
+                {% endif %}
+                {% if template.usable_alone %}
+                <span class="badge-usable">usable alone</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {# ── 2. Description ── #}
+        {% if template.description %}
+        <div class="template-section">
+            <h2>Description</h2>
+            <p class="lead">{{ template.description }}</p>
+        </div>
+        {% endif %}
+
+        {# ── 3. Documentation / Key Guidance ── #}
+        {# Note: the rendering script should pre-process documentation_html #}
+        {# from the raw documentation field, converting backticks to <code> #}
+        {# and structuring paragraphs/lists as HTML. If documentation_html   #}
+        {# is provided, use it directly; otherwise render raw text.          #}
+        {% if template.documentation_html is defined and template.documentation_html %}
+        <div class="template-section">
+            <h2>Key Guidance</h2>
+            <div class="doc-content">
+                {{ template.documentation_html }}
+            </div>
+        </div>
+        {% elif template.documentation %}
+        <div class="template-section">
+            <h2>Key Guidance</h2>
+            <div class="doc-content">
+                {% for block in template.documentation.split('\n\n') %}
+                    {% set lines = block.strip().split('\n') %}
+                    {% set list_lines = [] %}
+                    {% set para_lines = [] %}
+                    {% for line in lines %}
+                        {% if line.strip().startswith('- ') %}
+                            {% if list_lines.append(line.strip()[2:]) %}{% endif %}
+                        {% else %}
+                            {% if para_lines.append(line.strip()) %}{% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if para_lines %}
+                    <p>{{ para_lines | join(' ') }}</p>
+                    {% endif %}
+                    {% if list_lines %}
+                    <ul>
+                        {% for item in list_lines %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 4. Inheritance Chain ── #}
+        {% if template.inheritance_chain and template.inheritance_chain | length > 1 %}
+        <div class="template-section">
+            <h2>Inheritance Chain</h2>
+            <div class="inheritance-chain">
+                {% for ancestor in template.inheritance_chain %}
+                    {% if not loop.first %}
+                    <span class="chain-separator">&rarr;</span>
+                    {% endif %}
+                    {% if ancestor == template.name %}
+                    <span class="chain-item current">{{ ancestor }}</span>
+                    {% else %}
+                    <a class="chain-item" href="./{{ ancestor }}.html">{{ ancestor }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 5. Combination Rules ── #}
+        {% if template.requires or template.mutually_exclusive_with or template.excludes %}
+        <div class="template-section">
+            <h2>Combination Rules</h2>
+            <div class="combination-rules">
+                <ul>
+                    {% if template.requires %}
+                        {% for req in template.requires %}
+                        <li>Requires a <strong>{{ req.layer }}</strong> layer template to be combined.</li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if template.mutually_exclusive_with %}
+                    <li>Mutually exclusive with:
+                        {% for t in template.mutually_exclusive_with %}
+                        <a href="./{{ t }}.html">{{ t }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                    {% endif %}
+                    {% if template.excludes and template.excludes.templates %}
+                    <li>Excludes:
+                        {% for t in template.excludes.templates %}
+                        <a href="./{{ t }}.html">{{ t }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 6. Column Table ── #}
+        {% if template.all_columns %}
+        {% set inherited_cols = template.all_columns | selectattr('source_template', 'ne', template.name) | list %}
+        {% set own_cols = template.all_columns | selectattr('source_template', 'eq', template.name) | list %}
+        <div class="template-section">
+            <h2>Columns</h2>
+            <div class="column-toggle">
+                <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
+                    Show inherited columns ({{ inherited_cols | length }})
+                </button>
+                <span style="font-size: 0.85rem; color: var(--text-light);">
+                    {{ own_cols | length }} own + {{ inherited_cols | length }} inherited = {{ template.all_columns | length }} total
+                </span>
+            </div>
+            <div class="columns-table-wrapper">
+                <table class="columns-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Requirement</th>
+                            <th>Source</th>
+                            <th>Description</th>
+                            <th>Ontology</th>
+                            <th>Validators</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for col in template.all_columns %}
+                        {% set is_inherited = col.source_template != template.name %}
+                        <tr class="{% if is_inherited %}inherited hidden{% endif %}">
+                            <td class="col-name">{{ col.name }}</td>
+                            <td>
+                                {% if col.requirement == 'required' %}
+                                <span class="req-badge req-required">required</span>
+                                {% elif col.requirement == 'recommended' %}
+                                <span class="req-badge req-recommended">recommended</span>
+                                {% else %}
+                                <span class="req-badge req-optional">optional</span>
+                                {% endif %}
+                            </td>
+                            <td><span class="source-badge">{{ col.source_template }}</span></td>
+                            <td class="col-desc">
+                                {{ col.description | default('', true) }}
+                                {% if col.validators %}
+                                    {% for v in col.validators %}
+                                        {% if v.params and v.params.examples %}
+                                        <div class="examples">
+                                            e.g.
+                                            {% for ex in v.params.examples[:3] %}
+                                            <code>{{ ex }}</code>{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if col.ontology_accession %}
+                                <a class="ontology-link" href="https://www.ebi.ac.uk/ols4/search?q={{ col.ontology_accession }}" target="_blank" rel="noopener">{{ col.ontology_accession }}</a>
+                                {% endif %}
+                            </td>
+                            <td class="validator-summary">
+                                {% if col.validators %}
+                                    {% for v in col.validators %}
+                                    {{ v.validator_name }}{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if col.allow_not_applicable %}
+                                <br><em>allows N/A</em>
+                                {% endif %}
+                                {% if col.cardinality is defined and col.cardinality %}
+                                <br><em>{{ col.cardinality }}</em>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 7. Contributors ── #}
+        {% if template.contributors %}
+        <div class="template-section">
+            <h2>Contributors</h2>
+            <ul class="contributors-list">
+                {% for contributor in template.contributors %}
+                <li>{{ contributor }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script>
+    function toggleInherited() {
+        var rows = document.querySelectorAll('tr.inherited');
+        var btn = document.getElementById('toggle-inherited');
+        var count = rows.length;
+        var isHidden = rows.length > 0 && rows[0].classList.contains('hidden');
+
+        for (var i = 0; i < rows.length; i++) {
+            if (isHidden) {
+                rows[i].classList.remove('hidden');
+            } else {
+                rows[i].classList.add('hidden');
+            }
+        }
+
+        if (isHidden) {
+            btn.textContent = 'Hide inherited columns (' + count + ')';
+        } else {
+            btn.textContent = 'Show inherited columns (' + count + ')';
+        }
+    }
+    </script>
+</body>
+</html>
