@@ -1,0 +1,81 @@
+            <h2>Templates</h2>
+            <p>SDRF templates define the columns and validation rules for different types of proteomics experiments.
+                Browse all templates below or see the <a href="./TEMPLATES.html">full template documentation</a> for details on inheritance and combination rules.</p>
+
+            {% if organism_templates %}
+            <h3>Organism Templates</h3>
+            <p>Organism-specific sample metadata. Combine with a technology template (MS or affinity) for a complete SDRF.</p>
+            <div class="card-row card-row-4">
+                {% for t in organism_templates %}
+                <div class="card-compact">
+                    <h4>{{ t.name | replace('-', ' ') | title }}</h4>
+                    <p>{{ t.description | truncate(80, True, '...') }}</p>
+                    <a href="./templates/{{ t.name }}.html">View Template</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if technology_templates %}
+            <h3>Technology Templates</h3>
+            <p>Platform-level templates that can be used standalone or combined with organism and experiment templates.</p>
+            <div class="card-row card-row-4">
+                {% for t in technology_templates %}
+                <div class="card-compact">
+                    <h4>{{ t.name | replace('-', ' ') | title }}</h4>
+                    <p>{{ t.description | truncate(80, True, '...') }}</p>
+                    <a href="./templates/{{ t.name }}.html">View Template</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if experiment_templates %}
+            <h3>Experiment Templates</h3>
+            <p>Specialized templates for specific experiment types. Combine with organism and technology templates.</p>
+            <div class="templates-table-wrapper">
+                <table class="templates-table">
+                    <thead>
+                        <tr>
+                            <th>Template</th>
+                            <th>Description</th>
+                            <th>Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in experiment_templates %}
+                        <tr>
+                            <td><a href="./templates/{{ t.name }}.html">{{ t.name | replace('-', ' ') | title }}</a></td>
+                            <td>{{ t.description | truncate(120, True, '...') }}</td>
+                            <td>{{ t.version }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if sample_clinical_templates %}
+            <h3>Sample &amp; Clinical Templates</h3>
+            <p>Additional sample-layer templates for clinical studies, environmental samples, and specialized use cases.</p>
+            <div class="templates-table-wrapper">
+                <table class="templates-table">
+                    <thead>
+                        <tr>
+                            <th>Template</th>
+                            <th>Description</th>
+                            <th>Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in sample_clinical_templates %}
+                        <tr>
+                            <td><a href="./templates/{{ t.name }}.html">{{ t.name | replace('-', ' ') | title }}</a></td>
+                            <td>{{ t.description | truncate(120, True, '...') }}</td>
+                            <td>{{ t.version }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}

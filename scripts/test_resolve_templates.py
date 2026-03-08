@@ -240,3 +240,37 @@ class TestBuildTemplatePages:
             assert "characteristics[organism]" in html  # inherited
             assert "source name" in html  # from base
             assert "Contributors" in html
+
+
+# --- build_index_templates script ---
+
+
+class TestBuildIndexTemplates:
+    def test_build_index_templates_updates_html(self):
+        """build_index_templates.py replaces template section in index.html."""
+        import shutil
+
+        repo_root = os.path.join(os.path.dirname(__file__), "..")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            src = os.path.join(repo_root, "site", "index.html")
+            dst = os.path.join(tmpdir, "index.html")
+            shutil.copy(src, dst)
+            result = subprocess.run(
+                [
+                    "python3",
+                    "scripts/build_index_templates.py",
+                    "sdrf-proteomics/sdrf-templates",
+                    dst,
+                ],
+                capture_output=True,
+                text=True,
+                cwd=repo_root,
+            )
+            assert result.returncode == 0, f"Script failed: {result.stderr}"
+            with open(dst) as f:
+                html = f.read()
+            # New templates present
+            assert "olink" in html.lower() or "Olink" in html
+            assert "clinical-metadata" in html.lower() or "Clinical" in html
+            # Still has the section
+            assert html.count('<section id="templates"') == 1
