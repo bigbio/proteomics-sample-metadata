@@ -73,10 +73,22 @@ def transform_adoc_links(content: str, filepath: str) -> tuple[str, int]:
     content, c = re.subn(pattern6, replacement6, content)
     count += c
 
-    # Pattern 7: tool-support.adoc -> tool-support.html
-    pattern7 = r'href="(\.\.\/)?tool-support\.adoc([^"]*)"'
-    replacement7 = r'href="\1tool-support.html\2"'
+    # Pattern 7: TOOLS.adoc / tool-support.adoc -> tools.html
+    pattern7 = r'href="(\.\.\/)?(tool-support|TOOLS)\.adoc([^"]*)"'
+    replacement7 = r'href="\1tools.html\3"'
     content, c = re.subn(pattern7, replacement7, content)
+    count += c
+
+    # Pattern 7a: TEMPLATES.adoc -> templates.html
+    pattern7a = r'href="(\.\.\/)?(TEMPLATES)\.adoc([^"]*)"'
+    replacement7a = r'href="\1templates.html\3"'
+    content, c = re.subn(pattern7a, replacement7a, content)
+    count += c
+
+    # Pattern 7b: SAMPLE-GUIDELINES.adoc -> sample-guidelines.html
+    pattern7b = r'href="(\.\.\/)?(SAMPLE-GUIDELINES|sample-guidelines)\.adoc([^"]*)"'
+    replacement7b = r'href="\1sample-guidelines.html\3"'
+    content, c = re.subn(pattern7b, replacement7b, content)
     count += c
 
     # Pattern 8: Any remaining .adoc links - generic transformation

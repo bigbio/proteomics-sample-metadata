@@ -109,53 +109,24 @@ echo "Building tool support page..."
 asciidoctor \
     -D "$OUTPUT_DIR" \
     $ASCIIDOCTOR_OPTS \
-    -o tool-support.html \
-    sdrf-proteomics/tool-support.adoc
+    -o tools.html \
+    sdrf-proteomics/TOOLS.adoc
 
-# Build metadata guidelines
-echo "Building metadata guidelines..."
+# Build sample guidelines page
+echo "Building sample guidelines page..."
 asciidoctor \
-    -D "$OUTPUT_DIR/metadata-guidelines" \
-    -a stylesheet=../css/style.css \
-    -a linkcss \
-    -a toc=left \
-    -a toclevels=3 \
-    -a sectanchors \
-    -a sectlinks \
-    --backend=html5 \
-    -o sample-metadata.html \
-    sdrf-proteomics/metadata-guidelines/sample-metadata.adoc
-
-# Check if human-sample-metadata.adoc exists and build it
-if [ -f "sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc" ]; then
-    echo "Building human sample metadata guidelines..."
-    asciidoctor \
-        -D "$OUTPUT_DIR/metadata-guidelines" \
-        -a stylesheet=../css/style.css \
-        -a linkcss \
-        -a toc=left \
-        -a toclevels=3 \
-        -a sectanchors \
-        -a sectlinks \
-        --backend=html5 \
-        -o human-sample-metadata.html \
-        sdrf-proteomics/metadata-guidelines/human-sample-metadata.adoc
-fi
+    -D "$OUTPUT_DIR" \
+    $ASCIIDOCTOR_OPTS \
+    -o sample-guidelines.html \
+    sdrf-proteomics/SAMPLE-GUIDELINES.adoc
 
 # Build templates guide
 if [ -f "sdrf-proteomics/TEMPLATES.adoc" ]; then
     echo "Building templates guide..."
     asciidoctor \
         -D "$OUTPUT_DIR" \
-        -a stylesheet=css/style.css \
-        -a linkcss \
-        -a toc=left \
-        -a toclevels=3 \
-        -a sectanchors \
-        -a sectlinks \
-        -a source-highlighter=highlight.js \
-        --backend=html5 \
-        -o TEMPLATES.html \
+        $ASCIIDOCTOR_OPTS \
+        -o templates.html \
         sdrf-proteomics/TEMPLATES.adoc
 fi
 
@@ -176,25 +147,10 @@ if [ -f "sdrf-proteomics/metadata-guidelines/data-analysis-metadata.adoc" ]; the
         sdrf-proteomics/metadata-guidelines/data-analysis-metadata.adoc
 fi
 
-# Build template documentation
-echo "Building templates..."
-for dir in sdrf-proteomics/templates/*/; do
-    if [ -f "${dir}README.adoc" ]; then
-        template_name=$(basename "$dir")
-        echo "  Building template: $template_name"
-        asciidoctor \
-            -D "$OUTPUT_DIR/templates" \
-            -a stylesheet=../css/style.css \
-            -a linkcss \
-            -a toc=left \
-            -a toclevels=3 \
-            -a sectanchors \
-            -a sectlinks \
-            --backend=html5 \
-            -o "${template_name}.html" \
-            "${dir}README.adoc"
-    fi
-done
+# Build template pages from YAML definitions
+echo "Building template pages from YAML..."
+python3 scripts/build_template_pages.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/templates"
 
 # Copy assets
 echo "Copying assets..."
@@ -204,6 +160,7 @@ cp site/css/style.css "$OUTPUT_DIR/css/"
 
 # Copy JavaScript
 cp site/js/search.js "$OUTPUT_DIR/js/"
+cp site/js/sdrf-builder.js "$OUTPUT_DIR/js/"
 
 # Copy images
 cp -r sdrf-proteomics/images/* "$OUTPUT_DIR/images/" 2>/dev/null || true
@@ -215,9 +172,16 @@ cp site/index.html "$OUTPUT_DIR/"
 cp site/sdrf-terms.html "$OUTPUT_DIR/"
 cp site/quickstart.html "$OUTPUT_DIR/"
 cp site/sdrf-explorer.html "$OUTPUT_DIR/"
+cp site/sdrf-editor.html "$OUTPUT_DIR/"
 
-# Copy SDRF terms TSV
-cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/"
+# Copy SDRF terms TSV (if present) — also create TERMS.tsv alias for AsciiDoc links
+cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/" 2>/dev/null || true
+cp sdrf-proteomics/TERMS.tsv "$OUTPUT_DIR/TERMS.tsv" 2>/dev/null || true
+
+# Auto-generate index.html template section from YAML
+echo "Updating index template section..."
+python3 scripts/build_index_templates.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/index.html"
 
 # Build SDRF Explorer index
 echo "Building SDRF Explorer index..."
@@ -235,6 +199,11 @@ python3 scripts/transform-links.py "$OUTPUT_DIR"
 # Transform SDRF example tables (add column styling)
 echo "Transforming SDRF example tables..."
 python3 scripts/transform-sdrf-tables.py "$OUTPUT_DIR"
+
+# Build SDRF builder data
+echo "Building SDRF builder data..."
+python3 scripts/build_sdrf_builder_data.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/sdrf-builder-data.json"
 
 # Build search index
 echo "Building search index..."

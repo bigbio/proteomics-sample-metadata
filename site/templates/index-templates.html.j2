@@ -1,0 +1,26 @@
+            <h2>Templates</h2>
+            <p>SDRF templates define the columns and validation rules for different types of proteomics experiments.
+                See the <a href="./templates.html">Templates Guide</a> for details on inheritance and combination rules.</p>
+
+            <div class="templates-table-wrapper">
+                <table class="templates-table">
+                    <thead>
+                        <tr>
+                            <th>Template</th>
+                            <th>Layer</th>
+                            <th>Description</th>
+                            <th>Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in all_templates %}
+                        <tr>
+                            <td><a href="./templates/{{ t.name }}.html">{{ t.name | replace('-', ' ') | title }}</a></td>
+                            <td><span class="status-{{ 'released' if t.layer == 'technology' else 'dev' if t.layer == 'experiment' else 'released' }}">{{ t.layer or 'internal' }}</span></td>
+                            <td>{{ t.description | truncate(120, true, '...') }}</td>
+                            <td>{{ t.version }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>

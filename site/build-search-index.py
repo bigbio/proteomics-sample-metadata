@@ -7,6 +7,7 @@ Extracts content from AsciiDoc files and creates a JSON index for Lunr.js
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 def extract_text_from_adoc(filepath):
@@ -152,11 +153,79 @@ def parse_sdrf_terms_tsv(filepath):
     return entries
 
 
+def _index_yaml_templates(docs_dir):
+    """Index YAML template definitions for search.
+
+    Uses resolve_templates to get full template data including inherited columns,
+    then creates search entries for each template.
+    """
+    scripts_dir = Path(docs_dir) / 'scripts'
+    templates_dir = Path(docs_dir) / 'sdrf-proteomics' / 'sdrf-templates'
+
+    if not templates_dir.exists():
+        print("Warning: sdrf-templates directory not found, skipping YAML template indexing")
+        return []
+
+    # Import resolve_templates
+    sys.path.insert(0, str(scripts_dir))
+    try:
+        from resolve_templates import resolve_all
+    except ImportError:
+        print("Warning: Could not import resolve_templates, skipping YAML template indexing")
+        return []
+
+    entries = []
+    all_templates = resolve_all(templates_dir)
+
+    for name, tpl in all_templates.items():
+        # Build searchable content from template metadata and columns
+        parts = [
+            tpl.get('description', ''),
+            tpl.get('documentation', ''),
+        ]
+
+        # Add column names and descriptions
+        column_keywords = []
+        for col in tpl.get('all_columns', []):
+            col_name = col.get('name', '')
+            parts.append(col_name)
+            parts.append(col.get('description', ''))
+            column_keywords.append(col_name)
+
+            # Extract ontology references from validators
+            for v in col.get('validators', []):
+                if v.get('params'):
+                    ontology = v['params'].get('ontology', '')
+                    if ontology:
+                        column_keywords.append(ontology)
+
+        content = ' '.join(p for p in parts if p)
+
+        # Build keywords
+        kw = set(column_keywords)
+        kw.update(extract_keywords(content))
+        if tpl.get('layer'):
+            kw.add(tpl['layer'])
+        # Add the template name parts as keywords
+        kw.update(name.replace('-', ' ').split())
+
+        entries.append({
+            'title': f"{name.replace('-', ' ').title()} Template",
+            'content': content[:3000],
+            'url': f'./templates/{name}.html',
+            'section': f'{(tpl.get("layer") or "internal").title()} Template',
+            'keywords': ' '.join(kw)
+        })
+
+    print(f"  Indexed {len(entries)} YAML template entries")
+    return entries
+
+
 def build_index(docs_dir, output_file):
     """Build search index from documentation files."""
     index = []
 
-    # Define documents to index (use relative paths for file:// compatibility)
+    # Define AsciiDoc documents to index
     documents = [
         {
             'file': 'sdrf-proteomics/README.adoc',
@@ -164,32 +233,33 @@ def build_index(docs_dir, output_file):
             'section': 'Core Specification'
         },
         {
-            'file': 'sdrf-proteomics/metadata-guidelines/sample-metadata.adoc',
-            'url': './metadata-guidelines/sample-metadata.html',
-            'section': 'Sample Metadata Guidelines'
+            'file': 'sdrf-proteomics/TEMPLATES.adoc',
+            'url': './templates.html',
+            'section': 'Templates Guide'
         },
         {
-            'file': 'sdrf-proteomics/tool-support.adoc',
-            'url': './tool-support.html',
+            'file': 'sdrf-proteomics/TOOLS.adoc',
+            'url': './tools.html',
             'section': 'Tool Support'
+        },
+        {
+            'file': 'sdrf-proteomics/SAMPLE-GUIDELINES.adoc',
+            'url': './sample-guidelines.html',
+            'section': 'Sample Metadata Guidelines'
         },
     ]
 
-    # Add template documents
-    templates_dir = Path(docs_dir) / 'templates'
-    if templates_dir.exists():
-        for template_dir in templates_dir.iterdir():
-            if template_dir.is_dir():
-                readme = template_dir / 'README.adoc'
-                if readme.exists():
-                    template_name = template_dir.name
-                    documents.append({
-                        'file': str(readme.relative_to(docs_dir)),
-                        'url': f'./templates/{template_name}.html',
-                        'section': f'{template_name.replace("-", " ").title()} Template'
-                    })
+    # Add metadata-guidelines .adoc files if they exist
+    mg_dir = Path(docs_dir) / 'sdrf-proteomics' / 'metadata-guidelines'
+    if mg_dir.exists():
+        for adoc_file in sorted(mg_dir.glob('*.adoc')):
+            documents.append({
+                'file': str(adoc_file.relative_to(docs_dir)),
+                'url': f'./metadata-guidelines/{adoc_file.stem}.html',
+                'section': adoc_file.stem.replace('-', ' ').title()
+            })
 
-    # Process each document
+    # Process AsciiDoc documents
     for doc in documents:
         filepath = Path(docs_dir) / doc['file']
         if not filepath.exists():
@@ -204,9 +274,11 @@ def build_index(docs_dir, output_file):
         title, content = extract_text_from_adoc(filepath)
         keywords = extract_keywords(raw_content)
 
-        # Split large documents into chunks for better search results
         chunks = split_into_chunks(content, title, doc['url'], doc['section'], keywords)
         index.extend(chunks)
+
+    # Index YAML-generated template pages
+    index.extend(_index_yaml_templates(docs_dir))
 
     # Index sdrf-terms.tsv for column definitions and ontology mappings
     sdrf_terms_path = Path(docs_dir) / 'sdrf-proteomics' / 'metadata-guidelines' / 'sdrf-terms.tsv'

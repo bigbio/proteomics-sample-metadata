@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ template.name }} - SDRF Template</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .template-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        /* Header */
+        .template-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .template-header h1 { margin: 0 0 12px; font-size: 2.25rem; }
+        .header-badges { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .badge {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            padding: 4px 10px; border-radius: 20px;
+        }
+        .badge-version { font-size: 0.75rem; font-weight: 500; color: var(--text-light);
+            background: var(--bg-alt); border: 1px solid var(--border); text-transform: none; }
+        .badge-layer-sample { background: #ddf4ff; color: #0550ae; }
+        .badge-layer-technology { background: #dafbe1; color: #116329; }
+        .badge-layer-experiment { background: #fff8c5; color: #6a5700; }
+        .badge-layer-internal { background: var(--bg-alt); color: var(--text-light); }
+        .badge-usable { background: #dafbe1; color: #116329; }
+
+        /* Sections */
+        .template-section { margin-bottom: 2.5rem; }
+        .template-section h2 { margin-top: 0; font-size: 1.4rem; margin-bottom: 0.75rem; }
+
+        /* Documentation */
+        .doc-content { line-height: 1.7; color: var(--text); }
+        .doc-content p { margin: 0.6em 0; }
+        .doc-content ul { margin: 0.5em 0; padding-left: 1.5rem; }
+        .doc-content li { margin: 0.3em 0; }
+        .doc-content code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--bg-alt); padding: 1px 5px; border-radius: 3px;
+        }
+
+        /* Inheritance chain */
+        .inheritance-chain {
+            display: flex; flex-wrap: wrap; align-items: center;
+            padding: 12px 16px; background: var(--bg-alt);
+            border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;
+        }
+        .inheritance-chain a { color: var(--accent); text-decoration: none; }
+        .inheritance-chain a:hover { text-decoration: underline; }
+        .inheritance-chain .current { font-weight: 700; color: var(--text); }
+        .chain-sep { margin: 0 8px; color: var(--text-light); }
+
+        /* Combination rules */
+        .combination-rules ul { list-style: disc; padding-left: 1.5rem; }
+        .combination-rules li { margin: 0.5em 0; font-size: 0.95rem; }
+
+        /* Column controls */
+        .column-controls {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .toggle-btn {
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg-alt); color: var(--text); cursor: pointer;
+        }
+        .toggle-btn:hover { background: #f0f3f6; border-color: var(--accent); }
+        .column-stats { font-size: 0.85rem; color: var(--text-light); }
+
+        /* Column table */
+        .columns-table-wrapper {
+            overflow-x: auto; border: 1px solid var(--border); border-radius: 8px;
+        }
+        .columns-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .columns-table thead { background: var(--bg-alt); }
+        .columns-table th {
+            font-weight: 600; text-align: left; padding: 10px 14px;
+            border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap;
+        }
+        .columns-table td {
+            padding: 10px 14px; border-bottom: 1px solid var(--border-light); vertical-align: middle;
+        }
+        .columns-table tbody tr:last-child td { border-bottom: none; }
+        .columns-table .col-name {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; white-space: nowrap;
+        }
+
+        /* Requirement badges */
+        .req-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+        }
+        .req-required { background: #cf222e; color: #fff; }
+        .req-recommended { background: #9a6700; color: #fff; }
+        .req-optional { background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border); }
+
+        /* Source badge */
+        .source-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 500;
+            padding: 2px 8px; border-radius: 4px;
+            background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        /* Inherited rows */
+        .columns-table tr.inherited { background: #fafbfc; }
+        .columns-table tr.inherited td { color: var(--text-light); }
+        .columns-table tr.inherited .col-name { color: var(--text-light); }
+        tr.hidden { display: none; }
+
+        /* Clickable rows */
+        tr.column-row { cursor: pointer; }
+        tr.column-row:hover { background: #f6f8fa; }
+        tr.column-row.inherited:hover { background: #f0f3f6; }
+
+        /* Detail row (expandable) */
+        tr.detail-row { display: none; }
+        tr.detail-row.open { display: table-row; }
+        tr.detail-row td {
+            padding: 0 14px 14px 14px; background: #f6f8fa;
+            border-bottom: 1px solid var(--border);
+        }
+        tr.inherited + tr.detail-row td { background: #f0f3f6; }
+
+        .detail-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;
+            font-size: 0.82rem; padding-top: 8px;
+        }
+        .detail-item label {
+            display: block; font-weight: 600; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            color: var(--text-light); margin-bottom: 2px;
+        }
+        .detail-item .value { color: var(--text); line-height: 1.5; }
+        .detail-item .value code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--bg); padding: 1px 5px; border-radius: 3px;
+            border: 1px solid var(--border-light);
+        }
+        .detail-item .value a {
+            color: var(--accent); text-decoration: none;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+        }
+        .detail-item.full-width { grid-column: 1 / -1; }
+        .detail-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+        .detail-tag {
+            font-size: 0.7rem; padding: 2px 6px; border-radius: 3px;
+            background: var(--bg); border: 1px solid var(--border-light);
+        }
+
+        /* Expand indicator */
+        .expand-icon {
+            display: inline-block; width: 16px; font-size: 0.7rem;
+            color: var(--text-light); transition: transform 0.15s;
+        }
+        tr.column-row.expanded .expand-icon { transform: rotate(90deg); }
+
+        /* Contributors */
+        .contributors-list { list-style: disc; padding-left: 1.5rem; }
+        .contributors-list li { font-size: 0.9rem; margin: 0.4em 0; }
+
+        @media (max-width: 768px) {
+            .template-page { padding: 32px 20px; }
+            .template-header h1 { font-size: 1.75rem; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="template-page">
+
+        {# ── 1. Header ── #}
+        <div class="template-header">
+            <h1>{{ template.name }}</h1>
+            <div class="header-badges">
+                {% if template.version %}
+                <span class="badge badge-version">v{{ template.version }}</span>
+                {% endif %}
+                {% if template.layer %}
+                <span class="badge badge-layer-{{ template.layer }}">{{ template.layer }}</span>
+                {% else %}
+                <span class="badge badge-layer-internal">internal</span>
+                {% endif %}
+                {% if template.usable_alone %}
+                <span class="badge badge-usable">usable alone</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {# ── 2. Description ── #}
+        {% if template.description %}
+        <div class="template-section">
+            <p style="font-size: 1.05rem; line-height: 1.6;">{{ template.description }}</p>
+        </div>
+        {% endif %}
+
+        {# ── 3. Documentation / Key Guidance ── #}
+        {% if template.documentation_html is defined and template.documentation_html %}
+        <div class="template-section">
+            <h2>Key Guidance</h2>
+            <div class="doc-content">
+                {{ template.documentation_html }}
+            </div>
+        </div>
+        {% elif template.documentation %}
+        <div class="template-section">
+            <h2>Key Guidance</h2>
+            <div class="doc-content">
+                {% for block in template.documentation.split('\n\n') %}
+                    {% set lines = block.strip().split('\n') %}
+                    {% set list_lines = [] %}
+                    {% set para_lines = [] %}
+                    {% for line in lines %}
+                        {% if line.strip().startswith('- ') %}
+                            {% if list_lines.append(line.strip()[2:]) %}{% endif %}
+                        {% else %}
+                            {% if para_lines.append(line.strip()) %}{% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if para_lines %}
+                    <p>{{ para_lines | join(' ') }}</p>
+                    {% endif %}
+                    {% if list_lines %}
+                    <ul>
+                        {% for item in list_lines %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 4. Inheritance Chain ── #}
+        {% if template.inheritance_chain and template.inheritance_chain | length > 1 %}
+        <div class="template-section">
+            <h2>Inheritance</h2>
+            <div class="inheritance-chain">
+                {% for ancestor in template.inheritance_chain %}
+                    {% if not loop.first %}<span class="chain-sep">&rarr;</span>{% endif %}
+                    {% if ancestor == template.name %}
+                    <span class="current">{{ ancestor }}</span>
+                    {% else %}
+                    <a href="./{{ ancestor }}.html">{{ ancestor }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 5. Combination Rules ── #}
+        {% if template.requires or template.mutually_exclusive_with or template.excludes %}
+        <div class="template-section">
+            <h2>Combination Rules</h2>
+            <div class="combination-rules">
+                <ul>
+                    {% if template.requires %}
+                        {% for req in template.requires %}
+                        <li>Requires a <strong>{{ req.layer }}</strong> layer template.</li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if template.mutually_exclusive_with %}
+                    <li>Mutually exclusive with:
+                        {% for t in template.mutually_exclusive_with %}
+                        <a href="./{{ t }}.html">{{ t }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                    {% endif %}
+                    {% if template.excludes and template.excludes.templates %}
+                    <li>Excludes:
+                        {% for t in template.excludes.templates %}
+                        <a href="./{{ t }}.html">{{ t }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 6. Column Table ── #}
+        {% if template.all_columns %}
+        {% set inherited_cols = template.all_columns | selectattr('source_template', 'ne', template.name) | list %}
+        {% set own_cols = template.all_columns | selectattr('source_template', 'eq', template.name) | list %}
+        <div class="template-section">
+            <h2>Columns</h2>
+            <div class="column-controls">
+                {% if inherited_cols %}
+                <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
+                    Show inherited columns ({{ inherited_cols | length }})
+                </button>
+                {% endif %}
+                <span class="column-stats">
+                    {{ own_cols | length }} own{% if inherited_cols %} + {{ inherited_cols | length }} inherited{% endif %} = {{ template.all_columns | length }} total
+                    &middot; click a row for details
+                </span>
+            </div>
+            <div class="columns-table-wrapper">
+                <table class="columns-table">
+                    <thead>
+                        <tr>
+                            <th style="width:20px"></th>
+                            <th>Column</th>
+                            <th>Requirement</th>
+                            <th>Source</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for col in template.all_columns %}
+                        {% set is_inherited = col.source_template != template.name %}
+                        {% set row_id = "col-" ~ loop.index %}
+                        <tr class="column-row{% if is_inherited %} inherited hidden{% endif %}" onclick="toggleDetail('{{ row_id }}')" id="{{ row_id }}">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">{{ col.name }}</td>
+                            <td>
+                                {% if col.requirement == 'required' %}
+                                <span class="req-badge req-required">required</span>
+                                {% elif col.requirement == 'recommended' %}
+                                <span class="req-badge req-recommended">recommended</span>
+                                {% else %}
+                                <span class="req-badge req-optional">optional</span>
+                                {% endif %}
+                            </td>
+                            <td><span class="source-badge">{{ col.source_template }}</span></td>
+                            <td style="max-width:400px;">{{ col.description | default('', true) | truncate(100, true, '...') }}</td>
+                        </tr>
+                        <tr class="detail-row{% if is_inherited %} inherited hidden{% endif %}" id="{{ row_id }}-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    {% if col.description %}
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">{{ col.description }}</div>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if col.ontology_accession %}
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q={{ col.ontology_accession }}" target="_blank" rel="noopener">{{ col.ontology_accession }}</a>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            {% if col.allow_not_applicable %}<span class="detail-tag">allows N/A</span>{% endif %}
+                                            {% if col.allow_not_available %}<span class="detail-tag">allows not available</span>{% endif %}
+                                            {% if col.cardinality is defined and col.cardinality %}<span class="detail-tag">{{ col.cardinality }} cardinality</span>{% endif %}
+                                            {% if col.type is defined and col.type %}<span class="detail-tag">type: {{ col.type }}</span>{% endif %}
+                                        </div>
+                                    </div>
+
+                                    {% if col.validators %}
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            {% for v in col.validators %}
+                                            <div style="margin-bottom:6px;">
+                                                <strong>{{ v.validator_name }}</strong>
+                                                {% if v.params %}
+                                                    {% if v.params.ontologies is defined %}
+                                                     &mdash; ontologies: {{ v.params.ontologies | join(', ') }}
+                                                    {% endif %}
+                                                    {% if v.params.pattern is defined %}
+                                                     &mdash; pattern: <code>{{ v.params.pattern }}</code>
+                                                    {% endif %}
+                                                    {% if v.params.allowed_values is defined %}
+                                                     &mdash; values: {% for val in v.params.allowed_values[:6] %}<code>{{ val }}</code>{% if not loop.last %}, {% endif %}{% endfor %}{% if v.params.allowed_values | length > 6 %}, &hellip;{% endif %}
+                                                    {% endif %}
+                                                    {% if v.params.description is defined %}
+                                                    <div style="color:var(--text-light); font-size:0.9em;">{{ v.params.description }}</div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    {% set examples = [] %}
+                                    {% if col.validators %}
+                                        {% for v in col.validators %}
+                                            {% if v.params and v.params.examples %}
+                                                {% for ex in v.params.examples %}
+                                                    {% if examples.append(ex) %}{% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if examples %}
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            {% for ex in examples[:8] %}<code>{{ ex }}</code>{% if not loop.last %}, {% endif %}{% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── 7. Contributors ── #}
+        {% if template.contributors %}
+        <div class="template-section">
+            <h2>Contributors</h2>
+            <ul class="contributors-list">
+                {% for contributor in template.contributors %}
+                <li>{{ contributor }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script>
+    function toggleDetail(rowId) {
+        var row = document.getElementById(rowId);
+        var detail = document.getElementById(rowId + '-detail');
+        if (!detail) return;
+        row.classList.toggle('expanded');
+        detail.classList.toggle('open');
+    }
+
+    function toggleInherited() {
+        var rows = document.querySelectorAll('tr.inherited');
+        var btn = document.getElementById('toggle-inherited');
+        var count = document.querySelectorAll('tr.column-row.inherited').length;
+        var isHidden = rows.length > 0 && rows[0].classList.contains('hidden');
+
+        rows.forEach(function(r) {
+            if (isHidden) {
+                r.classList.remove('hidden');
+                // Keep detail rows closed when revealing inherited
+                if (r.classList.contains('detail-row')) {
+                    r.classList.remove('open');
+                }
+            } else {
+                r.classList.add('hidden');
+                if (r.classList.contains('detail-row')) {
+                    r.classList.remove('open');
+                }
+            }
+        });
+        // Reset expanded state on inherited column rows
+        document.querySelectorAll('tr.column-row.inherited').forEach(function(r) {
+            r.classList.remove('expanded');
+        });
+
+        btn.textContent = isHidden
+            ? 'Hide inherited columns (' + count + ')'
+            : 'Show inherited columns (' + count + ')';
+    }
+    </script>
+</body>
+</html>
