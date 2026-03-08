@@ -14,6 +14,7 @@ proteomics-metadata-standard/
 │   ├── inject-headers.py      # Navigation header injection
 │   ├── transform-links.py     # .adoc→.html link transformation
 │   ├── transform-sdrf-tables.py # SDRF example table styling
+│   ├── build_sdrf_builder_data.py # SDRF builder JSON data compiler
 │   └── add-dev-banner.sh      # Dev version banner
 ├── sdrf-proteomics/           # Main specification source
 │   ├── README.adoc            # Main specification (AsciiDoc)
@@ -28,8 +29,9 @@ proteomics-metadata-standard/
 ├── site/                      # Website assets and build scripts
 │   ├── css/style.css          # Main stylesheet
 │   ├── js/search.js           # Search functionality
+│   ├── js/sdrf-builder.js     # Interactive SDRF builder logic
 │   ├── index.html             # Homepage
-│   ├── quickstart.html        # Quick start guide
+│   ├── quickstart.html        # Quick start guide + interactive builder
 │   ├── sdrf-explorer.html     # SDRF dataset explorer
 │   ├── sdrf-terms.html        # Terms reference page
 │   ├── build-sdrf-index.py    # Builds dataset index
@@ -353,6 +355,32 @@ npm run build -- --configuration=production
 # Serve locally and update sdrf-editor.html to point to local files
 # (temporarily change jsDelivr URLs to local paths for testing)
 ```
+
+## Interactive SDRF Builder
+
+The quickstart page (`/quickstart.html`) includes an interactive SDRF template builder that helps users create custom SDRF templates by answering questions.
+
+### How It Works
+
+1. **Build time:** `scripts/build_sdrf_builder_data.py` resolves all YAML templates and sdrf-terms.tsv into `sdrf-builder-data.json`
+2. **Runtime:** `site/js/sdrf-builder.js` loads the JSON and renders a branching questionnaire
+3. Users select technology, organism, experiment type, review columns, and download a TSV
+
+### Builder Files
+
+| File | Purpose |
+|------|---------|
+| `scripts/build_sdrf_builder_data.py` | Compiles YAML templates + terms into JSON |
+| `site/js/sdrf-builder.js` | Builder UI logic (vanilla JS) |
+| `site/quickstart.html` | Page with simplified intro + builder scaffold |
+| `site/css/style.css` | Builder-specific styles (`.builder-*`, `.option-*`) |
+
+### Updating the Builder
+
+When templates change (new columns, new templates):
+1. The build script automatically recompiles `sdrf-builder-data.json`
+2. No JS changes needed unless new template layers or combination rules are added
+3. New templates appear automatically in the appropriate step
 
 ## Contributing
 

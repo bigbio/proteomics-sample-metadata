@@ -160,6 +160,7 @@ cp site/css/style.css "$OUTPUT_DIR/css/"
 
 # Copy JavaScript
 cp site/js/search.js "$OUTPUT_DIR/js/"
+cp site/js/sdrf-builder.js "$OUTPUT_DIR/js/"
 
 # Copy images
 cp -r sdrf-proteomics/images/* "$OUTPUT_DIR/images/" 2>/dev/null || true
@@ -173,8 +174,9 @@ cp site/quickstart.html "$OUTPUT_DIR/"
 cp site/sdrf-explorer.html "$OUTPUT_DIR/"
 cp site/sdrf-editor.html "$OUTPUT_DIR/"
 
-# Copy SDRF terms TSV (if present)
+# Copy SDRF terms TSV (if present) — also create TERMS.tsv alias for AsciiDoc links
 cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/" 2>/dev/null || true
+cp sdrf-proteomics/TERMS.tsv "$OUTPUT_DIR/TERMS.tsv" 2>/dev/null || true
 
 # Auto-generate index.html template section from YAML
 echo "Updating index template section..."
@@ -197,6 +199,11 @@ python3 scripts/transform-links.py "$OUTPUT_DIR"
 # Transform SDRF example tables (add column styling)
 echo "Transforming SDRF example tables..."
 python3 scripts/transform-sdrf-tables.py "$OUTPUT_DIR"
+
+# Build SDRF builder data
+echo "Building SDRF builder data..."
+python3 scripts/build_sdrf_builder_data.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/sdrf-builder-data.json"
 
 # Build search index
 echo "Building search index..."

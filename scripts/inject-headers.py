@@ -22,7 +22,11 @@ HEADERS = {
 
     'guidelines': '''<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines" class="nav-current">Metadata Guidelines</a><a href="../index.html#templates">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>''',
 
-    'templates': '''<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'''
+    'templates': '''<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>''',
+
+    'sample_guidelines': '''<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./index.html#metadata-guidelines" class="nav-current">Metadata Guidelines</a><a href="./index.html#templates">Templates</a><a href="./index.html#tools">Tools</a><a href="./sdrf-explorer.html">Explorer</a><a href="./sdrf-editor.html">Editor</a><a href="./index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>''',
+
+    'templates_guide': '''<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./index.html#metadata-guidelines">Metadata Guidelines</a><a href="./index.html#templates" class="nav-current">Templates</a><a href="./index.html#tools">Tools</a><a href="./sdrf-explorer.html">Explorer</a><a href="./sdrf-editor.html">Editor</a><a href="./index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>'''
 }
 
 
@@ -65,13 +69,13 @@ def main():
     sg_file = output_dir / "sample-guidelines.html"
     if sg_file.exists():
         print(f"Injecting header into: {sg_file}")
-        inject_header(str(sg_file), HEADERS['root'])
+        inject_header(str(sg_file), HEADERS['sample_guidelines'])
 
     # Inject header into templates.html (templates guide)
     tpl_guide = output_dir / "templates.html"
     if tpl_guide.exists():
         print(f"Injecting header into: {tpl_guide}")
-        inject_header(str(tpl_guide), HEADERS['root'])
+        inject_header(str(tpl_guide), HEADERS['templates_guide'])
 
     # Inject headers into metadata-guidelines pages
     guidelines_dir = output_dir / "metadata-guidelines"
