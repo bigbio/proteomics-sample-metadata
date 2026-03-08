@@ -214,10 +214,10 @@
 <p>Organism templates (human, vertebrates, etc.) override this to required.</p>
 <ul><li><code>characteristics[biological replicate]</code>: Integer starting from 1. Use <code>pooled</code> for</li></ul>
 <p>pooled reference samples only.</p>
-<ul><li><code>comment[sample type]</code>: Classifies the sample's role in multiplexed experiments.</li></ul>
+<ul><li><code>characteristics[sample type]</code>: Classifies the sample's role in multiplexed experiments.</li></ul>
 <p>Values include single cell, reference, bridge, carrier, empty, quality control sample,</p>
 <p>and various control types. This column replaces older per-template role columns.</p>
-<ul><li><code>comment[tissue mass]</code>: Mass of tissue input with unit (mg, g, ug).</li><li><code>characteristics[biosample accession number]</code>: Link to BioSample record (SAMN/SAMEA/SAMD).</li></ul>
+<ul><li><code>characteristics[biosample accession number]</code>: Link to BioSample record (SAMN/SAMEA/SAMD).</li></ul>
             </div>
         </div>
         
@@ -1068,12 +1068,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: mondo, efo, doid, pato
+                                                     &mdash; ontologies: mondo, efo, doid, ncit, pato
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, NCIT, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
                                                     
                                                 
                                             </div>
@@ -1431,9 +1431,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^SN=.+(;SN=.+)*$</code>
+                                                     &mdash; pattern: <code>^(not pooled|pooled|SN=.+(;SN=.+)*)$</code>
                                                     
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</div>
                                                     
                                                 
                                             </div>
@@ -1448,8 +1450,19 @@
                                             
                                         
                                             
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>SN=sample1;SN=sample2</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -1459,7 +1472,7 @@
                         
                         <tr class="column-row" onclick="toggleDetail('col-16')" id="col-16">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample type]</td>
+                            <td class="col-name">characteristics[sample type]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -1648,7 +1661,7 @@
                         
                         <tr class="column-row" onclick="toggleDetail('col-18')" id="col-18">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[tissue mass]</td>
+                            <td class="col-name">characteristics[tissue mass]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2136,11 +2149,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV)=.+)*$</code>
+                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV|SP)=.+)*$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</div>
                                                     
                                                 
                                             </div>
@@ -2160,6 +2173,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2167,7 +2182,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
+                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
                                         </div>
                                     </div>
                                     

@@ -267,11 +267,11 @@
             <div class="column-controls">
                 
                 <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
-                    Show inherited columns (48)
+                    Show inherited columns (55)
                 </button>
                 
                 <span class="column-stats">
-                    12 own + 48 inherited = 60 total
+                    12 own + 55 inherited = 67 total
                     &middot; click a row for details
                 </span>
             </div>
@@ -1697,12 +1697,12 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: mondo, efo, doid, pato
+                                                     &mdash; ontologies: mondo, efo, doid, ncit, pato
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, NCIT, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
                                                     
                                                 
                                             </div>
@@ -1983,7 +1983,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm or Da)</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm, Da, or mmu)</div>
                                                     
                                                 
                                             </div>
@@ -2003,6 +2003,8 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2010,7 +2012,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>10 ppm</code>, <code>20 ppm</code>, <code>0.5 Da</code>
+                                            <code>10 ppm</code>, <code>20 ppm</code>, <code>0.5 Da</code>, <code>20 mmu</code>
                                         </div>
                                     </div>
                                     
@@ -2072,7 +2074,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm or Da)</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm, Da, or mmu)</div>
                                                     
                                                 
                                             </div>
@@ -2090,6 +2092,8 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2097,7 +2101,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>0.02 Da</code>, <code>20 ppm</code>
+                                            <code>0.02 Da</code>, <code>20 ppm</code>, <code>50 mmu</code>
                                         </div>
                                     </div>
                                     
@@ -2684,9 +2688,11 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^SN=.+(;SN=.+)*$</code>
+                                                     &mdash; pattern: <code>^(not pooled|pooled|SN=.+(;SN=.+)*)$</code>
                                                     
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</div>
                                                     
                                                 
                                             </div>
@@ -2701,8 +2707,19 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                             
                                         
                                             
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>SN=sample1;SN=sample2</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -2712,7 +2729,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-30')" id="col-30">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample type]</td>
+                            <td class="col-name">characteristics[sample type]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2901,7 +2918,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-32')" id="col-32">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[tissue mass]</td>
+                            <td class="col-name">characteristics[tissue mass]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -3389,11 +3406,11 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV)=.+)*$</code>
+                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV|SP)=.+)*$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</div>
                                                     
                                                 
                                             </div>
@@ -3413,6 +3430,8 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -3420,7 +3439,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
+                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
                                         </div>
                                     </div>
                                     
@@ -4125,7 +4144,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                 
                             </td>
                             <td><span class="source-badge">ms-proteomics</span></td>
-                            <td style="max-width:400px;">MS method-defined minimum precursor m/z setting used to acquire the data</td>
+                            <td style="max-width:400px;">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-46-detail">
                             <td colspan="5">
@@ -4133,7 +4152,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">MS method-defined minimum precursor m/z setting used to acquire the data</div>
+                                        <div class="value">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</div>
                                     </div>
                                     
 
@@ -4162,15 +4181,13 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
+                                                <strong>mz_value</strong>
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^[\d.]+$</code>
                                                     
                                                     
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Numeric m/z value</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Precursor m/z value with unit</div>
                                                     
                                                 
                                             </div>
@@ -4197,7 +4214,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>100</code>, <code>200</code>, <code>350.5</code>
+                                            <code>100m/z</code>, <code>200m/z</code>, <code>350.5m/z</code>
                                         </div>
                                     </div>
                                     
@@ -4216,7 +4233,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                 
                             </td>
                             <td><span class="source-badge">ms-proteomics</span></td>
-                            <td style="max-width:400px;">MS method-defined maximum precursor m/z setting used to acquire the data</td>
+                            <td style="max-width:400px;">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-47-detail">
                             <td colspan="5">
@@ -4224,7 +4241,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">MS method-defined maximum precursor m/z setting used to acquire the data</div>
+                                        <div class="value">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</div>
                                     </div>
                                     
 
@@ -4253,15 +4270,13 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
+                                                <strong>mz_value</strong>
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^[\d.]+$</code>
                                                     
                                                     
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Numeric m/z value</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Precursor m/z value with unit</div>
                                                     
                                                 
                                             </div>
@@ -4288,7 +4303,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>1200</code>, <code>1600</code>, <code>2000</code>
+                                            <code>1200m/z</code>, <code>1600m/z</code>, <code>2000m/z</code>
                                         </div>
                                     </div>
                                     
@@ -4842,6 +4857,615 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-54')" id="col-54">
                             <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 min mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined minimum product ion (MS2) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-54-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined minimum product ion (MS2) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001011" target="_blank" rel="noopener">PRIDE:0001011</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z</code>, <code>200m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-55')" id="col-55">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 max mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined maximum product ion (MS2) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-55-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined maximum product ion (MS2) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001012" target="_blank" rel="noopener">PRIDE:0001012</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>1800m/z</code>, <code>2000m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-56')" id="col-56">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms3 min mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined minimum product ion (MS3) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-56-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined minimum product ion (MS3) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001013" target="_blank" rel="noopener">PRIDE:0001013</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z</code>, <code>200m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-57')" id="col-57">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms3 max mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined maximum product ion (MS3) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-57-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined maximum product ion (MS3) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001014" target="_blank" rel="noopener">PRIDE:0001014</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>1500m/z</code>, <code>2000m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-58')" id="col-58">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms1 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-58-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001008" target="_blank" rel="noopener">PRIDE:0001008</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS1 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>400m/z-1200m/z</code>, <code>350m/z-1600m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-59')" id="col-59">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-59-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001009" target="_blank" rel="noopener">PRIDE:0001009</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS2 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z-2000m/z</code>, <code>200m/z-1800m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-60')" id="col-60">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms3 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-60-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001010" target="_blank" rel="noopener">PRIDE:0001010</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS3 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z-1500m/z</code>, <code>200m/z-2000m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-61')" id="col-61">
+                            <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[elution conditions]</td>
                             <td>
                                 
@@ -4851,7 +5475,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">ms-proteomics</span></td>
                             <td style="max-width:400px;">Conditions used for peptide/protein elution</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-54-detail">
+                        <tr class="detail-row inherited hidden" id="col-61-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -4931,7 +5555,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-55')" id="col-55">
+                        <tr class="column-row" onclick="toggleDetail('col-62')" id="col-62">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[crosslink distance]</td>
                             <td>
@@ -4942,7 +5566,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">crosslinking</span></td>
                             <td style="max-width:400px;">Maximum Cα-Cα distance constraint provided by the crosslinker (for structural interpretation)</td>
                         </tr>
-                        <tr class="detail-row" id="col-55-detail">
+                        <tr class="detail-row" id="col-62-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5020,7 +5644,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-56')" id="col-56">
+                        <tr class="column-row" onclick="toggleDetail('col-63')" id="col-63">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[crosslinker concentration]</td>
                             <td>
@@ -5031,7 +5655,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">crosslinking</span></td>
                             <td style="max-width:400px;">Concentration of crosslinking reagent used</td>
                         </tr>
-                        <tr class="detail-row" id="col-56-detail">
+                        <tr class="detail-row" id="col-63-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5109,7 +5733,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-57')" id="col-57">
+                        <tr class="column-row" onclick="toggleDetail('col-64')" id="col-64">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[crosslinking reaction time]</td>
                             <td>
@@ -5120,7 +5744,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">crosslinking</span></td>
                             <td style="max-width:400px;">Duration of the crosslinking reaction</td>
                         </tr>
-                        <tr class="detail-row" id="col-57-detail">
+                        <tr class="detail-row" id="col-64-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5198,7 +5822,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-58')" id="col-58">
+                        <tr class="column-row" onclick="toggleDetail('col-65')" id="col-65">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[crosslinking temperature]</td>
                             <td>
@@ -5209,7 +5833,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">crosslinking</span></td>
                             <td style="max-width:400px;">Temperature at which crosslinking was performed</td>
                         </tr>
-                        <tr class="detail-row" id="col-58-detail">
+                        <tr class="detail-row" id="col-65-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5289,7 +5913,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-59')" id="col-59">
+                        <tr class="column-row" onclick="toggleDetail('col-66')" id="col-66">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[crosslinker to protein ratio]</td>
                             <td>
@@ -5300,7 +5924,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">crosslinking</span></td>
                             <td style="max-width:400px;">Molar ratio of crosslinker to protein</td>
                         </tr>
-                        <tr class="detail-row" id="col-59-detail">
+                        <tr class="detail-row" id="col-66-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5380,7 +6004,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-60')" id="col-60">
+                        <tr class="column-row" onclick="toggleDetail('col-67')" id="col-67">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[quenching reagent]</td>
                             <td>
@@ -5391,7 +6015,7 @@ Uses XLMOD ontology (parent term XLMOD:00004).
                             <td><span class="source-badge">crosslinking</span></td>
                             <td style="max-width:400px;">Reagent used to quench the crosslinking reaction</td>
                         </tr>
-                        <tr class="detail-row" id="col-60-detail">
+                        <tr class="detail-row" id="col-67-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     

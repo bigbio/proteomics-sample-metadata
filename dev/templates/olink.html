@@ -215,7 +215,7 @@
 <p>Olink Explore 384, Olink Explore HT, Olink Reveal).</p>
 <ul><li><code>comment[npx normalization]</code>: Recommended. How NPX values were normalized</li></ul>
 <p>(plate control normalized, intensity normalized, bridge normalized, not normalized).</p>
-<ul><li><code>comment[olink lot number]</code>: Optional. Reagent lot for traceability.</li><li>Inherited from affinity-proteomics: <code>comment[sample matrix]</code> (serum, plasma, CSF),</li></ul>
+<ul><li><code>comment[olink lot number]</code>: Optional. Reagent lot for traceability.</li><li>Inherited from affinity-proteomics: <code>characteristics[sample matrix]</code> (serum, plasma, CSF),</li></ul>
 <p><code>comment[quantification unit]</code> (NPX), <code>comment[normalization method]</code>.</p>
 <p>Olink data uses Normalized Protein eXpression (NPX) units on a log2 scale.</p>
 <p>Mutually exclusive with somascan.</p>
@@ -1344,12 +1344,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: mondo, efo, doid, pato
+                                                     &mdash; ontologies: mondo, efo, doid, ncit, pato
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, NCIT, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
                                                     
                                                 
                                             </div>
@@ -1478,7 +1478,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-16')" id="col-16">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample matrix]</td>
+                            <td class="col-name">characteristics[sample matrix]</td>
                             <td>
                                 
                                 <span class="req-badge req-recommended">recommended</span>
@@ -1952,9 +1952,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^SN=.+(;SN=.+)*$</code>
+                                                     &mdash; pattern: <code>^(not pooled|pooled|SN=.+(;SN=.+)*)$</code>
                                                     
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</div>
                                                     
                                                 
                                             </div>
@@ -1969,8 +1971,19 @@
                                             
                                         
                                             
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>SN=sample1;SN=sample2</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -1980,7 +1993,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-22')" id="col-22">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample type]</td>
+                            <td class="col-name">characteristics[sample type]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2169,7 +2182,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-24')" id="col-24">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[tissue mass]</td>
+                            <td class="col-name">characteristics[tissue mass]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2657,11 +2670,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV)=.+)*$</code>
+                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV|SP)=.+)*$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</div>
                                                     
                                                 
                                             </div>
@@ -2681,6 +2694,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2688,7 +2703,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
+                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
                                         </div>
                                     </div>
                                     

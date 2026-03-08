@@ -214,7 +214,7 @@
 <p>Key differences from ms-proteomics:</p>
 <ul><li>No sample preparation chemistry columns (no digestion, reduction, alkylation).</li><li><code>technology type</code> must be <code>protein expression profiling by antibody array</code> (Olink)</li></ul>
 <p>or <code>protein expression profiling by aptamer array</code> (SomaScan).</p>
-<ul><li><code>comment[platform]</code> identifies the specific instrument/platform.</li><li><code>comment[panel name]</code> and <code>comment[panel version]</code> track the commercial panel used.</li><li><code>comment[quantification unit]</code>: NPX for Olink, RFU for SomaScan.</li><li><code>comment[sample matrix]</code>: The biological fluid analyzed (serum, plasma, CSF, etc.).</li><li><code>comment[normalization method]</code>: How data was normalized (plate control, bridge, etc.).</li></ul>
+<ul><li><code>comment[platform]</code> identifies the specific instrument/platform.</li><li><code>comment[panel name]</code> and <code>comment[panel version]</code> track the commercial panel used.</li><li><code>comment[quantification unit]</code>: NPX for Olink, RFU for SomaScan.</li><li><code>characteristics[sample matrix]</code>: The biological fluid analyzed (serum, plasma, CSF, etc.).</li><li><code>comment[normalization method]</code>: How data was normalized (plate control, bridge, etc.).</li></ul>
 <p>Mutually exclusive with ms-proteomics.</p>
             </div>
         </div>
@@ -1179,12 +1179,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: mondo, efo, doid, pato
+                                                     &mdash; ontologies: mondo, efo, doid, ncit, pato
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, NCIT, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
                                                     
                                                 
                                             </div>
@@ -1313,7 +1313,7 @@
                         
                         <tr class="column-row" onclick="toggleDetail('col-14')" id="col-14">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample matrix]</td>
+                            <td class="col-name">characteristics[sample matrix]</td>
                             <td>
                                 
                                 <span class="req-badge req-recommended">recommended</span>
@@ -1718,9 +1718,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^SN=.+(;SN=.+)*$</code>
+                                                     &mdash; pattern: <code>^(not pooled|pooled|SN=.+(;SN=.+)*)$</code>
                                                     
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</div>
                                                     
                                                 
                                             </div>
@@ -1735,8 +1737,19 @@
                                             
                                         
                                             
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>SN=sample1;SN=sample2</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -1746,7 +1759,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-19')" id="col-19">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample type]</td>
+                            <td class="col-name">characteristics[sample type]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -1935,7 +1948,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-21')" id="col-21">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[tissue mass]</td>
+                            <td class="col-name">characteristics[tissue mass]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2423,11 +2436,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV)=.+)*$</code>
+                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV|SP)=.+)*$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</div>
                                                     
                                                 
                                             </div>
@@ -2447,6 +2460,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2454,7 +2469,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
+                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
                                         </div>
                                     </div>
                                     

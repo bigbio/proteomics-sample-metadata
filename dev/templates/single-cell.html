@@ -221,7 +221,7 @@
 <p>Plate-level batch effects are a major confounder in single-cell studies.</p>
 <ul><li><code>characteristics[individual]</code>: Recommended. Links cells to the same donor/patient.</li><li>Flow cytometry data (forward/side scatter, enrichment markers): Optional but valuable</li></ul>
 <p>for cell size and identity documentation.</p>
-<ul><li><code>comment[spatial coordinates]</code> / <code>comment[tissue section]</code>: For spatially resolved SCP</li></ul>
+<ul><li><code>characteristics[spatial coordinates]</code> / <code>comment[tissue section]</code>: For spatially resolved SCP</li></ul>
 <p>(e.g., LCM-based isolation from tissue sections).</p>
 <ul><li>Isolation method-specific parameters (all optional): <code>comment[facs nozzle size]</code>,</li></ul>
 <p><code>comment[facs sorting mode]</code>, <code>comment[microfluidics chip type]</code>,</p>
@@ -272,11 +272,11 @@
             <div class="column-controls">
                 
                 <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
-                    Show inherited columns (49)
+                    Show inherited columns (56)
                 </button>
                 
                 <span class="column-stats">
-                    20 own + 49 inherited = 69 total
+                    20 own + 56 inherited = 76 total
                     &middot; click a row for details
                 </span>
             </div>
@@ -1633,7 +1633,7 @@
                         
                         <tr class="column-row" onclick="toggleDetail('col-18')" id="col-18">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample type]</td>
+                            <td class="col-name">characteristics[sample type]</td>
                             <td>
                                 
                                 <span class="req-badge req-recommended">recommended</span>
@@ -1793,12 +1793,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: mondo, efo, doid, pato
+                                                     &mdash; ontologies: mondo, efo, doid, ncit, pato
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, NCIT, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
                                                     
                                                 
                                             </div>
@@ -1982,7 +1982,7 @@
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm or Da)</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm, Da, or mmu)</div>
                                                     
                                                 
                                             </div>
@@ -2002,6 +2002,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2009,7 +2011,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>10 ppm</code>, <code>20 ppm</code>, <code>0.5 Da</code>
+                                            <code>10 ppm</code>, <code>20 ppm</code>, <code>0.5 Da</code>, <code>20 mmu</code>
                                         </div>
                                     </div>
                                     
@@ -2071,7 +2073,7 @@
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm or Da)</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm, Da, or mmu)</div>
                                                     
                                                 
                                             </div>
@@ -2089,6 +2091,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2096,7 +2100,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>0.02 Da</code>, <code>20 ppm</code>
+                                            <code>0.02 Da</code>, <code>20 ppm</code>, <code>50 mmu</code>
                                         </div>
                                     </div>
                                     
@@ -2873,9 +2877,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^SN=.+(;SN=.+)*$</code>
+                                                     &mdash; pattern: <code>^(not pooled|pooled|SN=.+(;SN=.+)*)$</code>
                                                     
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</div>
                                                     
                                                 
                                             </div>
@@ -2890,8 +2896,19 @@
                                             
                                         
                                             
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>SN=sample1;SN=sample2</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -2977,7 +2994,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-33')" id="col-33">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[tissue mass]</td>
+                            <td class="col-name">characteristics[tissue mass]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -3465,11 +3482,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV)=.+)*$</code>
+                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV|SP)=.+)*$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</div>
                                                     
                                                 
                                             </div>
@@ -3489,6 +3506,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -3496,7 +3515,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
+                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
                                         </div>
                                     </div>
                                     
@@ -4303,7 +4322,7 @@
                                 
                             </td>
                             <td><span class="source-badge">ms-proteomics</span></td>
-                            <td style="max-width:400px;">MS method-defined minimum precursor m/z setting used to acquire the data</td>
+                            <td style="max-width:400px;">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-48-detail">
                             <td colspan="5">
@@ -4311,7 +4330,7 @@
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">MS method-defined minimum precursor m/z setting used to acquire the data</div>
+                                        <div class="value">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</div>
                                     </div>
                                     
 
@@ -4340,15 +4359,13 @@
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
+                                                <strong>mz_value</strong>
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^[\d.]+$</code>
                                                     
                                                     
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Numeric m/z value</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Precursor m/z value with unit</div>
                                                     
                                                 
                                             </div>
@@ -4375,7 +4392,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>100</code>, <code>200</code>, <code>350.5</code>
+                                            <code>100m/z</code>, <code>200m/z</code>, <code>350.5m/z</code>
                                         </div>
                                     </div>
                                     
@@ -4394,7 +4411,7 @@
                                 
                             </td>
                             <td><span class="source-badge">ms-proteomics</span></td>
-                            <td style="max-width:400px;">MS method-defined maximum precursor m/z setting used to acquire the data</td>
+                            <td style="max-width:400px;">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-49-detail">
                             <td colspan="5">
@@ -4402,7 +4419,7 @@
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">MS method-defined maximum precursor m/z setting used to acquire the data</div>
+                                        <div class="value">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</div>
                                     </div>
                                     
 
@@ -4431,15 +4448,13 @@
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
+                                                <strong>mz_value</strong>
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^[\d.]+$</code>
                                                     
                                                     
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Numeric m/z value</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Precursor m/z value with unit</div>
                                                     
                                                 
                                             </div>
@@ -4466,7 +4481,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>1200</code>, <code>1600</code>, <code>2000</code>
+                                            <code>1200m/z</code>, <code>1600m/z</code>, <code>2000m/z</code>
                                         </div>
                                     </div>
                                     
@@ -5020,6 +5035,615 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-56')" id="col-56">
                             <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 min mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined minimum product ion (MS2) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-56-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined minimum product ion (MS2) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001011" target="_blank" rel="noopener">PRIDE:0001011</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z</code>, <code>200m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-57')" id="col-57">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 max mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined maximum product ion (MS2) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-57-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined maximum product ion (MS2) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001012" target="_blank" rel="noopener">PRIDE:0001012</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>1800m/z</code>, <code>2000m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-58')" id="col-58">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms3 min mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined minimum product ion (MS3) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-58-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined minimum product ion (MS3) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001013" target="_blank" rel="noopener">PRIDE:0001013</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z</code>, <code>200m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-59')" id="col-59">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms3 max mz]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">MS method-defined maximum product ion (MS3) m/z setting used to acquire the data</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-59-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MS method-defined maximum product ion (MS3) m/z setting used to acquire the data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001014" target="_blank" rel="noopener">PRIDE:0001014</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_value</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Product ion m/z value with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>1500m/z</code>, <code>2000m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-60')" id="col-60">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms1 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-60-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001008" target="_blank" rel="noopener">PRIDE:0001008</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS1 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>400m/z-1200m/z</code>, <code>350m/z-1600m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-61')" id="col-61">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-61-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001009" target="_blank" rel="noopener">PRIDE:0001009</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS2 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z-2000m/z</code>, <code>200m/z-1800m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-62')" id="col-62">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms3 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-proteomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-62-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001010" target="_blank" rel="noopener">PRIDE:0001010</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS3 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>100m/z-1500m/z</code>, <code>200m/z-2000m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-63')" id="col-63">
+                            <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[elution conditions]</td>
                             <td>
                                 
@@ -5029,7 +5653,7 @@
                             <td><span class="source-badge">ms-proteomics</span></td>
                             <td style="max-width:400px;">Conditions used for peptide/protein elution</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-56-detail">
+                        <tr class="detail-row inherited hidden" id="col-63-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5109,7 +5733,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-57')" id="col-57">
+                        <tr class="column-row" onclick="toggleDetail('col-64')" id="col-64">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[forward scatter]</td>
                             <td>
@@ -5120,7 +5744,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Forward scatter (FSC) value from flow cytometry - proxy for cell size</td>
                         </tr>
-                        <tr class="detail-row" id="col-57-detail">
+                        <tr class="detail-row" id="col-64-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5198,7 +5822,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-58')" id="col-58">
+                        <tr class="column-row" onclick="toggleDetail('col-65')" id="col-65">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[side scatter]</td>
                             <td>
@@ -5209,7 +5833,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Side scatter (SSC) value from flow cytometry - proxy for cell granularity/complexity</td>
                         </tr>
-                        <tr class="detail-row" id="col-58-detail">
+                        <tr class="detail-row" id="col-65-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5287,7 +5911,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-59')" id="col-59">
+                        <tr class="column-row" onclick="toggleDetail('col-66')" id="col-66">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[enrichment marker]</td>
                             <td>
@@ -5298,7 +5922,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Markers used for cell sorting/enrichment with optional intensity values</td>
                         </tr>
-                        <tr class="detail-row" id="col-59-detail">
+                        <tr class="detail-row" id="col-66-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5382,7 +6006,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-60')" id="col-60">
+                        <tr class="column-row" onclick="toggleDetail('col-67')" id="col-67">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[cell viability]</td>
                             <td>
@@ -5393,7 +6017,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Viability status of the cell at isolation</td>
                         </tr>
-                        <tr class="detail-row" id="col-60-detail">
+                        <tr class="detail-row" id="col-67-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5458,7 +6082,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-61')" id="col-61">
+                        <tr class="column-row" onclick="toggleDetail('col-68')" id="col-68">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[cell cycle phase]</td>
                             <td>
@@ -5469,7 +6093,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Cell cycle phase if determined (e.g., by FACS or computational inference)</td>
                         </tr>
-                        <tr class="detail-row" id="col-61-detail">
+                        <tr class="detail-row" id="col-68-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5534,7 +6158,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-62')" id="col-62">
+                        <tr class="column-row" onclick="toggleDetail('col-69')" id="col-69">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[cell diameter]</td>
                             <td>
@@ -5545,7 +6169,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Physical diameter of the isolated cell if measured (in micrometers)</td>
                         </tr>
-                        <tr class="detail-row" id="col-62-detail">
+                        <tr class="detail-row" id="col-69-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5623,9 +6247,9 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-63')" id="col-63">
+                        <tr class="column-row" onclick="toggleDetail('col-70')" id="col-70">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[spatial coordinates]</td>
+                            <td class="col-name">characteristics[spatial coordinates]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -5634,7 +6258,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">X,Y coordinates if cells were isolated from a spatial context (e.g., LCM from tissue)</td>
                         </tr>
-                        <tr class="detail-row" id="col-63-detail">
+                        <tr class="detail-row" id="col-70-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5712,7 +6336,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-64')" id="col-64">
+                        <tr class="column-row" onclick="toggleDetail('col-71')" id="col-71">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[tissue section]</td>
                             <td>
@@ -5723,7 +6347,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Tissue section identifier for spatially resolved single-cell proteomics</td>
                         </tr>
-                        <tr class="detail-row" id="col-64-detail">
+                        <tr class="detail-row" id="col-71-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5801,7 +6425,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-65')" id="col-65">
+                        <tr class="column-row" onclick="toggleDetail('col-72')" id="col-72">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[facs nozzle size]</td>
                             <td>
@@ -5812,7 +6436,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Nozzle diameter used for FACS-based single cell isolation (in micrometers)</td>
                         </tr>
-                        <tr class="detail-row" id="col-65-detail">
+                        <tr class="detail-row" id="col-72-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5890,7 +6514,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-66')" id="col-66">
+                        <tr class="column-row" onclick="toggleDetail('col-73')" id="col-73">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[facs sorting mode]</td>
                             <td>
@@ -5901,7 +6525,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Sorting mode used during FACS isolation</td>
                         </tr>
-                        <tr class="detail-row" id="col-66-detail">
+                        <tr class="detail-row" id="col-73-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -5966,7 +6590,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-67')" id="col-67">
+                        <tr class="column-row" onclick="toggleDetail('col-74')" id="col-74">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[microfluidics chip type]</td>
                             <td>
@@ -5977,7 +6601,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Type and manufacturer of the microfluidics chip used for single cell isolation</td>
                         </tr>
-                        <tr class="detail-row" id="col-67-detail">
+                        <tr class="detail-row" id="col-74-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -6057,7 +6681,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-68')" id="col-68">
+                        <tr class="column-row" onclick="toggleDetail('col-75')" id="col-75">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[lcm microscope model]</td>
                             <td>
@@ -6068,7 +6692,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Model of the laser capture microdissection microscope used for cell isolation</td>
                         </tr>
-                        <tr class="detail-row" id="col-68-detail">
+                        <tr class="detail-row" id="col-75-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -6148,7 +6772,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-69')" id="col-69">
+                        <tr class="column-row" onclick="toggleDetail('col-76')" id="col-76">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[nanopots chip version]</td>
                             <td>
@@ -6159,7 +6783,7 @@
                             <td><span class="source-badge">single-cell</span></td>
                             <td style="max-width:400px;">Version of the nanoPOTS chip used for single cell sample preparation</td>
                         </tr>
-                        <tr class="detail-row" id="col-69-detail">
+                        <tr class="detail-row" id="col-76-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     

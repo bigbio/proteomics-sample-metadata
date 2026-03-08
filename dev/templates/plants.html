@@ -279,11 +279,11 @@
             <div class="column-controls">
                 
                 <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
-                    Show inherited columns (22)
+                    Show inherited columns (21)
                 </button>
                 
                 <span class="column-stats">
-                    5 own + 22 inherited = 27 total
+                    6 own + 21 inherited = 27 total
                     &middot; click a row for details
                 </span>
             </div>
@@ -680,7 +680,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-7')" id="col-7">
+                        <tr class="column-row" onclick="toggleDetail('col-7')" id="col-7">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[organism part]</td>
                             <td>
@@ -688,10 +688,10 @@
                                 <span class="req-badge req-required">required</span>
                                 
                             </td>
-                            <td><span class="source-badge">sample-metadata</span></td>
+                            <td><span class="source-badge">plants</span></td>
                             <td style="max-width:400px;">Anatomical part of the organism from which sample was derived</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-7-detail">
+                        <tr class="detail-row" id="col-7-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -729,12 +729,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: uberon, bto
+                                                     &mdash; ontologies: uberon, bto, po
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The organism part should be a valid UBERON or BTO term</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The organism part should be a valid UBERON, BTO, or Plant Ontology (PO) term</div>
                                                     
                                                 
                                             </div>
@@ -763,7 +763,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>liver</code>, <code>brain</code>, <code>heart</code>, <code>blood</code>
+                                            <code>flower bud</code>, <code>leaf</code>, <code>root</code>, <code>seed</code>
                                         </div>
                                     </div>
                                     
@@ -913,12 +913,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: mondo, efo, doid, pato
+                                                     &mdash; ontologies: mondo, efo, doid, ncit, pato
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The disease should be a valid MONDO, EFO, DOID, NCIT, or PATO ontology term. Use 'normal' (PATO:0000461) for healthy samples.</div>
                                                     
                                                 
                                             </div>
@@ -1830,9 +1830,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^SN=.+(;SN=.+)*$</code>
+                                                     &mdash; pattern: <code>^(not pooled|pooled|SN=.+(;SN=.+)*)$</code>
                                                     
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</div>
                                                     
                                                 
                                             </div>
@@ -1847,8 +1849,19 @@
                                             
                                         
                                             
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>SN=sample1;SN=sample2</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -1858,7 +1871,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-20')" id="col-20">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[sample type]</td>
+                            <td class="col-name">characteristics[sample type]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2047,7 +2060,7 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-22')" id="col-22">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[tissue mass]</td>
+                            <td class="col-name">characteristics[tissue mass]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
@@ -2440,11 +2453,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV)=.+)*$</code>
+                                                     &mdash; pattern: <code>^CT=.+(;(QY|PS|AC|CN|CV|SP)=.+)*$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</div>
                                                     
                                                 
                                             </div>
@@ -2464,6 +2477,8 @@
                                                 
                                                     
                                                 
+                                                    
+                                                
                                             
                                         
                                     
@@ -2471,7 +2486,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
+                                            <code>CT=peptide;PS=PEPTIDESEQ;QY=10 fmol</code>, <code>CT=protein;AC=A9WZ33;QY=20 nmol</code>, <code>CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840</code>, <code>CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</code>
                                         </div>
                                     </div>
                                     
