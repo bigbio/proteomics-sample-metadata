@@ -1,5 +1,9 @@
 """Tests for the template inheritance resolver module."""
 
+import os
+import subprocess
+import tempfile
+
 import pytest
 from pathlib import Path
 
@@ -205,3 +209,34 @@ class TestResolveAll:
                 f"Template {name} has duplicate columns: "
                 f"{[n for n in names if names.count(n) > 1]}"
             )
+
+
+# --- build_template_pages script ---
+
+
+class TestBuildTemplatePages:
+    def test_build_template_pages_generates_html(self):
+        """build_template_pages.py generates HTML files for all templates."""
+        repo_root = os.path.join(os.path.dirname(__file__), "..")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = subprocess.run(
+                [
+                    "python3",
+                    "scripts/build_template_pages.py",
+                    "sdrf-proteomics/sdrf-templates",
+                    tmpdir,
+                ],
+                capture_output=True,
+                text=True,
+                cwd=repo_root,
+            )
+            assert result.returncode == 0, f"Script failed: {result.stderr}"
+            assert os.path.exists(os.path.join(tmpdir, "human.html"))
+            assert os.path.exists(os.path.join(tmpdir, "dia-acquisition.html"))
+            assert os.path.exists(os.path.join(tmpdir, "base.html"))
+            with open(os.path.join(tmpdir, "human.html")) as f:
+                html = f.read()
+            assert "characteristics[ancestry category]" in html
+            assert "characteristics[organism]" in html  # inherited
+            assert "source name" in html  # from base
+            assert "Contributors" in html
