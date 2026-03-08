@@ -110,7 +110,7 @@ asciidoctor \
     -D "$OUTPUT_DIR" \
     $ASCIIDOCTOR_OPTS \
     -o tool-support.html \
-    sdrf-proteomics/tool-support.adoc
+    sdrf-proteomics/TOOLS.adoc
 
 # Build metadata guidelines
 echo "Building metadata guidelines..."
@@ -176,25 +176,10 @@ if [ -f "sdrf-proteomics/metadata-guidelines/data-analysis-metadata.adoc" ]; the
         sdrf-proteomics/metadata-guidelines/data-analysis-metadata.adoc
 fi
 
-# Build template documentation
-echo "Building templates..."
-for dir in sdrf-proteomics/templates/*/; do
-    if [ -f "${dir}README.adoc" ]; then
-        template_name=$(basename "$dir")
-        echo "  Building template: $template_name"
-        asciidoctor \
-            -D "$OUTPUT_DIR/templates" \
-            -a stylesheet=../css/style.css \
-            -a linkcss \
-            -a toc=left \
-            -a toclevels=3 \
-            -a sectanchors \
-            -a sectlinks \
-            --backend=html5 \
-            -o "${template_name}.html" \
-            "${dir}README.adoc"
-    fi
-done
+# Build template pages from YAML definitions
+echo "Building template pages from YAML..."
+python3 scripts/build_template_pages.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/templates"
 
 # Copy assets
 echo "Copying assets..."
@@ -218,6 +203,11 @@ cp site/sdrf-explorer.html "$OUTPUT_DIR/"
 
 # Copy SDRF terms TSV
 cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/"
+
+# Auto-generate index.html template section from YAML
+echo "Updating index template section..."
+python3 scripts/build_index_templates.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/index.html"
 
 # Build SDRF Explorer index
 echo "Building SDRF Explorer index..."

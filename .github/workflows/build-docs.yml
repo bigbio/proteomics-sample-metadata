@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -25,6 +27,9 @@ jobs:
         run: |
           gem install asciidoctor
           gem install asciidoctor-diagram
+
+      - name: Install Python dependencies
+        run: pip install pyyaml jinja2
 
       - name: Set output directory based on branch
         id: set-output-dir
@@ -49,6 +54,10 @@ jobs:
         run: |
           chmod +x scripts/copy-assets.sh
           ./scripts/copy-assets.sh ${{ steps.set-output-dir.outputs.output_dir }}
+
+      - name: Generate index template section from YAML
+        run: |
+          python3 scripts/build_index_templates.py sdrf-proteomics/sdrf-templates ${{ steps.set-output-dir.outputs.output_dir }}/index.html
 
       - name: Build SDRF Explorer index
         run: |

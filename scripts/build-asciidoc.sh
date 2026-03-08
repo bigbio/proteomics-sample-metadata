@@ -32,7 +32,7 @@ asciidoctor \
     -a stylesheet=css/style.css \
     $ASCIIDOCTOR_OPTS \
     -o tool-support.html \
-    sdrf-proteomics/tool-support.adoc
+    sdrf-proteomics/TOOLS.adoc
 
 # Build sample metadata guidelines
 echo "Building sample metadata guidelines..."
@@ -65,19 +65,9 @@ if [ -f "sdrf-proteomics/metadata-guidelines/data-analysis-metadata.adoc" ]; the
         sdrf-proteomics/metadata-guidelines/data-analysis-metadata.adoc
 fi
 
-# Build template documentation
-echo "Building template documentation..."
-for dir in sdrf-proteomics/templates/*/; do
-    if [ -f "${dir}README.adoc" ]; then
-        template_name=$(basename "$dir")
-        echo "  Building template: $template_name"
-        asciidoctor \
-            -D "$OUTPUT_DIR/templates" \
-            -a stylesheet=../css/style.css \
-            $ASCIIDOCTOR_OPTS \
-            -o "${template_name}.html" \
-            "${dir}README.adoc"
-    fi
-done
+# Build template pages from YAML definitions
+echo "Building template pages from YAML..."
+python3 scripts/build_template_pages.py \
+    sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/templates"
 
 echo "AsciiDoc build complete!"
