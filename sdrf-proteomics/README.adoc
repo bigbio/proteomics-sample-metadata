@@ -830,6 +830,1760 @@ TIP: Use the link:sdrf-explorer.html[SDRF Explorer] to browse all {total_dataset
 
 A comprehensive collection of annotated projects is available at: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects[Annotated Projects Repository]
 
+// AUTO-GENERATED: Template Definitions (do not edit below this line)
+
+[[template-definitions]]
+== Template Definitions
+
+This section provides the column definitions for each SDRF-Proteomics template. Each template shows only its *own* columns (not inherited ones). See the "Extends" field to identify which parent template's columns are also included.
+
+=== base
+
+**Version:** 1.1.0 | **Layer:** internal | **Extends:** none | **Usable alone:** No
+
+Base SDRF template with infrastructure columns (identifiers, data files, versioning) inherited by all proteomics templates. This is a construction artifact and cannot be used directly.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `source name`
+| required
+| Unique identifier for the biological sample
+| 
+| 
+
+| `assay name`
+| required
+| Unique identifier for the data acquisition run
+| 
+| 
+
+| `technology type`
+| required
+| Type of technology used
+| single value only; values: proteomic profiling by mass spectrometry, protein expression profiling by antibody array, protein expression profiling by aptamer array
+| 
+
+| `comment[technical replicate]`
+| required
+| Identifier for the technical replicate (integer starting from 1)
+| 
+| 
+
+| `comment[data file]`
+| required
+| Name of the raw data file
+| 
+| 
+
+| `comment[sdrf version]`
+| recommended
+| Version of the SDRF-Proteomics specification used to annotate this file
+| semver
+| v1.1.0, v2.0.0-dev
+
+| `comment[sdrf template]`
+| optional
+| Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns.
+| pattern: Template can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z'
+| NT=human;VV=v1.1.0, human v1.1.0, NT=ms-proteomics;VV=v1.1.0, ms-proteomics v1.1.0
+
+| `comment[sdrf annotation tool]`
+| optional
+| Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z).
+| pattern: Annotation tool can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z' or 'manual curation'
+| NT=lesSDRF;VV=v0.1.0, lesSDRF v0.1.0, NT=sdrf-pipelines;VV=v1.0.0, sdrf-pipelines v1.0.0, ...
+
+| `comment[sdrf validation hash]`
+| optional
+| Hash value for SDRF validation integrity checking
+| pattern: Validation hash string
+| 
+
+|===
+
+=== sample-metadata
+
+**Version:** 1.0.0 | **Layer:** internal | **Extends:** base | **Usable alone:** No
+
+SDRF template with shared sample metadata columns (organism, tissue, disease). This is an internal construction layer inherited by technology and organism templates - not used directly.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[organism]`
+| required
+| Species of the sample using NCBI Taxonomy
+| ontology: ncbitaxon
+| homo sapiens, mus musculus, rattus norvegicus, saccharomyces cerevisiae
+
+| `characteristics[organism part]`
+| required
+| Anatomical part of the organism from which sample was derived
+| ontology: uberon, bto
+| liver, brain, heart, blood
+
+| `characteristics[cell type]`
+| recommended
+| Cell type of the sample
+| ontology: cl, bto, clo
+| hepatocyte, neuron, fibroblast, T cell
+
+| `characteristics[biological replicate]`
+| required
+| Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples)
+| pattern: Biological replicate should be an integer or 'pooled' for pooled reference samples
+| 1, 2, pooled
+
+| `characteristics[pooled sample]`
+| optional
+| Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names.
+| values: not pooled, pooled; pattern: Use 'not pooled', 'pooled', or list sample IDs with SN= prefix
+| SN=sample1;SN=sample2
+
+| `characteristics[sample type]`
+| optional
+| Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.
+| ontology: pride
+| single cell, reference, bridge, carrier, ...
+
+| `characteristics[disease]`
+| recommended
+| Disease state of the sample
+| ontology: mondo, efo, doid, ncit, pato
+| normal, breast cancer, infection, metabolic disease
+
+| `characteristics[material type]`
+| optional
+| Type of biological material being analyzed
+| values: tissue, cell, cell line, organism part, ...
+| 
+
+| `characteristics[tissue mass]`
+| optional
+| Mass of tissue used for extraction
+| number with unit (mg, g, ug)
+| 50 mg, 1 g, 500 ug
+
+| `characteristics[biosample accession number]`
+| optional
+| BioSample accession number for the sample (e.g., SAMN or SAMEA identifiers)
+| accession: biosample
+| SAMN12345678, SAMEA12345678, SAMD1234567
+
+| `characteristics[sampling time]`
+| optional
+| Time at which the sample was collected (for longitudinal or time-course studies)
+| number with unit (hour, day, minute, week, month, year)
+| 0 hour, 24 hour, 7 day, 3 month
+
+| `characteristics[treatment]`
+| optional
+| Treatment or perturbation applied to the sample (drug, stimulus, environmental stress)
+| ontology: ncit, efo
+| untreated, LPS stimulation, doxorubicin treatment, drought stress, ...
+
+| `characteristics[synthetic peptide]`
+| optional
+| Whether the sample is a synthetic peptide library or biological material
+| values: synthetic, not synthetic
+| 
+
+| `characteristics[spiked compound]`
+| optional
+| Spiked-in compound details using key-value format (CT=compound type, QY=quantity, PS=peptide sequence, AC=UniProt accession, CN=compound name, CV=vendor)
+| pattern: Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)
+| CT=peptide;PS=PEPTIDESEQ;QY=10 fmol, CT=protein;AC=A9WZ33;QY=20 nmol, CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840, CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol
+
+| `characteristics[enrichment process]`
+| optional
+| Enrichment strategy applied to the sample (e.g., phosphopeptide enrichment, crosslinked peptide enrichment, glycopeptide enrichment)
+| ontology: pride, efo
+| enrichment of cross-linked peptides, enrichment of phosphorylated protein, enrichment of glycopeptides, enrichment of ubiquitinated proteins
+
+|===
+
+=== ms-proteomics
+
+**Version:** 1.1.0 | **Layer:** technology | **Extends:** sample-metadata | **Usable alone:** Yes
+
+Base SDRF template for mass spectrometry-based proteomics. This is the minimum valid template for any MS experiment.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `technology type`
+| required
+| Type of technology used
+| single value only; values: proteomic profiling by mass spectrometry
+| 
+
+| `comment[proteomics data acquisition method]`
+| required
+| Mass spectrometry acquisition method
+| ontology: pride
+| data-dependent acquisition, data-independent acquisition, parallel reaction monitoring, selected reaction monitoring
+
+| `comment[instrument]`
+| required
+| Mass spectrometer instrument used
+| ontology: ms, pride
+| LTQ Orbitrap, Q Exactive, Orbitrap Fusion Lumos, timsTOF Pro
+
+| `comment[cleavage agent details]`
+| required
+| Enzyme or chemical used for protein digestion
+| ontology: ms
+| NT=Trypsin;AC=MS:1001251, NT=Lys-C;AC=MS:1001309, NT=Chymotrypsin;AC=MS:1001306
+
+| `comment[label]`
+| required
+| Labeling strategy used for quantification
+| ontology: pride
+| label free sample, SILAC light, SILAC heavy, TMT126, ...
+
+| `comment[fraction identifier]`
+| required
+| Fraction number for fractionated samples (integer, use 1 for non-fractionated). In MS proteomics, this identifies the chromatographic or electrophoretic fraction (e.g., SCX, hpHRP, SEC fractions). Each fraction maps to one data file.
+| 
+| 
+
+| `comment[dissociation method]`
+| recommended
+| Fragmentation method used in MS/MS
+| ontology: ms, pride
+| HCD, CID, ETD, EThcD
+
+| `comment[fractionation method]`
+| optional
+| Peptide fractionation method used before MS analysis
+| ontology: pride
+| High-pH reversed-phase chromatography (hpHRP), Strong cation-exchange chromatography (SCX), Strong anion-exchange chromatography (SAX), Size-exclusion chromatography (SEC)
+
+| `comment[collision energy]`
+| optional
+| Collision energy used for fragmentation
+| pattern: Collision energy format: {value} {unit} where unit is NCE or eV. For multiple values, use semicolon-separated entries.
+| 30 NCE, 30% NCE, 27 eV, 25 NCE;27 NCE;30 NCE
+
+| `comment[precursor mass tolerance]`
+| recommended
+| Precursor mass tolerance for database search
+| number with unit (ppm, Da, mmu)
+| 10 ppm, 20 ppm, 0.5 Da, 20 mmu
+
+| `comment[fragment mass tolerance]`
+| recommended
+| Fragment mass tolerance for database search
+| number with unit (ppm, Da, mmu)
+| 0.02 Da, 20 ppm, 50 mmu
+
+| `comment[reduction reagent]`
+| optional
+| Chemical reagent used for disulfide bond reduction
+| ontology: pride, ms
+| dithiothreitol, tris(2-carboxyethyl)phosphine
+
+| `comment[alkylation reagent]`
+| optional
+| Chemical reagent used for cysteine alkylation
+| ontology: pride, ms
+| iodoacetamide, chloroacetamide
+
+| `characteristics[depletion]`
+| optional
+| Whether abundant protein depletion was performed
+| values: no depletion, depletion
+| 
+
+| `comment[modification parameters]`
+| recommended
+| Post-translational modifications searched
+| ontology: unimod, mod
+| NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35, NT=Carbamidomethyl;TA=C;MT=fixed;AC=UNIMOD:4
+
+| `comment[ms2 mass analyzer]`
+| optional
+| Mass analyzer used for MS2 acquisition
+| ontology: ms
+| orbitrap, ion trap, TOF
+
+| `comment[sample preparation batch]`
+| optional
+| Batch identifier for sample preparation (plate, chip, processing batch). Useful for batch effect correction in multi-batch experiments.
+| pattern: Sample preparation batch identifier
+| plate1, batch_20220601, prep_A
+
+| `comment[lc batch]`
+| optional
+| Liquid chromatography batch identifier for batch effect tracking (e.g., column changes, LC system swaps)
+| pattern: LC batch identifier
+| LC1, column_A
+
+| `comment[acquisition date]`
+| optional
+| Date of MS data acquisition (ISO 8601 format recommended). Useful for tracking instrument drift and batch effects.
+| pattern: Acquisition date/time
+| 2022-06-01, 2022-06-01T18:28:37
+
+| `comment[ms min mz]`
+| optional
+| MS method-defined minimum precursor (MS1) m/z setting used to acquire the data
+| m/z value
+| 100m/z, 200m/z, 350.5m/z
+
+| `comment[ms max mz]`
+| optional
+| MS method-defined maximum precursor (MS1) m/z setting used to acquire the data
+| m/z value
+| 1200m/z, 1600m/z, 2000m/z
+
+| `comment[ms min charge]`
+| optional
+| MS method-defined minimum precursor charge state setting used to acquire the data
+| pattern: Integer charge state
+| 1, 2
+
+| `comment[ms max charge]`
+| optional
+| MS method-defined maximum precursor charge state setting used to acquire the data
+| pattern: Integer charge state
+| 6, 7, 8
+
+| `comment[ms min rt]`
+| optional
+| LC method-defined minimum retention time setting used to acquire the data (in minutes)
+| pattern: Numeric retention time in minutes
+| 0, 5, 10.5
+
+| `comment[ms max rt]`
+| optional
+| LC method-defined maximum retention time setting used to acquire the data (in minutes)
+| pattern: Numeric retention time in minutes
+| 60, 90, 120
+
+| `comment[ms min im]`
+| optional
+| MS method-defined minimum ion mobility setting used to acquire the data (1/K0 or Vs/cm2)
+| pattern: Numeric ion mobility value
+| 0.6, 0.7
+
+| `comment[ms max im]`
+| optional
+| MS method-defined maximum ion mobility setting used to acquire the data (1/K0 or Vs/cm2)
+| pattern: Numeric ion mobility value
+| 1.3, 1.4, 1.6
+
+| `comment[ms2 min mz]`
+| optional
+| MS method-defined minimum product ion (MS2) m/z setting used to acquire the data
+| m/z value
+| 100m/z, 200m/z
+
+| `comment[ms2 max mz]`
+| optional
+| MS method-defined maximum product ion (MS2) m/z setting used to acquire the data
+| m/z value
+| 1800m/z, 2000m/z
+
+| `comment[ms3 min mz]`
+| optional
+| MS method-defined minimum product ion (MS3) m/z setting used to acquire the data
+| m/z value
+| 100m/z, 200m/z
+
+| `comment[ms3 max mz]`
+| optional
+| MS method-defined maximum product ion (MS3) m/z setting used to acquire the data
+| m/z value
+| 1500m/z, 2000m/z
+
+| `comment[ms1 scan range]`
+| optional
+| m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns
+| m/z range interval
+| 400m/z-1200m/z, 350m/z-1600m/z
+
+| `comment[ms2 scan range]`
+| optional
+| m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns
+| m/z range interval
+| 100m/z-2000m/z, 200m/z-1800m/z
+
+| `comment[ms3 scan range]`
+| optional
+| m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns
+| m/z range interval
+| 100m/z-1500m/z, 200m/z-2000m/z
+
+| `comment[elution conditions]`
+| optional
+| Conditions used for peptide/protein elution
+| pattern: Free-text elution conditions
+| 0.1% TFA in water, 80% acetonitrile, gradient 5-35% ACN in 60 min
+
+|===
+
+=== affinity-proteomics
+
+**Version:** 1.0.0 | **Layer:** technology | **Extends:** sample-metadata | **Usable alone:** Yes
+
+SDRF template for affinity-based proteomics experiments (Olink, SomaScan). This is the base template for all affinity proteomics experiments.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `technology type`
+| required
+| Type of technology used
+| single value only; values: protein expression profiling by antibody array, protein expression profiling by aptamer array
+| 
+
+| `comment[platform]`
+| required
+| Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K)
+| single value only; ontology: pride
+| Olink Explore HT, Olink Target 96, SomaScan Assay 11K
+
+| `comment[instrument]`
+| optional
+| Instrument used for data acquisition (e.g. sequencer, qPCR machine, microarray reader)
+| ontology: ms, pride
+| Illumina NovaSeq X, Illumina NextSeq 2000, Agilent SureScan Microarray Scanner
+
+| `comment[panel name]`
+| recommended
+| Name of the commercial panel used
+| pattern: Panel name
+| Olink Explore 3072, Olink Explore 1536, Olink Target 96 Inflammation, SomaScan 7K, ...
+
+| `comment[panel version]`
+| optional
+| Version of the assay panel
+| pattern: Panel version
+| v4.1, 2023-01, 7K v4.1
+
+| `comment[quantification unit]`
+| optional
+| Unit of quantification for the assay (platform-specific)
+| values: NPX, RFU
+| 
+
+| `comment[plate]`
+| optional
+| Plate identifier for batch effect analysis
+| pattern: Plate identifier
+| 1, 2
+
+| `characteristics[sample matrix]`
+| recommended
+| Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)
+| ontology: uberon, bto
+| serum, plasma, cerebrospinal fluid, urine, ...
+
+| `comment[normalization method]`
+| optional
+| Normalization method applied to quantification values
+| pattern: Normalization method
+| plate control normalized, bridge normalized, median normalization, not normalized
+
+| `comment[fraction identifier]`
+| optional
+| Fraction or dilution series identifier. While fractionation is rare in affinity proteomics, dilution series are used in some protocols (e.g. SomaScan alternative matrix validation).
+| pattern: Fraction or dilution identifier
+| 1, 2, 3
+
+|===
+
+=== human
+
+**Version:** 1.1.0 | **Layer:** sample | **Extends:** sample-metadata | **Usable alone:** No
+
+Human SDRF template with human-specific sample metadata fields. Must be combined with a technology template (ms-proteomics or affinity-proteomics).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[disease]`
+| required
+| _(override: requirement set to required)_
+| 
+| 
+
+| `characteristics[ancestry category]`
+| recommended
+| Ancestry or ethnic background of the donor
+| ontology: hancestro
+| European, African, Asian, Hispanic or Latin American
+
+| `characteristics[age]`
+| required
+| Age of the donor at sample collection
+| pattern: Age format: 45Y, 6M, 30Y6M (Y>M>W>D order), ranges like 40Y-50Y, or comparison operators like >18Y, >=21Y, <65Y. Use "not available" if unknown, "anonymized" if redacted, or "pooled" for pooled samples.
+| 45Y, 6M, 30Y6M, 30Y6M2W, ...
+
+| `characteristics[sex]`
+| required
+| Biological sex of the donor
+| values: male, female, intersex
+| 
+
+| `characteristics[developmental stage]`
+| optional
+| Developmental stage of the donor
+| ontology: efo
+| adult, embryonic stage, fetal stage, infant stage
+
+| `characteristics[individual]`
+| recommended
+| Unique identifier for the donor individual
+| identifier
+| patient_001, donor-A1, subject_12, anonymized, ...
+
+|===
+
+=== vertebrates
+
+**Version:** 1.1.0 | **Layer:** sample | **Extends:** sample-metadata | **Usable alone:** No
+
+SDRF template for non-human vertebrate samples (mammals, birds, fish, reptiles, amphibians). Must be combined with a technology template (ms-proteomics or affinity-proteomics).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[disease]`
+| required
+| _(override: requirement set to required)_
+| 
+| 
+
+| `characteristics[developmental stage]`
+| required
+| Developmental stage of the organism
+| ontology: efo
+| adult, embryo, juvenile, larval stage
+
+| `characteristics[strain or breed]`
+| recommended
+| Strain or breed of the organism
+| ontology: ncbitaxon
+| C57BL/6, Sprague-Dawley, BALB/c, Wistar
+
+| `characteristics[sex]`
+| recommended
+| Biological sex of the organism
+| values: male, female, hermaphrodite
+| 
+
+|===
+
+=== invertebrates
+
+**Version:** 1.1.0 | **Layer:** sample | **Extends:** sample-metadata | **Usable alone:** No
+
+SDRF template for invertebrate samples (Drosophila, C. elegans, insects, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[disease]`
+| required
+| _(override: requirement set to required)_
+| 
+| 
+
+| `characteristics[developmental stage]`
+| required
+| Developmental stage of the organism
+| ontology: efo
+| adult stage, larval stage, pupal stage, embryonic stage
+
+| `characteristics[strain or breed]`
+| required
+| Strain of the organism
+| ontology: ncbitaxon
+| Oregon-R, w1118, N2, Canton-S
+
+| `characteristics[genotype]`
+| optional
+| Genotype of the organism
+| pattern: Genotype notation following standard conventions
+| wild type, daf-2(e1370), w[*]; P{GAL4}
+
+|===
+
+=== plants
+
+**Version:** 1.1.0 | **Layer:** sample | **Extends:** sample-metadata | **Usable alone:** No
+
+SDRF template for plant samples (Arabidopsis, crops, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[organism part]`
+| 
+| 
+| ontology: uberon, bto, po
+| flower bud, leaf, root, seed
+
+| `characteristics[disease]`
+| required
+| _(override: requirement set to required)_
+| 
+| 
+
+| `characteristics[developmental stage]`
+| required
+| Developmental stage of the plant
+| ontology: efo
+| seedling stage, flowering stage, rosette growth stage, senescent stage
+
+| `characteristics[strain or breed]`
+| recommended
+| Cultivar, ecotype, or accession of the plant
+| pattern: Plant cultivar or ecotype name
+| Col-0, Ler-0, Nipponbare, B73
+
+| `characteristics[growth condition]`
+| recommended
+| Growth conditions for the plant
+| pattern: Description of growth conditions
+| long day (16h light/8h dark), short day (8h light/16h dark), continuous light, greenhouse
+
+| `characteristics[treatment]`
+| recommended
+| _(override: requirement set to recommended)_
+| 
+| 
+
+|===
+
+=== clinical-metadata
+
+**Version:** 1.0.0 | **Layer:** sample | **Extends:** sample-metadata | **Usable alone:** No
+
+SDRF template for clinical study samples with treatment, demographics, and lifestyle metadata. Applicable to any organism. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[disease]`
+| required
+| _(override: requirement set to required)_
+| 
+| 
+
+| `characteristics[compound]`
+| optional
+| Chemical compound or drug applied to sample
+| ontology: chebi, ncit, efo
+| doxorubicin, cisplatin, tamoxifen, metformin
+
+| `characteristics[dose]`
+| optional
+| Dose or concentration of compound treatment
+| number with unit (mg/kg, uM, nM, mg, ug, mg/mL, ug/mL, mM)
+| 10 mg/kg, 50 uM, 100 nM, 5 mg
+
+| `characteristics[exposure duration]`
+| optional
+| Duration of treatment exposure
+| number with unit (hour, day, minute, week, month)
+| 24 hour, 5 day, 30 minute, 2 week
+
+| `characteristics[treatment status]`
+| optional
+| Treatment status at time of sampling
+| values: pre-treatment, on treatment, post-treatment, treatment naive
+| 
+
+| `characteristics[treatment response]`
+| optional
+| Response to treatment (for studies measuring therapeutic outcomes)
+| ontology: ncit
+| complete response, partial response, progressive disease, stable disease
+
+| `characteristics[pre-existing condition]`
+| optional
+| Pre-existing medical conditions or comorbidities
+| ontology: mondo, efo, doid
+| diabetes mellitus, hypertension, obesity
+
+| `characteristics[body mass index]`
+| optional
+| Body mass index (BMI) in kg/m^2
+| pattern: Numeric BMI value
+| 24.5, 31.2, 18.7
+
+| `characteristics[smoking status]`
+| optional
+| Patient smoking status
+| ontology: ncit
+| never smoker, former smoker, current smoker
+
+| `characteristics[menopausal status]`
+| optional
+| Menopausal status for female patients
+| values: pre-menopausal, peri-menopausal, post-menopausal
+| 
+
+| `characteristics[genetic modification]`
+| optional
+| Method of genetic modification (knockout, knockdown, overexpression, transduction)
+| ontology: efo
+| knockout, knockdown, overexpression, transduction, ...
+
+| `characteristics[phenotype]`
+| optional
+| Observable characteristics or traits (drug sensitivity, molecular markers, expression phenotypes)
+| ontology: pato, efo
+| drug resistant, HER2-positive, high expresser, wild-type phenotype
+
+| `characteristics[weight]`
+| optional
+| Body weight of the subject
+| number with unit (kg, g, lb)
+| 70 kg, 55 kg, 154 lb
+
+| `characteristics[height]`
+| optional
+| Height of the subject
+| number with unit (cm, m)
+| 175 cm, 1.75 m, 160 cm
+
+| `characteristics[sampling site]`
+| optional
+| Specific anatomical location or context of sampling within the organism part
+| ontology: uberon, bto
+| tumor, normal tissue adjacent to tumor, left ventricle, frontal cortex
+
+| `characteristics[genotype]`
+| optional
+| Known genetic variant, mutation, or genotype of the subject
+| pattern: Genotype as free text (gene name + variant)
+| BRCA1 mutation carrier, KRAS G12D mutant, wild type, TP53 R175H
+
+|===
+
+=== oncology-metadata
+
+**Version:** 1.0.0 | **Layer:** sample | **Extends:** clinical-metadata | **Usable alone:** No
+
+SDRF template for cancer/oncology study samples with tumor staging, grading, and clinical outcome metadata. Extends clinical-metadata with oncology-specific columns. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[disease staging]`
+| optional
+| Disease progression stage (stage I-IV, chronic phase, end stage)
+| ontology: ncit, efo
+| stage I, stage II, stage III, stage IV, ...
+
+| `characteristics[tumor grading]`
+| optional
+| Histological tumor grade (describes how abnormal cells look)
+| ontology: ncit
+| grade 1, grade 2, grade 3, grade 4, ...
+
+| `characteristics[tumor stage]`
+| optional
+| TNM staging notation (describes extent of cancer spread)
+| ontology: ncit
+| T2N1M0, T3N0M0, T1N0M0, T4N2M1
+
+| `characteristics[tumor size]`
+| optional
+| Tumor size measurement
+| number with unit (cm, mm)
+| 2.5 cm, 15 mm, 0.8 cm
+
+| `characteristics[tumor mass]`
+| optional
+| Tumor mass/weight measurement
+| number with unit (g, mg)
+| 15 g, 250 mg
+
+| `characteristics[histologic subtype]`
+| optional
+| Cancer molecular or histologic subtype
+| ontology: ncit
+| luminal A, luminal B, HER2-enriched, triple-negative, ...
+
+| `characteristics[metastasis site]`
+| optional
+| Location where cancer has spread from primary site
+| ontology: uberon, bto
+| liver, lung, bone, brain
+
+| `characteristics[biopsy site]`
+| optional
+| Specific anatomical location of biopsy
+| ontology: uberon, bto
+| breast, colon, prostate, lung
+
+| `characteristics[clinical data]`
+| optional
+| Free-text clinical details (receptor status, treatment history, surgical details)
+| pattern: Free-text clinical data
+| ER+/PR+/HER2-, prior chemotherapy with doxorubicin, surgical resection performed
+
+| `characteristics[clinical history]`
+| optional
+| Relevant medical history information for the patient
+| pattern: Free-text clinical history
+| family history of breast cancer, previous radiation therapy, no significant medical history
+
+| `characteristics[survival time]`
+| optional
+| Patient survival time for survival analysis studies
+| number with unit (month, year, day, week)
+| 24 month, 3 year, 180 day
+
+| `characteristics[last follow up]`
+| optional
+| Time of last clinical follow-up for longitudinal studies
+| number with unit (month, year, day, week)
+| 36 month, 5 year, 365 day
+
+| `characteristics[mitotic rate]`
+| optional
+| Number of mitoses per high-power field (indicator of tumor proliferation)
+| pattern: Mitotic rate as count or count per HPF
+| 5, 12/10 HPF, 3/10 HPF
+
+| `characteristics[dukes stage]`
+| optional
+| Dukes staging for colorectal cancer (A, B, C, D)
+| values: A, B, C, D
+| 
+
+| `characteristics[ann arbor stage]`
+| optional
+| Ann Arbor staging for lymphoma (I, II, III, IV with optional A/B suffix)
+| pattern: Ann Arbor stage (I-IV with optional A/B suffix for symptoms, E for extranodal, S for spleen)
+| IA, IIB, IIIA, IVB, ...
+
+| `characteristics[gleason score]`
+| optional
+| Gleason score for prostate cancer grading (sum of two pattern grades, range 2-10)
+| pattern: Gleason score as sum (e.g., 7) or component pattern (e.g., 3+4)
+| 7, 3+4, 4+3, 9, ...
+
+| `characteristics[weiss grade]`
+| optional
+| Weiss scoring system for adrenal cortical carcinoma (low or high)
+| values: low, high
+| 
+
+|===
+
+=== dia-acquisition
+
+**Version:** 1.1.0 | **Layer:** experiment | **Extends:** ms-proteomics | **Usable alone:** No
+
+SDRF template for Data-independent acquisition (DIA) experiments. Extends ms-proteomics with DIA-specific columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `comment[proteomics data acquisition method]`
+| required
+| Mass spectrometry acquisition method (restricted to DIA for this template)
+| single value only; values: Data-independent acquisition
+| 
+
+| `comment[scan window lower limit]`
+| recommended
+| Lower m/z limit of the DIA scan window
+| pattern: m/z value as a number
+| 400, 350.5
+
+| `comment[scan window upper limit]`
+| recommended
+| Upper m/z limit of the DIA scan window
+| pattern: m/z value as a number
+| 1200, 1000
+
+| `comment[isolation window width]`
+| recommended
+| Width of the isolation window in m/z units
+| pattern: Width in m/z
+| 25, 8, 4
+
+| `comment[dia method]`
+| recommended
+| Specific DIA method variant used
+| ontology: pride
+| SWATH-MS, MSE, All ion fragmentation, diaPASEF
+
+|===
+
+=== single-cell
+
+**Version:** 1.0.0 | **Layer:** experiment | **Extends:** ms-proteomics | **Usable alone:** No
+
+SDRF template for single-cell proteomics (SCP) experiments. Works with any organism - combine with appropriate sample template (human, vertebrates, invertebrates, or plants). Aligned with Nature Methods SCP guidelines (Gatto et al., 2023).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[sample type]`
+| recommended
+| _(override: requirement set to recommended)_
+| 
+| 
+
+| `characteristics[single cell isolation protocol]`
+| required
+| Method used to isolate single cells (FACS, cellenONE, LCM, etc.)
+| values: FACS, cellenONE, microfluidics, laser capture microdissection, ...
+| 
+
+| `characteristics[cell identifier]`
+| required
+| Unique identifier for each single cell within the experiment. Required per SCP guidelines for tracking cells through analysis.
+| identifier
+| cell_001, SC_A1, well_B3, barcode_ATCGATCG, ...
+
+| `comment[sample preparation batch]`
+| recommended
+| Batch identifier for sample preparation (plate, chip, processing batch). Critical for batch effect correction.
+| 
+| 
+
+| `characteristics[cells per well]`
+| recommended
+| Number of cells per well/reaction. Use 1 for true single cells, higher numbers for small pools.
+| pattern: Number of cells
+| 1, 5, 10, 100
+
+| `comment[carrier channel]`
+| recommended
+| TMT/TMTpro channel used for the carrier proteome
+| pattern: TMT channel label for carrier
+| TMT131C, TMTpro134N, TMT126
+
+| `comment[reference channel]`
+| recommended
+| TMT/TMTpro channel used for the reference sample (for normalization across sets)
+| pattern: TMT channel label for reference
+| TMT131N, TMTpro133C, TMT127N
+
+| `characteristics[forward scatter]`
+| optional
+| Forward scatter (FSC) value from flow cytometry - proxy for cell size
+| pattern: FSC value (numeric)
+| 316.0, 250
+
+| `characteristics[side scatter]`
+| optional
+| Side scatter (SSC) value from flow cytometry - proxy for cell granularity/complexity
+| pattern: SSC value (numeric)
+| 301.0, 184
+
+| `characteristics[enrichment marker]`
+| optional
+| Markers used for cell sorting/enrichment with optional intensity values
+| pattern: Enrichment marker(s) and optional intensity
+| CD45+, GFP+, CD3+CD4+, CD34:APC-Cy7-A=276.0, ...
+
+| `characteristics[cell viability]`
+| optional
+| Viability status of the cell at isolation
+| values: live, viable, dead, unknown
+| 
+
+| `characteristics[cell cycle phase]`
+| optional
+| Cell cycle phase if determined (e.g., by FACS or computational inference)
+| values: G1, S, G2, G2/M, ...
+| 
+
+| `characteristics[cell diameter]`
+| optional
+| Physical diameter of the isolated cell if measured (in micrometers)
+| number with unit (um, μm)
+| 15 um, 20.5 um, 12 μm
+
+| `characteristics[spatial coordinates]`
+| optional
+| X,Y coordinates if cells were isolated from a spatial context (e.g., LCM from tissue)
+| pattern: Spatial coordinates
+| X=100;Y=250, X=50.5;Y=120.3
+
+| `comment[tissue section]`
+| optional
+| Tissue section identifier for spatially resolved single-cell proteomics
+| pattern: Tissue section identifier
+| section_001, slide_A_section_3
+
+| `comment[facs nozzle size]`
+| optional
+| Nozzle diameter used for FACS-based single cell isolation (in micrometers)
+| number with unit (um, μm)
+| 70 um, 100 um, 130 μm
+
+| `comment[facs sorting mode]`
+| optional
+| Sorting mode used during FACS isolation
+| values: single cell, purity, yield, 4-way purity
+| 
+
+| `comment[microfluidics chip type]`
+| optional
+| Type and manufacturer of the microfluidics chip used for single cell isolation
+| pattern: Chip type/manufacturer identifier
+| Fluidigm C1, Cellenion cellenCHIP, nanowell chip
+
+| `comment[lcm microscope model]`
+| optional
+| Model of the laser capture microdissection microscope used for cell isolation
+| pattern: LCM microscope model name
+| Leica LMD7, Zeiss PALM MicroBeam, Thermo LCM
+
+| `comment[nanopots chip version]`
+| optional
+| Version of the nanoPOTS chip used for single cell sample preparation
+| pattern: nanoPOTS chip version identifier
+| nanoPOTS v1, nanoPOTS v2, 9-well chip
+
+|===
+
+=== immunopeptidomics
+
+**Version:** 1.0.0 | **Layer:** experiment | **Extends:** ms-proteomics | **Usable alone:** No
+
+SDRF template for immunopeptidomics experiments (MHC-bound peptide identification). Works with any organism - combine with appropriate sample template (human for HLA typing, vertebrates for H-2/MHC typing in mouse, etc.).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[mhc protein complex]`
+| required
+| MHC protein complex targeted for immunopeptidome enrichment (GO:0042611)
+| values: MHC class I protein complex, MHC class II protein complex, non-classical MHC protein complex, mutant MHC protein complex, MHC protein complex with serotype
+| 
+
+| `characteristics[immunopeptidome enrichment method]`
+| required
+| Method used to enrich MHC-bound peptides
+| values: immunoaffinity purification, immunoaffinity purification (iodoacetamide), mild acid elution, detergent lysis
+| 
+
+| `characteristics[mhc typing]`
+| recommended
+| MHC alleles expressed by the sample (PRIDE:0000893) following IPD-MHC nomenclature (https://www.ebi.ac.uk/ipd/mhc/). Use IPD-IMGT/HLA notation for human (HLA-A*02:01), H-2 notation for mouse (H-2Kb, H-2Db), or appropriate IPD-MHC notation for other species. Multiple alleles can be separated by semicolons.
+| pattern: MHC allele notation (HLA for human, H-2 for mouse). Supports multi-allele (semicolon-separated), 2-4 field resolution.
+| HLA-A*02:01, HLA-B*07:02, HLA-A*02:01;HLA-B*07:02;HLA-C*07:02, HLA-A*02:01:01, ...
+
+| `characteristics[mhc typing method]`
+| optional
+| MHC typing method used (PRIDE:0000894). Values mapped to NCIT where available: NGS-based typing (NCIT:C101293), sequence-based typing (NCIT:C130180), PCR-SSO (NCIT:C130181), PCR-SSP (NCIT:C130179), PCR-based genotyping (NCIT:C17003)
+| values: NGS-based typing, sequence-based typing, PCR-SSO, PCR-SSP, ...
+| 
+
+| `characteristics[antibody enrichment]`
+| recommended
+| Antibody clone used for MHC immunoprecipitation
+| pattern: Antibody clone name
+| W6/32, BB7.2
+
+|===
+
+=== crosslinking
+
+**Version:** 1.0.0 | **Layer:** experiment | **Extends:** ms-proteomics | **Usable alone:** No
+
+SDRF template for crosslinking mass spectrometry (XL-MS) experiments. Extends ms-proteomics with crosslinking-specific columns for data analysis.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `comment[chemical cross-linking coupled with ms]`
+| recommended
+| MS-based cross-linking methodology used to identify this as a crosslinking dataset
+| values: cross-linking mass spectrometry
+| 
+
+| `characteristics[enrichment process]`
+| recommended
+| _(override: requirement set to recommended)_
+| 
+| 
+
+| `comment[cross-linker]`
+| required
+| Cross-linker compound with structured properties for analysis tools.
+Format: NT=name;AC=accession;CL=cleavable;TA=targets;MH/ML=stub masses
+Uses XLMOD ontology (parent term XLMOD:00004).
+
+| structured_kv
+| NT=DSS;AC=XLMOD:02001, NT=BS3;AC=XLMOD:02000, NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98, NT=EDC;AC=XLMOD:02009;CL=no;TA=K,D,E
+
+| `comment[dissociation method]`
+| required
+| Fragmentation method used in MS2. Critical for cleavable crosslinkers (DSSO, DSBU)
+which generate diagnostic stub ions under specific fragmentation conditions.
+
+| ontology: ms, pride
+| HCD, CID, ETD, EThcD, ...
+
+| `comment[collision energy]`
+| recommended
+| Collision energy used for fragmentation. Important for cleavable crosslinker analysis.
+| pattern: Collision energy format: {value} {unit} where unit is NCE or eV. For stepped collision energies, use semicolon-separated values or 'stepped' prefix.
+| 30 NCE, 30% NCE, 27 eV, 25 NCE;27 NCE;30 NCE, ...
+
+| `comment[crosslink enrichment method]`
+| recommended
+| Method used to enrich crosslinked peptides before MS analysis
+| ontology: pride, ms
+| size exclusion chromatography, strong cation exchange chromatography, high-pH reversed-phase chromatography, FAIMS
+
+| `characteristics[crosslink distance]`
+| optional
+| Maximum Cα-Cα distance constraint provided by the crosslinker (for structural interpretation)
+| number with unit (Å)
+| 30 Å, 26.4 Å, 11.4 Å
+
+| `comment[crosslinker concentration]`
+| optional
+| Concentration of crosslinking reagent used
+| number with unit (mM, uM, µM)
+| 2 mM, 500 uM, 1 mM
+
+| `characteristics[crosslinking reaction time]`
+| optional
+| Duration of the crosslinking reaction
+| number with unit (min, h, s)
+| 30 min, 1 h, 45 min
+
+| `characteristics[crosslinking temperature]`
+| optional
+| Temperature at which crosslinking was performed
+| number with unit (°C)
+| 25°C, 4°C, 37°C, room temperature
+
+| `comment[crosslinker to protein ratio]`
+| optional
+| Molar ratio of crosslinker to protein
+| pattern: Ratio format (e.g., 50:1 or 1:1 w/w)
+| 3001, 6001, 1:1 w/w
+
+| `comment[quenching reagent]`
+| optional
+| Reagent used to quench the crosslinking reaction
+| pattern: Chemical name of quenching reagent
+| Tris-HCl, ammonium bicarbonate, glycine
+
+|===
+
+=== cell-lines
+
+**Version:** 1.1.0 | **Layer:** experiment | **Extends:** sample-metadata | **Usable alone:** No
+
+SDRF template for cell line samples with Cellosaurus-based annotation. Cell lines can originate from any organism - combine with appropriate organism template (human for HeLa, vertebrates for NIH 3T3, invertebrates for Sf9).
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[cell line]`
+| required
+| Name of the cell line
+| ontology: clo, bto, efo
+| HeLa, HEK293, MCF7, A549
+
+| `characteristics[disease]`
+| required
+| Disease state of the donor tissue from which the cell line was established
+| 
+| 
+
+| `characteristics[cellosaurus accession]`
+| required
+| Cellosaurus accession number for the cell line
+| accession: cellosaurus
+| CVCL_0030, CVCL_0004
+
+| `characteristics[cellosaurus name]`
+| recommended
+| Official Cellosaurus name for the cell line
+| 
+| 
+
+| `characteristics[sampling site]`
+| optional
+| Tissue or organ from which the cell line was derived
+| ontology: uberon, bto
+| cervix, kidney, breast
+
+| `characteristics[passage number]`
+| recommended
+| Passage number of the cell line used in the experiment
+| pattern: Passage number should be an integer or range
+| 10, 15-20, 5
+
+| `characteristics[biorepository]`
+| optional
+| BioBank or source from which the cell line was obtained
+| pattern: Source of the cell line
+| ATCC, DSMZ, ECACC, Sigma-Aldrich
+
+| `characteristics[cell line authentication]`
+| optional
+| Method used to authenticate the cell line identity
+| pattern: Authentication method used
+| STR profiling, SNP fingerprinting, cytogenetic analysis
+
+| `characteristics[culture medium]`
+| recommended
+| Culture medium used to grow the cell line
+| ontology: ncit
+| DMEM, RPMI 1640, MEM, Ham's F-12
+
+| `characteristics[developmental stage]`
+| optional
+| Developmental stage of the donor from which the cell line was derived
+| ontology: efo
+| adult, embryonic, fetal, neonatal
+
+| `characteristics[ancestry category]`
+| optional
+| Ancestry category of the cell line donor (if known)
+| ontology: hancestro
+| European, African, East Asian, South Asian
+
+| `characteristics[sample storage temperature]`
+| recommended
+| Storage temperature of the cell line (in Celsius)
+| number with unit (°C)
+| -80 °C, -20 °C, 4 °C
+
+|===
+
+=== olink
+
+**Version:** 1.0.0 | **Layer:** experiment | **Extends:** affinity-proteomics | **Usable alone:** No
+
+SDRF template for Olink Proximity Extension Assay (PEA) experiments. Extends affinity-proteomics with Olink-specific columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `comment[olink panel]`
+| required
+| Specific Olink panel name
+| pattern: Olink panel name
+| Target 96 Inflammation, Target 96 Cardiovascular II, Explore 384 Cardiometabolic, Explore 1536, ...
+
+| `comment[olink platform]`
+| required
+| Olink platform version
+| values: Olink Target 96, Olink Explore 384, Olink Explore HT, Olink Reveal
+| 
+
+| `comment[npx normalization]`
+| recommended
+| Normalization method applied to NPX values
+| values: plate control normalized, intensity normalized, bridge normalized, not normalized
+| 
+
+| `comment[olink lot number]`
+| optional
+| Reagent lot number for traceability
+| pattern: Lot number
+| lot_2023_001, B12345
+
+|===
+
+=== somascan
+
+**Version:** 1.0.0 | **Layer:** experiment | **Extends:** affinity-proteomics | **Usable alone:** No
+
+SDRF template for SomaScan aptamer-based proteomics experiments. Extends affinity-proteomics with SomaScan-specific columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `comment[somascan menu]`
+| required
+| SomaScan assay menu (number of aptamers/proteins measured)
+| values: SomaScan 1.1K, SomaScan 1.3K, SomaScan 5K, SomaScan 7K, SomaScan 11K
+| 
+
+| `comment[somascan platform]`
+| required
+| SomaScan instrument/platform version
+| values: SomaScan Assay, SomaScan Assay v4, SomaScan Assay v4.1
+| 
+
+| `comment[dilution]`
+| recommended
+| Sample dilution factor used
+| pattern: Standard SomaScan dilution factors
+| 0.005%, 0.5%, 20%, 40%
+
+| `comment[somascan lot number]`
+| optional
+| Reagent lot number for traceability
+| pattern: Lot number
+| SS-2023-001, lot_12345
+
+|===
+
+=== metaproteomics
+
+**Version:** 1.0.0 | **Layer:** sample | **Extends:** base | **Usable alone:** No
+
+Base SDRF template for metaproteomics experiments (microbial community proteomics). Extends base directly and defines MIxS-aligned sample metadata. When combined with ms-proteomics, sample-metadata columns (organism, disease, cell type) are excluded. Use a child template (human-gut, soil, water) for environment-specific fields.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[environmental sample type]`
+| required
+| Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).
+| ontology: envo, efo
+| soil, seawater, gut microbiome, wastewater, ...
+
+| `characteristics[geographic location]`
+| recommended
+| Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010).
+| ontology: gaz
+| Pacific Ocean, Amazon rainforest, 47.6062 N, 122.3321 W
+
+| `characteristics[environmental medium]`
+| recommended
+| Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).
+| ontology: envo
+| soil, seawater, freshwater, feces, ...
+
+| `characteristics[collection date]`
+| optional
+| Date when sample was collected (ISO 8601)
+| date
+| 2024, 2024-01, 2024-01-15
+
+| `characteristics[sample collection method]`
+| optional
+| Method used to collect the environmental sample
+| pattern: Collection method description
+| grab sample, core sample, swab, filtration
+
+| `characteristics[depth]`
+| optional
+| Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018).
+| number with unit (m, cm, mm)
+| 10 m, 50 cm, 100 m
+
+| `characteristics[altitude]`
+| optional
+| Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093).
+| number with unit (m)
+| 500 m, 1200 m, 0 m
+
+| `characteristics[temperature]`
+| optional
+| Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113).
+| number with unit (°C)
+| 25 °C, 4 °C, -20 °C
+
+| `characteristics[ph]`
+| optional
+| pH at sampling location
+| pattern: pH value
+| 7.0, 5.5, 8.2
+
+| `characteristics[sample storage]`
+| optional
+| Storage conditions for the sample before analysis
+| pattern: Storage conditions
+| -80C, liquid nitrogen, 4C
+
+| `comment[metagenome accession]`
+| optional
+| Accession number for matched metagenome data
+| accession: 
+| MGYA00001234, SRP123456
+
+| `characteristics[microbiome source]`
+| optional
+| Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome)
+| pattern: Microbiome source description
+| gut microbiome, rhizosphere microbiome, oral microbiome, skin microbiome
+
+| `characteristics[biomass estimation]`
+| optional
+| Estimated microbial biomass in the sample
+| pattern: Biomass estimation
+| 1e9 cells/g, high biomass, low biomass
+
+| `characteristics[host contamination]`
+| optional
+| Level of host protein contamination if known
+| pattern: Host contamination level
+| low (<5%), moderate (5-20%), high (>20%)
+
+| `comment[contaminant database]`
+| optional
+| Contaminant database(s) used in database search
+| pattern: Contaminant database name(s)
+| cRAP, MaxQuant contaminants, cRAP;MaxQuant contaminants
+
+| `characteristics[mock community]`
+| optional
+| Identifier or name of mock community standard used
+| pattern: Mock community identifier
+| ZymoBIOMICS Microbial Community Standard, ATCC MSA-1000
+
+| `characteristics[mock community composition]`
+| optional
+| Description of mock community composition (species and ratios)
+| pattern: Community composition description
+| 8 bacteria + 2 yeasts at defined ratios, even mix of 10 species
+
+| `comment[expected organism list]`
+| optional
+| Semicolon-separated list of organisms expected in mock community
+| pattern: Semicolon-separated organism list
+| E. coli;B. subtilis;S. cerevisiae;L. fermentum, Bacillus subtilis;Staphylococcus aureus
+
+|===
+
+=== human-gut
+
+**Version:** 1.0.0 | **Layer:** sample | **Extends:** metaproteomics | **Usable alone:** No
+
+SDRF template for human gut metaproteomics. Extends metaproteomics with host-associated columns aligned with the GSC MIxS human-gut extension (0016004). Combine with ms-proteomics for MS acquisition columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[host organism]`
+| required
+| Host organism for host-associated microbiome samples
+| ontology: ncbitaxon
+| Homo sapiens
+
+| `characteristics[host subject id]`
+| recommended
+| De-identified unique identifier for the host subject. Corresponds to MIxS host_subject_id (MIXS:0000861).
+| identifier
+| subject_001, patient_A, anonymized
+
+| `characteristics[host disease status]`
+| recommended
+| Host disease diagnoses. Corresponds to MIxS host_disease_stat (MIXS:0000031).
+| ontology: mondo, doid
+| inflammatory bowel disease, colorectal cancer, healthy
+
+| `characteristics[host body site]`
+| recommended
+| Body site where sample was obtained. Corresponds to MIxS host_body_site (MIXS:0000867).
+| ontology: uberon, bto
+| stool, oral cavity, colon
+
+| `characteristics[host age]`
+| optional
+| Age of host at the time of sampling. Corresponds to MIxS host_age (MIXS:0000255).
+| pattern: Age in standard format (Y=year, M=month, W=week, D=day, H=hour)
+| 45Y, 8W, 3M
+
+| `characteristics[host sex]`
+| optional
+| Sex of the host organism. Corresponds to MIxS host_sex (MIXS:0000811).
+| values: male, female, intersex
+| 
+
+| `characteristics[host body-mass index]`
+| optional
+| Body mass index (weight/height^2). Corresponds to MIxS host_body_mass_index (MIXS:0000317).
+| pattern: BMI numeric value
+| 22.5, 30.1, 18.5
+
+| `characteristics[host height]`
+| optional
+| Height of the host. Corresponds to MIxS host_height (MIXS:0000264).
+| number with unit (cm, m)
+| 175 cm, 1.75 m
+
+| `characteristics[host total mass]`
+| optional
+| Total mass of the host. Corresponds to MIxS host_tot_mass (MIXS:0000263).
+| number with unit (kg, g)
+| 70 kg, 85 kg
+
+| `characteristics[ethnicity]`
+| optional
+| Ethnicity of the host. Corresponds to MIxS ethnicity (MIXS:0000895).
+| pattern: Ethnicity description
+| European, East Asian, African
+
+| `characteristics[host diet]`
+| optional
+| Diet type of the host. Corresponds to MIxS host_diet (MIXS:0000869).
+| pattern: Diet description
+| omnivore, vegan, western diet, high-fiber
+
+| `characteristics[special diet]`
+| optional
+| Special dietary restrictions. Corresponds to MIxS special_diet (MIXS:0000905).
+| pattern: Special diet description
+| gluten-free, low FODMAP, ketogenic
+
+| `characteristics[host last meal]`
+| optional
+| Content of last meal and time since feeding. Corresponds to MIxS host_last_meal (MIXS:0000870).
+| pattern: Last meal description
+| breakfast 4 hours prior, fasting 12 hours
+
+| `characteristics[gastrointestinal tract disorder]`
+| optional
+| History of GI tract disorders. Corresponds to MIxS gastroint_disord (MIXS:0000280).
+| pattern: GI disorder description
+| Crohn's disease, ulcerative colitis, irritable bowel syndrome, none
+
+| `characteristics[liver disorder]`
+| optional
+| History of liver disorders. Corresponds to MIxS liver_disord (MIXS:0000282).
+| pattern: Liver disorder description
+| none, fatty liver disease, hepatitis
+
+| `characteristics[antibiotic treatment]`
+| optional
+| Recent antibiotic exposure of the host
+| pattern: Antibiotic treatment description
+| none, amoxicillin 7 days prior, broad-spectrum
+
+| `characteristics[ihmc medication code]`
+| optional
+| Medication codes (IHMC). Corresponds to MIxS ihmc_medication_code (MIXS:0000884).
+| pattern: Medication code(s)
+| none, A02BC01, N02BE01
+
+| `characteristics[host body product]`
+| optional
+| Substance produced by the body where sample was obtained. Corresponds to MIxS host_body_product (MIXS:0000888).
+| pattern: Body product description
+| stool, mucus, saliva
+
+| `characteristics[host body temperature]`
+| optional
+| Core body temperature at sample collection. Corresponds to MIxS host_body_temp (MIXS:0000874).
+| number with unit (°C)
+| 36.6 °C, 37.2 °C
+
+| `characteristics[perturbation]`
+| optional
+| Type of perturbation applied. Corresponds to MIxS perturbation (MIXS:0000754).
+| pattern: Perturbation description
+| antibiotic administration, dietary intervention, none
+
+| `characteristics[chemical administration]`
+| optional
+| Chemical compounds administered to the host. Corresponds to MIxS chem_administration (MIXS:0000751).
+| pattern: Chemical administration description
+| metformin 500mg daily, probiotics, none
+
+|===
+
+=== soil
+
+**Version:** 1.0.0 | **Layer:** sample | **Extends:** metaproteomics | **Usable alone:** No
+
+SDRF template for soil metaproteomics. Extends metaproteomics with soil-specific columns aligned with the GSC MIxS soil extension (0016012). Combine with ms-proteomics for MS acquisition columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[soil type]`
+| recommended
+| Soil classification type (ENVO term)
+| ontology: envo
+| sandy loam, clay, peat, silt
+
+| `characteristics[soil horizon]`
+| optional
+| Soil horizon from which sample was collected
+| values: O horizon, A horizon, B horizon, C horizon, ...
+| 
+
+| `characteristics[land use]`
+| optional
+| Land use type at sampling site
+| pattern: Land use type
+| agricultural, forest, urban, grassland, ...
+
+| `characteristics[vegetation]`
+| optional
+| Dominant vegetation at sampling site
+| pattern: Vegetation description
+| deciduous forest, corn field, prairie, tropical rainforest
+
+| `characteristics[total organic carbon]`
+| optional
+| Total organic carbon content. Corresponds to MIxS tot_org_carb (MIXS:0000533).
+| pattern: Total organic carbon with unit
+| 15.2 g/kg, 2.5 %
+
+| `characteristics[total nitrogen]`
+| optional
+| Total nitrogen content. Corresponds to MIxS tot_nitro_content (MIXS:0000530).
+| pattern: Total nitrogen with unit
+| 1.2 g/kg, 0.15 %
+
+| `characteristics[water content]`
+| optional
+| Water content of soil sample. Corresponds to MIxS water_content (MIXS:0000185).
+| pattern: Water content with unit
+| 25 %, 0.25 g/g
+
+| `characteristics[soil texture measurement]`
+| optional
+| Soil texture measurement (sand/silt/clay percentages). Corresponds to MIxS soil_text_measure (MIXS:0000335).
+| pattern: Soil texture description
+| sand 60%;silt 25%;clay 15%, loamy sand
+
+| `characteristics[current vegetation]`
+| optional
+| Current vegetation type at sampling site. Corresponds to MIxS cur_vegetation (MIXS:0000312).
+| ontology: envo
+| grassland, deciduous forest, cropland
+
+| `characteristics[crop rotation]`
+| optional
+| Crop rotation history. Corresponds to MIxS crop_rotation (MIXS:0000318).
+| pattern: Crop rotation description
+| corn-soybean rotation, wheat-fallow, continuous corn
+
+| `characteristics[perturbation]`
+| optional
+| Type of perturbation applied. Corresponds to MIxS perturbation (MIXS:0000754).
+| pattern: Perturbation description
+| fertilizer application, tillage, none
+
+| `characteristics[chemical administration]`
+| optional
+| Chemical compounds administered to the site. Corresponds to MIxS chem_administration (MIXS:0000751).
+| pattern: Chemical administration description
+| nitrogen fertilizer, pesticide, none
+
+|===
+
+=== water
+
+**Version:** 1.0.0 | **Layer:** sample | **Extends:** metaproteomics | **Usable alone:** No
+
+SDRF template for aquatic metaproteomics. Extends metaproteomics with water-specific columns aligned with the GSC MIxS water extension (0016014). Combine with ms-proteomics for MS acquisition columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `characteristics[water body type]`
+| recommended
+| Type of water body from which sample was collected (ENVO term)
+| ontology: envo
+| ocean, lake, river, estuary, ...
+
+| `characteristics[salinity]`
+| optional
+| Salinity measurement. Corresponds to MIxS salinity (MIXS:0000183).
+| pattern: Salinity value with unit or descriptive term
+| 35 PSU, freshwater, brackish
+
+| `characteristics[dissolved oxygen]`
+| optional
+| Dissolved oxygen concentration. Corresponds to MIxS diss_oxygen (MIXS:0000119).
+| pattern: Dissolved oxygen with unit or descriptive term
+| 8.5 mg/L, hypoxic, anoxic
+
+| `characteristics[chlorophyll]`
+| optional
+| Chlorophyll concentration if measured
+| number with unit (ug/L, mg/L)
+| 2.5 ug/L, 0.1 mg/L
+
+| `characteristics[sampling depth zone]`
+| optional
+| Ecological depth zone of the sampling site
+| values: epipelagic, mesopelagic, bathypelagic, abyssopelagic, ...
+| 
+
+| `characteristics[turbidity]`
+| optional
+| Turbidity measurement. Corresponds to MIxS turbidity (MIXS:0000191).
+| pattern: Turbidity with unit
+| 5.2 NTU, 12 FNU
+
+| `characteristics[alkalinity]`
+| optional
+| Alkalinity measurement. Corresponds to MIxS alkalinity (MIXS:0000421).
+| number with unit (mg/L, meq/L)
+| 120 mg/L, 2.5 meq/L
+
+| `characteristics[nitrate]`
+| optional
+| Nitrate concentration. Corresponds to MIxS nitrate (MIXS:0000425).
+| number with unit (mg/L, umol/L)
+| 0.5 mg/L, 10 umol/L
+
+| `characteristics[phosphate]`
+| optional
+| Phosphate concentration. Corresponds to MIxS phosphate (MIXS:0000505).
+| number with unit (mg/L, umol/L)
+| 0.1 mg/L, 1.5 umol/L
+
+| `characteristics[conductivity]`
+| optional
+| Electrical conductivity of water sample. Corresponds to MIxS conduc (MIXS:0000544).
+| pattern: Conductivity with unit
+| 450 uS/cm, 1.2 mS/cm
+
+| `characteristics[total dissolved solids]`
+| optional
+| Total dissolved solids (TDS) concentration in the water sample.
+| number with unit (mg/L, g/L)
+| 350 mg/L, 1.2 g/L
+
+| `characteristics[light intensity]`
+| optional
+| Light intensity at sampling depth. Corresponds to MIxS light_intensity (MIXS:0000706).
+| pattern: Light intensity with unit
+| 500 lux, 100 umol/m2/s
+
+| `characteristics[current]`
+| optional
+| Water current velocity. Corresponds to MIxS current (MIXS:0000051).
+| number with unit (m/s, cm/s, knots)
+| 0.5 m/s, 15 cm/s
+
+|===
+
+// AUTO-GENERATED: End of Template Definitions
+
 == Intellectual Property Statement
 
 The PSI takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Copies of claims of rights made available for publication and any assurances of licenses to be made available or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the PSI Chair.

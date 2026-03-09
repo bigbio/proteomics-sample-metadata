@@ -36,6 +36,20 @@ jobs:
           gem install asciidoctor-pdf
           gem install rouge
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install pyyaml
+
+      - name: Generate template definitions appendix
+        run: |
+          python scripts/generate_templates_appendix.py \
+            --templates-dir sdrf-proteomics/sdrf-templates \
+            --readme sdrf-proteomics/README.adoc
+
       - name: Get version number
         id: version
         run: |
