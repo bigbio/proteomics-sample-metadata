@@ -7,7 +7,7 @@
 - sdrf-proteomics/README.adoc - Core specification: format rules, column headers, cell values, templates, factor values, ontologies
   - sdrf-proteomics/quickstart.adoc - Quick Start Tutorial (10-15 min)
   - sdrf-proteomics/metadata-guidelines/sample-metadata.adoc - Sample Metadata Guidelines: age, sex, disease, organism part, cell type
-  - sdrf-proteomics/metadata-guidelines/template-definitions.adoc - Template Definitions Guide (for developers)
+  - sdrf-proteomics/TEMPLATES.adoc - Templates Guide: template selection, YAML schema, validators, and developer reference
   - sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv - SDRF Terms Reference: all column terms with ontology mappings
 
 - sdrf-proteomics/VERSIONING.adoc - Versioning and Deprecation Policy: version tracks, template compatibility, deprecation lifecycle, transition timelines
@@ -24,10 +24,9 @@
 - sdrf-proteomics/templates/invertebrates/README.adoc - Invertebrates: Drosophila, C. elegans
 - sdrf-proteomics/templates/plants/README.adoc - Plants: Arabidopsis, crops
 - sdrf-proteomics/templates/cell-lines/README.adoc - Cell Lines: Cellosaurus integration
-- sdrf-proteomics/templates/dda-acquisition/README.adoc - DDA Acquisition: dissociation method, collision energy
 - sdrf-proteomics/templates/dia-acquisition/README.adoc - DIA Acquisition: scan windows, isolation width
 - sdrf-proteomics/templates/single-cell/README.adoc - Single-Cell Proteomics: cell isolation, carrier proteome
-- sdrf-proteomics/templates/immunopeptidomics/README.adoc - Immunopeptidomics: MHC class, HLA typing
+- sdrf-proteomics/templates/immunopeptidomics/README.adoc - Immunopeptidomics: MHC protein complex, MHC typing
 - sdrf-proteomics/templates/crosslinking/README.adoc - Crosslinking MS: crosslinker reagents
 - sdrf-proteomics/templates/metaproteomics/README.adoc - Metaproteomics: environmental and microbiome samples
 - sdrf-proteomics/templates/olink/README.adoc - Olink: proximity extension assays
@@ -35,34 +34,34 @@
 
 ## Template YAML Schemas (sdrf-templates submodule)
 
-Machine-readable YAML definitions used by sdrf-pipelines for validation. Each template has a `.yaml` schema and an optional `.sdrf.tsv` example file. Templates follow a layered hierarchy: base → technology → sample/experiment.
+Machine-readable YAML definitions used by sdrf-pipelines for validation. Each template has a `.yaml` schema and an optional `.sdrf.tsv` example file. Templates follow a layered hierarchy: base → sample-metadata → technology/sample/experiment.
 
 - sdrf-proteomics/sdrf-templates/templates.yaml - Template manifest: all templates with latest versions, inheritance, and layer metadata
-- sdrf-proteomics/sdrf-templates/base/1.1.0/base.yaml - Base template (internal, not user-facing): shared columns inherited by all templates
+- sdrf-proteomics/sdrf-templates/base/1.1.0/base.yaml - Base template (internal, not user-facing): infrastructure columns (source name, assay name, technology type, etc.)
   - sdrf-proteomics/sdrf-templates/base/1.1.0/base.sdrf.tsv - Base example
-- sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml - MS-Proteomics (technology layer): minimum valid template for any MS experiment
+- sdrf-proteomics/sdrf-templates/sample-metadata/1.1.0/sample-metadata.yaml - Sample-metadata template (intermediate, not user-facing): sample columns (organism, organism part, cell type, biological replicate, pooled sample, disease, biosample accession). Extends base.
+  - sdrf-proteomics/sdrf-templates/sample-metadata/1.1.0/sample-metadata.sdrf.tsv - Sample-metadata example
+- sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.yaml - MS-Proteomics (technology layer): minimum valid template for any MS experiment. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/ms-proteomics/1.1.0/ms-proteomics.sdrf.tsv - MS-Proteomics example
-- sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.yaml - Affinity Proteomics (technology layer): Olink, SomaScan base
+- sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.yaml - Affinity Proteomics (technology layer): Olink, SomaScan base. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/affinity-proteomics/1.1.0/affinity-proteomics.sdrf.tsv - Affinity Proteomics example
-- sdrf-proteomics/sdrf-templates/human/1.1.0/human.yaml - Human (sample layer): disease, age, sex, ancestry
+- sdrf-proteomics/sdrf-templates/human/1.1.0/human.yaml - Human (sample layer): disease, age, sex, ancestry. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/human/1.1.0/human.sdrf.tsv - Human example
-- sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.yaml - Vertebrates (sample layer): mouse, rat, zebrafish, etc.
+- sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.yaml - Vertebrates (sample layer): mouse, rat, zebrafish, etc. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/vertebrates/1.1.0/vertebrates.sdrf.tsv - Vertebrates example
-- sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.yaml - Invertebrates (sample layer): Drosophila, C. elegans
+- sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.yaml - Invertebrates (sample layer): Drosophila, C. elegans. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/invertebrates/1.1.0/invertebrates.sdrf.tsv - Invertebrates example
-- sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.yaml - Plants (sample layer): Arabidopsis, crops
+- sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.yaml - Plants (sample layer): Arabidopsis, crops. Extends sample-metadata.
   - sdrf-proteomics/sdrf-templates/plants/1.1.0/plants.sdrf.tsv - Plants example
 - sdrf-proteomics/sdrf-templates/cell-lines/1.1.0/cell-lines.yaml - Cell Lines (experiment layer): Cellosaurus integration
   - sdrf-proteomics/sdrf-templates/cell-lines/1.1.0/cell-lines.sdrf.tsv - Cell Lines example
-- sdrf-proteomics/sdrf-templates/dda-acquisition/1.1.0/dda-acquisition.yaml - DDA Acquisition (experiment layer): dissociation method, collision energy
-  - sdrf-proteomics/sdrf-templates/dda-acquisition/1.1.0/dda-acquisition.sdrf.tsv - DDA example
 - sdrf-proteomics/sdrf-templates/dia-acquisition/1.1.0/dia-acquisition.yaml - DIA Acquisition (experiment layer): scan windows, isolation width
   - sdrf-proteomics/sdrf-templates/dia-acquisition/1.1.0/dia-acquisition.sdrf.tsv - DIA example
 - sdrf-proteomics/sdrf-templates/crosslinking/1.1.0/crosslinking.yaml - Crosslinking MS (experiment layer): crosslinker reagents
   - sdrf-proteomics/sdrf-templates/crosslinking/1.1.0/crosslinking.sdrf.tsv - Crosslinking example
 - sdrf-proteomics/sdrf-templates/single-cell/1.0.0/single-cell.yaml - Single-Cell (experiment layer): cell isolation, carrier proteome
   - sdrf-proteomics/sdrf-templates/single-cell/1.0.0/single-cell.sdrf.tsv - Single-Cell example
-- sdrf-proteomics/sdrf-templates/immunopeptidomics/1.0.0-dev/immunopeptidomics.yaml - Immunopeptidomics (experiment layer): MHC class, HLA typing
+- sdrf-proteomics/sdrf-templates/immunopeptidomics/1.0.0-dev/immunopeptidomics.yaml - Immunopeptidomics (experiment layer): MHC protein complex, MHC typing
 - sdrf-proteomics/sdrf-templates/metaproteomics/1.0.0-dev/metaproteomics.yaml - Metaproteomics (experiment layer): environmental and microbiome samples
   - sdrf-proteomics/sdrf-templates/metaproteomics/1.0.0-dev/metaproteomics.sdrf.tsv - Metaproteomics example
 - sdrf-proteomics/sdrf-templates/olink/1.0.0/olink.yaml - Olink (experiment layer): proximity extension assays
@@ -82,14 +81,18 @@ Machine-readable YAML definitions used by sdrf-pipelines for validation. Each te
 
 ## Examples
 
-- examples/core/PXD002137/PXD002137.sdrf.tsv - Core example: label-free
-- examples/core/PXD004684/PXD004684.sdrf.tsv - Core example: TMT labeled
-- examples/core/PXD006482/PXD006482.sdrf.tsv - Core example: SILAC
-- examples/core/PXD008934/PXD008934.sdrf.tsv - Core example: human proteome
-- examples/core/PDC000126/PDC000126.sdrf.tsv - Core example: PDC dataset
-- examples/use-cases/crosslinking.sdrf.tsv - Use case: crosslinking MS
-- examples/use-cases/immunopeptidomics.sdrf.tsv - Use case: immunopeptidomics
-- examples/use-cases/single-cell.sdrf.tsv - Use case: single-cell proteomics
+- examples/PXD004684/ - Label-free, DDA, human
+- examples/PXD008934/ - Label-free, human proteome
+- examples/PXD002137/ - Label-free, clinical, human
+- examples/PXD006482/ - Label-free, renal carcinoma, human
+- examples/PXD003772/ - TMT labeling, mouse
+- examples/PDC000126/ - TMT labeling, large cohort, human
+- examples/PXD013923/ - SILAC, phosphoproteomics, human
+- examples/PXD012667/ - DIA acquisition, human
+- examples/PXD019515/ - Single-cell proteomics, human
+- examples/PXD003791/ - Metaproteomics, gut
+- examples/PXD006439/ - Label-free, mouse
+- examples/PXD013868/ - Label-free, plant (Arabidopsis)
 
 ## Annotated Projects
 

@@ -26,26 +26,27 @@ Templates are organized in a layered hierarchy where each layer serves a specifi
 ----
 base (construction artifact - not user-facing)
 │
-├── TECHNOLOGY LAYER (mutually exclusive)
-│   ├── ms-proteomics              # Mass spectrometry proteomics
-│   │   └── EXPERIMENT LAYER
-│   │       ├── dda-acquisition    # Data-dependent acquisition
-│   │       ├── dia-acquisition    # Data-independent acquisition
-│   │       ├── single-cell        # Single-cell proteomics
-│   │       ├── immunopeptidomics  # MHC peptide analysis
-│   │       ├── crosslinking       # XL-MS experiments
-│   │       └── metaproteomics     # Microbiome proteomics
-│   │
-│   └── affinity-proteomics        # Affinity-based proteomics
-│       └── EXPERIMENT LAYER
-│           ├── olink              # Olink PEA platform
-│           └── somascan           # SomaScan aptamer platform
-│
-└── SAMPLE LAYER (mutually exclusive)
-    ├── human                      # Human samples
-    ├── vertebrates                # Non-human vertebrates (mouse, rat, etc.)
-    ├── invertebrates              # Invertebrates (Drosophila, C. elegans)
-    └── plants                     # Plant samples (Arabidopsis, crops)
+└── sample-metadata (intermediate - sample columns shared by all templates)
+    │
+    ├── TECHNOLOGY LAYER (mutually exclusive)
+    │   ├── ms-proteomics              # Mass spectrometry proteomics
+    │   │   └── EXPERIMENT LAYER
+    │   │       ├── dia-acquisition    # Data-independent acquisition
+    │   │       ├── single-cell        # Single-cell proteomics
+    │   │       ├── immunopeptidomics  # MHC peptide analysis
+    │   │       ├── crosslinking       # XL-MS experiments
+    │   │       └── metaproteomics     # Microbiome proteomics
+    │   │
+    │   └── affinity-proteomics        # Affinity-based proteomics
+    │       └── EXPERIMENT LAYER
+    │           ├── olink              # Olink PEA platform
+    │           └── somascan           # SomaScan aptamer platform
+    │
+    └── SAMPLE LAYER (mutually exclusive)
+        ├── human                      # Human samples
+        ├── vertebrates                # Non-human vertebrates (mouse, rat, etc.)
+        ├── invertebrates              # Invertebrates (Drosophila, C. elegans)
+        └── plants                     # Plant samples (Arabidopsis, crops)
 
 cell-lines (EXPERIMENT layer - requires technology + sample)
 ----
@@ -57,8 +58,12 @@ cell-lines (EXPERIMENT layer - requires technology + sample)
 | Layer | Purpose | Examples
 
 | `base`
-| Internal construction artifact with shared columns. Never used directly by users.
+| Internal construction artifact with infrastructure columns (source name, assay name, technology type, etc.). Never used directly by users.
 | base
+
+| `sample-metadata`
+| Intermediate template with sample-level columns shared by all templates (organism, organism part, cell type, biological replicate, pooled sample, disease, biosample accession). Extends `base`. Never used directly by users.
+| sample-metadata
 
 | `technology`
 | Defines the proteomics technology. Exactly one required per SDRF.
@@ -70,7 +75,7 @@ cell-lines (EXPERIMENT layer - requires technology + sample)
 
 | `experiment`
 | Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.
-| dda-acquisition, single-cell, olink, cell-lines
+| dia-acquisition, single-cell, olink, cell-lines
 |===
 
 === Mutual Exclusivity
@@ -82,7 +87,6 @@ Some templates cannot be combined because they represent mutually exclusive conc
 | Template A | Template B | Reason
 
 | ms-proteomics | affinity-proteomics | Different technologies
-| dda-acquisition | dia-acquisition | Different acquisition methods
 | somascan | olink | Different affinity platforms
 | human | vertebrates | Different organism types
 | human | invertebrates | Different organism types
@@ -108,9 +112,9 @@ version: 1.1.0                     # Semantic version (major.minor.patch)
 # =============================================================================
 # INHERITANCE AND RELATIONSHIPS (optional)
 # =============================================================================
-extends: base                      # Parent template to inherit from
+extends: sample-metadata             # Parent template to inherit from
 usable_alone: false                # Can this template be used without others?
-layer: sample                      # Layer: base, technology, sample, experiment
+layer: sample                      # Layer: base, sample-metadata, technology, sample, experiment
 
 # Mutual exclusivity - templates that cannot be combined with this one
 mutually_exclusive_with:
@@ -476,7 +480,7 @@ When multiple templates are combined:
 **Example valid combination:**
 [source]
 ----
-ms-proteomics + human + dda-acquisition + cell-lines
+ms-proteomics + human + dia-acquisition + cell-lines
      ↓             ↓           ↓              ↓
  technology    sample    experiment     experiment
 ----
@@ -576,10 +580,10 @@ parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv --template ms-proteomics
 parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv \
   --template ms-proteomics \
   --template human \
-  --template dda-acquisition
+  --template dia-acquisition
 
 # Check template compatibility
-parse_sdrf check-templates --templates ms-proteomics,human,dda-acquisition
+parse_sdrf check-templates --templates ms-proteomics,human,dia-acquisition
 ----
 
 == References

@@ -43,7 +43,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Template architecture refactoring**: Introduced `sample-metadata` intermediate template between `base` and technology/organism templates. Columns `organism`, `organism part`, `cell type`, `biological replicate`, and `pooled sample` moved from `base` to `sample-metadata`. Columns `disease` and `biosample accession number` consolidated from organism templates into `sample-metadata` (RECOMMENDED and OPTIONAL respectively; organism templates override disease to REQUIRED). All technology templates (`ms-proteomics`, `affinity-proteomics`) and organism templates (`human`, `vertebrates`, `invertebrates`, `plants`) now extend `sample-metadata` instead of `base`. No change to effective validation for any template combination.
 - **Version bump to v1.1.0**.
+- **BREAKING: `comment[technical replicate]`** changed from RECOMMENDED to REQUIRED in base template. All inheriting templates now require a technical replicate column. Existing SDRF files without this column will fail validation -- add the column with value `1` for single-run samples.
+- **BREAKING: Immunopeptidomics field renames**: `characteristics[MHC class]` → `characteristics[MHC protein complex]` (GO:0042611), `characteristics[MHC allele]`/`characteristics[HLA typing]` → `characteristics[MHC typing]` (PRIDE:0000893), `characteristics[HLA typing method]` → `characteristics[MHC typing method]` (PRIDE:0000894). Values updated to use MRO/GO ontology terms. Existing datasets must update column names and values.
+- **Organism templates**: `developmental stage` and `strain/breed` changed to REQUIRED in invertebrates, vertebrates, and plants. `sex` changed to RECOMMENDED in vertebrates. `growth conditions` and `treatment` changed to RECOMMENDED in plants.
+- **Human template**: `age` and `sex` changed to REQUIRED. Age pattern now allows standalone month/week/day values (e.g. `6M`, `3W`, `14D`).
+- **BioSample accession**: regex fixed from `^SAM[NED]A?\d+$` to `^SAM(N|EA|D)\d+$` to reject invalid prefixes.
+- **Affinity proteomics**: version set to 1.0.0. `comment[instrument]` renamed to `comment[platform]` (REQUIRED); new `comment[instrument]` added as OPTIONAL for actual sequencer/reader. Sample type values normalized to use spaces (`sample control`, `negative control`, etc.).
+- **Cell-lines**: added PATO ontology to disease field for `normal` (PATO:0000461). Added `characteristics[culture medium]` (RECOMMENDED) and `characteristics[storage temperature]` (RECOMMENDED).
+- **MS-proteomics/DDA**: mass tolerance patterns updated to accept `not available`/`not applicable` when those flags are set. DDA mass tolerance kept as RECOMMENDED.
 - **Specification restructured** with clearer organization: Quick Start → Validation → Specification Structure → Notational Conventions → Sample Metadata → Data File Metadata → Templates → Factor Values.
 - **Column naming**: `fileformat` changed to `file_format` for consistency with underscore convention.
 - **Ontology recommendations**: added NCIT and PRIDE to general purpose; added PATO for healthy samples (`normal` = PATO:0000461).

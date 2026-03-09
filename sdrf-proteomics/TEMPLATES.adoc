@@ -1,0 +1,1339 @@
+= SDRF Templates Guide
+:toc: left
+:toc-title: Contents
+:toclevels: 3
+:icons: font
+:source-highlighter: highlight.js
+:sectnums:
+
+A comprehensive guide for template selection, combination rules, key column guidance, format conventions, and YAML schema definitions. It complements the per-template YAML definitions and auto-generated documentation.
+
+NOTE: **Source of truth**: The YAML file for each template (located in link:sdrf-templates/[sdrf-templates/]) is the authoritative definition of its columns, validators, and metadata. To add, remove, or modify a column, edit the corresponding YAML file. All other documentation — including this guide — is derived from or supplements those YAMLs.
+
+IMPORTANT: **YAML templates do not define every possible column.** Templates define the most common columns with their validators and requirement levels. Additional terms listed in `TERMS.tsv` (e.g., `characteristics[xenograft]`, `characteristics[mass]`) can be added to any SDRF file without needing a corresponding YAML definition. The YAML templates capture what is most frequently needed; `TERMS.tsv` serves as a broader registry of recognised column names and ontology mappings.
+
+**Template files location:** https://github.com/bigbio/sdrf-templates[sdrf-templates/]
+
+== Template Architecture
+
+=== Layers
+
+Templates are organized in a hierarchy with two internal construction layers (`base`, `sample-metadata`) and three user-facing layers (`technology`, `sample`, `experiment`):
+
+[source]
+----
+base                         Infrastructure (identifiers, data files, versioning)     [internal]
+  sample-metadata            Shared sample biology (organism, tissue, disease)        [internal]
+    technology templates     MS or affinity proteomics columns                        [layer: technology]
+    organism templates       Species-specific metadata (human, vertebrates, etc.)     [layer: sample]
+    clinical templates       Clinical/oncology metadata                               [layer: sample]
+    experiment templates     Technique-specific columns (DIA, crosslinking, etc.)     [layer: experiment]
+----
+
+=== Inheritance
+
+Every template inherits all columns from its parent chain. Child templates can override parent column properties (e.g., changing a column from `optional` to `required`).
+
+[source]
+----
+base (construction artifact - not user-facing)
+ ├── sample-metadata (intermediate - sample columns shared by most templates)
+ │    ├── ms-proteomics (technology)
+ │    │    ├── dia-acquisition (experiment)
+ │    │    ├── crosslinking (experiment)
+ │    │    ├── immunopeptidomics (experiment)
+ │    │    └── single-cell (experiment)
+ │    ├── affinity-proteomics (technology)
+ │    │    ├── olink (experiment)
+ │    │    └── somascan (experiment)
+ │    ├── human (sample)
+ │    ├── vertebrates (sample)
+ │    ├── invertebrates (sample)
+ │    ├── plants (sample)
+ │    ├── cell-lines (experiment)
+ │    ├── clinical-metadata (sample)
+ │    │    └── oncology-metadata (sample)
+ │    └── (columns: organism, organism part, cell type, disease, biological replicate...)
+ └── metaproteomics (sample - MIxS-aligned, excludes sample-metadata when combined)
+      ├── human-gut (sample)
+      ├── soil (sample)
+      └── water (sample)
+----
+
+[[version-pinning-in-extends]]
+=== Version Pinning in `extends`
+
+The `extends` field supports an optional version constraint using the `@` separator. This controls which version of the parent template a child inherits from, preventing unintended breaking changes when parent templates are updated.
+
+**Formats:**
+
+[cols="2,3,3", options="header"]
+|===
+| Format | Example | Meaning
+
+| Name only (latest)
+| `extends: ms-proteomics`
+| Always inherits from the latest available version. Backwards compatible with existing templates.
+
+| Lower bound
+| `extends: ms-proteomics@>=1.1.0`
+| Inherits from the latest version >= 1.1.0. Follows Python/PEP 440 version specifier syntax.
+
+| Explicit range
+| `extends: ms-proteomics@>=1.1.0,<2.0.0`
+| Inherits from the latest version within [1.1.0, 2.0.0). Use when an upper bound is needed.
+
+| Exact version
+| `extends: ms-proteomics@1.1.0`
+| Inherits from exactly that version. Use sparingly — prevents receiving patch fixes.
+|===
+
+**Recommended convention:** Use lower-bound constraints (`>=major.minor.0`) for all templates. Add an upper bound (`<next_major.0.0`) only when a known incompatible major version exists. This ensures:
+
+* **Patch and minor updates propagate automatically** — bug fixes, new optional columns, and documentation changes in the parent are inherited without child template changes.
+* **Upper bounds are added when needed** — once a parent releases a breaking major version, children can add `<next_major.0.0` to stay on the compatible range.
+
+**Example:** When `ms-proteomics` is at version `1.1.0`:
+
+[source,yaml]
+----
+# single-cell inherits from ms-proteomics >=1.1.0
+extends: ms-proteomics@>=1.1.0
+
+# If ms-proteomics is bumped to 1.2.0: single-cell automatically inherits 1.2.0 ✓
+# If ms-proteomics is bumped to 2.0.0: single-cell inherits 2.0.0 (review needed)
+#   → If incompatible, add upper bound: extends: ms-proteomics@>=1.1.0,<2.0.0
+----
+
+**Resolution order:** When loading templates, the registry resolves version constraints by:
+
+1. Scanning all available versions on disk for the parent template
+2. Filtering to versions matching the constraint
+3. Selecting the latest matching version
+4. Falling back to the manifest `latest` if no match (with a warning)
+
+=== Layer Definitions
+
+[cols="1,3,2", options="header"]
+|===
+| Layer | Purpose | Examples
+
+| `base`
+| Internal construction artifact with infrastructure columns (source name, assay name, technology type, etc.). Never used directly by users.
+| base
+
+| `sample-metadata`
+| Intermediate template with sample-level columns shared by all templates (organism, organism part, cell type, biological replicate, pooled sample, disease, biosample accession). Extends `base`. Never used directly by users.
+| sample-metadata
+
+| `technology`
+| Defines the proteomics technology. Exactly one required per SDRF.
+| ms-proteomics, affinity-proteomics
+
+| `sample`
+| Defines organism-specific sample metadata. One recommended per SDRF.
+| human, vertebrates, invertebrates, plants
+
+| `experiment`
+| Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.
+| dia-acquisition, single-cell, olink, cell-lines
+|===
+
+=== Combination Rule
+
+An SDRF file is built by **combining** templates:
+
+1. **ONE technology template** (required): `ms-proteomics` or `affinity-proteomics`
+2. **ONE sample template** (recommended): either an organism template (`human`, `vertebrates`, `invertebrates`, `plants`) OR a metaproteomics template (`human-gut`, `soil`, `water`). These two groups are mutually exclusive.
+3. **ZERO or more experiment templates**: `dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics` (extend `ms-proteomics`), `olink`, `somascan` (extend `affinity-proteomics`)
+4. **ZERO or more clinical templates**: `clinical-metadata`, `oncology-metadata`
+5. **ZERO or one cell-lines template**: when samples are cultured cell lines
+
+When templates are combined, columns from all selected templates are merged. If the same column appears in multiple templates, the most specific definition wins (experiment > technology > sample-metadata). Templates may declare `excludes` to remove columns from other templates in the combination (see <<Column Exclusion>>).
+
+=== Mutual Exclusivity
+
+* **Technology**: `ms-proteomics` and `affinity-proteomics` cannot be combined
+* **Organism**: only one of `human`, `vertebrates`, `invertebrates`, `plants` per study (multi-species studies use the most specific applicable template)
+* **Metaproteomics**: `metaproteomics` (and its children `human-gut`, `soil`, `water`) are mutually exclusive with organism templates (`human`, `vertebrates`, `invertebrates`, `plants`). Only one metaproteomics child template per study.
+* **Platform**: `olink` and `somascan` cannot be combined
+* **Affinity experiments**: `olink`/`somascan` require `affinity-proteomics` (not `ms-proteomics`)
+
+== How to Choose Templates
+
+=== By Study Type
+
+[cols="2,3", options="header"]
+|===
+| Study type | Templates to combine
+
+| Human clinical DDA proteomics | `human` + `ms-proteomics` + `clinical-metadata`
+| Human cancer proteomics | `human` + `ms-proteomics` + `oncology-metadata`
+| Mouse DDA proteomics | `vertebrates` + `ms-proteomics`
+| Plant stress proteomics | `plants` + `ms-proteomics`
+| Human cell line drug screen | `cell-lines` + `human` + `ms-proteomics` + `clinical-metadata`
+| Human XL-MS structural study | `crosslinking` + `human`
+| In-vitro XL-MS (purified proteins) | `crosslinking`
+| Human immunopeptidomics / HLA ligandomics | `immunopeptidomics` + `human`
+| Mouse immunopeptidomics / H-2 ligandomics | `immunopeptidomics` + `vertebrates`
+| Human DIA proteomics | `dia-acquisition` + `human`
+| Mouse DIA proteomics | `dia-acquisition` + `vertebrates`
+| Human single-cell proteomics | `single-cell` + `human`
+| Human gut metaproteomics | `human-gut` + `ms-proteomics`
+| Soil metaproteomics | `soil` + `ms-proteomics`
+| Aquatic metaproteomics (ocean, lake, river) | `water` + `ms-proteomics`
+| Human Olink plasma study | `olink` + `human`
+| Human SomaScan serum study | `somascan` + `human`
+| Drosophila phosphoproteomics | `invertebrates` + `ms-proteomics`
+| Zebrafish developmental proteomics | `vertebrates` + `ms-proteomics`
+| Arabidopsis drought response proteomics | `plants` + `ms-proteomics`
+| Mouse cancer model proteomics | `vertebrates` + `ms-proteomics` + `oncology-metadata`
+|===
+
+=== By Organism
+
+[cols="2,2", options="header"]
+|===
+| Organism | Template
+
+| Homo sapiens | `human`
+| Mouse, rat, zebrafish, other vertebrates | `vertebrates`
+| Drosophila, C. elegans, insects | `invertebrates`
+| Arabidopsis, rice, maize, crops | `plants`
+| Cultured cell lines (any origin) | `cell-lines` + organism template matching cell origin
+|===
+
+=== By Technology
+
+[cols="2,2", options="header"]
+|===
+| Technology | Template
+
+| Any mass spectrometry proteomics | `ms-proteomics`
+| DDA (data-dependent acquisition) | `ms-proteomics` (default)
+| DIA / SWATH / diaPASEF | `dia-acquisition`
+| TMT / iTRAQ / SILAC | `ms-proteomics` (labeling defined by `comment[label]`)
+| Label-free quantification | `ms-proteomics` (label = "label free sample")
+| Olink PEA | `olink` (inherits `affinity-proteomics`)
+| SomaScan aptamer | `somascan` (inherits `affinity-proteomics`)
+|===
+
+== Format Conventions
+
+=== Column Naming
+
+* All column names inside brackets **must be lowercase**: `characteristics[disease]`, `comment[dia method]`, not `characteristics[Disease]` or `comment[DIA method]`.
+* Prefix: `characteristics[...]` for sample properties, `comment[...]` for technical/analytical metadata.
+
+=== Ontology Terms
+
+* Use **lowercase** for organism names: `homo sapiens`, not `Homo sapiens`
+* Use ontology-controlled vocabulary wherever validators specify ontology validation
+
+=== CV Term Format (Controlled Vocabulary)
+
+Used for enzymes, modifications, instruments, and other ontology-mapped values:
+
+[source]
+----
+NT={name};AC={accession}
+----
+
+Examples:
+
+* `NT=Trypsin;AC=MS:1001251`
+* `NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35`
+* `NT=DSS;AC=XLMOD:02001`
+
+=== Numbers with Units
+
+Format: `{value} {unit}` (space-separated)
+
+* Mass tolerance: `10 ppm`, `0.02 Da`
+* Collision energy: `30 NCE`, `27 eV`
+* Tissue mass: `50 mg`, `1 g`
+* Cell diameter: `15 um`
+* Temperature: `25 °C`, `-80 °C`
+* Time: `24 hour`, `5 day`, `30 minute`
+
+=== Age Format (Human)
+
+See link:SAMPLE-GUIDELINES.adoc#age-annotation[Age in SAMPLE-GUIDELINES] for the complete format reference, including compound ages (`30Y6M`), ranges (`40Y-50Y`), and comparison operators (`>=21Y`).
+
+=== Special Values
+
+* `not available` — value exists but is unknown
+* `not applicable` — column does not apply to this sample
+* `normal` — healthy/control for disease columns (PATO:0000461)
+* `untreated` — no treatment applied (for treatment columns)
+* `pooled` — pooled sample (for biological replicate)
+
+=== Multiple Values
+
+Some columns allow multiple values (cardinality: multiple):
+
+* Use multiple columns with the same header name
+* Example: `characteristics[organism part]` can appear twice for mixed-tissue samples
+
+=== Accession Formats
+
+* BioSample: `SAMN12345678`, `SAMEA12345678`, `SAMD1234567`
+* Cellosaurus: `CVCL_0030`, `CVCL_0004`
+* Metagenome: `MGYA00001234` (ENA), `SRP123456` (SRA)
+
+[[value-types-reference]]
+== Value Types Reference
+
+SDRF cell values are **not parsed by inspecting the value itself**. Instead, each column's YAML template definition declares which value types are accepted through a list of `validators`. The validator determines how the value is interpreted and validated.
+
+This section provides a formal reference of all supported value types, their patterns, and examples.
+
+=== How Value Types Are Determined
+
+The parsing process for any SDRF cell value follows this logic:
+
+[source]
+----
+1. Look up the column name in the active YAML template(s)
+2. Retrieve the declared list of validators for that column
+3. Validate the cell value against each declared validator
+4. If no validators are declared, the value is accepted as free text
+----
+
+NOTE: The value type is a property of the **column definition**, not of the value itself. The same string `10` could be valid as an identifier, a free-text value, or invalid (if the column requires a unit), depending on the column's declared validators.
+
+=== Value Type Catalog
+
+The following table lists all supported value types. The **Type Name** corresponds to the `validator_name` used in YAML template definitions. The **Pattern** column shows the formal regular expression or grammar that values must match. For complete validator configuration options, see <<Column-Level Validators>>.
+
+[cols="2,2,3,3", options="header"]
+|===
+| Type Name | Description | Pattern / Grammar | Examples
+
+| `ontology`
+| Ontology-controlled term. Accepts free text (exact ontology term name), ontology URI, or key=value representation.
+| Free text matching an ontology term, or `NT=_name_;AC=_prefix_:_accession_` with optional additional keys (`MT`, `PP`, `TA`, `CS`)
+| `homo sapiens`, `NT=Trypsin;AC=MS:1001251`, `NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35`
+
+| `values`
+| Enumerated list. Value must exactly match one of the allowed entries (case-insensitive).
+| Exact match from a declared list
+| `male`, `female`, `label free sample`
+
+| `number_with_unit`
+| Numeric value followed by a unit string, separated by optional whitespace.
+| `^-?\d+(\.\d+)?\s*(_unit1_\|_unit2_\|...)$`
+| `10 ppm`, `0.5 Da`, `-80 °C`, `30 NCE`
+
+| `pattern`
+| Custom regular expression. Used for domain-specific formats not covered by other validators (e.g., age format, collision energy steps).
+| Any valid regular expression declared in `params.pattern`
+| `45Y`, `30Y6M`, `40Y-50Y`, `>=21Y`, `25 NCE;27 NCE;30 NCE`
+
+| `accession`
+| Database accession identifier with a known prefix and suffix pattern.
+| `^_prefix__suffix_$` (e.g., `^SAM(N\|EA\|D)\d+$` for BioSample)
+| `SAMN12345678`, `CVCL_0030`, `PXD000001`
+
+| `identifier`
+| Alphanumeric identifier with configurable character set.
+| `^[A-Za-z0-9_-]+$` (default charset, configurable)
+| `patient_001`, `cell.line.A`, `sample_23`
+
+| `date`
+| ISO 8601 date at configurable precision.
+| `^\d{4}$` (year), `^\d{4}-\d{2}$` (month), `^\d{4}-\d{2}-\d{2}$` (day)
+| `2024`, `2024-01`, `2024-01-15`
+
+| `structured_kv`
+| Semicolon-separated key=value pairs with declared keys and value patterns.
+| `_KEY1_=_value1_;_KEY2_=_value2_` where each key and value regex is declared in `params.fields`
+| `NT=DSS;AC=XLMOD:02001`, `NT=lesSDRF;VV=v0.1.0`
+
+| `semver`
+| Semantic version string with optional prefix and prerelease suffix.
+| `^v?\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$`
+| `v1.1.0`, `v2.0.0-dev`, `1.0.0`
+
+| `single_cardinality_validator`
+| Ensures a cell contains a single value (no semicolon-separated lists). Used in combination with other validators.
+| No semicolons allowed in value
+| (any single value)
+|===
+
+=== Sentinel Values
+
+Regardless of value type, most columns accept the following reserved words. These are controlled at the column level via the `allow_not_available` and `allow_not_applicable` flags in the YAML definition:
+
+* `not available` — the value exists but is unknown
+* `not applicable` — the column does not apply to this sample
+
+Additional sentinel values may be accepted per column via the `special_values` parameter (e.g., `pooled`, `untreated`, `room temperature`).
+
+=== Range and Compound Formats
+
+Some columns accept range expressions or compound values. These are **not a generic SDRF feature** — they are defined per column using `pattern` validators with specific regular expressions:
+
+* **Age ranges**: `40Y-50Y` — defined by the age pattern validator in the human/vertebrate templates
+* **m/z ranges**: `400 m/z-1200 m/z` — defined by a pattern validator in the ms-proteomics template
+* **Stepped collision energy**: `25 NCE;27 NCE;30 NCE` — semicolon-separated repeated `number_with_unit` values, defined by a pattern validator
+
+To determine if a column supports ranges or compound values, consult its YAML template definition and check the declared `pattern` validator's regex.
+
+== YAML Template Schema
+
+This section describes the technical implementation of SDRF-Proteomics templates for **developers and maintainers**. These YAML definitions are used by the https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] validator to check SDRF files for compliance.
+
+=== Complete Template Structure
+
+[source,yaml]
+----
+# =============================================================================
+# TEMPLATE METADATA (required)
+# =============================================================================
+name: human                        # Unique template identifier (used in --template flag)
+description: Human SDRF template   # Human-readable description
+version: 1.1.0                     # Semantic version (major.minor.patch)
+
+# =============================================================================
+# INHERITANCE AND RELATIONSHIPS (optional)
+# =============================================================================
+extends: sample-metadata@>=1.0.0           # Parent template with version constraint
+usable_alone: false                # Can this template be used without others?
+layer: sample                      # Layer: base, sample-metadata, technology, sample, experiment
+
+# Mutual exclusivity - templates that cannot be combined with this one
+mutually_exclusive_with:
+  - vertebrates
+  - invertebrates
+  - plants
+
+# Required layers - for templates that need specific layer types
+requires:
+  - layer: technology              # Requires a technology template
+  - layer: sample                  # Requires a sample template
+
+# =============================================================================
+# TEMPLATE-LEVEL VALIDATORS (optional)
+# =============================================================================
+validators:
+  - validator_name: min_columns
+    params:
+      min_columns: 12
+  - validator_name: trailing_whitespace_validator
+    params: {}
+
+# =============================================================================
+# COLUMN DEFINITIONS (required)
+# =============================================================================
+columns:
+  - name: characteristics[disease]
+    description: Disease state of the sample
+    requirement: required          # required | recommended | optional
+    type: string                   # string | integer (default: string)
+    cardinality: single            # single | multiple (default: single)
+    allow_not_applicable: true     # Allow "not applicable" value
+    allow_not_available: true      # Allow "not available" value
+    allow_pooled: false            # Allow "pooled" value (for replicates)
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - efo
+            - doid
+            - pato
+          error_level: warning     # error | warning
+          description: The disease should be a valid ontology term
+          examples:
+            - normal
+            - breast cancer
+            - diabetes mellitus
+----
+
+=== Template Properties Reference
+
+[cols="2,1,1,4", options="header"]
+|===
+| Property | Required | Type | Description
+
+| `name`
+| Yes
+| string
+| Unique template identifier. Used in validation commands (`--template human`).
+
+| `description`
+| Yes
+| string
+| Human-readable description of the template's purpose.
+
+| `version`
+| Yes
+| string
+| Semantic version (e.g., `1.1.0`). Should match the specification version.
+
+| `extends`
+| No
+| string
+| Parent template name with optional version constraint. Supports: `name` (latest version), `name@1.1.0` (exact version), `name@>=1.1.0` (lower bound), or `name@>=1.1.0,<2.0.0` (range). See <<Version Pinning in extends>>.
+
+| `usable_alone`
+| No
+| boolean
+| If `false`, must be combined with other templates. Default: `true`.
+
+| `layer`
+| No
+| string
+| Template layer: `base`, `technology`, `sample`, or `experiment`.
+
+| `mutually_exclusive_with`
+| No
+| list
+| Templates that cannot be combined with this one.
+
+| `requires`
+| No
+| list
+| Layer requirements (e.g., `- layer: technology`).
+
+| `validators`
+| No
+| list
+| Template-level validators applied to the entire SDRF file.
+
+| `columns`
+| Yes
+| list
+| Column definitions with validation rules.
+
+| `excludes`
+| No
+| object
+| Column exclusion rules applied when this template is combined with others. See <<Column Exclusion>>.
+|===
+
+=== Column Exclusion
+
+When templates are combined, a template may need to **exclude** columns that another template brings through inheritance. For example, `metaproteomics` extends `base` (not `sample-metadata`) and defines its own sample-level metadata aligned with GSC MIxS standards. When combined with `ms-proteomics`, the `sample-metadata` columns inherited by `ms-proteomics` (organism, disease, cell type, etc.) are not appropriate — metaproteomics replaces them with environment-specific fields.
+
+The `excludes` property supports three complementary exclusion strategies, applied in order:
+
+[source,yaml]
+----
+excludes:
+  # Strategy 1: Exclude all columns inherited from a named template
+  templates:
+    - sample-metadata              # Remove all columns that originated from sample-metadata
+
+  # Strategy 2: Exclude columns by prefix category
+  categories:
+    - characteristics              # Remove all characteristics[...] columns from other templates
+    - comment                      # Remove all comment[...] columns from other templates
+
+  # Strategy 3: Exclude specific columns by name
+  columns:
+    - characteristics[organism]
+    - characteristics[disease]
+    - characteristics[cell type]
+----
+
+==== Strategy 1: Template-level exclusion (`excludes.templates`)
+
+Removes **all columns** that originated from the named parent template when combining with another template that inherits from it.
+
+[source,yaml]
+----
+# metaproteomics.yaml
+name: metaproteomics
+extends: base
+excludes:
+  templates:
+    - sample-metadata
+----
+
+When `metaproteomics` is combined with `ms-proteomics`, the merge logic tracks column provenance. Columns that `ms-proteomics` inherited from `sample-metadata` (organism, organism part, cell type, disease, biological replicate, etc.) are removed from the combined result. Columns defined directly in `ms-proteomics` itself (instrument, label, cleavage agent, etc.) are preserved.
+
+**Provenance tracking**: During inheritance resolution, each column is tagged with its originating template. When `excludes.templates` is evaluated, columns whose origin matches a listed template are removed.
+
+**Use case**: A template that provides its own complete set of sample-level metadata and needs to replace (not supplement) the standard `sample-metadata` columns.
+
+==== Strategy 2: Category-level exclusion (`excludes.categories`)
+
+Removes columns from other templates that match a given **prefix category** (`characteristics` or `comment`).
+
+[source,yaml]
+----
+excludes:
+  categories:
+    - characteristics              # Exclude all characteristics[...] from other templates
+----
+
+This removes all `characteristics[...]` columns contributed by **other** templates in the combination. Columns defined by the excluding template itself (and its own inheritance chain) are preserved.
+
+**Scope**: Only affects columns from _other_ templates in the combination, not from the excluding template's own hierarchy. For example, if `metaproteomics` excludes category `characteristics`, its own `characteristics[environmental sample type]` is kept, but `characteristics[organism]` from `ms-proteomics` (via `sample-metadata`) is removed.
+
+**Use case**: Broad exclusion when a template replaces an entire category of metadata. For instance, metaproteomics defines its own `characteristics[...]` columns for environmental/host metadata and does not want the generic sample-metadata `characteristics[...]` columns.
+
+==== Strategy 3: Column-level exclusion (`excludes.columns`)
+
+Removes **specific named columns** from other templates.
+
+[source,yaml]
+----
+excludes:
+  columns:
+    - characteristics[organism]
+    - characteristics[disease]
+    - characteristics[cell type]
+----
+
+This is the most precise strategy, removing only the listed columns from the combination result.
+
+**Use case**: When only a small number of specific columns conflict and the rest should be preserved.
+
+==== Combining Strategies
+
+All three strategies can be used together. They are applied in order: templates first, then categories, then individual columns. The union of all excluded columns is removed.
+
+[source,yaml]
+----
+# Example: metaproteomics excludes sample-metadata entirely
+excludes:
+  templates:
+    - sample-metadata
+----
+
+[source,yaml]
+----
+# Example: exclude only specific columns
+excludes:
+  columns:
+    - characteristics[organism]
+    - characteristics[disease]
+    - characteristics[cell type]
+----
+
+==== Version Independence
+
+Exclusion operates on **template names only**, independent of version. When `excludes.templates` lists `sample-metadata`, it matches all columns originating from `sample-metadata` regardless of which version (`1.0.0`, `1.1.0`, etc.) was resolved during inheritance. This ensures that exclusion rules remain stable across version upgrades — a template does not need to update its `excludes` list when a dependency bumps versions.
+
+==== Precedence Rules
+
+1. **Self-preservation**: A template's `excludes` never removes its own columns or columns from its own parent chain. Exclusion only applies to columns from _other_ templates in the combination.
+2. **Order of application**: `templates` -> `categories` -> `columns`.
+3. **Union semantics**: All three strategies contribute to a single exclusion set. A column excluded by any strategy is removed.
+4. **Strictest wins**: If two templates both define the same column and one excludes it, the _excluding_ template's version (if any) is kept. If the excluding template does not define it, the column is removed entirely.
+
+=== Column Properties Reference
+
+[cols="2,1,1,4", options="header"]
+|===
+| Property | Required | Type | Description
+
+| `name`
+| Yes
+| string
+| Column header exactly as in SDRF (e.g., `characteristics[disease]`).
+
+| `description`
+| Yes
+| string
+| What the column contains and how to fill it.
+
+| `requirement`
+| Yes
+| string
+| `required` (must be present), `recommended` (should be present), `optional` (may be present).
+
+| `type`
+| No
+| string
+| Data type: `string` (default) or `integer`.
+
+| `cardinality`
+| No
+| string
+| `single` (default) or `multiple` (use multiple columns with the same header name).
+
+| `allow_not_applicable`
+| No
+| boolean
+| Allow `not applicable` when column doesn't apply. Default: `false`.
+
+| `allow_not_available`
+| No
+| boolean
+| Allow `not available` when data is unknown. Default: `false`.
+
+| `allow_pooled`
+| No
+| boolean
+| Allow `pooled` value (for biological replicate). Default: `false`.
+
+| `validators`
+| No
+| list
+| Column-level validators for value checking.
+|===
+
+== Validator Reference
+
+=== Template-Level Validators
+
+These validators apply to the entire SDRF file structure.
+
+==== min_columns
+
+Ensures minimum column count.
+
+[source,yaml]
+----
+- validator_name: min_columns
+  params:
+    min_columns: 12
+----
+
+==== trailing_whitespace_validator
+
+Checks for trailing whitespace in cell values.
+
+[source,yaml]
+----
+- validator_name: trailing_whitespace_validator
+  params: {}
+----
+
+==== column_order
+
+Validates expected column order (source name first, data file last).
+
+[source,yaml]
+----
+- validator_name: column_order
+  params: {}
+----
+
+==== empty_cells
+
+Checks for empty cells that should have values.
+
+[source,yaml]
+----
+- validator_name: empty_cells
+  params: {}
+----
+
+==== combination_of_columns_no_duplicate_validator
+
+Ensures column combinations are unique (no duplicate rows).
+
+[source,yaml]
+----
+- validator_name: combination_of_columns_no_duplicate_validator
+  params:
+    column_name:              # Must be unique (error if duplicates)
+      - source name
+      - assay name
+      - comment[label]
+    column_name_warning:      # Should be unique (warning if duplicates)
+      - source name
+      - assay name
+----
+
+=== Column-Level Validators
+
+These validators apply to individual column values.
+
+==== ontology
+
+Validates values against ontology terms.
+
+[source,yaml]
+----
+- validator_name: ontology
+  params:
+    ontologies:              # List of ontology prefixes
+      - mondo
+      - efo
+      - doid
+    parent_term: MS:1000044  # Optional: restrict to children of this term
+    error_level: warning     # error or warning
+    description: Human-readable validation message
+    examples:
+      - normal
+      - breast cancer
+----
+
+==== pattern
+
+Validates values against a regular expression.
+
+[source,yaml]
+----
+- validator_name: pattern
+  params:
+    # Age format: optional comparison operator + number + unit in strict Y>M>W>D order, with optional range
+    # Examples: 45Y, 6M, 3W, 14D, 30Y6M, 6M2W, 40Y-50Y, 6M-12M, >18Y, >=21Y, <65Y
+    pattern: ^(>=?|<=?)?(\d+[Yy](\d+[Mm](\d+[Ww](\d+[Dd])?)?)?|\d+[Mm](\d+[Ww](\d+[Dd])?)?|\d+[Ww](\d+[Dd])?|\d+[Dd])(-((\d+[Yy](\d+[Mm](\d+[Ww](\d+[Dd])?)?)?|\d+[Mm](\d+[Ww](\d+[Dd])?)?|\d+[Ww](\d+[Dd])?|\d+[Dd])))?$
+    case_sensitive: false    # Optional, default: true
+    description: "Age format: 45Y, 6M, 30Y6M (Y>M>W>D order), ranges like 40Y-50Y, or comparison operators like >18Y, >=21Y, <65Y"
+    examples:
+      - 45Y
+      - 6M
+      - 3W
+      - 30Y6M
+      - 40Y-50Y
+      - ">18Y"
+      - ">=21Y"
+----
+
+==== values
+
+Validates against a fixed list of allowed values.
+
+[source,yaml]
+----
+- validator_name: values
+  params:
+    values:
+      - male
+      - female
+      - intersex
+    error_level: error
+    description: Sex must be one of the allowed values
+----
+
+==== single_cardinality_validator
+
+Ensures single value per cell (no semicolon-separated values).
+
+[source,yaml]
+----
+- validator_name: single_cardinality_validator
+  params: {}
+----
+
+==== number_with_unit
+
+Validates values in `<number> <unit>` format. Replaces complex regex patterns for fields like mass tolerance, temperature, concentration, and depth.
+
+[source,yaml]
+----
+- validator_name: number_with_unit
+  params:
+    units: [ppm, Da]             # Required: allowed unit strings
+    allow_negative: false         # Optional: allow negative numbers (default: false)
+    allow_decimal: true           # Optional: allow decimal numbers (default: true)
+    special_values: []            # Optional: extra allowed literals (e.g., "room temperature")
+    error_level: error            # error or warning
+    description: Mass tolerance with unit
+    examples:
+      - 10 ppm
+      - 0.5 Da
+----
+
+Parameters:
+
+[cols="2,1,1,4", options="header"]
+|===
+| Parameter | Required | Default | Description
+
+| `units`
+| Yes
+| -
+| List of allowed unit strings (e.g., `[ppm, Da]`, `[mg, g]`, `[°C]`)
+
+| `allow_negative`
+| No
+| `false`
+| Allow negative numbers (useful for temperature)
+
+| `allow_decimal`
+| No
+| `true`
+| Allow decimal numbers (e.g., `0.5`)
+
+| `special_values`
+| No
+| `[]`
+| Additional literal values accepted verbatim (e.g., `[room temperature]`)
+|===
+
+NOTE: `not available` and `not applicable` are handled automatically by the column-level `allow_not_available` and `allow_not_applicable` flags — do not add them to `special_values`.
+
+==== accession
+
+Validates accession identifiers with prefix + suffix format. Supports predefined formats or custom prefix/suffix patterns.
+
+[source,yaml]
+----
+# Predefined format (recommended for known databases)
+- validator_name: accession
+  params:
+    format: biosample             # Predefined format name
+    error_level: error
+    description: BioSample accession
+    examples:
+      - SAMN12345678
+      - SAMEA12345678
+      - SAMD1234567
+
+# Custom prefix + suffix
+- validator_name: accession
+  params:
+    prefix: "CVCL_"              # Literal or simple regex
+    suffix: "[A-Z0-9]+"          # Simple regex (default: \d+)
+    error_level: error
+----
+
+Predefined formats:
+
+[cols="1,2,2,2", options="header"]
+|===
+| Format | Prefix | Suffix | Example
+
+| `biosample`
+| `SAM(N\|EA\|D)`
+| `\d+`
+| SAMN12345678
+
+| `cellosaurus`
+| `CVCL_`
+| `[A-Z0-9]+`
+| CVCL_0030
+
+| `proteomexchange`
+| `PXD`
+| `\d+`
+| PXD000001
+|===
+
+==== identifier
+
+Validates alphanumeric identifiers with optional special values. Useful for individual/patient IDs and cell identifiers.
+
+[source,yaml]
+----
+- validator_name: identifier
+  params:
+    charset: "[A-Za-z0-9_-]"     # Character class (default: [A-Za-z0-9_-])
+    special_values: [anonymized, pooled]  # Extra allowed literals
+    error_level: error
+    description: Patient or individual identifier
+----
+
+The `charset` parameter accepts a regex character class. Common values:
+
+* `[A-Za-z0-9_-]` (default) — alphanumeric with underscores and hyphens
+* `[A-Za-z0-9_.-]` — also allows dots (for cell identifiers)
+
+==== date
+
+Validates ISO 8601 dates at variable precision levels.
+
+[source,yaml]
+----
+- validator_name: date
+  params:
+    format: iso8601               # Currently the only supported format
+    precision: [year, month, day] # Allowed precision levels
+    error_level: warning
+    description: Sample collection date
+    examples:
+      - "2024"
+      - "2024-01"
+      - "2024-01-15"
+----
+
+The `precision` list controls which granularity levels are accepted. For example, `[day]` would only accept full `YYYY-MM-DD` dates, while `[year, month, day]` accepts any level.
+
+==== structured_kv
+
+Validates semicolon-separated key=value pair formats. Useful for ontology-annotated values with `NT=name;AC=accession` structure.
+
+[source,yaml]
+----
+- validator_name: structured_kv
+  params:
+    separator: ";"                # Separator between pairs (default: ";")
+    fields:                       # Required key=value definitions
+      - key: NT
+        value: ".+"               # Simple regex for the value
+      - key: AC
+        value: "(XLMOD|CHEBI|UNIMOD):\\d+"
+    error_level: error
+    description: "Cross-linker: NT=name;AC=ontology:accession"
+    examples:
+      - "NT=DSS;AC=XLMOD:02001"
+      - "NT=BS3;AC=XLMOD:02000"
+----
+
+Each entry in `fields` defines a required key and a regex pattern for its value.
+
+==== semver
+
+Validates semantic version strings.
+
+[source,yaml]
+----
+- validator_name: semver
+  params:
+    prefix: "v"                   # Optional prefix character
+    allow_prerelease: true        # Allow -alpha, -beta, -rc.1 suffixes (default: true)
+    error_level: error
+    description: SDRF specification version
+    examples:
+      - v1.1.0
+      - v1.0.0
+----
+
+== Supported Ontologies
+
+[cols="1,3,3", options="header"]
+|===
+| Prefix | Ontology | Common Use
+
+| `ncbitaxon` | NCBI Taxonomy | organism
+| `uberon` | Uberon Anatomy Ontology | organism part
+| `cl` | Cell Ontology | cell type
+| `clo` | Cell Line Ontology | cell line
+| `bto` | BRENDA Tissue Ontology | tissue, cell type, cell line
+| `mondo` | MONDO Disease Ontology | disease
+| `efo` | Experimental Factor Ontology | disease, experimental factors
+| `doid` | Disease Ontology | disease
+| `pato` | Phenotype and Trait Ontology | phenotypes (including "normal")
+| `ms` | PSI-MS Ontology | instrument, cleavage agent, mass analyzer
+| `pride` | PRIDE Ontology | acquisition method, labels, affinity instruments
+| `unimod` | UNIMOD | post-translational modifications
+| `xlmod` | XLMOD | crosslinking reagents
+| `hancestro` | Human Ancestry Ontology | ancestry category (human)
+| `envo` | Environment Ontology | environmental samples (metaproteomics)
+| `gaz` | Gazetteer | geographic locations
+| `chebi` | ChEBI | chemical entities, treatments
+|===
+
+== Template Inheritance Rules
+
+When templates are combined, the following rules apply:
+
+=== Inheritance Behavior
+
+1. **Column inheritance**: Child templates inherit all columns from parent templates
+2. **Validator inheritance**: Child templates inherit all validators from parent templates
+3. **Column override**: Child templates can redefine inherited columns with stricter requirements
+
+=== Requirement Strengthening
+
+Child templates may **strengthen** but not weaken requirements:
+
+[cols="2,2,2", options="header"]
+|===
+| Parent Requirement | Allowed in Child | Not Allowed
+
+| `optional`
+| `optional`, `recommended`, `required`
+| -
+
+| `recommended`
+| `recommended`, `required`
+| `optional`
+
+| `required`
+| `required`
+| `optional`, `recommended`
+|===
+
+=== Multi-Template Combination
+
+When multiple templates are combined:
+
+1. All columns from all templates are included
+2. If the same column appears in multiple templates, the **strictest requirement** wins
+3. Validators are merged (all validators apply)
+4. Mutual exclusivity is checked first
+
+**Example valid combination:**
+[source]
+----
+ms-proteomics + human + dia-acquisition + cell-lines
+     ↓             ↓           ↓              ↓
+ technology    sample    experiment     experiment
+----
+
+== Creating a New Template: Step-by-Step Guide
+
+This section walks through creating a new YAML template from scratch. The example creates a hypothetical `top-down` template for top-down proteomics experiments.
+
+=== Step 1: Choose the Parent Template
+
+Every template (except `base`) must extend a parent. Choose based on where your template fits in the hierarchy:
+
+[cols="2,3,2", options="header"]
+|===
+| You are defining... | Extend | Layer
+
+| A new proteomics technology (rare)
+| `sample-metadata`
+| `technology`
+
+| A new organism type
+| `sample-metadata`
+| `sample`
+
+| A new MS experiment type
+| `ms-proteomics`
+| `experiment`
+
+| A new affinity experiment type
+| `affinity-proteomics`
+| `experiment`
+
+| A template with its own sample metadata (e.g., metaproteomics)
+| `base`
+| `sample`
+|===
+
+For our example, top-down proteomics is a mass spectrometry technique, so we extend `ms-proteomics` and use the `experiment` layer.
+
+=== Step 2: Create the Directory Structure
+
+Templates live in the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository. Each template has a versioned directory:
+
+[source]
+----
+sdrf-templates/
+└── top-down/
+    └── 1.0.0-dev/
+        ├── top-down.yaml         # Template schema (required)
+        └── top-down.sdrf.tsv     # Example SDRF file (required)
+----
+
+Use the `-dev` suffix for the initial version until the template is reviewed and accepted by the community.
+
+=== Step 3: Write the YAML Schema
+
+Start with the template metadata, then define the columns your experiment type needs. Only define columns that are **new or different** from the parent — inherited columns from `ms-proteomics` do not need to be repeated.
+
+.top-down/1.0.0-dev/top-down.yaml
+[source,yaml]
+----
+# ===========================================================================
+# TEMPLATE METADATA
+# ===========================================================================
+name: top-down
+description: >
+  SDRF template for top-down proteomics experiments where intact proteins
+  are analyzed without prior enzymatic digestion. Extends ms-proteomics
+  with top-down-specific columns for intact mass analysis.
+version: 1.0.0-dev
+extends: ms-proteomics@>=1.1.0
+usable_alone: false
+layer: experiment
+
+# ===========================================================================
+# COLUMN DEFINITIONS — only columns new or changed from parent
+# ===========================================================================
+columns:
+
+  # --- New column: protein separation method ---
+  - name: comment[protein separation method]
+    description: >
+      Method used to separate intact proteins before MS analysis
+      (e.g., GELFrEE, SEC, RPLC, CZE). Use "not applicable" if no
+      separation was performed (direct infusion).
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+            - pride
+          error_level: warning
+          description: >
+            Protein separation method should be a valid PSI-MS or PRIDE
+            ontology term.
+          examples:
+            - size exclusion chromatography
+            - gel electrophoresis
+            - capillary zone electrophoresis
+            - reversed-phase liquid chromatography
+            - not applicable
+
+  # --- New column: intact mass range ---
+  - name: comment[precursor mass range]
+    description: >
+      The mass range of intact protein precursors analyzed, in Daltons.
+      Format: "min-max Da" (e.g., "5000-50000 Da").
+    requirement: optional
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^(\d+-\d+\s*Da|not available)$
+          case_sensitive: false
+          description: >
+            Precursor mass range in format "min-max Da".
+          examples:
+            - 5000-50000 Da
+            - 10000-100000 Da
+            - not available
+
+  # --- Override inherited column: make cleavage agent "not applicable" ---
+  # In top-down experiments, proteins are not digested, so the cleavage
+  # agent column should always be "not applicable". We override the
+  # inherited column to make this explicit.
+  - name: comment[cleavage agent details]
+    description: >
+      Cleavage agent is not applicable for top-down experiments where
+      intact proteins are analyzed. Use "not applicable".
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - not applicable
+          error_level: warning
+          description: >
+            Top-down experiments analyze intact proteins. Cleavage agent
+            should be "not applicable".
+----
+
+Key points demonstrated in this example:
+
+* **New columns** (`comment[protein separation method]`, `comment[precursor mass range]`) are defined with their own validators.
+* **Overriding an inherited column** (`comment[cleavage agent details]`) restricts the parent's definition — in this case, forcing the value to "not applicable" since top-down experiments don't use enzymatic digestion.
+* **Descriptions explain the "why"** — not just what the field is, but when to use `not applicable` and what format to follow.
+* **Examples are always provided** in validators — they serve as documentation and can be used by tools to generate autocomplete suggestions.
+
+=== Step 4: Create an Example SDRF File
+
+Every template must include an example `.sdrf.tsv` file that passes validation. This file demonstrates correct usage and serves as a starting point for users.
+
+=== Step 5: Test Locally
+
+Before submitting, validate your example file against your template:
+
+[source,bash]
+----
+# Install or upgrade the validator
+pip install sdrf-pipelines
+
+# Validate the example SDRF file with the new template
+parse_sdrf validate-sdrf \
+  --sdrf_file top-down/1.0.0-dev/top-down.sdrf.tsv \
+  --template ms-proteomics \
+  --custom_template top-down/1.0.0-dev/top-down.yaml
+----
+
+Check that:
+
+* [ ] The example file passes validation with no errors.
+* [ ] All required columns from the parent template are present.
+* [ ] New columns validate correctly (ontology terms resolve, patterns match).
+* [ ] The `not applicable` and `not available` values work where expected.
+
+=== Step 6: Submit a Pull Request
+
+Submit the template to the https://github.com/bigbio/sdrf-templates[sdrf-templates] repository via pull request. The PR must include:
+
+1. The YAML schema file (`top-down/1.0.0-dev/top-down.yaml`).
+2. The example SDRF file (`top-down/1.0.0-dev/top-down.sdrf.tsv`).
+3. A PR description explaining: what experiment type the template covers, why it is needed, and which parent it extends.
+
+Once reviewed and merged, the template appears in the `templates.yaml` manifest and becomes available to all users of sdrf-pipelines. A documentation page is auto-generated from the YAML definition. The `-dev` suffix is removed when the template is promoted to a stable release (e.g., `1.0.0`).
+
+=== Quick Reference: Template YAML Checklist
+
+[cols="1,3", options="header"]
+|===
+| Field | Checklist
+
+| `name`
+| Lowercase with hyphens. Unique across all templates.
+
+| `description`
+| One or two sentences. Mention what it extends and what experiment type it covers.
+
+| `version`
+| Use `X.Y.Z-dev` for new templates. Remove `-dev` after community review.
+
+| `extends`
+| Must be an existing template name with a version constraint (e.g., `ms-proteomics@>=1.1.0`). Use `>=major.minor.patch` format to pin to a minimum version. See <<Version Pinning in extends>>.
+
+| `layer`
+| One of: `technology`, `sample`, `experiment`.
+
+| `usable_alone`
+| Almost always `false` for experiment and sample layer templates.
+
+| `columns`
+| Only define columns that are **new** or that **override** a parent column. Do not repeat inherited columns unchanged.
+
+| Validators
+| Use `ontology` for controlled vocabularies, `values` for fixed lists, and typed validators for common formats: `number_with_unit` for numeric values with units, `accession` for database identifiers, `identifier` for alphanumeric IDs, `date` for ISO dates, `structured_kv` for key=value formats, `semver` for version strings. Use `pattern` only for unique formats not covered by typed validators. Always include `examples`.
+
+| Reserved words
+| Set `allow_not_applicable`, `allow_not_available`, `allow_pooled`, `allow_anonymized` as appropriate for each column.
+|===
+
+=== Best Practices
+
+* **Only define what is new.** Inherited columns from the parent template do not need to be repeated. Only add a column to your template if it is new or if you need to override the parent's definition (e.g., change `requirement` from `optional` to `required`, or restrict allowed values).
+* **Use ontologies over patterns.** Prefer `ontology` validators for fields where controlled vocabulary terms exist. Use typed validators (`number_with_unit`, `accession`, `identifier`, `date`, `structured_kv`, `semver`) for common structured formats. Use `pattern` validators only for unique formats not covered by typed validators.
+* **Provide clear descriptions.** Explain not just what the field is, but when to use `not applicable` vs `not available`, and give format guidance.
+* **Always include examples.** Examples in validators serve as documentation and help tools generate suggestions.
+* **Test with real data.** Your example SDRF should represent a realistic experiment, not a toy file. If possible, base it on a real public dataset.
+
+== Validation Commands
+
+Validate SDRF files using sdrf-pipelines:
+
+[source,bash]
+----
+# Install
+pip install sdrf-pipelines
+
+# Validate with single template
+parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv --template ms-proteomics
+
+# Validate with multiple templates
+parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv \
+  --template ms-proteomics \
+  --template human \
+  --template dia-acquisition
+
+# Check template compatibility
+parse_sdrf check-templates --templates ms-proteomics,human,dia-acquisition
+----
+
+== Versioning
+
+=== Template Versions
+
+Templates follow semantic versioning (`MAJOR.MINOR.PATCH`):
+
+* **MAJOR**: Breaking changes (column removals, requirement escalations)
+* **MINOR**: Additions (new optional/recommended columns)
+* **PATCH**: Fixes (description updates, validator corrections)
+
+=== Recording Templates in SDRF
+
+Use `comment[sdrf template]` to record which templates were used:
+
+[source]
+----
+NT=ms-proteomics;VV=v1.1.0    NT=human;VV=v1.1.0
+----
+
+Multiple template columns supported for combined templates.
+
+== References
+
+* https://github.com/bigbio/sdrf-pipelines[sdrf-pipelines] - SDRF validation tool
+* https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates[Template files on GitHub]
+* link:README.adoc[SDRF-Proteomics Specification]

@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -25,6 +27,9 @@ jobs:
         run: |
           gem install asciidoctor
           gem install asciidoctor-diagram
+
+      - name: Install Python dependencies
+        run: pip install pyyaml jinja2
 
       - name: Set output directory based on branch
         id: set-output-dir
@@ -37,45 +42,14 @@ jobs:
             echo "base_url=/dev" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create output directory
-        run: mkdir -p ${{ steps.set-output-dir.outputs.output_dir }}
-
-      - name: Build AsciiDoc documentation
+      - name: Build documentation site
         run: |
-          chmod +x scripts/build-asciidoc.sh
-          ./scripts/build-asciidoc.sh ${{ steps.set-output-dir.outputs.output_dir }}
-
-      - name: Copy static assets
-        run: |
-          chmod +x scripts/copy-assets.sh
-          ./scripts/copy-assets.sh ${{ steps.set-output-dir.outputs.output_dir }}
-
-      - name: Build SDRF Explorer index
-        run: |
-          python3 site/build-sdrf-index.py
-          cp site/sdrf-data.json ${{ steps.set-output-dir.outputs.output_dir }}/
-
-      - name: Inject navigation headers
-        run: |
-          python3 scripts/inject-headers.py ${{ steps.set-output-dir.outputs.output_dir }}
-
-      - name: Transform SDRF links to viewer
-        run: |
-          python3 scripts/transform-links.py ${{ steps.set-output-dir.outputs.output_dir }}
-
-      - name: Transform SDRF example tables
-        run: |
-          python3 scripts/transform-sdrf-tables.py ${{ steps.set-output-dir.outputs.output_dir }}
-
-      - name: Build search index
-        run: |
-          python3 site/build-search-index.py . ${{ steps.set-output-dir.outputs.output_dir }}/search-index.json
-
-      - name: Add version banner for dev branch
-        if: github.ref_name == 'dev'
-        run: |
-          chmod +x scripts/add-dev-banner.sh
-          ./scripts/add-dev-banner.sh ${{ steps.set-output-dir.outputs.output_dir }}
+          chmod +x scripts/build-docs.sh
+          if [ "${{ github.ref_name }}" == "dev" ]; then
+            ./scripts/build-docs.sh ${{ steps.set-output-dir.outputs.output_dir }} --dev
+          else
+            ./scripts/build-docs.sh ${{ steps.set-output-dir.outputs.output_dir }}
+          fi
 
       - name: Checkout gh-pages branch for merging
         if: github.ref_name == 'dev'
