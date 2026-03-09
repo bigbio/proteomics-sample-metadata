@@ -173,6 +173,7 @@ cp site/sdrf-terms.html "$OUTPUT_DIR/"
 cp site/quickstart.html "$OUTPUT_DIR/"
 cp site/sdrf-explorer.html "$OUTPUT_DIR/"
 cp site/sdrf-editor.html "$OUTPUT_DIR/"
+cp site/sdrf-builder.html "$OUTPUT_DIR/"
 
 # Copy SDRF terms TSV (if present) — also create TERMS.tsv alias for AsciiDoc links
 cp sdrf-proteomics/metadata-guidelines/sdrf-terms.tsv "$OUTPUT_DIR/" 2>/dev/null || true
@@ -190,7 +191,11 @@ cp site/sdrf-data.json "$OUTPUT_DIR/"
 
 # Inject navigation headers
 echo "Adding navigation headers..."
-python3 scripts/inject-headers.py "$OUTPUT_DIR"
+if [ "$IS_DEV" = true ]; then
+    python3 scripts/inject-headers.py "$OUTPUT_DIR" --dev
+else
+    python3 scripts/inject-headers.py "$OUTPUT_DIR"
+fi
 
 # Transform links (SDRF Explorer links and .adoc to .html)
 echo "Transforming links..."
