@@ -36,8 +36,12 @@ jobs:
           args: >-
             --verbose
             --no-progress
-            --timeout 20
-            --max-concurrency 10
+            --timeout 30
+            --max-concurrency 3
+            --max-retries 3
+            --retry-wait-time 10
             '**/*.md'
             '**/*.adoc'
           fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
