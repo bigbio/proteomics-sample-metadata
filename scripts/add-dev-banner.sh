@@ -1,19 +1,37 @@
 #!/bin/bash
-# Add development version banner to documentation
+# Add development version banner to all documentation pages
 # Usage: ./add-dev-banner.sh <output_dir>
 
 set -e
 
 OUTPUT_DIR="${1:-docs}"
 
-echo "Adding dev banner to: $OUTPUT_DIR"
+echo "Adding dev banner to all HTML pages in: $OUTPUT_DIR"
 
-# Add banner HTML to index.html
-sed -i.bak 's/<body>/<body><div class="dev-banner">⚠️ Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="\/">View stable version<\/a><\/div>/' "$OUTPUT_DIR/index.html"
-rm -f "$OUTPUT_DIR/index.html.bak"
+# Use Python for reliable cross-platform HTML injection
+python3 -c "
+import os, re
 
-# Append dev banner CSS to stylesheet
-cat >> "$OUTPUT_DIR/css/style.css" << 'EOF'
+output_dir = '$OUTPUT_DIR'
+banner = '<div class=\"dev-banner\">&#9888;&#65039; Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href=\"/\">View stable version</a></div>'
+
+for root, dirs, files in os.walk(output_dir):
+    for f in files:
+        if not f.endswith('.html'):
+            continue
+        path = os.path.join(root, f)
+        with open(path, 'r') as fh:
+            content = fh.read()
+        if 'dev-banner' in content:
+            continue
+        content = re.sub(r'(<body[^>]*>)', r'\1' + banner, content)
+        with open(path, 'w') as fh:
+            fh.write(content)
+"
+
+# Append dev banner CSS to stylesheet (only once)
+if ! grep -q "dev-banner" "$OUTPUT_DIR/css/style.css" 2>/dev/null; then
+    cat >> "$OUTPUT_DIR/css/style.css" << 'EOF'
 
 /* Dev banner */
 .dev-banner {
@@ -29,5 +47,6 @@ cat >> "$OUTPUT_DIR/css/style.css" << 'EOF'
   font-weight: 600;
 }
 EOF
+fi
 
-echo "Dev banner added successfully!"
+echo "Dev banner added to all pages successfully!"
