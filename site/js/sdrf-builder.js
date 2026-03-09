@@ -914,11 +914,16 @@
         var columns = resolveColumns();
         if (!columns.length) return;
 
-        var names = [];
+        var headers = [];
+        var values = [];
         for (var i = 0; i < columns.length; i++) {
-            names.push(columns[i].name);
+            headers.push(columns[i].name);
+            values.push(columns[i].example_value || '');
         }
-        window.open('sdrf-editor.html?columns=' + encodeURIComponent(names.join(',')));
+
+        var tsv = headers.join('\t') + '\n' + values.join('\t') + '\n';
+        var encoded = btoa(unescape(encodeURIComponent(tsv)));
+        window.open('sdrf-editor.html?content=' + encodeURIComponent(encoded));
     }
 
     /* ---------------------------------------------------------------
