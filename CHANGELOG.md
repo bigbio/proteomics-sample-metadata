@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Human-specific metadata guidelines (templates/human/README.adoc)
   - MS data file metadata (in ms-proteomics template)
   - SDRF terms reference (sdrf-terms.tsv)
+- **Template Builder page** (site/sdrf-builder.html): dedicated interactive wizard for building customized SDRF templates by selecting technology, organism, and experiment type.
+- **Metaproteomics examples**: PXD005969 (human gut, extraction methods), PXD003572 (soil, Mediterranean dryland), PXD009712 (ocean, Pacific depth profiles).
 - **Website infrastructure** (site/): homepage, SDRF explorer, terms reference, search functionality, CSS styling.
 - **PDF generation workflow** with custom theme for specification documents.
 - File-level metadata support using dedicated columns (`comment[sdrf version]`, `comment[sdrf template]`, `comment[sdrf annotation tool]`) for capturing SDRF version, template, and provenance information.
@@ -53,6 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Affinity proteomics**: version set to 1.0.0. `comment[instrument]` renamed to `comment[platform]` (REQUIRED); new `comment[instrument]` added as OPTIONAL for actual sequencer/reader. Sample type values normalized to use spaces (`sample control`, `negative control`, etc.).
 - **Cell-lines**: added PATO ontology to disease field for `normal` (PATO:0000461). Added `characteristics[culture medium]` (RECOMMENDED) and `characteristics[storage temperature]` (RECOMMENDED).
 - **MS-proteomics/DDA**: mass tolerance patterns updated to accept `not available`/`not applicable` when those flags are set. DDA mass tolerance kept as RECOMMENDED.
+- **Quick Start page** refactored as an educational concepts guide (column types, ontology usage, common patterns, validation) with CTA linking to the new Template Builder.
+- **Navigation** updated across all pages to include Template Builder link.
+- **CI/CD link checker** optimized with concurrency limits, retries, and GITHUB_TOKEN to avoid 429 rate-limit failures. Fixed stale repository URLs (proteomics-sample-metadata → proteomics-metadata-standard).
+- **Dev/Stable version links** now use a placeholder system in inject-headers.py, resolved at build time based on `--dev` flag.
 - **Specification restructured** with clearer organization: Quick Start → Validation → Specification Structure → Notational Conventions → Sample Metadata → Data File Metadata → Templates → Factor Values.
 - **Column naming**: `fileformat` changed to `file_format` for consistency with underscore convention.
 - **Ontology recommendations**: added NCIT and PRIDE to general purpose; added PATO for healthy samples (`normal` = PATO:0000461).
