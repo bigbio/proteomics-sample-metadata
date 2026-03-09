@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Builder - SDRF-Proteomics</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body><div class="dev-banner">&#9888;&#65039; Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="/">View stable version</a></div>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav">
+                <a href="./index.html">Home</a>
+                <a href="./specification.html">Specification</a>
+                <a href="./index.html#templates">Templates</a>
+                <a href="./sdrf-builder.html" class="nav-current">Template Builder</a>
+                <a href="./index.html#tools">Tools</a>
+                <a href="./sdrf-explorer.html">Explorer</a>
+                <a href="./sdrf-editor.html">Editor</a>
+                <a href="/" class="version-link">Stable Version</a>
+                <a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="content" class="container">
+
+        <section class="builder-hero">
+            <h2>Template Builder</h2>
+            <p>Build a customized SDRF template for your experiment in a few steps. Select your technology, organism, and experiment type — we'll generate the right columns with example values.</p>
+            <p class="builder-hero-sub">New to SDRF? <a href="./quickstart.html">Read the Quick Start guide</a> first.</p>
+        </section>
+
+        <!-- ===== BUILDER ===== -->
+        <section class="builder-section" id="sdrf-builder">
+
+            <!-- Step 1: Technology type -->
+            <div class="builder-step" id="step-technology">
+                <h3><span class="step-number">1</span> What type of proteomics experiment?</h3>
+                <p>Choose the technology platform used in your study.</p>
+                <div class="option-grid" id="technology-options">
+                    <!-- Cards populated by JS -->
+                </div>
+                <div class="why-toggle" onclick="toggleWhy('why-technology')">
+                    Why does this matter? &#x25BE;
+                </div>
+                <div class="why-content" id="why-technology">
+                    <p>
+                        MS-based and affinity-based proteomics have fundamentally different data types.
+                        MS experiments produce spectra files and need columns for instrument settings,
+                        fragmentation, and search parameters. Affinity experiments (Olink, SomaScan)
+                        produce protein-level measurements and need panel/assay identifiers.
+                        They cannot be combined in a single SDRF.
+                    </p>
+                    <p><a href="./specification.html">Read the full specification &rarr;</a></p>
+                </div>
+            </div>
+
+            <!-- Step 2: Organism -->
+            <div class="builder-step hidden" id="step-organism">
+                <h3><span class="step-number">2</span> What organism are you studying?</h3>
+                <p>Select the organism group that best matches your samples.</p>
+                <div class="option-grid" id="organism-options">
+                    <!-- Cards populated by JS -->
+                </div>
+                <div class="why-toggle" onclick="toggleWhy('why-organism')">
+                    Why does this matter? &#x25BE;
+                </div>
+                <div class="why-content" id="why-organism">
+                    <p>
+                        Different organisms require different metadata. Human samples need ancestry
+                        and age information. Plant samples need developmental stage and growth
+                        conditions. Model organisms need strain identifiers.
+                    </p>
+                    <p><a href="./sample-guidelines.html">See sample metadata guidelines &rarr;</a></p>
+                </div>
+            </div>
+
+            <!-- Step 3: Experiment type (MS) -->
+            <div class="builder-step hidden" id="step-experiment">
+                <h3><span class="step-number">3</span> Any specialized experiment type?</h3>
+                <p>If your experiment uses a specialized technique, select it here. Otherwise skip this step.</p>
+                <div class="option-grid" id="experiment-options">
+                    <!-- Cards populated by JS -->
+                </div>
+                <div class="why-toggle" onclick="toggleWhy('why-experiment')">
+                    Why does this matter? &#x25BE;
+                </div>
+                <div class="why-content" id="why-experiment">
+                    <p>
+                        Specialized experiments need extra metadata for analysis tools. DIA experiments
+                        need isolation window parameters. Crosslinking-MS needs crosslinker chemistry
+                        details. Single-cell proteomics needs cell-level annotations.
+                    </p>
+                    <p><a href="./templates.html">Browse all templates &rarr;</a></p>
+                </div>
+            </div>
+
+            <!-- Step 3b: Affinity subtype -->
+            <div class="builder-step hidden" id="step-affinity-subtype">
+                <h3><span class="step-number">3</span> Which affinity platform?</h3>
+                <p>Select the specific affinity proteomics platform used.</p>
+                <div class="option-grid" id="affinity-options">
+                    <!-- Cards populated by JS -->
+                </div>
+                <div class="why-toggle" onclick="toggleWhy('why-affinity')">
+                    Why does this matter? &#x25BE;
+                </div>
+                <div class="why-content" id="why-affinity">
+                    <p>
+                        Each affinity platform has its own panel identifiers and normalization metadata.
+                        Olink uses NPX values and panel identifiers, while SomaScan uses SOMAmer reagent
+                        identifiers and dilution information.
+                    </p>
+                    <p><a href="./templates.html">Browse all templates &rarr;</a></p>
+                </div>
+            </div>
+
+            <!-- Step 4: Review & customize -->
+            <div class="builder-step hidden" id="step-customize">
+                <h3><span class="step-number">4</span> Review &amp; customize your columns</h3>
+                <p>Here is your SDRF template based on your selections. Add or remove optional columns as needed.</p>
+
+                <div class="builder-preview" id="builder-preview">
+                    <div class="builder-preview-header">
+                        <h4>Live Preview</h4>
+                        <span class="column-stats" id="column-stats"></span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="preview-table">
+                            <thead>
+                                <tr id="preview-header"></tr>
+                            </thead>
+                            <tbody>
+                                <tr id="preview-row"></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sdrf-legend">
+                        <span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+                        <span class="legend-item"><span class="legend-color data-bg"></span> Data / instrument</span>
+                        <span class="legend-item"><span class="legend-color factor-bg"></span> Experimental factors</span>
+                    </div>
+                </div>
+
+                <div class="column-picker" id="column-picker">
+                    <h4>Add or remove columns</h4>
+                    <input
+                        type="text"
+                        id="column-search"
+                        class="column-picker-search"
+                        placeholder="Search columns (e.g. &quot;instrument&quot;, &quot;label&quot;)..."
+                    >
+                    <div id="column-picker-list"></div>
+                </div>
+            </div>
+
+            <!-- Step 5: Factor values -->
+            <div class="builder-step hidden" id="step-factors">
+                <h3><span class="step-number">5</span> Select your factor values</h3>
+                <p>Which sample characteristics are the <strong>experimental variables</strong> you are comparing?
+                   Factor values tell analysis tools what differs between your groups (e.g. disease, treatment, genotype).</p>
+                <div class="factor-picker" id="factor-picker">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="why-toggle" onclick="toggleWhy('why-factors')">
+                    Why does this matter? &#x25BE;
+                </div>
+                <div class="why-content" id="why-factors">
+                    <p>
+                        Factor values define what you are comparing in your experiment. If you are
+                        comparing healthy vs. disease samples, <code>disease</code> is your factor value.
+                        Analysis tools use these to set up the correct statistical contrasts.
+                        Each factor value column mirrors a characteristics column.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Download bar -->
+            <div class="download-bar hidden" id="download-bar">
+                <div class="download-info" id="download-info">
+                    <strong>Your SDRF template is ready!</strong>
+                    <span>Download the TSV file or open it in the online editor to start filling in your data.</span>
+                </div>
+                <div class="download-actions">
+                    <button class="btn-download" id="btn-download" onclick="downloadTSV()">Download .tsv</button>
+                    <button class="btn-secondary" id="btn-editor" onclick="openInEditor()">Open in Editor</button>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <script>
+        function toggleWhy(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('open');
+            }
+        }
+    </script>
+    <script src="js/sdrf-builder.js"></script>
+</body>
+</html>

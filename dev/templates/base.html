@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>base - SDRF Template</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .template-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        /* Header */
+        .template-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .template-header h1 { margin: 0 0 12px; font-size: 2.25rem; }
+        .header-badges { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .badge {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            padding: 4px 10px; border-radius: 20px;
+        }
+        .badge-version { font-size: 0.75rem; font-weight: 500; color: var(--text-light);
+            background: var(--bg-alt); border: 1px solid var(--border); text-transform: none; }
+        .badge-layer-sample { background: #ddf4ff; color: #0550ae; }
+        .badge-layer-technology { background: #dafbe1; color: #116329; }
+        .badge-layer-experiment { background: #fff8c5; color: #6a5700; }
+        .badge-layer-internal { background: var(--bg-alt); color: var(--text-light); }
+        .badge-usable { background: #dafbe1; color: #116329; }
+
+        /* Sections */
+        .template-section { margin-bottom: 2.5rem; }
+        .template-section h2 { margin-top: 0; font-size: 1.4rem; margin-bottom: 0.75rem; }
+
+        /* Documentation */
+        .doc-content { line-height: 1.7; color: var(--text); }
+        .doc-content p { margin: 0.6em 0; }
+        .doc-content ul { margin: 0.5em 0; padding-left: 1.5rem; }
+        .doc-content li { margin: 0.3em 0; }
+        .doc-content code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--bg-alt); padding: 1px 5px; border-radius: 3px;
+        }
+
+        /* Inheritance chain */
+        .inheritance-chain {
+            display: flex; flex-wrap: wrap; align-items: center;
+            padding: 12px 16px; background: var(--bg-alt);
+            border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;
+        }
+        .inheritance-chain a { color: var(--accent); text-decoration: none; }
+        .inheritance-chain a:hover { text-decoration: underline; }
+        .inheritance-chain .current { font-weight: 700; color: var(--text); }
+        .chain-sep { margin: 0 8px; color: var(--text-light); }
+
+        /* Combination rules */
+        .combination-rules ul { list-style: disc; padding-left: 1.5rem; }
+        .combination-rules li { margin: 0.5em 0; font-size: 0.95rem; }
+
+        /* Column controls */
+        .column-controls {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .toggle-btn {
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg-alt); color: var(--text); cursor: pointer;
+        }
+        .toggle-btn:hover { background: #f0f3f6; border-color: var(--accent); }
+        .column-stats { font-size: 0.85rem; color: var(--text-light); }
+
+        /* Column table */
+        .columns-table-wrapper {
+            overflow-x: auto; border: 1px solid var(--border); border-radius: 8px;
+        }
+        .columns-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .columns-table thead { background: var(--bg-alt); }
+        .columns-table th {
+            font-weight: 600; text-align: left; padding: 10px 14px;
+            border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap;
+        }
+        .columns-table td {
+            padding: 10px 14px; border-bottom: 1px solid var(--border-light); vertical-align: middle;
+        }
+        .columns-table tbody tr:last-child td { border-bottom: none; }
+        .columns-table .col-name {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; white-space: nowrap;
+        }
+
+        /* Requirement badges */
+        .req-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+        }
+        .req-required { background: #cf222e; color: #fff; }
+        .req-recommended { background: #9a6700; color: #fff; }
+        .req-optional { background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border); }
+
+        /* Source badge */
+        .source-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 500;
+            padding: 2px 8px; border-radius: 4px;
+            background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        /* Inherited rows */
+        .columns-table tr.inherited { background: #fafbfc; }
+        .columns-table tr.inherited td { color: var(--text-light); }
+        .columns-table tr.inherited .col-name { color: var(--text-light); }
+        tr.hidden { display: none; }
+
+        /* Clickable rows */
+        tr.column-row { cursor: pointer; }
+        tr.column-row:hover { background: #f6f8fa; }
+        tr.column-row.inherited:hover { background: #f0f3f6; }
+
+        /* Detail row (expandable) */
+        tr.detail-row { display: none; }
+        tr.detail-row.open { display: table-row; }
+        tr.detail-row td {
+            padding: 0 14px 14px 14px; background: #f6f8fa;
+            border-bottom: 1px solid var(--border);
+        }
+        tr.inherited + tr.detail-row td { background: #f0f3f6; }
+
+        .detail-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;
+            font-size: 0.82rem; padding-top: 8px;
+        }
+        .detail-item label {
+            display: block; font-weight: 600; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            color: var(--text-light); margin-bottom: 2px;
+        }
+        .detail-item .value { color: var(--text); line-height: 1.5; }
+        .detail-item .value code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--bg); padding: 1px 5px; border-radius: 3px;
+            border: 1px solid var(--border-light);
+        }
+        .detail-item .value a {
+            color: var(--accent); text-decoration: none;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+        }
+        .detail-item.full-width { grid-column: 1 / -1; }
+        .detail-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+        .detail-tag {
+            font-size: 0.7rem; padding: 2px 6px; border-radius: 3px;
+            background: var(--bg); border: 1px solid var(--border-light);
+        }
+
+        /* Expand indicator */
+        .expand-icon {
+            display: inline-block; width: 16px; font-size: 0.7rem;
+            color: var(--text-light); transition: transform 0.15s;
+        }
+        tr.column-row.expanded .expand-icon { transform: rotate(90deg); }
+
+        /* Contributors */
+        .contributors-list { list-style: disc; padding-left: 1.5rem; }
+        .contributors-list li { font-size: 0.9rem; margin: 0.4em 0; }
+
+        @media (max-width: 768px) {
+            .template-page { padding: 32px 20px; }
+            .template-header h1 { font-size: 1.75rem; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="has-doc-header"><div class="dev-banner">&#9888;&#65039; Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="/">View stable version</a></div>
+<header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../sdrf-builder.html">Template Builder</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/" class="version-link">Stable Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+    <div class="template-page">
+
+        
+        <div class="template-header">
+            <h1>base</h1>
+            <div class="header-badges">
+                
+                <span class="badge badge-version">v1.1.0</span>
+                
+                
+                <span class="badge badge-layer-internal">internal</span>
+                
+                
+            </div>
+        </div>
+
+        
+        
+        <div class="template-section">
+            <p style="font-size: 1.05rem; line-height: 1.6;">Base SDRF template with infrastructure columns (identifiers, data files, versioning) inherited by all proteomics templates. This is a construction artifact and cannot be used directly.</p>
+        </div>
+        
+
+        
+        
+        <div class="template-section">
+            <h2>Key Guidance</h2>
+            <div class="doc-content">
+                <p>The base template provides the foundational columns inherited by every SDRF file.</p>
+<p>It is never used directly — all other templates inherit from it through sample-metadata.</p>
+<p>Key conventions:</p>
+<ul><li><code>source name</code> must be unique per biological sample across the entire SDRF file.</li><li><code>assay name</code> must be unique per data acquisition run.</li><li><code>comment[data file]</code> must exactly match the filename deposited in the data repository.</li><li><code>comment[technical replicate]</code> starts at 1 for each biological sample.</li><li><code>comment[sdrf template]</code> records which templates were combined, using format</li></ul>
+<p><code>NT=template_name;VV=vX.Y.Z</code> or <code>template_name vX.Y.Z</code>.</p>
+<p>Validation rules enforced at this level:</p>
+<ul><li>No trailing whitespace in any cell.</li><li>No empty cells allowed.</li><li>The combination of source name + assay name must be unique (no duplicate rows).</li><li>Column order must follow the template definition order.</li></ul>
+            </div>
+        </div>
+        
+
+        
+        
+
+        
+        
+
+        
+        
+        
+        
+        <div class="template-section">
+            <h2>Columns</h2>
+            <div class="column-controls">
+                
+                <span class="column-stats">
+                    9 own = 9 total
+                    &middot; click a row for details
+                </span>
+            </div>
+            <div class="columns-table-wrapper">
+                <table class="columns-table">
+                    <thead>
+                        <tr>
+                            <th style="width:20px"></th>
+                            <th>Column</th>
+                            <th>Requirement</th>
+                            <th>Source</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-1')" id="col-1">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">source name</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Unique identifier for the biological sample</td>
+                        </tr>
+                        <tr class="detail-row" id="col-1-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Unique identifier for the biological sample</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000623" target="_blank" rel="noopener">PRIDE:0000623</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-2')" id="col-2">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">assay name</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Unique identifier for the data acquisition run</td>
+                        </tr>
+                        <tr class="detail-row" id="col-2-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Unique identifier for the data acquisition run</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=NCIT:C178857" target="_blank" rel="noopener">NCIT:C178857</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-3')" id="col-3">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">technology type</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Type of technology used</td>
+                        </tr>
+                        <tr class="detail-row" id="col-3-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Type of technology used</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000663" target="_blank" rel="noopener">PRIDE:0000663</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>single_cardinality_validator</strong>
+                                                
+                                            </div>
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>values</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                     &mdash; values: <code>proteomic profiling by mass spectrometry</code>, <code>protein expression profiling by antibody array</code>, <code>protein expression profiling by aptamer array</code>
+                                                    
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                        
+                                            
+                                        
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-4')" id="col-4">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[technical replicate]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Identifier for the technical replicate (integer starting from 1)</td>
+                        </tr>
+                        <tr class="detail-row" id="col-4-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Identifier for the technical replicate (integer starting from 1)</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1001808" target="_blank" rel="noopener">MS:1001808</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            <span class="detail-tag">type: integer</span>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-5')" id="col-5">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[data file]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Name of the raw data file</td>
+                        </tr>
+                        <tr class="detail-row" id="col-5-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Name of the raw data file</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1003083" target="_blank" rel="noopener">MS:1003083</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-6')" id="col-6">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf version]</td>
+                            <td>
+                                
+                                <span class="req-badge req-recommended">recommended</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Version of the SDRF-Proteomics specification used to annotate this file</td>
+                        </tr>
+                        <tr class="detail-row" id="col-6-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Version of the SDRF-Proteomics specification used to annotate this file</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000839" target="_blank" rel="noopener">PRIDE:0000839</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>semver</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">SDRF specification version</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>v1.1.0</code>, <code>v2.0.0-dev</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-7')" id="col-7">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf template]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Template name and version used for annotation. Two formats are supported - key=value format (NT=t...</td>
+                        </tr>
+                        <tr class="detail-row" id="col-7-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns.</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000832" target="_blank" rel="noopener">PRIDE:0000832</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            <span class="detail-tag">allows not available</span>
+                                            <span class="detail-tag">multiple cardinality</span>
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^(NT=[\w-]+;VV=v\d+\.\d+\.\d+(-[\w.]+)?|[\w-]+ v\d+\.\d+\.\d+(-[\w.]+)?)$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Template can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z'</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>NT=human;VV=v1.1.0</code>, <code>human v1.1.0</code>, <code>NT=ms-proteomics;VV=v1.1.0</code>, <code>ms-proteomics v1.1.0</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-8')" id="col-8">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf annotation tool]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Software tool or method used to generate or annotate the SDRF file. Two formats are supported - k...</td>
+                        </tr>
+                        <tr class="detail-row" id="col-8-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000840" target="_blank" rel="noopener">PRIDE:0000840</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^(NT=[\w-]+;VV=v[\d.]+[\w.-]*|[\w-]+ v[\d.]+[\w.-]*|manual curation)$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Annotation tool can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z' or 'manual curation'</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>NT=lesSDRF;VV=v0.1.0</code>, <code>lesSDRF v0.1.0</code>, <code>NT=sdrf-pipelines;VV=v1.0.0</code>, <code>sdrf-pipelines v1.0.0</code>, <code>manual curation</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-9')" id="col-9">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf validation hash]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Hash value for SDRF validation integrity checking</td>
+                        </tr>
+                        <tr class="detail-row" id="col-9-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Hash value for SDRF validation integrity checking</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Validation hash string</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                        
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+        
+        
+        <div class="template-section">
+            <h2>Contributors</h2>
+            <ul class="contributors-list">
+                
+                <li>Yasset Perez-Riverol (yperez@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Deepti Jaiswal Kundu (jaiswal@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Nithu Sara John (nithu@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Nandana Madhusoodanan (nandana@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Asier Larrea (alarre@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Toan Phung (TPhung001@dundee.ac.uk) - University of Dundee</li>
+                
+                <li>Timo Sachsenberg (timo.sachsenberg@uni-tuebingen.de) - University of Tübingen</li>
+                
+            </ul>
+        </div>
+        
+
+    </div>
+
+    <script>
+    function toggleDetail(rowId) {
+        var row = document.getElementById(rowId);
+        var detail = document.getElementById(rowId + '-detail');
+        if (!detail) return;
+        row.classList.toggle('expanded');
+        detail.classList.toggle('open');
+    }
+
+    function toggleInherited() {
+        var rows = document.querySelectorAll('tr.inherited');
+        var btn = document.getElementById('toggle-inherited');
+        var count = document.querySelectorAll('tr.column-row.inherited').length;
+        var isHidden = rows.length > 0 && rows[0].classList.contains('hidden');
+
+        rows.forEach(function(r) {
+            if (isHidden) {
+                r.classList.remove('hidden');
+                // Keep detail rows closed when revealing inherited
+                if (r.classList.contains('detail-row')) {
+                    r.classList.remove('open');
+                }
+            } else {
+                r.classList.add('hidden');
+                if (r.classList.contains('detail-row')) {
+                    r.classList.remove('open');
+                }
+            }
+        });
+        // Reset expanded state on inherited column rows
+        document.querySelectorAll('tr.column-row.inherited').forEach(function(r) {
+            r.classList.remove('expanded');
+        });
+
+        btn.textContent = isHidden
+            ? 'Hide inherited columns (' + count + ')'
+            : 'Show inherited columns (' + count + ')';
+    }
+    </script>
+</body>
+</html>
