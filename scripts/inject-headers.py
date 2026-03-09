@@ -38,11 +38,11 @@ def inject_header(filepath: str, header_html: str, is_dev: bool = False) -> None
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Resolve version link based on dev/stable mode
+    # Resolve version link: only show in dev builds (link back to stable)
     if is_dev:
         version_link = '<a href="/" class="version-link">Stable Version</a>'
     else:
-        version_link = '<a href="/dev/" class="version-link">Dev Version</a>'
+        version_link = ''
     resolved_header = header_html.replace(VERSION_LINK_PLACEHOLDER, version_link)
 
     # Add has-doc-header class to body
@@ -56,17 +56,24 @@ def inject_header(filepath: str, header_html: str, is_dev: bool = False) -> None
         f.write(content)
 
 
-def rewrite_version_links(filepath: str, is_dev: bool) -> None:
-    """Rewrite version links in static HTML pages (index.html, quickstart.html, etc.)."""
+def inject_version_link_into_static(filepath: str, is_dev: bool) -> None:
+    """Inject a 'Stable Version' link into static HTML pages for dev builds."""
+    if not is_dev:
+        return  # Stable builds don't show a version link
+
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    if is_dev:
-        content = content.replace(
-            '<a href="/dev/" class="version-link">Dev Version</a>',
-            '<a href="/" class="version-link">Stable Version</a>'
-        )
-    # No change needed for stable — the source files already have /dev/ links
+    # Already has a version link — skip
+    if 'class="version-link"' in content:
+        return
+
+    # Insert "Stable Version" link before the GitHub link
+    stable_link = '<a href="/" class="version-link">Stable Version</a>'
+    content = content.replace(
+        '<a href="https://github.com/bigbio/proteomics-metadata-standard"',
+        stable_link + '<a href="https://github.com/bigbio/proteomics-metadata-standard"'
+    )
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
@@ -120,13 +127,13 @@ def main():
             print(f"Injecting header into: {html_file}")
             inject_header(str(html_file), HEADERS['templates'], is_dev)
 
-    # Rewrite version links in static HTML pages (index.html, quickstart.html, etc.)
+    # Inject version link into static HTML pages for dev builds
     for static_page in ["index.html", "quickstart.html", "sdrf-terms.html",
                          "sdrf-explorer.html", "sdrf-editor.html", "sdrf-builder.html"]:
         static_file = output_dir / static_page
         if static_file.exists():
-            print(f"Rewriting version links in: {static_file}")
-            rewrite_version_links(str(static_file), is_dev)
+            print(f"Processing version link in: {static_file}")
+            inject_version_link_into_static(str(static_file), is_dev)
 
     print("Header injection complete!")
 
