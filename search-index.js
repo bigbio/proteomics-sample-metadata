@@ -5,839 +5,202 @@ const SEARCH_INDEX = [
     "content": "// suppress inspection \"GrazieInspection\" for whole file\nSample and Data Relationship Format for Proteomics (SDRF-Proteomics)\n\n//only works on some backends, not HTML\n\n//use style like Section 1 when referencing within the document.\n\n//GitHub specific settings\n\nStatus of this document\n\nThis document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.\n\nVersion v1.1.0 - 2026-01\n\nAbstract\n\nThe Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).\n\nFurther detailed information, including any updates to this document, implementations, and examples is available at SDRF GitHub Repository. The official PSI web page for the document is: HUPO-PSI SDRF.\n\nMotivation\n\nPublic proteomics data is valuable, but sample metadata is often missing or stored inconsistently across repositories (e.g., CPTAC uses Excel files, ProteomicsDB captures minimal properties) . This heterogeneity prevents reproducibility and cross-dataset integration.\n\nSDRF-Proteomics addresses this by providing a standard tab-delimited format to capture (Figure 1):\n\n- Sample metadata and characteristics\n- Data file acquisition parameters\n- Sample-to-file relationships (experimental design)\n\nFigure 1: SDRF-Proteomics captures sample information and its relationship to data files.\n\nThe format is fully compatible with MAGE-TAB SDRF, enabling integration with transcriptomics metadata standards.\n\nSpecification structure\n\nSDRF-Proteomics uses a two-tier system: this core specification defines the format rules, and ** provide metadata checklists for specific experiment types (Figure 2). Templates are organized in the",
     "url": "./specification.html",
     "section": "Core Specification",
-    "keywords": "PRIDE:0000659 disease PATO:0000461 label age organism part CL data file exclamation assay name organism pooled sample instrument comment proteomics data acquisition method cleavage agent details sdrf template dia_scan PRIDE:0000840 sdrf version source name CLO EFO sdrf annotation tool disease staging sdrf validation hash ... sex biological replicate MS protein UBERON fraction identifier cell type PATO cell line modification parameters cleavage agent biosample accession number tissue MS:1001251 technical replicate BTO PRIDE:0000834 PRIDE:0000839 PRIDE:0000590 MS:1000484 PRIDE:0000832 DOID sample characteristics developmental stage file your individual technology type NCIT HANCESTRO factor value MONDO"
+    "keywords": "DOID cell line developmental stage MONDO individual PRIDE:0000834 NCIT MS:1002481 PRIDE:0000839 comment exclamation tissue MS:1000484 characteristics PRIDE:0000840 MS:1001251 sdrf version source name cleavage agent organism part organism MS:1000422 PRIDE:0000590 factor value technical replicate age label PRIDE:0000832 cell type instrument proteomics data acquisition method fraction identifier PATO:0000461 sdrf validation hash biosample accession number HANCESTRO disease modification parameters sdrf template additional_sample_related file your PRIDE:0000659 PATO sample ... technology type CLO disease staging data file UBERON sdrf annotation tool MS biological replicate pooled sample CL cleavage agent details assay name EFO sex BTO"
   },
   {
     "title": "Sample and Data Relationship Format for Proteomics (SDRF-Proteomics)",
     "content": "// suppress inspection \"GrazieInspection\" for whole file\nSample and Data Relationship Format for Proteomics (SDRF-Proteomics)\n\n//only works on some backends, not HTML\n\n//use style like Section 1 when referencing within the document.\n\n//GitHub specific settings\n\nStatus of this document\n\nThis document provides information to the proteomics community about a proposed standard for sample metadata annotations in public repositories called Sample and Data Relationship Format (SDRF)-Proteomics. Distribution is unlimited.\n\nVersion v1.1.0 - 2026-01\n\nAbstract\n\nThe Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) defines community standards for data representation in proteomics to facilitate data comparison, exchange, and verification. This document presents a specification for the Sample and Data Relationship Format (SDRF-Proteomics).\n\nFurther detailed information, including any updates to this document, implementations, and examples is available at SDRF GitHub Repository. The official PSI web page for the document is: HUPO-PSI SDRF.\n\nMotivation\n\nPublic proteomics data is valuable, but sample metadata is often missing or stored inconsistently across repositories (e.g., CPTAC uses Excel files, ProteomicsDB captures minimal properties) . This heterogeneity prevents reproducibility and cross-dataset integration.\n\nSDRF-Proteomics addresses this by providing a standard tab-delimited format to capture (Figure 1):\n\n- Sample metadata and characteristics\n- Data file acquisition parameters\n- Sample-to-file relationships (experimental design)\n\nFigure 1: SDRF-Proteomics captures sample information and its relationship to data files.\n\nThe format is fully compatible with MAGE-TAB SDRF, enabling integration with transcriptomics metadata standards.\n\nSpecification structure\n\nSDRF-Proteomics uses a two-tier system: this core specification defines the format rules, and ** provide metadata checklists for specific experiment types (Figure 2). Templates are organized in the",
     "url": "./specification.html#sample-and-data-relationship-format-for-proteomics-sdrf-proteomics",
     "section": "Core Specification",
-    "keywords": "PRIDE:0000659 disease PATO:0000461 label age organism part CL data file assay name organism pooled sample instrument comment proteomics data acquisition method cleavage agent details sdrf template PRIDE:0000840 sdrf version source name CLO EFO sdrf annotation tool disease staging sdrf validation hash ... sex biological replicate MS UBERON fraction identifier cell type PATO cell line modification parameters cleavage agent biosample accession number tissue MS:1001251 technical replicate BTO PRIDE:0000834 PRIDE:0000839 PRIDE:0000590 MS:1000484 PRIDE:0000832 DOID developmental stage individual technology type NCIT HANCESTRO factor value MONDO"
+    "keywords": "DOID cell line developmental stage MONDO individual PRIDE:0000834 NCIT MS:1002481 PRIDE:0000839 comment tissue MS:1000484 PRIDE:0000840 MS:1001251 sdrf version source name cleavage agent organism part organism MS:1000422 PRIDE:0000590 factor value technical replicate age label PRIDE:0000832 cell type instrument proteomics data acquisition method fraction identifier PATO:0000461 sdrf validation hash biosample accession number HANCESTRO disease modification parameters sdrf template PRIDE:0000659 PATO ... technology type CLO disease staging data file UBERON sdrf annotation tool MS biological replicate pooled sample CL cleavage agent details assay name EFO sex BTO"
   },
   {
-    "title": "Sample Metadata Guidelines",
-    "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[organism]\n\nOntology: NCBI Taxonomy (NCBITaxon)\n\nUse the scientific name in lowercase. The validator will map to the correct ontology term.\n\nValue |NCBITaxon ID |Description\n\nhomo sapiens |NCBITaxon:9606 |Human\nmus musculus |NCBITaxon:10090 |Mouse\n\nOrganism Part / Tissue\n\nColumn: characteristics[organism part]\n\nOntology: UBERON for mammals/vertebrates, Plant Ontology (PO) for plants, FlyBase Anatomy (FBbt) for Drosophila.\n\nUse lowercase for all values. For cell line samples, use not applicable or specify the tissue of origin (e.g., cervix for HeLa).\n\n[NOTE]\n====\nDo ",
-    "url": "./metadata-guidelines/sample-metadata.html",
-    "section": "Sample Metadata Guidelines",
-    "keywords": "PATO:0000047 disease PATO:0000461 age organism part CL exclamation patient bmi time point PRIDE:0000837 organism factor value UBERON:0000955 CL:0000235 phenotype EFO:0000651 material type source name CL:0000815 EFO sex UBERON:0000948 CL:0000236 UBERON treatment cell type CL:0000057 PATO cell line dose enrichment process depletion mass tissue synthetic peptide UBERON:0002107 MONDO:0004989 DOID xenograft compound SIO:001012 developmental stage tissue supergroup CL:0000066 UBERON:0001969 smoking status individual CL:0000624 genotype spiked compound CL:0000084 MONDO"
+    "title": "SDRF Templates Guide",
+    "content": "SDRF Templates Guide\n\nA comprehensive guide for template selection, combination rules, key column guidance, format conventions, and YAML schema definitions. It complements the per-template YAML definitions and auto-generated documentation.\n\n Source of truth: The YAML file for each template (located in sdrf-templates/) is the authoritative definition of its columns, validators, and metadata. To add, remove, or modify a column, edit the corresponding YAML file. All other documentation \u2014 including this guide \u2014 is derived from or supplements those YAMLs.\n\n YAML templates do not define every possible column. Templates define the most common columns with their validators and requirement levels. Additional terms listed in TERMS.tsv (e.g., characteristics[xenograft], characteristics[mass]) can be added to any SDRF file without needing a corresponding YAML definition. The YAML templates capture what is most frequently needed; TERMS.tsv serves as a broader registry of recognised column names and ontology mappings.\n\nTemplate files location: sdrf-templates/\n\nTemplate Architecture\n\nLayers\n\nTemplates are organized in a hierarchy with two internal construction layers (base, sample-metadata) and three user-facing layers (technology, sample, experiment):\n\nbase                         Infrastructure (identifiers, data files, versioning)     [internal]\n  sample-metadata            Shared sample biology (organism, tissue, disease)        [internal]\n    technology templates     MS or affinity proteomics columns                        [layer: technology]\n    organism templates       Species-specific metadata (human, vertebrates, etc.)     [layer: sample]\n    clinical templates       Clinical/oncology metadata                               [layer: sample]\n    experiment templates     Technique-specific columns (DIA, crosslinking, etc.)     [layer: experiment]\n\nInheritance\n\nEvery template inherits all columns from its parent chain. Child templates can override parent column properties (e.g",
+    "url": "./templates.html",
+    "section": "Templates Guide",
+    "keywords": "protein separation method excluding XLMOD:02000 cell line MONDO not individual dia method comment xenograft prefix__suffix tissue MS:1001251 precursor mass range source name organism part cleavage agent name organism CHEBI mass accession label age cell type instrument of_columns_no_duplicate DIA method PATO:0000461 cardinality XLMOD:02001 disease ancestry category sdrf template PATO prefix MS:1000044 other ... technology type Disease with exclusive MS biological replicate whitespace environmental sample type cleavage agent details assay name sex"
   },
   {
-    "title": "Sample Metadata Guidelines",
-    "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[organism]\n\nOntology: NCBI Taxonomy (NCBITaxon)\n\nUse the scientific name in lowercase. The validator will map to the correct ontology term.\n\nValue |NCBITaxon ID |Description\n\nhomo sapiens |NCBITaxon:9606 |Human\nmus musculus |NCBITaxon:10090 |Mouse\n\nOrganism Part / Tissue\n\nColumn: characteristics[organism part]\n\nOntology: UBERON for mammals/vertebrates, Plant Ontology (PO) for plants, FlyBase Anatomy (FBbt) for Drosophila.\n\nUse lowercase for all values. For cell line samples, use not applicable or specify the tissue of origin (e.g., cervix for HeLa).\n\n[NOTE]\n====\nDo ",
-    "url": "./metadata-guidelines/sample-metadata.html#sample-metadata-guidelines",
-    "section": "Sample Metadata Guidelines",
-    "keywords": "PATO:0000047 disease PATO:0000461 age organism part CL patient bmi time point PRIDE:0000837 organism factor value UBERON:0000955 CL:0000235 phenotype EFO:0000651 material type source name CL:0000815 EFO sex UBERON:0000948 CL:0000236 UBERON treatment cell type CL:0000057 PATO cell line dose enrichment process depletion mass tissue synthetic peptide UBERON:0002107 MONDO:0004989 DOID xenograft compound SIO:001012 developmental stage tissue supergroup CL:0000066 UBERON:0001969 smoking status individual CL:0000624 genotype spiked compound CL:0000084 MONDO"
+    "title": "SDRF Templates Guide",
+    "content": "SDRF Templates Guide\n\nA comprehensive guide for template selection, combination rules, key column guidance, format conventions, and YAML schema definitions. It complements the per-template YAML definitions and auto-generated documentation.\n\n Source of truth: The YAML file for each template (located in sdrf-templates/) is the authoritative definition of its columns, validators, and metadata. To add, remove, or modify a column, edit the corresponding YAML file. All other documentation \u2014 including this guide \u2014 is derived from or supplements those YAMLs.\n\n YAML templates do not define every possible column. Templates define the most common columns with their validators and requirement levels. Additional terms listed in TERMS.tsv (e.g., characteristics[xenograft], characteristics[mass]) can be added to any SDRF file without needing a corresponding YAML definition. The YAML templates capture what is most frequently needed; TERMS.tsv serves as a broader registry of recognised column names and ontology mappings.\n\nTemplate files location: sdrf-templates/\n\nTemplate Architecture\n\nLayers\n\nTemplates are organized in a hierarchy with two internal construction layers (base, sample-metadata) and three user-facing layers (technology, sample, experiment):\n\nbase                         Infrastructure (identifiers, data files, versioning)     [internal]\n  sample-metadata            Shared sample biology (organism, tissue, disease)        [internal]\n    technology templates     MS or affinity proteomics columns                        [layer: technology]\n    organism templates       Species-specific metadata (human, vertebrates, etc.)     [layer: sample]\n    clinical templates       Clinical/oncology metadata                               [layer: sample]\n    experiment templates     Technique-specific columns (DIA, crosslinking, etc.)     [layer: experiment]\n\nInheritance\n\nEvery template inherits all columns from its parent chain. Child templates can override parent column properties (e.g",
+    "url": "./templates.html#sdrf-templates-guide",
+    "section": "Templates Guide",
+    "keywords": "protein separation method XLMOD:02000 cell line MONDO individual dia method comment xenograft tissue MS:1001251 precursor mass range source name organism part cleavage agent organism CHEBI mass age label cell type instrument DIA method PATO:0000461 XLMOD:02001 disease ancestry category sdrf template PATO MS:1000044 ... technology type Disease MS biological replicate environmental sample type cleavage agent details assay name sex"
   },
   {
     "title": "SDRF-Proteomics: Tool Support",
     "content": "SDRF-Proteomics: Tool Support\n\n//GitHub specific settings\n\nIntroduction\n\nThis document provides an overview of tools that support the SDRF-Proteomics format. These tools are developed by the community to help researchers create, validate, and use SDRF files in their proteomics workflows.\n\nThe tools are organized into three categories:\n\n* Annotators: Tools for creating and editing SDRF files\n* Validators: Tools for validating SDRF files against the specification\n* Analysis Tools: Proteomics analysis pipelines that accept SDRF as input\n\nAnnotators\n\nAnnotator tools help researchers create SDRF files from scratch or from existing metadata. These tools typically provide user-friendly interfaces to guide users through the annotation process.\n\nlesSDRF\n\nlesSDRF is a web-based tool for creating SDRF files with minimal effort.\n\nFeature |Description\n\nType\nWeb application\n\nURL\n\nDescription\nA streamlined web interface for creating SDRF-Proteomics files. The tool guides users through the annotation process with an intuitive form-based interface, reducing the complexity of manual SDRF creation.\n\nKey Features\na|\n* Interactive web-based interface\n* Template-based annotation\n* Real-time validation feedback\n* Export to SDRF-Proteomics format\n\nPublication\nClaeys T, Van Den Bossche T, Perez-Riverol Y, Gevaert K, Vizca\u00edno JA, Martens L. lesSDRF is more: maximizing the value of proteomics data through streamlined metadata annotation. Nature Communications 14, 6743 (2023).\n\nCupCAKE\n\nCupCAKE (Curation Portal for Curation, Annotation, and Knowledge Extraction) is a comprehensive platform for proteomics data annotation.\n\nFeature |Description\n\nType\nWeb application\n\nDemo URL\n\nDemo Credentials\nUsername: demo / Password: demo123\n\nDescription\nCupCAKE provides a web-based platform for annotating proteomics datasets with standardized metadata. It supports SDRF-Proteomics format and helps users create well-annotated sample metadata files.\n\nKey Features\na|\n* Web-based annotation interface\n* Support fo",
-    "url": "./tool-support.html",
+    "url": "./tools.html",
     "section": "Tool Support",
-    "keywords": "exclamation label"
+    "keywords": "label exclamation"
   },
   {
     "title": "SDRF-Proteomics: Tool Support",
     "content": "SDRF-Proteomics: Tool Support\n\n//GitHub specific settings\n\nIntroduction\n\nThis document provides an overview of tools that support the SDRF-Proteomics format. These tools are developed by the community to help researchers create, validate, and use SDRF files in their proteomics workflows.\n\nThe tools are organized into three categories:\n\n* Annotators: Tools for creating and editing SDRF files\n* Validators: Tools for validating SDRF files against the specification\n* Analysis Tools: Proteomics analysis pipelines that accept SDRF as input\n\nAnnotators\n\nAnnotator tools help researchers create SDRF files from scratch or from existing metadata. These tools typically provide user-friendly interfaces to guide users through the annotation process.\n\nlesSDRF\n\nlesSDRF is a web-based tool for creating SDRF files with minimal effort.\n\nFeature |Description\n\nType\nWeb application\n\nURL\n\nDescription\nA streamlined web interface for creating SDRF-Proteomics files. The tool guides users through the annotation process with an intuitive form-based interface, reducing the complexity of manual SDRF creation.\n\nKey Features\na|\n* Interactive web-based interface\n* Template-based annotation\n* Real-time validation feedback\n* Export to SDRF-Proteomics format\n\nPublication\nClaeys T, Van Den Bossche T, Perez-Riverol Y, Gevaert K, Vizca\u00edno JA, Martens L. lesSDRF is more: maximizing the value of proteomics data through streamlined metadata annotation. Nature Communications 14, 6743 (2023).\n\nCupCAKE\n\nCupCAKE (Curation Portal for Curation, Annotation, and Knowledge Extraction) is a comprehensive platform for proteomics data annotation.\n\nFeature |Description\n\nType\nWeb application\n\nDemo URL\n\nDemo Credentials\nUsername: demo / Password: demo123\n\nDescription\nCupCAKE provides a web-based platform for annotating proteomics datasets with standardized metadata. It supports SDRF-Proteomics format and helps users create well-annotated sample metadata files.\n\nKey Features\na|\n* Web-based annotation interface\n* Support fo",
-    "url": "./tool-support.html#sdrf-proteomics-tool-support",
+    "url": "./tools.html#sdrf-proteomics-tool-support",
     "section": "Tool Support",
     "keywords": "label"
   },
   {
-    "title": "Column: source name",
-    "content": "source name anchor column minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition free text",
-    "url": "./sdrf-terms.html#source-name",
-    "section": "SDRF Terms Reference",
-    "keywords": "source name minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Sample Metadata Guidelines",
+    "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nColumns Beyond the YAML Templates\n\nThe YAML templates define the most common columns with validators and requirement levels. However, not every recognised SDRF column needs a YAML definition. The file TERMS.tsv serves as a broader registry of column names, ontology mappings, and allowed values. Submitters may add any term listed in TERMS.tsv (e.g., characteristics[xenograft], characteristics[mass]) to their SDRF file even if no YAML template includes it. Such columns will not be subject to template-level validation but remain part of the specification.\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL/BTO/CLO (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[org",
+    "url": "./sample-guidelines.html",
+    "section": "Sample Metadata Guidelines",
+    "keywords": "DOID PATO:0000047 developmental stage cell line MONDO individual enrichment process NCIT exclamation xenograft tissue material type CL:0000057 smoking status depletion organism part source name CL:0000066 EFO:0004340 organism CL:0000624 EFO:0009090 genotype PRIDE:0000837 factor value synthetic peptide mass age CL:0000084 CL:0000815 cell type CL:0000235 spiked compound treatment phenotype PATO:0000461 body mass index CL:0000236 EFO:0000651 dose disease PATO UBERON:0001969 CLO UBERON:0000955 UBERON sampling time UBERON:0000948 compound CL MONDO:0004989 EFO UBERON:0002107 sex BTO"
   },
   {
-    "title": "Column: assay name",
-    "content": "assay name anchor column minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition free text",
-    "url": "./sdrf-terms.html#assay-name",
-    "section": "SDRF Terms Reference",
-    "keywords": "assay name minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Sample Metadata Guidelines",
+    "content": "Sample Metadata Guidelines\n\nIntroduction\n\nThis document provides guidelines for annotating general sample metadata in SDRF-Proteomics format. These guidelines apply to samples from any organism (human, animal, plant, microorganism).\n\nFor human-specific metadata (disease staging, comorbidities, treatment history), see Human Template.\n\nVersion 1.1.0 - 2026-01\n\nColumns Beyond the YAML Templates\n\nThe YAML templates define the most common columns with validators and requirement levels. However, not every recognised SDRF column needs a YAML definition. The file TERMS.tsv serves as a broader registry of column names, ontology mappings, and allowed values. Submitters may add any term listed in TERMS.tsv (e.g., characteristics[xenograft], characteristics[mass]) to their SDRF file even if no YAML template includes it. Such columns will not be subject to template-level validation but remain part of the specification.\n\nBest Practices\n\n1. Use lowercase for all controlled vocabulary values (except proper nouns in disease names).\n2. Use ontology terms mapped to MONDO (diseases), CL/BTO/CLO (cell types), UBERON (anatomy), PATO (phenotypes).\n3. Be consistent with format across all samples in a dataset.\n4. Document unknowns using not available (unknown) or not applicable (not relevant) - never leave cells empty.\n5. Validate before submission using sdrf-pipelines to check ontology mappings.\n\nGeneral Formatting Conventions\n\nCapitalization Rules\n\nMost controlled vocabulary values are recommended to be lowercase:\n\n- Organism names: homo sapiens, mus musculus\n- Organism parts: blood, liver, brain\n- Sex values: male, female\n\nExceptions (retain proper noun capitalization):\n\n- Ancestry categories (geographic populations): African, European, South Asian\n- Cell line names: HeLa, HEK293, K562\n\n Validators should normalize common capitalization variations (e.g., accept both Homo sapiens and homo sapiens), but submitters should use lowercase for consistency.\n\nOrganism\n\nColumn: characteristics[org",
+    "url": "./sample-guidelines.html#sample-metadata-guidelines",
+    "section": "Sample Metadata Guidelines",
+    "keywords": "DOID PATO:0000047 developmental stage cell line MONDO individual enrichment process NCIT xenograft tissue material type CL:0000057 smoking status depletion organism part source name CL:0000066 EFO:0004340 organism CL:0000624 EFO:0009090 genotype PRIDE:0000837 factor value synthetic peptide mass age CL:0000084 CL:0000815 cell type CL:0000235 spiked compound treatment phenotype PATO:0000461 body mass index CL:0000236 EFO:0000651 dose disease PATO UBERON:0001969 CLO UBERON:0000955 UBERON sampling time UBERON:0000948 compound CL MONDO:0004989 EFO UBERON:0002107 sex BTO"
   },
   {
-    "title": "Column: technology type",
-    "content": "technology type anchor column minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition fixed: proteomic profiling by mass spectrometry, protein expression profiling by antibody array, protein expression profiling by aptamer array",
-    "url": "./sdrf-terms.html#technology-type",
-    "section": "SDRF Terms Reference",
-    "keywords": "technology type minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Affinity Proteomics Template",
+    "content": "SDRF template for affinity-based proteomics experiments (Olink, SomaScan). This is the base template for all affinity proteomics experiments. The affinity-proteomics template is one of two usable-alone technology templates. It covers\nantibody-based (Olink PEA) and aptamer-based (SomaScan) proteomics platforms.\n\nUse this template directly for generic affinity experiments, or combine with olink/somascan\nfor platform-specific columns. Always combine with an organism template.\n\nKey differences from ms-proteomics:\n- No sample preparation chemistry columns (no digestion, reduction, alkylation).\n- `technology type` must be `protein expression profiling by antibody array` (Olink)\n  or `protein expression profiling by aptamer array` (SomaScan).\n- `comment[platform]` identifies the specific instrument/platform.\n- `comment[panel name]` and `comment[panel version]` track the commercial panel used.\n- `comment[quantification unit]`: NPX for Olink, RFU for SomaScan.\n- `characteristics[sample matrix]`: The biological fluid analyzed (serum, plasma, CSF, etc.).\n- `comment[normalization method]`: How data was normalized (plate control, bridge, etc.).\n\nMutually exclusive with ms-proteomics.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of bi",
+    "url": "./templates/affinity-proteomics.html",
+    "section": "Technology Template",
+    "keywords": "y comment[instrument] comment[sdrf validation hash] characteristics[organism] comment[quantification unit] x source name comment[plate] characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n z comment[panel version] comment[sdrf annotation tool] characteristics[pooled sample]   comment[normalization method] b technology characteristics[tissue mass] q comment[sdrf template] t characteristics[synthetic peptide] characteristics[cell type] characteristics[disease] characteristics[spiked compound] p u e characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] comment[platform] comment[panel name] a l r c k characteristics[material type] f characteristics[treatment] affinity proteomics m g characteristics[organism part] characteristics[sample matrix] comment[data file] h comment[fraction identifier] assay name o d i s characteristics[sample type]"
   },
   {
-    "title": "Column: organism",
-    "content": "organism characteristics minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition NCBITaxon",
-    "url": "./sdrf-terms.html#organism",
-    "section": "SDRF Terms Reference",
-    "keywords": "organism minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Base Template",
+    "content": "Base SDRF template with infrastructure columns (identifiers, data files, versioning) inherited by all proteomics templates. This is a construction artifact and cannot be used directly. The base template provides the foundational columns inherited by every SDRF file.\nIt is never used directly \u2014 all other templates inherit from it through sample-metadata.\n\nKey conventions:\n- `source name` must be unique per biological sample across the entire SDRF file.\n- `assay name` must be unique per data acquisition run.\n- `comment[data file]` must exactly match the filename deposited in the data repository.\n- `comment[technical replicate]` starts at 1 for each biological sample.\n- `comment[sdrf template]` records which templates were combined, using format\n  `NT=template_name;VV=vX.Y.Z` or `template_name vX.Y.Z`.\n\nValidation rules enforced at this level:\n- No trailing whitespace in any cell.\n- No empty cells allowed.\n- The combination of source name + assay name must be unique (no duplicate rows).\n- Column order must follow the template definition order.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking",
+    "url": "./templates/base.html",
+    "section": "Internal Template",
+    "keywords": "y comment[sdrf validation hash] source name comment[technical replicate] v n comment[sdrf annotation tool]   comment[sdrf template] t base p u e a technology type r comment[sdrf version] l c f m g comment[data file] h assay name o d i s"
   },
   {
-    "title": "Column: organism part",
-    "content": "organism part characteristics minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition UBERON, BTO",
-    "url": "./sdrf-terms.html#organism-part",
-    "section": "SDRF Terms Reference",
-    "keywords": "organism part minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Cell Lines Template",
+    "content": "SDRF template for cell line samples with Cellosaurus-based annotation. Cell lines can originate from any organism - combine with appropriate organism template (human for HeLa, vertebrates for NIH 3T3, invertebrates for Sf9). The cell-lines template provides standardized annotation for cultured cell lines using\nCellosaurus as the primary reference database.\n\nRequired combination: technology template + organism template (based on cell line origin).\nExample: HeLa study = cell-lines + human + ms-proteomics.\n\nKey guidance:\n- `characteristics[cellosaurus accession]`: Required. Look up accessions at\n  https://www.cellosaurus.org/. Format: CVCL_XXXX (e.g., CVCL_0030 for HeLa).\n- `characteristics[cell line]`: Required. Use standard cell line names from CLO/BTO/EFO.\n- `characteristics[disease]`: Required. The disease of the donor tissue from which the\n  cell line was originally derived. Use `normal` for non-disease-derived cell lines.\n- `characteristics[passage number]`: Recommended. Document passage for reproducibility.\n  Passage drift can significantly affect proteomics results.\n- `characteristics[culture medium]`: Recommended. Use NCIT terms (DMEM, RPMI 1640).\n- `characteristics[cell line authentication]`: Optional but encouraged. STR profiling\n  is the gold standard for human cell lines.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-",
+    "url": "./templates/cell-lines.html",
+    "section": "Experiment Template",
+    "keywords": "characteristics[sampling site] characteristics[passage number] y E comment[sdrf validation hash] characteristics[cellosaurus accession] characteristics[organism] L source name characteristics[sampling time] comment[technical replicate] v cell characteristics[enrichment process] n comment[sdrf annotation tool] characteristics[pooled sample]   b characteristics[tissue mass] C comment[sdrf template] t characteristics[synthetic peptide] experiment characteristics[cell type] O characteristics[disease] characteristics[developmental stage] I N characteristics[spiked compound] p u lines e F characteristics[biosample accession number] characteristics[ancestry category] characteristics[biological replicate] technology type comment[sdrf version] l characteristics[sample storage temperature] a c r k characteristics[material type] f characteristics[treatment] m g T characteristics[organism part] B comment[data file] characteristics[cell line] characteristics[cell line authentication] h i characteristics[biorepository] assay name o d characteristics[cellosaurus name] characteristics[culture medium] s characteristics[sample type]"
   },
   {
-    "title": "Column: disease",
-    "content": "disease characteristics default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition, dda-acquisition MONDO, EFO, DOID, PATO",
-    "url": "./sdrf-terms.html#disease",
-    "section": "SDRF Terms Reference",
-    "keywords": "disease default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, dia-acquisition, dda-acquisition"
+    "title": "Clinical Metadata Template",
+    "content": "SDRF template for clinical study samples with treatment, demographics, and lifestyle metadata. Applicable to any organism. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics). The clinical-metadata template captures treatment, demographics, and lifestyle data for\ninterventional and observational studies. It extends sample-metadata and is also the parent\nof oncology-metadata.\n\nKey guidance:\n- For drug studies, use `characteristics[compound]` + `characteristics[dose]` +\n  `characteristics[exposure duration]` together for detailed pharmacological annotation.\n- `characteristics[treatment]`: Broader treatment description. Use `untreated` for controls.\n- `characteristics[treatment status]`: When the sample was collected relative to treatment\n  (pre-treatment, on treatment, post-treatment, treatment naive).\n- `characteristics[treatment response]`: Clinical response assessment (complete response,\n  partial response, progressive disease, stable disease).\n- `characteristics[sampling time]`: Time of collection with unit (0 hour, 24 hour,\n  7 day). Critical for time-course and pharmacokinetic studies.\n- `characteristics[sampling site]`: Anatomical context (tumor, normal tissue adjacent to\n  tumor). Important for matched tissue designs.\n- `characteristics[genotype]`: Known genetic variants (BRCA1 mutation carrier, wild type).\n- `characteristics[phenotype]`: Observable characteristics (drug resistant, HER2-positive).\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names.",
+    "url": "./templates/clinical-metadata.html",
+    "section": "Sample Template",
+    "keywords": "characteristics[weight] characteristics[pre-existing condition] characteristics[menopausal status] characteristics[sampling site] characteristics[height] y w comment[sdrf validation hash] metadata characteristics[organism] x source name characteristics[sampling time] comment[technical replicate] v characteristics[phenotype] characteristics[enrichment process] n characteristics[dose] characteristics[exposure duration] characteristics[treatment response] comment[sdrf annotation tool] characteristics[pooled sample]   clinical b characteristics[tissue mass] comment[sdrf template] characteristics[genetic modification] t characteristics[synthetic peptide] characteristics[cell type] characteristics[disease] characteristics[spiked compound] p u sample characteristics[treatment status] e characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] a l r c k characteristics[material type] f characteristics[treatment] characteristics[smoking status] g m characteristics[organism part] characteristics[body mass index] comment[data file] - characteristics[genotype] h assay name o d characteristics[compound] i s characteristics[sample type]"
   },
   {
-    "title": "Column: cell type",
-    "content": "cell type characteristics minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition CL, BTO, CLO",
-    "url": "./sdrf-terms.html#cell-type",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell type minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Crosslinking Template",
+    "content": "SDRF template for crosslinking mass spectrometry (XL-MS) experiments. Extends ms-proteomics with crosslinking-specific columns for data analysis. The crosslinking template adds XL-MS-specific columns for structural proteomics studies.\nCross-linker identity is required and enrichment is recommended for proper data interpretation.\n\nKey guidance:\n- `comment[cross-linker]`: Required. Use structured format with ontology accession:\n  `NT=DSS;AC=XLMOD:02001` for simple notation, or extended format with cleavability,\n  target residues, and mass: `NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98`.\n- `characteristics[enrichment process]`: Recommended. Should be `enrichment of cross-linked peptides`.\n- `comment[dissociation method]`: Required (overridden from ms-proteomics recommended).\n  Dissociation method critically affects cleavable linker stub ion generation.\n  Common: HCD, CID, ETD, EThcD, stepped HCD.\n- `comment[collision energy]`: Recommended. Stepped collision energies are common for\n  cleavable linkers (e.g., `25 NCE;27 NCE;30 NCE`).\n- `characteristics[crosslink distance]`: Maximum Calpha-Calpha distance constraint in\n  Angstroms (30 \u00c5 for DSS/BS3, 26.4 \u00c5 for DSSO, 11.4 \u00c5 for EDC zero-length).\n- `comment[crosslinker to protein ratio]`: Molar ratio (50:1, 100:1).\n\nCommon cross-linkers: DSS (XLMOD:02001), BS3 (XLMOD:02000), DSSO (XLMOD:02010, cleavable),\nEDC (XLMOD:02009, zero-length).\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in",
+    "url": "./templates/crosslinking.html",
+    "section": "Experiment Template",
+    "keywords": "y characteristics[organism] source name comment[ms2 mass analyzer] comment[ms max charge] comment[ms max im] comment[dissociation method] characteristics[disease] comment[proteomics data acquisition method] e comment[sdrf version] characteristics[crosslink distance] 2 X comment[ms3 scan range] characteristics[organism part] comment[ms1 scan range] comment[reduction reagent] h o s comment[ms max rt] comment[ms2 scan range] 0 comment[collision energy] comment[acquisition date] comment[chemical cross-linking coupled with ms] 3 comment[sdrf validation hash] comment[precursor mass tolerance] x comment[technical replicate] v comment[ms3 max mz] characteristics[crosslinking reaction time] n z comment[crosslinker to protein ratio] characteristics[pooled sample] 4 comment[ms min im] comment[crosslinker concentration] comment[cleavage agent details] experiment comment[crosslink enrichment method] O comment[elution conditions] crosslinking comment[ms max mz] characteristics[biological replicate] comment[ms3 min mz] : l c characteristics[treatment] m comment[sample preparation batch] d comment[ms2 max mz] characteristics[sample type] comment[instrument] characteristics[depletion] w comment[ms min mz] L characteristics[sampling time] comment[ms min rt] 9 comment[sdrf annotation tool]   S D comment[fragment mass tolerance] q t characteristics[synthetic peptide] characteristics[cell type] characteristics[spiked compound] p comment[cross-linker] u M characteristics[biosample accession number] comment[label] comment[fractionation method] a k characteristics[material type] comment[alkylation reagent] f comment[quenching reagent] characteristics[crosslinking temperature] comment[fraction identifier] i characteristics[enrichment process] b characteristics[tissue mass] C comment[sdrf template] comment[ms2 min mz] comment[lc batch] technology type r g comment[data file] - comment[ms min charge] 1 assay name comment[modification parameters]"
   },
   {
-    "title": "Column: material type",
-    "content": "material type characteristics minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition fixed: tissue, cell, cell line, organism part, whole organism, synthetic",
-    "url": "./sdrf-terms.html#material-type",
-    "section": "SDRF Terms Reference",
-    "keywords": "material type minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Dia Acquisition Template",
+    "content": "SDRF template for Data-independent acquisition (DIA) experiments. Extends ms-proteomics with DIA-specific columns. The dia-acquisition template restricts the acquisition method to Data-independent\nacquisition and adds DIA-specific window parameters.\n\nKey guidance:\n- `comment[proteomics data acquisition method]`: Automatically restricted to\n  `Data-independent acquisition`. This is enforced by the template.\n- `comment[scan window lower limit]` / `comment[scan window upper limit]`: The overall\n  m/z range of the DIA method (e.g., 400-1200 for a typical SWATH experiment).\n- `comment[isolation window width]`: Width of individual isolation windows in m/z.\n  Common values: 25 (wide SWATH), 8 (narrow windows), 4 (high-resolution DIA).\n- `comment[dia method]`: The specific DIA variant used. Common values:\n  SWATH-MS, diaPASEF (Bruker timsTOF), MSE (Waters), All ion fragmentation.\n\nThis template inherits all ms-proteomics columns (instrument, label, cleavage agent, etc.).\nThe ms-proteomics range columns (ms min/max mz, rt, im) are also relevant for DIA methods.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material being analyzed characteristics[tissue mass] Mass of tissue used for extraction characteristics[biosampl",
+    "url": "./templates/dia-acquisition.html",
+    "section": "Experiment Template",
+    "keywords": "comment[scan window upper limit] y characteristics[organism] source name comment[ms2 mass analyzer] comment[ms max charge] acquisition comment[ms max im] comment[dissociation method] characteristics[disease] comment[proteomics data acquisition method] e comment[sdrf version] 2 comment[dia method] comment[ms3 scan range] characteristics[organism part] comment[ms1 scan range] comment[reduction reagent] h o s comment[ms max rt] comment[ms2 scan range] comment[collision energy] comment[acquisition date] 3 comment[sdrf validation hash] comment[precursor mass tolerance] x comment[technical replicate] v comment[ms3 max mz] n z characteristics[pooled sample] comment[ms min im] comment[cleavage agent details] comment[scan window lower limit] experiment comment[elution conditions] comment[ms max mz] characteristics[biological replicate] comment[ms3 min mz] c l dia characteristics[treatment] m comment[sample preparation batch] d comment[ms2 max mz] characteristics[sample type] comment[instrument] characteristics[depletion] w comment[ms min mz] characteristics[sampling time] comment[ms min rt] comment[sdrf annotation tool]   S comment[fragment mass tolerance] q t characteristics[synthetic peptide] characteristics[cell type] characteristics[spiked compound] p u M characteristics[biosample accession number] comment[label] comment[fractionation method] a k characteristics[material type] comment[alkylation reagent] f comment[fraction identifier] i characteristics[enrichment process] b characteristics[tissue mass] comment[sdrf template] comment[ms2 min mz] comment[isolation window width] comment[lc batch] technology type r g comment[data file] comment[ms min charge] 1 assay name comment[modification parameters]"
   },
   {
-    "title": "Column: biological replicate",
-    "content": "biological replicate characteristics minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition integer or pooled",
-    "url": "./sdrf-terms.html#biological-replicate",
-    "section": "SDRF Terms Reference",
-    "keywords": "biological replicate minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
+    "title": "Human Template",
+    "content": "Human SDRF template with human-specific sample metadata fields. Must be combined with a technology template (ms-proteomics or affinity-proteomics). The human template adds demographic and individual-level tracking columns for Homo sapiens\nsamples. It overrides `characteristics[disease]` to required and adds age, sex, ancestry,\nand individual identifiers.\n\nKey guidance:\n- `characteristics[age]`: Strict format with Y>M>W>D order. Examples: `45Y`, `6M`,\n  `30Y6M`, `40Y-50Y`. Use `anonymized` when age is protected, `pooled` for pooled samples.\n- `characteristics[sex]`: Required. Values: `male`, `female`, `intersex`.\n- `characteristics[individual]`: Recommended for longitudinal, matched (tumor/normal), or\n  multi-sample designs. Use consistent identifiers across all samples from the same donor.\n- `characteristics[ancestry category]`: HANCESTRO terms (European, African, East Asian,\n  Hispanic or Latin American, etc.). Recommended for population studies.\n- `characteristics[developmental stage]`: EFO terms (adult, fetal stage, etc.).\n\nAdd clinical-metadata for treatment studies, oncology-metadata for cancer studies,\ncell-lines for cultured human cell lines.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material bein",
+    "url": "./templates/human.html",
+    "section": "Sample Template",
+    "keywords": "y E comment[sdrf validation hash] characteristics[organism] x source name characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n comment[sdrf annotation tool] characteristics[pooled sample] characteristics[age]   H S b characteristics[tissue mass] A characteristics[individual] comment[sdrf template] C t characteristics[synthetic peptide] characteristics[cell type] O characteristics[disease] characteristics[developmental stage] N characteristics[spiked compound] p u sample e F characteristics[biosample accession number] characteristics[ancestry category] characteristics[biological replicate] technology type comment[sdrf version] l a r c k characteristics[material type] f characteristics[treatment] m g T characteristics[organism part] comment[data file] R characteristics[sex] h human assay name o d i s characteristics[sample type]"
   },
   {
-    "title": "Column: ancestry category",
-    "content": "ancestry category characteristics human, cell-lines HANCESTRO, EFO",
-    "url": "./sdrf-terms.html#ancestry-category",
-    "section": "SDRF Terms Reference",
-    "keywords": "ancestry category human, cell-lines"
+    "title": "Human Gut Template",
+    "content": "SDRF template for human gut metaproteomics. Extends metaproteomics with host-associated columns aligned with the GSC MIxS human-gut extension (0016004). Combine with ms-proteomics for MS acquisition columns.\n The human-gut template adds host-associated metadata fields from the MIxS\nhuman-gut extension. These columns describe the host organism, its health\nstatus, diet, and other clinical context relevant to gut microbiome studies.\n\nPRIDE ontology terms (PRIDE:0000674 children) include MIxS cross-references.\n\nUsage: human-gut + ms-proteomics\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[environmental sample type] Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[geographic location] Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010). characteristics[environmental medium] Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[collection date] Date when sample was collected (ISO 8601) characteristics[sample collection method] Method used to collect the environmental sample characteristics[depth] Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018). characteristics[altitude] Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093). characteristics[temperature] Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113). characteristics[ph] pH at sampling location characteristics[sample storage] Storage conditions for the sample before analysis comment[metagenome accession] Accession number for matched metagenome data characteristics[microbiome source] Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome) characteristics[biomass estimation] Estimated microbial biomass in the sample characteristics[host contamination] Level of host protein contamination if known comment[contaminant database] Contaminant database(s) used in database search characteristics[mock co",
+    "url": "./templates/human-gut.html",
+    "section": "Sample Template",
+    "keywords": "comment[metagenome accession] comment[contaminant database] y characteristics[gastrointestinal tract disorder] characteristics[antibiotic treatment] characteristics[liver disorder] characteristics[host contamination] source name characteristics[sample storage] characteristics[host height] gut characteristics[host age] e comment[sdrf version] 6 characteristics[host total mass] X 2 7 characteristics[host body temperature] R h o s characteristics[host diet] characteristics[host body-mass index] 0 3 comment[sdrf validation hash] x comment[technical replicate] v n 4 8 O characteristics[biomass estimation] characteristics[host last meal] characteristics[perturbation] characteristics[temperature] l : c characteristics[altitude] characteristics[host subject id] m characteristics[environmental sample type] characteristics[ethnicity] _ d characteristics[host body site] j P comment[expected organism list] characteristics[environmental medium] 9 characteristics[host organism] characteristics[microbiome source] characteristics[chemical administration] comment[sdrf annotation tool] S   D characteristics[mock community] characteristics[host disease status] characteristics[host sex] 5 t I p u sample M a k f characteristics[ph] i characteristics[collection date] E characteristics[host body product] characteristics[sample collection method] b comment[sdrf template] characteristics[depth] characteristics[mock community composition] characteristics[ihmc medication code] characteristics[geographic location] F technology type r characteristics[special diet] g comment[data file] - human 1 assay name"
   },
   {
-    "title": "Column: age",
-    "content": "age characteristics human, cell-lines pattern: {Number}{Unit} (Y/M/W/D), anonymized, or pooled",
-    "url": "./sdrf-terms.html#age",
-    "section": "SDRF Terms Reference",
-    "keywords": "age human, cell-lines"
+    "title": "Immunopeptidomics Template",
+    "content": "SDRF template for immunopeptidomics experiments (MHC-bound peptide identification). Works with any organism - combine with appropriate sample template (human for HLA typing, vertebrates for H-2/MHC typing in mouse, etc.). The immunopeptidomics template captures MHC-bound peptidome analysis metadata for\nimmunology, vaccine design, and neoantigen discovery studies.\n\nKey guidance:\n- `characteristics[mhc protein complex]`: Required. Specify the MHC class targeted\n  (class I, class II, non-classical, mutant). Determines the expected peptide length\n  distribution (class I: 8-12aa, class II: 12-25aa).\n- `characteristics[mhc typing]`: Use IPD-IMGT/HLA notation for human (HLA-A*02:01),\n  H-2 notation for mouse (H-2Kb, H-2Db). Supports 2-4 field resolution and multi-allele\n  semicolon-separated format (HLA-A*02:01;HLA-B*07:02;HLA-C*07:02).\n- `characteristics[mhc typing method]`: How alleles were determined (NGS-based typing,\n  sequence-based typing, predicted from RNA-seq, inferred from mass spectrometry,\n  inbred strain known genotype).\n- `characteristics[antibody enrichment]`: The antibody clone used for immunoprecipitation.\n  Common clones: W6/32 (pan-class I), BB7.2 (HLA-A*02), Tu39 (pan-class II).\n- `characteristics[immunopeptidome enrichment method]`: The IP method used (immunoaffinity\n  purification, mild acid elution, detergent lysis).\n\nCombine with human template for HLA typing or vertebrates for mouse H-2 typing.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the",
+    "url": "./templates/immunopeptidomics.html",
+    "section": "Experiment Template",
+    "keywords": "y characteristics[organism] source name comment[ms2 mass analyzer] G comment[ms max charge] immunopeptidomics characteristics[mhc typing] comment[ms max im] comment[dissociation method] characteristics[mhc protein complex] characteristics[disease] comment[proteomics data acquisition method] e comment[sdrf version] 6 2 comment[ms3 scan range] T characteristics[organism part] comment[ms1 scan range] comment[reduction reagent] R h o comment[ms max rt] s comment[ms2 scan range] 0 comment[collision energy] comment[acquisition date] 3 comment[sdrf validation hash] comment[precursor mass tolerance] x comment[technical replicate] v comment[ms3 max mz] n z characteristics[pooled sample] 4 comment[ms min im] comment[cleavage agent details] 8 experiment O comment[elution conditions] comment[ms max mz] characteristics[biological replicate] comment[ms3 min mz] c l : characteristics[treatment] characteristics[mhc typing method] m comment[sample preparation batch] d comment[ms2 max mz] characteristics[sample type] characteristics[immunopeptidome enrichment method] P comment[instrument] characteristics[depletion] comment[ms min mz] characteristics[sampling time] comment[ms min rt] 9 comment[sdrf annotation tool]   S D comment[fragment mass tolerance] q t characteristics[synthetic peptide] characteristics[cell type] I characteristics[spiked compound] p u M characteristics[biosample accession number] comment[label] comment[fractionation method] a k characteristics[material type] comment[alkylation reagent] f comment[fraction identifier] i E characteristics[enrichment process] b characteristics[tissue mass] C comment[sdrf template] characteristics[antibody enrichment] comment[ms2 min mz] N comment[lc batch] technology type r g comment[data file] comment[ms min charge] 1 assay name comment[modification parameters]"
   },
   {
-    "title": "Column: sex",
-    "content": "sex characteristics human, cell-lines fixed: male, female, intersex, anonymized, not available, not applicable, pooled",
-    "url": "./sdrf-terms.html#sex",
-    "section": "SDRF Terms Reference",
-    "keywords": "sex human, cell-lines"
+    "title": "Invertebrates Template",
+    "content": "SDRF template for invertebrate samples (Drosophila, C. elegans, insects, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics). The invertebrates template covers Drosophila, C. elegans, insects, and other arthropods.\n\nKey guidance:\n- `characteristics[strain or breed]`: Required. Use standard strain names\n  (Oregon-R, w1118, Canton-S for Drosophila; N2, Bristol for C. elegans).\n- `characteristics[developmental stage]`: Required. Use organism-specific ontologies:\n  FBdv for Drosophila, WBls for C. elegans, or general EFO/UBERON terms.\n- `characteristics[genotype]`: Optional. Use standard genetic notation\n  (wild type, daf-2(e1370), w[*]; P{GAL4}).\n- `characteristics[disease]`: Required.\n\nMutually exclusive with human, vertebrates, and plants.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material being analyzed characteristics[tissue mass] Mass of tissue used for extraction characteristics[biosample accession number] BioSample accession number for the sample (e.g., SAMN or SAMEA identifiers) characteristics[sampling time] Time at which the sample was collected (for longitudinal or time-course studies) characteristics[treatment] Treatment or perturbation applied to the sample",
+    "url": "./templates/invertebrates.html",
+    "section": "Sample Template",
+    "keywords": "y E comment[sdrf validation hash] characteristics[organism] U invertebrates source name characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n comment[sdrf annotation tool] characteristics[pooled sample]   b characteristics[tissue mass] comment[sdrf template] t characteristics[synthetic peptide] characteristics[cell type] O characteristics[disease] characteristics[developmental stage] N characteristics[spiked compound] p u sample e F characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] l a r c k characteristics[material type] f characteristics[treatment] m g characteristics[organism part] B comment[data file] characteristics[strain or breed] characteristics[genotype] h R assay name o d i s characteristics[sample type]"
   },
   {
-    "title": "Column: developmental stage",
-    "content": "developmental stage characteristics human, cell-lines, single-cell HsapDv, EFO, MmusDv, UBERON",
-    "url": "./sdrf-terms.html#developmental-stage",
-    "section": "SDRF Terms Reference",
-    "keywords": "developmental stage human, cell-lines, single-cell"
+    "title": "Metaproteomics Template",
+    "content": "Base SDRF template for metaproteomics experiments (microbial community proteomics). Extends base directly and defines MIxS-aligned sample metadata. When combined with ms-proteomics, sample-metadata columns (organism, disease, cell type) are excluded. Use a child template (human-gut, soil, water) for environment-specific fields.\n The metaproteomics template is aligned with the Genomics Standards Consortium (GSC)\nMIxS standard for environmental and host-associated sample metadata.\n\nTemplate hierarchy:\n  metaproteomics (this template) - shared environmental context\n    human-gut  - human gut microbiome (MIxS human-gut extension)\n    soil       - soil metaproteomics (MIxS soil extension)\n    water      - aquatic metaproteomics (MIxS water extension)\n\nUsage: combine a child template with ms-proteomics, e.g.:\n  human-gut + ms-proteomics\n  soil + ms-proteomics\n\nKey columns:\n- `characteristics[environmental sample type]`: Required. ENVO/EFO term describing\n  the environmental material (soil, seawater, gut microbiome, biofilm).\n- `characteristics[geographic location]`: Recommended. GAZ term or coordinates.\n- `characteristics[collection date]`: ISO 8601 date of sample collection.\n- `characteristics[environmental medium]`: ENVO term for the environmental material.\n- `comment[metagenome accession]`: Link to matched metagenome dataset.\n\nPRIDE ontology terms include MIxS cross-references in their definitions\n(e.g., MIXS:0001107). Column names use spaces (SDRF convention) rather than\nunderscores (MIxS convention).\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[environmental sample type] Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[geographic location] Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010). characteristics[environmental medium] Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[collection date] Date when sample was collected (ISO 8601) characteristics[sa",
+    "url": "./templates/metaproteomics.html",
+    "section": "Sample Template",
+    "keywords": "characteristics[collection date] comment[metagenome accession] comment[contaminant database] 0 y E comment[expected organism list] 3 comment[sdrf validation hash] characteristics[host contamination] characteristics[environmental medium] x source name characteristics[sample storage] comment[technical replicate] v 9 n characteristics[microbiome source] comment[sdrf annotation tool] characteristics[sample collection method]   S 4 b characteristics[mock community] comment[sdrf template] characteristics[depth] t 8 O characteristics[biomass estimation] characteristics[mock community composition] I metaproteomics p characteristics[geographic location] u characteristics[temperature] M e F sample a technology type comment[sdrf version] c : k X r l characteristics[altitude] f 7 m characteristics[environmental sample type] g characteristics[ph] comment[data file] h 1 assay name o d i s"
   },
   {
-    "title": "Column: individual",
-    "content": "individual characteristics human, cell-lines free text pattern or pooled",
-    "url": "./sdrf-terms.html#individual",
-    "section": "SDRF Terms Reference",
-    "keywords": "individual human, cell-lines"
+    "title": "Ms Proteomics Template",
+    "content": "Base SDRF template for mass spectrometry-based proteomics. This is the minimum valid template for any MS experiment. The ms-proteomics template is one of two usable-alone technology templates (the other\nis affinity-proteomics). It provides all columns needed for a basic MS proteomics\nexperiment and serves as the parent for specialized experiment templates (DIA, XL-MS,\nimmunopeptidomics, single-cell, metaproteomics).\n\nCombine with an organism template (human, vertebrates, invertebrates, plants) to add\nspecies-specific columns. Add clinical-metadata or oncology-metadata for clinical studies.\n\nKey annotation guidance:\n- `comment[label]`: Always required. Use `label free sample` for LFQ, specific channel\n  names for multiplexed (TMT126, iTRAQ114, SILAC light/heavy).\n- `comment[fraction identifier]`: Always required. Use `1` for non-fractionated samples.\n  For fractionated experiments, each fraction gets its own row with the same source name.\n- `comment[cleavage agent details]`: Use CV term format `NT=Trypsin;AC=MS:1001251`.\n- `comment[modification parameters]`: Multiple cardinality. Each PTM gets its own column.\n  Format: `NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35`.\n- `comment[collision energy]`: Format `{value} {unit}` (e.g., `30 NCE`). For stepped\n  energies: `25 NCE;27 NCE;30 NCE` or `stepped 27+-6%`.\n- `comment[precursor mass tolerance]` / `comment[fragment mass tolerance]`: Use ppm or Da\n  (e.g., `10 ppm`, `0.02 Da`).\n- MS range columns (`comment[ms min/max mz/charge/rt/im]`): Optional method parameters\n  for documenting acquisition settings.\n\nMutually exclusive with affinity-proteomics.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sour",
+    "url": "./templates/ms-proteomics.html",
+    "section": "Technology Template",
+    "keywords": "y characteristics[organism] source name comment[ms2 mass analyzer] comment[ms max charge] comment[ms max im] comment[dissociation method] characteristics[disease] comment[proteomics data acquisition method] e comment[sdrf version] 2 comment[ms3 scan range] characteristics[organism part] comment[ms1 scan range] comment[reduction reagent] h o s comment[ms max rt] comment[ms2 scan range] 0 comment[collision energy] comment[acquisition date] 3 comment[sdrf validation hash] comment[precursor mass tolerance] x comment[technical replicate] v comment[ms3 max mz] n z characteristics[pooled sample] comment[ms min im] technology comment[cleavage agent details] comment[elution conditions] comment[ms max mz] characteristics[biological replicate] comment[ms3 min mz] l c : characteristics[treatment] m comment[sample preparation batch] d comment[ms2 max mz] characteristics[sample type] comment[instrument] characteristics[depletion] comment[ms min mz] characteristics[sampling time] comment[ms min rt] comment[sdrf annotation tool]   S comment[fragment mass tolerance] 5 q t characteristics[synthetic peptide] characteristics[cell type] characteristics[spiked compound] p u M / characteristics[biosample accession number] comment[label] comment[fractionation method] a ms k characteristics[material type] comment[alkylation reagent] f proteomics comment[fraction identifier] i characteristics[enrichment process] b characteristics[tissue mass] comment[sdrf template] comment[ms2 min mz] comment[lc batch] technology type r g comment[data file] comment[ms min charge] 1 assay name comment[modification parameters]"
   },
   {
-    "title": "Column: cell line",
-    "content": "cell line characteristics cell-lines, immunopeptidomics CLO, BTO, EFO",
-    "url": "./sdrf-terms.html#cell-line",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell line cell-lines, immunopeptidomics"
+    "title": "Olink Template",
+    "content": "SDRF template for Olink Proximity Extension Assay (PEA) experiments. Extends affinity-proteomics with Olink-specific columns. The olink template captures Proximity Extension Assay (PEA) specific metadata for\nOlink experiments. PEA uses paired antibodies with oligonucleotide tags \u2014 binding\nevents are detected via qPCR or sequencing.\n\nKey guidance:\n- `comment[olink panel]`: Required. The specific panel used (Target 96 Inflammation,\n  Explore 384 Cardiometabolic, Explore 1536, Explore 3072).\n- `comment[olink platform]`: Required. The platform version (Olink Target 96,\n  Olink Explore 384, Olink Explore HT, Olink Reveal).\n- `comment[npx normalization]`: Recommended. How NPX values were normalized\n  (plate control normalized, intensity normalized, bridge normalized, not normalized).\n- `comment[olink lot number]`: Optional. Reagent lot for traceability.\n- Inherited from affinity-proteomics: `characteristics[sample matrix]` (serum, plasma, CSF),\n  `comment[quantification unit]` (NPX), `comment[normalization method]`.\n\nOlink data uses Normalized Protein eXpression (NPX) units on a log2 scale.\nMutually exclusive with somascan.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material being analyzed characteristics[tissu",
+    "url": "./templates/olink.html",
+    "section": "Experiment Template",
+    "keywords": "y comment[instrument] comment[sdrf validation hash] characteristics[organism] comment[quantification unit] olink x source name comment[plate] characteristics[sampling time] comment[technical replicate] v comment[npx normalization] characteristics[enrichment process] n z comment[panel version] comment[sdrf annotation tool] characteristics[pooled sample] comment[olink panel] comment[normalization method]   b characteristics[tissue mass] q comment[sdrf template] t characteristics[synthetic peptide] experiment characteristics[cell type] characteristics[disease] characteristics[spiked compound] comment[olink platform] p u e characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] comment[platform] comment[panel name] a l r c comment[olink lot number] k characteristics[material type] f characteristics[treatment] m g characteristics[organism part] characteristics[sample matrix] comment[data file] h comment[fraction identifier] assay name o d i s characteristics[sample type]"
   },
   {
-    "title": "Column: cellosaurus accession",
-    "content": "cellosaurus accession characteristics cell-lines Cellosaurus (CVCL_XXXX)",
-    "url": "./sdrf-terms.html#cellosaurus-accession",
-    "section": "SDRF Terms Reference",
-    "keywords": "cellosaurus accession cell-lines"
+    "title": "Oncology Metadata Template",
+    "content": "SDRF template for cancer/oncology study samples with tumor staging, grading, and clinical outcome metadata. Extends clinical-metadata with oncology-specific columns. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics). The oncology-metadata template extends clinical-metadata with cancer-specific staging,\ngrading, and outcome columns. It supports multiple standardized staging systems.\n\nKey guidance:\n- `characteristics[disease staging]`: General disease stage (stage I-IV). Use NCIT or\n  EFO terms.\n- `characteristics[tumor stage]`: TNM notation (e.g., T2N1M0). Prefix with p for\n  pathological or c for clinical staging.\n- Specialized staging systems (use the appropriate column for the cancer type):\n  - `characteristics[dukes stage]`: Colorectal cancer (A, B, C, D).\n  - `characteristics[ann arbor stage]`: Lymphoma (I-IV with A/B/E/S suffix).\n  - `characteristics[gleason score]`: Prostate cancer (sum or components: 3+4, 4+3).\n  - `characteristics[weiss grade]`: Adrenal cortical carcinoma (low, high).\n- `characteristics[histologic subtype]`: Molecular/histologic classification (luminal A,\n  triple-negative, adenocarcinoma, squamous cell carcinoma).\n- `characteristics[survival time]` / `characteristics[last follow up]`: Time with unit\n  for clinical outcome tracking.\n- `characteristics[metastasis site]` / `characteristics[biopsy site]`: UBERON/BTO terms\n  for anatomical locations.\n\nInherits all clinical-metadata columns (compound, dose, treatment, demographics).\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unkno",
+    "url": "./templates/oncology-metadata.html",
+    "section": "Sample Template",
+    "keywords": "characteristics[menopausal status] y characteristics[organism] source name characteristics[phenotype] characteristics[dose] characteristics[survival time] characteristics[tumor mass] characteristics[disease] e comment[sdrf version] characteristics[clinical data] characteristics[ann arbor stage] characteristics[smoking status] T characteristics[organism part] characteristics[body mass index] R h o s characteristics[compound] characteristics[pre-existing condition] comment[sdrf validation hash] metadata x comment[technical replicate] characteristics[mitotic rate] v n z characteristics[pooled sample] oncology characteristics[histologic subtype] O characteristics[last follow up] characteristics[biological replicate] l c characteristics[treatment] m characteristics[tumor stage] d characteristics[sample type] characteristics[sampling site] characteristics[height] characteristics[weiss grade] characteristics[disease staging] w characteristics[sampling time] characteristics[exposure duration] characteristics[treatment response] comment[sdrf annotation tool]   characteristics[genetic modification] t characteristics[synthetic peptide] characteristics[cell type] characteristics[clinical history] I characteristics[spiked compound] p u sample characteristics[biosample accession number] a k characteristics[material type] f B characteristics[metastasis site] characteristics[genotype] i characteristics[weight] characteristics[dukes stage] E U characteristics[enrichment process] b characteristics[tumor grading] characteristics[biopsy site] characteristics[tissue mass] C comment[sdrf template] N characteristics[treatment status] F characteristics[tumor size] technology type r g comment[data file] characteristics[gleason score] - assay name"
   },
   {
-    "title": "Column: cellosaurus name",
-    "content": "cellosaurus name characteristics cell-lines Cellosaurus",
-    "url": "./sdrf-terms.html#cellosaurus-name",
-    "section": "SDRF Terms Reference",
-    "keywords": "cellosaurus name cell-lines"
+    "title": "Plants Template",
+    "content": "SDRF template for plant samples (Arabidopsis, crops, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics). The plants template covers Arabidopsis thaliana, rice, maize, wheat, and other plant species.\n\nKey guidance:\n- `characteristics[strain or breed]`: Recommended. Use cultivar/ecotype/accession names\n  (Col-0, Ler-0 for Arabidopsis; Nipponbare for rice; B73 for maize).\n- `characteristics[developmental stage]`: Required. Use Plant Ontology (PO) or EFO terms\n  (seedling stage, flowering stage, rosette growth stage, senescent stage).\n- `characteristics[growth condition]`: Recommended. Free-text description of growth\n  conditions (long day 16h/8h, short day, continuous light, greenhouse).\n- `characteristics[treatment]`: Recommended. Use NCIT or EFO terms for treatments\n  (drought stress, salt stress, pathogen infection, hormone treatment).\n- `characteristics[disease]`: Required.\n\nMutually exclusive with human, vertebrates, and invertebrates.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material being analyzed characteristics[tissue mass] Mass of tissue used for extraction characteristics[biosample accession number] BioSample accession number for the sample (e.g., SAMN or S",
+    "url": "./templates/plants.html",
+    "section": "Sample Template",
+    "keywords": "y E w comment[sdrf validation hash] characteristics[organism] source name characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n comment[sdrf annotation tool] characteristics[pooled sample]   b characteristics[tissue mass] C comment[sdrf template] t characteristics[synthetic peptide] characteristics[cell type] O plants characteristics[disease] characteristics[developmental stage] I N characteristics[spiked compound] p u sample e F characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] l a r c k characteristics[material type] f characteristics[treatment] m g T characteristics[organism part] comment[data file] characteristics[strain or breed] h assay name o d i s characteristics[sample type] characteristics[growth condition]"
   },
   {
-    "title": "Column: sampling site",
-    "content": "sampling site characteristics human, cell-lines UBERON, BTO",
-    "url": "./sdrf-terms.html#sampling-site",
-    "section": "SDRF Terms Reference",
-    "keywords": "sampling site human, cell-lines"
+    "title": "Sample Metadata Template",
+    "content": "SDRF template with shared sample metadata columns (organism, tissue, disease). This is an internal construction layer inherited by technology and organism templates - not used directly. The sample-metadata template is the shared biological layer inherited by all technology\nand organism templates. It defines the core sample identity and biology columns.\n\nKey columns and guidance:\n- `characteristics[organism]`: Use NCBI Taxonomy names in lowercase (e.g., `homo sapiens`).\n- `characteristics[organism part]`: Use UBERON or BTO terms. Supports multiple cardinality\n  for mixed-tissue samples (add multiple columns with the same header).\n- `characteristics[disease]`: Use `normal` (PATO:0000461) for healthy/control samples.\n  Organism templates (human, vertebrates, etc.) override this to required.\n- `characteristics[biological replicate]`: Integer starting from 1. Use `pooled` for\n  pooled reference samples only.\n- `characteristics[sample type]`: Classifies the sample's role in multiplexed experiments.\n  Values include single cell, reference, bridge, carrier, empty, quality control sample,\n  and various control types. This column replaces older per-template role columns.\n- `characteristics[biosample accession number]`: Link to BioSample record (SAMN/SAMEA/SAMD).\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteris",
+    "url": "./templates/sample-metadata.html",
+    "section": "Internal Template",
+    "keywords": "0 y P E comment[sdrf validation hash] metadata characteristics[organism] U source name characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n comment[sdrf annotation tool] characteristics[pooled sample]   4 b characteristics[tissue mass] A comment[sdrf template] t characteristics[synthetic peptide] characteristics[cell type] O characteristics[disease] N characteristics[spiked compound] p u sample e characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] a l r c k : 6 characteristics[material type] f characteristics[treatment] m g T characteristics[organism part] B comment[data file] R h 1 assay name o d i s characteristics[sample type]"
   },
   {
-    "title": "Column: disease staging",
-    "content": "disease staging characteristics human NCIT, EFO",
-    "url": "./sdrf-terms.html#disease-staging",
-    "section": "SDRF Terms Reference",
-    "keywords": "disease staging human"
+    "title": "Single Cell Template",
+    "content": "SDRF template for single-cell proteomics (SCP) experiments. Works with any organism - combine with appropriate sample template (human, vertebrates, invertebrates, or plants). Aligned with Nature Methods SCP guidelines (Gatto et al., 2023). The single-cell template follows the Nature Methods SCP guidelines (Gatto et al., 2023)\nfor standardized annotation of single-cell proteomics experiments.\n\nKey guidance:\n- `characteristics[single cell isolation protocol]`: Required. The method used to isolate\n  single cells (FACS, cellenONE, LCM, nanoPOTS, microfluidics, manual picking).\n- `characteristics[cell identifier]`: Required. Unique per-cell label within the experiment.\n  Use special values `carrier`, `reference`, or `empty` for non-single-cell wells in\n  multiplexed designs (e.g., SCoPE-MS, plexDIA).\n- `characteristics[cells per well]`: Recommended. Use `1` for true single cells. Higher numbers\n  (5, 10, 100) for small cell pools.\n- `comment[carrier channel]` / `comment[reference channel]`: Recommended for TMT-based SCP.\n  Specify the TMT channel used for carrier proteome and reference normalization.\n- `comment[sample preparation batch]`: Critical for batch effect correction in SCP.\n  Plate-level batch effects are a major confounder in single-cell studies.\n- `characteristics[individual]`: Recommended. Links cells to the same donor/patient.\n- Flow cytometry data (forward/side scatter, enrichment markers): Optional but valuable\n  for cell size and identity documentation.\n- `characteristics[spatial coordinates]` / `comment[tissue section]`: For spatially resolved SCP\n  (e.g., LCM-based isolation from tissue sections).\n- Isolation method-specific parameters (all optional): `comment[facs nozzle size]`,\n  `comment[facs sorting mode]`, `comment[microfluidics chip type]`,\n  `comment[lcm microscope model]`, `comment[nanopots chip version]`.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteris",
+    "url": "./templates/single-cell.html",
+    "section": "Experiment Template",
+    "keywords": "y comment[tissue section] characteristics[organism] source name comment[ms2 mass analyzer] comment[ms max charge] characteristics[cell diameter] comment[facs sorting mode] comment[facs nozzle size] comment[ms max im] comment[dissociation method] characteristics[disease] comment[proteomics data acquisition method] characteristics[cell identifier] characteristics[cells per well] e comment[sdrf version] 2 comment[carrier channel] comment[ms3 scan range] characteristics[organism part] comment[ms1 scan range] comment[reduction reagent] h o s comment[ms max rt] comment[ms2 scan range] comment[collision energy] comment[acquisition date] 3 comment[sdrf validation hash] comment[precursor mass tolerance] x comment[technical replicate] v comment[ms3 max mz] n z characteristics[pooled sample] characteristics[cell cycle phase] comment[nanopots chip version] single comment[ms min im] comment[cleavage agent details] experiment comment[elution conditions] comment[ms max mz] characteristics[biological replicate] comment[ms3 min mz] l c characteristics[treatment] m comment[sample preparation batch] comment[reference channel] d comment[ms2 max mz] characteristics[sample type] comment[microfluidics chip type] comment[instrument] characteristics[depletion] characteristics[spatial coordinates] characteristics[single cell isolation protocol] w comment[ms min mz] characteristics[sampling time] comment[ms min rt] comment[sdrf annotation tool]   S comment[fragment mass tolerance] q t characteristics[synthetic peptide] characteristics[cell type] characteristics[spiked compound] p u M characteristics[biosample accession number] comment[label] comment[fractionation method] characteristics[forward scatter] a k characteristics[material type] comment[alkylation reagent] f comment[fraction identifier] i characteristics[enrichment marker] cell characteristics[enrichment process] b characteristics[tissue mass] comment[sdrf template] comment[ms2 min mz] comment[lcm microscope model] comment[lc batch] technology type r characteristics[cell viability] g comment[data file] characteristics[side scatter] comment[ms min charge] 1 assay name comment[modification parameters]"
   },
   {
-    "title": "Column: tumor grading",
-    "content": "tumor grading characteristics human NCIT",
-    "url": "./sdrf-terms.html#tumor-grading",
-    "section": "SDRF Terms Reference",
-    "keywords": "tumor grading human"
+    "title": "Soil Template",
+    "content": "SDRF template for soil metaproteomics. Extends metaproteomics with soil-specific columns aligned with the GSC MIxS soil extension (0016012). Combine with ms-proteomics for MS acquisition columns.\n The soil template adds soil-specific environmental metadata from the MIxS\nsoil extension. These columns describe soil properties, land use, and\nchemical/physical context relevant to soil microbiome studies.\n\nPRIDE ontology terms (PRIDE:0000828 children) include MIxS cross-references.\n\nUsage: soil + ms-proteomics\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[environmental sample type] Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[geographic location] Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010). characteristics[environmental medium] Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[collection date] Date when sample was collected (ISO 8601) characteristics[sample collection method] Method used to collect the environmental sample characteristics[depth] Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018). characteristics[altitude] Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093). characteristics[temperature] Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113). characteristics[ph] pH at sampling location characteristics[sample storage] Storage conditions for the sample before analysis comment[metagenome accession] Accession number for matched metagenome data characteristics[microbiome source] Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome) characteristics[biomass estimation] Estimated microbial biomass in the sample characteristics[host contamination] Level of host protein contamination if known comment[contaminant database] Contaminant database(s) used in database search characteristics[mock community] Identifier or name of mock",
+    "url": "./templates/soil.html",
+    "section": "Sample Template",
+    "keywords": "comment[metagenome accession] comment[contaminant database] y characteristics[host contamination] source name characteristics[sample storage] e comment[sdrf version] 2 X 7 R h o s 0 3 comment[sdrf validation hash] x comment[technical replicate] v n z 4 8 O characteristics[biomass estimation] characteristics[soil horizon] characteristics[perturbation] characteristics[temperature] l : c characteristics[altitude] m characteristics[environmental sample type] characteristics[current vegetation] soil d P comment[expected organism list] w characteristics[environmental medium] 9 characteristics[microbiome source] characteristics[chemical administration] comment[sdrf annotation tool] S characteristics[total nitrogen]   D characteristics[mock community] 5 characteristics[vegetation] t characteristics[crop rotation] I p u sample M a k f characteristics[land use] characteristics[ph] i characteristics[collection date] E characteristics[total organic carbon] characteristics[soil texture measurement] characteristics[sample collection method] b comment[sdrf template] characteristics[depth] characteristics[water content] characteristics[soil type] characteristics[mock community composition] characteristics[geographic location] F technology type r g comment[data file] 1 assay name"
   },
   {
-    "title": "Column: tumor stage",
-    "content": "tumor stage characteristics human NCIT",
-    "url": "./sdrf-terms.html#tumor-stage",
-    "section": "SDRF Terms Reference",
-    "keywords": "tumor stage human"
+    "title": "Somascan Template",
+    "content": "SDRF template for SomaScan aptamer-based proteomics experiments. Extends affinity-proteomics with SomaScan-specific columns. The somascan template captures SOMAmer (Slow Off-rate Modified Aptamer) based proteomics\nmetadata for SomaScan experiments by SomaLogic/Standard BioTools.\n\nKey guidance:\n- `comment[somascan menu]`: Required. The aptamer panel size (SomaScan 1.1K, 1.3K, 5K,\n  7K, 11K). Different menus measure different numbers of proteins.\n- `comment[somascan platform]`: Required. The assay version (SomaScan Assay, SomaScan\n  Assay v4, SomaScan Assay v4.1).\n- `comment[dilution]`: Recommended. Standard dilution factors used in the assay\n  (0.005%, 0.5%, 20%, 40%). SomaScan uses multiple dilutions to extend dynamic range.\n- `comment[somascan lot number]`: Optional. Reagent lot for traceability.\n- Inherited from affinity-proteomics: `characteristics[sample matrix]` (serum, plasma),\n  `comment[quantification unit]` (RFU), `comment[normalization method]`.\n\nSomaScan data uses Relative Fluorescence Units (RFU). Multiple dilutions per sample\nare standard \u2014 each dilution may appear as a separate row.\nMutually exclusive with olink.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material being analyzed characterist",
+    "url": "./templates/somascan.html",
+    "section": "Experiment Template",
+    "keywords": "somascan y comment[instrument] comment[sdrf validation hash] characteristics[organism] comment[quantification unit] x source name comment[plate] characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n z comment[panel version] comment[sdrf annotation tool] characteristics[pooled sample]   comment[normalization method] b characteristics[tissue mass] comment[somascan platform] q comment[sdrf template] comment[somascan lot number] characteristics[synthetic peptide] t characteristics[cell type] experiment characteristics[disease] comment[dilution] characteristics[spiked compound] p u e characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] comment[platform] comment[panel name] l a r c k characteristics[material type] f characteristics[treatment] m g characteristics[organism part] characteristics[sample matrix] comment[data file] h comment[fraction identifier] assay name comment[somascan menu] d o i s characteristics[sample type]"
   },
   {
-    "title": "Column: clinical data",
-    "content": "clinical data characteristics human free text",
-    "url": "./sdrf-terms.html#clinical-data",
-    "section": "SDRF Terms Reference",
-    "keywords": "clinical data human"
+    "title": "Vertebrates Template",
+    "content": "SDRF template for non-human vertebrate samples (mammals, birds, fish, reptiles, amphibians). Must be combined with a technology template (ms-proteomics or affinity-proteomics). The vertebrates template covers all non-human vertebrate model organisms including mouse,\nrat, zebrafish, and other mammals, birds, fish, reptiles, and amphibians.\n\nKey guidance:\n- `characteristics[strain or breed]`: Recommended. Use NCBI Taxonomy strain names\n  (C57BL/6, BALB/c, Sprague-Dawley, Wistar for mammals; AB, TU for zebrafish).\n- `characteristics[developmental stage]`: Required. Use EFO or UBERON terms\n  (adult, embryo, juvenile, larval stage).\n- `characteristics[sex]`: Recommended. Values: `male`, `female`, `hermaphrodite`.\n- `characteristics[disease]`: Required (overridden from sample-metadata). Use `normal`\n  for healthy animals.\n\nMutually exclusive with human, invertebrates, and plants.\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[organism] Species of the sample using NCBI Taxonomy characteristics[organism part] Anatomical part of the organism from which sample was derived characteristics[cell type] Cell type of the sample characteristics[biological replicate] Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples) characteristics[pooled sample] Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names. characteristics[sample type] Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments. characteristics[disease] Disease state of the sample characteristics[material type] Type of biological material being analyzed characteristics[tissue mass] Mass of tissue used for extraction characteristics[biosample accession number] BioSample accession number for the sample (e.g., SAMN or SAMEA identifiers) characteristics[sampling time] Time at which the sample was collected (for longitudina",
+    "url": "./templates/vertebrates.html",
+    "section": "Sample Template",
+    "keywords": "y E comment[sdrf validation hash] characteristics[organism] U x source name characteristics[sampling time] comment[technical replicate] v characteristics[enrichment process] n vertebrates comment[sdrf annotation tool] characteristics[pooled sample]   b characteristics[tissue mass] comment[sdrf template] t characteristics[synthetic peptide] characteristics[cell type] O characteristics[disease] characteristics[developmental stage] N characteristics[spiked compound] p u sample e F characteristics[biosample accession number] characteristics[biological replicate] technology type comment[sdrf version] l a r c k characteristics[material type] f characteristics[treatment] m g characteristics[organism part] B comment[data file] characteristics[strain or breed] characteristics[sex] h R assay name o d i s characteristics[sample type]"
   },
   {
-    "title": "Column: clinical history",
-    "content": "clinical history characteristics human free text",
-    "url": "./sdrf-terms.html#clinical-history",
-    "section": "SDRF Terms Reference",
-    "keywords": "clinical history human"
-  },
-  {
-    "title": "Column: phenotype",
-    "content": "phenotype characteristics default, human, cell-lines, vertebrates, invertebrates, plants PATO, EFO, free text",
-    "url": "./sdrf-terms.html#phenotype",
-    "section": "SDRF Terms Reference",
-    "keywords": "phenotype default, human, cell-lines, vertebrates, invertebrates, plants"
-  },
-  {
-    "title": "Column: metastasis site",
-    "content": "metastasis site characteristics human UBERON, BTO",
-    "url": "./sdrf-terms.html#metastasis-site",
-    "section": "SDRF Terms Reference",
-    "keywords": "metastasis site human"
-  },
-  {
-    "title": "Column: survival time",
-    "content": "survival time characteristics human pattern: number + unit",
-    "url": "./sdrf-terms.html#survival-time",
-    "section": "SDRF Terms Reference",
-    "keywords": "survival time human"
-  },
-  {
-    "title": "Column: tumor size",
-    "content": "tumor size characteristics human pattern: number + unit",
-    "url": "./sdrf-terms.html#tumor-size",
-    "section": "SDRF Terms Reference",
-    "keywords": "tumor size human"
-  },
-  {
-    "title": "Column: tumor mass",
-    "content": "tumor mass characteristics human pattern: number + unit",
-    "url": "./sdrf-terms.html#tumor-mass",
-    "section": "SDRF Terms Reference",
-    "keywords": "tumor mass human"
-  },
-  {
-    "title": "Column: biopsy site",
-    "content": "biopsy site characteristics human UBERON, BTO",
-    "url": "./sdrf-terms.html#biopsy-site",
-    "section": "SDRF Terms Reference",
-    "keywords": "biopsy site human"
-  },
-  {
-    "title": "Column: last follow up",
-    "content": "last follow up characteristics human pattern: number + unit",
-    "url": "./sdrf-terms.html#last-follow-up",
-    "section": "SDRF Terms Reference",
-    "keywords": "last follow up human"
-  },
-  {
-    "title": "Column: treatment time",
-    "content": "treatment time characteristics human pattern: number + time unit",
-    "url": "./sdrf-terms.html#treatment-time",
-    "section": "SDRF Terms Reference",
-    "keywords": "treatment time human"
-  },
-  {
-    "title": "Column: genetic modification",
-    "content": "genetic modification characteristics human, cell-lines, vertebrates, invertebrates EFO",
-    "url": "./sdrf-terms.html#genetic-modification",
-    "section": "SDRF Terms Reference",
-    "keywords": "genetic modification human, cell-lines, vertebrates, invertebrates"
-  },
-  {
-    "title": "Column: compound",
-    "content": "compound characteristics human, cell-lines CHEBI, NCIT, EFO",
-    "url": "./sdrf-terms.html#compound",
-    "section": "SDRF Terms Reference",
-    "keywords": "compound human, cell-lines"
-  },
-  {
-    "title": "Column: dose",
-    "content": "dose characteristics human, cell-lines pattern: number + unit",
-    "url": "./sdrf-terms.html#dose",
-    "section": "SDRF Terms Reference",
-    "keywords": "dose human, cell-lines"
-  },
-  {
-    "title": "Column: pre-existing condition",
-    "content": "pre-existing condition characteristics human MONDO, EFO, DOID",
-    "url": "./sdrf-terms.html#pre-existing-condition",
-    "section": "SDRF Terms Reference",
-    "keywords": "pre-existing condition human"
-  },
-  {
-    "title": "Column: treatment status",
-    "content": "treatment status characteristics human fixed: pre-treatment, on treatment, post-treatment, treatment naive",
-    "url": "./sdrf-terms.html#treatment-status",
-    "section": "SDRF Terms Reference",
-    "keywords": "treatment status human"
-  },
-  {
-    "title": "Column: treatment response",
-    "content": "treatment response characteristics human NCIT",
-    "url": "./sdrf-terms.html#treatment-response",
-    "section": "SDRF Terms Reference",
-    "keywords": "treatment response human"
-  },
-  {
-    "title": "Column: body mass index",
-    "content": "body mass index characteristics human numeric",
-    "url": "./sdrf-terms.html#body-mass-index",
-    "section": "SDRF Terms Reference",
-    "keywords": "body mass index human"
-  },
-  {
-    "title": "Column: smoking status",
-    "content": "smoking status characteristics human fixed: never smoker, former smoker, current smoker",
-    "url": "./sdrf-terms.html#smoking-status",
-    "section": "SDRF Terms Reference",
-    "keywords": "smoking status human"
-  },
-  {
-    "title": "Column: menopausal status",
-    "content": "menopausal status characteristics human fixed: pre-menopausal, peri-menopausal, post-menopausal",
-    "url": "./sdrf-terms.html#menopausal-status",
-    "section": "SDRF Terms Reference",
-    "keywords": "menopausal status human"
-  },
-  {
-    "title": "Column: breast cancer subtype",
-    "content": "breast cancer subtype characteristics human NCIT",
-    "url": "./sdrf-terms.html#breast-cancer-subtype",
-    "section": "SDRF Terms Reference",
-    "keywords": "breast cancer subtype human"
-  },
-  {
-    "title": "Column: single cell isolation method",
-    "content": "single cell isolation method characteristics single-cell fixed: FACS, microfluidics, laser capture microdissection, manual picking, CellenONE, nanoPOTS",
-    "url": "./sdrf-terms.html#single-cell-isolation-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "single cell isolation method single-cell"
-  },
-  {
-    "title": "Column: cell identifier",
-    "content": "cell identifier characteristics single-cell free text pattern",
-    "url": "./sdrf-terms.html#cell-identifier",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell identifier single-cell"
-  },
-  {
-    "title": "Column: cell viability",
-    "content": "cell viability characteristics single-cell fixed: live, dead, unknown",
-    "url": "./sdrf-terms.html#cell-viability",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell viability single-cell"
-  },
-  {
-    "title": "Column: cell cycle phase",
-    "content": "cell cycle phase characteristics single-cell fixed: G1, S, G2, M, G0",
-    "url": "./sdrf-terms.html#cell-cycle-phase",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell cycle phase single-cell"
-  },
-  {
-    "title": "Column: sorting marker",
-    "content": "sorting marker characteristics single-cell free text",
-    "url": "./sdrf-terms.html#sorting-marker",
-    "section": "SDRF Terms Reference",
-    "keywords": "sorting marker single-cell"
-  },
-  {
-    "title": "Column: genotype",
-    "content": "genotype characteristics single-cell free text",
-    "url": "./sdrf-terms.html#genotype",
-    "section": "SDRF Terms Reference",
-    "keywords": "genotype single-cell"
-  },
-  {
-    "title": "Column: strain",
-    "content": "strain characteristics single-cell free text",
-    "url": "./sdrf-terms.html#strain",
-    "section": "SDRF Terms Reference",
-    "keywords": "strain single-cell"
-  },
-  {
-    "title": "Column: MHC class",
-    "content": "MHC class characteristics immunopeptidomics fixed: MHC class I, MHC class II, MHC class I and II",
-    "url": "./sdrf-terms.html#mhc-class",
-    "section": "SDRF Terms Reference",
-    "keywords": "MHC class immunopeptidomics"
-  },
-  {
-    "title": "Column: immunopeptidome enrichment method",
-    "content": "immunopeptidome enrichment method characteristics immunopeptidomics fixed: immunoaffinity purification, mild acid elution, detergent lysis",
-    "url": "./sdrf-terms.html#immunopeptidome-enrichment-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "immunopeptidome enrichment method immunopeptidomics"
-  },
-  {
-    "title": "Column: HLA typing",
-    "content": "HLA typing characteristics immunopeptidomics HLA nomenclature pattern",
-    "url": "./sdrf-terms.html#hla-typing",
-    "section": "SDRF Terms Reference",
-    "keywords": "HLA typing immunopeptidomics"
-  },
-  {
-    "title": "Column: HLA typing method",
-    "content": "HLA typing method characteristics immunopeptidomics fixed: NGS-based typing, SSO typing, SSP typing, SBT typing, predicted from RNA-seq",
-    "url": "./sdrf-terms.html#hla-typing-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "HLA typing method immunopeptidomics"
-  },
-  {
-    "title": "Column: crosslinking reagent",
-    "content": "crosslinking reagent characteristics crosslinking XLMOD, ChEBI",
-    "url": "./sdrf-terms.html#crosslinking-reagent",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslinking reagent crosslinking"
-  },
-  {
-    "title": "Column: enrichment process",
-    "content": "enrichment process characteristics crosslinking fixed: enrichment of cross-linked peptides, not applicable",
-    "url": "./sdrf-terms.html#enrichment-process",
-    "section": "SDRF Terms Reference",
-    "keywords": "enrichment process crosslinking"
-  },
-  {
-    "title": "Column: crosslink type",
-    "content": "crosslink type characteristics crosslinking fixed: homo-bifunctional, hetero-bifunctional, zero-length, photo-reactive, cleavable",
-    "url": "./sdrf-terms.html#crosslink-type",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslink type crosslinking"
-  },
-  {
-    "title": "Column: crosslink distance",
-    "content": "crosslink distance characteristics crosslinking pattern: number + A",
-    "url": "./sdrf-terms.html#crosslink-distance",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslink distance crosslinking"
-  },
-  {
-    "title": "Column: crosslinking reaction time",
-    "content": "crosslinking reaction time characteristics crosslinking pattern: number + time unit",
-    "url": "./sdrf-terms.html#crosslinking-reaction-time",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslinking reaction time crosslinking"
-  },
-  {
-    "title": "Column: crosslinking temperature",
-    "content": "crosslinking temperature characteristics crosslinking pattern: number + C",
-    "url": "./sdrf-terms.html#crosslinking-temperature",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslinking temperature crosslinking"
-  },
-  {
-    "title": "Column: environmental sample type",
-    "content": "environmental sample type characteristics metaproteomics ENVO, EFO",
-    "url": "./sdrf-terms.html#environmental-sample-type",
-    "section": "SDRF Terms Reference",
-    "keywords": "environmental sample type metaproteomics"
-  },
-  {
-    "title": "Column: sample collection method",
-    "content": "sample collection method characteristics metaproteomics free text",
-    "url": "./sdrf-terms.html#sample-collection-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "sample collection method metaproteomics"
-  },
-  {
-    "title": "Column: geographic location",
-    "content": "geographic location characteristics metaproteomics GAZ",
-    "url": "./sdrf-terms.html#geographic-location",
-    "section": "SDRF Terms Reference",
-    "keywords": "geographic location metaproteomics"
-  },
-  {
-    "title": "Column: collection date",
-    "content": "collection date characteristics metaproteomics ISO 8601 date",
-    "url": "./sdrf-terms.html#collection-date",
-    "section": "SDRF Terms Reference",
-    "keywords": "collection date metaproteomics"
-  },
-  {
-    "title": "Column: depth",
-    "content": "depth characteristics metaproteomics pattern: number + m/cm",
-    "url": "./sdrf-terms.html#depth",
-    "section": "SDRF Terms Reference",
-    "keywords": "depth metaproteomics"
-  },
-  {
-    "title": "Column: temperature",
-    "content": "temperature characteristics metaproteomics pattern: number + C",
-    "url": "./sdrf-terms.html#temperature",
-    "section": "SDRF Terms Reference",
-    "keywords": "temperature metaproteomics"
-  },
-  {
-    "title": "Column: pH",
-    "content": "pH characteristics metaproteomics numeric",
-    "url": "./sdrf-terms.html#ph",
-    "section": "SDRF Terms Reference",
-    "keywords": "pH metaproteomics"
-  },
-  {
-    "title": "Column: host organism",
-    "content": "host organism characteristics metaproteomics NCBITaxon",
-    "url": "./sdrf-terms.html#host-organism",
-    "section": "SDRF Terms Reference",
-    "keywords": "host organism metaproteomics"
-  },
-  {
-    "title": "Column: host disease",
-    "content": "host disease characteristics metaproteomics MONDO, DOID",
-    "url": "./sdrf-terms.html#host-disease",
-    "section": "SDRF Terms Reference",
-    "keywords": "host disease metaproteomics"
-  },
-  {
-    "title": "Column: proteomics data acquisition method",
-    "content": "proteomics data acquisition method comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition PRIDE",
-    "url": "./sdrf-terms.html#proteomics-data-acquisition-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "proteomics data acquisition method minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: label",
-    "content": "label comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition PRIDE",
-    "url": "./sdrf-terms.html#label",
-    "section": "SDRF Terms Reference",
-    "keywords": "label minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: instrument",
-    "content": "instrument comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition MS (PSI-MS)",
-    "url": "./sdrf-terms.html#instrument",
-    "section": "SDRF Terms Reference",
-    "keywords": "instrument minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: cleavage agent details",
-    "content": "cleavage agent details comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition MS (PSI-MS)",
-    "url": "./sdrf-terms.html#cleavage-agent-details",
-    "section": "SDRF Terms Reference",
-    "keywords": "cleavage agent details minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: fraction identifier",
-    "content": "fraction identifier comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition integer",
-    "url": "./sdrf-terms.html#fraction-identifier",
-    "section": "SDRF Terms Reference",
-    "keywords": "fraction identifier minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: technical replicate",
-    "content": "technical replicate comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition integer",
-    "url": "./sdrf-terms.html#technical-replicate",
-    "section": "SDRF Terms Reference",
-    "keywords": "technical replicate minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: data file",
-    "content": "data file comment minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition file name",
-    "url": "./sdrf-terms.html#data-file",
-    "section": "SDRF Terms Reference",
-    "keywords": "data file minimum, default, human, cell-lines, single-cell, immunopeptidomics, crosslinking, metaproteomics, dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: modification parameters",
-    "content": "modification parameters comment dia-acquisition, dda-acquisition Unimod, PSI-MOD",
-    "url": "./sdrf-terms.html#modification-parameters",
-    "section": "SDRF Terms Reference",
-    "keywords": "modification parameters dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: precursor mass tolerance",
-    "content": "precursor mass tolerance comment dia-acquisition, dda-acquisition pattern: number + ppm/Da",
-    "url": "./sdrf-terms.html#precursor-mass-tolerance",
-    "section": "SDRF Terms Reference",
-    "keywords": "precursor mass tolerance dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: fragment mass tolerance",
-    "content": "fragment mass tolerance comment dia-acquisition, dda-acquisition pattern: number + ppm/Da",
-    "url": "./sdrf-terms.html#fragment-mass-tolerance",
-    "section": "SDRF Terms Reference",
-    "keywords": "fragment mass tolerance dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: precursor min mz",
-    "content": "precursor min mz comment dia-acquisition, dda-acquisition numeric (m/z)",
-    "url": "./sdrf-terms.html#precursor-min-mz",
-    "section": "SDRF Terms Reference",
-    "keywords": "precursor min mz dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: precursor max mz",
-    "content": "precursor max mz comment dia-acquisition, dda-acquisition numeric (m/z)",
-    "url": "./sdrf-terms.html#precursor-max-mz",
-    "section": "SDRF Terms Reference",
-    "keywords": "precursor max mz dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: precursor min charge",
-    "content": "precursor min charge comment dia-acquisition, dda-acquisition integer",
-    "url": "./sdrf-terms.html#precursor-min-charge",
-    "section": "SDRF Terms Reference",
-    "keywords": "precursor min charge dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: precursor max charge",
-    "content": "precursor max charge comment dia-acquisition, dda-acquisition integer",
-    "url": "./sdrf-terms.html#precursor-max-charge",
-    "section": "SDRF Terms Reference",
-    "keywords": "precursor max charge dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: min retention time",
-    "content": "min retention time comment dia-acquisition, dda-acquisition numeric (minutes)",
-    "url": "./sdrf-terms.html#min-retention-time",
-    "section": "SDRF Terms Reference",
-    "keywords": "min retention time dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: max retention time",
-    "content": "max retention time comment dia-acquisition, dda-acquisition numeric (minutes)",
-    "url": "./sdrf-terms.html#max-retention-time",
-    "section": "SDRF Terms Reference",
-    "keywords": "max retention time dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: min ion mobility",
-    "content": "min ion mobility comment dia-acquisition, dda-acquisition numeric (1/K0 or Vs/cm2)",
-    "url": "./sdrf-terms.html#min-ion-mobility",
-    "section": "SDRF Terms Reference",
-    "keywords": "min ion mobility dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: max ion mobility",
-    "content": "max ion mobility comment dia-acquisition, dda-acquisition numeric (1/K0 or Vs/cm2)",
-    "url": "./sdrf-terms.html#max-ion-mobility",
-    "section": "SDRF Terms Reference",
-    "keywords": "max ion mobility dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: passage number",
-    "content": "passage number comment cell-lines integer or range",
-    "url": "./sdrf-terms.html#passage-number",
-    "section": "SDRF Terms Reference",
-    "keywords": "passage number cell-lines"
-  },
-  {
-    "title": "Column: cell line source",
-    "content": "cell line source comment cell-lines free text",
-    "url": "./sdrf-terms.html#cell-line-source",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell line source cell-lines"
-  },
-  {
-    "title": "Column: authentication method",
-    "content": "authentication method comment cell-lines free text",
-    "url": "./sdrf-terms.html#authentication-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "authentication method cell-lines"
-  },
-  {
-    "title": "Column: carrier proteome",
-    "content": "carrier proteome comment single-cell fixed: yes, no, not applicable",
-    "url": "./sdrf-terms.html#carrier-proteome",
-    "section": "SDRF Terms Reference",
-    "keywords": "carrier proteome single-cell"
-  },
-  {
-    "title": "Column: carrier channel",
-    "content": "carrier channel comment single-cell TMT channel pattern",
-    "url": "./sdrf-terms.html#carrier-channel",
-    "section": "SDRF Terms Reference",
-    "keywords": "carrier channel single-cell"
-  },
-  {
-    "title": "Column: reference channel",
-    "content": "reference channel comment single-cell TMT channel pattern",
-    "url": "./sdrf-terms.html#reference-channel",
-    "section": "SDRF Terms Reference",
-    "keywords": "reference channel single-cell"
-  },
-  {
-    "title": "Column: cells per well",
-    "content": "cells per well comment single-cell integer",
-    "url": "./sdrf-terms.html#cells-per-well",
-    "section": "SDRF Terms Reference",
-    "keywords": "cells per well single-cell"
-  },
-  {
-    "title": "Column: single cell quality",
-    "content": "single cell quality comment single-cell fixed: OK, pass, fail, not OK",
-    "url": "./sdrf-terms.html#single-cell-quality",
-    "section": "SDRF Terms Reference",
-    "keywords": "single cell quality single-cell"
-  },
-  {
-    "title": "Column: cell number",
-    "content": "cell number comment immunopeptidomics scientific notation",
-    "url": "./sdrf-terms.html#cell-number",
-    "section": "SDRF Terms Reference",
-    "keywords": "cell number immunopeptidomics"
-  },
-  {
-    "title": "Column: tissue mass",
-    "content": "tissue mass comment immunopeptidomics pattern: number + mg/g",
-    "url": "./sdrf-terms.html#tissue-mass",
-    "section": "SDRF Terms Reference",
-    "keywords": "tissue mass immunopeptidomics"
-  },
-  {
-    "title": "Column: antibody used",
-    "content": "antibody used comment immunopeptidomics free text",
-    "url": "./sdrf-terms.html#antibody-used",
-    "section": "SDRF Terms Reference",
-    "keywords": "antibody used immunopeptidomics"
-  },
-  {
-    "title": "Column: elution conditions",
-    "content": "elution conditions comment immunopeptidomics free text",
-    "url": "./sdrf-terms.html#elution-conditions",
-    "section": "SDRF Terms Reference",
-    "keywords": "elution conditions immunopeptidomics"
-  },
-  {
-    "title": "Column: cross-linking method",
-    "content": "cross-linking method comment crosslinking fixed: cross-linking mass spectrometry, hydrogen-deuterium exchange, ion-mobility mass spectrometry",
-    "url": "./sdrf-terms.html#cross-linking-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "cross-linking method crosslinking"
-  },
-  {
-    "title": "Column: cross-linker",
-    "content": "cross-linker comment crosslinking XLMOD key-value format",
-    "url": "./sdrf-terms.html#cross-linker",
-    "section": "SDRF Terms Reference",
-    "keywords": "cross-linker crosslinking"
-  },
-  {
-    "title": "Column: crosslinker concentration",
-    "content": "crosslinker concentration comment crosslinking pattern: number + mM/uM",
-    "url": "./sdrf-terms.html#crosslinker-concentration",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslinker concentration crosslinking"
-  },
-  {
-    "title": "Column: crosslinker to protein ratio",
-    "content": "crosslinker to protein ratio comment crosslinking ratio pattern",
-    "url": "./sdrf-terms.html#crosslinker-to-protein-ratio",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslinker to protein ratio crosslinking"
-  },
-  {
-    "title": "Column: quenching reagent",
-    "content": "quenching reagent comment crosslinking free text",
-    "url": "./sdrf-terms.html#quenching-reagent",
-    "section": "SDRF Terms Reference",
-    "keywords": "quenching reagent crosslinking"
-  },
-  {
-    "title": "Column: crosslink enrichment method",
-    "content": "crosslink enrichment method comment crosslinking fixed: size exclusion chromatography, strong cation exchange, affinity enrichment, peptide SEC, high-pH reversed phase, FAIMS",
-    "url": "./sdrf-terms.html#crosslink-enrichment-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "crosslink enrichment method crosslinking"
-  },
-  {
-    "title": "Column: database search strategy",
-    "content": "database search strategy comment metaproteomics fixed: matched metagenome, reference database, two-step search, spectral library",
-    "url": "./sdrf-terms.html#database-search-strategy",
-    "section": "SDRF Terms Reference",
-    "keywords": "database search strategy metaproteomics"
-  },
-  {
-    "title": "Column: metagenome accession",
-    "content": "metagenome accession comment metaproteomics accession pattern",
-    "url": "./sdrf-terms.html#metagenome-accession",
-    "section": "SDRF Terms Reference",
-    "keywords": "metagenome accession metaproteomics"
-  },
-  {
-    "title": "Column: sample storage",
-    "content": "sample storage comment metaproteomics free text",
-    "url": "./sdrf-terms.html#sample-storage",
-    "section": "SDRF Terms Reference",
-    "keywords": "sample storage metaproteomics"
-  },
-  {
-    "title": "Column: scan window lower limit",
-    "content": "scan window lower limit comment dia-acquisition numeric m/z",
-    "url": "./sdrf-terms.html#scan-window-lower-limit",
-    "section": "SDRF Terms Reference",
-    "keywords": "scan window lower limit dia-acquisition"
-  },
-  {
-    "title": "Column: scan window upper limit",
-    "content": "scan window upper limit comment dia-acquisition numeric m/z",
-    "url": "./sdrf-terms.html#scan-window-upper-limit",
-    "section": "SDRF Terms Reference",
-    "keywords": "scan window upper limit dia-acquisition"
-  },
-  {
-    "title": "Column: isolation window width",
-    "content": "isolation window width comment dia-acquisition numeric m/z",
-    "url": "./sdrf-terms.html#isolation-window-width",
-    "section": "SDRF Terms Reference",
-    "keywords": "isolation window width dia-acquisition"
-  },
-  {
-    "title": "Column: collision energy",
-    "content": "collision energy comment dia-acquisition, dda-acquisition pattern: {value} {unit} where value is number with optional %, unit is NCE or eV. Stepped: {value} {unit};{value} {unit}",
-    "url": "./sdrf-terms.html#collision-energy",
-    "section": "SDRF Terms Reference",
-    "keywords": "collision energy dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: dissociation method",
-    "content": "dissociation method comment dia-acquisition, dda-acquisition MS, PRIDE (children of MS:1000044)",
-    "url": "./sdrf-terms.html#dissociation-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "dissociation method dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: MS2 mass analyzer",
-    "content": "MS2 mass analyzer comment dia-acquisition, dda-acquisition MS (PSI-MS)",
-    "url": "./sdrf-terms.html#ms2-mass-analyzer",
-    "section": "SDRF Terms Reference",
-    "keywords": "MS2 mass analyzer dia-acquisition, dda-acquisition"
-  },
-  {
-    "title": "Column: DIA method",
-    "content": "DIA method comment dia-acquisition PRIDE",
-    "url": "./sdrf-terms.html#dia-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "DIA method dia-acquisition"
-  },
-  {
-    "title": "Column: fractionation method",
-    "content": "fractionation method comment dda-acquisition PRIDE (children of PRIDE:0000550)",
-    "url": "./sdrf-terms.html#fractionation-method",
-    "section": "SDRF Terms Reference",
-    "keywords": "fractionation method dda-acquisition"
+    "title": "Water Template",
+    "content": "SDRF template for aquatic metaproteomics. Extends metaproteomics with water-specific columns aligned with the GSC MIxS water extension (0016014). Combine with ms-proteomics for MS acquisition columns.\n The water template adds aquatic environment metadata from the MIxS water\nextension. These columns describe water body properties, chemical/physical\nmeasurements, and sampling context for aquatic microbiome studies.\n\nPRIDE ontology terms (PRIDE:0000829 children) include MIxS cross-references.\n\nUsage: water + ms-proteomics\n source name Unique identifier for the biological sample assay name Unique identifier for the data acquisition run technology type Type of technology used comment[technical replicate] Identifier for the technical replicate (integer starting from 1) comment[data file] Name of the raw data file comment[sdrf version] Version of the SDRF-Proteomics specification used to annotate this file comment[sdrf template] Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns. comment[sdrf annotation tool] Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z). comment[sdrf validation hash] Hash value for SDRF validation integrity checking characteristics[environmental sample type] Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[geographic location] Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010). characteristics[environmental medium] Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014). characteristics[collection date] Date when sample was collected (ISO 8601) characteristics[sample collection method] Method used to collect the environmental sample characteristics[depth] Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018). characteristics[altitude] Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093). characteristics[temperature] Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113). characteristics[ph] pH at sampling location characteristics[sample storage] Storage conditions for the sample before analysis comment[metagenome accession] Accession number for matched metagenome data characteristics[microbiome source] Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome) characteristics[biomass estimation] Estimated microbial biomass in the sample characteristics[host contamination] Level of host protein contamination if known comment[contaminant database] Contaminant database(s) used in database search characteristics[mock community] Identifier o",
+    "url": "./templates/water.html",
+    "section": "Sample Template",
+    "keywords": "comment[metagenome accession] comment[contaminant database] y characteristics[host contamination] source name characteristics[sample storage] characteristics[alkalinity] characteristics[chlorophyll] characteristics[current] e comment[sdrf version] 6 2 X 7 characteristics[sampling depth zone] R h o s water 0 3 comment[sdrf validation hash] x comment[technical replicate] v n z 4 8 O characteristics[biomass estimation] characteristics[total dissolved solids] characteristics[temperature] l c : characteristics[altitude] m characteristics[environmental sample type] d P comment[expected organism list] w characteristics[salinity] characteristics[environmental medium] 9 characteristics[microbiome source] comment[sdrf annotation tool]   S characteristics[nitrate] D characteristics[mock community] 5 t characteristics[phosphate] characteristics[conductivity] I characteristics[turbidity] p u sample M a k f characteristics[ph] i characteristics[collection date] E characteristics[sample collection method] b comment[sdrf template] characteristics[water body type] characteristics[depth] characteristics[mock community composition] characteristics[geographic location] F technology type r characteristics[light intensity] g comment[data file] characteristics[dissolved oxygen] 1 assay name"
   }
 ];

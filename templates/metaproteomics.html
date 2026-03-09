@@ -1,888 +1,2649 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.26">
-<title>SDRF-Proteomics: Metaproteomics Template</title>
-<link rel="stylesheet" href="./../css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>metaproteomics - SDRF Template</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .template-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        /* Header */
+        .template-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .template-header h1 { margin: 0 0 12px; font-size: 2.25rem; }
+        .header-badges { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .badge {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            padding: 4px 10px; border-radius: 20px;
+        }
+        .badge-version { font-size: 0.75rem; font-weight: 500; color: var(--text-light);
+            background: var(--bg-alt); border: 1px solid var(--border); text-transform: none; }
+        .badge-layer-sample { background: #ddf4ff; color: #0550ae; }
+        .badge-layer-technology { background: #dafbe1; color: #116329; }
+        .badge-layer-experiment { background: #fff8c5; color: #6a5700; }
+        .badge-layer-internal { background: var(--bg-alt); color: var(--text-light); }
+        .badge-usable { background: #dafbe1; color: #116329; }
+
+        /* Sections */
+        .template-section { margin-bottom: 2.5rem; }
+        .template-section h2 { margin-top: 0; font-size: 1.4rem; margin-bottom: 0.75rem; }
+
+        /* Documentation */
+        .doc-content { line-height: 1.7; color: var(--text); }
+        .doc-content p { margin: 0.6em 0; }
+        .doc-content ul { margin: 0.5em 0; padding-left: 1.5rem; }
+        .doc-content li { margin: 0.3em 0; }
+        .doc-content code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--bg-alt); padding: 1px 5px; border-radius: 3px;
+        }
+
+        /* Inheritance chain */
+        .inheritance-chain {
+            display: flex; flex-wrap: wrap; align-items: center;
+            padding: 12px 16px; background: var(--bg-alt);
+            border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;
+        }
+        .inheritance-chain a { color: var(--accent); text-decoration: none; }
+        .inheritance-chain a:hover { text-decoration: underline; }
+        .inheritance-chain .current { font-weight: 700; color: var(--text); }
+        .chain-sep { margin: 0 8px; color: var(--text-light); }
+
+        /* Combination rules */
+        .combination-rules ul { list-style: disc; padding-left: 1.5rem; }
+        .combination-rules li { margin: 0.5em 0; font-size: 0.95rem; }
+
+        /* Column controls */
+        .column-controls {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .toggle-btn {
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg-alt); color: var(--text); cursor: pointer;
+        }
+        .toggle-btn:hover { background: #f0f3f6; border-color: var(--accent); }
+        .column-stats { font-size: 0.85rem; color: var(--text-light); }
+
+        /* Column table */
+        .columns-table-wrapper {
+            overflow-x: auto; border: 1px solid var(--border); border-radius: 8px;
+        }
+        .columns-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .columns-table thead { background: var(--bg-alt); }
+        .columns-table th {
+            font-weight: 600; text-align: left; padding: 10px 14px;
+            border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap;
+        }
+        .columns-table td {
+            padding: 10px 14px; border-bottom: 1px solid var(--border-light); vertical-align: middle;
+        }
+        .columns-table tbody tr:last-child td { border-bottom: none; }
+        .columns-table .col-name {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; white-space: nowrap;
+        }
+
+        /* Requirement badges */
+        .req-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+        }
+        .req-required { background: #cf222e; color: #fff; }
+        .req-recommended { background: #9a6700; color: #fff; }
+        .req-optional { background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border); }
+
+        /* Source badge */
+        .source-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 500;
+            padding: 2px 8px; border-radius: 4px;
+            background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        /* Inherited rows */
+        .columns-table tr.inherited { background: #fafbfc; }
+        .columns-table tr.inherited td { color: var(--text-light); }
+        .columns-table tr.inherited .col-name { color: var(--text-light); }
+        tr.hidden { display: none; }
+
+        /* Clickable rows */
+        tr.column-row { cursor: pointer; }
+        tr.column-row:hover { background: #f6f8fa; }
+        tr.column-row.inherited:hover { background: #f0f3f6; }
+
+        /* Detail row (expandable) */
+        tr.detail-row { display: none; }
+        tr.detail-row.open { display: table-row; }
+        tr.detail-row td {
+            padding: 0 14px 14px 14px; background: #f6f8fa;
+            border-bottom: 1px solid var(--border);
+        }
+        tr.inherited + tr.detail-row td { background: #f0f3f6; }
+
+        .detail-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;
+            font-size: 0.82rem; padding-top: 8px;
+        }
+        .detail-item label {
+            display: block; font-weight: 600; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            color: var(--text-light); margin-bottom: 2px;
+        }
+        .detail-item .value { color: var(--text); line-height: 1.5; }
+        .detail-item .value code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--bg); padding: 1px 5px; border-radius: 3px;
+            border: 1px solid var(--border-light);
+        }
+        .detail-item .value a {
+            color: var(--accent); text-decoration: none;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+        }
+        .detail-item.full-width { grid-column: 1 / -1; }
+        .detail-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+        .detail-tag {
+            font-size: 0.7rem; padding: 2px 6px; border-radius: 3px;
+            background: var(--bg); border: 1px solid var(--border-light);
+        }
+
+        /* Expand indicator */
+        .expand-icon {
+            display: inline-block; width: 16px; font-size: 0.7rem;
+            color: var(--text-light); transition: transform 0.15s;
+        }
+        tr.column-row.expanded .expand-icon { transform: rotate(90deg); }
+
+        /* Contributors */
+        .contributors-list { list-style: disc; padding-left: 1.5rem; }
+        .contributors-list li { font-size: 0.9rem; margin: 0.4em 0; }
+
+        @media (max-width: 768px) {
+            .template-page { padding: 32px 20px; }
+            .template-header h1 { font-size: 1.75rem; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
-<body class="has-doc-header book toc2 toc-left">
+<body class="has-doc-header">
 <header class="doc-header"><div class="doc-header-brand"><a href="../index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="../index.html">Home</a><a href="../specification.html">Specification</a><a href="../index.html#metadata-guidelines">Metadata Guidelines</a><a href="../index.html#templates" class="nav-current">Templates</a><a href="../index.html#tools">Tools</a><a href="../sdrf-explorer.html">Explorer</a><a href="../sdrf-editor.html">Editor</a><a href="../index.html#contributors">Contributors</a><a href="/dev/" class="version-link">Dev Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
-<div id="header">
-<h1>SDRF-Proteomics: Metaproteomics Template</h1>
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#status">1. Status of this Template</a></li>
-<li><a href="#abstract">2. Abstract</a></li>
-<li><a href="#connections">3. Connections to Other Omics Fields</a></li>
-<li><a href="#additional-ontologies">4. Additional Ontologies</a></li>
-<li><a href="#checklist">5. Checklist</a>
-<ul class="sectlevel2">
-<li><a href="#_required_columns">5.1. Required Columns</a></li>
-<li><a href="#_recommended_columns">5.2. Recommended Columns</a></li>
-<li><a href="#_environmental_context_columns">5.3. Environmental Context Columns</a>
-<ul class="sectlevel3">
-<li><a href="#_aquatic_samples">5.3.1. Aquatic Samples</a></li>
-<li><a href="#_soil_samples">5.3.2. Soil Samples</a></li>
-<li><a href="#_host_associated_samples">5.3.3. Host-Associated Samples</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#organism-annotation">6. Organism Annotation in Metaproteomics</a>
-<ul class="sectlevel2">
-<li><a href="#_option_1_use_metagenome_or_environment_specific_term">6.1. Option 1: Use "metagenome" or Environment-Specific Term</a></li>
-<li><a href="#_option_2_specify_host_organism">6.2. Option 2: Specify Host Organism</a></li>
-<li><a href="#_option_3_multiple_organism_columns">6.3. Option 3: Multiple Organism Columns</a></li>
-</ul>
-</li>
-<li><a href="#database-annotation">7. Database Search Strategy Annotation</a></li>
-<li><a href="#mock-communities">8. Mock Community Samples</a></li>
-<li><a href="#example-sdrf">9. Example SDRF Files</a>
-<ul class="sectlevel2">
-<li><a href="#_human_gut_microbiome_example">9.1. Human Gut Microbiome Example</a></li>
-<li><a href="#_environmental_sample_example">9.2. Environmental Sample Example</a></li>
-</ul>
-</li>
-<li><a href="#quality-considerations">10. Quality Control Annotations</a></li>
-<li><a href="#best-practices">11. Best Practices for Metaproteomics Annotation</a></li>
-<li><a href="#template-file">12. Template File</a></li>
-<li><a href="#validation">13. Validation</a></li>
-<li><a href="#authors">14. Authors and Maintainers</a></li>
-<li><a href="#references">15. References</a></li>
-</ul>
-</div>
-</div>
-<div id="content">
-<div class="sect1">
-<h2 id="status"><a class="anchor" href="#status"></a><a class="link" href="#status">1. Status of this Template</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This document provides guidelines for annotating metaproteomics experiments in SDRF-Proteomics format. This template extends the core SDRF-Proteomics specification with metaproteomics-specific metadata fields.</p>
-</div>
-<div class="paragraph">
-<p><strong>Status:</strong> Draft - This template is under active development and may change significantly.</p>
-</div>
-<div class="paragraph">
-<p><strong>Version:</strong> 1.0.0-dev - 2026-01</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="abstract"><a class="anchor" href="#abstract"></a><a class="link" href="#abstract">2. Abstract</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Metaproteomics is the study of proteins expressed by microbial communities, analyzing complex samples containing proteins from many different organisms simultaneously. Key applications include gut microbiome characterization, environmental microbiology, host-microbiome interactions, and industrial biotechnology.</p>
-</div>
-<div class="paragraph">
-<p>Metaproteomics experiments have unique characteristics: multi-organism samples, complex sample matrices, databases constructed from metagenomics data, taxonomic attribution challenges, and critical environmental context metadata. This template defines the additional metadata requirements for annotating metaproteomics datasets.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="connections"><a class="anchor" href="#connections"></a><a class="link" href="#connections">3. Connections to Other Omics Fields</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Metaproteomics data is typically integrated with:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Metagenomics</strong>: For database construction and taxonomic context</p>
-</li>
-<li>
-<p><strong>Metatranscriptomics</strong>: For gene expression correlation</p>
-</li>
-<li>
-<p><strong>16S/ITS amplicon sequencing</strong>: For community composition</p>
-</li>
-<li>
-<p><strong>Metabolomics</strong>: For functional interpretation</p>
-</li>
-<li>
-<p><strong>Environmental databases</strong>: ENVO, MIxS standards</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>When available, linking to related omics datasets is highly RECOMMENDED.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="additional-ontologies"><a class="anchor" href="#additional-ontologies"></a><a class="link" href="#additional-ontologies">4. Additional Ontologies</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In addition to the ontologies supported by the core SDRF-Proteomics specification, metaproteomics templates utilize:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Environment Ontology (ENVO)</strong>: For environmental sample classification (<a href="http://www.obofoundry.org/ontology/envo.html" class="bare">http://www.obofoundry.org/ontology/envo.html</a>)</p>
-</li>
-<li>
-<p><strong>Gazetteer (GAZ)</strong>: For geographic locations</p>
-</li>
-<li>
-<p><strong>MIxS</strong>: Minimum Information about any (x) Sequence standards</p>
-</li>
-<li>
-<p><strong>NCBI Taxonomy</strong>: For organism classification</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="checklist"><a class="anchor" href="#checklist"></a><a class="link" href="#checklist">5. Checklist</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This section defines the metadata columns required and recommended for metaproteomics experiments.</p>
-</div>
-<div class="sect2">
-<h3 id="_required_columns"><a class="anchor" href="#_required_columns"></a><a class="link" href="#_required_columns">5.1. Required Columns</a></h3>
-<div class="paragraph">
-<p>The following columns are REQUIRED for metaproteomics experiments in addition to the core SDRF-Proteomics requirements:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Cardinality</th>
-<th class="tableblock halign-left valign-top">Ontology/CV</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[environmental sample type]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of environmental or biological sample being analyzed</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ENVO, EFO</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">soil, marine sediment, human gut, wastewater, rhizosphere, oral cavity, skin</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_recommended_columns"><a class="anchor" href="#_recommended_columns"></a><a class="link" href="#_recommended_columns">5.2. Recommended Columns</a></h3>
-<div class="paragraph">
-<p>The following columns are RECOMMENDED for metaproteomics experiments:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Cardinality</th>
-<th class="tableblock halign-left valign-top">Ontology/CV</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sample collection method]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to collect the sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Controlled vocabulary or free text</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">grab sample, core sampling, swab collection, filtration, fecal collection, biopsy</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[geographic location]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Geographic location where sample was collected</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GAZ or free text with coordinates</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Baltic Sea, Amazon rainforest, lat:52.5 lon:13.4, GAZ:00002459</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[collection date]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Date when sample was collected</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISO 8601 date format</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2024-03-15, 2024-03, March 2024</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[depth]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Depth at which sample was collected (for water/sediment)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10 m, 0-5 cm, surface</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[altitude]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Altitude/elevation for terrestrial samples</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">500 m, 1200 m above sea level</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[temperature]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Environmental temperature at collection</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value with unit (Celsius)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">25 C, 4 C, 37 C</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[pH]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pH of the sample or environment</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">7.4, 5.5, 8.2</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host organism]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Host organism for host-associated microbiomes</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NCBITaxon</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens, mus musculus, zea mays</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host disease]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of host if applicable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO, EFO</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">inflammatory bowel disease, normal, colorectal cancer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host age]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Age of host organism</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Standard age format</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45Y, 8W, 3M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[database search strategy]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Strategy for sequence database construction</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">matched metagenome, RefSeq bacteria, GTDB, UniRef90, custom assembly</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[metagenome accession]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Accession number for associated metagenome data</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database accession</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SRR12345678, ERR12345678, PRJNA123456</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[sample storage]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">How sample was stored before processing</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0..1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Free text description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">flash frozen, -80C, RNAlater, 4C for 24h</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_environmental_context_columns"><a class="anchor" href="#_environmental_context_columns"></a><a class="link" href="#_environmental_context_columns">5.3. Environmental Context Columns</a></h3>
-<div class="sect3">
-<h4 id="_aquatic_samples"><a class="anchor" href="#_aquatic_samples"></a><a class="link" href="#_aquatic_samples">5.3.1. Aquatic Samples</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[water body type]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of water body</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ocean, lake, river, estuary, pond</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[salinity]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Salinity measurement</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">35 PSU, freshwater, brackish</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[dissolved oxygen]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved oxygen concentration</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8.5 mg/L, hypoxic, anoxic</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[chlorophyll]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Chlorophyll concentration if measured</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 ug/L</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[sampling depth zone]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ecological depth zone</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">epipelagic, mesopelagic, benthic</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_soil_samples"><a class="anchor" href="#_soil_samples"></a><a class="link" href="#_soil_samples">5.3.2. Soil Samples</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[soil type]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Soil classification</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sandy loam, clay, peat</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[soil horizon]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Soil horizon sampled</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A horizon, O horizon, B horizon</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[land use]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Land use type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">agricultural, forest, urban, grassland</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[vegetation]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dominant vegetation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">deciduous forest, corn field, prairie</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_host_associated_samples"><a class="anchor" href="#_host_associated_samples"></a><a class="link" href="#_host_associated_samples">5.3.3. Host-Associated Samples</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[body site]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specific body site for host-associated samples</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">stool, oral cavity, skin, vaginal</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[host diet]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Diet information for host</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">omnivore, vegan, western diet, high-fiber</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[antibiotic treatment]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Recent antibiotic exposure</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">none, amoxicillin 7 days prior, broad-spectrum</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="organism-annotation"><a class="anchor" href="#organism-annotation"></a><a class="link" href="#organism-annotation">6. Organism Annotation in Metaproteomics</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <code>characteristics[organism]</code> column presents a unique challenge in metaproteomics because samples contain multiple organisms. Several approaches are supported:</p>
-</div>
-<div class="sect2">
-<h3 id="_option_1_use_metagenome_or_environment_specific_term"><a class="anchor" href="#_option_1_use_metagenome_or_environment_specific_term"></a><a class="link" href="#_option_1_use_metagenome_or_environment_specific_term">6.1. Option 1: Use "metagenome" or Environment-Specific Term</a></h3>
-<div class="paragraph">
-<p>For samples where the community composition is unknown or highly complex:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">Example Samples</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">General environmental samples</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">human gut metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human fecal samples, gut biopsies</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">soil metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Soil samples</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">marine metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ocean water, marine sediment</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mouse gut metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse fecal samples</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>These terms have corresponding NCBITaxon identifiers (e.g., NCBITaxon:749906 for "gut metagenome").</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_option_2_specify_host_organism"><a class="anchor" href="#_option_2_specify_host_organism"></a><a class="link" href="#_option_2_specify_host_organism">6.2. Option 2: Specify Host Organism</a></h3>
-<div class="paragraph">
-<p>For host-associated microbiomes where host context is important:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[microbiome source]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">gut microbiome</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mus musculus</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">gut microbiome</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">arabidopsis thaliana</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">rhizosphere microbiome</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_option_3_multiple_organism_columns"><a class="anchor" href="#_option_3_multiple_organism_columns"></a><a class="link" href="#_option_3_multiple_organism_columns">6.3. Option 3: Multiple Organism Columns</a></h3>
-<div class="paragraph">
-<p>For controlled or known communities (e.g., defined consortia, mock communities):</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-<th class="tableblock halign-left valign-top">characteristics[organism]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">escherichia coli</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">bacteroides fragilis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">lactobacillus acidophilus</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The approach should be chosen based on the experimental context and database search strategy used.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="database-annotation"><a class="anchor" href="#database-annotation"></a><a class="link" href="#database-annotation">7. Database Search Strategy Annotation</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Metaproteomics database construction is critical and should be documented:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Strategy</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">When to Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Matched metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database from metagenome of same sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When metagenome sequencing was performed</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reference database</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public reference database (RefSeq, UniProt)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When no metagenome available</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Custom assembly</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">De novo assembled from sample metagenome</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For novel environments</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GTDB/UHGG</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genome-resolved metagenome databases</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For gut microbiome studies</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hybrid approach</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Combination of reference and sample-specific</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Complex communities with some known members</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Document the strategy in <code>comment[database search strategy]</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="mock-communities"><a class="anchor" href="#mock-communities"></a><a class="link" href="#mock-communities">8. Mock Community Samples</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For defined/mock microbial communities used as standards:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[mock community]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier or name of mock community standard</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ZymoBIOMICS Microbial Community Standard, ATCC MSA-1000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">characteristics[mock community composition]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Description of community composition</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8 bacteria + 2 yeasts at defined ratios, even mix of 10 species</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[expected organism list]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List of organisms expected in mock community</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">E. coli;B. subtilis;S. cerevisiae;L. fermentum</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="example-sdrf"><a class="anchor" href="#example-sdrf"></a><a class="link" href="#example-sdrf">9. Example SDRF Files</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_human_gut_microbiome_example"><a class="anchor" href="#_human_gut_microbiome_example"></a><a class="link" href="#_human_gut_microbiome_example">9.1. Human Gut Microbiome Example</a></h3>
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="sample-col">characteristics[environmental sample type]</th>
-<th class="sample-col">characteristics[host disease]</th>
-<th class="ellipsis-col">...</th>
-<th class="data-col">comment[database search strategy]</th>
-<th class="data-col">comment[metagenome accession]</th>
-<th class="data-col">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">subject_001_stool</td>
-<td class="sample-col">human gut metagenome</td>
-<td class="sample-col">human gut</td>
-<td class="sample-col">inflammatory bowel disease</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">matched metagenome</td>
-<td class="data-col">SRR12345678</td>
-<td class="data-col">IBD_001.raw</td>
-</tr>
-<tr>
-<td class="sample-col">subject_002_stool</td>
-<td class="sample-col">human gut metagenome</td>
-<td class="sample-col">human gut</td>
-<td class="sample-col">normal</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">matched metagenome</td>
-<td class="data-col">SRR12345679</td>
-<td class="data-col">healthy_002.raw</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_environmental_sample_example"><a class="anchor" href="#_environmental_sample_example"></a><a class="link" href="#_environmental_sample_example">9.2. Environmental Sample Example</a></h3>
-<div class="sdrf-example-table">
-<table>
-<thead>
-<tr>
-<th class="sample-col">source name</th>
-<th class="sample-col">characteristics[organism]</th>
-<th class="sample-col">characteristics[environmental sample type]</th>
-<th class="sample-col">characteristics[geographic location]</th>
-<th class="sample-col">characteristics[depth]</th>
-<th class="ellipsis-col">...</th>
-<th class="data-col">comment[database search strategy]</th>
-<th class="data-col">comment[data file]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="sample-col">baltic_station1_summer</td>
-<td class="sample-col">marine metagenome</td>
-<td class="sample-col">marine sediment</td>
-<td class="sample-col">Baltic Sea</td>
-<td class="sample-col">50 m</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">GTDB marine subset</td>
-<td class="data-col">baltic_sed_001.raw</td>
-</tr>
-<tr>
-<td class="sample-col">soil_farm_plot1</td>
-<td class="sample-col">soil metagenome</td>
-<td class="sample-col">agricultural soil</td>
-<td class="sample-col">Iowa, USA</td>
-<td class="sample-col">0-10 cm</td>
-<td class="ellipsis-col">...</td>
-<td class="data-col">custom assembly</td>
-<td class="data-col">soil_plot1.raw</td>
-</tr>
-</tbody>
-</table>
-<div class="sdrf-legend">
-<span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
-<span class="legend-item"><span class="legend-color data-bg"></span> Data file metadata</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="quality-considerations"><a class="anchor" href="#quality-considerations"></a><a class="link" href="#quality-considerations">10. Quality Control Annotations</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For metaproteomics, consider documenting:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Example Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[biomass estimation]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Estimated microbial biomass in sample</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1e9 cells/g, high biomass, low biomass</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[host contamination]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Level of host protein contamination if known</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">low (&lt;5%), moderate (5-20%), high (&gt;20%)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment[contaminant database]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Contaminant databases used in search</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cRAP, MaxQuant contaminants</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="best-practices"><a class="anchor" href="#best-practices"></a><a class="link" href="#best-practices">11. Best Practices for Metaproteomics Annotation</a></h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Use appropriate organism terms</strong>: Choose between metagenome terms, host organism, or explicit multi-organism annotation based on your experimental design.</p>
-</li>
-<li>
-<p><strong>Document database strategy</strong>: The sequence database used dramatically affects results - always document construction strategy.</p>
-</li>
-<li>
-<p><strong>Link to metagenomics data</strong>: When available, provide accession numbers for related metagenome/metatranscriptome data.</p>
-</li>
-<li>
-<p><strong>Include environmental context</strong>: Geographic location, collection date, and environmental parameters enhance data reusability.</p>
-</li>
-<li>
-<p><strong>Specify host information</strong>: For host-associated microbiomes, document host species, health status, and relevant metadata.</p>
-</li>
-<li>
-<p><strong>Note sample handling</strong>: Storage conditions and processing time can affect community composition.</p>
-</li>
-<li>
-<p><strong>Consider MIxS standards</strong>: Align with Minimum Information about any (x) Sequence standards where applicable.</p>
-</li>
-<li>
-<p><strong>Use controlled vocabularies</strong>: Prefer ENVO terms for environmental classification and NCBITaxon for organisms.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="template-file"><a class="anchor" href="#template-file"></a><a class="link" href="#template-file">12. Template File</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The metaproteomics SDRF template file is available in the sdrf-templates repository:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/bigbio/sdrf-templates/blob/main/metaproteomics/1.0.0-dev/metaproteomics.sdrf.tsv">metaproteomics.sdrf.tsv</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="validation"><a class="anchor" href="#validation"></a><a class="link" href="#validation">13. Validation</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Metaproteomics SDRF files should be validated using the sdrf-pipelines tool:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install sdrf-pipelines
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Metaproteomics-specific validation rules are under development.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="authors"><a class="anchor" href="#authors"></a><a class="link" href="#authors">14. Authors and Maintainers</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This template was developed by the SDRF-Proteomics community with contributions from metaproteomics researchers.</p>
-</div>
-<div class="paragraph">
-<p>For questions or suggestions, please open an issue on the <a href="https://github.com/bigbio/proteomics-metadata-standard">GitHub repository</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="references"><a class="anchor" href="#references"></a><a class="link" href="#references">15. References</a></h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Wilmes P, Bond PL. (2004) The application of two-dimensional polyacrylamide gel electrophoresis and downstream analyses to a mixed community of prokaryotic microorganisms. Environmental Microbiology.</p>
-</li>
-<li>
-<p>Muth T, et al. (2015) The MetaProteomeAnalyzer: a powerful open-source software suite for metaproteomics data analysis and interpretation. Journal of Proteome Research.</p>
-</li>
-<li>
-<p>Chatterjee S, et al. (2023) A comprehensive and scalable database search system for metaproteomics. Nature Communications.</p>
-</li>
-<li>
-<p>ENVO: Environment Ontology (<a href="http://www.obofoundry.org/ontology/envo.html" class="bare">http://www.obofoundry.org/ontology/envo.html</a>)</p>
-</li>
-<li>
-<p>MIxS: Minimum Information about any (x) Sequence (<a href="https://genomicsstandardsconsortium.github.io/mixs/" class="bare">https://genomicsstandardsconsortium.github.io/mixs/</a>)</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div id="footer">
-<div id="footer-text">
-Last updated 2026-03-07 06:34:47 UTC
-</div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
-<script>
-if (!hljs.initHighlighting.called) {
-  hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
-}
-</script>
+    <div class="template-page">
+
+        
+        <div class="template-header">
+            <h1>metaproteomics</h1>
+            <div class="header-badges">
+                
+                <span class="badge badge-version">v1.0.0</span>
+                
+                
+                <span class="badge badge-layer-sample">sample</span>
+                
+                
+            </div>
+        </div>
+
+        
+        
+        <div class="template-section">
+            <p style="font-size: 1.05rem; line-height: 1.6;">Base SDRF template for metaproteomics experiments (microbial community proteomics). Extends base directly and defines MIxS-aligned sample metadata. When combined with ms-proteomics, sample-metadata columns (organism, disease, cell type) are excluded. Use a child template (human-gut, soil, water) for environment-specific fields.
+</p>
+        </div>
+        
+
+        
+        
+        <div class="template-section">
+            <h2>Key Guidance</h2>
+            <div class="doc-content">
+                <p>The metaproteomics template is aligned with the Genomics Standards Consortium (GSC)</p>
+<p>MIxS standard for environmental and host-associated sample metadata.</p>
+<p>Template hierarchy:</p>
+<p>metaproteomics (this template) - shared environmental context</p>
+<p>human-gut  - human gut microbiome (MIxS human-gut extension)</p>
+<p>soil       - soil metaproteomics (MIxS soil extension)</p>
+<p>water      - aquatic metaproteomics (MIxS water extension)</p>
+<p>Usage: combine a child template with ms-proteomics, e.g.:</p>
+<p>human-gut + ms-proteomics</p>
+<p>soil + ms-proteomics</p>
+<p>Key columns:</p>
+<ul><li><code>characteristics[environmental sample type]</code>: Required. ENVO/EFO term describing</li></ul>
+<p>the environmental material (soil, seawater, gut microbiome, biofilm).</p>
+<ul><li><code>characteristics[geographic location]</code>: Recommended. GAZ term or coordinates.</li><li><code>characteristics[collection date]</code>: ISO 8601 date of sample collection.</li><li><code>characteristics[environmental medium]</code>: ENVO term for the environmental material.</li><li><code>comment[metagenome accession]</code>: Link to matched metagenome dataset.</li></ul>
+<p>PRIDE ontology terms include MIxS cross-references in their definitions</p>
+<p>(e.g., MIXS:0001107). Column names use spaces (SDRF convention) rather than</p>
+<p>underscores (MIxS convention).</p>
+            </div>
+        </div>
+        
+
+        
+        
+        <div class="template-section">
+            <h2>Inheritance</h2>
+            <div class="inheritance-chain">
+                
+                    
+                    
+                    <a href="./base.html">base</a>
+                    
+                
+                    <span class="chain-sep">&rarr;</span>
+                    
+                    <span class="current">metaproteomics</span>
+                    
+                
+            </div>
+        </div>
+        
+
+        
+        
+        <div class="template-section">
+            <h2>Combination Rules</h2>
+            <div class="combination-rules">
+                <ul>
+                    
+                        
+                        <li>Requires a <strong>technology</strong> layer template.</li>
+                        
+                    
+                    
+                    <li>Mutually exclusive with:
+                        
+                        <a href="./human.html">human</a>, 
+                        
+                        <a href="./vertebrates.html">vertebrates</a>, 
+                        
+                        <a href="./invertebrates.html">invertebrates</a>, 
+                        
+                        <a href="./plants.html">plants</a>
+                        
+                    </li>
+                    
+                    
+                    <li>Excludes:
+                        
+                        <a href="./sample-metadata.html">sample-metadata</a>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+
+        
+        
+        
+        
+        <div class="template-section">
+            <h2>Columns</h2>
+            <div class="column-controls">
+                
+                <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
+                    Show inherited columns (9)
+                </button>
+                
+                <span class="column-stats">
+                    18 own + 9 inherited = 27 total
+                    &middot; click a row for details
+                </span>
+            </div>
+            <div class="columns-table-wrapper">
+                <table class="columns-table">
+                    <thead>
+                        <tr>
+                            <th style="width:20px"></th>
+                            <th>Column</th>
+                            <th>Requirement</th>
+                            <th>Source</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-1')" id="col-1">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">source name</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Unique identifier for the biological sample</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-1-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Unique identifier for the biological sample</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000623" target="_blank" rel="noopener">PRIDE:0000623</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-2')" id="col-2">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">assay name</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Unique identifier for the data acquisition run</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-2-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Unique identifier for the data acquisition run</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=NCIT:C178857" target="_blank" rel="noopener">NCIT:C178857</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-3')" id="col-3">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">technology type</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Type of technology used</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-3-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Type of technology used</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000663" target="_blank" rel="noopener">PRIDE:0000663</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>single_cardinality_validator</strong>
+                                                
+                                            </div>
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>values</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                     &mdash; values: <code>proteomic profiling by mass spectrometry</code>, <code>protein expression profiling by antibody array</code>, <code>protein expression profiling by aptamer array</code>
+                                                    
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                        
+                                            
+                                        
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-4')" id="col-4">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[technical replicate]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Identifier for the technical replicate (integer starting from 1)</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-4-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Identifier for the technical replicate (integer starting from 1)</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1001808" target="_blank" rel="noopener">MS:1001808</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            <span class="detail-tag">type: integer</span>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-5')" id="col-5">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[data file]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Name of the raw data file</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-5-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Name of the raw data file</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1003083" target="_blank" rel="noopener">MS:1003083</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-6')" id="col-6">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[environmental sample type]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).</td>
+                        </tr>
+                        <tr class="detail-row" id="col-6-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000993" target="_blank" rel="noopener">PRIDE:0000993</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: envo, efo
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Should be a valid ENVO or EFO term</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>soil</code>, <code>seawater</code>, <code>gut microbiome</code>, <code>wastewater</code>, <code>biofilm</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-7')" id="col-7">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf version]</td>
+                            <td>
+                                
+                                <span class="req-badge req-recommended">recommended</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Version of the SDRF-Proteomics specification used to annotate this file</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-7-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Version of the SDRF-Proteomics specification used to annotate this file</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000839" target="_blank" rel="noopener">PRIDE:0000839</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>semver</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">SDRF specification version</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>v1.1.0</code>, <code>v2.0.0-dev</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-8')" id="col-8">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[geographic location]</td>
+                            <td>
+                                
+                                <span class="req-badge req-recommended">recommended</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo...</td>
+                        </tr>
+                        <tr class="detail-row" id="col-8-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000995" target="_blank" rel="noopener">PRIDE:0000995</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: gaz
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Should be a valid GAZ term or coordinates</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>Pacific Ocean</code>, <code>Amazon rainforest</code>, <code>47.6062 N, 122.3321 W</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-9')" id="col-9">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[environmental medium]</td>
+                            <td>
+                                
+                                <span class="req-badge req-recommended">recommended</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_me...</td>
+                        </tr>
+                        <tr class="detail-row" id="col-9-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000994" target="_blank" rel="noopener">PRIDE:0000994</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: envo
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Should be a valid ENVO environmental material term</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>soil</code>, <code>seawater</code>, <code>freshwater</code>, <code>feces</code>, <code>biofilm</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-10')" id="col-10">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf template]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Template name and version used for annotation. Two formats are supported - key=value format (NT=t...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-10-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns.</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000832" target="_blank" rel="noopener">PRIDE:0000832</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            <span class="detail-tag">allows not available</span>
+                                            <span class="detail-tag">multiple cardinality</span>
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^(NT=[\w-]+;VV=v\d+\.\d+\.\d+(-[\w.]+)?|[\w-]+ v\d+\.\d+\.\d+(-[\w.]+)?)$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Template can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z'</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>NT=human;VV=v1.1.0</code>, <code>human v1.1.0</code>, <code>NT=ms-proteomics;VV=v1.1.0</code>, <code>ms-proteomics v1.1.0</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-11')" id="col-11">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf annotation tool]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Software tool or method used to generate or annotate the SDRF file. Two formats are supported - k...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-11-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000840" target="_blank" rel="noopener">PRIDE:0000840</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^(NT=[\w-]+;VV=v[\d.]+[\w.-]*|[\w-]+ v[\d.]+[\w.-]*|manual curation)$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Annotation tool can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z' or 'manual curation'</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>NT=lesSDRF;VV=v0.1.0</code>, <code>lesSDRF v0.1.0</code>, <code>NT=sdrf-pipelines;VV=v1.0.0</code>, <code>sdrf-pipelines v1.0.0</code>, <code>manual curation</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-12')" id="col-12">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sdrf validation hash]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">base</span></td>
+                            <td style="max-width:400px;">Hash value for SDRF validation integrity checking</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-12-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Hash value for SDRF validation integrity checking</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Validation hash string</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                        
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-13')" id="col-13">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[collection date]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Date when sample was collected (ISO 8601)</td>
+                        </tr>
+                        <tr class="detail-row" id="col-13-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Date when sample was collected (ISO 8601)</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000996" target="_blank" rel="noopener">PRIDE:0000996</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>date</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Sample collection date</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>2024</code>, <code>2024-01</code>, <code>2024-01-15</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-14')" id="col-14">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[sample collection method]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Method used to collect the environmental sample</td>
+                        </tr>
+                        <tr class="detail-row" id="col-14-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Method used to collect the environmental sample</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000997" target="_blank" rel="noopener">PRIDE:0000997</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Collection method description</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>grab sample</code>, <code>core sample</code>, <code>swab</code>, <code>filtration</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-15')" id="col-15">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[depth]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018).</td>
+                        </tr>
+                        <tr class="detail-row" id="col-15-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000711" target="_blank" rel="noopener">PRIDE:0000711</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>number_with_unit</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Depth with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>10 m</code>, <code>50 cm</code>, <code>100 m</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-16')" id="col-16">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[altitude]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093).</td>
+                        </tr>
+                        <tr class="detail-row" id="col-16-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000712" target="_blank" rel="noopener">PRIDE:0000712</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>number_with_unit</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Altitude with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>500 m</code>, <code>1200 m</code>, <code>0 m</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-17')" id="col-17">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[temperature]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113).</td>
+                        </tr>
+                        <tr class="detail-row" id="col-17-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000703" target="_blank" rel="noopener">PRIDE:0000703</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>number_with_unit</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Temperature in Celsius</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>25 °C</code>, <code>4 °C</code>, <code>-20 °C</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-18')" id="col-18">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[ph]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">pH at sampling location</td>
+                        </tr>
+                        <tr class="detail-row" id="col-18-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">pH at sampling location</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000746" target="_blank" rel="noopener">PRIDE:0000746</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^\d+(\.\d+)?$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">pH value</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>7.0</code>, <code>5.5</code>, <code>8.2</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-19')" id="col-19">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[sample storage]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Storage conditions for the sample before analysis</td>
+                        </tr>
+                        <tr class="detail-row" id="col-19-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Storage conditions for the sample before analysis</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000730" target="_blank" rel="noopener">PRIDE:0000730</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Storage conditions</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>-80C</code>, <code>liquid nitrogen</code>, <code>4C</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-20')" id="col-20">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[metagenome accession]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Accession number for matched metagenome data</td>
+                        </tr>
+                        <tr class="detail-row" id="col-20-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Accession number for matched metagenome data</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000956" target="_blank" rel="noopener">PRIDE:0000956</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>accession</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Database accession number</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>MGYA00001234</code>, <code>SRP123456</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-21')" id="col-21">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[microbiome source]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome)</td>
+                        </tr>
+                        <tr class="detail-row" id="col-21-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome)</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000986" target="_blank" rel="noopener">PRIDE:0000986</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Microbiome source description</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>gut microbiome</code>, <code>rhizosphere microbiome</code>, <code>oral microbiome</code>, <code>skin microbiome</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-22')" id="col-22">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[biomass estimation]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Estimated microbial biomass in the sample</td>
+                        </tr>
+                        <tr class="detail-row" id="col-22-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Estimated microbial biomass in the sample</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000990" target="_blank" rel="noopener">PRIDE:0000990</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Biomass estimation</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>1e9 cells/g</code>, <code>high biomass</code>, <code>low biomass</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-23')" id="col-23">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[host contamination]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Level of host protein contamination if known</td>
+                        </tr>
+                        <tr class="detail-row" id="col-23-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Level of host protein contamination if known</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000991" target="_blank" rel="noopener">PRIDE:0000991</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Host contamination level</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>low (<5%)</code>, <code>moderate (5-20%)</code>, <code>high (>20%)</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-24')" id="col-24">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[contaminant database]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Contaminant database(s) used in database search</td>
+                        </tr>
+                        <tr class="detail-row" id="col-24-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Contaminant database(s) used in database search</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000992" target="_blank" rel="noopener">PRIDE:0000992</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Contaminant database name(s)</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>cRAP</code>, <code>MaxQuant contaminants</code>, <code>cRAP;MaxQuant contaminants</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-25')" id="col-25">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[mock community]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Identifier or name of mock community standard used</td>
+                        </tr>
+                        <tr class="detail-row" id="col-25-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Identifier or name of mock community standard used</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000987" target="_blank" rel="noopener">PRIDE:0000987</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mock community identifier</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>ZymoBIOMICS Microbial Community Standard</code>, <code>ATCC MSA-1000</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-26')" id="col-26">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[mock community composition]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Description of mock community composition (species and ratios)</td>
+                        </tr>
+                        <tr class="detail-row" id="col-26-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Description of mock community composition (species and ratios)</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000988" target="_blank" rel="noopener">PRIDE:0000988</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Community composition description</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>8 bacteria + 2 yeasts at defined ratios</code>, <code>even mix of 10 species</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-27')" id="col-27">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[expected organism list]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">metaproteomics</span></td>
+                            <td style="max-width:400px;">Semicolon-separated list of organisms expected in mock community</td>
+                        </tr>
+                        <tr class="detail-row" id="col-27-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Semicolon-separated list of organisms expected in mock community</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000989" target="_blank" rel="noopener">PRIDE:0000989</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Semicolon-separated organism list</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>E. coli;B. subtilis;S. cerevisiae;L. fermentum</code>, <code>Bacillus subtilis;Staphylococcus aureus</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+        
+        
+        <div class="template-section">
+            <h2>Contributors</h2>
+            <ul class="contributors-list">
+                
+                <li>Yasset Perez-Riverol (yperez@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Deepti Jaiswal Kundu (jaiswal@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Nithu Sara John (nithu@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Nandana Madhusoodanan (nandana@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Asier Larrea (alarre@ebi.ac.uk) - EMBL-EBI</li>
+                
+                <li>Toan Phung (TPhung001@dundee.ac.uk) - University of Dundee</li>
+                
+                <li>Timo Sachsenberg (timo.sachsenberg@uni-tuebingen.de) - University of Tübingen</li>
+                
+            </ul>
+        </div>
+        
+
+    </div>
+
+    <script>
+    function toggleDetail(rowId) {
+        var row = document.getElementById(rowId);
+        var detail = document.getElementById(rowId + '-detail');
+        if (!detail) return;
+        row.classList.toggle('expanded');
+        detail.classList.toggle('open');
+    }
+
+    function toggleInherited() {
+        var rows = document.querySelectorAll('tr.inherited');
+        var btn = document.getElementById('toggle-inherited');
+        var count = document.querySelectorAll('tr.column-row.inherited').length;
+        var isHidden = rows.length > 0 && rows[0].classList.contains('hidden');
+
+        rows.forEach(function(r) {
+            if (isHidden) {
+                r.classList.remove('hidden');
+                // Keep detail rows closed when revealing inherited
+                if (r.classList.contains('detail-row')) {
+                    r.classList.remove('open');
+                }
+            } else {
+                r.classList.add('hidden');
+                if (r.classList.contains('detail-row')) {
+                    r.classList.remove('open');
+                }
+            }
+        });
+        // Reset expanded state on inherited column rows
+        document.querySelectorAll('tr.column-row.inherited').forEach(function(r) {
+            r.classList.remove('expanded');
+        });
+
+        btn.textContent = isHidden
+            ? 'Hide inherited columns (' + count + ')'
+            : 'Show inherited columns (' + count + ')';
+    }
+    </script>
 </body>
 </html>
