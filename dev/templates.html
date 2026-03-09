@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>SDRF Templates Guide</title>
+<link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="has-doc-header article toc2 toc-left"><div class="dev-banner">&#9888;&#65039; Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="/">View stable version</a></div>
+<header class="doc-header"><div class="doc-header-brand"><a href="./index.html">SDRF-Proteomics</a></div><nav class="doc-header-nav"><a href="./index.html">Home</a><a href="./specification.html">Specification</a><a href="./index.html#metadata-guidelines">Metadata Guidelines</a><a href="./index.html#templates" class="nav-current">Templates</a><a href="./index.html#tools">Tools</a><a href="./sdrf-explorer.html">Explorer</a><a href="./sdrf-editor.html">Editor</a><a href="./sdrf-builder.html">Template Builder</a><a href="./index.html#contributors">Contributors</a><a href="/" class="version-link">Stable Version</a><a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a></nav></header>
+<div id="header">
+<h1>SDRF Templates Guide</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_template_architecture">1. Template Architecture</a>
+<ul class="sectlevel2">
+<li><a href="#_layers">1.1. Layers</a></li>
+<li><a href="#_inheritance">1.2. Inheritance</a></li>
+<li><a href="#version-pinning-in-extends">1.3. Version Pinning in <code>extends</code></a></li>
+<li><a href="#_layer_definitions">1.4. Layer Definitions</a></li>
+<li><a href="#_combination_rule">1.5. Combination Rule</a></li>
+<li><a href="#_mutual_exclusivity">1.6. Mutual Exclusivity</a></li>
+</ul>
+</li>
+<li><a href="#_how_to_choose_templates">2. How to Choose Templates</a>
+<ul class="sectlevel2">
+<li><a href="#_by_study_type">2.1. By Study Type</a></li>
+<li><a href="#_by_organism">2.2. By Organism</a></li>
+<li><a href="#_by_technology">2.3. By Technology</a></li>
+</ul>
+</li>
+<li><a href="#_format_conventions">3. Format Conventions</a>
+<ul class="sectlevel2">
+<li><a href="#_column_naming">3.1. Column Naming</a></li>
+<li><a href="#_ontology_terms">3.2. Ontology Terms</a></li>
+<li><a href="#_cv_term_format_controlled_vocabulary">3.3. CV Term Format (Controlled Vocabulary)</a></li>
+<li><a href="#_numbers_with_units">3.4. Numbers with Units</a></li>
+<li><a href="#_age_format_human">3.5. Age Format (Human)</a></li>
+<li><a href="#_special_values">3.6. Special Values</a></li>
+<li><a href="#_multiple_values">3.7. Multiple Values</a></li>
+<li><a href="#_accession_formats">3.8. Accession Formats</a></li>
+</ul>
+</li>
+<li><a href="#value-types-reference">4. Value Types Reference</a>
+<ul class="sectlevel2">
+<li><a href="#_how_value_types_are_determined">4.1. How Value Types Are Determined</a></li>
+<li><a href="#_value_type_catalog">4.2. Value Type Catalog</a></li>
+<li><a href="#_sentinel_values">4.3. Sentinel Values</a></li>
+<li><a href="#_range_and_compound_formats">4.4. Range and Compound Formats</a></li>
+</ul>
+</li>
+<li><a href="#_yaml_template_schema">5. YAML Template Schema</a>
+<ul class="sectlevel2">
+<li><a href="#_complete_template_structure">5.1. Complete Template Structure</a></li>
+<li><a href="#_template_properties_reference">5.2. Template Properties Reference</a></li>
+<li><a href="#_column_exclusion">5.3. Column Exclusion</a>
+<ul class="sectlevel3">
+<li><a href="#_strategy_1_template_level_exclusion_excludes_templates">5.3.1. Strategy 1: Template-level exclusion (<code>excludes.templates</code>)</a></li>
+<li><a href="#_strategy_2_category_level_exclusion_excludes_categories">5.3.2. Strategy 2: Category-level exclusion (<code>excludes.categories</code>)</a></li>
+<li><a href="#_strategy_3_column_level_exclusion_excludes_columns">5.3.3. Strategy 3: Column-level exclusion (<code>excludes.columns</code>)</a></li>
+<li><a href="#_combining_strategies">5.3.4. Combining Strategies</a></li>
+<li><a href="#_version_independence">5.3.5. Version Independence</a></li>
+<li><a href="#_precedence_rules">5.3.6. Precedence Rules</a></li>
+</ul>
+</li>
+<li><a href="#_column_properties_reference">5.4. Column Properties Reference</a></li>
+</ul>
+</li>
+<li><a href="#_validator_reference">6. Validator Reference</a>
+<ul class="sectlevel2">
+<li><a href="#_template_level_validators">6.1. Template-Level Validators</a>
+<ul class="sectlevel3">
+<li><a href="#_min_columns">6.1.1. min_columns</a></li>
+<li><a href="#_trailing_whitespace_validator">6.1.2. trailing_whitespace_validator</a></li>
+<li><a href="#_column_order">6.1.3. column_order</a></li>
+<li><a href="#_empty_cells">6.1.4. empty_cells</a></li>
+<li><a href="#_combination_of_columns_no_duplicate_validator">6.1.5. combination_of_columns_no_duplicate_validator</a></li>
+</ul>
+</li>
+<li><a href="#_column_level_validators">6.2. Column-Level Validators</a>
+<ul class="sectlevel3">
+<li><a href="#_ontology">6.2.1. ontology</a></li>
+<li><a href="#_pattern">6.2.2. pattern</a></li>
+<li><a href="#_values">6.2.3. values</a></li>
+<li><a href="#_single_cardinality_validator">6.2.4. single_cardinality_validator</a></li>
+<li><a href="#_number_with_unit">6.2.5. number_with_unit</a></li>
+<li><a href="#_accession">6.2.6. accession</a></li>
+<li><a href="#_identifier">6.2.7. identifier</a></li>
+<li><a href="#_date">6.2.8. date</a></li>
+<li><a href="#_structured_kv">6.2.9. structured_kv</a></li>
+<li><a href="#_semver">6.2.10. semver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_supported_ontologies">7. Supported Ontologies</a></li>
+<li><a href="#_template_inheritance_rules">8. Template Inheritance Rules</a>
+<ul class="sectlevel2">
+<li><a href="#_inheritance_behavior">8.1. Inheritance Behavior</a></li>
+<li><a href="#_requirement_strengthening">8.2. Requirement Strengthening</a></li>
+<li><a href="#_multi_template_combination">8.3. Multi-Template Combination</a></li>
+</ul>
+</li>
+<li><a href="#_creating_a_new_template_step_by_step_guide">9. Creating a New Template: Step-by-Step Guide</a>
+<ul class="sectlevel2">
+<li><a href="#_step_1_choose_the_parent_template">9.1. Step 1: Choose the Parent Template</a></li>
+<li><a href="#_step_2_create_the_directory_structure">9.2. Step 2: Create the Directory Structure</a></li>
+<li><a href="#_step_3_write_the_yaml_schema">9.3. Step 3: Write the YAML Schema</a></li>
+<li><a href="#_step_4_create_an_example_sdrf_file">9.4. Step 4: Create an Example SDRF File</a></li>
+<li><a href="#_step_5_test_locally">9.5. Step 5: Test Locally</a></li>
+<li><a href="#_step_6_submit_a_pull_request">9.6. Step 6: Submit a Pull Request</a></li>
+<li><a href="#_quick_reference_template_yaml_checklist">9.7. Quick Reference: Template YAML Checklist</a></li>
+<li><a href="#_best_practices">9.8. Best Practices</a></li>
+</ul>
+</li>
+<li><a href="#_validation_commands">10. Validation Commands</a></li>
+<li><a href="#_versioning">11. Versioning</a>
+<ul class="sectlevel2">
+<li><a href="#_template_versions">11.1. Template Versions</a></li>
+<li><a href="#_recording_templates_in_sdrf">11.2. Recording Templates in SDRF</a></li>
+</ul>
+</li>
+<li><a href="#_references">12. References</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>A comprehensive guide for template selection, combination rules, key column guidance, format conventions, and YAML schema definitions. It complements the per-template YAML definitions and auto-generated documentation.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<strong>Source of truth</strong>: The YAML file for each template (located in <a href="sdrf-templates/">sdrf-templates/</a>) is the authoritative definition of its columns, validators, and metadata. To add, remove, or modify a column, edit the corresponding YAML file. All other documentation — including this guide — is derived from or supplements those YAMLs.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<strong>YAML templates do not define every possible column.</strong> Templates define the most common columns with their validators and requirement levels. Additional terms listed in <code>TERMS.tsv</code> (e.g., <code>characteristics[xenograft]</code>, <code>characteristics[mass]</code>) can be added to any SDRF file without needing a corresponding YAML definition. The YAML templates capture what is most frequently needed; <code>TERMS.tsv</code> serves as a broader registry of recognised column names and ontology mappings.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Template files location:</strong> <a href="https://github.com/bigbio/sdrf-templates">sdrf-templates/</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_template_architecture"><a class="anchor" href="#_template_architecture"></a><a class="link" href="#_template_architecture">1. Template Architecture</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_layers"><a class="anchor" href="#_layers"></a><a class="link" href="#_layers">1.1. Layers</a></h3>
+<div class="paragraph">
+<p>Templates are organized in a hierarchy with two internal construction layers (<code>base</code>, <code>sample-metadata</code>) and three user-facing layers (<code>technology</code>, <code>sample</code>, <code>experiment</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">base                         Infrastructure (identifiers, data files, versioning)     [internal]
+  sample-metadata            Shared sample biology (organism, tissue, disease)        [internal]
+    technology templates     MS or affinity proteomics columns                        [layer: technology]
+    organism templates       Species-specific metadata (human, vertebrates, etc.)     [layer: sample]
+    clinical templates       Clinical/oncology metadata                               [layer: sample]
+    experiment templates     Technique-specific columns (DIA, crosslinking, etc.)     [layer: experiment]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inheritance"><a class="anchor" href="#_inheritance"></a><a class="link" href="#_inheritance">1.2. Inheritance</a></h3>
+<div class="paragraph">
+<p>Every template inherits all columns from its parent chain. Child templates can override parent column properties (e.g., changing a column from <code>optional</code> to <code>required</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">base (construction artifact - not user-facing)
+ ├── sample-metadata (intermediate - sample columns shared by most templates)
+ │    ├── ms-proteomics (technology)
+ │    │    ├── dia-acquisition (experiment)
+ │    │    ├── crosslinking (experiment)
+ │    │    ├── immunopeptidomics (experiment)
+ │    │    └── single-cell (experiment)
+ │    ├── affinity-proteomics (technology)
+ │    │    ├── olink (experiment)
+ │    │    └── somascan (experiment)
+ │    ├── human (sample)
+ │    ├── vertebrates (sample)
+ │    ├── invertebrates (sample)
+ │    ├── plants (sample)
+ │    ├── cell-lines (experiment)
+ │    ├── clinical-metadata (sample)
+ │    │    └── oncology-metadata (sample)
+ │    └── (columns: organism, organism part, cell type, disease, biological replicate...)
+ └── metaproteomics (sample - MIxS-aligned, excludes sample-metadata when combined)
+      ├── human-gut (sample)
+      ├── soil (sample)
+      └── water (sample)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="version-pinning-in-extends"><a class="anchor" href="#version-pinning-in-extends"></a><a class="link" href="#version-pinning-in-extends">1.3. Version Pinning in <code>extends</code></a></h3>
+<div class="paragraph">
+<p>The <code>extends</code> field supports an optional version constraint using the <code>@</code> separator. This controls which version of the parent template a child inherits from, preventing unintended breaking changes when parent templates are updated.</p>
+</div>
+<div class="paragraph">
+<p><strong>Formats:</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name only (latest)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends: ms-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Always inherits from the latest available version. Backwards compatible with existing templates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lower bound</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends: ms-proteomics@&gt;=1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inherits from the latest version &gt;= 1.1.0. Follows Python/PEP 440 version specifier syntax.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Explicit range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends: ms-proteomics@&gt;=1.1.0,&lt;2.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inherits from the latest version within [1.1.0, 2.0.0). Use when an upper bound is needed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exact version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends: ms-proteomics@1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inherits from exactly that version. Use sparingly — prevents receiving patch fixes.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Recommended convention:</strong> Use lower-bound constraints (<code>&gt;=major.minor.0</code>) for all templates. Add an upper bound (<code>&lt;next_major.0.0</code>) only when a known incompatible major version exists. This ensures:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Patch and minor updates propagate automatically</strong> — bug fixes, new optional columns, and documentation changes in the parent are inherited without child template changes.</p>
+</li>
+<li>
+<p><strong>Upper bounds are added when needed</strong> — once a parent releases a breaking major version, children can add <code>&lt;next_major.0.0</code> to stay on the compatible range.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Example:</strong> When <code>ms-proteomics</code> is at version <code>1.1.0</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># single-cell inherits from ms-proteomics &gt;=1.1.0
+extends: ms-proteomics@&gt;=1.1.0
+
+# If ms-proteomics is bumped to 1.2.0: single-cell automatically inherits 1.2.0 ✓
+# If ms-proteomics is bumped to 2.0.0: single-cell inherits 2.0.0 (review needed)
+#   → If incompatible, add upper bound: extends: ms-proteomics@&gt;=1.1.0,&lt;2.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Resolution order:</strong> When loading templates, the registry resolves version constraints by:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Scanning all available versions on disk for the parent template</p>
+</li>
+<li>
+<p>Filtering to versions matching the constraint</p>
+</li>
+<li>
+<p>Selecting the latest matching version</p>
+</li>
+<li>
+<p>Falling back to the manifest <code>latest</code> if no match (with a warning)</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_layer_definitions"><a class="anchor" href="#_layer_definitions"></a><a class="link" href="#_layer_definitions">1.4. Layer Definitions</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Layer</th>
+<th class="tableblock halign-left valign-top">Purpose</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal construction artifact with infrastructure columns (source name, assay name, technology type, etc.). Never used directly by users.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">base</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample-metadata</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Intermediate template with sample-level columns shared by all templates (organism, organism part, cell type, biological replicate, pooled sample, disease, biosample accession). Extends <code>base</code>. Never used directly by users.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample-metadata</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the proteomics technology. Exactly one required per SDRF.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics, affinity-proteomics</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines organism-specific sample metadata. One recommended per SDRF.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">human, vertebrates, invertebrates, plants</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dia-acquisition, single-cell, olink, cell-lines</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_combination_rule"><a class="anchor" href="#_combination_rule"></a><a class="link" href="#_combination_rule">1.5. Combination Rule</a></h3>
+<div class="paragraph">
+<p>An SDRF file is built by <strong>combining</strong> templates:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>ONE technology template</strong> (required): <code>ms-proteomics</code> or <code>affinity-proteomics</code></p>
+</li>
+<li>
+<p><strong>ONE sample template</strong> (recommended): either an organism template (<code>human</code>, <code>vertebrates</code>, <code>invertebrates</code>, <code>plants</code>) OR a metaproteomics template (<code>human-gut</code>, <code>soil</code>, <code>water</code>). These two groups are mutually exclusive.</p>
+</li>
+<li>
+<p><strong>ZERO or more experiment templates</strong>: <code>dia-acquisition</code>, <code>single-cell</code>, <code>crosslinking</code>, <code>immunopeptidomics</code> (extend <code>ms-proteomics</code>), <code>olink</code>, <code>somascan</code> (extend <code>affinity-proteomics</code>)</p>
+</li>
+<li>
+<p><strong>ZERO or more clinical templates</strong>: <code>clinical-metadata</code>, <code>oncology-metadata</code></p>
+</li>
+<li>
+<p><strong>ZERO or one cell-lines template</strong>: when samples are cultured cell lines</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>When templates are combined, columns from all selected templates are merged. If the same column appears in multiple templates, the most specific definition wins (experiment &gt; technology &gt; sample-metadata). Templates may declare <code>excludes</code> to remove columns from other templates in the combination (see <a href="#_column_exclusion">Column Exclusion</a>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mutual_exclusivity"><a class="anchor" href="#_mutual_exclusivity"></a><a class="link" href="#_mutual_exclusivity">1.6. Mutual Exclusivity</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Technology</strong>: <code>ms-proteomics</code> and <code>affinity-proteomics</code> cannot be combined</p>
+</li>
+<li>
+<p><strong>Organism</strong>: only one of <code>human</code>, <code>vertebrates</code>, <code>invertebrates</code>, <code>plants</code> per study (multi-species studies use the most specific applicable template)</p>
+</li>
+<li>
+<p><strong>Metaproteomics</strong>: <code>metaproteomics</code> (and its children <code>human-gut</code>, <code>soil</code>, <code>water</code>) are mutually exclusive with organism templates (<code>human</code>, <code>vertebrates</code>, <code>invertebrates</code>, <code>plants</code>). Only one metaproteomics child template per study.</p>
+</li>
+<li>
+<p><strong>Platform</strong>: <code>olink</code> and <code>somascan</code> cannot be combined</p>
+</li>
+<li>
+<p><strong>Affinity experiments</strong>: <code>olink</code>/<code>somascan</code> require <code>affinity-proteomics</code> (not <code>ms-proteomics</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_choose_templates"><a class="anchor" href="#_how_to_choose_templates"></a><a class="link" href="#_how_to_choose_templates">2. How to Choose Templates</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_by_study_type"><a class="anchor" href="#_by_study_type"></a><a class="link" href="#_by_study_type">2.1. By Study Type</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Study type</th>
+<th class="tableblock halign-left valign-top">Templates to combine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human clinical DDA proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>human</code> + <code>ms-proteomics</code> + <code>clinical-metadata</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human cancer proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>human</code> + <code>ms-proteomics</code> + <code>oncology-metadata</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse DDA proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertebrates</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Plant stress proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>plants</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human cell line drug screen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cell-lines</code> + <code>human</code> + <code>ms-proteomics</code> + <code>clinical-metadata</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human XL-MS structural study</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>crosslinking</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In-vitro XL-MS (purified proteins)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>crosslinking</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human immunopeptidomics / HLA ligandomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>immunopeptidomics</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse immunopeptidomics / H-2 ligandomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>immunopeptidomics</code> + <code>vertebrates</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human DIA proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dia-acquisition</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse DIA proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dia-acquisition</code> + <code>vertebrates</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human single-cell proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>single-cell</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human gut metaproteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>human-gut</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil metaproteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>soil</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aquatic metaproteomics (ocean, lake, river)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>water</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink plasma study</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>olink</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human SomaScan serum study</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>somascan</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drosophila phosphoproteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>invertebrates</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zebrafish developmental proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertebrates</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Arabidopsis drought response proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>plants</code> + <code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse cancer model proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertebrates</code> + <code>ms-proteomics</code> + <code>oncology-metadata</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_by_organism"><a class="anchor" href="#_by_organism"></a><a class="link" href="#_by_organism">2.2. By Organism</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Organism</th>
+<th class="tableblock halign-left valign-top">Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Homo sapiens</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mouse, rat, zebrafish, other vertebrates</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vertebrates</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drosophila, C. elegans, insects</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>invertebrates</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Arabidopsis, rice, maize, crops</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>plants</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cultured cell lines (any origin)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cell-lines</code> + organism template matching cell origin</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_by_technology"><a class="anchor" href="#_by_technology"></a><a class="link" href="#_by_technology">2.3. By Technology</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Technology</th>
+<th class="tableblock halign-left valign-top">Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any mass spectrometry proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DDA (data-dependent acquisition)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> (default)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIA / SWATH / diaPASEF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dia-acquisition</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT / iTRAQ / SILAC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> (labeling defined by <code>comment[label]</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label-free quantification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> (label = "label free sample")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink PEA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>olink</code> (inherits <code>affinity-proteomics</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan aptamer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>somascan</code> (inherits <code>affinity-proteomics</code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_conventions"><a class="anchor" href="#_format_conventions"></a><a class="link" href="#_format_conventions">3. Format Conventions</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_column_naming"><a class="anchor" href="#_column_naming"></a><a class="link" href="#_column_naming">3.1. Column Naming</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>All column names inside brackets <strong>must be lowercase</strong>: <code>characteristics[disease]</code>, <code>comment[dia method]</code>, not <code>characteristics[Disease]</code> or <code>comment[DIA method]</code>.</p>
+</li>
+<li>
+<p>Prefix: <code>characteristics[&#8230;&#8203;]</code> for sample properties, <code>comment[&#8230;&#8203;]</code> for technical/analytical metadata.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ontology_terms"><a class="anchor" href="#_ontology_terms"></a><a class="link" href="#_ontology_terms">3.2. Ontology Terms</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <strong>lowercase</strong> for organism names: <code>homo sapiens</code>, not <code>Homo sapiens</code></p>
+</li>
+<li>
+<p>Use ontology-controlled vocabulary wherever validators specify ontology validation</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cv_term_format_controlled_vocabulary"><a class="anchor" href="#_cv_term_format_controlled_vocabulary"></a><a class="link" href="#_cv_term_format_controlled_vocabulary">3.3. CV Term Format (Controlled Vocabulary)</a></h3>
+<div class="paragraph">
+<p>Used for enzymes, modifications, instruments, and other ontology-mapped values:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">NT={name};AC={accession}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NT=Trypsin;AC=MS:1001251</code></p>
+</li>
+<li>
+<p><code>NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35</code></p>
+</li>
+<li>
+<p><code>NT=DSS;AC=XLMOD:02001</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_numbers_with_units"><a class="anchor" href="#_numbers_with_units"></a><a class="link" href="#_numbers_with_units">3.4. Numbers with Units</a></h3>
+<div class="paragraph">
+<p>Format: <code>{value} {unit}</code> (space-separated)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Mass tolerance: <code>10 ppm</code>, <code>0.02 Da</code></p>
+</li>
+<li>
+<p>Collision energy: <code>30 NCE</code>, <code>27 eV</code></p>
+</li>
+<li>
+<p>Tissue mass: <code>50 mg</code>, <code>1 g</code></p>
+</li>
+<li>
+<p>Cell diameter: <code>15 um</code></p>
+</li>
+<li>
+<p>Temperature: <code>25 °C</code>, <code>-80 °C</code></p>
+</li>
+<li>
+<p>Time: <code>24 hour</code>, <code>5 day</code>, <code>30 minute</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_age_format_human"><a class="anchor" href="#_age_format_human"></a><a class="link" href="#_age_format_human">3.5. Age Format (Human)</a></h3>
+<div class="paragraph">
+<p>See <a href="sample-guidelines.html#age-annotation">Age in SAMPLE-GUIDELINES</a> for the complete format reference, including compound ages (<code>30Y6M</code>), ranges (<code>40Y-50Y</code>), and comparison operators (<code>&gt;=21Y</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_special_values"><a class="anchor" href="#_special_values"></a><a class="link" href="#_special_values">3.6. Special Values</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>not available</code> — value exists but is unknown</p>
+</li>
+<li>
+<p><code>not applicable</code> — column does not apply to this sample</p>
+</li>
+<li>
+<p><code>normal</code> — healthy/control for disease columns (PATO:0000461)</p>
+</li>
+<li>
+<p><code>untreated</code> — no treatment applied (for treatment columns)</p>
+</li>
+<li>
+<p><code>pooled</code> — pooled sample (for biological replicate)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_multiple_values"><a class="anchor" href="#_multiple_values"></a><a class="link" href="#_multiple_values">3.7. Multiple Values</a></h3>
+<div class="paragraph">
+<p>Some columns allow multiple values (cardinality: multiple):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use multiple columns with the same header name</p>
+</li>
+<li>
+<p>Example: <code>characteristics[organism part]</code> can appear twice for mixed-tissue samples</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_accession_formats"><a class="anchor" href="#_accession_formats"></a><a class="link" href="#_accession_formats">3.8. Accession Formats</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>BioSample: <code>SAMN12345678</code>, <code>SAMEA12345678</code>, <code>SAMD1234567</code></p>
+</li>
+<li>
+<p>Cellosaurus: <code>CVCL_0030</code>, <code>CVCL_0004</code></p>
+</li>
+<li>
+<p>Metagenome: <code>MGYA00001234</code> (ENA), <code>SRP123456</code> (SRA)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="value-types-reference"><a class="anchor" href="#value-types-reference"></a><a class="link" href="#value-types-reference">4. Value Types Reference</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SDRF cell values are <strong>not parsed by inspecting the value itself</strong>. Instead, each column&#8217;s YAML template definition declares which value types are accepted through a list of <code>validators</code>. The validator determines how the value is interpreted and validated.</p>
+</div>
+<div class="paragraph">
+<p>This section provides a formal reference of all supported value types, their patterns, and examples.</p>
+</div>
+<div class="sect2">
+<h3 id="_how_value_types_are_determined"><a class="anchor" href="#_how_value_types_are_determined"></a><a class="link" href="#_how_value_types_are_determined">4.1. How Value Types Are Determined</a></h3>
+<div class="paragraph">
+<p>The parsing process for any SDRF cell value follows this logic:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">1. Look up the column name in the active YAML template(s)
+2. Retrieve the declared list of validators for that column
+3. Validate the cell value against each declared validator
+4. If no validators are declared, the value is accepted as free text</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The value type is a property of the <strong>column definition</strong>, not of the value itself. The same string <code>10</code> could be valid as an identifier, a free-text value, or invalid (if the column requires a unit), depending on the column&#8217;s declared validators.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_value_type_catalog"><a class="anchor" href="#_value_type_catalog"></a><a class="link" href="#_value_type_catalog">4.2. Value Type Catalog</a></h3>
+<div class="paragraph">
+<p>The following table lists all supported value types. The <strong>Type Name</strong> corresponds to the <code>validator_name</code> used in YAML template definitions. The <strong>Pattern</strong> column shows the formal regular expression or grammar that values must match. For complete validator configuration options, see <a href="#_column_level_validators">Column-Level Validators</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 30%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Pattern / Grammar</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ontology</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ontology-controlled term. Accepts free text (exact ontology term name), ontology URI, or key=value representation.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free text matching an ontology term, or <code>NT=<em>name</em>;AC=<em>prefix</em>:_accession_</code> with optional additional keys (<code>MT</code>, <code>PP</code>, <code>TA</code>, <code>CS</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>homo sapiens</code>, <code>NT=Trypsin;AC=MS:1001251</code>, <code>NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>values</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enumerated list. Value must exactly match one of the allowed entries (case-insensitive).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exact match from a declared list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>male</code>, <code>female</code>, <code>label free sample</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number_with_unit</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric value followed by a unit string, separated by optional whitespace.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>^-?\d+(\.\d+)?\s*(<em>unit1</em>|<em>unit2</em>|&#8230;&#8203;)$</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10 ppm</code>, <code>0.5 Da</code>, <code>-80 °C</code>, <code>30 NCE</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custom regular expression. Used for domain-specific formats not covered by other validators (e.g., age format, collision energy steps).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any valid regular expression declared in <code>params.pattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>45Y</code>, <code>30Y6M</code>, <code>40Y-50Y</code>, <code>&gt;=21Y</code>, <code>25 NCE;27 NCE;30 NCE</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accession</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database accession identifier with a known prefix and suffix pattern.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>^<em>prefix__suffix</em>$</code> (e.g., <code>^SAM(N|EA|D)\d+$</code> for BioSample)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SAMN12345678</code>, <code>CVCL_0030</code>, <code>PXD000001</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>identifier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alphanumeric identifier with configurable character set.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>^[A-Za-z0-9_-]+$</code> (default charset, configurable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>patient_001</code>, <code>cell.line.A</code>, <code>sample_23</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>date</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ISO 8601 date at configurable precision.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>^\d{4}$</code> (year), <code>^\d{4}-\d{2}$</code> (month), <code>^\d{4}-\d{2}-\d{2}$</code> (day)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2024</code>, <code>2024-01</code>, <code>2024-01-15</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>structured_kv</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semicolon-separated key=value pairs with declared keys and value patterns.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>KEY1</em>=<em>value1</em>;_KEY2_=<em>value2</em></code> where each key and value regex is declared in <code>params.fields</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NT=DSS;AC=XLMOD:02001</code>, <code>NT=lesSDRF;VV=v0.1.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>semver</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semantic version string with optional prefix and prerelease suffix.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>^v?\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>v1.1.0</code>, <code>v2.0.0-dev</code>, <code>1.0.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>single_cardinality_validator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ensures a cell contains a single value (no semicolon-separated lists). Used in combination with other validators.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No semicolons allowed in value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(any single value)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_sentinel_values"><a class="anchor" href="#_sentinel_values"></a><a class="link" href="#_sentinel_values">4.3. Sentinel Values</a></h3>
+<div class="paragraph">
+<p>Regardless of value type, most columns accept the following reserved words. These are controlled at the column level via the <code>allow_not_available</code> and <code>allow_not_applicable</code> flags in the YAML definition:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>not available</code> — the value exists but is unknown</p>
+</li>
+<li>
+<p><code>not applicable</code> — the column does not apply to this sample</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Additional sentinel values may be accepted per column via the <code>special_values</code> parameter (e.g., <code>pooled</code>, <code>untreated</code>, <code>room temperature</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_range_and_compound_formats"><a class="anchor" href="#_range_and_compound_formats"></a><a class="link" href="#_range_and_compound_formats">4.4. Range and Compound Formats</a></h3>
+<div class="paragraph">
+<p>Some columns accept range expressions or compound values. These are <strong>not a generic SDRF feature</strong> — they are defined per column using <code>pattern</code> validators with specific regular expressions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Age ranges</strong>: <code>40Y-50Y</code> — defined by the age pattern validator in the human/vertebrate templates</p>
+</li>
+<li>
+<p><strong>m/z ranges</strong>: <code>400 m/z-1200 m/z</code> — defined by a pattern validator in the ms-proteomics template</p>
+</li>
+<li>
+<p><strong>Stepped collision energy</strong>: <code>25 NCE;27 NCE;30 NCE</code> — semicolon-separated repeated <code>number_with_unit</code> values, defined by a pattern validator</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To determine if a column supports ranges or compound values, consult its YAML template definition and check the declared <code>pattern</code> validator&#8217;s regex.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_yaml_template_schema"><a class="anchor" href="#_yaml_template_schema"></a><a class="link" href="#_yaml_template_schema">5. YAML Template Schema</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section describes the technical implementation of SDRF-Proteomics templates for <strong>developers and maintainers</strong>. These YAML definitions are used by the <a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines</a> validator to check SDRF files for compliance.</p>
+</div>
+<div class="sect2">
+<h3 id="_complete_template_structure"><a class="anchor" href="#_complete_template_structure"></a><a class="link" href="#_complete_template_structure">5.1. Complete Template Structure</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># =============================================================================
+# TEMPLATE METADATA (required)
+# =============================================================================
+name: human                        # Unique template identifier (used in --template flag)
+description: Human SDRF template   # Human-readable description
+version: 1.1.0                     # Semantic version (major.minor.patch)
+
+# =============================================================================
+# INHERITANCE AND RELATIONSHIPS (optional)
+# =============================================================================
+extends: sample-metadata@&gt;=1.0.0           # Parent template with version constraint
+usable_alone: false                # Can this template be used without others?
+layer: sample                      # Layer: base, sample-metadata, technology, sample, experiment
+
+# Mutual exclusivity - templates that cannot be combined with this one
+mutually_exclusive_with:
+  - vertebrates
+  - invertebrates
+  - plants
+
+# Required layers - for templates that need specific layer types
+requires:
+  - layer: technology              # Requires a technology template
+  - layer: sample                  # Requires a sample template
+
+# =============================================================================
+# TEMPLATE-LEVEL VALIDATORS (optional)
+# =============================================================================
+validators:
+  - validator_name: min_columns
+    params:
+      min_columns: 12
+  - validator_name: trailing_whitespace_validator
+    params: {}
+
+# =============================================================================
+# COLUMN DEFINITIONS (required)
+# =============================================================================
+columns:
+  - name: characteristics[disease]
+    description: Disease state of the sample
+    requirement: required          # required | recommended | optional
+    type: string                   # string | integer (default: string)
+    cardinality: single            # single | multiple (default: single)
+    allow_not_applicable: true     # Allow "not applicable" value
+    allow_not_available: true      # Allow "not available" value
+    allow_pooled: false            # Allow "pooled" value (for replicates)
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - mondo
+            - efo
+            - doid
+            - pato
+          error_level: warning     # error | warning
+          description: The disease should be a valid ontology term
+          examples:
+            - normal
+            - breast cancer
+            - diabetes mellitus</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_template_properties_reference"><a class="anchor" href="#_template_properties_reference"></a><a class="link" href="#_template_properties_reference">5.2. Template Properties Reference</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique template identifier. Used in validation commands (<code>--template human</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human-readable description of the template&#8217;s purpose.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semantic version (e.g., <code>1.1.0</code>). Should match the specification version.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parent template name with optional version constraint. Supports: <code>name</code> (latest version), <code>name@1.1.0</code> (exact version), <code>name@&gt;=1.1.0</code> (lower bound), or <code>name@&gt;=1.1.0,&lt;2.0.0</code> (range). See <a href="#Version Pinning in extends">[Version Pinning in extends]</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usable_alone</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>false</code>, must be combined with other templates. Default: <code>true</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>layer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template layer: <code>base</code>, <code>technology</code>, <code>sample</code>, or <code>experiment</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mutually_exclusive_with</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Templates that cannot be combined with this one.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>requires</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layer requirements (e.g., <code>- layer: technology</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>validators</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template-level validators applied to the entire SDRF file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>columns</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column definitions with validation rules.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>excludes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column exclusion rules applied when this template is combined with others. See <a href="#_column_exclusion">Column Exclusion</a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_column_exclusion"><a class="anchor" href="#_column_exclusion"></a><a class="link" href="#_column_exclusion">5.3. Column Exclusion</a></h3>
+<div class="paragraph">
+<p>When templates are combined, a template may need to <strong>exclude</strong> columns that another template brings through inheritance. For example, <code>metaproteomics</code> extends <code>base</code> (not <code>sample-metadata</code>) and defines its own sample-level metadata aligned with GSC MIxS standards. When combined with <code>ms-proteomics</code>, the <code>sample-metadata</code> columns inherited by <code>ms-proteomics</code> (organism, disease, cell type, etc.) are not appropriate — metaproteomics replaces them with environment-specific fields.</p>
+</div>
+<div class="paragraph">
+<p>The <code>excludes</code> property supports three complementary exclusion strategies, applied in order:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">excludes:
+  # Strategy 1: Exclude all columns inherited from a named template
+  templates:
+    - sample-metadata              # Remove all columns that originated from sample-metadata
+
+  # Strategy 2: Exclude columns by prefix category
+  categories:
+    - characteristics              # Remove all characteristics[...] columns from other templates
+    - comment                      # Remove all comment[...] columns from other templates
+
+  # Strategy 3: Exclude specific columns by name
+  columns:
+    - characteristics[organism]
+    - characteristics[disease]
+    - characteristics[cell type]</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_strategy_1_template_level_exclusion_excludes_templates"><a class="anchor" href="#_strategy_1_template_level_exclusion_excludes_templates"></a><a class="link" href="#_strategy_1_template_level_exclusion_excludes_templates">5.3.1. Strategy 1: Template-level exclusion (<code>excludes.templates</code>)</a></h4>
+<div class="paragraph">
+<p>Removes <strong>all columns</strong> that originated from the named parent template when combining with another template that inherits from it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># metaproteomics.yaml
+name: metaproteomics
+extends: base
+excludes:
+  templates:
+    - sample-metadata</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When <code>metaproteomics</code> is combined with <code>ms-proteomics</code>, the merge logic tracks column provenance. Columns that <code>ms-proteomics</code> inherited from <code>sample-metadata</code> (organism, organism part, cell type, disease, biological replicate, etc.) are removed from the combined result. Columns defined directly in <code>ms-proteomics</code> itself (instrument, label, cleavage agent, etc.) are preserved.</p>
+</div>
+<div class="paragraph">
+<p><strong>Provenance tracking</strong>: During inheritance resolution, each column is tagged with its originating template. When <code>excludes.templates</code> is evaluated, columns whose origin matches a listed template are removed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Use case</strong>: A template that provides its own complete set of sample-level metadata and needs to replace (not supplement) the standard <code>sample-metadata</code> columns.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_strategy_2_category_level_exclusion_excludes_categories"><a class="anchor" href="#_strategy_2_category_level_exclusion_excludes_categories"></a><a class="link" href="#_strategy_2_category_level_exclusion_excludes_categories">5.3.2. Strategy 2: Category-level exclusion (<code>excludes.categories</code>)</a></h4>
+<div class="paragraph">
+<p>Removes columns from other templates that match a given <strong>prefix category</strong> (<code>characteristics</code> or <code>comment</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">excludes:
+  categories:
+    - characteristics              # Exclude all characteristics[...] from other templates</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This removes all <code>characteristics[&#8230;&#8203;]</code> columns contributed by <strong>other</strong> templates in the combination. Columns defined by the excluding template itself (and its own inheritance chain) are preserved.</p>
+</div>
+<div class="paragraph">
+<p><strong>Scope</strong>: Only affects columns from <em>other</em> templates in the combination, not from the excluding template&#8217;s own hierarchy. For example, if <code>metaproteomics</code> excludes category <code>characteristics</code>, its own <code>characteristics[environmental sample type]</code> is kept, but <code>characteristics[organism]</code> from <code>ms-proteomics</code> (via <code>sample-metadata</code>) is removed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Use case</strong>: Broad exclusion when a template replaces an entire category of metadata. For instance, metaproteomics defines its own <code>characteristics[&#8230;&#8203;]</code> columns for environmental/host metadata and does not want the generic sample-metadata <code>characteristics[&#8230;&#8203;]</code> columns.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_strategy_3_column_level_exclusion_excludes_columns"><a class="anchor" href="#_strategy_3_column_level_exclusion_excludes_columns"></a><a class="link" href="#_strategy_3_column_level_exclusion_excludes_columns">5.3.3. Strategy 3: Column-level exclusion (<code>excludes.columns</code>)</a></h4>
+<div class="paragraph">
+<p>Removes <strong>specific named columns</strong> from other templates.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">excludes:
+  columns:
+    - characteristics[organism]
+    - characteristics[disease]
+    - characteristics[cell type]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the most precise strategy, removing only the listed columns from the combination result.</p>
+</div>
+<div class="paragraph">
+<p><strong>Use case</strong>: When only a small number of specific columns conflict and the rest should be preserved.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_combining_strategies"><a class="anchor" href="#_combining_strategies"></a><a class="link" href="#_combining_strategies">5.3.4. Combining Strategies</a></h4>
+<div class="paragraph">
+<p>All three strategies can be used together. They are applied in order: templates first, then categories, then individual columns. The union of all excluded columns is removed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Example: metaproteomics excludes sample-metadata entirely
+excludes:
+  templates:
+    - sample-metadata</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Example: exclude only specific columns
+excludes:
+  columns:
+    - characteristics[organism]
+    - characteristics[disease]
+    - characteristics[cell type]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_version_independence"><a class="anchor" href="#_version_independence"></a><a class="link" href="#_version_independence">5.3.5. Version Independence</a></h4>
+<div class="paragraph">
+<p>Exclusion operates on <strong>template names only</strong>, independent of version. When <code>excludes.templates</code> lists <code>sample-metadata</code>, it matches all columns originating from <code>sample-metadata</code> regardless of which version (<code>1.0.0</code>, <code>1.1.0</code>, etc.) was resolved during inheritance. This ensures that exclusion rules remain stable across version upgrades — a template does not need to update its <code>excludes</code> list when a dependency bumps versions.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_precedence_rules"><a class="anchor" href="#_precedence_rules"></a><a class="link" href="#_precedence_rules">5.3.6. Precedence Rules</a></h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Self-preservation</strong>: A template&#8217;s <code>excludes</code> never removes its own columns or columns from its own parent chain. Exclusion only applies to columns from <em>other</em> templates in the combination.</p>
+</li>
+<li>
+<p><strong>Order of application</strong>: <code>templates</code> &#8594; <code>categories</code> &#8594; <code>columns</code>.</p>
+</li>
+<li>
+<p><strong>Union semantics</strong>: All three strategies contribute to a single exclusion set. A column excluded by any strategy is removed.</p>
+</li>
+<li>
+<p><strong>Strictest wins</strong>: If two templates both define the same column and one excludes it, the <em>excluding</em> template&#8217;s version (if any) is kept. If the excluding template does not define it, the column is removed entirely.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_column_properties_reference"><a class="anchor" href="#_column_properties_reference"></a><a class="link" href="#_column_properties_reference">5.4. Column Properties Reference</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column header exactly as in SDRF (e.g., <code>characteristics[disease]</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">What the column contains and how to fill it.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>requirement</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>required</code> (must be present), <code>recommended</code> (should be present), <code>optional</code> (may be present).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data type: <code>string</code> (default) or <code>integer</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cardinality</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>single</code> (default) or <code>multiple</code> (use multiple columns with the same header name).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_not_applicable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow <code>not applicable</code> when column doesn&#8217;t apply. Default: <code>false</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_not_available</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow <code>not available</code> when data is unknown. Default: <code>false</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_pooled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow <code>pooled</code> value (for biological replicate). Default: <code>false</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>validators</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column-level validators for value checking.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validator_reference"><a class="anchor" href="#_validator_reference"></a><a class="link" href="#_validator_reference">6. Validator Reference</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_template_level_validators"><a class="anchor" href="#_template_level_validators"></a><a class="link" href="#_template_level_validators">6.1. Template-Level Validators</a></h3>
+<div class="paragraph">
+<p>These validators apply to the entire SDRF file structure.</p>
+</div>
+<div class="sect3">
+<h4 id="_min_columns"><a class="anchor" href="#_min_columns"></a><a class="link" href="#_min_columns">6.1.1. min_columns</a></h4>
+<div class="paragraph">
+<p>Ensures minimum column count.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: min_columns
+  params:
+    min_columns: 12</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_trailing_whitespace_validator"><a class="anchor" href="#_trailing_whitespace_validator"></a><a class="link" href="#_trailing_whitespace_validator">6.1.2. trailing_whitespace_validator</a></h4>
+<div class="paragraph">
+<p>Checks for trailing whitespace in cell values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: trailing_whitespace_validator
+  params: {}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_column_order"><a class="anchor" href="#_column_order"></a><a class="link" href="#_column_order">6.1.3. column_order</a></h4>
+<div class="paragraph">
+<p>Validates expected column order (source name first, data file last).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: column_order
+  params: {}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_empty_cells"><a class="anchor" href="#_empty_cells"></a><a class="link" href="#_empty_cells">6.1.4. empty_cells</a></h4>
+<div class="paragraph">
+<p>Checks for empty cells that should have values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: empty_cells
+  params: {}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_combination_of_columns_no_duplicate_validator"><a class="anchor" href="#_combination_of_columns_no_duplicate_validator"></a><a class="link" href="#_combination_of_columns_no_duplicate_validator">6.1.5. combination_of_columns_no_duplicate_validator</a></h4>
+<div class="paragraph">
+<p>Ensures column combinations are unique (no duplicate rows).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: combination_of_columns_no_duplicate_validator
+  params:
+    column_name:              # Must be unique (error if duplicates)
+      - source name
+      - assay name
+      - comment[label]
+    column_name_warning:      # Should be unique (warning if duplicates)
+      - source name
+      - assay name</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_column_level_validators"><a class="anchor" href="#_column_level_validators"></a><a class="link" href="#_column_level_validators">6.2. Column-Level Validators</a></h3>
+<div class="paragraph">
+<p>These validators apply to individual column values.</p>
+</div>
+<div class="sect3">
+<h4 id="_ontology"><a class="anchor" href="#_ontology"></a><a class="link" href="#_ontology">6.2.1. ontology</a></h4>
+<div class="paragraph">
+<p>Validates values against ontology terms.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: ontology
+  params:
+    ontologies:              # List of ontology prefixes
+      - mondo
+      - efo
+      - doid
+    parent_term: MS:1000044  # Optional: restrict to children of this term
+    error_level: warning     # error or warning
+    description: Human-readable validation message
+    examples:
+      - normal
+      - breast cancer</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pattern"><a class="anchor" href="#_pattern"></a><a class="link" href="#_pattern">6.2.2. pattern</a></h4>
+<div class="paragraph">
+<p>Validates values against a regular expression.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: pattern
+  params:
+    # Age format: optional comparison operator + number + unit in strict Y&gt;M&gt;W&gt;D order, with optional range
+    # Examples: 45Y, 6M, 3W, 14D, 30Y6M, 6M2W, 40Y-50Y, 6M-12M, &gt;18Y, &gt;=21Y, &lt;65Y
+    pattern: ^(&gt;=?|&lt;=?)?(\d+[Yy](\d+[Mm](\d+[Ww](\d+[Dd])?)?)?|\d+[Mm](\d+[Ww](\d+[Dd])?)?|\d+[Ww](\d+[Dd])?|\d+[Dd])(-((\d+[Yy](\d+[Mm](\d+[Ww](\d+[Dd])?)?)?|\d+[Mm](\d+[Ww](\d+[Dd])?)?|\d+[Ww](\d+[Dd])?|\d+[Dd])))?$
+    case_sensitive: false    # Optional, default: true
+    description: "Age format: 45Y, 6M, 30Y6M (Y&gt;M&gt;W&gt;D order), ranges like 40Y-50Y, or comparison operators like &gt;18Y, &gt;=21Y, &lt;65Y"
+    examples:
+      - 45Y
+      - 6M
+      - 3W
+      - 30Y6M
+      - 40Y-50Y
+      - "&gt;18Y"
+      - "&gt;=21Y"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_values"><a class="anchor" href="#_values"></a><a class="link" href="#_values">6.2.3. values</a></h4>
+<div class="paragraph">
+<p>Validates against a fixed list of allowed values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: values
+  params:
+    values:
+      - male
+      - female
+      - intersex
+    error_level: error
+    description: Sex must be one of the allowed values</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_single_cardinality_validator"><a class="anchor" href="#_single_cardinality_validator"></a><a class="link" href="#_single_cardinality_validator">6.2.4. single_cardinality_validator</a></h4>
+<div class="paragraph">
+<p>Ensures single value per cell (no semicolon-separated values).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: single_cardinality_validator
+  params: {}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_number_with_unit"><a class="anchor" href="#_number_with_unit"></a><a class="link" href="#_number_with_unit">6.2.5. number_with_unit</a></h4>
+<div class="paragraph">
+<p>Validates values in <code>&lt;number&gt; &lt;unit&gt;</code> format. Replaces complex regex patterns for fields like mass tolerance, temperature, concentration, and depth.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: number_with_unit
+  params:
+    units: [ppm, Da]             # Required: allowed unit strings
+    allow_negative: false         # Optional: allow negative numbers (default: false)
+    allow_decimal: true           # Optional: allow decimal numbers (default: true)
+    special_values: []            # Optional: extra allowed literals (e.g., "room temperature")
+    error_level: error            # error or warning
+    description: Mass tolerance with unit
+    examples:
+      - 10 ppm
+      - 0.5 Da</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Parameters:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>units</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of allowed unit strings (e.g., <code>[ppm, Da]</code>, <code>[mg, g]</code>, <code>[°C]</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_negative</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow negative numbers (useful for temperature)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>allow_decimal</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow decimal numbers (e.g., <code>0.5</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>special_values</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional literal values accepted verbatim (e.g., <code>[room temperature]</code>)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>not available</code> and <code>not applicable</code> are handled automatically by the column-level <code>allow_not_available</code> and <code>allow_not_applicable</code> flags — do not add them to <code>special_values</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_accession"><a class="anchor" href="#_accession"></a><a class="link" href="#_accession">6.2.6. accession</a></h4>
+<div class="paragraph">
+<p>Validates accession identifiers with prefix + suffix format. Supports predefined formats or custom prefix/suffix patterns.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Predefined format (recommended for known databases)
+- validator_name: accession
+  params:
+    format: biosample             # Predefined format name
+    error_level: error
+    description: BioSample accession
+    examples:
+      - SAMN12345678
+      - SAMEA12345678
+      - SAMD1234567
+
+# Custom prefix + suffix
+- validator_name: accession
+  params:
+    prefix: "CVCL_"              # Literal or simple regex
+    suffix: "[A-Z0-9]+"          # Simple regex (default: \d+)
+    error_level: error</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Predefined formats:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Prefix</th>
+<th class="tableblock halign-left valign-top">Suffix</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>biosample</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SAM(N|EA|D)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\d+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SAMN12345678</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cellosaurus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CVCL_</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[A-Z0-9]+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVCL_0030</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>proteomexchange</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PXD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\d+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PXD000001</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_identifier"><a class="anchor" href="#_identifier"></a><a class="link" href="#_identifier">6.2.7. identifier</a></h4>
+<div class="paragraph">
+<p>Validates alphanumeric identifiers with optional special values. Useful for individual/patient IDs and cell identifiers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: identifier
+  params:
+    charset: "[A-Za-z0-9_-]"     # Character class (default: [A-Za-z0-9_-])
+    special_values: [anonymized, pooled]  # Extra allowed literals
+    error_level: error
+    description: Patient or individual identifier</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>charset</code> parameter accepts a regex character class. Common values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>[A-Za-z0-9_-]</code> (default) — alphanumeric with underscores and hyphens</p>
+</li>
+<li>
+<p><code>[A-Za-z0-9_.-]</code> — also allows dots (for cell identifiers)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_date"><a class="anchor" href="#_date"></a><a class="link" href="#_date">6.2.8. date</a></h4>
+<div class="paragraph">
+<p>Validates ISO 8601 dates at variable precision levels.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: date
+  params:
+    format: iso8601               # Currently the only supported format
+    precision: [year, month, day] # Allowed precision levels
+    error_level: warning
+    description: Sample collection date
+    examples:
+      - "2024"
+      - "2024-01"
+      - "2024-01-15"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>precision</code> list controls which granularity levels are accepted. For example, <code>[day]</code> would only accept full <code>YYYY-MM-DD</code> dates, while <code>[year, month, day]</code> accepts any level.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_structured_kv"><a class="anchor" href="#_structured_kv"></a><a class="link" href="#_structured_kv">6.2.9. structured_kv</a></h4>
+<div class="paragraph">
+<p>Validates semicolon-separated key=value pair formats. Useful for ontology-annotated values with <code>NT=name;AC=accession</code> structure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: structured_kv
+  params:
+    separator: ";"                # Separator between pairs (default: ";")
+    fields:                       # Required key=value definitions
+      - key: NT
+        value: ".+"               # Simple regex for the value
+      - key: AC
+        value: "(XLMOD|CHEBI|UNIMOD):\\d+"
+    error_level: error
+    description: "Cross-linker: NT=name;AC=ontology:accession"
+    examples:
+      - "NT=DSS;AC=XLMOD:02001"
+      - "NT=BS3;AC=XLMOD:02000"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each entry in <code>fields</code> defines a required key and a regex pattern for its value.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_semver"><a class="anchor" href="#_semver"></a><a class="link" href="#_semver">6.2.10. semver</a></h4>
+<div class="paragraph">
+<p>Validates semantic version strings.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- validator_name: semver
+  params:
+    prefix: "v"                   # Optional prefix character
+    allow_prerelease: true        # Allow -alpha, -beta, -rc.1 suffixes (default: true)
+    error_level: error
+    description: SDRF specification version
+    examples:
+      - v1.1.0
+      - v1.0.0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supported_ontologies"><a class="anchor" href="#_supported_ontologies"></a><a class="link" href="#_supported_ontologies">7. Supported Ontologies</a></h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Prefix</th>
+<th class="tableblock halign-left valign-top">Ontology</th>
+<th class="tableblock halign-left valign-top">Common Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ncbitaxon</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NCBI Taxonomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organism</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>uberon</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uberon Anatomy Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organism part</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cell Line Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell line</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BRENDA Tissue Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tissue, cell type, cell line</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mondo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONDO Disease Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">disease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>efo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Experimental Factor Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">disease, experimental factors</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">disease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pato</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phenotype and Trait Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">phenotypes (including "normal")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSI-MS Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instrument, cleavage agent, mass analyzer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pride</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRIDE Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">acquisition method, labels, affinity instruments</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unimod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIMOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-translational modifications</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>xlmod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XLMOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">crosslinking reagents</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hancestro</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human Ancestry Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ancestry category (human)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>envo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Environment Ontology</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">environmental samples (metaproteomics)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gaz</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gazetteer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">geographic locations</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chebi</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ChEBI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">chemical entities, treatments</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_template_inheritance_rules"><a class="anchor" href="#_template_inheritance_rules"></a><a class="link" href="#_template_inheritance_rules">8. Template Inheritance Rules</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When templates are combined, the following rules apply:</p>
+</div>
+<div class="sect2">
+<h3 id="_inheritance_behavior"><a class="anchor" href="#_inheritance_behavior"></a><a class="link" href="#_inheritance_behavior">8.1. Inheritance Behavior</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Column inheritance</strong>: Child templates inherit all columns from parent templates</p>
+</li>
+<li>
+<p><strong>Validator inheritance</strong>: Child templates inherit all validators from parent templates</p>
+</li>
+<li>
+<p><strong>Column override</strong>: Child templates can redefine inherited columns with stricter requirements</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_requirement_strengthening"><a class="anchor" href="#_requirement_strengthening"></a><a class="link" href="#_requirement_strengthening">8.2. Requirement Strengthening</a></h3>
+<div class="paragraph">
+<p>Child templates may <strong>strengthen</strong> but not weaken requirements:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parent Requirement</th>
+<th class="tableblock halign-left valign-top">Allowed in Child</th>
+<th class="tableblock halign-left valign-top">Not Allowed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>optional</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>optional</code>, <code>recommended</code>, <code>required</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>recommended</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>recommended</code>, <code>required</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>optional</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>required</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>required</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>optional</code>, <code>recommended</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_multi_template_combination"><a class="anchor" href="#_multi_template_combination"></a><a class="link" href="#_multi_template_combination">8.3. Multi-Template Combination</a></h3>
+<div class="paragraph">
+<p>When multiple templates are combined:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>All columns from all templates are included</p>
+</li>
+<li>
+<p>If the same column appears in multiple templates, the <strong>strictest requirement</strong> wins</p>
+</li>
+<li>
+<p>Validators are merged (all validators apply)</p>
+</li>
+<li>
+<p>Mutual exclusivity is checked first</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Example valid combination:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">ms-proteomics + human + dia-acquisition + cell-lines
+     ↓             ↓           ↓              ↓
+ technology    sample    experiment     experiment</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_a_new_template_step_by_step_guide"><a class="anchor" href="#_creating_a_new_template_step_by_step_guide"></a><a class="link" href="#_creating_a_new_template_step_by_step_guide">9. Creating a New Template: Step-by-Step Guide</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section walks through creating a new YAML template from scratch. The example creates a hypothetical <code>top-down</code> template for top-down proteomics experiments.</p>
+</div>
+<div class="sect2">
+<h3 id="_step_1_choose_the_parent_template"><a class="anchor" href="#_step_1_choose_the_parent_template"></a><a class="link" href="#_step_1_choose_the_parent_template">9.1. Step 1: Choose the Parent Template</a></h3>
+<div class="paragraph">
+<p>Every template (except <code>base</code>) must extend a parent. Choose based on where your template fits in the hierarchy:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 42.8571%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">You are defining&#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">Extend</th>
+<th class="tableblock halign-left valign-top">Layer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new proteomics technology (rare)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample-metadata</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new organism type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample-metadata</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new MS experiment type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A new affinity experiment type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>affinity-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A template with its own sample metadata (e.g., metaproteomics)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For our example, top-down proteomics is a mass spectrometry technique, so we extend <code>ms-proteomics</code> and use the <code>experiment</code> layer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_create_the_directory_structure"><a class="anchor" href="#_step_2_create_the_directory_structure"></a><a class="link" href="#_step_2_create_the_directory_structure">9.2. Step 2: Create the Directory Structure</a></h3>
+<div class="paragraph">
+<p>Templates live in the <a href="https://github.com/bigbio/sdrf-templates">sdrf-templates</a> repository. Each template has a versioned directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">sdrf-templates/
+└── top-down/
+    └── 1.0.0-dev/
+        ├── top-down.yaml         # Template schema (required)
+        └── top-down.sdrf.tsv     # Example SDRF file (required)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use the <code>-dev</code> suffix for the initial version until the template is reviewed and accepted by the community.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_write_the_yaml_schema"><a class="anchor" href="#_step_3_write_the_yaml_schema"></a><a class="link" href="#_step_3_write_the_yaml_schema">9.3. Step 3: Write the YAML Schema</a></h3>
+<div class="paragraph">
+<p>Start with the template metadata, then define the columns your experiment type needs. Only define columns that are <strong>new or different</strong> from the parent — inherited columns from <code>ms-proteomics</code> do not need to be repeated.</p>
+</div>
+<div class="listingblock">
+<div class="title">top-down/1.0.0-dev/top-down.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ===========================================================================
+# TEMPLATE METADATA
+# ===========================================================================
+name: top-down
+description: &gt;
+  SDRF template for top-down proteomics experiments where intact proteins
+  are analyzed without prior enzymatic digestion. Extends ms-proteomics
+  with top-down-specific columns for intact mass analysis.
+version: 1.0.0-dev
+extends: ms-proteomics@&gt;=1.1.0
+usable_alone: false
+layer: experiment
+
+# ===========================================================================
+# COLUMN DEFINITIONS — only columns new or changed from parent
+# ===========================================================================
+columns:
+
+  # --- New column: protein separation method ---
+  - name: comment[protein separation method]
+    description: &gt;
+      Method used to separate intact proteins before MS analysis
+      (e.g., GELFrEE, SEC, RPLC, CZE). Use "not applicable" if no
+      separation was performed (direct infusion).
+    requirement: recommended
+    allow_not_applicable: true
+    allow_not_available: true
+    validators:
+      - validator_name: ontology
+        params:
+          ontologies:
+            - ms
+            - pride
+          error_level: warning
+          description: &gt;
+            Protein separation method should be a valid PSI-MS or PRIDE
+            ontology term.
+          examples:
+            - size exclusion chromatography
+            - gel electrophoresis
+            - capillary zone electrophoresis
+            - reversed-phase liquid chromatography
+            - not applicable
+
+  # --- New column: intact mass range ---
+  - name: comment[precursor mass range]
+    description: &gt;
+      The mass range of intact protein precursors analyzed, in Daltons.
+      Format: "min-max Da" (e.g., "5000-50000 Da").
+    requirement: optional
+    allow_not_available: true
+    validators:
+      - validator_name: pattern
+        params:
+          pattern: ^(\d+-\d+\s*Da|not available)$
+          case_sensitive: false
+          description: &gt;
+            Precursor mass range in format "min-max Da".
+          examples:
+            - 5000-50000 Da
+            - 10000-100000 Da
+            - not available
+
+  # --- Override inherited column: make cleavage agent "not applicable" ---
+  # In top-down experiments, proteins are not digested, so the cleavage
+  # agent column should always be "not applicable". We override the
+  # inherited column to make this explicit.
+  - name: comment[cleavage agent details]
+    description: &gt;
+      Cleavage agent is not applicable for top-down experiments where
+      intact proteins are analyzed. Use "not applicable".
+    requirement: required
+    allow_not_applicable: true
+    allow_not_available: false
+    validators:
+      - validator_name: values
+        params:
+          values:
+            - not applicable
+          error_level: warning
+          description: &gt;
+            Top-down experiments analyze intact proteins. Cleavage agent
+            should be "not applicable".</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Key points demonstrated in this example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>New columns</strong> (<code>comment[protein separation method]</code>, <code>comment[precursor mass range]</code>) are defined with their own validators.</p>
+</li>
+<li>
+<p><strong>Overriding an inherited column</strong> (<code>comment[cleavage agent details]</code>) restricts the parent&#8217;s definition — in this case, forcing the value to "not applicable" since top-down experiments don&#8217;t use enzymatic digestion.</p>
+</li>
+<li>
+<p><strong>Descriptions explain the "why"</strong> — not just what the field is, but when to use <code>not applicable</code> and what format to follow.</p>
+</li>
+<li>
+<p><strong>Examples are always provided</strong> in validators — they serve as documentation and can be used by tools to generate autocomplete suggestions.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_create_an_example_sdrf_file"><a class="anchor" href="#_step_4_create_an_example_sdrf_file"></a><a class="link" href="#_step_4_create_an_example_sdrf_file">9.4. Step 4: Create an Example SDRF File</a></h3>
+<div class="paragraph">
+<p>Every template must include an example <code>.sdrf.tsv</code> file that passes validation. This file demonstrates correct usage and serves as a starting point for users.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_5_test_locally"><a class="anchor" href="#_step_5_test_locally"></a><a class="link" href="#_step_5_test_locally">9.5. Step 5: Test Locally</a></h3>
+<div class="paragraph">
+<p>Before submitting, validate your example file against your template:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Install or upgrade the validator
+pip install sdrf-pipelines
+
+# Validate the example SDRF file with the new template
+parse_sdrf validate-sdrf \
+  --sdrf_file top-down/1.0.0-dev/top-down.sdrf.tsv \
+  --template ms-proteomics \
+  --custom_template top-down/1.0.0-dev/top-down.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check that:</p>
+</div>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> The example file passes validation with no errors.</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> All required columns from the parent template are present.</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> New columns validate correctly (ontology terms resolve, patterns match).</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> The <code>not applicable</code> and <code>not available</code> values work where expected.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_6_submit_a_pull_request"><a class="anchor" href="#_step_6_submit_a_pull_request"></a><a class="link" href="#_step_6_submit_a_pull_request">9.6. Step 6: Submit a Pull Request</a></h3>
+<div class="paragraph">
+<p>Submit the template to the <a href="https://github.com/bigbio/sdrf-templates">sdrf-templates</a> repository via pull request. The PR must include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The YAML schema file (<code>top-down/1.0.0-dev/top-down.yaml</code>).</p>
+</li>
+<li>
+<p>The example SDRF file (<code>top-down/1.0.0-dev/top-down.sdrf.tsv</code>).</p>
+</li>
+<li>
+<p>A PR description explaining: what experiment type the template covers, why it is needed, and which parent it extends.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Once reviewed and merged, the template appears in the <code>templates.yaml</code> manifest and becomes available to all users of sdrf-pipelines. A documentation page is auto-generated from the YAML definition. The <code>-dev</code> suffix is removed when the template is promoted to a stable release (e.g., <code>1.0.0</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_quick_reference_template_yaml_checklist"><a class="anchor" href="#_quick_reference_template_yaml_checklist"></a><a class="link" href="#_quick_reference_template_yaml_checklist">9.7. Quick Reference: Template YAML Checklist</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Checklist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lowercase with hyphens. Unique across all templates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">One or two sentences. Mention what it extends and what experiment type it covers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>X.Y.Z-dev</code> for new templates. Remove <code>-dev</code> after community review.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extends</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must be an existing template name with a version constraint (e.g., <code>ms-proteomics@&gt;=1.1.0</code>). Use <code>&gt;=major.minor.patch</code> format to pin to a minimum version. See <a href="#Version Pinning in extends">[Version Pinning in extends]</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>layer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">One of: <code>technology</code>, <code>sample</code>, <code>experiment</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usable_alone</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almost always <code>false</code> for experiment and sample layer templates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>columns</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only define columns that are <strong>new</strong> or that <strong>override</strong> a parent column. Do not repeat inherited columns unchanged.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validators</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use <code>ontology</code> for controlled vocabularies, <code>values</code> for fixed lists, and typed validators for common formats: <code>number_with_unit</code> for numeric values with units, <code>accession</code> for database identifiers, <code>identifier</code> for alphanumeric IDs, <code>date</code> for ISO dates, <code>structured_kv</code> for key=value formats, <code>semver</code> for version strings. Use <code>pattern</code> only for unique formats not covered by typed validators. Always include <code>examples</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved words</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set <code>allow_not_applicable</code>, <code>allow_not_available</code>, <code>allow_pooled</code>, <code>allow_anonymized</code> as appropriate for each column.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_best_practices"><a class="anchor" href="#_best_practices"></a><a class="link" href="#_best_practices">9.8. Best Practices</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Only define what is new.</strong> Inherited columns from the parent template do not need to be repeated. Only add a column to your template if it is new or if you need to override the parent&#8217;s definition (e.g., change <code>requirement</code> from <code>optional</code> to <code>required</code>, or restrict allowed values).</p>
+</li>
+<li>
+<p><strong>Use ontologies over patterns.</strong> Prefer <code>ontology</code> validators for fields where controlled vocabulary terms exist. Use typed validators (<code>number_with_unit</code>, <code>accession</code>, <code>identifier</code>, <code>date</code>, <code>structured_kv</code>, <code>semver</code>) for common structured formats. Use <code>pattern</code> validators only for unique formats not covered by typed validators.</p>
+</li>
+<li>
+<p><strong>Provide clear descriptions.</strong> Explain not just what the field is, but when to use <code>not applicable</code> vs <code>not available</code>, and give format guidance.</p>
+</li>
+<li>
+<p><strong>Always include examples.</strong> Examples in validators serve as documentation and help tools generate suggestions.</p>
+</li>
+<li>
+<p><strong>Test with real data.</strong> Your example SDRF should represent a realistic experiment, not a toy file. If possible, base it on a real public dataset.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation_commands"><a class="anchor" href="#_validation_commands"></a><a class="link" href="#_validation_commands">10. Validation Commands</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Validate SDRF files using sdrf-pipelines:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Install
+pip install sdrf-pipelines
+
+# Validate with single template
+parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv --template ms-proteomics
+
+# Validate with multiple templates
+parse_sdrf validate-sdrf --sdrf_file file.sdrf.tsv \
+  --template ms-proteomics \
+  --template human \
+  --template dia-acquisition
+
+# Check template compatibility
+parse_sdrf check-templates --templates ms-proteomics,human,dia-acquisition</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_versioning"><a class="anchor" href="#_versioning"></a><a class="link" href="#_versioning">11. Versioning</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_template_versions"><a class="anchor" href="#_template_versions"></a><a class="link" href="#_template_versions">11.1. Template Versions</a></h3>
+<div class="paragraph">
+<p>Templates follow semantic versioning (<code>MAJOR.MINOR.PATCH</code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>MAJOR</strong>: Breaking changes (column removals, requirement escalations)</p>
+</li>
+<li>
+<p><strong>MINOR</strong>: Additions (new optional/recommended columns)</p>
+</li>
+<li>
+<p><strong>PATCH</strong>: Fixes (description updates, validator corrections)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_recording_templates_in_sdrf"><a class="anchor" href="#_recording_templates_in_sdrf"></a><a class="link" href="#_recording_templates_in_sdrf">11.2. Recording Templates in SDRF</a></h3>
+<div class="paragraph">
+<p>Use <code>comment[sdrf template]</code> to record which templates were used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">NT=ms-proteomics;VV=v1.1.0    NT=human;VV=v1.1.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Multiple template columns supported for combined templates.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references"><a class="anchor" href="#_references"></a><a class="link" href="#_references">12. References</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/bigbio/sdrf-pipelines">sdrf-pipelines</a> - SDRF validation tool</p>
+</li>
+<li>
+<p><a href="https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics/templates">Template files on GitHub</a></p>
+</li>
+<li>
+<p><a href="specification.html">SDRF-Proteomics Specification</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-03-09 08:10:37 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
