@@ -45,6 +45,7 @@
         affinitySubtype: null,
         extraColumns: [],      // columns from sdrf-terms.tsv added by user
         addedOptionals: [],    // optional template columns the user opted into
+        removedColumns: [],    // recommended columns the user explicitly removed
         factorValues: []       // characteristics chosen as factor values
     };
 
@@ -180,6 +181,9 @@
             if (req === 'optional') {
                 // Only include if user explicitly added it
                 if (state.addedOptionals.indexOf(colName) === -1) continue;
+            } else if (req === 'recommended') {
+                // Exclude if user explicitly removed it
+                if (state.removedColumns.indexOf(colName) !== -1) continue;
             }
             result.push(col2);
         }
@@ -380,6 +384,7 @@
         state.experiments = [];
         state.affinitySubtype = null;
         state.addedOptionals = [];
+        state.removedColumns = [];
         state.extraColumns = [];
         state.factorValues = [];
 
@@ -608,8 +613,9 @@
                 continue;
             }
 
-            if (req === 'optional' && !includedNames[colName]) {
-                // Optional and not enabled -> goes in "optional" section
+            if ((req === 'optional' && !includedNames[colName]) ||
+                (req === 'recommended' && state.removedColumns.indexOf(colName) !== -1)) {
+                // Optional not enabled, or recommended that user removed -> "optional" section
                 optionalCols.push(col);
             } else if (includedNames[colName] && state.extraColumns.indexOf(colName) === -1) {
                 // Included from template (not user-added extra)
@@ -734,7 +740,14 @@
                     item.appendChild(toggleBtn);
 
                     item.addEventListener('click', function () {
-                        state.addedOptionals.push(col.name);
+                        var req = col.requirement || 'optional';
+                        if (req === 'recommended') {
+                            // Re-add: remove from removedColumns
+                            var idx = state.removedColumns.indexOf(col.name);
+                            if (idx !== -1) state.removedColumns.splice(idx, 1);
+                        } else {
+                            state.addedOptionals.push(col.name);
+                        }
                         updatePreview();
                     });
                     optDiv.appendChild(item);
@@ -844,6 +857,11 @@
                     // Remove from extra
                     var idx = state.extraColumns.indexOf(colName);
                     if (idx !== -1) state.extraColumns.splice(idx, 1);
+                } else if (col.requirement === 'recommended') {
+                    // Move recommended column to removed list
+                    if (state.removedColumns.indexOf(colName) === -1) {
+                        state.removedColumns.push(colName);
+                    }
                 } else {
                     // Toggle optional template column off (remove from addedOptionals)
                     var idx2 = state.addedOptionals.indexOf(colName);
