@@ -1,13 +1,13 @@
 # Proteomics Sample Metadata Format
 
-[![Version](https://flat.badgen.net/static/sdrf-proteomics/1.0.1/orange)](CHANGELOG.md)
-[![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
-[![Open Issues](https://flat.badgen.net/github/open-issues/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/issues)
-[![Open PRs](https://flat.badgen.net/github/open-prs/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/pulls)
-![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
-![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
-![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard)
-[![llms.txt](https://flat.badgen.net/static/llms.txt/available/blue)](llms.txt)
+[![Version](https://img.shields.io/badge/sdrf--proteomics-1.0.0-orange?style=flat)](CHANGELOG.md)
+[![License](https://img.shields.io/github/license/bigbio/proteomics-metadata-standard?style=flat)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
+[![Open Issues](https://img.shields.io/github/issues/bigbio/proteomics-metadata-standard?style=flat)](https://github.com/bigbio/proteomics-metadata-standard/issues)
+[![Open PRs](https://img.shields.io/github/issues-pr/bigbio/proteomics-metadata-standard?style=flat)](https://github.com/bigbio/proteomics-metadata-standard/pulls)
+![Contributors](https://img.shields.io/github/contributors/bigbio/proteomics-metadata-standard?style=flat)
+![Watchers](https://img.shields.io/github/watchers/bigbio/proteomics-metadata-standard?style=flat)
+![Stars](https://img.shields.io/github/stars/bigbio/proteomics-metadata-standard?style=flat)
+[![llms.txt](https://img.shields.io/badge/llms.txt-available-blue?style=flat)](llms.txt)
 
 ## Improving metadata annotation of Proteomics datasets
 
