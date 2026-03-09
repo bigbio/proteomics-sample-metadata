@@ -73,9 +73,34 @@
 </li>
 <li><a href="#ontologies-supported">12. Ontologies and Controlled Vocabularies</a></li>
 <li><a href="#example-annotated-datasets">13. Examples of Annotated Datasets</a></li>
-<li><a href="#_intellectual_property_statement">14. Intellectual Property Statement</a></li>
-<li><a href="#_copyright_notice">15. Copyright Notice</a></li>
-<li><a href="#_how_to_cite">16. How to cite</a></li>
+<li><a href="#template-definitions">14. Template Definitions</a>
+<ul class="sectlevel2">
+<li><a href="#_base">14.1. base</a></li>
+<li><a href="#_sample_metadata">14.2. sample-metadata</a></li>
+<li><a href="#_ms_proteomics">14.3. ms-proteomics</a></li>
+<li><a href="#_affinity_proteomics">14.4. affinity-proteomics</a></li>
+<li><a href="#_human">14.5. human</a></li>
+<li><a href="#_vertebrates">14.6. vertebrates</a></li>
+<li><a href="#_invertebrates">14.7. invertebrates</a></li>
+<li><a href="#_plants">14.8. plants</a></li>
+<li><a href="#_clinical_metadata">14.9. clinical-metadata</a></li>
+<li><a href="#_oncology_metadata">14.10. oncology-metadata</a></li>
+<li><a href="#_dia_acquisition">14.11. dia-acquisition</a></li>
+<li><a href="#_single_cell">14.12. single-cell</a></li>
+<li><a href="#_immunopeptidomics">14.13. immunopeptidomics</a></li>
+<li><a href="#_crosslinking">14.14. crosslinking</a></li>
+<li><a href="#_cell_lines">14.15. cell-lines</a></li>
+<li><a href="#_olink">14.16. olink</a></li>
+<li><a href="#_somascan">14.17. somascan</a></li>
+<li><a href="#_metaproteomics">14.18. metaproteomics</a></li>
+<li><a href="#_human_gut">14.19. human-gut</a></li>
+<li><a href="#_soil">14.20. soil</a></li>
+<li><a href="#_water">14.21. water</a></li>
+</ul>
+</li>
+<li><a href="#_intellectual_property_statement">15. Intellectual Property Statement</a></li>
+<li><a href="#_copyright_notice">16. Copyright Notice</a></li>
+<li><a href="#_how_to_cite">17. How to cite</a></li>
 <li><a href="#_references">References</a></li>
 </ul>
 </div>
@@ -1923,7 +1948,2363 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_intellectual_property_statement"><a class="anchor" href="#_intellectual_property_statement"></a><a class="link" href="#_intellectual_property_statement">14. Intellectual Property Statement</a></h2>
+<h2 id="template-definitions"><a class="anchor" href="#template-definitions"></a><a class="link" href="#template-definitions">14. Template Definitions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section provides the column definitions for each SDRF-Proteomics template. Each template shows only its <strong>own</strong> columns (not inherited ones). See the "Extends" field to identify which parent template&#8217;s columns are also included.</p>
+</div>
+<div class="sect2">
+<h3 id="_base"><a class="anchor" href="#_base"></a><a class="link" href="#_base">14.1. base</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> internal | <strong>Extends:</strong> none | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>Base SDRF template with infrastructure columns (identifiers, data files, versioning) inherited by all proteomics templates. This is a construction artifact and cannot be used directly.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for the biological sample</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>assay name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for the data acquisition run</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of technology used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: proteomic profiling by mass spectrometry, protein expression profiling by antibody array, protein expression profiling by aptamer array</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[technical replicate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier for the technical replicate (integer starting from 1)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[data file]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the raw data file</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf version]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the SDRF-Proteomics specification used to annotate this file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">semver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1.1.0, v2.0.0-dev</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf template]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template name and version used for annotation. Two formats are supported - key=value format (NT=template_name;VV=vX.Y.Z) or simple format (template_name vX.Y.Z). Multiple templates can be specified using multiple columns.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Template can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z'</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=human;VV=v1.1.0, human v1.1.0, NT=ms-proteomics;VV=v1.1.0, ms-proteomics v1.1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf annotation tool]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Software tool or method used to generate or annotate the SDRF file. Two formats are supported - key=value format (NT=tool_name;VV=vX.Y.Z) or simple format (tool_name vX.Y.Z).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Annotation tool can be specified as 'NT=name;VV=vX.Y.Z' or 'name vX.Y.Z' or 'manual curation'</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=lesSDRF;VV=v0.1.0, lesSDRF v0.1.0, NT=sdrf-pipelines;VV=v1.0.0, sdrf-pipelines v1.0.0, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sdrf validation hash]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hash value for SDRF validation integrity checking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Validation hash string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_sample_metadata"><a class="anchor" href="#_sample_metadata"></a><a class="link" href="#_sample_metadata">14.2. sample-metadata</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> internal | <strong>Extends:</strong> base | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template with shared sample metadata columns (organism, tissue, disease). This is an internal construction layer inherited by technology and organism templates - not used directly.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organism]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Species of the sample using NCBI Taxonomy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncbitaxon</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homo sapiens, mus musculus, rattus norvegicus, saccharomyces cerevisiae</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organism part]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomical part of the organism from which sample was derived</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver, brain, heart, blood</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cell type of the sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: cl, bto, clo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hepatocyte, neuron, fibroblast, T cell</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[biological replicate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier for the biological replicate (integer starting from 1, or 'pooled' for pooled samples)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Biological replicate should be an integer or 'pooled' for pooled reference samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1, 2, pooled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[pooled sample]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the sample is a pooled sample combining material from multiple biological sources. Use 'not pooled' for individual samples, 'pooled' when sources are unknown, or 'SN=sample1;SN=sample2' to list source names.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: not pooled, pooled; pattern: Use 'not pooled', 'pooled', or list sample IDs with SN= prefix</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SN=sample1;SN=sample2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single cell, reference, bridge, carrier, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of the sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: mondo, efo, doid, ncit, pato</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal, breast cancer, infection, metabolic disease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[material type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological material being analyzed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: tissue, cell, cell line, organism part, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tissue mass]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass of tissue used for extraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg, g, ug)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50 mg, 1 g, 500 ug</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[biosample accession number]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BioSample accession number for the sample (e.g., SAMN or SAMEA identifiers)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">accession: biosample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SAMN12345678, SAMEA12345678, SAMD1234567</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling time]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time at which the sample was collected (for longitudinal or time-course studies)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (hour, day, minute, week, month, year)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 hour, 24 hour, 7 day, 3 month</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[treatment]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Treatment or perturbation applied to the sample (drug, stimulus, environmental stress)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">untreated, LPS stimulation, doxorubicin treatment, drought stress, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[synthetic peptide]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the sample is a synthetic peptide library or biological material</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: synthetic, not synthetic</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[spiked compound]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spiked-in compound details using key-value format (CT=compound type, QY=quantity, PS=peptide sequence, AC=UniProt accession, CN=compound name, CV=vendor)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Key-value format for spiked compound details (CT=type, SP=species, QY=quantity, PS=sequence, AC=accession, CN=name, CV=vendor)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CT=peptide;PS=PEPTIDESEQ;QY=10 fmol, CT=protein;AC=A9WZ33;QY=20 nmol, CT=protein;SP=Homo sapiens;QY=1 pmol;AC=P37840, CT=mixture;CN=iRT mixture;CV=Biognosys;QY=1 pmol</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[enrichment process]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enrichment strategy applied to the sample (e.g., phosphopeptide enrichment, crosslinked peptide enrichment, glycopeptide enrichment)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enrichment of cross-linked peptides, enrichment of phosphorylated protein, enrichment of glycopeptides, enrichment of ubiquitinated proteins</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ms_proteomics"><a class="anchor" href="#_ms_proteomics"></a><a class="link" href="#_ms_proteomics">14.3. ms-proteomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> technology | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> Yes</p>
+</div>
+<div class="paragraph">
+<p>Base SDRF template for mass spectrometry-based proteomics. This is the minimum valid template for any MS experiment.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of technology used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: proteomic profiling by mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[proteomics data acquisition method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass spectrometry acquisition method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition, data-independent acquisition, parallel reaction monitoring, selected reaction monitoring</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[instrument]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass spectrometer instrument used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ms, pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LTQ Orbitrap, Q Exactive, Orbitrap Fusion Lumos, timsTOF Pro</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[cleavage agent details]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enzyme or chemical used for protein digestion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Trypsin;AC=MS:1001251, NT=Lys-C;AC=MS:1001309, NT=Chymotrypsin;AC=MS:1001306</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[label]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Labeling strategy used for quantification</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">label free sample, SILAC light, SILAC heavy, TMT126, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[fraction identifier]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fraction number for fractionated samples (integer, use 1 for non-fractionated). In MS proteomics, this identifies the chromatographic or electrophoretic fraction (e.g., SCX, hpHRP, SEC fractions). Each fraction maps to one data file.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[dissociation method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fragmentation method used in MS/MS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ms, pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD, CID, ETD, EThcD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[fractionation method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Peptide fractionation method used before MS analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High-pH reversed-phase chromatography (hpHRP), Strong cation-exchange chromatography (SCX), Strong anion-exchange chromatography (SAX), Size-exclusion chromatography (SEC)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[collision energy]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collision energy used for fragmentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Collision energy format: {value} {unit} where unit is NCE or eV. For multiple values, use semicolon-separated entries.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE, 30% NCE, 27 eV, 25 NCE;27 NCE;30 NCE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[precursor mass tolerance]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Precursor mass tolerance for database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ppm, Da, mmu)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 ppm, 20 ppm, 0.5 Da, 20 mmu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[fragment mass tolerance]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fragment mass tolerance for database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ppm, Da, mmu)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da, 20 ppm, 50 mmu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[reduction reagent]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical reagent used for disulfide bond reduction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride, ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dithiothreitol, tris(2-carboxyethyl)phosphine</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[alkylation reagent]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical reagent used for cysteine alkylation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride, ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iodoacetamide, chloroacetamide</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[depletion]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether abundant protein depletion was performed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: no depletion, depletion</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[modification parameters]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post-translational modifications searched</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: unimod, mod</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=Oxidation;MT=Variable;TA=M;AC=Unimod:35, NT=Carbamidomethyl;TA=C;MT=fixed;AC=UNIMOD:4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms2 mass analyzer]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass analyzer used for MS2 acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orbitrap, ion trap, TOF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample preparation batch]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Batch identifier for sample preparation (plate, chip, processing batch). Useful for batch effect correction in multi-batch experiments.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Sample preparation batch identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate1, batch_20220601, prep_A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[lc batch]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Liquid chromatography batch identifier for batch effect tracking (e.g., column changes, LC system swaps)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: LC batch identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC1, column_A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[acquisition date]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date of MS data acquisition (ISO 8601 format recommended). Useful for tracking instrument drift and batch effects.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Acquisition date/time</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022-06-01, 2022-06-01T18:28:37</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms min mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100m/z, 200m/z, 350.5m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms max mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1200m/z, 1600m/z, 2000m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms min charge]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined minimum precursor charge state setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Integer charge state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1, 2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms max charge]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined maximum precursor charge state setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Integer charge state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6, 7, 8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms min rt]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC method-defined minimum retention time setting used to acquire the data (in minutes)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Numeric retention time in minutes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0, 5, 10.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms max rt]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC method-defined maximum retention time setting used to acquire the data (in minutes)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Numeric retention time in minutes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">60, 90, 120</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms min im]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined minimum ion mobility setting used to acquire the data (1/K0 or Vs/cm2)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Numeric ion mobility value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6, 0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms max im]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined maximum ion mobility setting used to acquire the data (1/K0 or Vs/cm2)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Numeric ion mobility value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.3, 1.4, 1.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms2 min mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined minimum product ion (MS2) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100m/z, 200m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms2 max mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined maximum product ion (MS2) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1800m/z, 2000m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms3 min mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined minimum product ion (MS3) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100m/z, 200m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms3 max mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined maximum product ion (MS3) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1500m/z, 2000m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms1 scan range]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z range interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400m/z-1200m/z, 350m/z-1600m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms2 scan range]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z range interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100m/z-2000m/z, 200m/z-1800m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms3 scan range]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z range interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100m/z-1500m/z, 200m/z-2000m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[elution conditions]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Conditions used for peptide/protein elution</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text elution conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1% TFA in water, 80% acetonitrile, gradient 5-35% ACN in 60 min</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_affinity_proteomics"><a class="anchor" href="#_affinity_proteomics"></a><a class="link" href="#_affinity_proteomics">14.4. affinity-proteomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> technology | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> Yes</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for affinity-based proteomics experiments (Olink, SomaScan). This is the base template for all affinity proteomics experiments.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of technology used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: protein expression profiling by antibody array, protein expression profiling by aptamer array</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[platform]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Explore HT, Olink Target 96, SomaScan Assay 11K</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[instrument]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instrument used for data acquisition (e.g. sequencer, qPCR machine, microarray reader)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ms, pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Illumina NovaSeq X, Illumina NextSeq 2000, Agilent SureScan Microarray Scanner</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[panel name]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the commercial panel used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Panel name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Explore 3072, Olink Explore 1536, Olink Target 96 Inflammation, SomaScan 7K, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[panel version]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the assay panel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Panel version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v4.1, 2023-01, 7K v4.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[quantification unit]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unit of quantification for the assay (platform-specific)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: NPX, RFU</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[plate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Plate identifier for batch effect analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Plate identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1, 2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample matrix]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serum, plasma, cerebrospinal fluid, urine, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[normalization method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalization method applied to quantification values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Normalization method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate control normalized, bridge normalized, median normalization, not normalized</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[fraction identifier]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fraction or dilution series identifier. While fractionation is rare in affinity proteomics, dilution series are used in some protocols (e.g. SomaScan alternative matrix validation).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Fraction or dilution identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1, 2, 3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_human"><a class="anchor" href="#_human"></a><a class="link" href="#_human">14.5. human</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>Human SDRF template with human-specific sample metadata fields. Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ancestry category]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry or ethnic background of the donor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: hancestro</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European, African, Asian, Hispanic or Latin American</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[age]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age of the donor at sample collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Age format: 45Y, 6M, 30Y6M (Y&gt;M&gt;W&gt;D order), ranges like 40Y-50Y, or comparison operators like &gt;18Y, &gt;=21Y, &lt;65Y. Use "not available" if unknown, "anonymized" if redacted, or "pooled" for pooled samples.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">45Y, 6M, 30Y6M, 30Y6M2W, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sex]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Biological sex of the donor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: male, female, intersex</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[developmental stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of the donor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adult, embryonic stage, fetal stage, infant stage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[individual]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for the donor individual</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patient_001, donor-A1, subject_12, anonymized, &#8230;&#8203;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_vertebrates"><a class="anchor" href="#_vertebrates"></a><a class="link" href="#_vertebrates">14.6. vertebrates</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for non-human vertebrate samples (mammals, birds, fish, reptiles, amphibians). Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[developmental stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of the organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adult, embryo, juvenile, larval stage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[strain or breed]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strain or breed of the organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncbitaxon</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C57BL/6, Sprague-Dawley, BALB/c, Wistar</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sex]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Biological sex of the organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: male, female, hermaphrodite</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_invertebrates"><a class="anchor" href="#_invertebrates"></a><a class="link" href="#_invertebrates">14.7. invertebrates</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for invertebrate samples (Drosophila, C. elegans, insects, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[developmental stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of the organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adult stage, larval stage, pupal stage, embryonic stage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[strain or breed]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strain of the organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncbitaxon</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Oregon-R, w1118, N2, Canton-S</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genotype of the organism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Genotype notation following standard conventions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wild type, daf-2(e1370), w[*]; P{GAL4}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_plants"><a class="anchor" href="#_plants"></a><a class="link" href="#_plants">14.8. plants</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for plant samples (Arabidopsis, crops, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organism part]</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto, po</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">flower bud, leaf, root, seed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[developmental stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of the plant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">seedling stage, flowering stage, rosette growth stage, senescent stage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[strain or breed]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cultivar, ecotype, or accession of the plant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Plant cultivar or ecotype name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Col-0, Ler-0, Nipponbare, B73</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[growth condition]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Growth conditions for the plant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of growth conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long day (16h light/8h dark), short day (8h light/16h dark), continuous light, greenhouse</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[treatment]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to recommended)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_clinical_metadata"><a class="anchor" href="#_clinical_metadata"></a><a class="link" href="#_clinical_metadata">14.9. clinical-metadata</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for clinical study samples with treatment, demographics, and lifestyle metadata. Applicable to any organism. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[compound]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical compound or drug applied to sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: chebi, ncit, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">doxorubicin, cisplatin, tamoxifen, metformin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dose]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dose or concentration of compound treatment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/kg, uM, nM, mg, ug, mg/mL, ug/mL, mM)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 mg/kg, 50 uM, 100 nM, 5 mg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[exposure duration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration of treatment exposure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (hour, day, minute, week, month)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24 hour, 5 day, 30 minute, 2 week</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[treatment status]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Treatment status at time of sampling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: pre-treatment, on treatment, post-treatment, treatment naive</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[treatment response]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response to treatment (for studies measuring therapeutic outcomes)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">complete response, partial response, progressive disease, stable disease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[pre-existing condition]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pre-existing medical conditions or comorbidities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: mondo, efo, doid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">diabetes mellitus, hypertension, obesity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[body mass index]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Body mass index (BMI) in kg/m^2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Numeric BMI value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24.5, 31.2, 18.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[smoking status]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Patient smoking status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">never smoker, former smoker, current smoker</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[menopausal status]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Menopausal status for female patients</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: pre-menopausal, peri-menopausal, post-menopausal</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genetic modification]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method of genetic modification (knockout, knockdown, overexpression, transduction)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">knockout, knockdown, overexpression, transduction, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phenotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Observable characteristics or traits (drug sensitivity, molecular markers, expression phenotypes)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pato, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">drug resistant, HER2-positive, high expresser, wild-type phenotype</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[weight]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Body weight of the subject</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (kg, g, lb)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">70 kg, 55 kg, 154 lb</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[height]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Height of the subject</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (cm, m)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">175 cm, 1.75 m, 160 cm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling site]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical location or context of sampling within the organism part</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor, normal tissue adjacent to tumor, left ventricle, frontal cortex</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Known genetic variant, mutation, or genotype of the subject</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Genotype as free text (gene name + variant)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BRCA1 mutation carrier, KRAS G12D mutant, wild type, TP53 R175H</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_oncology_metadata"><a class="anchor" href="#_oncology_metadata"></a><a class="link" href="#_oncology_metadata">14.10. oncology-metadata</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> clinical-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for cancer/oncology study samples with tumor staging, grading, and clinical outcome metadata. Extends clinical-metadata with oncology-specific columns. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease staging]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease progression stage (stage I-IV, chronic phase, end stage)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage I, stage II, stage III, stage IV, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tumor grading]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Histological tumor grade (describes how abnormal cells look)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grade 1, grade 2, grade 3, grade 4, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tumor stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TNM staging notation (describes extent of cancer spread)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">T2N1M0, T3N0M0, T1N0M0, T4N2M1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tumor size]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tumor size measurement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (cm, mm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 cm, 15 mm, 0.8 cm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tumor mass]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tumor mass/weight measurement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (g, mg)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15 g, 250 mg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[histologic subtype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cancer molecular or histologic subtype</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luminal A, luminal B, HER2-enriched, triple-negative, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[metastasis site]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location where cancer has spread from primary site</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liver, lung, bone, brain</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[biopsy site]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical location of biopsy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">breast, colon, prostate, lung</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[clinical data]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free-text clinical details (receptor status, treatment history, surgical details)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text clinical data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ER+/PR+/HER2-, prior chemotherapy with doxorubicin, surgical resection performed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[clinical history]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relevant medical history information for the patient</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text clinical history</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">family history of breast cancer, previous radiation therapy, no significant medical history</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[survival time]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Patient survival time for survival analysis studies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (month, year, day, week)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24 month, 3 year, 180 day</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[last follow up]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time of last clinical follow-up for longitudinal studies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (month, year, day, week)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36 month, 5 year, 365 day</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mitotic rate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of mitoses per high-power field (indicator of tumor proliferation)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Mitotic rate as count or count per HPF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5, 12/10 HPF, 3/10 HPF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dukes stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dukes staging for colorectal cancer (A, B, C, D)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: A, B, C, D</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ann arbor stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ann Arbor staging for lymphoma (I, II, III, IV with optional A/B suffix)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Ann Arbor stage (I-IV with optional A/B suffix for symptoms, E for extranodal, S for spleen)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IA, IIB, IIIA, IVB, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[gleason score]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gleason score for prostate cancer grading (sum of two pattern grades, range 2-10)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Gleason score as sum (e.g., 7) or component pattern (e.g., 3+4)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7, 3+4, 4+3, 9, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[weiss grade]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Weiss scoring system for adrenal cortical carcinoma (low or high)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: low, high</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_dia_acquisition"><a class="anchor" href="#_dia_acquisition"></a><a class="link" href="#_dia_acquisition">14.11. dia-acquisition</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> ms-proteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for Data-independent acquisition (DIA) experiments. Extends ms-proteomics with DIA-specific columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[proteomics data acquisition method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass spectrometry acquisition method (restricted to DIA for this template)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: Data-independent acquisition</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[scan window lower limit]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lower m/z limit of the DIA scan window</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: m/z value as a number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400, 350.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[scan window upper limit]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Upper m/z limit of the DIA scan window</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: m/z value as a number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1200, 1000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[isolation window width]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Width of the isolation window in m/z units</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Width in m/z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25, 8, 4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[dia method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific DIA method variant used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SWATH-MS, MSE, All ion fragmentation, diaPASEF</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_single_cell"><a class="anchor" href="#_single_cell"></a><a class="link" href="#_single_cell">14.12. single-cell</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> ms-proteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for single-cell proteomics (SCP) experiments. Works with any organism - combine with appropriate sample template (human, vertebrates, invertebrates, or plants). Aligned with Nature Methods SCP guidelines (Gatto et al., 2023).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to recommended)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[single cell isolation protocol]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to isolate single cells (FACS, cellenONE, LCM, etc.)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: FACS, cellenONE, microfluidics, laser capture microdissection, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell identifier]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for each single cell within the experiment. Required per SCP guidelines for tracking cells through analysis.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell_001, SC_A1, well_B3, barcode_ATCGATCG, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample preparation batch]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Batch identifier for sample preparation (plate, chip, processing batch). Critical for batch effect correction.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cells per well]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of cells per well/reaction. Use 1 for true single cells, higher numbers for small pools.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Number of cells</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1, 5, 10, 100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[carrier channel]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT/TMTpro channel used for the carrier proteome</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: TMT channel label for carrier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT131C, TMTpro134N, TMT126</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[reference channel]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT/TMTpro channel used for the reference sample (for normalization across sets)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: TMT channel label for reference</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMT131N, TMTpro133C, TMT127N</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[forward scatter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forward scatter (FSC) value from flow cytometry - proxy for cell size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: FSC value (numeric)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">316.0, 250</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[side scatter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Side scatter (SSC) value from flow cytometry - proxy for cell granularity/complexity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: SSC value (numeric)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">301.0, 184</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[enrichment marker]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Markers used for cell sorting/enrichment with optional intensity values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Enrichment marker(s) and optional intensity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CD45+, GFP+, CD3+CD4+, CD34:APC-Cy7-A=276.0, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell viability]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Viability status of the cell at isolation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: live, viable, dead, unknown</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell cycle phase]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cell cycle phase if determined (e.g., by FACS or computational inference)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: G1, S, G2, G2/M, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell diameter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Physical diameter of the isolated cell if measured (in micrometers)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (um, μm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15 um, 20.5 um, 12 μm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[spatial coordinates]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X,Y coordinates if cells were isolated from a spatial context (e.g., LCM from tissue)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Spatial coordinates</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X=100;Y=250, X=50.5;Y=120.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[tissue section]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tissue section identifier for spatially resolved single-cell proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Tissue section identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">section_001, slide_A_section_3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[facs nozzle size]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nozzle diameter used for FACS-based single cell isolation (in micrometers)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (um, μm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">70 um, 100 um, 130 μm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[facs sorting mode]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sorting mode used during FACS isolation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: single cell, purity, yield, 4-way purity</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[microfluidics chip type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type and manufacturer of the microfluidics chip used for single cell isolation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chip type/manufacturer identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fluidigm C1, Cellenion cellenCHIP, nanowell chip</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[lcm microscope model]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Model of the laser capture microdissection microscope used for cell isolation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: LCM microscope model name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Leica LMD7, Zeiss PALM MicroBeam, Thermo LCM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[nanopots chip version]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the nanoPOTS chip used for single cell sample preparation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: nanoPOTS chip version identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nanoPOTS v1, nanoPOTS v2, 9-well chip</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_immunopeptidomics"><a class="anchor" href="#_immunopeptidomics"></a><a class="link" href="#_immunopeptidomics">14.13. immunopeptidomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> ms-proteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for immunopeptidomics experiments (MHC-bound peptide identification). Works with any organism - combine with appropriate sample template (human for HLA typing, vertebrates for H-2/MHC typing in mouse, etc.).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mhc protein complex]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MHC protein complex targeted for immunopeptidome enrichment (GO:0042611)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: MHC class I protein complex, MHC class II protein complex, non-classical MHC protein complex, mutant MHC protein complex, MHC protein complex with serotype</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[immunopeptidome enrichment method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to enrich MHC-bound peptides</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: immunoaffinity purification, immunoaffinity purification (iodoacetamide), mild acid elution, detergent lysis</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mhc typing]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MHC alleles expressed by the sample (PRIDE:0000893) following IPD-MHC nomenclature (<a href="https://www.ebi.ac.uk/ipd/mhc/" class="bare">https://www.ebi.ac.uk/ipd/mhc/</a>). Use IPD-IMGT/HLA notation for human (HLA-A*02:01), H-2 notation for mouse (H-2Kb, H-2Db), or appropriate IPD-MHC notation for other species. Multiple alleles can be separated by semicolons.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: MHC allele notation (HLA for human, H-2 for mouse). Supports multi-allele (semicolon-separated), 2-4 field resolution.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HLA-A*02:01, HLA-B*07:02, HLA-A*02:01;HLA-B*07:02;HLA-C*07:02, HLA-A*02:01:01, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mhc typing method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MHC typing method used (PRIDE:0000894). Values mapped to NCIT where available: NGS-based typing (NCIT:C101293), sequence-based typing (NCIT:C130180), PCR-SSO (NCIT:C130181), PCR-SSP (NCIT:C130179), PCR-based genotyping (NCIT:C17003)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: NGS-based typing, sequence-based typing, PCR-SSO, PCR-SSP, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[antibody enrichment]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Antibody clone used for MHC immunoprecipitation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Antibody clone name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W6/32, BB7.2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_crosslinking"><a class="anchor" href="#_crosslinking"></a><a class="link" href="#_crosslinking">14.14. crosslinking</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> ms-proteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for crosslinking mass spectrometry (XL-MS) experiments. Extends ms-proteomics with crosslinking-specific columns for data analysis.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[chemical cross-linking coupled with ms]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS-based cross-linking methodology used to identify this as a crosslinking dataset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: cross-linking mass spectrometry</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[enrichment process]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to recommended)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[cross-linker]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-linker compound with structured properties for analysis tools.
+Format: NT=name;AC=accession;CL=cleavable;TA=targets;MH/ML=stub masses
+Uses XLMOD ontology (parent term XLMOD:00004).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">structured_kv</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=DSS;AC=XLMOD:02001, NT=BS3;AC=XLMOD:02000, NT=DSSO;AC=XLMOD:02010;CL=yes;TA=K,S,T,Y,nterm;MH=54.01;ML=85.98, NT=EDC;AC=XLMOD:02009;CL=no;TA=K,D,E</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[dissociation method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fragmentation method used in MS2. Critical for cleavable crosslinkers (DSSO, DSBU)
+which generate diagnostic stub ions under specific fragmentation conditions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ms, pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HCD, CID, ETD, EThcD, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[collision energy]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collision energy used for fragmentation. Important for cleavable crosslinker analysis.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Collision energy format: {value} {unit} where unit is NCE or eV. For stepped collision energies, use semicolon-separated values or 'stepped' prefix.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE, 30% NCE, 27 eV, 25 NCE;27 NCE;30 NCE, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[crosslink enrichment method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to enrich crosslinked peptides before MS analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride, ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size exclusion chromatography, strong cation exchange chromatography, high-pH reversed-phase chromatography, FAIMS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[crosslink distance]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum Cα-Cα distance constraint provided by the crosslinker (for structural interpretation)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (Å)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 Å, 26.4 Å, 11.4 Å</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[crosslinker concentration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Concentration of crosslinking reagent used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mM, uM, µM)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2 mM, 500 uM, 1 mM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[crosslinking reaction time]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration of the crosslinking reaction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (min, h, s)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 min, 1 h, 45 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[crosslinking temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Temperature at which crosslinking was performed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (°C)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25°C, 4°C, 37°C, room temperature</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[crosslinker to protein ratio]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Molar ratio of crosslinker to protein</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Ratio format (e.g., 50:1 or 1:1 w/w)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3001, 6001, 1:1 w/w</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[quenching reagent]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent used to quench the crosslinking reaction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chemical name of quenching reagent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tris-HCl, ammonium bicarbonate, glycine</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_cell_lines"><a class="anchor" href="#_cell_lines"></a><a class="link" href="#_cell_lines">14.15. cell-lines</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for cell line samples with Cellosaurus-based annotation. Cell lines can originate from any organism - combine with appropriate organism template (human for HeLa, vertebrates for NIH 3T3, invertebrates for Sf9).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell line]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the cell line</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: clo, bto, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HeLa, HEK293, MCF7, A549</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[disease]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disease state of the donor tissue from which the cell line was established</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cellosaurus accession]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cellosaurus accession number for the cell line</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">accession: cellosaurus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CVCL_0030, CVCL_0004</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cellosaurus name]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Official Cellosaurus name for the cell line</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling site]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tissue or organ from which the cell line was derived</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cervix, kidney, breast</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[passage number]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Passage number of the cell line used in the experiment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Passage number should be an integer or range</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10, 15-20, 5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[biorepository]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BioBank or source from which the cell line was obtained</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Source of the cell line</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ATCC, DSMZ, ECACC, Sigma-Aldrich</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell line authentication]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to authenticate the cell line identity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Authentication method used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STR profiling, SNP fingerprinting, cytogenetic analysis</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[culture medium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Culture medium used to grow the cell line</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DMEM, RPMI 1640, MEM, Ham&#8217;s F-12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[developmental stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Developmental stage of the donor from which the cell line was derived</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adult, embryonic, fetal, neonatal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ancestry category]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ancestry category of the cell line donor (if known)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: hancestro</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European, African, East Asian, South Asian</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample storage temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage temperature of the cell line (in Celsius)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (°C)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-80 °C, -20 °C, 4 °C</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_olink"><a class="anchor" href="#_olink"></a><a class="link" href="#_olink">14.16. olink</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> affinity-proteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for Olink Proximity Extension Assay (PEA) experiments. Extends affinity-proteomics with Olink-specific columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[olink panel]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific Olink panel name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Olink panel name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target 96 Inflammation, Target 96 Cardiovascular II, Explore 384 Cardiometabolic, Explore 1536, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[olink platform]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Olink platform version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: Olink Target 96, Olink Explore 384, Olink Explore HT, Olink Reveal</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[npx normalization]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalization method applied to NPX values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: plate control normalized, intensity normalized, bridge normalized, not normalized</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[olink lot number]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent lot number for traceability</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Lot number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lot_2023_001, B12345</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_somascan"><a class="anchor" href="#_somascan"></a><a class="link" href="#_somascan">14.17. somascan</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> affinity-proteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for SomaScan aptamer-based proteomics experiments. Extends affinity-proteomics with SomaScan-specific columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[somascan menu]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan assay menu (number of aptamers/proteins measured)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: SomaScan 1.1K, SomaScan 1.3K, SomaScan 5K, SomaScan 7K, SomaScan 11K</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[somascan platform]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan instrument/platform version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: SomaScan Assay, SomaScan Assay v4, SomaScan Assay v4.1</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[dilution]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample dilution factor used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Standard SomaScan dilution factors</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.005%, 0.5%, 20%, 40%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[somascan lot number]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent lot number for traceability</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Lot number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SS-2023-001, lot_12345</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_metaproteomics"><a class="anchor" href="#_metaproteomics"></a><a class="link" href="#_metaproteomics">14.18. metaproteomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> base | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>Base SDRF template for metaproteomics experiments (microbial community proteomics). Extends base directly and defines MIxS-aligned sample metadata. When combined with ms-proteomics, sample-metadata columns (organism, disease, cell type) are excluded. Use a child template (human-gut, soil, water) for environment-specific fields.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[environmental sample type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: envo, efo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">soil, seawater, gut microbiome, wastewater, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[geographic location]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Geographic location where sample was collected (GAZ term or coordinates). Corresponds to MIxS geo_loc_name (MIXS:0000010).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: gaz</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pacific Ocean, Amazon rainforest, 47.6062 N, 122.3321 W</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[environmental medium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: envo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">soil, seawater, freshwater, feces, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[collection date]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date when sample was collected (ISO 8601)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024, 2024-01, 2024-01-15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample collection method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to collect the environmental sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Collection method description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grab sample, core sample, swab, filtration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[depth]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Depth at which sample was collected. Corresponds to MIxS depth (MIXS:0000018).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m, cm, mm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 m, 50 cm, 100 m</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[altitude]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Altitude or elevation of sampling site. Corresponds to MIxS elevation (MIXS:0000093).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 m, 1200 m, 0 m</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Temperature at sampling location. Corresponds to MIxS temperature (MIXS:0000113).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (°C)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 °C, 4 °C, -20 °C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ph]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pH at sampling location</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: pH value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.0, 5.5, 8.2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample storage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage conditions for the sample before analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Storage conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-80C, liquid nitrogen, 4C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[metagenome accession]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accession number for matched metagenome data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">accession:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MGYA00001234, SRP123456</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[microbiome source]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source of the microbiome being studied (e.g., gut microbiome, rhizosphere microbiome)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Microbiome source description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gut microbiome, rhizosphere microbiome, oral microbiome, skin microbiome</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[biomass estimation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Estimated microbial biomass in the sample</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Biomass estimation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1e9 cells/g, high biomass, low biomass</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host contamination]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Level of host protein contamination if known</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Host contamination level</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">low (&lt;5%), moderate (5-20%), high (&gt;20%)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[contaminant database]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contaminant database(s) used in database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Contaminant database name(s)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cRAP, MaxQuant contaminants, cRAP;MaxQuant contaminants</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mock community]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier or name of mock community standard used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Mock community identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ZymoBIOMICS Microbial Community Standard, ATCC MSA-1000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mock community composition]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description of mock community composition (species and ratios)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Community composition description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8 bacteria + 2 yeasts at defined ratios, even mix of 10 species</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[expected organism list]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semicolon-separated list of organisms expected in mock community</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Semicolon-separated organism list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">E. coli;B. subtilis;S. cerevisiae;L. fermentum, Bacillus subtilis;Staphylococcus aureus</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_human_gut"><a class="anchor" href="#_human_gut"></a><a class="link" href="#_human_gut">14.19. human-gut</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> metaproteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for human gut metaproteomics. Extends metaproteomics with host-associated columns aligned with the GSC MIxS human-gut extension (0016004). Combine with ms-proteomics for MS acquisition columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host organism]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host organism for host-associated microbiome samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: ncbitaxon</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Homo sapiens</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host subject id]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">De-identified unique identifier for the host subject. Corresponds to MIxS host_subject_id (MIXS:0000861).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subject_001, patient_A, anonymized</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host disease status]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host disease diagnoses. Corresponds to MIxS host_disease_stat (MIXS:0000031).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: mondo, doid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">inflammatory bowel disease, colorectal cancer, healthy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host body site]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Body site where sample was obtained. Corresponds to MIxS host_body_site (MIXS:0000867).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stool, oral cavity, colon</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host age]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Age of host at the time of sampling. Corresponds to MIxS host_age (MIXS:0000255).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Age in standard format (Y=year, M=month, W=week, D=day, H=hour)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">45Y, 8W, 3M</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host sex]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sex of the host organism. Corresponds to MIxS host_sex (MIXS:0000811).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: male, female, intersex</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host body-mass index]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Body mass index (weight/height^2). Corresponds to MIxS host_body_mass_index (MIXS:0000317).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: BMI numeric value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22.5, 30.1, 18.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host height]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Height of the host. Corresponds to MIxS host_height (MIXS:0000264).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (cm, m)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">175 cm, 1.75 m</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host total mass]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total mass of the host. Corresponds to MIxS host_tot_mass (MIXS:0000263).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (kg, g)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">70 kg, 85 kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ethnicity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ethnicity of the host. Corresponds to MIxS ethnicity (MIXS:0000895).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Ethnicity description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European, East Asian, African</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host diet]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diet type of the host. Corresponds to MIxS host_diet (MIXS:0000869).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Diet description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">omnivore, vegan, western diet, high-fiber</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[special diet]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Special dietary restrictions. Corresponds to MIxS special_diet (MIXS:0000905).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Special diet description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gluten-free, low FODMAP, ketogenic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host last meal]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content of last meal and time since feeding. Corresponds to MIxS host_last_meal (MIXS:0000870).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Last meal description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">breakfast 4 hours prior, fasting 12 hours</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[gastrointestinal tract disorder]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">History of GI tract disorders. Corresponds to MIxS gastroint_disord (MIXS:0000280).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: GI disorder description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Crohn&#8217;s disease, ulcerative colitis, irritable bowel syndrome, none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[liver disorder]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">History of liver disorders. Corresponds to MIxS liver_disord (MIXS:0000282).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Liver disorder description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none, fatty liver disease, hepatitis</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[antibiotic treatment]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recent antibiotic exposure of the host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Antibiotic treatment description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none, amoxicillin 7 days prior, broad-spectrum</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ihmc medication code]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medication codes (IHMC). Corresponds to MIxS ihmc_medication_code (MIXS:0000884).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Medication code(s)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none, A02BC01, N02BE01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host body product]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Substance produced by the body where sample was obtained. Corresponds to MIxS host_body_product (MIXS:0000888).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Body product description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stool, mucus, saliva</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host body temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Core body temperature at sample collection. Corresponds to MIxS host_body_temp (MIXS:0000874).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (°C)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36.6 °C, 37.2 °C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[perturbation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of perturbation applied. Corresponds to MIxS perturbation (MIXS:0000754).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Perturbation description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">antibiotic administration, dietary intervention, none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chemical administration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical compounds administered to the host. Corresponds to MIxS chem_administration (MIXS:0000751).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chemical administration description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metformin 500mg daily, probiotics, none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_soil"><a class="anchor" href="#_soil"></a><a class="link" href="#_soil">14.20. soil</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> metaproteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for soil metaproteomics. Extends metaproteomics with soil-specific columns aligned with the GSC MIxS soil extension (0016012). Combine with ms-proteomics for MS acquisition columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil classification type (ENVO term)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: envo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sandy loam, clay, peat, silt</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil horizon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil horizon from which sample was collected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: O horizon, A horizon, B horizon, C horizon, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[land use]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Land use type at sampling site</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Land use type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">agricultural, forest, urban, grassland, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[vegetation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dominant vegetation at sampling site</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Vegetation description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deciduous forest, corn field, prairie, tropical rainforest</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total organic carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total organic carbon content. Corresponds to MIxS tot_org_carb (MIXS:0000533).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Total organic carbon with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15.2 g/kg, 2.5 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total nitrogen content. Corresponds to MIxS tot_nitro_content (MIXS:0000530).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Total nitrogen with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2 g/kg, 0.15 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[water content]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Water content of soil sample. Corresponds to MIxS water_content (MIXS:0000185).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Water content with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 %, 0.25 g/g</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil texture measurement]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil texture measurement (sand/silt/clay percentages). Corresponds to MIxS soil_text_measure (MIXS:0000335).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Soil texture description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sand 60%;silt 25%;clay 15%, loamy sand</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[current vegetation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current vegetation type at sampling site. Corresponds to MIxS cur_vegetation (MIXS:0000312).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: envo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grassland, deciduous forest, cropland</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[crop rotation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Crop rotation history. Corresponds to MIxS crop_rotation (MIXS:0000318).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Crop rotation description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">corn-soybean rotation, wheat-fallow, continuous corn</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[perturbation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of perturbation applied. Corresponds to MIxS perturbation (MIXS:0000754).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Perturbation description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fertilizer application, tillage, none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chemical administration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical compounds administered to the site. Corresponds to MIxS chem_administration (MIXS:0000751).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chemical administration description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nitrogen fertilizer, pesticide, none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_water"><a class="anchor" href="#_water"></a><a class="link" href="#_water">14.21. water</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> metaproteomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for aquatic metaproteomics. Extends metaproteomics with water-specific columns aligned with the GSC MIxS water extension (0016014). Combine with ms-proteomics for MS acquisition columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[water body type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of water body from which sample was collected (ENVO term)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: envo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ocean, lake, river, estuary, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[salinity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Salinity measurement. Corresponds to MIxS salinity (MIXS:0000183).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Salinity value with unit or descriptive term</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35 PSU, freshwater, brackish</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved oxygen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved oxygen concentration. Corresponds to MIxS diss_oxygen (MIXS:0000119).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Dissolved oxygen with unit or descriptive term</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8.5 mg/L, hypoxic, anoxic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chlorophyll]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chlorophyll concentration if measured</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L, mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 ug/L, 0.1 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling depth zone]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ecological depth zone of the sampling site</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: epipelagic, mesopelagic, bathypelagic, abyssopelagic, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[turbidity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Turbidity measurement. Corresponds to MIxS turbidity (MIXS:0000191).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Turbidity with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.2 NTU, 12 FNU</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[alkalinity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alkalinity measurement. Corresponds to MIxS alkalinity (MIXS:0000421).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, meq/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120 mg/L, 2.5 meq/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[nitrate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nitrate concentration. Corresponds to MIxS nitrate (MIXS:0000425).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 mg/L, 10 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phosphate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phosphate concentration. Corresponds to MIxS phosphate (MIXS:0000505).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1 mg/L, 1.5 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[conductivity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Electrical conductivity of water sample. Corresponds to MIxS conduc (MIXS:0000544).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Conductivity with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">450 uS/cm, 1.2 mS/cm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total dissolved solids]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total dissolved solids (TDS) concentration in the water sample.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, g/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">350 mg/L, 1.2 g/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[light intensity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Light intensity at sampling depth. Corresponds to MIxS light_intensity (MIXS:0000706).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Light intensity with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 lux, 100 umol/m2/s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[current]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Water current velocity. Corresponds to MIxS current (MIXS:0000051).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m/s, cm/s, knots)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 m/s, 15 cm/s</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_intellectual_property_statement"><a class="anchor" href="#_intellectual_property_statement"></a><a class="link" href="#_intellectual_property_statement">15. Intellectual Property Statement</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The PSI takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Copies of claims of rights made available for publication and any assurances of licenses to be made available or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the PSI Chair.</p>
@@ -1934,7 +4315,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_copyright_notice"><a class="anchor" href="#_copyright_notice"></a><a class="link" href="#_copyright_notice">15. Copyright Notice</a></h2>
+<h2 id="_copyright_notice"><a class="anchor" href="#_copyright_notice"></a><a class="link" href="#_copyright_notice">16. Copyright Notice</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Copyright &#169; Proteomics Standards Initiative (2020). All Rights Reserved.</p>
@@ -1951,7 +4332,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 </div>
 <div class="sect1">
-<h2 id="_how_to_cite"><a class="anchor" href="#_how_to_cite"></a><a class="link" href="#_how_to_cite">16. How to cite</a></h2>
+<h2 id="_how_to_cite"><a class="anchor" href="#_how_to_cite"></a><a class="link" href="#_how_to_cite">17. How to cite</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Please cite this document as:</p>
@@ -1988,7 +4369,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-09 07:20:08 UTC
+Last updated 2026-03-09 07:33:09 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
