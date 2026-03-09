@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start - SDRF-Proteomics</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .quickstart-intro {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
+        .quickstart-intro h2 {
+            margin-bottom: 0.75rem;
+        }
+        .quickstart-intro p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+        .concept-section {
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+        .concept-section h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .concept-section p {
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+        .concept-section code {
+            background: #f4f4f5;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.92em;
+        }
+        .concept-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 640px) {
+            .concept-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+        .concept-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .concept-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        .concept-card p {
+            font-size: 0.93rem;
+            margin-bottom: 0.25rem;
+        }
+        .concept-card .example-vals {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .rule-list {
+            padding-left: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .rule-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        .cta-builder-box {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .cta-builder-box h3 {
+            margin-bottom: 0.5rem;
+        }
+        .cta-builder-box p {
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+        }
+        .cta-builder-box .btn {
+            display: inline-block;
+            font-size: 1.05rem;
+        }
+    </style>
+</head>
+<body><div class="dev-banner">&#9888;&#65039; Development Version - This documentation is from the dev branch and may contain unreleased changes. <a href="/">View stable version</a></div>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav">
+                <a href="./index.html">Home</a>
+                <a href="./specification.html">Specification</a>
+                <a href="./index.html#templates">Templates</a>
+                <a href="./index.html#tools">Tools</a>
+                <a href="./sdrf-explorer.html">Explorer</a>
+                <a href="./sdrf-editor.html">Editor</a>
+                <a href="./sdrf-builder.html">Template Builder</a>
+                <a href="./quickstart.html" class="nav-current">Quick Start</a>
+                <a href="/" class="version-link">Stable Version</a>
+                <a href="https://github.com/bigbio/proteomics-metadata-standard" target="_blank">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="content" class="container">
+
+        <!-- ===== INTRO ===== -->
+        <section class="quickstart-intro">
+            <h2>What is an SDRF file?</h2>
+            <p>
+                SDRF (Sample and Data Relationship Format) is a tab-delimited file that
+                describes your proteomics samples and links them to data files. Every row
+                is one sample-to-file relationship, and every column captures a piece of
+                metadata &mdash; from the organism you studied to the instrument that acquired the data.
+            </p>
+            <p>
+                Columns fall into three categories:
+            </p>
+
+            <div class="sdrf-example-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sample-col">source name</th>
+                            <th class="sample-col">characteristics[organism]</th>
+                            <th class="sample-col">characteristics[disease]</th>
+                            <th class="data-col">assay name</th>
+                            <th class="data-col">comment[instrument]</th>
+                            <th class="data-col">comment[data file]</th>
+                            <th class="factor-col">factor value[disease]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="sample-col">Sample-1</td>
+                            <td class="sample-col">Homo sapiens</td>
+                            <td class="sample-col">lung cancer</td>
+                            <td class="data-col">run_01</td>
+                            <td class="data-col">Orbitrap Exploris 480</td>
+                            <td class="data-col">sample1.raw</td>
+                            <td class="factor-col">lung cancer</td>
+                        </tr>
+                        <tr>
+                            <td class="sample-col">Sample-2</td>
+                            <td class="sample-col">Homo sapiens</td>
+                            <td class="sample-col">normal</td>
+                            <td class="data-col">run_02</td>
+                            <td class="data-col">Orbitrap Exploris 480</td>
+                            <td class="data-col">sample2.raw</td>
+                            <td class="factor-col">normal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sdrf-legend">
+                <span class="legend-item"><span class="legend-color sample-bg"></span> Sample metadata</span>
+                <span class="legend-item"><span class="legend-color data-bg"></span> Data / instrument</span>
+                <span class="legend-item"><span class="legend-color factor-bg"></span> Experimental factors</span>
+            </div>
+        </section>
+
+        <!-- ===== CONCEPT: Row structure ===== -->
+        <section class="concept-section">
+            <h3>One row = one data file</h3>
+            <p>
+                Each row in an SDRF file represents one data file (e.g. a .raw or .mzML file) and the biological sample it came from.
+                If the same sample was run twice, it gets two rows. If a TMT multiplex packs 10 samples into one file, that file gets 10 rows &mdash; one per channel.
+            </p>
+            <p>
+                This design makes the relationship between samples and data explicit, so analysis tools can automatically match files to conditions without manual configuration.
+            </p>
+        </section>
+
+        <!-- ===== CONCEPT: Column types ===== -->
+        <section class="concept-section">
+            <h3>Three types of columns</h3>
+            <p>Every SDRF column belongs to one of three categories. Understanding these makes filling in a template straightforward.</p>
+
+            <div class="concept-columns">
+                <div class="concept-card">
+                    <h4>characteristics[&hellip;]</h4>
+                    <p>Describe the biological sample: what organism, tissue, disease state, or treatment group it belongs to.</p>
+                    <p class="example-vals">Examples: <code>characteristics[organism]</code>, <code>characteristics[disease]</code>, <code>characteristics[cell type]</code></p>
+                </div>
+                <div class="concept-card">
+                    <h4>comment[&hellip;]</h4>
+                    <p>Describe the data acquisition: instrument, data file name, modifications, fragmentation method, and other technical details.</p>
+                    <p class="example-vals">Examples: <code>comment[instrument]</code>, <code>comment[data file]</code>, <code>comment[label]</code></p>
+                </div>
+                <div class="concept-card">
+                    <h4>factor value[&hellip;]</h4>
+                    <p>Mark which characteristics are the experimental variables you are comparing. These mirror a characteristics column.</p>
+                    <p class="example-vals">Example: if <code>characteristics[disease]</code> varies, add <code>factor value[disease]</code></p>
+                </div>
+                <div class="concept-card">
+                    <h4>source name &amp; assay name</h4>
+                    <p>Two special columns: <code>source name</code> identifies the biological sample, and <code>assay name</code> identifies the instrument run.</p>
+                    <p class="example-vals">These are always the first and middle columns in an SDRF file.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONCEPT: Ontology values ===== -->
+        <section class="concept-section">
+            <h3>Use controlled vocabulary</h3>
+            <p>
+                SDRF values should come from established ontologies whenever possible. This ensures that "breast cancer" in your file
+                means the same thing as "breast cancer" in someone else's file, enabling cross-study analysis.
+            </p>
+            <ul class="rule-list">
+                <li><strong>Organisms</strong> &mdash; use NCBI Taxonomy names: <code>Homo sapiens</code>, <code>Mus musculus</code></li>
+                <li><strong>Diseases</strong> &mdash; use MONDO or EFO terms: <code>breast cancer</code>, <code>normal</code></li>
+                <li><strong>Instruments</strong> &mdash; use PSI-MS terms: <code>Orbitrap Exploris 480</code>, <code>Q Exactive HF</code></li>
+                <li><strong>Modifications</strong> &mdash; use UNIMOD names: <code>Oxidation</code>, <code>Carbamidomethyl</code></li>
+                <li><strong>Tissues</strong> &mdash; use UBERON or BTO terms: <code>liver</code>, <code>blood plasma</code></li>
+            </ul>
+            <p>
+                The <a href="./sdrf-terms.html">SDRF Terms</a> page lists all allowed values and their source ontologies.
+                The <a href="./sdrf-editor.html">SDRF Editor</a> provides autocomplete for ontology terms.
+            </p>
+        </section>
+
+        <!-- ===== CONCEPT: Templates ===== -->
+        <section class="concept-section">
+            <h3>Start from a template</h3>
+            <p>
+                You don't need to build an SDRF from scratch. Templates define which columns are required and recommended
+                for your experiment type. They are organized in layers:
+            </p>
+            <ul class="rule-list">
+                <li><strong>Organism templates</strong> (human, vertebrates, plants) add species-specific metadata like age, sex, ancestry, or growth conditions.</li>
+                <li><strong>Experiment templates</strong> (DIA, single-cell, crosslinking) add technique-specific columns like isolation windows or crosslinker details.</li>
+                <li>Templates are <strong>composable</strong> &mdash; combine an organism template with an experiment template to get all the right columns.</li>
+            </ul>
+            <p>
+                Browse available templates on the <a href="./index.html#templates">home page</a> or use the
+                <a href="./sdrf-builder.html">Template Builder</a> to interactively pick the right combination.
+            </p>
+        </section>
+
+        <!-- ===== CONCEPT: Factor values ===== -->
+        <section class="concept-section">
+            <h3>Factor values tell tools what you're comparing</h3>
+            <p>
+                Factor value columns are what make an SDRF file useful for analysis. They tell tools like
+                <a href="https://quantms.org" target="_blank">quantms</a> which sample properties differ between your experimental groups.
+            </p>
+            <p>
+                If you're comparing <strong>healthy vs. disease</strong> samples, add <code>factor value[disease]</code>
+                with the same values as <code>characteristics[disease]</code>. If you're comparing
+                <strong>treatment vs. control</strong>, add <code>factor value[compound]</code>.
+                Multiple factor values are allowed when comparing more than one variable.
+            </p>
+        </section>
+
+        <!-- ===== CONCEPT: Common patterns ===== -->
+        <section class="concept-section">
+            <h3>Common patterns</h3>
+            <div class="concept-columns">
+                <div class="concept-card">
+                    <h4>Label-free experiment</h4>
+                    <p>One sample per file. Set <code>comment[label]</code> to <code>label free sample</code>.
+                    Each row is one .raw file from one biological sample.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>TMT / iTRAQ multiplexing</h4>
+                    <p>Multiple samples per file. Each channel gets its own row with the same <code>comment[data file]</code>
+                    but different <code>comment[label]</code> values (e.g. <code>TMT126</code>, <code>TMT127N</code>).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Fractionation</h4>
+                    <p>One sample split across multiple files. Each fraction is a separate row with the same <code>source name</code>
+                    but different <code>comment[fraction identifier]</code> values.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Technical replicates</h4>
+                    <p>Same sample run multiple times. Each replicate is its own row with the same <code>source name</code>
+                    but different <code>comment[technical replicate]</code> values.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONCEPT: Validation ===== -->
+        <section class="concept-section">
+            <h3>Validate before submitting</h3>
+            <p>
+                The <a href="https://github.com/bigbio/sdrf-pipelines" target="_blank">sdrf-pipelines</a> validator
+                checks your file against the specification: required columns, valid ontology terms,
+                consistent labels across rows, and more.
+            </p>
+            <p>Install and run:</p>
+            <pre style="background:#f4f4f5; padding:1rem; border-radius:6px; overflow-x:auto;"><code>pip install sdrf-pipelines
+parse_sdrf validate-sdrf --sdrf_file your-file.sdrf.tsv</code></pre>
+            <p>
+                Fix any errors reported, then validate again. A passing validation means your SDRF is ready
+                for submission to <a href="https://www.ebi.ac.uk/pride/" target="_blank">PRIDE</a> or other ProteomeXchange repositories.
+            </p>
+        </section>
+
+        <!-- ===== CTA to Builder ===== -->
+        <div class="cta-builder-box">
+            <h3>Ready to build your SDRF?</h3>
+            <p>Use the interactive Template Builder to select your technology, organism, and experiment type &mdash; and generate a customized template in seconds.</p>
+            <a href="./sdrf-builder.html" class="btn btn-primary">Open Template Builder</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
