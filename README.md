@@ -1,12 +1,12 @@
 # Proteomics Sample Metadata Format
 
 [![Version](https://flat.badgen.net/static/sdrf-proteomics/1.0.1/orange)](CHANGELOG.md)
-[![License](https://flat.badgen.net/github/license/bigbio/proteomics-sample-metadata)](https://github.com/bigbio/proteomics-sample-metadata/blob/master/LICENSE)
-[![Open Issues](https://flat.badgen.net/github/open-issues/bigbio/proteomics-sample-metadata)](https://github.com/bigbio/proteomics-sample-metadata/issues)
-[![Open PRs](https://flat.badgen.net/github/open-prs/bigbio/proteomics-sample-metadata)](https://github.com/bigbio/proteomics-sample-metadata/pulls)
-![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-sample-metadata)
-![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-sample-metadata)
-![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-sample-metadata)
+[![License](https://flat.badgen.net/github/license/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/blob/master/LICENSE)
+[![Open Issues](https://flat.badgen.net/github/open-issues/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/issues)
+[![Open PRs](https://flat.badgen.net/github/open-prs/bigbio/proteomics-metadata-standard)](https://github.com/bigbio/proteomics-metadata-standard/pulls)
+![Contributors](https://flat.badgen.net/github/contributors/bigbio/proteomics-metadata-standard)
+![Watchers](https://flat.badgen.net/github/watchers/bigbio/proteomics-metadata-standard)
+![Stars](https://flat.badgen.net/github/stars/bigbio/proteomics-metadata-standard)
 [![llms.txt](https://flat.badgen.net/static/llms.txt/available/blue)](llms.txt)
 
 ## Improving metadata annotation of Proteomics datasets
@@ -45,7 +45,7 @@ In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standa
 Annotate a dataset in 5 steps:
 
 - Read the [SDRF-Proteomics specification](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics).
-- Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-sample-metadata/tree/master/sdrf-proteomics#sdrf-templates).
+- Depending on the type of dataset, choose the appropriate [sample template](https://github.com/bigbio/proteomics-metadata-standard/tree/master/sdrf-proteomics#sdrf-templates).
 - Annotate the corresponding ProteomeXchange PXD dataset following the guidelines.
 - Validate your SDRF file:
 
