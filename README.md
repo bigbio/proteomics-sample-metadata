@@ -114,6 +114,7 @@ The project is run by different groups:
 - Deepti Jaiswal Kundu (PRIDE Team, European Bioinformatics Institute - EMBL-EBI, U.K.)
 - Nandana Madhusoodanan (PRIDE Team, European Bioinformatics Institute - EMBL-EBI, U.K.)
 - Diogo Borges Lima (Exact Sciences Corp., Munich, Germany) 
+- Wouter Lampaert (Brussels, Belgium)
 
 IMPORTANT: If you contribute with the following specification, please make sure to add your name to the list of contributors.
 
