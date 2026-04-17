@@ -13,7 +13,7 @@ import os
 import json
 import glob
 import re
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime
 
 def parse_sdrf_file(filepath):
@@ -96,8 +96,9 @@ def parse_ontology_term(value):
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     annotated_dir = os.path.join(base_dir, 'annotated-projects')
-    templates_dir = os.path.join(base_dir, 'sdrf-proteomics')
-
+    datasets_prefix = 'datasets'
+    datasets_repo = 'bigbio/sdrf-annotated-datasets'
+    datasets_branch = 'dev'
     # Find all SDRF files
     sdrf_files = glob.glob(os.path.join(annotated_dir, '**', '*.sdrf.tsv'), recursive=True)
 
@@ -243,14 +244,17 @@ def main():
                 elif 'label free' in lbl_lower or 'label-free' in lbl_lower:
                     label_type = 'Label-free'
 
+        # Keep local parsing on annotated-projects/ while publishing links via datasets/
+        datasets_rel_path = os.path.join(datasets_prefix, project_id, os.path.basename(filepath)).replace(os.sep, '/')
+
         # Create dataset entry
         dataset_entry = {
             'id': project_id,
             'file': os.path.basename(filepath),  # Alias for filename (used by quickstart search)
             'filename': os.path.basename(filepath),
-            'path': rel_path,
-            'github_url': f'https://github.com/bigbio/proteomics-metadata-standard/blob/master/{rel_path}',
-            'raw_url': f'https://raw.githubusercontent.com/bigbio/proteomics-metadata-standard/master/{rel_path}',
+            'path': datasets_rel_path,
+            'github_url': f'https://github.com/{datasets_repo}/blob/{datasets_branch}/{datasets_rel_path}',
+            'raw_url': f'https://raw.githubusercontent.com/{datasets_repo}/{datasets_branch}/{datasets_rel_path}',
             'num_samples': num_samples,
             'num_columns': len(headers),
             'organisms': [o for o in dataset_organisms if o],
@@ -297,6 +301,31 @@ def main():
 
     print(f"Generated SDRF index with {len(datasets)} datasets and {total_samples} total samples")
     print(f"Output written to: {output_path}")
+
+    # Keep sdrf-explorer.html embedded index in sync with sdrf-data.json
+    explorer_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sdrf-explorer.html')
+    if os.path.isfile(explorer_path):
+        embedded = '\n' + json.dumps(output, indent=2, ensure_ascii=False) + '\n'
+        with open(explorer_path, 'r', encoding='utf-8') as f:
+            explorer_html = f.read()
+        pattern = re.compile(
+            r'(<script id="sdrf-data" type="application/json">)(.*?)(</script>)',
+            re.DOTALL,
+        )
+        new_explorer, repl_count = pattern.subn(
+            lambda m: m.group(1) + embedded + m.group(3),
+            explorer_html,
+            count=1,
+        )
+        if repl_count == 1:
+            with open(explorer_path, 'w', encoding='utf-8') as f:
+                f.write(new_explorer)
+            print(f"Updated embedded index in: {explorer_path}")
+        else:
+            print(
+                f"Warning: could not update embedded sdrf-data in {explorer_path} "
+                f"(matches={repl_count})"
+            )
 
     # Print summary
     print(f"\nTop 10 organisms:")
