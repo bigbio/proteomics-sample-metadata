@@ -6,8 +6,8 @@ Usage: python3 transform-links.py <html_file_or_directory>
 
 This script performs two types of transformations:
 
-1. GitHub annotated-projects links to SDRF Explorer viewer links:
-   https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/PXD123456
+1. GitHub annotated dataset links to SDRF Explorer viewer links:
+   https://github.com/bigbio/sdrf-annotated-datasets/tree/dev/datasets/PXD123456
    -> ./sdrf-explorer.html?view=PXD123456
 
 2. AsciiDoc links (.adoc) to HTML links (.html):
@@ -23,8 +23,12 @@ from pathlib import Path
 
 
 def transform_sdrf_explorer_links(content: str) -> tuple[str, int]:
-    """Transform GitHub annotated-projects links to SDRF Explorer links."""
-    pattern = r'href="https://github\.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects/(PXD\d+)"'
+    """Transform GitHub annotated dataset links to SDRF Explorer links."""
+    pattern = (
+        r'href="https://github\.com/bigbio/'
+        r'(?:proteomics-(?:metadata-standard|sample-metadata)|sdrf-annotated-datasets)'
+        r'/tree/(?:master|dev)/(?:annotated-projects|datasets)/([A-Za-z0-9_]+)"'
+    )
     replacement = r'href="./sdrf-explorer.html?view=\1"'
     return re.subn(pattern, replacement, content)
 
@@ -32,10 +36,6 @@ def transform_sdrf_explorer_links(content: str) -> tuple[str, int]:
 def transform_adoc_links(content: str, filepath: str) -> tuple[str, int]:
     """Transform .adoc links to .html links based on file location."""
     count = 0
-
-    # Determine if this file is in templates/ or metadata-guidelines/ directory
-    is_template = '/templates/' in filepath
-    is_metadata_guidelines = '/metadata-guidelines/' in filepath
 
     # Pattern 1: ../../README.adoc -> ../specification.html (from templates)
     pattern1 = r'href="\.\.\/\.\.\/README\.adoc([^"]*)"'

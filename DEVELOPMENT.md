@@ -36,7 +36,7 @@ proteomics-metadata-standard/
 │   ├── sdrf-terms.html        # Terms reference page
 │   ├── build-sdrf-index.py    # Builds dataset index
 │   └── build-search-index.py  # Builds search index
-├── annotated-projects/        # Annotated SDRF files (~300 datasets)
+├── annotated-projects/        # Migration notice and legacy compatibility pointers
 ├── demo_page/                 # Local preview output (git-ignored)
 ├── .github/workflows/         # CI/CD configuration
 │   └── build-docs.yml         # Website build workflow
@@ -85,7 +85,7 @@ The easiest way to build the documentation is using the provided build script. T
 1. **Converts AsciiDoc to HTML** using Asciidoctor with proper styling options
 2. **Copies static assets** (CSS, JavaScript, images)
 3. **Copies static HTML pages** (index.html, quickstart.html, sdrf-explorer.html, sdrf-editor.html, sdrf-terms.html)
-4. **Builds SDRF Explorer index** from annotated-projects
+4. **Builds SDRF Explorer index** using annotated project metadata and links
 5. **Injects navigation headers** into all generated HTML pages
 6. **Transforms SDRF links** to use the SDRF Explorer viewer
 7. **Transforms SDRF example tables** to add color-coded column styling
@@ -213,14 +213,21 @@ To verify your local build matches the deployed version:
 
 ## Adding New Annotated Projects
 
-1. Create a folder in `annotated-projects/` with the PXD accession
-2. Add the SDRF file as `{PXD}.sdrf.tsv`
+Annotated datasets are now maintained in
+`bigbio/sdrf-annotated-datasets` using the layout
+`datasets/{ACCESSION}/{ACCESSION}.sdrf.tsv`.
+
+1. Create a folder in `datasets/` with the accession in
+   `bigbio/sdrf-annotated-datasets`
+2. Add the SDRF file as `{ACCESSION}.sdrf.tsv`
 3. Validate the file:
    ```bash
    pip install sdrf-pipelines
-   parse_sdrf validate-sdrf --sdrf_file annotated-projects/PXD000000/PXD000000.sdrf.tsv
+   parse_sdrf validate-sdrf --sdrf_file datasets/PXD000000/PXD000000.sdrf.tsv
    ```
-4. Rebuild the dataset index:
+4. Open a pull request in `bigbio/sdrf-annotated-datasets`
+5. If this repository needs a refreshed explorer index after migration updates,
+   rebuild it locally:
    ```bash
    python3 site/build-sdrf-index.py
    ```
@@ -243,16 +250,16 @@ This is supported by research <<ref1>>.
 ## Useful Commands
 
 ```bash
-# Validate all SDRF files in a folder
-for f in annotated-projects/*/*.sdrf.tsv; do
+# Validate all SDRF files in the annotated datasets repository
+for f in datasets/*/*.sdrf.tsv; do
   parse_sdrf validate-sdrf --sdrf_file "$f"
 done
 
 # Find all SDRF files with a specific column
-grep -l "characteristics\[disease\]" annotated-projects/*/*.sdrf.tsv
+grep -l "characteristics\[disease\]" datasets/*/*.sdrf.tsv
 
 # Count annotated projects
-ls -d annotated-projects/PXD* | wc -l
+ls -d datasets/PXD* | wc -l
 ```
 
 ## Troubleshooting
