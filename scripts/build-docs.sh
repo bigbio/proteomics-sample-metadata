@@ -184,6 +184,29 @@ echo "Updating index template section..."
 python3 scripts/build_index_templates.py \
     sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/index.html"
 
+# Provision the external sdrf-annotated-datasets repository so the index
+# script can read the SDRF files. Honour SDRF_DATASETS_DIR if the caller
+# already provided one (local dev with an existing checkout); otherwise
+# shallow-clone the default branch into vendor/.
+SDRF_DATASETS_REPO="${SDRF_DATASETS_REPO:-bigbio/sdrf-annotated-datasets}"
+SDRF_DATASETS_BRANCH="${SDRF_DATASETS_BRANCH:-main}"
+if [ -z "${SDRF_DATASETS_DIR:-}" ]; then
+    VENDOR_DIR="$REPO_ROOT/vendor/sdrf-annotated-datasets"
+    if [ ! -d "$VENDOR_DIR/.git" ]; then
+        echo "Cloning $SDRF_DATASETS_REPO@$SDRF_DATASETS_BRANCH into $VENDOR_DIR ..."
+        mkdir -p "$(dirname "$VENDOR_DIR")"
+        git clone --depth 1 --branch "$SDRF_DATASETS_BRANCH" \
+            "https://github.com/$SDRF_DATASETS_REPO.git" "$VENDOR_DIR"
+    else
+        echo "Updating existing clone at $VENDOR_DIR ..."
+        git -C "$VENDOR_DIR" fetch --depth 1 origin "$SDRF_DATASETS_BRANCH"
+        git -C "$VENDOR_DIR" reset --hard "origin/$SDRF_DATASETS_BRANCH"
+    fi
+    SDRF_DATASETS_DIR="$VENDOR_DIR/datasets"
+fi
+export SDRF_DATASETS_DIR SDRF_DATASETS_REPO SDRF_DATASETS_BRANCH
+echo "Using SDRF datasets from: $SDRF_DATASETS_DIR"
+
 # Build SDRF Explorer index
 echo "Building SDRF Explorer index..."
 python3 site/build-sdrf-index.py

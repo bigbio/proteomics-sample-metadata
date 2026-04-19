@@ -95,12 +95,27 @@ def parse_ontology_term(value):
 
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    annotated_dir = os.path.join(base_dir, 'annotated-projects')
     datasets_prefix = 'datasets'
-    datasets_repo = 'bigbio/sdrf-annotated-datasets'
-    datasets_branch = 'dev'
+    datasets_repo = os.environ.get('SDRF_DATASETS_REPO', 'bigbio/sdrf-annotated-datasets')
+    datasets_branch = os.environ.get('SDRF_DATASETS_BRANCH', 'main')
+
+    # Annotated SDRFs live in the external sdrf-annotated-datasets repository.
+    # SDRF_DATASETS_DIR must point at its datasets/ folder (either a local
+    # checkout or a shallow clone produced by scripts/build-docs.sh / CI).
+    datasets_dir = os.environ.get('SDRF_DATASETS_DIR')
+    if not datasets_dir:
+        raise SystemExit(
+            "SDRF_DATASETS_DIR is not set. Point it at a checkout of "
+            f"https://github.com/{datasets_repo} (the datasets/ folder). "
+            "scripts/build-docs.sh provisions this automatically."
+        )
+    if not os.path.isdir(datasets_dir):
+        raise SystemExit(
+            f"SDRF_DATASETS_DIR={datasets_dir!r} does not exist or is not a directory."
+        )
+
     # Find all SDRF files
-    sdrf_files = glob.glob(os.path.join(annotated_dir, '**', '*.sdrf.tsv'), recursive=True)
+    sdrf_files = glob.glob(os.path.join(datasets_dir, '**', '*.sdrf.tsv'), recursive=True)
 
     # Statistics counters
     total_samples = 0
@@ -122,12 +137,11 @@ def main():
         if '/.' in filepath:
             continue
 
-        rel_path = os.path.relpath(filepath, base_dir)
-
-        # Extract project ID from path
-        parts = rel_path.split(os.sep)
+        # Extract project ID from the path inside the datasets/ tree
+        rel_in_datasets = os.path.relpath(filepath, datasets_dir)
+        parts = rel_in_datasets.split(os.sep)
         if len(parts) >= 2:
-            project_id = parts[1]
+            project_id = parts[0]
         else:
             project_id = os.path.basename(filepath).replace('.sdrf.tsv', '')
 
