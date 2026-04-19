@@ -182,9 +182,8 @@ Example HTML in AsciiDoc:
 
 ## CI/CD Deployment
 
-The website is automatically built and deployed when pushing to:
-- `master` branch → Production site (https://sdrf.quantms.org/)
-- `dev` branch → Development site (https://sdrf.quantms.org/dev/)
+The website is automatically built and deployed when pushing to the `master`
+branch → https://sdrf.quantms.org/.
 
 The CI/CD workflow (`.github/workflows/build-docs.yml`) performs the same steps as the local build script, ensuring consistency.
 
@@ -196,8 +195,8 @@ The CI/CD workflow (`.github/workflows/build-docs.yml`) performs the same steps 
 | Navigation headers | ✓ | ✓ |
 | SDRF link transformation | ✓ | ✓ |
 | Search index | ✓ | ✓ |
-| Dev banner | `--dev` flag | Auto for dev branch |
-| Output directory | Configurable | docs/ or docs/dev/ |
+| Dev banner | `--dev` flag (local only) | — |
+| Output directory | Configurable | `docs/` |
 
 ### Ensuring Consistency
 
@@ -394,6 +393,5 @@ When templates change (new columns, new templates):
 1. Make changes to the appropriate AsciiDoc or HTML files
 2. Build locally and test: `./scripts/build-docs.sh --clean`
 3. View locally: `open demo_page/index.html`
-4. Create a pull request to the `dev` branch for review
-5. After approval and merge to dev, changes deploy to https://sdrf.quantms.org/dev/
-6. After merge to master, changes deploy to https://sdrf.quantms.org/
+4. Open a pull request against `master`
+5. After approval and merge, changes deploy to https://sdrf.quantms.org/
