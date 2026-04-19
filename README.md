@@ -40,7 +40,13 @@ For information on building the documentation website locally, see the [Developm
 
 Contribute with the specification: you can contribute to the specification with ideas or refinements by adding an issue into the [issue tracker](https://github.com/bigbio/proteomics-metadata-standard/issues) or performing a PR.
 
-In the [annotated projects](https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects) folder, users can see different public datasets that have been annotated so far by the contributors. If you would like to join these efforts, make a Fork of this repo and perform a pull request (PR) with your annotated project. If you don't have a project in mind, you can take one project from the [issues](https://github.com/bigbio/proteomics-metadata-standard/issues) and perform the annotation.
+Annotated SDRF dataset files are now maintained in the dedicated repository
+[`bigbio/sdrf-annotated-datasets`](https://github.com/bigbio/sdrf-annotated-datasets)
+under `datasets/{ACCESSION}/{ACCESSION}.sdrf.tsv`.
+If you would like to contribute annotations, open a pull request in that
+repository. If you do not have a project in mind, you can still pick one from
+the [issues](https://github.com/bigbio/proteomics-metadata-standard/issues) and
+prepare the SDRF annotation.
 
 Annotate a dataset in 5 steps:
 
@@ -63,7 +69,8 @@ parse_sdrf validate-sdrf --sdrf_file PXD020294.sdrf.tsv
 
 You can read more about the validator [here](https://github.com/bigbio/sdrf-pipelines).
 
-- Fork the current repository, add a folder with the ProteomeXchange accession and the annotated sdrf.tsv
+- Fork `bigbio/sdrf-annotated-datasets`, add a folder under `datasets/` with
+  the ProteomeXchange accession and the annotated `.sdrf.tsv` file.
 
 ## 30 Minutes Guide to SDRF-Proteomics
 
