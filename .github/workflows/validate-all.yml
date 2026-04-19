@@ -1,24 +1,25 @@
-# This workflow will install Python dependencies and run the included validation script.
+# Validate the small set of SDRF examples kept in examples/ for quickstart and
+# specification illustration purposes. Annotated public datasets now live at
+# bigbio/sdrf-annotated-datasets and are validated by that repository's CI.
 
-name: Validate annotations
+name: Validate examples
 
 on:
   push:
     branches: [ master, dev ]
     paths:
-      - 'annotated-projects/**'
+      - 'examples/**'
   pull_request:
     branches: [ master, dev ]
     paths:
-      - 'annotated-projects/**'
+      - 'examples/**'
+  workflow_dispatch:
 
 jobs:
   sdrf_proteomics_validations:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
@@ -28,30 +29,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install wheel
           pip install git+https://github.com/bigbio/sdrf-pipelines
-      - name: Get a list of changed files
-        if: github.event_name != 'schedule'
-        id: getfiles
+      - name: Validate examples
         run: |
-          export OUTFILE=$HOME/filelist.txt
-          if [ "${{ github.event_name }}" == pull_request ]; then
-              echo 'Changed files:'
-              git diff-tree --no-commit-id --name-only -r origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | tee "$OUTFILE"
-          else
-            # push
-            if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-              parent="origin/master" # compare with master as a last resort
-            else
-              parent="${{ github.event.before }}"
+          shopt -s nullglob
+          failed=0
+          for f in examples/*/*.sdrf.tsv; do
+            echo "Validating $f"
+            if ! parse_sdrf validate-sdrf --sdrf_file "$f" --use_ols_cache_only; then
+              echo "::error file=$f::parse_sdrf validate-sdrf failed"
+              failed=1
             fi
-            git diff-tree --no-commit-id --name-only -r "$parent" ${{ github.sha }} | tee "$OUTFILE"
-          fi
-      - name: Run validation
-        run: |
-          if [ ${{ github.event_name }} == "schedule" ]; then
-            echo "Validating all projects (schedule)"
-            python validate.py -v
-          else
-            export FILELIST=$HOME/filelist.txt
-            cat "$FILELIST" | grep "*sdrf.tsv" | while read line; do echo "Changed file: $line"; parse_sdrf validate-sdrf --sdrf_file $line --skip_factor_validation --skip_experimental_design_validation --use_ols_cache_only; done
-          fi
-
+          done
+          exit "$failed"

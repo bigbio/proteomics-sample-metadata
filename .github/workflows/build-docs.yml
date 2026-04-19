@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - dev
   workflow_dispatch:
 
 jobs:
@@ -31,46 +30,10 @@ jobs:
       - name: Install Python dependencies
         run: pip install pyyaml jinja2
 
-      - name: Set output directory based on branch
-        id: set-output-dir
-        run: |
-          if [ "${{ github.ref_name }}" == "master" ]; then
-            echo "output_dir=docs" >> $GITHUB_OUTPUT
-            echo "base_url=" >> $GITHUB_OUTPUT
-          else
-            echo "output_dir=docs/dev" >> $GITHUB_OUTPUT
-            echo "base_url=/dev" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build documentation site
         run: |
           chmod +x scripts/build-docs.sh
-          if [ "${{ github.ref_name }}" == "dev" ]; then
-            ./scripts/build-docs.sh ${{ steps.set-output-dir.outputs.output_dir }} --dev
-          else
-            ./scripts/build-docs.sh ${{ steps.set-output-dir.outputs.output_dir }}
-          fi
-
-      - name: Checkout gh-pages branch for merging
-        if: github.ref_name == 'dev'
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages-existing
-
-      - name: Merge dev docs into existing gh-pages
-        if: github.ref_name == 'dev'
-        run: |
-          # Copy existing gh-pages content (master version)
-          mkdir -p final-docs
-          cp -r gh-pages-existing/* final-docs/ 2>/dev/null || true
-          # Remove old dev folder if exists
-          rm -rf final-docs/dev
-          # Copy new dev docs
-          cp -r docs/dev final-docs/dev
-          # Move final-docs to docs for deployment
-          rm -rf docs
-          mv final-docs docs
+          ./scripts/build-docs.sh docs
 
       - name: Add CNAME for custom domain
         run: echo 'sdrf.quantms.org' > docs/CNAME
