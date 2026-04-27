@@ -296,7 +296,7 @@ The Sample metadata section provides information about the samples of origin and
 
 - *source name*: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)
 - *characteristics[organism]*: The organism of the Sample of origin. Values MUST come from https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy].
-- *characteristics[organism part]*: The part of organism's anatomy or substance arising from an organism from which the biomaterial was derived (e.g., liver). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO].
+- *characteristics[organism part]*: The main normalized anatomical term for the sample (e.g., liver). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO]. Use the clearest ontology-backed anatomy term available for cross-study integration; more specific provenance can be captured separately in `characteristics[sampling site]`.
 - *characteristics[disease]*: The disease under study in the Sample. Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], or https://www.ebi.ac.uk/ols4/ontologies/doid[DOID]. For healthy/control samples, use `normal` (https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]) - see link:SAMPLE-GUIDELINES.adoc#disease-annotation[Disease Annotation Guidelines].
 - *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell (e.g., epithelial, glial). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)], https://www.ebi.ac.uk/ols4/ontologies/bto[BTO], or https://www.ebi.ac.uk/ols4/ontologies/clo[Cell Line Ontology (CLO)].
 
@@ -1563,9 +1563,9 @@ SDRF template for clinical study samples with treatment, demographics, and lifes
 
 | `characteristics[sampling site]`
 | optional
-| Specific anatomical location or context of sampling within the organism part
+| Local sampling context, provenance, or original source label relative to the organism part. Can be equal to the organism part when no finer distinction exists.
 | ontology: uberon, bto
-| tumor, normal tissue adjacent to tumor, left ventricle, frontal cortex
+| tumor, normal tissue adjacent to tumor, heart left ventricle, frontal cortex, liver
 
 | `characteristics[genotype]`
 | optional
