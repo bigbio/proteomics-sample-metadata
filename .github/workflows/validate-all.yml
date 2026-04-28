@@ -41,7 +41,7 @@ jobs:
             "examples/PXD006439/PXD006439.sdrf.tsv"
             "examples/PXD012667/PXD012667.sdrf.tsv"
           )
-          # Pick the most specific leaf template declared by the file in its
+          # Pick the most specific template declared by the file in its
           # comment[sdrf template] columns; fall back to ms-proteomics.
           detect_template() {
             local f="$1"
@@ -50,11 +50,13 @@ jobs:
               NR==1 { for (i=1;i<=NF;i++) if (tolower($i)=="comment[sdrf template]") cols[i]=1 }
               NR==2 { for (i in cols) print tolower($i) }
             ' "$f")
-            for leaf in olink somascan crosslinking immunopeptidomics \
-                       single-cell dia-acquisition metaproteomics \
-                       human-gut soil water cell-lines; do
-              if grep -q "$leaf" <<< "$declared"; then
-                echo "$leaf"; return
+            for template in lc-ms-metabolomics gc-ms-metabolomics \
+                            affinity-proteomics ms-metabolomics \
+                            crosslinking immunopeptidomics single-cell \
+                            dia-acquisition human-gut soil water \
+                            metaproteomics cell-lines; do
+              if grep -q "$template" <<< "$declared"; then
+                echo "$template"; return
               fi
             done
             echo "ms-proteomics"
