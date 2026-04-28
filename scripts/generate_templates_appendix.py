@@ -61,7 +61,7 @@ def _summarize_validators(validators: list[dict[str, Any]]) -> str:
     parts: list[str] = []
     for v in validators:
         vname = v.get("validator_name", "")
-        params = v.get("params", {})
+        params = v.get("params") or {}
 
         if vname == "ontology":
             ontologies = params.get("ontologies", [])
@@ -104,7 +104,7 @@ def _collect_examples(validators: list[dict[str, Any]]) -> str:
     """Collect example values from validators."""
     examples: list[str] = []
     for v in validators:
-        params = v.get("params", {})
+        params = v.get("params") or {}
         for ex in params.get("examples", []):
             ex_str = str(ex)
             if ex_str not in examples:
