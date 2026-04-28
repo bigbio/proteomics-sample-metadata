@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Multi-file vendor format annotation** (`comment[associated data file]`, `comment[associated file uri]`): new sidecar columns to describe auxiliary files that must be downloaded alongside a primary raw file (e.g. AB Sciex `.wiff.scan` companion to a `.wiff`). `comment[data file]` and `comment[file uri]` continue to reference the primary/canonical file; the auxiliary columns are repeated positionally when more than one auxiliary file is needed. New specification section (`Vendor formats that ship multiple files`) and AB Sciex example (`examples/PXD073289`). Resolves https://github.com/bigbio/proteomics-sample-metadata/issues/761.
+- **Metabolomics example SDRFs**: added MTBLS1129, MTBLS1903, and MTBLS547 as worked examples for the in-progress LC-MS metabolomics templates and validator wiring discussed in `bigbio/sdrf-templates#29` and `bigbio/sdrf-pipelines#286`.
+- **`characteristics[tissue supergroup]`**: added as an optional shared sample metadata field for broader organ/system-level grouping alongside `characteristics[organism part]`.
 - **Quick Start section** with minimal example, key concepts, format requirements, and scope clarification.
 - **Format Requirements** documenting core SDRF rules (tab-delimited, column structure, row semantics).
 - **Scope clarification**: SDRF captures sample-to-data relationships but not downstream analysis parameters (FDR, p-values, etc.).
@@ -45,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Abbreviated SDRF examples use `...` columns to indicate omitted columns.
 
 ### Changed
+
+- **Organism part / sampling site guidance**: clarified that `characteristics[organism part]` is the main normalized anatomy field for cross-study integration, while `characteristics[sampling site]` captures provenance or finer local context and may be equal to `characteristics[organism part]`.
 
 - **Template architecture refactoring**: Introduced `sample-metadata` intermediate template between `base` and technology/organism templates. Columns `organism`, `organism part`, `cell type`, `biological replicate`, and `pooled sample` moved from `base` to `sample-metadata`. Columns `disease` and `biosample accession number` consolidated from organism templates into `sample-metadata` (RECOMMENDED and OPTIONAL respectively; organism templates override disease to REQUIRED). All technology templates (`ms-proteomics`, `affinity-proteomics`) and organism templates (`human`, `vertebrates`, `invertebrates`, `plants`) now extend `sample-metadata` instead of `base`. No change to effective validation for any template combination.
 - **Version bump to v1.1.0**.
@@ -94,4 +98,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Nothing removed.
-
