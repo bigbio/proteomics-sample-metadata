@@ -399,7 +399,7 @@ The following properties MUST be provided for each data file in **mass spectrome
 |`comment[cleavage agent details]` |REQUIRED |Enzyme information (use "not applicable" for top-down/undigested samples) |PSI-MS - Cleavage agents
 |`comment[fraction identifier]` |REQUIRED |Fraction number (1 if not fractionated) |Integer
 |`comment[technical replicate]` |REQUIRED |Technical replicate number (1 if none) |Integer
-|`comment[data file]` |REQUIRED |Name of the raw file |Free text
+|`comment[data file]` |REQUIRED |Name of the raw file (primary/canonical file when the vendor format ships multiple files - see <<multi-file-formats>>) |Free text
 |===
 
 Example:
@@ -410,6 +410,36 @@ Example:
 
 |sample_1 |sample1_run1 |proteomic profiling by mass spectrometry |data-dependent acquisition |label free sample |Q Exactive HF |sample1.raw
 |===
+
+[[multi-file-formats]]
+=== Vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan)
+
+Some vendor formats persist a single MS run as **two or more files on disk** that are only useful together. The most common case is AB Sciex, where every acquisition produces a `.wiff` file paired with a `.wiff.scan` (and sometimes `.wiff2`) sidecar; tools such as ProteoWizard/Skyline cannot open one without the other. Bruker `.d` directories, in contrast, are a single logical entity (a folder) and do **not** require this pattern - reference the `.d` folder name directly in `comment[data file]`.
+
+To represent these multi-file formats while keeping one row per MS run, SDRF-Proteomics treats one file as the **primary/canonical** file and the remaining files as **auxiliary** files described by sidecar columns:
+
+[cols="3,1,4", options="header"]
+|===
+|Column |Cardinality |Description
+
+|`comment[data file]` |1 |Name of the primary/canonical file for the MS run (for AB Sciex, the `.wiff` file).
+|`comment[file uri]` |1 |URI to retrieve the primary file. The trailing path segment MUST equal `comment[data file]`.
+|`comment[associated data file]` |* |Name of an auxiliary file that must be downloaded alongside the primary file (for AB Sciex, the `.wiff.scan` file). Repeat the column when more than one auxiliary file is required.
+|`comment[associated file uri]` |* |URI to retrieve the auxiliary file. The trailing path segment MUST equal the corresponding `comment[associated data file]`. Repeat in the same order as `comment[associated data file]`.
+|===
+
+NOTE: When multiple `comment[associated data file]` / `comment[associated file uri]` columns are present, consumers MUST pair them positionally (first associated file with first associated URI, second with second, etc.).
+
+**Example - AB Sciex (.wiff + .wiff.scan):**
+
+[%header,cols="1,1,1,2,2,2,2"]
+|===
+|source name |assay name |comment[instrument] |comment[data file] |comment[file uri] |comment[associated data file] |comment[associated file uri]
+
+|sample_1 |sample1_run1 |TripleTOF 6600 |OA_3.wiff |\https://ftp.pride.ebi.ac.uk/pride/data/archive/2026/03/PXD073289/OA_3.wiff |OA_3.wiff.scan |\https://ftp.pride.ebi.ac.uk/pride/data/archive/2026/03/PXD073289/OA_3.wiff.scan
+|===
+
+TIP: Once repositories standardise on bundling related files into a single `.zip` or `.tar.gz` (as already done for some Bruker timsTOF deposits), `comment[data file]` and `comment[file uri]` can reference the archive directly and `comment[associated data file]` is no longer needed. See the https://github.com/PRIDE-Archive/pride-resources/blob/main/guidelines/pride-submission-formats-guidelines.md[PRIDE submission formats guidelines] for the direction of travel.
 
 [[sample-prep-fragmentation]]
 === Sample Preparation and Fragmentation (MS-based only)
@@ -873,9 +903,9 @@ Base SDRF template with infrastructure columns (identifiers, data files, version
 
 | `comment[data file]`
 | required
-| Name of the raw data file
-| 
-| 
+| Name of the primary raw data file. For vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan), use `comment[associated data file]` for the auxiliary files - see <<multi-file-formats>>.
+|
+|
 
 | `comment[sdrf version]`
 | recommended
