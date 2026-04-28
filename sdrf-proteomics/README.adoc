@@ -296,7 +296,7 @@ The Sample metadata section provides information about the samples of origin and
 
 - *source name*: Unique sample name (it can be present multiple times if the same sample is used several times in the same dataset)
 - *characteristics[organism]*: The organism of the Sample of origin. Values MUST come from https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon[NCBI Taxonomy].
-- *characteristics[organism part]*: The main normalized anatomical term for the sample (e.g., liver). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO]. Use the clearest ontology-backed anatomy term available for cross-study integration; more specific provenance can be captured separately in `characteristics[sampling site]`.
+- *characteristics[organism part]*: The main normalized anatomical term for the sample (e.g., liver). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/uberon[UBERON] or https://www.ebi.ac.uk/ols4/ontologies/bto[BTO]. Use the clearest ontology-backed anatomy term available for cross-study integration; `characteristics[sampling site]` can be used separately for finer provenance and may be equal to `characteristics[organism part]` when no distinction exists.
 - *characteristics[disease]*: The disease under study in the Sample. Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/mondo[MONDO], https://www.ebi.ac.uk/ols4/ontologies/efo[EFO], or https://www.ebi.ac.uk/ols4/ontologies/doid[DOID]. For healthy/control samples, use `normal` (https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461[PATO:0000461]) - see link:SAMPLE-GUIDELINES.adoc#disease-annotation[Disease Annotation Guidelines].
 - *characteristics[cell type]*: A cell type is a distinct morphological or functional form of cell (e.g., epithelial, glial). Values SHOULD come from https://www.ebi.ac.uk/ols4/ontologies/cl[Cell Ontology (CL)], https://www.ebi.ac.uk/ols4/ontologies/bto[BTO], or https://www.ebi.ac.uk/ols4/ontologies/clo[Cell Line Ontology (CLO)].
 
@@ -440,6 +440,8 @@ NOTE: When multiple `comment[associated data file]` / `comment[associated file u
 |===
 
 TIP: Once repositories standardise on bundling related files into a single `.zip` or `.tar.gz` (as already done for some Bruker timsTOF deposits), `comment[data file]` and `comment[file uri]` can reference the archive directly and `comment[associated data file]` is no longer needed. See the https://github.com/PRIDE-Archive/pride-resources/blob/main/guidelines/pride-submission-formats-guidelines.md[PRIDE submission formats guidelines] for the direction of travel.
+
+If a repository already distributes a single canonical archive for one acquisition today (for example a `.raw.zip` bundle in some metabolomics deposits), that archive can already be recorded directly in `comment[data file]` and `comment[file uri]`.
 
 [[sample-prep-fragmentation]]
 === Sample Preparation and Fragmentation (MS-based only)
