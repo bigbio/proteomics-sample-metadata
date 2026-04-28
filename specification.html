@@ -42,9 +42,10 @@
 <li><a href="#from-sample-data">8. SDRF-Proteomics: data files metadata</a>
 <ul class="sectlevel2">
 <li><a href="#cv-term-format">8.1. CV Term Format for Data File Metadata</a></li>
-<li><a href="#sample-prep-fragmentation">8.2. Sample Preparation and Fragmentation (MS-based only)</a></li>
-<li><a href="#data-acquisition-method">8.3. Proteomics data acquisition method</a></li>
-<li><a href="#_ms_proteomics_template">8.4. MS-Proteomics Template</a></li>
+<li><a href="#multi-file-formats">8.2. Vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan)</a></li>
+<li><a href="#sample-prep-fragmentation">8.3. Sample Preparation and Fragmentation (MS-based only)</a></li>
+<li><a href="#data-acquisition-method">8.4. Proteomics data acquisition method</a></li>
+<li><a href="#_ms_proteomics_template">8.5. MS-Proteomics Template</a></li>
 </ul>
 </li>
 <li><a href="#additional-sdrf-rules">9. Additional SDRF Rules</a>
@@ -706,7 +707,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 <p><strong>characteristics[organism]</strong>: The organism of the Sample of origin. Values MUST come from <a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBI Taxonomy</a>.</p>
 </li>
 <li>
-<p><strong>characteristics[organism part]</strong>: The part of organism&#8217;s anatomy or substance arising from an organism from which the biomaterial was derived (e.g., liver). Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a>.</p>
+<p><strong>characteristics[organism part]</strong>: The main normalized anatomical term for the sample (e.g., liver). Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a>. Use the clearest ontology-backed anatomy term available for cross-study integration; more specific provenance can be captured separately in <code>characteristics[sampling site]</code>.</p>
 </li>
 <li>
 <p><strong>characteristics[disease]</strong>: The disease under study in the Sample. Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a>, or <a href="https://www.ebi.ac.uk/ols4/ontologies/doid">DOID</a>. For healthy/control samples, use <code>normal</code> (<a href="https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461">PATO:0000461</a>) - see <a href="sample-guidelines.html#disease-annotation">Disease Annotation Guidelines</a>.</p>
@@ -1035,7 +1036,7 @@ For pooled samples, use <code>pooled</code> for individual-specific fields (biol
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[data file]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the raw file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the raw file (primary/canonical file when the vendor format ships multiple files - see <a href="#multi-file-formats">Section 8.2</a>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Free text</p></td>
 </tr>
 </tbody>
@@ -1078,7 +1079,112 @@ For pooled samples, use <code>pooled</code> for individual-specific fields (biol
 </table><div class="sdrf-legend"><div class="legend-item"><span class="legend-color sample"></span>Sample metadata</div><div class="legend-item"><span class="legend-color data"></span>Data file metadata</div></div></div>
 </div>
 <div class="sect2">
-<h3 id="sample-prep-fragmentation"><a class="anchor" href="#sample-prep-fragmentation"></a><a class="link" href="#sample-prep-fragmentation">8.2. Sample Preparation and Fragmentation (MS-based only)</a></h3>
+<h3 id="multi-file-formats"><a class="anchor" href="#multi-file-formats"></a><a class="link" href="#multi-file-formats">8.2. Vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan)</a></h3>
+<div class="paragraph">
+<p>Some vendor formats persist a single MS run as <strong>two or more files on disk</strong> that are only useful together. The most common case is AB Sciex, where every acquisition produces a <code>.wiff</code> file paired with a <code>.wiff.scan</code> (and sometimes <code>.wiff2</code>) sidecar; tools such as ProteoWizard/Skyline cannot open one without the other. Bruker <code>.d</code> directories, in contrast, are a single logical entity (a folder) and do <strong>not</strong> require this pattern - reference the <code>.d</code> folder name directly in <code>comment[data file]</code>.</p>
+</div>
+<div class="paragraph">
+<p>To represent these multi-file formats while keeping one row per MS run, SDRF-Proteomics treats one file as the <strong>primary/canonical</strong> file and the remaining files as <strong>auxiliary</strong> files described by sidecar columns:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Cardinality</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[data file]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the primary/canonical file for the MS run (for AB Sciex, the <code>.wiff</code> file).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[file uri]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URI to retrieve the primary file. The trailing path segment MUST equal <code>comment[data file]</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[associated data file]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of an auxiliary file that must be downloaded alongside the primary file (for AB Sciex, the <code>.wiff.scan</code> file). Repeat the column when more than one auxiliary file is required.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[associated file uri]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URI to retrieve the auxiliary file. The trailing path segment MUST equal the corresponding <code>comment[associated data file]</code>. Repeat in the same order as <code>comment[associated data file]</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+When multiple <code>comment[associated data file]</code> / <code>comment[associated file uri]</code> columns are present, consumers MUST pair them positionally (first associated file with first associated URI, second with second, etc.).
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Example - AB Sciex (.wiff + .wiff.scan):</strong></p>
+</div>
+<div class="sdrf-example-table"><table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 9.0909%;">
+<col style="width: 18.1818%;">
+<col style="width: 18.1818%;">
+<col style="width: 18.1818%;">
+<col style="width: 18.1819%;">
+</colgroup>
+<thead>
+<tr>
+<th class="sample-col tableblock halign-left valign-top">source name</th>
+<th class="data-col tableblock halign-left valign-top">assay name</th>
+<th class="data-col tableblock halign-left valign-top">comment[instrument]</th>
+<th class="data-col tableblock halign-left valign-top">comment[data file]</th>
+<th class="data-col tableblock halign-left valign-top">comment[file uri]</th>
+<th class="data-col tableblock halign-left valign-top">comment[associated data file]</th>
+<th class="data-col tableblock halign-left valign-top">comment[associated file uri]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sample-col tableblock halign-left valign-top"><p class="tableblock">sample_1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">sample1_run1</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">TripleTOF 6600</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">OA_3.wiff</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">https://ftp.pride.ebi.ac.uk/pride/data/archive/2026/03/PXD073289/OA_3.wiff</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">OA_3.wiff.scan</p></td>
+<td class="data-col tableblock halign-left valign-top"><p class="tableblock">https://ftp.pride.ebi.ac.uk/pride/data/archive/2026/03/PXD073289/OA_3.wiff.scan</p></td>
+</tr>
+</tbody>
+</table><div class="sdrf-legend"><div class="legend-item"><span class="legend-color sample"></span>Sample metadata</div><div class="legend-item"><span class="legend-color data"></span>Data file metadata</div></div></div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Once repositories standardise on bundling related files into a single <code>.zip</code> or <code>.tar.gz</code> (as already done for some Bruker timsTOF deposits), <code>comment[data file]</code> and <code>comment[file uri]</code> can reference the archive directly and <code>comment[associated data file]</code> is no longer needed. See the <a href="https://github.com/PRIDE-Archive/pride-resources/blob/main/guidelines/pride-submission-formats-guidelines.md">PRIDE submission formats guidelines</a> for the direction of travel.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sample-prep-fragmentation"><a class="anchor" href="#sample-prep-fragmentation"></a><a class="link" href="#sample-prep-fragmentation">8.3. Sample Preparation and Fragmentation (MS-based only)</a></h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1121,7 +1227,7 @@ For HCD (Higher-energy C-trap Dissociation), the canonical accession is <a href=
 </div>
 </div>
 <div class="sect2">
-<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">8.3. Proteomics data acquisition method</a></h3>
+<h3 id="data-acquisition-method"><a class="anchor" href="#data-acquisition-method"></a><a class="link" href="#data-acquisition-method">8.4. Proteomics data acquisition method</a></h3>
 <div class="paragraph">
 <p>Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the <em>comment[proteomics data acquisition method]</em> column. The values MUST be children of the PRIDE ontology term <a href="https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659">proteomics data acquisition method (PRIDE:0000659)</a>. The following values are commonly used:</p>
 </div>
@@ -1180,7 +1286,7 @@ For DIA experiments, additional properties like MS1 scan range can be captured. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_ms_proteomics_template"><a class="anchor" href="#_ms_proteomics_template"></a><a class="link" href="#_ms_proteomics_template">8.4. MS-Proteomics Template</a></h3>
+<h3 id="_ms_proteomics_template"><a class="anchor" href="#_ms_proteomics_template"></a><a class="link" href="#_ms_proteomics_template">8.5. MS-Proteomics Template</a></h3>
 <div class="paragraph">
 <p>For detailed guidance on data file metadata, refer to the conventions document:</p>
 </div>
@@ -2010,7 +2116,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[data file]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the raw data file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the primary raw data file. For vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan), use <code>comment[associated data file]</code> for the auxiliary files - see <a href="#multi-file-formats">Section 8.2</a>.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -2935,9 +3041,9 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling site]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical location or context of sampling within the organism part</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Local sampling context, provenance, or original source label relative to the organism part. Can be equal to the organism part when no finer distinction exists.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tumor, normal tissue adjacent to tumor, left ventricle, frontal cortex</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor, normal tissue adjacent to tumor, heart left ventricle, frontal cortex, liver</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genotype]</code></p></td>
@@ -4369,7 +4475,7 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-19 10:36:55 UTC
+Last updated 2026-04-28 12:15:54 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

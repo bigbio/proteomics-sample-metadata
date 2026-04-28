@@ -203,6 +203,15 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <div class="paragraph">
 <p>Use lowercase for all values. For cell line samples, use <code>not applicable</code> or specify the tissue of origin (e.g., <code>cervix</code> for HeLa).</p>
 </div>
+<div class="paragraph">
+<p><code>characteristics[organism part]</code> should be the main normalized anatomical term in the metadata.
+Use the clearest ontology-backed anatomy term available for cross-study integration and grouping.
+When additional hierarchy is useful, <code>characteristics[tissue supergroup]</code> can capture a broader
+bucket such as a major organ or anatomical system, while <code>characteristics[sampling site]</code> can
+capture the original source label, local provenance, or a more specific context. <code>sampling site</code>
+may be equal to <code>organism part</code> when no finer distinction exists, and may sometimes be less
+ontologically precise than the normalized <code>organism part</code>.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -214,7 +223,10 @@ Validators should normalize common capitalization variations (e.g., accept both 
 <p><strong>Do NOT use <code>characteristics[tissue]</code></strong> - Use <code>characteristics[organism part]</code> instead.</p>
 </div>
 <div class="paragraph">
-<p>The <code>characteristics[tissue]</code> column should not be used as a replacement for <code>characteristics[organism part]</code>.</p>
+<p>The <code>characteristics[tissue]</code> column should not be used as a replacement for <code>characteristics[organism part]</code>.
+When tissue-related columns are needed, use them alongside <code>characteristics[organism part]</code> for
+additional hierarchy or provenance, for example <code>characteristics[tissue supergroup]</code> for broader
+grouping and <code>characteristics[sampling site]</code> for finer source context.</p>
 </div>
 </td>
 </tr>
@@ -1165,7 +1177,7 @@ For cell line samples, use <code>cell line</code> as the material type. The spec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-19 10:36:55 UTC
+Last updated 2026-04-28 12:15:54 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
