@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Multi-file vendor format annotation** (`comment[associated data file]`, `comment[associated file uri]`): new sidecar columns to describe auxiliary files that must be downloaded alongside a primary raw file (e.g. AB Sciex `.wiff.scan` companion to a `.wiff`). `comment[data file]` and `comment[file uri]` continue to reference the primary/canonical file; the auxiliary columns are repeated positionally when more than one auxiliary file is needed. New specification section (`Vendor formats that ship multiple files`) and AB Sciex example (`examples/PXD073289`). Resolves https://github.com/bigbio/proteomics-sample-metadata/issues/761.
 - **Metabolomics example SDRFs**: added MTBLS1129, MTBLS1903, and MTBLS547 as worked examples for the in-progress LC-MS metabolomics templates and validator wiring discussed in `bigbio/sdrf-templates#29` and `bigbio/sdrf-pipelines#286`.
+- **`characteristics[tissue supergroup]`**: added as an optional shared sample metadata field for broader organ/system-level grouping alongside `characteristics[organism part]`.
 - **Quick Start section** with minimal example, key concepts, format requirements, and scope clarification.
 - **Format Requirements** documenting core SDRF rules (tab-delimited, column structure, row semantics).
 - **Scope clarification**: SDRF captures sample-to-data relationships but not downstream analysis parameters (FDR, p-values, etc.).
