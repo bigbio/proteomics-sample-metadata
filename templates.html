@@ -198,8 +198,9 @@
  │    │    ├── immunopeptidomics (experiment)
  │    │    └── single-cell (experiment)
  │    ├── affinity-proteomics (technology)
- │    │    ├── olink (experiment)
- │    │    └── somascan (experiment)
+ │    ├── ms-metabolomics (technology)
+ │    │    ├── lc-ms-metabolomics (experiment)
+ │    │    └── gc-ms-metabolomics (experiment)
  │    ├── human (sample)
  │    ├── vertebrates (sample)
  │    ├── invertebrates (sample)
@@ -334,7 +335,7 @@ extends: ms-proteomics@&gt;=1.1.0
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines the proteomics technology. Exactly one required per SDRF.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics, affinity-proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ms-proteomics, affinity-proteomics, ms-metabolomics</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sample</code></p></td>
@@ -344,7 +345,7 @@ extends: ms-proteomics@&gt;=1.1.0
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>experiment</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">dia-acquisition, single-cell, olink, cell-lines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dia-acquisition, single-cell, lc-ms-metabolomics, gc-ms-metabolomics, cell-lines</p></td>
 </tr>
 </tbody>
 </table>
@@ -357,13 +358,13 @@ extends: ms-proteomics@&gt;=1.1.0
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>ONE technology template</strong> (required): <code>ms-proteomics</code> or <code>affinity-proteomics</code></p>
+<p><strong>ONE technology template</strong> (required): <code>ms-proteomics</code>, <code>affinity-proteomics</code>, or <code>ms-metabolomics</code></p>
 </li>
 <li>
 <p><strong>ONE sample template</strong> (recommended): either an organism template (<code>human</code>, <code>vertebrates</code>, <code>invertebrates</code>, <code>plants</code>) OR a metaproteomics template (<code>human-gut</code>, <code>soil</code>, <code>water</code>). These two groups are mutually exclusive.</p>
 </li>
 <li>
-<p><strong>ZERO or more experiment templates</strong>: <code>dia-acquisition</code>, <code>single-cell</code>, <code>crosslinking</code>, <code>immunopeptidomics</code> (extend <code>ms-proteomics</code>), <code>olink</code>, <code>somascan</code> (extend <code>affinity-proteomics</code>)</p>
+<p><strong>ZERO or more experiment templates</strong>: <code>dia-acquisition</code>, <code>single-cell</code>, <code>crosslinking</code>, <code>immunopeptidomics</code> (extend <code>ms-proteomics</code>), <code>lc-ms-metabolomics</code>, <code>gc-ms-metabolomics</code> (extend <code>ms-metabolomics</code>)</p>
 </li>
 <li>
 <p><strong>ZERO or more clinical templates</strong>: <code>clinical-metadata</code>, <code>oncology-metadata</code></p>
@@ -382,7 +383,7 @@ extends: ms-proteomics@&gt;=1.1.0
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Technology</strong>: <code>ms-proteomics</code> and <code>affinity-proteomics</code> cannot be combined</p>
+<p><strong>Technology</strong>: <code>ms-proteomics</code>, <code>affinity-proteomics</code>, and <code>ms-metabolomics</code> are mutually exclusive</p>
 </li>
 <li>
 <p><strong>Organism</strong>: only one of <code>human</code>, <code>vertebrates</code>, <code>invertebrates</code>, <code>plants</code> per study (multi-species studies use the most specific applicable template)</p>
@@ -391,10 +392,10 @@ extends: ms-proteomics@&gt;=1.1.0
 <p><strong>Metaproteomics</strong>: <code>metaproteomics</code> (and its children <code>human-gut</code>, <code>soil</code>, <code>water</code>) are mutually exclusive with organism templates (<code>human</code>, <code>vertebrates</code>, <code>invertebrates</code>, <code>plants</code>). Only one metaproteomics child template per study.</p>
 </li>
 <li>
-<p><strong>Platform</strong>: <code>olink</code> and <code>somascan</code> cannot be combined</p>
+<p><strong>Metabolomics modality</strong>: <code>lc-ms-metabolomics</code> and <code>gc-ms-metabolomics</code> cannot be combined for the same assay</p>
 </li>
 <li>
-<p><strong>Affinity experiments</strong>: <code>olink</code>/<code>somascan</code> require <code>affinity-proteomics</code> (not <code>ms-proteomics</code>)</p>
+<p><strong>Metabolomics experiments</strong>: <code>lc-ms-metabolomics</code>/<code>gc-ms-metabolomics</code> require <code>ms-metabolomics</code> (not <code>ms-proteomics</code>)</p>
 </li>
 </ul>
 </div>
@@ -479,12 +480,16 @@ extends: ms-proteomics@&gt;=1.1.0
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>water</code> + <code>ms-proteomics</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink plasma study</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>olink</code> + <code>human</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human affinity proteomics study</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>affinity-proteomics</code> + <code>human</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human SomaScan serum study</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>somascan</code> + <code>human</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human LC-MS metabolomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lc-ms-metabolomics</code> + <code>human</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Plant GC-MS metabolomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gc-ms-metabolomics</code> + <code>plants</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Drosophila phosphoproteomics</p></td>
@@ -577,12 +582,16 @@ extends: ms-proteomics@&gt;=1.1.0
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> (label = "label free sample")</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Olink PEA</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>olink</code> (inherits <code>affinity-proteomics</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Affinity-based proteomics (Olink, SomaScan)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>affinity-proteomics</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan aptamer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>somascan</code> (inherits <code>affinity-proteomics</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC-MS metabolomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lc-ms-metabolomics</code> (inherits <code>ms-metabolomics</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GC-MS metabolomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gc-ms-metabolomics</code> (inherits <code>ms-metabolomics</code>)</p></td>
 </tr>
 </tbody>
 </table>
@@ -2296,7 +2305,7 @@ parse_sdrf check-templates --templates ms-proteomics,human,dia-acquisition</code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-28 12:15:54 UTC
+Last updated 2026-04-29 10:39:57 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

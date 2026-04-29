@@ -91,12 +91,13 @@
 <li><a href="#_immunopeptidomics">14.13. immunopeptidomics</a></li>
 <li><a href="#_crosslinking">14.14. crosslinking</a></li>
 <li><a href="#_cell_lines">14.15. cell-lines</a></li>
-<li><a href="#_olink">14.16. olink</a></li>
-<li><a href="#_somascan">14.17. somascan</a></li>
-<li><a href="#_metaproteomics">14.18. metaproteomics</a></li>
-<li><a href="#_human_gut">14.19. human-gut</a></li>
-<li><a href="#_soil">14.20. soil</a></li>
-<li><a href="#_water">14.21. water</a></li>
+<li><a href="#_metaproteomics">14.16. metaproteomics</a></li>
+<li><a href="#_human_gut">14.17. human-gut</a></li>
+<li><a href="#_soil">14.18. soil</a></li>
+<li><a href="#_water">14.19. water</a></li>
+<li><a href="#_gc_ms_metabolomics">14.20. gc-ms-metabolomics</a></li>
+<li><a href="#_lc_ms_metabolomics">14.21. lc-ms-metabolomics</a></li>
+<li><a href="#_ms_metabolomics">14.22. ms-metabolomics</a></li>
 </ul>
 </li>
 <li><a href="#_intellectual_property_statement">15. Intellectual Property Statement</a></li>
@@ -707,7 +708,7 @@ parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv --template human</code><
 <p><strong>characteristics[organism]</strong>: The organism of the Sample of origin. Values MUST come from <a href="https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon">NCBI Taxonomy</a>.</p>
 </li>
 <li>
-<p><strong>characteristics[organism part]</strong>: The main normalized anatomical term for the sample (e.g., liver). Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a>. Use the clearest ontology-backed anatomy term available for cross-study integration; more specific provenance can be captured separately in <code>characteristics[sampling site]</code>.</p>
+<p><strong>characteristics[organism part]</strong>: The main normalized anatomical term for the sample (e.g., liver). Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/uberon">UBERON</a> or <a href="https://www.ebi.ac.uk/ols4/ontologies/bto">BTO</a>. Use the clearest ontology-backed anatomy term available for cross-study integration; <code>characteristics[tissue supergroup]</code> can be used separately for broader organ/system grouping and <code>characteristics[sampling site]</code> for finer provenance. <code>characteristics[sampling site]</code> may be equal to <code>characteristics[organism part]</code> when no distinction exists.</p>
 </li>
 <li>
 <p><strong>characteristics[disease]</strong>: The disease under study in the Sample. Values SHOULD come from <a href="https://www.ebi.ac.uk/ols4/ontologies/mondo">MONDO</a>, <a href="https://www.ebi.ac.uk/ols4/ontologies/efo">EFO</a>, or <a href="https://www.ebi.ac.uk/ols4/ontologies/doid">DOID</a>. For healthy/control samples, use <code>normal</code> (<a href="https://www.ebi.ac.uk/ols4/ontologies/pato/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPATO_0000461">PATO:0000461</a>) - see <a href="sample-guidelines.html#disease-annotation">Disease Annotation Guidelines</a>.</p>
@@ -1182,6 +1183,9 @@ Once repositories standardise on bundling related files into a single <code>.zip
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>If a repository already distributes a single canonical archive for one acquisition today (for example a <code>.raw.zip</code> bundle in some metabolomics deposits), that archive can already be recorded directly in <code>comment[data file]</code> and <code>comment[file uri]</code>.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="sample-prep-fragmentation"><a class="anchor" href="#sample-prep-fragmentation"></a><a class="link" href="#sample-prep-fragmentation">8.3. Sample Preparation and Fragmentation (MS-based only)</a></h3>
@@ -1409,7 +1413,7 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>TECHNOLOGY</strong> (required)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/sdrf-templates/tree/main/ms-proteomics">ms-proteomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/affinity-proteomics">affinity-proteomics</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/sdrf-templates/tree/main/ms-proteomics">ms-proteomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/affinity-proteomics">affinity-proteomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/ms-metabolomics">ms-metabolomics</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Minimum valid SDRF - choose one</p></td>
 </tr>
 <tr>
@@ -1419,7 +1423,7 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EXPERIMENT</strong> (optional)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/sdrf-templates/tree/main/cell-lines">cell-lines</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/crosslinking">crosslinking</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/dia-acquisition">dia-acquisition</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/single-cell">single-cell</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/immunopeptidomics">immunopeptidomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/metaproteomics">metaproteomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/olink">olink</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/somascan">somascan</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bigbio/sdrf-templates/tree/main/cell-lines">cell-lines</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/crosslinking">crosslinking</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/dia-acquisition">dia-acquisition</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/single-cell">single-cell</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/immunopeptidomics">immunopeptidomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/metaproteomics">metaproteomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/lc-ms-metabolomics">lc-ms-metabolomics</a>, <a href="https://github.com/bigbio/sdrf-templates/tree/main/gc-ms-metabolomics">gc-ms-metabolomics</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Methodology-specific columns</p></td>
 </tr>
 </tbody>
@@ -1449,7 +1453,7 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TECHNOLOGY</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> vs <code>affinity-proteomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ms-proteomics</code> vs <code>affinity-proteomics</code> vs <code>ms-metabolomics</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mutually exclusive — choose one (REQUIRED)</p></td>
 </tr>
 <tr>
@@ -1463,9 +1467,9 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 <td class="tableblock halign-left valign-top"><p class="tableblock">Can be combined (e.g., <code>dia-acquisition</code> + <code>single-cell</code>)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">EXPERIMENT (affinity platform)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>olink</code> vs <code>somascan</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mutually exclusive — choose one if using affinity-proteomics (OPTIONAL)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXPERIMENT (metabolomics)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lc-ms-metabolomics</code> vs <code>gc-ms-metabolomics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mutually exclusive — choose one when using <code>ms-metabolomics</code> (OPTIONAL)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1490,16 +1494,19 @@ For multiplexed experiments (TMT, iTRAQ), multiple rows share the same <code>ass
 <p><code>ms-proteomics</code> + <code>human</code> + <code>crosslinking</code> (human crosslinking MS)</p>
 </li>
 <li>
-<p><code>affinity-proteomics</code> + <code>human</code> + <code>olink</code> (human Olink)</p>
+<p><code>affinity-proteomics</code> + <code>human</code> (human affinity proteomics, including Olink or SomaScan)</p>
 </li>
 <li>
-<p><code>affinity-proteomics</code> + <code>human</code> + <code>somascan</code> (human SomaScan)</p>
+<p><code>ms-metabolomics</code> + <code>human</code> + <code>lc-ms-metabolomics</code> (human LC-MS metabolomics)</p>
+</li>
+<li>
+<p><code>ms-metabolomics</code> + <code>plants</code> + <code>gc-ms-metabolomics</code> (plant GC-MS metabolomics)</p>
 </li>
 <li>
 <p><code>ms-proteomics</code> + <code>metaproteomics</code> (environmental metaproteomics)</p>
 </li>
 <li>
-<p><code>ms-proteomics</code> + <code>human</code> + <code>metaproteomics</code> (human gut microbiome metaproteomics)</p>
+<p><code>ms-proteomics</code> + <code>human-gut</code> (human gut microbiome metaproteomics)</p>
 </li>
 <li>
 <p><code>ms-proteomics</code> + <code>human</code> + <code>single-cell</code> (human single-cell proteomics)</p>
@@ -1556,8 +1563,12 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>human v1.1.0</code> + <code>crosslinking v1.0.0</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Human Olink</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>human v1.1.0</code> + <code>olink v1.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human affinity proteomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>human v1.1.0</code> + <code>affinity-proteomics v1.0.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human LC-MS metabolomics</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two columns: <code>human v1.1.0</code> + <code>lc-ms-metabolomics v1.0.0-dev</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -1609,6 +1620,9 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 <div class="ulist">
 <ul>
 <li>
+<p><a href="https://github.com/bigbio/sdrf-templates/tree/main/affinity-proteomics">Affinity Proteomics</a> - Olink and SomaScan-style platform metadata</p>
+</li>
+<li>
 <p><a href="https://github.com/bigbio/sdrf-templates/tree/main/dia-acquisition">DIA Acquisition</a> - scan windows, isolation width</p>
 </li>
 <li>
@@ -1622,6 +1636,12 @@ sample_1	...	human v1.1.0	crosslinking v1.0.0</code></pre>
 </li>
 <li>
 <p><a href="https://github.com/bigbio/sdrf-templates/tree/main/crosslinking">Crosslinking MS</a> - crosslinker reagents</p>
+</li>
+<li>
+<p><a href="https://github.com/bigbio/sdrf-templates/tree/main/lc-ms-metabolomics">LC-MS Metabolomics</a> - chromatography, ion source, polarity, scan range</p>
+</li>
+<li>
+<p><a href="https://github.com/bigbio/sdrf-templates/tree/main/gc-ms-metabolomics">GC-MS Metabolomics</a> - derivatization, GC column, carrier gas, oven program</p>
 </li>
 <li>
 <p><a href="https://github.com/bigbio/sdrf-templates/tree/main/metaproteomics">Metaproteomics</a> - environmental sample type</p>
@@ -2116,7 +2136,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[data file]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the primary raw data file. For vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan), use <code>comment[associated data file]</code> for the auxiliary files - see <a href="#multi-file-formats">Section 8.2</a>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the raw data file</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -2187,9 +2207,16 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organism part]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Anatomical part of the organism from which sample was derived</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Main normalized anatomical term for the sample</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">liver, brain, heart, blood</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tissue supergroup]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Broader anatomical grouping or system-level bucket for the sample, used alongside the organism part for higher-level grouping</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">digestive system, nervous system, cardiovascular system, gastrointestinal tract</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[cell type]</code></p></td>
@@ -2311,13 +2338,6 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of technology used</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: proteomic profiling by mass spectrometry</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[proteomics data acquisition method]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
@@ -2586,11 +2606,11 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample type]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of technology used</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: protein expression profiling by antibody array, protein expression profiling by aptamer array</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Role of the sample in the assay. Distinguishes study samples from controls/reference materials for assay interpretation and quality control</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">study sample, negative control, positive control, calibrator, &#8230;&#8203;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[platform]</code></p></td>
@@ -2609,16 +2629,9 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[panel name]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the commercial panel used</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Panel name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Olink Explore 3072, Olink Explore 1536, Olink Target 96 Inflammation, SomaScan 7K, &#8230;&#8203;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[panel version]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the assay panel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Panel version</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v4.1, 2023-01, 7K v4.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Commercial panel/menu identifier within the platform. RECOMMENDED, but MUST be provided when not uniquely inferable from comment[platform].</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Panel/menu identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target 96 Inflammation, Explore 1536, SomaScan 7K, SomaScan 11K</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[quantification unit]</code></p></td>
@@ -2635,13 +2648,6 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <td class="tableblock halign-left valign-top"><p class="tableblock">1, 2</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample matrix]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">serum, plasma, cerebrospinal fluid, urine, &#8230;&#8203;</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[normalization method]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Normalization method applied to quantification values</p></td>
@@ -2649,11 +2655,18 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <td class="tableblock halign-left valign-top"><p class="tableblock">plate control normalized, bridge normalized, median normalization, not normalized</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[fraction identifier]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[dilution]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fraction or dilution series identifier. While fractionation is rare in affinity proteomics, dilution series are used in some protocols (e.g. SomaScan alternative matrix validation).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Fraction or dilution identifier</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1, 2, 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample dilution factor used (commonly used for SomaScan workflows)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Dilution factor; SomaScan commonly uses 0.005%, 0.5%, 20%, 40%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.005%, 0.5%, 20%, 40%, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[lot number]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent lot number for traceability</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Lot number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SS-2023-001, lot_12345</p></td>
 </tr>
 </tbody>
 </table>
@@ -2664,7 +2677,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
 </div>
 <div class="paragraph">
-<p>Human SDRF template with human-specific sample metadata fields. Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+<p>Human SDRF template with human-specific sample metadata fields. Must be combined with a technology template (ms-proteomics, affinity-proteomics, or ms-metabolomics).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2735,7 +2748,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
 </div>
 <div class="paragraph">
-<p>SDRF template for non-human vertebrate samples (mammals, birds, fish, reptiles, amphibians). Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+<p>SDRF template for non-human vertebrate samples (mammals, birds, fish, reptiles, amphibians). Must be combined with a technology template (ms-proteomics, affinity-proteomics, or ms-metabolomics).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2792,7 +2805,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
 </div>
 <div class="paragraph">
-<p>SDRF template for invertebrate samples (Drosophila, C. elegans, insects, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+<p>SDRF template for invertebrate samples (Drosophila, C. elegans, insects, etc.). Must be combined with a technology template (ms-proteomics, affinity-proteomics, or ms-metabolomics).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2849,7 +2862,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <p><strong>Version:</strong> 1.1.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
 </div>
 <div class="paragraph">
-<p>SDRF template for plant samples (Arabidopsis, crops, etc.). Must be combined with a technology template (ms-proteomics or affinity-proteomics).</p>
+<p>SDRF template for plant samples (Arabidopsis, crops, etc.). Must be combined with a technology template (ms-proteomics, affinity-proteomics, or ms-metabolomics).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2920,7 +2933,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> No</p>
 </div>
 <div class="paragraph">
-<p>SDRF template for clinical study samples with treatment, demographics, and lifestyle metadata. Applicable to any organism. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics).</p>
+<p>SDRF template for clinical study samples with treatment, demographics, and lifestyle metadata. Applicable to any organism. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics, or ms-metabolomics).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -3041,9 +3054,9 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling site]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Local sampling context, provenance, or original source label relative to the organism part. Can be equal to the organism part when no finer distinction exists.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific anatomical location or context of sampling within the organism part</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tumor, normal tissue adjacent to tumor, heart left ventricle, frontal cortex, liver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tumor, normal tissue adjacent to tumor, left ventricle, frontal cortex</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[genotype]</code></p></td>
@@ -3061,7 +3074,7 @@ Use the <a href="sdrf-explorer.html">SDRF Explorer</a> to browse all {total_data
 <p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> clinical-metadata | <strong>Usable alone:</strong> No</p>
 </div>
 <div class="paragraph">
-<p>SDRF template for cancer/oncology study samples with tumor staging, grading, and clinical outcome metadata. Extends clinical-metadata with oncology-specific columns. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics).</p>
+<p>SDRF template for cancer/oncology study samples with tumor staging, grading, and clinical outcome metadata. Extends clinical-metadata with oncology-specific columns. Combine with organism template (human, vertebrates) and technology template (ms-proteomics, affinity-proteomics, or ms-metabolomics).</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -3673,7 +3686,7 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling site]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tissue or organ from which the cell line was derived</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Original source term, local provenance, or finer tissue-of-origin context for the cell line</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cervix, kidney, breast</p></td>
 </tr>
@@ -3730,121 +3743,7 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_olink"><a class="anchor" href="#_olink"></a><a class="link" href="#_olink">14.16. olink</a></h3>
-<div class="paragraph">
-<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> affinity-proteomics | <strong>Usable alone:</strong> No</p>
-</div>
-<div class="paragraph">
-<p>SDRF template for Olink Proximity Extension Assay (PEA) experiments. Extends affinity-proteomics with Olink-specific columns.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 10%;">
-<col style="width: 30%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Req.</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Validators</th>
-<th class="tableblock halign-left valign-top">Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[olink panel]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specific Olink panel name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Olink panel name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Target 96 Inflammation, Target 96 Cardiovascular II, Explore 384 Cardiometabolic, Explore 1536, &#8230;&#8203;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[olink platform]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Olink platform version</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">values: Olink Target 96, Olink Explore 384, Olink Explore HT, Olink Reveal</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[npx normalization]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Normalization method applied to NPX values</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">values: plate control normalized, intensity normalized, bridge normalized, not normalized</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[olink lot number]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent lot number for traceability</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Lot number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">lot_2023_001, B12345</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_somascan"><a class="anchor" href="#_somascan"></a><a class="link" href="#_somascan">14.17. somascan</a></h3>
-<div class="paragraph">
-<p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> experiment | <strong>Extends:</strong> affinity-proteomics | <strong>Usable alone:</strong> No</p>
-</div>
-<div class="paragraph">
-<p>SDRF template for SomaScan aptamer-based proteomics experiments. Extends affinity-proteomics with SomaScan-specific columns.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 10%;">
-<col style="width: 30%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Column Name</th>
-<th class="tableblock halign-left valign-top">Req.</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Validators</th>
-<th class="tableblock halign-left valign-top">Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[somascan menu]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan assay menu (number of aptamers/proteins measured)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">values: SomaScan 1.1K, SomaScan 1.3K, SomaScan 5K, SomaScan 7K, SomaScan 11K</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[somascan platform]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SomaScan instrument/platform version</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">values: SomaScan Assay, SomaScan Assay v4, SomaScan Assay v4.1</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[dilution]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sample dilution factor used</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Standard SomaScan dilution factors</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.005%, 0.5%, 20%, 40%</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[somascan lot number]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reagent lot number for traceability</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Lot number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SS-2023-001, lot_12345</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_metaproteomics"><a class="anchor" href="#_metaproteomics"></a><a class="link" href="#_metaproteomics">14.18. metaproteomics</a></h3>
+<h3 id="_metaproteomics"><a class="anchor" href="#_metaproteomics"></a><a class="link" href="#_metaproteomics">14.16. metaproteomics</a></h3>
 <div class="paragraph">
 <p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> base | <strong>Usable alone:</strong> No</p>
 </div>
@@ -3999,7 +3898,7 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_human_gut"><a class="anchor" href="#_human_gut"></a><a class="link" href="#_human_gut">14.19. human-gut</a></h3>
+<h3 id="_human_gut"><a class="anchor" href="#_human_gut"></a><a class="link" href="#_human_gut">14.17. human-gut</a></h3>
 <div class="paragraph">
 <p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> metaproteomics | <strong>Usable alone:</strong> No</p>
 </div>
@@ -4024,6 +3923,13 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source name[sample name]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample_1, Sample_2</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host organism]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
@@ -4051,6 +3957,20 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Body site where sample was obtained. Corresponds to MIxS host_body_site (MIXS:0000867).</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">stool, oral cavity, colon</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host genotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Observed genotype MIXS:0000365.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: efo, gene</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">homozygous, heterozygous</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host phenotype]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phenotype of human or other host MIXS:0000274.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pato, hp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">polydactyly, arachnodactyly</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host age]</code></p></td>
@@ -4116,6 +4036,20 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">breakfast 4 hours prior, fasting 12 hours</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host family relationship]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relationships to other hosts in the same study; can include multiple relationships MIXS:0000872.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: family relationship description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">father, daughter</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host occupation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Most frequent job performed by subject MIXS:0000896.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: occupation description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">teacher, engineer</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[gastrointestinal tract disorder]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">History of GI tract disorders. Corresponds to MIxS gastroint_disord (MIXS:0000280).</p></td>
@@ -4169,13 +4103,90 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Chemical compounds administered to the host. Corresponds to MIxS chem_administration (MIXS:0000751).</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chemical administration description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">metformin 500mg daily, probiotics, none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metformin 500mg daily, probiotics</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[host pulse]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resting pulse, measured as beats per minutes (MIXS:0000333).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (bpm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65 bpm, 72 bpm, 85 bpm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[observed host symbionts]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The taxonomic name of the organism(s) found living in mutualistic, commensalistic, or parasitic symbiosis with the specific host (MIXS:0001298).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology:</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[medical history performed]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether full medical history was collected (MIXS:0000897).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Medical history performed description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">45 year old male with a 2 week history of stomach pain.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[project name]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the project within which the sequencing was organized (MIXS:0000092).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Human_microbiome_project</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample storage temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Temperature at which sample was stored (MIXS:0000110).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (°C)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-80 °C, -20 °C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample storage location]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location at which sample was stored (MIXS:0000755).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: storage location description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">freezer, room</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample storage duration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration for which the sample was stored (MIXS:0000116).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: storage duration description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40 days, 6 months</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample volume or weight for DNA extraction]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Volume (ml) or mass (g) of total collected sample processed for DNA extraction (MIXS:0000111).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ml,g)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 ml, 2 g</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[organism count]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total cell count of any organism per gram, volume, or area of sample, including count (MIXS:0000103).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (CFU/ml)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 CFU/ml, 2000 CFU/ml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[oxygenation status of sample]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Oxygenation status of sample (MIXS:0000753).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmHg)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80 mmHg, 100 mmHg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[miscellaneous parameter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any other measurement performed or parameter collected, that is not listed here (MIXS:0000752).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: miscellaneous parameter description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_soil"><a class="anchor" href="#_soil"></a><a class="link" href="#_soil">14.20. soil</a></h3>
+<h3 id="_soil"><a class="anchor" href="#_soil"></a><a class="link" href="#_soil">14.18. soil</a></h3>
 <div class="paragraph">
 <p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> metaproteomics | <strong>Usable alone:</strong> No</p>
 </div>
@@ -4201,6 +4212,20 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source name[sample name]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample_1, Sample_2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>project name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the project within which the sequencing was organized (MIXS:0000092).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bermuda_Atlantic_Time-series_Study, Metaproteomes_of_Seawater_Microbial_Communities</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil type]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Soil classification type (ENVO term)</p></td>
@@ -4208,53 +4233,46 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sandy loam, clay, peat, silt</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil horizon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[elevation]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Soil horizon from which sample was collected</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">values: O horizon, A horizon, B horizon, C horizon, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Height of the sampling site above mean sea level.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: 10 feet, 30 feet, 2 cm</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[land use]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[slope gradient]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Land use type at sampling site</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The angle between ground surface and a horizontal line (MIxS:0000646).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: 10 %, 30 %</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[slope aspect]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The direction a slope faces (MIxS:0000647).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: 300 degrees, north west, south</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[profile position]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-sectional position in the hillslope where sample was collected (MIxS:0001084).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: summit, shoulder, backslope</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[drainage classification]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drainage classification from a standard system such as the USDA system (MIxS:0001085).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: well drained, poorly drained, very poorly drained</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[current land use]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Present state of sample site (MIXS:0001080).</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Land use type</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">agricultural, forest, urban, grassland, &#8230;&#8203;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[vegetation]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dominant vegetation at sampling site</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Vegetation description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">deciduous forest, corn field, prairie, tropical rainforest</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total organic carbon]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Total organic carbon content. Corresponds to MIxS tot_org_carb (MIXS:0000533).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Total organic carbon with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">15.2 g/kg, 2.5 %</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total nitrogen]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Total nitrogen content. Corresponds to MIxS tot_nitro_content (MIXS:0000530).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Total nitrogen with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1.2 g/kg, 0.15 %</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[water content]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Water content of soil sample. Corresponds to MIxS water_content (MIXS:0000185).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Water content with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">25 %, 0.25 g/g</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil texture measurement]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Soil texture measurement (sand/silt/clay percentages). Corresponds to MIxS soil_text_measure (MIXS:0000335).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Soil texture description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sand 60%;silt 25%;clay 15%, loamy sand</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[current vegetation]</code></p></td>
@@ -4264,6 +4282,27 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">grassland, deciduous forest, cropland</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[current vegetation method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">method used in vegetation classification (MIXS:0000314).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: vegetation survey, quadrant sampling</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[history of previous land use]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Previous land use and dates (MIXS:0000315).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: agricultural land 15 years, grassland forest 5 years</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[history of previous land use method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference or method used in determining previous land use (MIXS:0000316).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: land registry records, historical archives</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[crop rotation]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Crop rotation history. Corresponds to MIxS crop_rotation (MIXS:0000318).</p></td>
@@ -4271,24 +4310,283 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">corn-soybean rotation, wheat-fallow, continuous corn</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[perturbation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[history of agrochemical additions]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of perturbation applied. Corresponds to MIxS perturbation (MIXS:0000754).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Perturbation description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fertilizer application, tillage, none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Addition of fertilizers, pesticides, etc. - amount and time of applications (MIXS:0000639).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: urea 2mg/L, 2020-01-01, superphosphate 5mg/L, 2019-02-19</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chemical administration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[history of tillage]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical compounds administered to the site. Corresponds to MIxS chem_administration (MIXS:0000751).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chemical administration description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">nitrogen fertilizer, pesticide, none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tilling methods (MIXS:0001081).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: chisel, digging spade</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[history of fire]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">evidence of fire (MIXS:0001086).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">09-10-2025, 10-02-2002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[history of flooding]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">evidence of flooding (MIXS:0000319).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">09-10-2025, 10-02-2002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[history of extreme event]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">events that may have affected microbial populations (MIXS:0000320).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">09-10-2025, 10-02-2002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil horizon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil horizon from which sample was collected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: O horizon, A horizon, B horizon, C horizon, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[horizon method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">method used in determining the horizon (MIXS:0000321).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Horizon method description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USDA Field Book, FAO Guidelines for Soil Profile Description, none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil taxonomic of FAO classification]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil classification from the FAO World soil distribution (MIxS:0001083)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: acrisols, calcisols, durisols, gleysols</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[link classification information]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Link to digitized soil maps or other soil classification information (MIXS:0000329).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: URL, DOI, or PMID linking to classification information</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://example.com/soil-map" class="bare">https://example.com/soil-map</a>, doi:10.1000/xyz123, PMID:12345678</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil taxonomic local classification]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Soil classification based on local soil classification system (MIXS:0000330).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Local soil classification term or description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chernozem, Podzol, Local classification type A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil local classification method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used for local soil classification, including reference to the classification system or methodology applied (MIXS:0000331).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description or reference to the local soil classification method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FAO soil classification guidelines, USDA Soil Taxonomy methodology, National soil classification system (UK)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil texture]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The relative proportion of different grain sizes of mineral particles in a soil, expressed as percentages of sand, silt, and clay, optionally including a textural class (MIXS:0000335).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Soil texture expressed as percentages and/or textural class</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40% sand 40% silt 20% clay, 30-50 silty clay loam, silty clay loam</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil texture method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine soil texture, including reference to the analytical or classification approach applied.(MIXS:0000336)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description or reference to the soil texture determination method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hydrometer method, Laser diffraction particle size analysis, Pipette method</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[link climate information]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Link to climate resource associated with the sampling site. (MIXS:0000328)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: URL, DOI, or PMID linking to climate information</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://climate-data.org/location123" class="bare">https://climate-data.org/location123</a>, doi:10.1000/climate456, PMID:98765432</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mean annual temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mean annual temperature at the sampling site, typically expressed in degrees Celsius.(MIXS:0000135)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12.5 oC, 25 oC</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mean seasonal temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mean seasonal temperature range or average during a defined season at the sampling site. (MIXS:0000136)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Seasonal temperature description or value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">summer 18°C, winter -2 to 5°C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mean annual precipitation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total annual precipitation at the sampling site, typically measured in millimeters per year.(MIXS:0000140)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">800/year, 1200.5/year</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mean seasonal precipitation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Precipitation amount during a defined season at the sampling site. (MIXS:0000141)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Seasonal precipitation description or value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">summer 120 mm, winter 300 mm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[pH method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine pH in the sample.(MIXS:0001106)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of pH measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pH measured in water (1:2.5 soil:solution ratio), pH measured in CaCl2 solution</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organic matter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organic matter content of the sample.(MIXS:0000204)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit ()</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.2 %, 12 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total organic carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total organic carbon content. Corresponds to MIxS tot_org_carb (MIXS:0000533).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Total organic carbon with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15.2 g/kg, 2.5 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total organic carbon method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine total organic carbon.(MIXS:0000337)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of TOC measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dry combustion method, Walkley-Black method</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organic nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organic nitrogen content of the sample.(MIXS:0000205)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit ()</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.2 %, 1.5 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total nitrogen content]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total nitrogen content of the sample.(MIXS:0000530)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit ()</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 %, 2.1 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total nitrogen content method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine total nitrogen content.(MIXS:0000338)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of nitrogen measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kjeldahl method, Dumas combustion method</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[water content]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Water content of soil sample. Corresponds to MIxS water_content (MIXS:0000185).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Water content with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 %, 0.25 g/g</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soil water content method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine soil water content.(MIXS:0000323)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of water content measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gravimetric method, time-domain reflectometry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[microbial biomass]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Microbial biomass present in the sample.(MIXS:0000650)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit ()</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">250 mg/kg, 1200 mg/kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[microbial biomass method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine microbial biomass.(MIXS:0000339)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of microbial biomass measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">chloroform fumigation extraction, substrate-induced respiration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[extreme unusual properties of heavy metals]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Concentration of heavy metals in the sample, including elements such as lead, cadmium, mercury, and others.(MIXS:0000652)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Heavy metal concentrations with units or description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pb 50 mg/kg; Cd 2 mg/kg, Hg 0.5 mg/kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[extreme unusual properties of heavy metals method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine heavy metal concentrations in the sample.(MIXS:0000343)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of heavy metal measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICP-MS analysis, Atomic absorption spectroscopy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[aluminum saturation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aluminum saturation of the soil, typically expressed as a percentage of cation exchange capacity occupied by aluminum.(MIXS:0000607)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit ()</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15 %, 45.5 %</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[aluminum saturation method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used to determine aluminum saturation in the sample.(MIXS:0000324)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Description of aluminum saturation measurement method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">KCl extraction followed by titration, ICP-OES after extraction</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sieving]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of mesh used to sieve the sample prior to analysis.(MIXS:0000322)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Sieve size or description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2 mm mesh, 500 µm sieve</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample volume or weight for DNA extraction]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Volume or weight of sample used for DNA extraction.(MIXS:0000111)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Sample amount with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 g, 10 mL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[pooling of DNA extracts]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether multiple DNA extracts were pooled prior to sequencing.(MIXS:0000325)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Indication of DNA extract pooling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes, pooled from 3 replicates, no</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[storage conditions]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Storage conditions of the sample prior to analysis, including temperature and duration if known.(MIXS:0000327)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Storage condition description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-80°C for 6 months, 4°C short-term storage, room temperature</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[link to additional analysis]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Link to additional analysis results or external resources related to the sample.(MIXS:0000340)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: URL, DOI, or PMID linking to additional analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://example.com/analysis-results" class="bare">https://example.com/analysis-results</a>, doi:10.1000/analysis123, PMID:12345678</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[miscellaneous parameter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any additional parameter not captured by other fields; should include a name and value.(MIXS:0000752)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Parameter name and value in key:value format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{'enzyme_activity': 'high'}, {'soil_color': 'dark brown'}</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_water"><a class="anchor" href="#_water"></a><a class="link" href="#_water">14.21. water</a></h3>
+<h3 id="_water"><a class="anchor" href="#_water"></a><a class="link" href="#_water">14.19. water</a></h3>
 <div class="paragraph">
 <p><strong>Version:</strong> 1.0.0 | <strong>Layer:</strong> sample | <strong>Extends:</strong> metaproteomics | <strong>Usable alone:</strong> No</p>
 </div>
@@ -4314,11 +4612,74 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[water body type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source name[sample name]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample_1, Sample_2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>project name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the project within which the sequencing was organized (MIXS:0000092).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bermuda_Atlantic_Time-series_Study, Metaproteomes_of_Seawater_Microbial_Communities</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling depth zone]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type of water body from which sample was collected (ENVO term)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: envo</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ocean, lake, river, estuary, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ecological depth zone of the sampling site</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: epipelagic, mesopelagic, bathypelagic, abyssopelagic, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[elevation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Height of the sampling site above mean sea level.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (feet, cm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 feet, 30 feet, 2 cm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[tidal stage]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stage of tide (MIXS:0000750).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: high tide, low tide</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total depth of water volume]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Measurement of total depth of water column (MIXS:0000634).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35 m, 10 m, 200 m</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[water current]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Measured speed and direction of water flow</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m/s)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.35 m/s, 0.10 m/s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mean friction velocity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Measurement of mean friction velocity (MIXS:0000498).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m/s)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.035 m/s, 0.010 m/s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[mean peak friction velocity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Measurement of mean peak friction velocity (MIXS:0000502).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m/s)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.015 m/s, 0.045 m/s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[pressure]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pressure to which the sample is subject to, in atmospheres (MIXS:0000412)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (dbar)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15 dbar, 25 dbar</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[salinity]</code></p></td>
@@ -4328,55 +4689,6 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">35 PSU, freshwater, brackish</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved oxygen]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved oxygen concentration. Corresponds to MIxS diss_oxygen (MIXS:0000119).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Dissolved oxygen with unit or descriptive term</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8.5 mg/L, hypoxic, anoxic</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chlorophyll]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Chlorophyll concentration if measured</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L, mg/L)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 ug/L, 0.1 mg/L</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sampling depth zone]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ecological depth zone of the sampling site</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">values: epipelagic, mesopelagic, bathypelagic, abyssopelagic, &#8230;&#8203;</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[turbidity]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Turbidity measurement. Corresponds to MIxS turbidity (MIXS:0000191).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Turbidity with unit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5.2 NTU, 12 FNU</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[alkalinity]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alkalinity measurement. Corresponds to MIxS alkalinity (MIXS:0000421).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, meq/L)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">120 mg/L, 2.5 meq/L</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[nitrate]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Nitrate concentration. Corresponds to MIxS nitrate (MIXS:0000425).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, umol/L)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 mg/L, 10 umol/L</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phosphate]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Phosphate concentration. Corresponds to MIxS phosphate (MIXS:0000505).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, umol/L)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.1 mg/L, 1.5 umol/L</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[conductivity]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Electrical conductivity of water sample. Corresponds to MIxS conduc (MIXS:0000544).</p></td>
@@ -4384,11 +4696,25 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">450 uS/cm, 1.2 mS/cm</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total dissolved solids]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[density]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Total dissolved solids (TDS) concentration in the water sample.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, g/L)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">350 mg/L, 1.2 g/L</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Density of the sample, which is its mass per unit volume (aka volumetric mass density) (MIXS:0000435).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (kg/m3)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1022 kg/m3, 1050 kg/m3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[redox potential]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redox potential, measured relative to a hydrogen cell, indicating oxidation or reduction potential (MIXS:0000182).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (V)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2 V, 0.80 V</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[fluorescence]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Raw or converted fluorescence of water (MIXS:0000704).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (RFU)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2 RFU, 3.8 RFU</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[light intensity]</code></p></td>
@@ -4398,11 +4724,826 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">500 lux, 100 umol/m2/s</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[current]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[turbidity]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Water current velocity. Corresponds to MIxS current (MIXS:0000051).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (m/s, cm/s, knots)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 m/s, 15 cm/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Turbidity measurement. Corresponds to MIxS turbidity (MIXS:0000191).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Turbidity with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.2 NTU, 12 FNU</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[downward PAR]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Visible waveband radiance and irradiance measurements in the water column (MIXS:0000703).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (µmol)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120 µmol, 15 µmol</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[photon flux]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Measurement of photon flux (MIXS:0000725).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (µmol)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120 µmol, 15 µmol</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[nitrate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nitrate concentration. Corresponds to MIxS nitrate (MIXS:0000425).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 mg/L, 10 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[nitrite]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nitrite concentration. Corresponds to MIxS nitrite (MIXS:0000426).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 mg/L, 1 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nitrogen concentration. Corresponds to MIxS nitrogen (MIXS:0000504).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 mg/L, 15 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[ammonium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ammonium concentration. Corresponds to MIxS ammonium (MIXS:0000427).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 mg/L, 1.5 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phosphate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phosphate concentration. Corresponds to MIxS phosphate (MIXS:0000505).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1 mg/L, 1.5 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved inorganic nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved inorganic nitrogen concentration (MIXS:0000698).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">761 mmol/L, 500 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total inorganic nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">total inorganic nitrogen concentration (MIXS:0000745).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76 mg/L, 40 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total dissolved nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">total dissolved nitrogen concentration (MIXS:0000744).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76 mg/L, 40 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved inorganic phosphorus]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved inorganic phosphorus concentration (MIXS:0000106).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76 mmol/L, 56 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total nitrogen concentration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">total nitrogen concentration (MIXS:0000102).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76 mmol/L, 56 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total phosphorus]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">total phosphorus concentration. Corresponds to MIxS total phosphorus (MIXS:0000117).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.03 mg/L, 0.05mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[soluble reactive phosphorus]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">soluble reactive phosphorus concentration (MIXS:0000738).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1 mg/L, 0.2 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[silicate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ssilicate concentration. Corresponds to MIxS(MIXS:0000184).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.05 mmol/L, 0.08 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[alkalinity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alkalinity measurement. Corresponds to MIxS alkalinity (MIXS:0000421).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L, meq/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120 mg/L, 2.5 meq/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[alkalinity method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used for alkalinity measurement (MIXS:0000298).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">titration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[calcium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Calcium concentration. Corresponds to MIxS(MIXS:0000421).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.2 mmol/L, 2.5 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[magnesium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Magnesium concentration. Corresponds to MIxS(MIXS:0000431).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/kg)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 mmol/kg, 52.8 mmol/kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[potassium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Potassium concentration. Corresponds to MIxS(MIXS:0000430).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">463 mg/L, 300 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sodium]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sodium concentration. Corresponds to MIxS(MIXS:0000428).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10.5 mg/L, 12 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chloride]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sodium concentration. Corresponds to MIxS(MIXS:0000429).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5000 mg/L, 3500 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sulfate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sulfate concentration. Corresponds to MIxS(MIXS:0000423).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5 mmol/L, 3.5 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sulfide]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sulfide concentration. Corresponds to MIxS(MIXS:0000424).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2 mmol/L, 1.5 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[bromide]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bromide concentration. Corresponds to MIxS(MIXS:0000176).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ppm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.05 ppm, 0.01 ppm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[atmospheric data]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Measurement of atmospheric data; can include multiple data (MIXS:0001097).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Diet description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wind speed; 9 knots, humidity; 75%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved organic carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved organic carbon concentration. Corresponds to MIxS (MIXS:0000433)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">197 mmol/L, 75 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved inorganic carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved inorganic carbon concentration. Corresponds to MIxS (MIXS:0000434)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/kg)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2059 mmol/kg, 1075 mmol/kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved carbon dioxide]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved carbon dioxide concentration. Corresponds to MIxS (MIXS:0000436)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5 mg/L, 10 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved oxygen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved oxygen concentration. Corresponds to MIxS diss_oxygen (MIXS:0000119).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Dissolved oxygen with unit or descriptive term</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8.5 mg/L, hypoxic, anoxic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved hydrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved hydrogen concentration. Corresponds to MIxS (MIXS:0000205).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.3 mmol/L, 0.5 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[dissolved organic nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dissolved organic nitrogen concentration. Corresponds to MIxS (MIXS:0000162).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.04 mmol/L, 0.05 mmol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organic carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organic carbon concentration. Corresponds to MIxS (MIXS:0000508).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.5 ug/L, 1 ug/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organic matter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organic matter concentration. Corresponds to MIxS (MIXS:0000204).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.75 ug/L, 1 ug/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[organic nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Organic nitrogen concentration. Corresponds to MIxS (MIXS:0000205).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4 umol/L, 1 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[particulate organic carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Particulate organic carbon concentration. Corresponds to MIxS (MIXS:0000515).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.92 umol/L, 1 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[particulate organic nitrogen]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Particulate organic nitrogen concentration. Corresponds to MIxS (MIXS:0000719).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.3 umol/L, 0.5 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[total particulate carbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total particulate carbon content. Corresponds to MIxS (MIXS:0000747).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (umol/L, ug/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35 umol/L, 5 ug/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[carbon nitrogen ratio]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carbon to nitrogen concentration. Corresponds to MIxS (MIXS:0000310).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: carbon nitrogen measurement value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.475, 0.34576</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[suspended particulate matter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Suspended particulate matter concentration. Corresponds to MIxS (MIXS:0000741).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 mg/L, 1 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[chlorophyll]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chlorophyll concentration if measured</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L, mg/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 ug/L, 0.1 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[primary production]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Primary production measurement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/m3/day, g/m2/day)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100 mg/m3/day, 10 g/m2/day</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[bacterial production]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bacterial production measurement (MIXS:0000683)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/m3/day)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5 mg/m3/day, 10 mg/m3/day</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[bacterial respiration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bacterial respiration measurement (MIXS:0000684)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/m3/day, umolO2/L/hr)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">300 umolO2/L/hr, 100 umolO2/L/hr</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[bacterial carbon production]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bacterial carbon production measurement (MIXS:0000173)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L/hr)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.53 ug/L/hr, 1.23 ug/L/hr</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[aminopeptidase activity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aminopeptidase activity measurement (MIXS:0000172)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mol/L/hr)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.253 mol/L/hr, 0.123 mol/L/hr</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[glucosidase activity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">glucosidase activity measurement (MIXS:0000137)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mol/L/hr)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5 mol/L/hr, 3 mol/L/hr</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phaeopigments]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">phaeopigments concentration (MIXS:0000180)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mg/m3)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.5 mg/m3, 3 mg/m3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[biomass]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total cell count of any organism (MIXS:0000174)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ton, kg, g)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25 g, 3 kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[organism count]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">phaeopigments concentration (MIXS:0000103)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (CFU/ml)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500 CFU/ml, 2000 CFU/ml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[oxygenation status of sample]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Oxygenation status of sample (MIXS:0000753).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mmHg)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80 mmHg, 100 mmHg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[alkyl diethers]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alkyl diethers concentration (MIXS:0000490).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (mol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.005 mol/L, 0.003 mol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[diether lipids]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diether lipids concentration (MIXS:0000178).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ng/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 ng/L, 0.3 ng/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[bishomohopanol]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bishomohopanol concentration (MIXS:0000175).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ug/L, ug/g)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14 ug/L, 4 ug/g</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[phospholipid fatty acid]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phospholipid fatty acid concentration (MIXS:0000181).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Phospholipid fatty acid name and measurement value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Linoleic acid; 2.8 mg/L, Palmitic acid; 1.5 mg/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[petroleum hydrocarbon]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Petroleum hydrocarbon concentration (MIXS:0000516).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (umol/L)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.05 umol/L, 0.02 umol/L</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample storage temperature]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Temperature at which sample was stored (MIXS:0000110).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (°C)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-80 °C, -20 °C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample storage location]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location at which sample was stored (MIXS:0000755).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: storage location description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">freezer, room</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample storage duration]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration for which the sample was stored (MIXS:0000116).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: storage duration description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40 days, 6 months</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample volume or weight for DNA extraction]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Volume or weight of sample used for DNA extraction.(MIXS:0000111)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Sample amount with unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5 g, 10 mL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[size-fraction lower threshold]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mesh/pore size used to pre-filter/pre-sort the sample (MIXS:0000735).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (um)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1 um, 0.2 um</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[size-fraction upper threshold]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mesh or pore size of the device used to retain the sample (MIXS:0000736).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (um)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 um, 20 um</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[perturbation]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of perturbation applied. Corresponds to MIxS perturbation (MIXS:0000754).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Perturbation description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">antibiotic administration, dietary intervention, none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[miscellaneous parameter]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any additional parameter not captured by other fields; should include a name and value.(MIXS:0000752)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Parameter name and value in key:value format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{'enzyme_activity': 'high'}, {'soil_color': 'dark brown'}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_gc_ms_metabolomics"><a class="anchor" href="#_gc_ms_metabolomics"></a><a class="link" href="#_gc_ms_metabolomics">14.20. gc-ms-metabolomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0-dev | <strong>Layer:</strong> experiment | <strong>Extends:</strong> ms-metabolomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for GC-MS-based metabolomics experiments. Extends ms-metabolomics with derivatization and GC-specific columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: GC-MS-based metabolomics</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ion source]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: electron ionization, chemical ionization, electron impact ionization</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[derivatization]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Derivatization protocol applied to the sample prior to GC injection. Use <code>none</code> if no derivatization was performed (e.g. volatiles analysis).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text derivatization protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MSTFA, MOX + MSTFA, BSTFA, methoximation followed by trimethylsilylation, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[derivatization agent]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chemical reagent(s) used for derivatization</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: chebi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N-methyl-N-(trimethylsilyl)trifluoroacetamide, N,O-bis(trimethylsilyl)trifluoroacetamide, methoxyamine hydrochloride</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[gc column]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GC column used for separation, including stationary phase and dimensions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text GC column description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DB-5MS 30 m x 0.25 mm x 0.25 um, HP-5MS 30 m x 0.25 mm x 0.25 um, Rxi-5Sil MS 30 m x 0.25 mm x 0.25 um</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[carrier gas]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Carrier gas used in the GC system</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: helium, hydrogen, nitrogen</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[oven program]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free-text description of the GC oven temperature program</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text oven program description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">60C 1 min, ramp 10C/min to 300C, hold 5 min, 70C 2 min, ramp 5C/min to 320C, hold 10 min</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_lc_ms_metabolomics"><a class="anchor" href="#_lc_ms_metabolomics"></a><a class="link" href="#_lc_ms_metabolomics">14.21. lc-ms-metabolomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0-dev | <strong>Layer:</strong> experiment | <strong>Extends:</strong> ms-metabolomics | <strong>Usable alone:</strong> No</p>
+</div>
+<div class="paragraph">
+<p>SDRF template for LC-MS-based metabolomics experiments. Extends ms-metabolomics with chromatography-specific columns.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(override: requirement set to required)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: LC-MS-based metabolomics</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[chromatography type]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chromatography mode used for separation. Should be a CHMO term (e.g. CHMO:0002302 reversed-phase chromatography, CHMO:0001025 hydrophilic interaction chromatography).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Chromatography type as a CHMO-style ontology term (NT=&#8230;&#8203;;AC=CHMO:NNNNNNN) or one of the common short names. Strict CHMO ontology validation is a follow-up.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT=reversed-phase chromatography;AC=CHMO:0002302, NT=hydrophilic interaction chromatography;AC=CHMO:0001025, reversed-phase chromatography, hydrophilic interaction chromatography</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[chromatography column]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC column used for separation, including manufacturer, model, and dimensions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text chromatography column description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Waters ACQUITY HSS T3 100 x 2.1 mm 1.8 um, Phenomenex Kinetex C18 150 x 2.1 mm 2.6 um, SeQuant ZIC-pHILIC 150 x 2.1 mm 5 um</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[mobile phase a]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Composition of mobile phase A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text composition of mobile phase A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1% formic acid in water, 10 mM ammonium acetate in water pH 9.0, 5 mM ammonium formate in water</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[mobile phase b]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Composition of mobile phase B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text composition of mobile phase B</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1% formic acid in acetonitrile, 10 mM ammonium acetate in 90% acetonitrile pH 9.0, methanol</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[gradient]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free-text description of the chromatographic gradient program</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text gradient description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5% B 0-1 min, ramp to 95% B at 15 min, hold 3 min, re-equilibrate, isocratic 50% B for 10 min, 0-100% B in 30 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[flow rate]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mobile-phase flow rate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (nL/min, uL/min, mL/min)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">300 nL/min, 250 uL/min, 0.4 mL/min</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ms_metabolomics"><a class="anchor" href="#_ms_metabolomics"></a><a class="link" href="#_ms_metabolomics">14.22. ms-metabolomics</a></h3>
+<div class="paragraph">
+<p><strong>Version:</strong> 1.0.0-dev | <strong>Layer:</strong> technology | <strong>Extends:</strong> sample-metadata | <strong>Usable alone:</strong> Yes</p>
+</div>
+<div class="paragraph">
+<p>Base SDRF template for mass spectrometry-based metabolomics. This is the parent template for LC-MS and GC-MS metabolomics experiments.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column Name</th>
+<th class="tableblock halign-left valign-top">Req.</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Validators</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>technology type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of technology used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: metabolite profiling by mass spectrometry, LC-MS-based metabolomics, GC-MS-based metabolomics</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[instrument]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass spectrometer instrument used</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: psi-ms, pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q Exactive, Xevo G2-S QTof, Orbitrap Fusion Lumos, timsTOF Pro</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ion source]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ion source used for ionization (e.g. ESI, APCI, EI, MALDI). Should be a child of MS:1000008.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: psi-ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">electrospray ionization, atmospheric pressure chemical ionization, electron ionization, matrix-assisted laser desorption ionization</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[scan polarity]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scan polarity (positive scan, negative scan, or polarity switching). Polarity switching is reserved for true in-method switching producing a single file; otherwise use two rows per sample (one per polarity).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single value only; values: positive scan, negative scan, polarity switching</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[acquisition method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass spectrometry acquisition method (DDA, DIA, SIM, MRM, full scan)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: pride</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">data-dependent acquisition, data-independent acquisition, selected reaction monitoring, parallel reaction monitoring, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[metabolite assignment file]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to the metabolite assignment file (MAF) for this assay. Per-assay constant — the same value is repeated across all rows of the same assay. Mirrors the MetaboBank semantics of Comment[Metabolite Assignment File].</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Path or filename of the MAF file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m_MTBLS1129_LC-MS_positive_reverse-phase_metabolite_profiling_v2_maf.tsv, maf_pos_lipidomics.tsv</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[extraction method]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample extraction method used to obtain the metabolite fraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Free-text extraction method, optionally CHMO-style NT=&#8230;&#8203;;AC=CHMO:NNNNNNN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">methanol-water extraction, MTBE extraction, Bligh-Dyer extraction, Folch extraction, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[extraction solvent]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Solvent or solvent mixture used for metabolite extraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: chebi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">methanol, chloroform, methyl tert-butyl ether, acetonitrile</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[analyte class]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class of metabolites targeted by the extraction and acquisition method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">values: polar metabolites, lipids, amino acids, fatty acids, &#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[internal standard]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal standard(s) spiked into the sample for normalization or retention-time calibration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: chebi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">caffeine-d9, L-tryptophan-d5, palmitic acid-d31</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>characteristics[sample matrix]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recommended</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine, tissue extract)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: uberon, bto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serum, plasma, cerebrospinal fluid, urine, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[sample preparation batch]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Batch identifier for sample preparation (plate, chip, processing batch). Useful for batch-effect correction.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Sample preparation batch identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plate1, batch_20220601, prep_A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[lc batch]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Liquid chromatography batch identifier for batch-effect tracking (e.g. column changes, LC system swaps)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: LC batch identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LC1, column_A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[acquisition date]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date of MS data acquisition (ISO 8601 format recommended). Useful for tracking instrument drift and batch effects.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Acquisition date/time</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022-06-01, 2022-06-01T18:28:37</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms2 mass analyzer]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mass analyzer used for MS2 acquisition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ontology: psi-ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orbitrap, ion trap, TOF</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms min mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100m/z, 200m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms max mz]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1200m/z, 1600m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms1 scan range]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z range interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">70m/z-1000m/z, 100m/z-1500m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[ms2 scan range]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/z range interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50m/z-1000m/z, 100m/z-1500m/z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[precursor mass tolerance]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Precursor mass tolerance for feature detection / database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ppm, Da, mmu)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5 ppm, 10 ppm, 0.01 Da</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[fragment mass tolerance]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fragment mass tolerance for feature detection / database search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number with unit (ppm, Da, mmu)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.02 Da, 20 ppm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[collision energy]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collision energy used for fragmentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Collision energy format: {value} {unit} where unit is NCE or eV. For multiple values, use semicolon-separated entries.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 NCE, 25 eV, 25 NCE;27 NCE;30 NCE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[raw data file md5]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MD5 integrity hash for the raw data file referenced in comment[data file]. Mirrors MetaboBank Comment[Raw Data File md5].</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: 32-character hex MD5 hash</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">d41d8cd98f00b204e9800998ecf8427e, 9e107d9d372bb6826bd81d3542a419d6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[processed data file]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pointer to the processed data file (e.g. peak table, feature matrix). Mirrors MetaboBank Comment[Processed Data File].</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: Path or filename of the processed data file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">features_pos.tsv, peak_table_lipidomics.csv</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[processed data file md5]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MD5 integrity hash for the processed data file. Mirrors MetaboBank Comment[Processed Data File md5].</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: 32-character hex MD5 hash</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">d41d8cd98f00b204e9800998ecf8427e</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment[metabolite assignment file md5]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MD5 integrity hash for the metabolite assignment file. Mirrors MetaboBank Comment[Metabolite Assignment File md5].</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pattern: 32-character hex MD5 hash</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">d41d8cd98f00b204e9800998ecf8427e</p></td>
 </tr>
 </tbody>
 </table>
@@ -4475,7 +5616,7 @@ which generate diagnostic stub ions under specific fragmentation conditions.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-28 12:15:54 UTC
+Last updated 2026-04-29 10:39:57 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

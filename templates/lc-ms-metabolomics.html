@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>olink - SDRF Template</title>
+    <title>lc-ms-metabolomics - SDRF Template</title>
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .template-page {
@@ -181,10 +181,10 @@
 
         
         <div class="template-header">
-            <h1>olink</h1>
+            <h1>lc-ms-metabolomics</h1>
             <div class="header-badges">
                 
-                <span class="badge badge-version">v1.0.0</span>
+                <span class="badge badge-version">v1.0.0-dev</span>
                 
                 
                 <span class="badge badge-layer-experiment">experiment</span>
@@ -196,7 +196,7 @@
         
         
         <div class="template-section">
-            <p style="font-size: 1.05rem; line-height: 1.6;">SDRF template for Olink Proximity Extension Assay (PEA) experiments. Extends affinity-proteomics with Olink-specific columns.</p>
+            <p style="font-size: 1.05rem; line-height: 1.6;">SDRF template for LC-MS-based metabolomics experiments. Extends ms-metabolomics with chromatography-specific columns.</p>
         </div>
         
 
@@ -205,20 +205,17 @@
         <div class="template-section">
             <h2>Key Guidance</h2>
             <div class="doc-content">
-                <p>The olink template captures Proximity Extension Assay (PEA) specific metadata for</p>
-<p>Olink experiments. PEA uses paired antibodies with oligonucleotide tags — binding</p>
-<p>events are detected via qPCR or sequencing.</p>
-<p>Key guidance:</p>
-<ul><li><code>comment[olink panel]</code>: Required. The specific panel used (Target 96 Inflammation,</li></ul>
-<p>Explore 384 Cardiometabolic, Explore 1536, Explore 3072).</p>
-<ul><li><code>comment[olink platform]</code>: Required. The platform version (Olink Target 96,</li></ul>
-<p>Olink Explore 384, Olink Explore HT, Olink Reveal).</p>
-<ul><li><code>comment[npx normalization]</code>: Recommended. How NPX values were normalized</li></ul>
-<p>(plate control normalized, intensity normalized, bridge normalized, not normalized).</p>
-<ul><li><code>comment[olink lot number]</code>: Optional. Reagent lot for traceability.</li><li>Inherited from affinity-proteomics: <code>characteristics[sample matrix]</code> (serum, plasma, CSF),</li></ul>
-<p><code>comment[quantification unit]</code> (NPX), <code>comment[normalization method]</code>.</p>
-<p>Olink data uses Normalized Protein eXpression (NPX) units on a log2 scale.</p>
-<p>Mutually exclusive with somascan.</p>
+                <p>The lc-ms-metabolomics template constrains technology type to LC-MS-based metabolomics and</p>
+<p>adds chromatography columns (chromatography type, column, mobile phases, gradient, flow rate).</p>
+<p>Polarity-switching annotation rule (also documented on the parent ms-metabolomics):</p>
+<ul><li>When a sample is acquired in both positive and negative ion modes producing TWO distinct</li></ul>
+<p>raw files, use TWO ROWS per source name — one row per (source name x scan polarity), each</p>
+<p>with its own comment[data file]. Do NOT use comment[scan polarity] = polarity switching</p>
+<p>in this case.</p>
+<ul><li>Reserve the value <code>polarity switching</code> for true in-method polarity switching that produces</li></ul>
+<p>a single combined raw file.</p>
+<p>Combine with an organism template (human, vertebrates, invertebrates, plants) and optionally</p>
+<p>with clinical-metadata or oncology-metadata for clinical studies.</p>
             </div>
         </div>
         
@@ -241,12 +238,12 @@
                 
                     <span class="chain-sep">&rarr;</span>
                     
-                    <a href="./affinity-proteomics.html">affinity-proteomics</a>
+                    <a href="./ms-metabolomics.html">ms-metabolomics</a>
                     
                 
                     <span class="chain-sep">&rarr;</span>
                     
-                    <span class="current">olink</span>
+                    <span class="current">lc-ms-metabolomics</span>
                     
                 
             </div>
@@ -254,23 +251,6 @@
         
 
         
-        
-        <div class="template-section">
-            <h2>Combination Rules</h2>
-            <div class="combination-rules">
-                <ul>
-                    
-                    
-                    <li>Mutually exclusive with:
-                        
-                        <a href="./somascan.html">somascan</a>
-                        
-                    </li>
-                    
-                    
-                </ul>
-            </div>
-        </div>
         
 
         
@@ -282,11 +262,11 @@
             <div class="column-controls">
                 
                 <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
-                    Show inherited columns (33)
+                    Show inherited columns (49)
                 </button>
                 
                 <span class="column-stats">
-                    4 own + 33 inherited = 37 total
+                    7 own + 49 inherited = 56 total
                     &middot; click a row for details
                 </span>
             </div>
@@ -407,7 +387,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-3')" id="col-3">
+                        <tr class="column-row" onclick="toggleDetail('col-3')" id="col-3">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">technology type</td>
                             <td>
@@ -415,10 +395,10 @@
                                 <span class="req-badge req-required">required</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
                             <td style="max-width:400px;">Type of technology used</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-3-detail">
+                        <tr class="detail-row" id="col-3-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -463,8 +443,10 @@
                                                     
                                                     
                                                     
-                                                     &mdash; values: <code>protein expression profiling by antibody array</code>, <code>protein expression profiling by aptamer array</code>
+                                                     &mdash; values: <code>LC-MS-based metabolomics</code>
                                                     
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">For lc-ms-metabolomics the technology type must be 'LC-MS-based metabolomics'</div>
                                                     
                                                 
                                             </div>
@@ -692,7 +674,7 @@
                                 
                             </td>
                             <td><span class="source-badge">sample-metadata</span></td>
-                            <td style="max-width:400px;">Anatomical part of the organism from which sample was derived</td>
+                            <td style="max-width:400px;">Main normalized anatomical term for the sample</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-7-detail">
                             <td colspan="5">
@@ -700,7 +682,7 @@
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Anatomical part of the organism from which sample was derived</div>
+                                        <div class="value">Main normalized anatomical term for the sample</div>
                                     </div>
                                     
 
@@ -869,14 +851,14 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-9')" id="col-9">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[platform]</td>
+                            <td class="col-name">comment[instrument]</td>
                             <td>
                                 
                                 <span class="req-badge req-required">required</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K)</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Mass spectrometer instrument used</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-9-detail">
                             <td colspan="5">
@@ -884,10 +866,203 @@
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K)</div>
+                                        <div class="value">Mass spectrometer instrument used</div>
                                     </div>
                                     
 
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000031" target="_blank" rel="noopener">MS:1000031</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            <span class="detail-tag">multiple cardinality</span>
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: psi-ms, pride
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The instrument should be a valid PSI-MS or PRIDE ontology term</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>Q Exactive</code>, <code>Xevo G2-S QTof</code>, <code>Orbitrap Fusion Lumos</code>, <code>timsTOF Pro</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-10')" id="col-10">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ion source]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Ion source used for ionization (e.g. ESI, APCI, EI, MALDI). Should be a child of MS:1000008.</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-10-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Ion source used for ionization (e.g. ESI, APCI, EI, MALDI). Should be a child of MS:1000008.</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000008" target="_blank" rel="noopener">MS:1000008</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: psi-ms
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Ion source should be a child term of MS:1000008</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>electrospray ionization</code>, <code>atmospheric pressure chemical ionization</code>, <code>electron ionization</code>, <code>matrix-assisted laser desorption ionization</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-11')" id="col-11">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[scan polarity]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Scan polarity (positive scan, negative scan, or polarity switching). Polarity switching is reserv...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-11-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Scan polarity (positive scan, negative scan, or polarity switching). Polarity switching is reserved for true in-method switching producing a single file; otherwise use two rows per sample (one per polarity).</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000465" target="_blank" rel="noopener">MS:1000465</a>
+                                        </div>
+                                    </div>
                                     
 
                                     <div class="detail-item">
@@ -911,15 +1086,15 @@
                                             </div>
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>ontology</strong>
+                                                <strong>values</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: pride
                                                     
                                                     
+                                                     &mdash; values: <code>positive scan</code>, <code>negative scan</code>, <code>polarity switching</code>
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The platform should be a valid PRIDE ontology term for affinity platforms</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Scan polarity must be one of positive scan, negative scan, polarity switching</div>
                                                     
                                                 
                                             </div>
@@ -934,6 +1109,86 @@
                                             
                                         
                                             
+                                        
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-12')" id="col-12">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[acquisition method]</td>
+                            <td>
+                                
+                                <span class="req-badge req-required">required</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Mass spectrometry acquisition method (DDA, DIA, SIM, MRM, full scan)</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-12-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Mass spectrometry acquisition method (DDA, DIA, SIM, MRM, full scan)</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000659" target="_blank" rel="noopener">PRIDE:0000659</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: pride
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Acquisition method should be a valid PRIDE ontology term</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
                                                 
                                                     
                                                 
@@ -948,7 +1203,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>Olink Explore HT</code>, <code>Olink Target 96</code>, <code>SomaScan Assay 11K</code>
+                                            <code>data-dependent acquisition</code>, <code>data-independent acquisition</code>, <code>selected reaction monitoring</code>, <code>parallel reaction monitoring</code>, <code>full scan</code>
                                         </div>
                                     </div>
                                     
@@ -958,24 +1213,24 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-10')" id="col-10">
+                        <tr class="column-row" onclick="toggleDetail('col-13')" id="col-13">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[olink panel]</td>
+                            <td class="col-name">comment[chromatography type]</td>
                             <td>
                                 
                                 <span class="req-badge req-required">required</span>
                                 
                             </td>
-                            <td><span class="source-badge">olink</span></td>
-                            <td style="max-width:400px;">Specific Olink panel name</td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Chromatography mode used for separation. Should be a CHMO term (e.g. CHMO:0002302 reversed-phase ...</td>
                         </tr>
-                        <tr class="detail-row" id="col-10-detail">
+                        <tr class="detail-row" id="col-13-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Specific Olink panel name</div>
+                                        <div class="value">Chromatography mode used for separation. Should be a CHMO term (e.g. CHMO:0002302 reversed-phase chromatography, CHMO:0001025 hydrophilic interaction chromatography).</div>
                                     </div>
                                     
 
@@ -1001,11 +1256,11 @@
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^.+$</code>
+                                                     &mdash; pattern: <code>^(NT=.+;AC=CHMO:\d{7}|reversed-phase chromatography|hydrophilic interaction chromatography|normal-phase chromatography|ion-exchange chromatography|size-exclusion chromatography)$</code>
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Olink panel name</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Chromatography type as a CHMO-style ontology term (NT=...;AC=CHMO:NNNNNNN) or one of the common short names. Strict CHMO ontology validation is a follow-up.</div>
                                                     
                                                 
                                             </div>
@@ -1018,8 +1273,6 @@
                                     
                                         
                                             
-                                                
-                                                    
                                                 
                                                     
                                                 
@@ -1036,7 +1289,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>Target 96 Inflammation</code>, <code>Target 96 Cardiovascular II</code>, <code>Explore 384 Cardiometabolic</code>, <code>Explore 1536</code>, <code>Explore 3072</code>
+                                            <code>NT=reversed-phase chromatography;AC=CHMO:0002302</code>, <code>NT=hydrophilic interaction chromatography;AC=CHMO:0001025</code>, <code>reversed-phase chromatography</code>, <code>hydrophilic interaction chromatography</code>
                                         </div>
                                     </div>
                                     
@@ -1046,76 +1299,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-11')" id="col-11">
-                            <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[olink platform]</td>
-                            <td>
-                                
-                                <span class="req-badge req-required">required</span>
-                                
-                            </td>
-                            <td><span class="source-badge">olink</span></td>
-                            <td style="max-width:400px;">Olink platform version</td>
-                        </tr>
-                        <tr class="detail-row" id="col-11-detail">
-                            <td colspan="5">
-                                <div class="detail-grid">
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Description</label>
-                                        <div class="value">Olink platform version</div>
-                                    </div>
-                                    
-
-                                    
-
-                                    <div class="detail-item">
-                                        <label>Properties</label>
-                                        <div class="value detail-tags">
-                                            
-                                            
-                                            
-                                            
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Validators</label>
-                                        <div class="value">
-                                            
-                                            <div style="margin-bottom:6px;">
-                                                <strong>values</strong>
-                                                
-                                                    
-                                                    
-                                                    
-                                                     &mdash; values: <code>Olink Target 96</code>, <code>Olink Explore 384</code>, <code>Olink Explore HT</code>, <code>Olink Reveal</code>
-                                                    
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Olink platform</div>
-                                                    
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    
-
-                                    
-                                    
-                                        
-                                            
-                                        
-                                    
-                                    
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        
-                        
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-12')" id="col-12">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-14')" id="col-14">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[sdrf version]</td>
                             <td>
@@ -1126,7 +1310,7 @@
                             <td><span class="source-badge">base</span></td>
                             <td style="max-width:400px;">Version of the SDRF-Proteomics specification used to annotate this file</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-12-detail">
+                        <tr class="detail-row inherited hidden" id="col-14-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1202,7 +1386,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-13')" id="col-13">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-15')" id="col-15">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[cell type]</td>
                             <td>
@@ -1213,7 +1397,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Cell type of the sample</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-13-detail">
+                        <tr class="detail-row inherited hidden" id="col-15-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1295,7 +1479,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-14')" id="col-14">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-16')" id="col-16">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[disease]</td>
                             <td>
@@ -1306,7 +1490,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Disease state of the sample</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-14-detail">
+                        <tr class="detail-row inherited hidden" id="col-16-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1320,7 +1504,7 @@
                                     <div class="detail-item">
                                         <label>Ontology</label>
                                         <div class="value">
-                                            <a href="https://www.ebi.ac.uk/ols4/search?q=EFO:0000408" target="_blank" rel="noopener">EFO:0000408</a>
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MONDO:0000001" target="_blank" rel="noopener">MONDO:0000001</a>
                                         </div>
                                     </div>
                                     
@@ -1388,24 +1572,24 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-15')" id="col-15">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-17')" id="col-17">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[panel name]</td>
+                            <td class="col-name">comment[metabolite assignment file]</td>
                             <td>
                                 
                                 <span class="req-badge req-recommended">recommended</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Name of the commercial panel used</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Pointer to the metabolite assignment file (MAF) for this assay. Per-assay constant — the same val...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-15-detail">
+                        <tr class="detail-row inherited hidden" id="col-17-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Name of the commercial panel used</div>
+                                        <div class="value">Pointer to the metabolite assignment file (MAF) for this assay. Per-assay constant — the same value is repeated across all rows of the same assay. Mirrors the MetaboBank semantics of Comment[Metabolite Assignment File].</div>
                                     </div>
                                     
 
@@ -1435,7 +1619,89 @@
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Panel name</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Path or filename of the MAF file</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>m_MTBLS1129_LC-MS_positive_reverse-phase_metabolite_profiling_v2_maf.tsv</code>, <code>maf_pos_lipidomics.tsv</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-18')" id="col-18">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[extraction method]</td>
+                            <td>
+                                
+                                <span class="req-badge req-recommended">recommended</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Sample extraction method used to obtain the metabolite fraction</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-18-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Sample extraction method used to obtain the metabolite fraction</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Free-text extraction method, optionally CHMO-style NT=...;AC=CHMO:NNNNNNN</div>
                                                     
                                                 
                                             </div>
@@ -1466,7 +1732,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>Olink Explore 3072</code>, <code>Olink Explore 1536</code>, <code>Olink Target 96 Inflammation</code>, <code>SomaScan 7K</code>, <code>SomaScan 11K</code>
+                                            <code>methanol-water extraction</code>, <code>MTBE extraction</code>, <code>Bligh-Dyer extraction</code>, <code>Folch extraction</code>, <code>NT=methanol-water extraction;AC=CHMO:0001568</code>
                                         </div>
                                     </div>
                                     
@@ -1476,7 +1742,76 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-16')" id="col-16">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-19')" id="col-19">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[analyte class]</td>
+                            <td>
+                                
+                                <span class="req-badge req-recommended">recommended</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Class of metabolites targeted by the extraction and acquisition method</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-19-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Class of metabolites targeted by the extraction and acquisition method</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>values</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                     &mdash; values: <code>polar metabolites</code>, <code>lipids</code>, <code>amino acids</code>, <code>fatty acids</code>, <code>bile acids</code>, <code>nucleotides</code>, &hellip;
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Analyte class describes the metabolite fraction targeted</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                        
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-20')" id="col-20">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[sample matrix]</td>
                             <td>
@@ -1484,16 +1819,16 @@
                                 <span class="req-badge req-recommended">recommended</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine, tissue extract)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-16-detail">
+                        <tr class="detail-row inherited hidden" id="col-20-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)</div>
+                                        <div class="value">Type of biological matrix used as input (e.g. serum, plasma, CSF, urine, tissue extract)</div>
                                     </div>
                                     
 
@@ -1554,7 +1889,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>serum</code>, <code>plasma</code>, <code>cerebrospinal fluid</code>, <code>urine</code>, <code>saliva</code>
+                                            <code>serum</code>, <code>plasma</code>, <code>cerebrospinal fluid</code>, <code>urine</code>, <code>tissue extract</code>
                                         </div>
                                     </div>
                                     
@@ -1564,24 +1899,24 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-17')" id="col-17">
+                        <tr class="column-row" onclick="toggleDetail('col-21')" id="col-21">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[npx normalization]</td>
+                            <td class="col-name">comment[chromatography column]</td>
                             <td>
                                 
                                 <span class="req-badge req-recommended">recommended</span>
                                 
                             </td>
-                            <td><span class="source-badge">olink</span></td>
-                            <td style="max-width:400px;">Normalization method applied to NPX values</td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
+                            <td style="max-width:400px;">LC column used for separation, including manufacturer, model, and dimensions</td>
                         </tr>
-                        <tr class="detail-row" id="col-17-detail">
+                        <tr class="detail-row" id="col-21-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Normalization method applied to NPX values</div>
+                                        <div class="value">LC column used for separation, including manufacturer, model, and dimensions</div>
                                     </div>
                                     
 
@@ -1603,15 +1938,15 @@
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>values</strong>
+                                                <strong>pattern</strong>
                                                 
                                                     
                                                     
+                                                     &mdash; pattern: <code>^.+$</code>
                                                     
-                                                     &mdash; values: <code>plate control normalized</code>, <code>intensity normalized</code>, <code>bridge normalized</code>, <code>not normalized</code>
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">NPX normalization method</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Free-text chromatography column description</div>
                                                     
                                                 
                                             </div>
@@ -1624,8 +1959,23 @@
                                     
                                         
                                             
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
                                         
                                     
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>Waters ACQUITY HSS T3 100 x 2.1 mm 1.8 um</code>, <code>Phenomenex Kinetex C18 150 x 2.1 mm 2.6 um</code>, <code>SeQuant ZIC-pHILIC 150 x 2.1 mm 5 um</code>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </td>
@@ -1633,7 +1983,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-18')" id="col-18">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-22')" id="col-22">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[sdrf template]</td>
                             <td>
@@ -1644,7 +1994,7 @@
                             <td><span class="source-badge">base</span></td>
                             <td style="max-width:400px;">Template name and version used for annotation. Two formats are supported - key=value format (NT=t...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-18-detail">
+                        <tr class="detail-row inherited hidden" id="col-22-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1726,7 +2076,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-19')" id="col-19">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-23')" id="col-23">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[sdrf annotation tool]</td>
                             <td>
@@ -1737,7 +2087,7 @@
                             <td><span class="source-badge">base</span></td>
                             <td style="max-width:400px;">Software tool or method used to generate or annotate the SDRF file. Two formats are supported - k...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-19-detail">
+                        <tr class="detail-row inherited hidden" id="col-23-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1821,7 +2171,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-20')" id="col-20">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-24')" id="col-24">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">comment[sdrf validation hash]</td>
                             <td>
@@ -1832,7 +2182,7 @@
                             <td><span class="source-badge">base</span></td>
                             <td style="max-width:400px;">Hash value for SDRF validation integrity checking</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-20-detail">
+                        <tr class="detail-row inherited hidden" id="col-24-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1890,7 +2240,93 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-21')" id="col-21">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-25')" id="col-25">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[tissue supergroup]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">sample-metadata</span></td>
+                            <td style="max-width:400px;">Broader anatomical grouping or system-level bucket for the sample, used alongside the organism pa...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-25-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Broader anatomical grouping or system-level bucket for the sample, used alongside the organism part for higher-level grouping</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: uberon, bto
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>digestive system</code>, <code>nervous system</code>, <code>cardiovascular system</code>, <code>gastrointestinal tract</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-26')" id="col-26">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[pooled sample]</td>
                             <td>
@@ -1901,7 +2337,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Whether the sample is a pooled sample combining material from multiple biological sources. Use 'n...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-21-detail">
+                        <tr class="detail-row inherited hidden" id="col-26-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1991,7 +2427,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-22')" id="col-22">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-27')" id="col-27">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[sample type]</td>
                             <td>
@@ -2002,7 +2438,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Classification of the sample role in the experiment. Distinguishes experimental samples from cont...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-22-detail">
+                        <tr class="detail-row inherited hidden" id="col-27-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2104,7 +2540,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-23')" id="col-23">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-28')" id="col-28">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[material type]</td>
                             <td>
@@ -2115,7 +2551,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Type of biological material being analyzed</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-23-detail">
+                        <tr class="detail-row inherited hidden" id="col-28-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2180,7 +2616,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-24')" id="col-24">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-29')" id="col-29">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[tissue mass]</td>
                             <td>
@@ -2191,7 +2627,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Mass of tissue used for extraction</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-24-detail">
+                        <tr class="detail-row inherited hidden" id="col-29-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2269,7 +2705,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-25')" id="col-25">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-30')" id="col-30">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[biosample accession number]</td>
                             <td>
@@ -2280,7 +2716,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">BioSample accession number for the sample (e.g., SAMN or SAMEA identifiers)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-25-detail">
+                        <tr class="detail-row inherited hidden" id="col-30-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2358,7 +2794,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-26')" id="col-26">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-31')" id="col-31">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[sampling time]</td>
                             <td>
@@ -2369,7 +2805,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Time at which the sample was collected (for longitudinal or time-course studies)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-26-detail">
+                        <tr class="detail-row inherited hidden" id="col-31-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2449,7 +2885,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-27')" id="col-27">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-32')" id="col-32">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[treatment]</td>
                             <td>
@@ -2460,7 +2896,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Treatment or perturbation applied to the sample (drug, stimulus, environmental stress)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-27-detail">
+                        <tr class="detail-row inherited hidden" id="col-32-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2544,7 +2980,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-28')" id="col-28">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-33')" id="col-33">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[synthetic peptide]</td>
                             <td>
@@ -2555,7 +2991,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Whether the sample is a synthetic peptide library or biological material</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-28-detail">
+                        <tr class="detail-row inherited hidden" id="col-33-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2620,7 +3056,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-29')" id="col-29">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-34')" id="col-34">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[spiked compound]</td>
                             <td>
@@ -2631,7 +3067,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Spiked-in compound details using key-value format (CT=compound type, QY=quantity, PS=peptide sequ...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-29-detail">
+                        <tr class="detail-row inherited hidden" id="col-34-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2713,7 +3149,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-30')" id="col-30">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-35')" id="col-35">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[enrichment process]</td>
                             <td>
@@ -2724,7 +3160,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Enrichment strategy applied to the sample (e.g., phosphopeptide enrichment, crosslinked peptide e...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-30-detail">
+                        <tr class="detail-row inherited hidden" id="col-35-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2806,24 +3242,442 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-31')" id="col-31">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-36')" id="col-36">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[instrument]</td>
+                            <td class="col-name">comment[extraction solvent]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Instrument used for data acquisition (e.g. sequencer, qPCR machine, microarray reader)</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Solvent or solvent mixture used for metabolite extraction</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-31-detail">
+                        <tr class="detail-row inherited hidden" id="col-36-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Instrument used for data acquisition (e.g. sequencer, qPCR machine, microarray reader)</div>
+                                        <div class="value">Solvent or solvent mixture used for metabolite extraction</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: chebi
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Extraction solvent should be a valid ChEBI term when possible</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>methanol</code>, <code>chloroform</code>, <code>methyl tert-butyl ether</code>, <code>acetonitrile</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-37')" id="col-37">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[internal standard]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Internal standard(s) spiked into the sample for normalization or retention-time calibration</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-37-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Internal standard(s) spiked into the sample for normalization or retention-time calibration</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            <span class="detail-tag">multiple cardinality</span>
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: chebi
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Internal standard should be a valid ChEBI term when possible</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>caffeine-d9</code>, <code>L-tryptophan-d5</code>, <code>palmitic acid-d31</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-38')" id="col-38">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[sample preparation batch]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Batch identifier for sample preparation (plate, chip, processing batch). Useful for batch-effect ...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-38-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Batch identifier for sample preparation (plate, chip, processing batch). Useful for batch-effect correction.</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Sample preparation batch identifier</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>plate1</code>, <code>batch_20220601</code>, <code>prep_A</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-39')" id="col-39">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[lc batch]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Liquid chromatography batch identifier for batch-effect tracking (e.g. column changes, LC system swaps)</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-39-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Liquid chromatography batch identifier for batch-effect tracking (e.g. column changes, LC system swaps)</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">LC batch identifier</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>LC1</code>, <code>column_A</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-40')" id="col-40">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[acquisition date]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Date of MS data acquisition (ISO 8601 format recommended). Useful for tracking instrument drift a...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-40-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Date of MS data acquisition (ISO 8601 format recommended). Useful for tracking instrument drift and batch effects.</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Acquisition date/time</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>2022-06-01</code>, <code>2022-06-01T18:28:37</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-41')" id="col-41">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 mass analyzer]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Mass analyzer used for MS2 acquisition</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-41-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Mass analyzer used for MS2 acquisition</div>
                                     </div>
                                     
 
@@ -2831,7 +3685,7 @@
                                     <div class="detail-item">
                                         <label>Ontology</label>
                                         <div class="value">
-                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000031" target="_blank" rel="noopener">MS:1000031</a>
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000443" target="_blank" rel="noopener">MS:1000443</a>
                                         </div>
                                     </div>
                                     
@@ -2855,96 +3709,12 @@
                                                 <strong>ontology</strong>
                                                 
                                                     
-                                                     &mdash; ontologies: ms, pride
+                                                     &mdash; ontologies: psi-ms
                                                     
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The instrument should be a valid PSI-MS ontology term</div>
-                                                    
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    
-
-                                    
-                                    
-                                        
-                                            
-                                                
-                                                    
-                                                
-                                                    
-                                                
-                                                    
-                                                
-                                            
-                                        
-                                    
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Examples</label>
-                                        <div class="value">
-                                            <code>Illumina NovaSeq X</code>, <code>Illumina NextSeq 2000</code>, <code>Agilent SureScan Microarray Scanner</code>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        
-                        
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-32')" id="col-32">
-                            <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[panel version]</td>
-                            <td>
-                                
-                                <span class="req-badge req-optional">optional</span>
-                                
-                            </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Version of the assay panel</td>
-                        </tr>
-                        <tr class="detail-row inherited hidden" id="col-32-detail">
-                            <td colspan="5">
-                                <div class="detail-grid">
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Description</label>
-                                        <div class="value">Version of the assay panel</div>
-                                    </div>
-                                    
-
-                                    
-
-                                    <div class="detail-item">
-                                        <label>Properties</label>
-                                        <div class="value detail-tags">
-                                            <span class="detail-tag">allows N/A</span>
-                                            <span class="detail-tag">allows not available</span>
-                                            
-                                            
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Validators</label>
-                                        <div class="value">
-                                            
-                                            <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
-                                                
-                                                    
-                                                    
-                                                     &mdash; pattern: <code>^.+$</code>
-                                                    
-                                                    
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Panel version</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Should be a valid PSI-MS ontology term</div>
                                                     
                                                 
                                             </div>
@@ -2971,7 +3741,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>v4.1</code>, <code>2023-01</code>, <code>7K v4.1</code>
+                                            <code>orbitrap</code>, <code>ion trap</code>, <code>TOF</code>
                                         </div>
                                     </div>
                                     
@@ -2981,24 +3751,24 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-33')" id="col-33">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-42')" id="col-42">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[quantification unit]</td>
+                            <td class="col-name">comment[ms min mz]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Unit of quantification for the assay (platform-specific)</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-33-detail">
+                        <tr class="detail-row inherited hidden" id="col-42-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Unit of quantification for the assay (platform-specific)</div>
+                                        <div class="value">MS method-defined minimum precursor (MS1) m/z setting used to acquire the data</div>
                                     </div>
                                     
 
@@ -3006,7 +3776,7 @@
                                     <div class="detail-item">
                                         <label>Ontology</label>
                                         <div class="value">
-                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000392" target="_blank" rel="noopener">PRIDE:0000392</a>
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000476" target="_blank" rel="noopener">PRIDE:0000476</a>
                                         </div>
                                     </div>
                                     
@@ -3027,84 +3797,13 @@
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>values</strong>
+                                                <strong>mz_value</strong>
                                                 
                                                     
                                                     
                                                     
-                                                     &mdash; values: <code>NPX</code>, <code>RFU</code>
                                                     
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Quantification unit</div>
-                                                    
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    
-
-                                    
-                                    
-                                        
-                                            
-                                        
-                                    
-                                    
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        
-                        
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-34')" id="col-34">
-                            <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[plate]</td>
-                            <td>
-                                
-                                <span class="req-badge req-optional">optional</span>
-                                
-                            </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Plate identifier for batch effect analysis</td>
-                        </tr>
-                        <tr class="detail-row inherited hidden" id="col-34-detail">
-                            <td colspan="5">
-                                <div class="detail-grid">
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Description</label>
-                                        <div class="value">Plate identifier for batch effect analysis</div>
-                                    </div>
-                                    
-
-                                    
-
-                                    <div class="detail-item">
-                                        <label>Properties</label>
-                                        <div class="value detail-tags">
-                                            <span class="detail-tag">allows N/A</span>
-                                            <span class="detail-tag">allows not available</span>
-                                            
-                                            
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Validators</label>
-                                        <div class="value">
-                                            
-                                            <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
-                                                
-                                                    
-                                                    
-                                                     &mdash; pattern: <code>^.+$</code>
-                                                    
-                                                    
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Plate identifier</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Precursor m/z value with unit</div>
                                                     
                                                 
                                             </div>
@@ -3129,7 +3828,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>1</code>, <code>2</code>
+                                            <code>100m/z</code>, <code>200m/z</code>
                                         </div>
                                     </div>
                                     
@@ -3139,110 +3838,24 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-35')" id="col-35">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-43')" id="col-43">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[normalization method]</td>
+                            <td class="col-name">comment[ms max mz]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
                                 
                             </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Normalization method applied to quantification values</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-35-detail">
+                        <tr class="detail-row inherited hidden" id="col-43-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Normalization method applied to quantification values</div>
-                                    </div>
-                                    
-
-                                    
-
-                                    <div class="detail-item">
-                                        <label>Properties</label>
-                                        <div class="value detail-tags">
-                                            <span class="detail-tag">allows N/A</span>
-                                            <span class="detail-tag">allows not available</span>
-                                            
-                                            
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Validators</label>
-                                        <div class="value">
-                                            
-                                            <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
-                                                
-                                                    
-                                                    
-                                                     &mdash; pattern: <code>^.+$</code>
-                                                    
-                                                    
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Normalization method</div>
-                                                    
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    
-
-                                    
-                                    
-                                        
-                                            
-                                                
-                                                    
-                                                
-                                                    
-                                                
-                                                    
-                                                
-                                                    
-                                                
-                                            
-                                        
-                                    
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Examples</label>
-                                        <div class="value">
-                                            <code>plate control normalized</code>, <code>bridge normalized</code>, <code>median normalization</code>, <code>not normalized</code>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        
-                        
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-36')" id="col-36">
-                            <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[fraction identifier]</td>
-                            <td>
-                                
-                                <span class="req-badge req-optional">optional</span>
-                                
-                            </td>
-                            <td><span class="source-badge">affinity-proteomics</span></td>
-                            <td style="max-width:400px;">Fraction or dilution series identifier. While fractionation is rare in affinity proteomics, dilut...</td>
-                        </tr>
-                        <tr class="detail-row inherited hidden" id="col-36-detail">
-                            <td colspan="5">
-                                <div class="detail-grid">
-                                    
-                                    <div class="detail-item full-width">
-                                        <label>Description</label>
-                                        <div class="value">Fraction or dilution series identifier. While fractionation is rare in affinity proteomics, dilution series are used in some protocols (e.g. SomaScan alternative matrix validation).</div>
+                                        <div class="value">MS method-defined maximum precursor (MS1) m/z setting used to acquire the data</div>
                                     </div>
                                     
 
@@ -3250,7 +3863,7 @@
                                     <div class="detail-item">
                                         <label>Ontology</label>
                                         <div class="value">
-                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000858" target="_blank" rel="noopener">MS:1000858</a>
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000477" target="_blank" rel="noopener">PRIDE:0000477</a>
                                         </div>
                                     </div>
                                     
@@ -3271,15 +3884,13 @@
                                         <div class="value">
                                             
                                             <div style="margin-bottom:6px;">
-                                                <strong>pattern</strong>
+                                                <strong>mz_value</strong>
                                                 
                                                     
                                                     
-                                                     &mdash; pattern: <code>^.+$</code>
                                                     
                                                     
-                                                    
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Fraction or dilution identifier</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Precursor m/z value with unit</div>
                                                     
                                                 
                                             </div>
@@ -3297,8 +3908,6 @@
                                                 
                                                     
                                                 
-                                                    
-                                                
                                             
                                         
                                     
@@ -3306,7 +3915,7 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>1</code>, <code>2</code>, <code>3</code>
+                                            <code>1200m/z</code>, <code>1600m/z</code>
                                         </div>
                                     </div>
                                     
@@ -3316,24 +3925,547 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-37')" id="col-37">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-44')" id="col-44">
                             <td><span class="expand-icon">&#9654;</span></td>
-                            <td class="col-name">comment[olink lot number]</td>
+                            <td class="col-name">comment[ms1 scan range]</td>
                             <td>
                                 
                                 <span class="req-badge req-optional">optional</span>
                                 
                             </td>
-                            <td><span class="source-badge">olink</span></td>
-                            <td style="max-width:400px;">Reagent lot number for traceability</td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.</td>
                         </tr>
-                        <tr class="detail-row" id="col-37-detail">
+                        <tr class="detail-row inherited hidden" id="col-44-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Reagent lot number for traceability</div>
+                                        <div class="value">m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001008" target="_blank" rel="noopener">PRIDE:0001008</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS1 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>70m/z-1000m/z</code>, <code>100m/z-1500m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-45')" id="col-45">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[ms2 scan range]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-45-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0001009" target="_blank" rel="noopener">PRIDE:0001009</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>mz_range_interval</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">m/z range interval for MS2 spectra</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>50m/z-1000m/z</code>, <code>100m/z-1500m/z</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-46')" id="col-46">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[precursor mass tolerance]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Precursor mass tolerance for feature detection / database search</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-46-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Precursor mass tolerance for feature detection / database search</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000575" target="_blank" rel="noopener">PRIDE:0000575</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>number_with_unit</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm, Da, or mmu)</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>5 ppm</code>, <code>10 ppm</code>, <code>0.01 Da</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-47')" id="col-47">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[fragment mass tolerance]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Fragment mass tolerance for feature detection / database search</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-47-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Fragment mass tolerance for feature detection / database search</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000576" target="_blank" rel="noopener">PRIDE:0000576</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>number_with_unit</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Mass tolerance with unit (ppm, Da, or mmu)</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>0.02 Da</code>, <code>20 ppm</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-48')" id="col-48">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[collision energy]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Collision energy used for fragmentation</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-48-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Collision energy used for fragmentation</div>
+                                    </div>
+                                    
+
+                                    
+                                    <div class="detail-item">
+                                        <label>Ontology</label>
+                                        <div class="value">
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000045" target="_blank" rel="noopener">MS:1000045</a>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^\d+(\.\d+)?%?\s*(NCE|eV)(;\d+(\.\d+)?%?\s*(NCE|eV))*$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Collision energy format: {value} {unit} where unit is NCE or eV. For multiple values, use semicolon-separated entries.</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>30 NCE</code>, <code>25 eV</code>, <code>25 NCE;27 NCE;30 NCE</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-49')" id="col-49">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[raw data file md5]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">MD5 integrity hash for the raw data file referenced in comment[data file]. Mirrors MetaboBank Com...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-49-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MD5 integrity hash for the raw data file referenced in comment[data file]. Mirrors MetaboBank Comment[Raw Data File md5].</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^[a-fA-F0-9]{32}$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">32-character hex MD5 hash</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>d41d8cd98f00b204e9800998ecf8427e</code>, <code>9e107d9d372bb6826bd81d3542a419d6</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-50')" id="col-50">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[processed data file]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Pointer to the processed data file (e.g. peak table, feature matrix). Mirrors MetaboBank Comment[...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-50-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Pointer to the processed data file (e.g. peak table, feature matrix). Mirrors MetaboBank Comment[Processed Data File].</div>
                                     </div>
                                     
 
@@ -3363,7 +4495,7 @@
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">Lot number</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Path or filename of the processed data file</div>
                                                     
                                                 
                                             </div>
@@ -3388,7 +4520,501 @@
                                     <div class="detail-item full-width">
                                         <label>Examples</label>
                                         <div class="value">
-                                            <code>lot_2023_001</code>, <code>B12345</code>
+                                            <code>features_pos.tsv</code>, <code>peak_table_lipidomics.csv</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-51')" id="col-51">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[processed data file md5]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">MD5 integrity hash for the processed data file. Mirrors MetaboBank Comment[Processed Data File md5].</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-51-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MD5 integrity hash for the processed data file. Mirrors MetaboBank Comment[Processed Data File md5].</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^[a-fA-F0-9]{32}$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">32-character hex MD5 hash</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>d41d8cd98f00b204e9800998ecf8427e</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-52')" id="col-52">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[metabolite assignment file md5]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">ms-metabolomics</span></td>
+                            <td style="max-width:400px;">MD5 integrity hash for the metabolite assignment file. Mirrors MetaboBank Comment[Metabolite Assi...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-52-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">MD5 integrity hash for the metabolite assignment file. Mirrors MetaboBank Comment[Metabolite Assignment File md5].</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^[a-fA-F0-9]{32}$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">32-character hex MD5 hash</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>d41d8cd98f00b204e9800998ecf8427e</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-53')" id="col-53">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[mobile phase a]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Composition of mobile phase A</td>
+                        </tr>
+                        <tr class="detail-row" id="col-53-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Composition of mobile phase A</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Free-text composition of mobile phase A</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>0.1% formic acid in water</code>, <code>10 mM ammonium acetate in water pH 9.0</code>, <code>5 mM ammonium formate in water</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-54')" id="col-54">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[mobile phase b]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Composition of mobile phase B</td>
+                        </tr>
+                        <tr class="detail-row" id="col-54-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Composition of mobile phase B</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Free-text composition of mobile phase B</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>0.1% formic acid in acetonitrile</code>, <code>10 mM ammonium acetate in 90% acetonitrile pH 9.0</code>, <code>methanol</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-55')" id="col-55">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[gradient]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Free-text description of the chromatographic gradient program</td>
+                        </tr>
+                        <tr class="detail-row" id="col-55-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Free-text description of the chromatographic gradient program</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>pattern</strong>
+                                                
+                                                    
+                                                    
+                                                     &mdash; pattern: <code>^.+$</code>
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Free-text gradient description</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>5% B 0-1 min, ramp to 95% B at 15 min, hold 3 min, re-equilibrate</code>, <code>isocratic 50% B for 10 min</code>, <code>0-100% B in 30 min</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row" onclick="toggleDetail('col-56')" id="col-56">
+                            <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">comment[flow rate]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">lc-ms-metabolomics</span></td>
+                            <td style="max-width:400px;">Mobile-phase flow rate</td>
+                        </tr>
+                        <tr class="detail-row" id="col-56-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Mobile-phase flow rate</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>number_with_unit</strong>
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Flow rate with unit</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>300 nL/min</code>, <code>250 uL/min</code>, <code>0.4 mL/min</code>
                                         </div>
                                     </div>
                                     
@@ -3410,19 +5036,7 @@
                 
                 <li>Yasset Perez-Riverol (yperez@ebi.ac.uk) - EMBL-EBI</li>
                 
-                <li>Deepti Jaiswal Kundu (jaiswal@ebi.ac.uk) - EMBL-EBI</li>
-                
-                <li>Nithu Sara John (nithu@ebi.ac.uk) - EMBL-EBI</li>
-                
-                <li>Nandana Madhusoodanan (nandana@ebi.ac.uk) - EMBL-EBI</li>
-                
-                <li>Asier Larrea (alarre@ebi.ac.uk) - EMBL-EBI</li>
-                
-                <li>Toan Phung (TPhung001@dundee.ac.uk) - University of Dundee</li>
-                
-                <li>Timo Sachsenberg (timo.sachsenberg@uni-tuebingen.de) - University of Tübingen</li>
-                
-                <li>Magnus Palmblad (n.m.palmblad@lumc.nl) - Leiden University Medical Center</li>
+                <li>Mathias Mattano (mmattano@bmb.sdu.dk) - University of Southern Denmark</li>
                 
             </ul>
         </div>

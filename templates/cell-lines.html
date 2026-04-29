@@ -208,12 +208,18 @@
                 <p>The cell-lines template provides standardized annotation for cultured cell lines using</p>
 <p>Cellosaurus as the primary reference database.</p>
 <p>Required combination: technology template + organism template (based on cell line origin).</p>
-<p>Example: HeLa study = cell-lines + human + ms-proteomics.</p>
+<p>Example: HeLa study = cell-lines + human + ms-proteomics. The same sample-layer</p>
+<p>combination can also be paired with ms-metabolomics when the experiment is metabolomics.</p>
 <p>Key guidance:</p>
 <ul><li><code>characteristics[cellosaurus accession]</code>: Required. Look up accessions at</li></ul>
 <p>https://www.cellosaurus.org/. Format: CVCL_XXXX (e.g., CVCL_0030 for HeLa).</p>
 <ul><li><code>characteristics[cell line]</code>: Required. Use standard cell line names from CLO/BTO/EFO.</li><li><code>characteristics[disease]</code>: Required. The disease of the donor tissue from which the</li></ul>
 <p>cell line was originally derived. Use <code>normal</code> for non-disease-derived cell lines.</p>
+<ul><li><code>characteristics[tissue supergroup]</code>: Optional broader anatomical bucket inherited from</li></ul>
+<p><code>sample-metadata</code> for higher-level grouping of tissue of origin.</p>
+<ul><li><code>characteristics[sampling site]</code>: Preserve the original Cellosaurus source term, local</li></ul>
+<p>provenance, or finer tissue-of-origin context. It can be equal to</p>
+<p><code>characteristics[organism part]</code> when no better distinction exists.</p>
 <ul><li><code>characteristics[passage number]</code>: Recommended. Document passage for reproducibility.</li></ul>
 <p>Passage drift can significantly affect proteomics results.</p>
 <ul><li><code>characteristics[culture medium]</code>: Recommended. Use NCIT terms (DMEM, RPMI 1640).</li><li><code>characteristics[cell line authentication]</code>: Optional but encouraged. STR profiling</li></ul>
@@ -276,11 +282,11 @@
             <div class="column-controls">
                 
                 <button class="toggle-btn" id="toggle-inherited" onclick="toggleInherited()">
-                    Show inherited columns (23)
+                    Show inherited columns (24)
                 </button>
                 
                 <span class="column-stats">
-                    12 own + 23 inherited = 35 total
+                    12 own + 24 inherited = 36 total
                     &middot; click a row for details
                 </span>
             </div>
@@ -686,7 +692,7 @@
                                 
                             </td>
                             <td><span class="source-badge">sample-metadata</span></td>
-                            <td style="max-width:400px;">Anatomical part of the organism from which sample was derived</td>
+                            <td style="max-width:400px;">Main normalized anatomical term for the sample</td>
                         </tr>
                         <tr class="detail-row inherited hidden" id="col-7-detail">
                             <td colspan="5">
@@ -694,7 +700,7 @@
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Anatomical part of the organism from which sample was derived</div>
+                                        <div class="value">Main normalized anatomical term for the sample</div>
                                     </div>
                                     
 
@@ -886,7 +892,7 @@
                                     <div class="detail-item">
                                         <label>Ontology</label>
                                         <div class="value">
-                                            <a href="https://www.ebi.ac.uk/ols4/search?q=EFO:0000408" target="_blank" rel="noopener">EFO:0000408</a>
+                                            <a href="https://www.ebi.ac.uk/ols4/search?q=MONDO:0000001" target="_blank" rel="noopener">MONDO:0000001</a>
                                         </div>
                                     </div>
                                     
@@ -1897,6 +1903,92 @@
                         
                         <tr class="column-row inherited hidden" onclick="toggleDetail('col-21')" id="col-21">
                             <td><span class="expand-icon">&#9654;</span></td>
+                            <td class="col-name">characteristics[tissue supergroup]</td>
+                            <td>
+                                
+                                <span class="req-badge req-optional">optional</span>
+                                
+                            </td>
+                            <td><span class="source-badge">sample-metadata</span></td>
+                            <td style="max-width:400px;">Broader anatomical grouping or system-level bucket for the sample, used alongside the organism pa...</td>
+                        </tr>
+                        <tr class="detail-row inherited hidden" id="col-21-detail">
+                            <td colspan="5">
+                                <div class="detail-grid">
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Description</label>
+                                        <div class="value">Broader anatomical grouping or system-level bucket for the sample, used alongside the organism part for higher-level grouping</div>
+                                    </div>
+                                    
+
+                                    
+
+                                    <div class="detail-item">
+                                        <label>Properties</label>
+                                        <div class="value detail-tags">
+                                            <span class="detail-tag">allows N/A</span>
+                                            <span class="detail-tag">allows not available</span>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Validators</label>
+                                        <div class="value">
+                                            
+                                            <div style="margin-bottom:6px;">
+                                                <strong>ontology</strong>
+                                                
+                                                    
+                                                     &mdash; ontologies: uberon, bto
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <div style="color:var(--text-light); font-size:0.9em;">Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible</div>
+                                                    
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    
+                                    <div class="detail-item full-width">
+                                        <label>Examples</label>
+                                        <div class="value">
+                                            <code>digestive system</code>, <code>nervous system</code>, <code>cardiovascular system</code>, <code>gastrointestinal tract</code>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-22')" id="col-22">
+                            <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[pooled sample]</td>
                             <td>
                                 
@@ -1906,7 +1998,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Whether the sample is a pooled sample combining material from multiple biological sources. Use 'n...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-21-detail">
+                        <tr class="detail-row inherited hidden" id="col-22-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -1996,7 +2088,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-22')" id="col-22">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-23')" id="col-23">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[sample type]</td>
                             <td>
@@ -2007,7 +2099,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Classification of the sample role in the experiment. Distinguishes experimental samples from cont...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-22-detail">
+                        <tr class="detail-row inherited hidden" id="col-23-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2109,7 +2201,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-23')" id="col-23">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-24')" id="col-24">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[material type]</td>
                             <td>
@@ -2120,7 +2212,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Type of biological material being analyzed</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-23-detail">
+                        <tr class="detail-row inherited hidden" id="col-24-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2185,7 +2277,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-24')" id="col-24">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-25')" id="col-25">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[tissue mass]</td>
                             <td>
@@ -2196,7 +2288,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Mass of tissue used for extraction</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-24-detail">
+                        <tr class="detail-row inherited hidden" id="col-25-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2274,7 +2366,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-25')" id="col-25">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-26')" id="col-26">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[biosample accession number]</td>
                             <td>
@@ -2285,7 +2377,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">BioSample accession number for the sample (e.g., SAMN or SAMEA identifiers)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-25-detail">
+                        <tr class="detail-row inherited hidden" id="col-26-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2363,7 +2455,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-26')" id="col-26">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-27')" id="col-27">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[sampling time]</td>
                             <td>
@@ -2374,7 +2466,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Time at which the sample was collected (for longitudinal or time-course studies)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-26-detail">
+                        <tr class="detail-row inherited hidden" id="col-27-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2454,7 +2546,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-27')" id="col-27">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-28')" id="col-28">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[treatment]</td>
                             <td>
@@ -2465,7 +2557,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Treatment or perturbation applied to the sample (drug, stimulus, environmental stress)</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-27-detail">
+                        <tr class="detail-row inherited hidden" id="col-28-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2549,7 +2641,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-28')" id="col-28">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-29')" id="col-29">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[synthetic peptide]</td>
                             <td>
@@ -2560,7 +2652,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Whether the sample is a synthetic peptide library or biological material</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-28-detail">
+                        <tr class="detail-row inherited hidden" id="col-29-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2625,7 +2717,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-29')" id="col-29">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-30')" id="col-30">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[spiked compound]</td>
                             <td>
@@ -2636,7 +2728,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Spiked-in compound details using key-value format (CT=compound type, QY=quantity, PS=peptide sequ...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-29-detail">
+                        <tr class="detail-row inherited hidden" id="col-30-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2718,7 +2810,7 @@
                         
                         
                         
-                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-30')" id="col-30">
+                        <tr class="column-row inherited hidden" onclick="toggleDetail('col-31')" id="col-31">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[enrichment process]</td>
                             <td>
@@ -2729,7 +2821,7 @@
                             <td><span class="source-badge">sample-metadata</span></td>
                             <td style="max-width:400px;">Enrichment strategy applied to the sample (e.g., phosphopeptide enrichment, crosslinked peptide e...</td>
                         </tr>
-                        <tr class="detail-row inherited hidden" id="col-30-detail">
+                        <tr class="detail-row inherited hidden" id="col-31-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2811,7 +2903,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-31')" id="col-31">
+                        <tr class="column-row" onclick="toggleDetail('col-32')" id="col-32">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[sampling site]</td>
                             <td>
@@ -2820,15 +2912,15 @@
                                 
                             </td>
                             <td><span class="source-badge">cell-lines</span></td>
-                            <td style="max-width:400px;">Tissue or organ from which the cell line was derived</td>
+                            <td style="max-width:400px;">Original source term, local provenance, or finer tissue-of-origin context for the cell line</td>
                         </tr>
-                        <tr class="detail-row" id="col-31-detail">
+                        <tr class="detail-row" id="col-32-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
                                     <div class="detail-item full-width">
                                         <label>Description</label>
-                                        <div class="value">Tissue or organ from which the cell line was derived</div>
+                                        <div class="value">Original source term, local provenance, or finer tissue-of-origin context for the cell line</div>
                                     </div>
                                     
 
@@ -2865,7 +2957,7 @@
                                                     
                                                     
                                                     
-                                                    <div style="color:var(--text-light); font-size:0.9em;">The sampling site should be a valid UBERON or BTO term</div>
+                                                    <div style="color:var(--text-light); font-size:0.9em;">The sampling site should be a valid UBERON or BTO term when it is expressed as a normalized anatomy term</div>
                                                     
                                                 
                                             </div>
@@ -2902,7 +2994,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-32')" id="col-32">
+                        <tr class="column-row" onclick="toggleDetail('col-33')" id="col-33">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[biorepository]</td>
                             <td>
@@ -2913,7 +3005,7 @@
                             <td><span class="source-badge">cell-lines</span></td>
                             <td style="max-width:400px;">BioBank or source from which the cell line was obtained</td>
                         </tr>
-                        <tr class="detail-row" id="col-32-detail">
+                        <tr class="detail-row" id="col-33-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -2995,7 +3087,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-33')" id="col-33">
+                        <tr class="column-row" onclick="toggleDetail('col-34')" id="col-34">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[cell line authentication]</td>
                             <td>
@@ -3006,7 +3098,7 @@
                             <td><span class="source-badge">cell-lines</span></td>
                             <td style="max-width:400px;">Method used to authenticate the cell line identity</td>
                         </tr>
-                        <tr class="detail-row" id="col-33-detail">
+                        <tr class="detail-row" id="col-34-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -3086,7 +3178,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-34')" id="col-34">
+                        <tr class="column-row" onclick="toggleDetail('col-35')" id="col-35">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[developmental stage]</td>
                             <td>
@@ -3097,7 +3189,7 @@
                             <td><span class="source-badge">cell-lines</span></td>
                             <td style="max-width:400px;">Developmental stage of the donor from which the cell line was derived</td>
                         </tr>
-                        <tr class="detail-row" id="col-34-detail">
+                        <tr class="detail-row" id="col-35-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
@@ -3179,7 +3271,7 @@
                         
                         
                         
-                        <tr class="column-row" onclick="toggleDetail('col-35')" id="col-35">
+                        <tr class="column-row" onclick="toggleDetail('col-36')" id="col-36">
                             <td><span class="expand-icon">&#9654;</span></td>
                             <td class="col-name">characteristics[ancestry category]</td>
                             <td>
@@ -3190,7 +3282,7 @@
                             <td><span class="source-badge">cell-lines</span></td>
                             <td style="max-width:400px;">Ancestry category of the cell line donor (if known)</td>
                         </tr>
-                        <tr class="detail-row" id="col-35-detail">
+                        <tr class="detail-row" id="col-36-detail">
                             <td colspan="5">
                                 <div class="detail-grid">
                                     
