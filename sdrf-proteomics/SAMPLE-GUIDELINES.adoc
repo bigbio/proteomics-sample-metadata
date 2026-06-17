@@ -75,11 +75,22 @@ Use the scientific name in lowercase. The validator will map to the correct onto
 
 Use lowercase for all values. For cell line samples, use `not applicable` or specify the tissue of origin (e.g., `cervix` for HeLa).
 
+`characteristics[organism part]` should be the main normalized anatomical term in the metadata.
+Use the clearest ontology-backed anatomy term available for cross-study integration and grouping.
+When additional hierarchy is useful, `characteristics[tissue supergroup]` can capture a broader
+bucket such as a major organ or anatomical system, while `characteristics[sampling site]` can
+capture the original source label, local provenance, or a more specific context. `sampling site`
+may be equal to `organism part` when no finer distinction exists, and may sometimes be less
+ontologically precise than the normalized `organism part`.
+
 [NOTE]
 ====
 **Do NOT use `characteristics[tissue]`** - Use `characteristics[organism part]` instead.
 
 The `characteristics[tissue]` column should not be used as a replacement for `characteristics[organism part]`.
+When tissue-related columns are needed, use them alongside `characteristics[organism part]` for
+additional hierarchy or provenance, for example `characteristics[tissue supergroup]` for broader
+grouping and `characteristics[sampling site]` for finer source context.
 ====
 
 |===

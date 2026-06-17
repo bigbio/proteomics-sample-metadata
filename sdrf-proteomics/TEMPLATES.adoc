@@ -44,8 +44,9 @@ base (construction artifact - not user-facing)
  │    │    ├── immunopeptidomics (experiment)
  │    │    └── single-cell (experiment)
  │    ├── affinity-proteomics (technology)
- │    │    ├── olink (experiment)
- │    │    └── somascan (experiment)
+ │    ├── ms-metabolomics (technology)
+ │    │    ├── lc-ms-metabolomics (experiment)
+ │    │    └── gc-ms-metabolomics (experiment)
  │    ├── human (sample)
  │    ├── vertebrates (sample)
  │    ├── invertebrates (sample)
@@ -128,7 +129,7 @@ extends: ms-proteomics@>=1.1.0
 
 | `technology`
 | Defines the proteomics technology. Exactly one required per SDRF.
-| ms-proteomics, affinity-proteomics
+| ms-proteomics, affinity-proteomics, ms-metabolomics
 
 | `sample`
 | Defines organism-specific sample metadata. One recommended per SDRF.
@@ -136,16 +137,16 @@ extends: ms-proteomics@>=1.1.0
 
 | `experiment`
 | Defines methodology-specific columns. Multiple can be combined if not mutually exclusive.
-| dia-acquisition, single-cell, olink, cell-lines
+| dia-acquisition, single-cell, lc-ms-metabolomics, gc-ms-metabolomics, cell-lines
 |===
 
 === Combination Rule
 
 An SDRF file is built by **combining** templates:
 
-1. **ONE technology template** (required): `ms-proteomics` or `affinity-proteomics`
+1. **ONE technology template** (required): `ms-proteomics`, `affinity-proteomics`, or `ms-metabolomics`
 2. **ONE sample template** (recommended): either an organism template (`human`, `vertebrates`, `invertebrates`, `plants`) OR a metaproteomics template (`human-gut`, `soil`, `water`). These two groups are mutually exclusive.
-3. **ZERO or more experiment templates**: `dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics` (extend `ms-proteomics`), `olink`, `somascan` (extend `affinity-proteomics`)
+3. **ZERO or more experiment templates**: `dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics` (extend `ms-proteomics`), `lc-ms-metabolomics`, `gc-ms-metabolomics` (extend `ms-metabolomics`)
 4. **ZERO or more clinical templates**: `clinical-metadata`, `oncology-metadata`
 5. **ZERO or one cell-lines template**: when samples are cultured cell lines
 
@@ -153,11 +154,11 @@ When templates are combined, columns from all selected templates are merged. If 
 
 === Mutual Exclusivity
 
-* **Technology**: `ms-proteomics` and `affinity-proteomics` cannot be combined
+* **Technology**: `ms-proteomics`, `affinity-proteomics`, and `ms-metabolomics` are mutually exclusive
 * **Organism**: only one of `human`, `vertebrates`, `invertebrates`, `plants` per study (multi-species studies use the most specific applicable template)
 * **Metaproteomics**: `metaproteomics` (and its children `human-gut`, `soil`, `water`) are mutually exclusive with organism templates (`human`, `vertebrates`, `invertebrates`, `plants`). Only one metaproteomics child template per study.
-* **Platform**: `olink` and `somascan` cannot be combined
-* **Affinity experiments**: `olink`/`somascan` require `affinity-proteomics` (not `ms-proteomics`)
+* **Metabolomics modality**: `lc-ms-metabolomics` and `gc-ms-metabolomics` cannot be combined for the same assay
+* **Metabolomics experiments**: `lc-ms-metabolomics`/`gc-ms-metabolomics` require `ms-metabolomics` (not `ms-proteomics`)
 
 == How to Choose Templates
 
@@ -182,8 +183,9 @@ When templates are combined, columns from all selected templates are merged. If 
 | Human gut metaproteomics | `human-gut` + `ms-proteomics`
 | Soil metaproteomics | `soil` + `ms-proteomics`
 | Aquatic metaproteomics (ocean, lake, river) | `water` + `ms-proteomics`
-| Human Olink plasma study | `olink` + `human`
-| Human SomaScan serum study | `somascan` + `human`
+| Human affinity proteomics study | `affinity-proteomics` + `human`
+| Human LC-MS metabolomics | `lc-ms-metabolomics` + `human`
+| Plant GC-MS metabolomics | `gc-ms-metabolomics` + `plants`
 | Drosophila phosphoproteomics | `invertebrates` + `ms-proteomics`
 | Zebrafish developmental proteomics | `vertebrates` + `ms-proteomics`
 | Arabidopsis drought response proteomics | `plants` + `ms-proteomics`
@@ -214,8 +216,9 @@ When templates are combined, columns from all selected templates are merged. If 
 | DIA / SWATH / diaPASEF | `dia-acquisition`
 | TMT / iTRAQ / SILAC | `ms-proteomics` (labeling defined by `comment[label]`)
 | Label-free quantification | `ms-proteomics` (label = "label free sample")
-| Olink PEA | `olink` (inherits `affinity-proteomics`)
-| SomaScan aptamer | `somascan` (inherits `affinity-proteomics`)
+| Affinity-based proteomics (Olink, SomaScan) | `affinity-proteomics`
+| LC-MS metabolomics | `lc-ms-metabolomics` (inherits `ms-metabolomics`)
+| GC-MS metabolomics | `gc-ms-metabolomics` (inherits `ms-metabolomics`)
 |===
 
 == Format Conventions

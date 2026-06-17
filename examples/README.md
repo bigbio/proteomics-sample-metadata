@@ -19,3 +19,4 @@ Curated examples of SDRF files covering different experiment types and organisms
 | PXD009712 | Metaproteomics, ocean (Pacific depth profiles) | marine metagenome | label free | metaproteomics, water | 74 |
 | PXD006439 | Label-free, mouse | Mus musculus | label free | ms-proteomics, vertebrates | 68 |
 | PXD013868 | Label-free, plant | Arabidopsis thaliana | label free | ms-proteomics, plants | 21 |
+| PXD073289 | AB Sciex DIA (.wiff + .wiff.scan multi-file annotation) | Homo sapiens | label free | ms-proteomics, human, dia-acquisition | 3 |
