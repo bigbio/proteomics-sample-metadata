@@ -261,17 +261,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -366,7 +366,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "required",
-          "description": "Role of the sample in the assay. Distinguishes study samples from controls/reference materials for assay interpretation and quality control",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -380,15 +380,19 @@
                   "pride"
                 ],
                 "parent_term": "PRIDE:0000895",
+                "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
                   "study sample",
                   "negative control",
                   "positive control",
                   "calibrator",
+                  "plate control",
+                  "quality control sample",
+                  "buffer control",
                   "reference",
                   "standard",
-                  "buffer control"
+                  "bridge"
                 ]
               }
             }
@@ -794,6 +798,37 @@
           "example_value": "1"
         },
         {
+          "name": "characteristics[sample matrix]",
+          "requirement": "recommended",
+          "description": "Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)",
+          "ontology_accession": "",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "affinity-proteomics",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "uberon",
+                  "bto"
+                ],
+                "error_level": "warning",
+                "description": "Sample matrix should be a valid UBERON or BTO term",
+                "examples": [
+                  "serum",
+                  "plasma",
+                  "cerebrospinal fluid",
+                  "urine",
+                  "saliva"
+                ]
+              }
+            }
+          ],
+          "example_value": "serum"
+        },
+        {
           "name": "comment[normalization method]",
           "requirement": "optional",
           "description": "Normalization method applied to quantification values",
@@ -875,7 +910,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "required",
-          "description": "Role of the sample in the assay. Distinguishes study samples from controls/reference materials for assay interpretation and quality control",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -889,15 +924,19 @@
                   "pride"
                 ],
                 "parent_term": "PRIDE:0000895",
+                "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
                   "study sample",
                   "negative control",
                   "positive control",
                   "calibrator",
+                  "plate control",
+                  "quality control sample",
+                  "buffer control",
                   "reference",
                   "standard",
-                  "buffer control"
+                  "bridge"
                 ]
               }
             }
@@ -1038,6 +1077,37 @@
             }
           ],
           "example_value": "1"
+        },
+        {
+          "name": "characteristics[sample matrix]",
+          "requirement": "recommended",
+          "description": "Type of biological matrix used as input (e.g. serum, plasma, CSF, urine)",
+          "ontology_accession": "",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "affinity-proteomics",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "uberon",
+                  "bto"
+                ],
+                "error_level": "warning",
+                "description": "Sample matrix should be a valid UBERON or BTO term",
+                "examples": [
+                  "serum",
+                  "plasma",
+                  "cerebrospinal fluid",
+                  "urine",
+                  "saliva"
+                ]
+              }
+            }
+          ],
+          "example_value": "serum"
         },
         {
           "name": "comment[normalization method]",
@@ -1738,17 +1808,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -1843,7 +1913,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -1860,25 +1930,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -3019,17 +3091,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -3124,7 +3196,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -3141,25 +3213,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -4601,17 +4675,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -4706,7 +4780,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -4723,25 +4797,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -6756,17 +6832,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -6861,7 +6937,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -6878,25 +6954,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -8522,17 +8600,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -8627,7 +8705,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -8644,25 +8722,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -10155,17 +10235,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -10260,7 +10340,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -10277,25 +10357,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -11078,6 +11160,34 @@
           "example_value": ""
         },
         {
+          "name": "characteristics[sample name]",
+          "requirement": "optional",
+          "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
+          "ontology_accession": "PRIDE:0000623",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "sample name identifier",
+                "examples": [
+                  "Sample_1",
+                  "Sample_2"
+                ]
+              }
+            }
+          ],
+          "example_value": "Sample_1"
+        },
+        {
           "name": "characteristics[environmental sample type]",
           "requirement": "required",
           "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
@@ -11107,6 +11217,34 @@
             }
           ],
           "example_value": "soil"
+        },
+        {
+          "name": "characteristics[project name]",
+          "requirement": "recommended",
+          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
+          "ontology_accession": "PRIDE:0000676",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": false,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "project name identifier",
+                "examples": [
+                  "Bermuda_Atlantic_Time-series_Study",
+                  "Metaproteomes_of_Seawater_Microbial_Communities"
+                ]
+              }
+            }
+          ],
+          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[geographic location]",
@@ -11560,34 +11698,6 @@
           "example_value": "E. coli;B. subtilis;S. cerevisiae;L. fermentum"
         },
         {
-          "name": "source name[sample name]",
-          "requirement": "required",
-          "description": "Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).",
-          "ontology_accession": "PRIDE:0000623",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "human-gut",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "sample name identifier",
-                "examples": [
-                  "Sample_1",
-                  "Sample_2"
-                ]
-              }
-            }
-          ],
-          "example_value": "Sample_1"
-        },
-        {
           "name": "characteristics[host organism]",
           "requirement": "required",
           "description": "Host organism for host-associated microbiome samples",
@@ -12303,33 +12413,6 @@
             }
           ],
           "example_value": "45 year old male with a 2 week history of stomach pain."
-        },
-        {
-          "name": "characteristics[project name]",
-          "requirement": "optional",
-          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
-          "ontology_accession": "PRIDE:0000676",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "human-gut",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "project name identifier",
-                "examples": [
-                  "Human_microbiome_project"
-                ]
-              }
-            }
-          ],
-          "example_value": "Human_microbiome_project"
         },
         {
           "name": "comment[sample storage temperature]",
@@ -12514,34 +12597,6 @@
       ],
       "own_columns": [
         {
-          "name": "source name[sample name]",
-          "requirement": "required",
-          "description": "Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).",
-          "ontology_accession": "PRIDE:0000623",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "human-gut",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "sample name identifier",
-                "examples": [
-                  "Sample_1",
-                  "Sample_2"
-                ]
-              }
-            }
-          ],
-          "example_value": "Sample_1"
-        },
-        {
           "name": "characteristics[host organism]",
           "requirement": "required",
           "description": "Host organism for host-associated microbiome samples",
@@ -13257,33 +13312,6 @@
             }
           ],
           "example_value": "45 year old male with a 2 week history of stomach pain."
-        },
-        {
-          "name": "characteristics[project name]",
-          "requirement": "optional",
-          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
-          "ontology_accession": "PRIDE:0000676",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "human-gut",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "project name identifier",
-                "examples": [
-                  "Human_microbiome_project"
-                ]
-              }
-            }
-          ],
-          "example_value": "Human_microbiome_project"
         },
         {
           "name": "comment[sample storage temperature]",
@@ -13729,17 +13757,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -13834,7 +13862,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -13851,25 +13879,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -15541,17 +15571,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -15646,7 +15676,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -15663,25 +15693,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -16411,17 +16443,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -16516,7 +16548,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -16533,25 +16565,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -18001,6 +18035,34 @@
           "example_value": ""
         },
         {
+          "name": "characteristics[sample name]",
+          "requirement": "optional",
+          "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
+          "ontology_accession": "PRIDE:0000623",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "sample name identifier",
+                "examples": [
+                  "Sample_1",
+                  "Sample_2"
+                ]
+              }
+            }
+          ],
+          "example_value": "Sample_1"
+        },
+        {
           "name": "characteristics[environmental sample type]",
           "requirement": "required",
           "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
@@ -18030,6 +18092,34 @@
             }
           ],
           "example_value": "soil"
+        },
+        {
+          "name": "characteristics[project name]",
+          "requirement": "recommended",
+          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
+          "ontology_accession": "PRIDE:0000676",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": false,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "project name identifier",
+                "examples": [
+                  "Bermuda_Atlantic_Time-series_Study",
+                  "Metaproteomes_of_Seawater_Microbial_Communities"
+                ]
+              }
+            }
+          ],
+          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[geographic location]",
@@ -18485,6 +18575,34 @@
       ],
       "own_columns": [
         {
+          "name": "characteristics[sample name]",
+          "requirement": "optional",
+          "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
+          "ontology_accession": "PRIDE:0000623",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "sample name identifier",
+                "examples": [
+                  "Sample_1",
+                  "Sample_2"
+                ]
+              }
+            }
+          ],
+          "example_value": "Sample_1"
+        },
+        {
           "name": "characteristics[environmental sample type]",
           "requirement": "required",
           "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
@@ -18514,6 +18632,34 @@
             }
           ],
           "example_value": "soil"
+        },
+        {
+          "name": "characteristics[project name]",
+          "requirement": "recommended",
+          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
+          "ontology_accession": "PRIDE:0000676",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": false,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "project name identifier",
+                "examples": [
+                  "Bermuda_Atlantic_Time-series_Study",
+                  "Metaproteomes_of_Seawater_Microbial_Communities"
+                ]
+              }
+            }
+          ],
+          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[geographic location]",
@@ -19229,17 +19375,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -19334,7 +19480,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -19351,25 +19497,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -21243,17 +21391,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -21348,7 +21496,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -21365,25 +21513,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -23650,17 +23800,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -23755,7 +23905,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -23772,25 +23922,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -25722,17 +25874,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -25827,7 +25979,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -25844,25 +25996,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -26648,17 +26802,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -26753,7 +26907,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -26770,25 +26924,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -27132,17 +27288,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -27237,7 +27393,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -27254,25 +27410,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -27801,17 +27959,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -27906,7 +28064,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "recommended",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -27923,25 +28081,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -29556,7 +29716,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "recommended",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -29573,25 +29733,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "comment[sample preparation batch]",
@@ -30282,6 +30444,34 @@
           "example_value": ""
         },
         {
+          "name": "characteristics[sample name]",
+          "requirement": "optional",
+          "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
+          "ontology_accession": "PRIDE:0000623",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "sample name identifier",
+                "examples": [
+                  "Sample_1",
+                  "Sample_2"
+                ]
+              }
+            }
+          ],
+          "example_value": "Sample_1"
+        },
+        {
           "name": "characteristics[environmental sample type]",
           "requirement": "required",
           "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
@@ -30311,6 +30501,34 @@
             }
           ],
           "example_value": "soil"
+        },
+        {
+          "name": "characteristics[project name]",
+          "requirement": "recommended",
+          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
+          "ontology_accession": "PRIDE:0000676",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": false,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "project name identifier",
+                "examples": [
+                  "Bermuda_Atlantic_Time-series_Study",
+                  "Metaproteomes_of_Seawater_Microbial_Communities"
+                ]
+              }
+            }
+          ],
+          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[geographic location]",
@@ -30762,62 +30980,6 @@
             }
           ],
           "example_value": "E. coli;B. subtilis;S. cerevisiae;L. fermentum"
-        },
-        {
-          "name": "source name[sample name]",
-          "requirement": "required",
-          "description": "Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).",
-          "ontology_accession": "PRIDE:0000623",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "soil",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "sample name identifier",
-                "examples": [
-                  "Sample_1",
-                  "Sample_2"
-                ]
-              }
-            }
-          ],
-          "example_value": "Sample_1"
-        },
-        {
-          "name": "project name",
-          "requirement": "required",
-          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
-          "ontology_accession": "PRIDE:0000676",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "soil",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "project name identifier",
-                "examples": [
-                  "Bermuda_Atlantic_Time-series_Study",
-                  "Metaproteomes_of_Seawater_Microbial_Communities"
-                ]
-              }
-            }
-          ],
-          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[soil type]",
@@ -32104,62 +32266,6 @@
         }
       ],
       "own_columns": [
-        {
-          "name": "source name[sample name]",
-          "requirement": "required",
-          "description": "Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).",
-          "ontology_accession": "PRIDE:0000623",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "soil",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "sample name identifier",
-                "examples": [
-                  "Sample_1",
-                  "Sample_2"
-                ]
-              }
-            }
-          ],
-          "example_value": "Sample_1"
-        },
-        {
-          "name": "project name",
-          "requirement": "required",
-          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
-          "ontology_accession": "PRIDE:0000676",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "soil",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "project name identifier",
-                "examples": [
-                  "Bermuda_Atlantic_Time-series_Study",
-                  "Metaproteomes_of_Seawater_Microbial_Communities"
-                ]
-              }
-            }
-          ],
-          "example_value": "Bermuda_Atlantic_Time-series_Study"
-        },
         {
           "name": "characteristics[soil type]",
           "requirement": "recommended",
@@ -33706,17 +33812,17 @@
                   "bto"
                 ],
                 "error_level": "warning",
-                "description": "Tissue supergroup should be a valid broad UBERON or BTO anatomy term when possible",
+                "description": "Tissue supergroup should be a valid UBERON or BTO anatomy term such as heart, liver, brain, or gastrointestinal tract when possible",
                 "examples": [
-                  "digestive system",
-                  "nervous system",
-                  "cardiovascular system",
+                  "heart",
+                  "liver",
+                  "brain",
                   "gastrointestinal tract"
                 ]
               }
             }
           ],
-          "example_value": "digestive system"
+          "example_value": "heart"
         },
         {
           "name": "characteristics[cell type]",
@@ -33811,7 +33917,7 @@
         {
           "name": "characteristics[sample type]",
           "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes experimental samples from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
           "ontology_accession": "PRIDE:0000895",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -33828,25 +33934,27 @@
                 "error_level": "error",
                 "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
                 "examples": [
+                  "study sample",
                   "single cell",
+                  "environmental sample",
                   "reference",
                   "bridge",
                   "carrier",
                   "pooled",
                   "empty",
-                  "quality control sample",
                   "negative control",
                   "positive control",
                   "bulk control",
-                  "standard",
-                  "calibrator",
+                  "buffer control",
                   "plate control",
-                  "buffer control"
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
                 ]
               }
             }
           ],
-          "example_value": "single cell"
+          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -34499,6 +34607,34 @@
           "example_value": ""
         },
         {
+          "name": "characteristics[sample name]",
+          "requirement": "optional",
+          "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
+          "ontology_accession": "PRIDE:0000623",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "sample name identifier",
+                "examples": [
+                  "Sample_1",
+                  "Sample_2"
+                ]
+              }
+            }
+          ],
+          "example_value": "Sample_1"
+        },
+        {
           "name": "characteristics[environmental sample type]",
           "requirement": "required",
           "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
@@ -34528,6 +34664,34 @@
             }
           ],
           "example_value": "soil"
+        },
+        {
+          "name": "characteristics[project name]",
+          "requirement": "recommended",
+          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
+          "ontology_accession": "PRIDE:0000676",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": false,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "identifier",
+              "params": {
+                "charset": "[A-Za-z0-9_.-]",
+                "special_values": [
+                  "anonymized"
+                ],
+                "error_level": "error",
+                "description": "project name identifier",
+                "examples": [
+                  "Bermuda_Atlantic_Time-series_Study",
+                  "Metaproteomes_of_Seawater_Microbial_Communities"
+                ]
+              }
+            }
+          ],
+          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[geographic location]",
@@ -34979,62 +35143,6 @@
             }
           ],
           "example_value": "E. coli;B. subtilis;S. cerevisiae;L. fermentum"
-        },
-        {
-          "name": "source name[sample name]",
-          "requirement": "required",
-          "description": "Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).",
-          "ontology_accession": "PRIDE:0000623",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "water",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "sample name identifier",
-                "examples": [
-                  "Sample_1",
-                  "Sample_2"
-                ]
-              }
-            }
-          ],
-          "example_value": "Sample_1"
-        },
-        {
-          "name": "project name",
-          "requirement": "required",
-          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
-          "ontology_accession": "PRIDE:0000676",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "water",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "project name identifier",
-                "examples": [
-                  "Bermuda_Atlantic_Time-series_Study",
-                  "Metaproteomes_of_Seawater_Microbial_Communities"
-                ]
-              }
-            }
-          ],
-          "example_value": "Bermuda_Atlantic_Time-series_Study"
         },
         {
           "name": "characteristics[sampling depth zone]",
@@ -37149,62 +37257,6 @@
         }
       ],
       "own_columns": [
-        {
-          "name": "source name[sample name]",
-          "requirement": "required",
-          "description": "Reference to the Sample. This term is used for cross-reference samples in SDRF for proteomics (MIXS:0001107).",
-          "ontology_accession": "PRIDE:0000623",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "water",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "sample name identifier",
-                "examples": [
-                  "Sample_1",
-                  "Sample_2"
-                ]
-              }
-            }
-          ],
-          "example_value": "Sample_1"
-        },
-        {
-          "name": "project name",
-          "requirement": "required",
-          "description": "Name of the project within which the sequencing was organized (MIXS:0000092).",
-          "ontology_accession": "PRIDE:0000676",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": false,
-          "source_template": "water",
-          "validators": [
-            {
-              "type": "identifier",
-              "params": {
-                "charset": "[A-Za-z0-9_.-]",
-                "special_values": [
-                  "anonymized"
-                ],
-                "error_level": "error",
-                "description": "project name identifier",
-                "examples": [
-                  "Bermuda_Atlantic_Time-series_Study",
-                  "Metaproteomes_of_Seawater_Microbial_Communities"
-                ]
-              }
-            }
-          ],
-          "example_value": "Bermuda_Atlantic_Time-series_Study"
-        },
         {
           "name": "characteristics[sampling depth zone]",
           "requirement": "recommended",
@@ -39326,10 +39378,9 @@
         "ms-proteomics"
       ],
       [
-        "human",
-        "invertebrates",
-        "plants",
-        "vertebrates"
+        "affinity-proteomics",
+        "ms-metabolomics",
+        "ms-proteomics"
       ],
       [
         "human-gut",
@@ -39337,14 +39388,15 @@
         "water"
       ],
       [
-        "affinity-proteomics",
-        "ms-metabolomics",
-        "ms-proteomics"
+        "human",
+        "invertebrates",
+        "metaproteomics",
+        "plants",
+        "vertebrates"
       ],
       [
         "human",
         "invertebrates",
-        "metaproteomics",
         "plants",
         "vertebrates"
       ]
