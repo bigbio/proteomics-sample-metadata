@@ -459,14 +459,35 @@ NOTE: For HCD (Higher-energy C-trap Dissociation), the canonical accession is ht
 [[data-acquisition-method]]
 === Proteomics data acquisition method
 
-Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the _comment[proteomics data acquisition method]_ column. The values MUST be children of the PRIDE ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659[proteomics data acquisition method (PRIDE:0000659)]. The following values are commonly used:
+Proteomics data acquisition method can happen in multiple ways: Data Dependent Acquisition (DDA), Data Independent Acquisition (DIA), and targeted approaches. The SDRF-Proteomics file format REQUIRES capturing the method used for the data acquisition in the _comment[proteomics data acquisition method]_ column.
 
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000627[data-dependent acquisition]
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000450[data-independent acquisition]
-  - https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000650?lang=en[diaPASEF]
-  - https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000447[SWATH MS]
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000629[parallel reaction monitoring]
-* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000630[selected reaction monitoring]
+The values MUST identify a **descendant** of the PRIDE ontology term https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659[proteomics data acquisition method (PRIDE:0000659)] (`http://purl.obolibrary.org/obo/PRIDE_0000659`).
+
+Recommended encoding:
+
+* Prefer lowercase OLS labels
+* Prefer `NT=<lowercase OLS label>;AC=<matching accession>`
+* Plain free-text OLS labels are also allowed when they match a descendant of `PRIDE:0000659`
+
+Common recommended values:
+
+[cols="1,3", options="header"]
+|===
+| Method | Recommended value
+| DDA | `NT=data-dependent acquisition;AC=PRIDE:0000627`
+| DIA | `NT=data-independent acquisition;AC=PRIDE:0000450`
+| PRM | `NT=parallel reaction monitoring;AC=PRIDE:0000629`
+| SRM | `NT=selected reaction monitoring;AC=PRIDE:0000630`
+|===
+
+Other descendants remain valid when that is the true acquisition method, for example:
+
+* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000650?lang=en[diaPASEF]
+* https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000447[SWATH MS]
+
+Finer DIA method detail may also be captured in _comment[dia method]_ when the top-level acquisition method is DIA.
+
+Do **not** use non-PRIDE accessions for this column (for example `MS:1000206`, `MS:1003221`, or `NCIT:C161786`).
 
 IMPORTANT: The _comment[proteomics data acquisition method]_ column is REQUIRED for all mass spectrometry-based SDRF files. This field must be explicitly specified and cannot be omitted or assumed.
 
@@ -1062,7 +1083,7 @@ Base SDRF template for mass spectrometry-based proteomics. This is the minimum v
 | required
 | Mass spectrometry acquisition method
 | ontology: pride
-| data-dependent acquisition, data-independent acquisition, parallel reaction monitoring, selected reaction monitoring
+| NT=data-dependent acquisition;AC=PRIDE:0000627, NT=data-independent acquisition;AC=PRIDE:0000450, NT=parallel reaction monitoring;AC=PRIDE:0000629, NT=selected reaction monitoring;AC=PRIDE:0000630
 
 | `comment[instrument]`
 | required
@@ -1733,8 +1754,8 @@ SDRF template for Data-independent acquisition (DIA) experiments. Extends ms-pro
 | `comment[proteomics data acquisition method]`
 | required
 | Mass spectrometry acquisition method (restricted to DIA for this template)
-| single value only; values: Data-independent acquisition
-|
+| single value only; ontology: pride; values: data-independent acquisition, NT=data-independent acquisition;AC=PRIDE:0000450, diaPASEF, SWATH MS (plain or NT+AC)
+| NT=data-independent acquisition;AC=PRIDE:0000450
 
 | `comment[scan window lower limit]`
 | recommended
