@@ -184,6 +184,49 @@
             white-space: nowrap;
         }
 
+        /* Cardinality badges */
+        .card-multiple {
+            background-color: #ecfeff;
+            color: #0e7490;
+            border: 1px solid #67e8f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: help;
+        }
+
+        .card-single {
+            color: var(--text-light);
+            font-size: 0.72rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Prominent cardinality note above the table */
+        .cardinality-note {
+            background: #ecfeff;
+            border: 1px solid #67e8f9;
+            border-left: 4px solid #0e7490;
+            border-radius: 6px;
+            padding: 0.9rem 1.1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .cardinality-note strong {
+            color: #0e7490;
+        }
+
+        .cardinality-note code {
+            background: var(--code-bg, #f1f5f9);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.82rem;
+        }
+
         /* Requirement badges - consistent with style.css */
         .req-required {
             background-color: #fef3c7;
@@ -376,6 +419,14 @@
             <p>Comprehensive reference for all SDRF column terms, their ontology mappings, and allowed values. Use the filters to find specific terms or browse by template.</p>
         </div>
 
+        <div class="cardinality-note">
+            <strong>Cardinality — some columns can be repeated.</strong>
+            A column marked <span class="card-multiple">Multiple &#9707;</span> in the table below may appear
+            <em>more than once with the same header</em>, and each copy carries one value. For example, to record
+            three post-translational modifications you add three <code>comment[modification parameters]</code> columns,
+            one per modification. Columns marked <span class="card-single">Single</span> appear exactly once per sample.
+        </div>
+
         <div class="filters">
             <div class="filter-row">
                 <div class="filter-group">
@@ -451,6 +502,7 @@
                         <th data-sort="term">Term</th>
                         <th data-sort="requirement">Requirement</th>
                         <th data-sort="type">Type</th>
+                        <th>Cardinality</th>
                         <th data-sort="ontology">Ontology Accession</th>
                         <th data-sort="usage">Usage (Templates)</th>
                         <th data-sort="values">Values Source</th>
@@ -631,6 +683,28 @@
             return `<span class="${classes[type] || ''}">${type}</span>`;
         }
 
+        // Columns that may be repeated (cardinality: multiple). Sourced from the template YAMLs;
+        // keyed as `<type>[<term>]` to match a full column header.
+        const MULTIPLE_CARDINALITY = new Set([
+            'characteristics[cell type]',
+            'characteristics[organism part]',
+            'characteristics[spiked compound]',
+            'comment[modification parameters]',
+            'comment[instrument]',
+            'comment[internal standard]',
+            'comment[derivatization agent]',
+            'comment[sdrf template]'
+        ]);
+
+        function formatCardinality(row) {
+            const isMultiple = MULTIPLE_CARDINALITY.has(`${row.type}[${row.term}]`);
+            if (isMultiple) {
+                return '<span class="card-multiple" title="Repeatable: add several columns with the '
+                    + 'same header, one value each">Multiple &#9707;</span>';
+            }
+            return '<span class="card-single" title="Appears exactly once per sample">Single</span>';
+        }
+
         function formatRequirement(requirement) {
             const classes = {
                 'required': 'req-required',
@@ -750,6 +824,7 @@
                     <td><span class="term-name">${row.term}</span></td>
                     <td>${formatRequirement(row.requirement)}</td>
                     <td>${formatType(row.type)}</td>
+                    <td>${formatCardinality(row)}</td>
                     <td>${getOntologyLink(row.ontology_term_accession)}</td>
                     <td>${formatUsage(row.usage)}</td>
                     <td class="values-cell">${formatValuesSource(row)}</td>
