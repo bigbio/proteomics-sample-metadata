@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Proteomics data acquisition method policy** (`comment[proteomics data acquisition method]`): values MUST be descendants of [`PRIDE:0000659`](https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659); recommend lowercase OLS labels and `NT=<label>;AC=<accession>`; plain free-text OLS labels remain allowed. Recommended SRM accession is `PRIDE:0000630` (not `MS:1000206`). See [#843](https://github.com/bigbio/proteomics-sample-metadata/issues/843) and [sdrf-annotated-datasets#31](https://github.com/bigbio/sdrf-annotated-datasets/issues/31).
+- **Proteomics data acquisition method policy** (`comment[proteomics data acquisition method]`): values MUST be descendants of [`PRIDE:0000659`](https://www.ebi.ac.uk/ols4/ontologies/pride/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FPRIDE_0000659); recommend `NT=<OLS label>;AC=<accession>` using the OLS label as written; plain free-text OLS labels remain allowed. DIA variants (diaPASEF, SWATH MS) are recorded in this same column as PRIDE:0000659 descendants (`comment[dia method]` is no longer a template column). Recommended SRM accession is `PRIDE:0000630` (not `MS:1000206`). See [#843](https://github.com/bigbio/proteomics-sample-metadata/issues/843) and [sdrf-annotated-datasets#31](https://github.com/bigbio/sdrf-annotated-datasets/issues/31).
 
 - **Organism part / sampling site guidance**: clarified that `characteristics[organism part]` is the main normalized anatomy field for cross-study integration, while `characteristics[sampling site]` captures provenance or finer local context and may be equal to `characteristics[organism part]`.
 
