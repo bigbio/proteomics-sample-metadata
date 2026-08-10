@@ -5085,7 +5085,7 @@
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method",
+          "description": "Mass spectrometry acquisition method. Values MUST be descendants of PRIDE:0000659. Recommended form is NT+AC using the OLS label as written (e.g. NT=Data-dependent acquisition;AC=PRIDE:0000627); plain free-text OLS labels are also allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -5099,17 +5099,21 @@
                   "pride"
                 ],
                 "error_level": "error",
-                "description": "The proteomics data acquisition method should be a valid PRIDE ontology term",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer NT=<OLS label>;AC=<accession> using the OLS label as written; plain free-text OLS labels are allowed.\n",
                 "examples": [
-                  "data-dependent acquisition",
-                  "data-independent acquisition",
-                  "parallel reaction monitoring",
-                  "selected reaction monitoring"
+                  "NT=Data-dependent acquisition;AC=PRIDE:0000627",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "NT=Parallel reaction monitoring;AC=PRIDE:0000629",
+                  "NT=Selected reaction monitoring;AC=PRIDE:0000630",
+                  "Data-dependent acquisition",
+                  "Data-independent acquisition"
                 ]
               }
             }
           ],
-          "example_value": "data-dependent acquisition"
+          "example_value": "NT=Data-dependent acquisition;AC=PRIDE:0000627"
         },
         {
           "name": "comment[instrument]",
@@ -7242,7 +7246,7 @@
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method (restricted to DIA for this template)",
+          "description": "Mass spectrometry acquisition method restricted to DIA or a DIA descendant under PRIDE:0000659. Prefer NT=Data-independent acquisition;AC=PRIDE:0000450; plain free-text labels are allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -7253,17 +7257,40 @@
               "type": "single_cardinality_validator"
             },
             {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "error_level": "error",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer a DIA term.\n",
+                "examples": [
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "Data-independent acquisition",
+                  "NT=diaPASEF;AC=PRIDE:0000650",
+                  "NT=SWATH MS;AC=PRIDE:0000447"
+                ]
+              }
+            },
+            {
               "type": "values",
               "params": {
                 "values": [
-                  "Data-independent acquisition"
+                  "Data-independent acquisition",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "diaPASEF",
+                  "NT=diaPASEF;AC=PRIDE:0000650",
+                  "SWATH MS",
+                  "NT=SWATH MS;AC=PRIDE:0000447"
                 ],
                 "error_level": "error",
-                "description": "This template requires Data-independent acquisition"
+                "description": "This template requires DIA or a named DIA descendant under PRIDE:0000659 (plain label or recommended NT+AC form)\n"
               }
             }
           ],
-          "example_value": "Data-independent acquisition"
+          "example_value": "NT=Data-independent acquisition;AC=PRIDE:0000450"
         },
         {
           "name": "comment[instrument]",
@@ -8176,42 +8203,13 @@
             }
           ],
           "example_value": "25"
-        },
-        {
-          "name": "comment[dia method]",
-          "requirement": "recommended",
-          "description": "Specific DIA method variant used",
-          "ontology_accession": "PRIDE:0000450",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "dia-acquisition",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid PRIDE ontology term for DIA methods",
-                "examples": [
-                  "SWATH-MS",
-                  "MSE",
-                  "All ion fragmentation",
-                  "diaPASEF"
-                ]
-              }
-            }
-          ],
-          "example_value": "SWATH-MS"
         }
       ],
       "own_columns": [
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method (restricted to DIA for this template)",
+          "description": "Mass spectrometry acquisition method restricted to DIA or a DIA descendant under PRIDE:0000659. Prefer NT=Data-independent acquisition;AC=PRIDE:0000450; plain free-text labels are allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -8222,17 +8220,40 @@
               "type": "single_cardinality_validator"
             },
             {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "error_level": "error",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer a DIA term.\n",
+                "examples": [
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "Data-independent acquisition",
+                  "NT=diaPASEF;AC=PRIDE:0000650",
+                  "NT=SWATH MS;AC=PRIDE:0000447"
+                ]
+              }
+            },
+            {
               "type": "values",
               "params": {
                 "values": [
-                  "Data-independent acquisition"
+                  "Data-independent acquisition",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "diaPASEF",
+                  "NT=diaPASEF;AC=PRIDE:0000650",
+                  "SWATH MS",
+                  "NT=SWATH MS;AC=PRIDE:0000447"
                 ],
                 "error_level": "error",
-                "description": "This template requires Data-independent acquisition"
+                "description": "This template requires DIA or a named DIA descendant under PRIDE:0000659 (plain label or recommended NT+AC form)\n"
               }
             }
           ],
-          "example_value": "Data-independent acquisition"
+          "example_value": "NT=Data-independent acquisition;AC=PRIDE:0000450"
         },
         {
           "name": "comment[scan window lower limit]",
@@ -8306,35 +8327,6 @@
             }
           ],
           "example_value": "25"
-        },
-        {
-          "name": "comment[dia method]",
-          "requirement": "recommended",
-          "description": "Specific DIA method variant used",
-          "ontology_accession": "PRIDE:0000450",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "dia-acquisition",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid PRIDE ontology term for DIA methods",
-                "examples": [
-                  "SWATH-MS",
-                  "MSE",
-                  "All ion fragmentation",
-                  "diaPASEF"
-                ]
-              }
-            }
-          ],
-          "example_value": "SWATH-MS"
         }
       ]
     },
@@ -11161,7 +11153,7 @@
         },
         {
           "name": "characteristics[sample name]",
-          "requirement": "optional",
+          "requirement": "required",
           "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
           "ontology_accession": "PRIDE:0000623",
           "cardinality": "single",
@@ -11188,29 +11180,28 @@
           "example_value": "Sample_1"
         },
         {
-          "name": "characteristics[environmental sample type]",
+          "name": "characteristics[environmental medium]",
           "requirement": "required",
-          "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000993",
+          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
+          "ontology_accession": "PRIDE:0000994",
           "cardinality": "single",
-          "allow_not_applicable": false,
-          "allow_not_available": false,
+          "allow_not_applicable": true,
+          "allow_not_available": true,
           "source_template": "metaproteomics",
           "validators": [
             {
               "type": "ontology",
               "params": {
                 "ontologies": [
-                  "envo",
-                  "efo"
+                  "envo"
                 ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO or EFO term",
+                "error_level": "error",
+                "description": "Should be a valid ENVO environmental material term",
                 "examples": [
                   "soil",
                   "seawater",
-                  "gut microbiome",
-                  "wastewater",
+                  "freshwater",
+                  "feces",
                   "biofilm"
                 ]
               }
@@ -11273,36 +11264,6 @@
             }
           ],
           "example_value": "Pacific Ocean"
-        },
-        {
-          "name": "characteristics[environmental medium]",
-          "requirement": "recommended",
-          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000994",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "metaproteomics",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "envo"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO environmental material term",
-                "examples": [
-                  "soil",
-                  "seawater",
-                  "freshwater",
-                  "feces",
-                  "biofilm"
-                ]
-              }
-            }
-          ],
-          "example_value": "soil"
         },
         {
           "name": "characteristics[collection date]",
@@ -14167,7 +14128,7 @@
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method",
+          "description": "Mass spectrometry acquisition method. Values MUST be descendants of PRIDE:0000659. Recommended form is NT+AC using the OLS label as written (e.g. NT=Data-dependent acquisition;AC=PRIDE:0000627); plain free-text OLS labels are also allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -14181,17 +14142,21 @@
                   "pride"
                 ],
                 "error_level": "error",
-                "description": "The proteomics data acquisition method should be a valid PRIDE ontology term",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer NT=<OLS label>;AC=<accession> using the OLS label as written; plain free-text OLS labels are allowed.\n",
                 "examples": [
-                  "data-dependent acquisition",
-                  "data-independent acquisition",
-                  "parallel reaction monitoring",
-                  "selected reaction monitoring"
+                  "NT=Data-dependent acquisition;AC=PRIDE:0000627",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "NT=Parallel reaction monitoring;AC=PRIDE:0000629",
+                  "NT=Selected reaction monitoring;AC=PRIDE:0000630",
+                  "Data-dependent acquisition",
+                  "Data-independent acquisition"
                 ]
               }
             }
           ],
-          "example_value": "data-dependent acquisition"
+          "example_value": "NT=Data-dependent acquisition;AC=PRIDE:0000627"
         },
         {
           "name": "comment[instrument]",
@@ -18036,7 +18001,7 @@
         },
         {
           "name": "characteristics[sample name]",
-          "requirement": "optional",
+          "requirement": "required",
           "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
           "ontology_accession": "PRIDE:0000623",
           "cardinality": "single",
@@ -18063,29 +18028,28 @@
           "example_value": "Sample_1"
         },
         {
-          "name": "characteristics[environmental sample type]",
+          "name": "characteristics[environmental medium]",
           "requirement": "required",
-          "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000993",
+          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
+          "ontology_accession": "PRIDE:0000994",
           "cardinality": "single",
-          "allow_not_applicable": false,
-          "allow_not_available": false,
+          "allow_not_applicable": true,
+          "allow_not_available": true,
           "source_template": "metaproteomics",
           "validators": [
             {
               "type": "ontology",
               "params": {
                 "ontologies": [
-                  "envo",
-                  "efo"
+                  "envo"
                 ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO or EFO term",
+                "error_level": "error",
+                "description": "Should be a valid ENVO environmental material term",
                 "examples": [
                   "soil",
                   "seawater",
-                  "gut microbiome",
-                  "wastewater",
+                  "freshwater",
+                  "feces",
                   "biofilm"
                 ]
               }
@@ -18148,36 +18112,6 @@
             }
           ],
           "example_value": "Pacific Ocean"
-        },
-        {
-          "name": "characteristics[environmental medium]",
-          "requirement": "recommended",
-          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000994",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "metaproteomics",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "envo"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO environmental material term",
-                "examples": [
-                  "soil",
-                  "seawater",
-                  "freshwater",
-                  "feces",
-                  "biofilm"
-                ]
-              }
-            }
-          ],
-          "example_value": "soil"
         },
         {
           "name": "characteristics[collection date]",
@@ -18576,7 +18510,7 @@
       "own_columns": [
         {
           "name": "characteristics[sample name]",
-          "requirement": "optional",
+          "requirement": "required",
           "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
           "ontology_accession": "PRIDE:0000623",
           "cardinality": "single",
@@ -18603,29 +18537,28 @@
           "example_value": "Sample_1"
         },
         {
-          "name": "characteristics[environmental sample type]",
+          "name": "characteristics[environmental medium]",
           "requirement": "required",
-          "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000993",
+          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
+          "ontology_accession": "PRIDE:0000994",
           "cardinality": "single",
-          "allow_not_applicable": false,
-          "allow_not_available": false,
+          "allow_not_applicable": true,
+          "allow_not_available": true,
           "source_template": "metaproteomics",
           "validators": [
             {
               "type": "ontology",
               "params": {
                 "ontologies": [
-                  "envo",
-                  "efo"
+                  "envo"
                 ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO or EFO term",
+                "error_level": "error",
+                "description": "Should be a valid ENVO environmental material term",
                 "examples": [
                   "soil",
                   "seawater",
-                  "gut microbiome",
-                  "wastewater",
+                  "freshwater",
+                  "feces",
                   "biofilm"
                 ]
               }
@@ -18688,36 +18621,6 @@
             }
           ],
           "example_value": "Pacific Ocean"
-        },
-        {
-          "name": "characteristics[environmental medium]",
-          "requirement": "recommended",
-          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000994",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "metaproteomics",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "envo"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO environmental material term",
-                "examples": [
-                  "soil",
-                  "seawater",
-                  "freshwater",
-                  "feces",
-                  "biofilm"
-                ]
-              }
-            }
-          ],
-          "example_value": "soil"
         },
         {
           "name": "characteristics[collection date]",
@@ -21801,7 +21704,7 @@
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method",
+          "description": "Mass spectrometry acquisition method. Values MUST be descendants of PRIDE:0000659. Recommended form is NT+AC using the OLS label as written (e.g. NT=Data-dependent acquisition;AC=PRIDE:0000627); plain free-text OLS labels are also allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -21815,17 +21718,21 @@
                   "pride"
                 ],
                 "error_level": "error",
-                "description": "The proteomics data acquisition method should be a valid PRIDE ontology term",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer NT=<OLS label>;AC=<accession> using the OLS label as written; plain free-text OLS labels are allowed.\n",
                 "examples": [
-                  "data-dependent acquisition",
-                  "data-independent acquisition",
-                  "parallel reaction monitoring",
-                  "selected reaction monitoring"
+                  "NT=Data-dependent acquisition;AC=PRIDE:0000627",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "NT=Parallel reaction monitoring;AC=PRIDE:0000629",
+                  "NT=Selected reaction monitoring;AC=PRIDE:0000630",
+                  "Data-dependent acquisition",
+                  "Data-independent acquisition"
                 ]
               }
             }
           ],
-          "example_value": "data-dependent acquisition"
+          "example_value": "NT=Data-dependent acquisition;AC=PRIDE:0000627"
         },
         {
           "name": "comment[instrument]",
@@ -22671,7 +22578,7 @@
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method",
+          "description": "Mass spectrometry acquisition method. Values MUST be descendants of PRIDE:0000659. Recommended form is NT+AC using the OLS label as written (e.g. NT=Data-dependent acquisition;AC=PRIDE:0000627); plain free-text OLS labels are also allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -22685,17 +22592,21 @@
                   "pride"
                 ],
                 "error_level": "error",
-                "description": "The proteomics data acquisition method should be a valid PRIDE ontology term",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer NT=<OLS label>;AC=<accession> using the OLS label as written; plain free-text OLS labels are allowed.\n",
                 "examples": [
-                  "data-dependent acquisition",
-                  "data-independent acquisition",
-                  "parallel reaction monitoring",
-                  "selected reaction monitoring"
+                  "NT=Data-dependent acquisition;AC=PRIDE:0000627",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "NT=Parallel reaction monitoring;AC=PRIDE:0000629",
+                  "NT=Selected reaction monitoring;AC=PRIDE:0000630",
+                  "Data-dependent acquisition",
+                  "Data-independent acquisition"
                 ]
               }
             }
           ],
-          "example_value": "data-dependent acquisition"
+          "example_value": "NT=Data-dependent acquisition;AC=PRIDE:0000627"
         },
         {
           "name": "comment[instrument]",
@@ -28369,7 +28280,7 @@
         {
           "name": "comment[proteomics data acquisition method]",
           "requirement": "required",
-          "description": "Mass spectrometry acquisition method",
+          "description": "Mass spectrometry acquisition method. Values MUST be descendants of PRIDE:0000659. Recommended form is NT+AC using the OLS label as written (e.g. NT=Data-dependent acquisition;AC=PRIDE:0000627); plain free-text OLS labels are also allowed.\n",
           "ontology_accession": "PRIDE:0000659",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -28383,17 +28294,21 @@
                   "pride"
                 ],
                 "error_level": "error",
-                "description": "The proteomics data acquisition method should be a valid PRIDE ontology term",
+                "parent_accession": "PRIDE:0000659",
+                "recommend_nt_ac": true,
+                "description": "Must be a PRIDE ontology term under proteomics data acquisition method (PRIDE:0000659). Prefer NT=<OLS label>;AC=<accession> using the OLS label as written; plain free-text OLS labels are allowed.\n",
                 "examples": [
-                  "data-dependent acquisition",
-                  "data-independent acquisition",
-                  "parallel reaction monitoring",
-                  "selected reaction monitoring"
+                  "NT=Data-dependent acquisition;AC=PRIDE:0000627",
+                  "NT=Data-independent acquisition;AC=PRIDE:0000450",
+                  "NT=Parallel reaction monitoring;AC=PRIDE:0000629",
+                  "NT=Selected reaction monitoring;AC=PRIDE:0000630",
+                  "Data-dependent acquisition",
+                  "Data-independent acquisition"
                 ]
               }
             }
           ],
-          "example_value": "data-dependent acquisition"
+          "example_value": "NT=Data-dependent acquisition;AC=PRIDE:0000627"
         },
         {
           "name": "comment[instrument]",
@@ -30445,7 +30360,7 @@
         },
         {
           "name": "characteristics[sample name]",
-          "requirement": "optional",
+          "requirement": "required",
           "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
           "ontology_accession": "PRIDE:0000623",
           "cardinality": "single",
@@ -30472,29 +30387,28 @@
           "example_value": "Sample_1"
         },
         {
-          "name": "characteristics[environmental sample type]",
+          "name": "characteristics[environmental medium]",
           "requirement": "required",
-          "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000993",
+          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
+          "ontology_accession": "PRIDE:0000994",
           "cardinality": "single",
-          "allow_not_applicable": false,
-          "allow_not_available": false,
+          "allow_not_applicable": true,
+          "allow_not_available": true,
           "source_template": "metaproteomics",
           "validators": [
             {
               "type": "ontology",
               "params": {
                 "ontologies": [
-                  "envo",
-                  "efo"
+                  "envo"
                 ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO or EFO term",
+                "error_level": "error",
+                "description": "Should be a valid ENVO environmental material term",
                 "examples": [
                   "soil",
                   "seawater",
-                  "gut microbiome",
-                  "wastewater",
+                  "freshwater",
+                  "feces",
                   "biofilm"
                 ]
               }
@@ -30557,36 +30471,6 @@
             }
           ],
           "example_value": "Pacific Ocean"
-        },
-        {
-          "name": "characteristics[environmental medium]",
-          "requirement": "recommended",
-          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000994",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "metaproteomics",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "envo"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO environmental material term",
-                "examples": [
-                  "soil",
-                  "seawater",
-                  "freshwater",
-                  "feces",
-                  "biofilm"
-                ]
-              }
-            }
-          ],
-          "example_value": "soil"
         },
         {
           "name": "characteristics[collection date]",
@@ -31133,6 +31017,32 @@
             }
           ],
           "example_value": "well drained"
+        },
+        {
+          "name": "characteristics[soil type method]",
+          "requirement": "optional",
+          "description": "Method used to determine or classify soil type, including the classification system, field assessment protocol, or laboratory procedure applied (MIXS:0000334).",
+          "ontology_accession": "PRIDE:0001009",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "soil",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Description of the soil type determination or classification method",
+                "examples": [
+                  "USDA Soil Taxonomy classification",
+                  "WRB soil classification system",
+                  "Field assessment according to FAO Guidelines for Soil Description",
+                  "National Soil Resources Institute classification protocol"
+                ]
+              }
+            }
+          ],
+          "example_value": "USDA Soil Taxonomy classification"
         },
         {
           "name": "characteristics[current land use]",
@@ -32418,6 +32328,32 @@
             }
           ],
           "example_value": "well drained"
+        },
+        {
+          "name": "characteristics[soil type method]",
+          "requirement": "optional",
+          "description": "Method used to determine or classify soil type, including the classification system, field assessment protocol, or laboratory procedure applied (MIXS:0000334).",
+          "ontology_accession": "PRIDE:0001009",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "soil",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Description of the soil type determination or classification method",
+                "examples": [
+                  "USDA Soil Taxonomy classification",
+                  "WRB soil classification system",
+                  "Field assessment according to FAO Guidelines for Soil Description",
+                  "National Soil Resources Institute classification protocol"
+                ]
+              }
+            }
+          ],
+          "example_value": "USDA Soil Taxonomy classification"
         },
         {
           "name": "characteristics[current land use]",
@@ -34608,7 +34544,7 @@
         },
         {
           "name": "characteristics[sample name]",
-          "requirement": "optional",
+          "requirement": "required",
           "description": "Identifier of the sample, provided for backward compatibility with MIxS samp_name (MIXS:0001107). May be identical to `source name` (defined in base); use this column when preserving the original MIxS sample label is required.",
           "ontology_accession": "PRIDE:0000623",
           "cardinality": "single",
@@ -34635,29 +34571,28 @@
           "example_value": "Sample_1"
         },
         {
-          "name": "characteristics[environmental sample type]",
+          "name": "characteristics[environmental medium]",
           "requirement": "required",
-          "description": "Type of environmental sample analyzed (ENVO or EFO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000993",
+          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
+          "ontology_accession": "PRIDE:0000994",
           "cardinality": "single",
-          "allow_not_applicable": false,
-          "allow_not_available": false,
+          "allow_not_applicable": true,
+          "allow_not_available": true,
           "source_template": "metaproteomics",
           "validators": [
             {
               "type": "ontology",
               "params": {
                 "ontologies": [
-                  "envo",
-                  "efo"
+                  "envo"
                 ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO or EFO term",
+                "error_level": "error",
+                "description": "Should be a valid ENVO environmental material term",
                 "examples": [
                   "soil",
                   "seawater",
-                  "gut microbiome",
-                  "wastewater",
+                  "freshwater",
+                  "feces",
                   "biofilm"
                 ]
               }
@@ -34720,36 +34655,6 @@
             }
           ],
           "example_value": "Pacific Ocean"
-        },
-        {
-          "name": "characteristics[environmental medium]",
-          "requirement": "recommended",
-          "description": "Environmental material from which the sample was obtained (ENVO term). Corresponds to MIxS env_medium (MIXS:0000014).",
-          "ontology_accession": "PRIDE:0000994",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "metaproteomics",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "envo"
-                ],
-                "error_level": "warning",
-                "description": "Should be a valid ENVO environmental material term",
-                "examples": [
-                  "soil",
-                  "seawater",
-                  "freshwater",
-                  "feces",
-                  "biofilm"
-                ]
-              }
-            }
-          ],
-          "example_value": "soil"
         },
         {
           "name": "characteristics[collection date]",
@@ -36004,7 +35909,7 @@
         {
           "name": "characteristics[calcium]",
           "requirement": "optional",
-          "description": "Calcium concentration. Corresponds to MIxS(MIXS:0000421).",
+          "description": "Calcium concentration. Corresponds to MIxS:0000432.",
           "ontology_accession": "PRIDE:0000772",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -36031,7 +35936,7 @@
         {
           "name": "characteristics[magnesium]",
           "requirement": "optional",
-          "description": "Magnesium concentration. Corresponds to MIxS(MIXS:0000431).",
+          "description": "Magnesium concentration. Corresponds to MIxS:0000431.",
           "ontology_accession": "PRIDE:0000793",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -36350,7 +36255,7 @@
         {
           "name": "characteristics[dissolved hydrogen]",
           "requirement": "optional",
-          "description": "Dissolved hydrogen concentration. Corresponds to MIxS (MIXS:0000205).",
+          "description": "Dissolved hydrogen concentration. Corresponds to MIxS (MIXS:0000179).",
           "ontology_accession": "PRIDE:0000780",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -36614,6 +36519,30 @@
             }
           ],
           "example_value": "0.5 mg/L"
+        },
+        {
+          "name": "characteristics[n-alkanes]",
+          "requirement": "optional",
+          "description": "Concentration or composition of n-alkanes present in the sample. n-Alkanes are straight-chain saturated hydrocarbons that can be used as indicators of organic matter sources and environmental conditions.",
+          "ontology_accession": "MIXS:0000503",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "water",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "n-alkane concentration, composition, or distribution",
+                "examples": [
+                  "C15-C35 n-alkane profile determined by GC-MS",
+                  "Total n-alkanes 150 \u00b5g/g dry weight"
+                ]
+              }
+            }
+          ],
+          "example_value": "C15-C35 n-alkane profile determined by GC-MS"
         },
         {
           "name": "characteristics[chlorophyll]",
@@ -38117,7 +38046,7 @@
         {
           "name": "characteristics[calcium]",
           "requirement": "optional",
-          "description": "Calcium concentration. Corresponds to MIxS(MIXS:0000421).",
+          "description": "Calcium concentration. Corresponds to MIxS:0000432.",
           "ontology_accession": "PRIDE:0000772",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -38144,7 +38073,7 @@
         {
           "name": "characteristics[magnesium]",
           "requirement": "optional",
-          "description": "Magnesium concentration. Corresponds to MIxS(MIXS:0000431).",
+          "description": "Magnesium concentration. Corresponds to MIxS:0000431.",
           "ontology_accession": "PRIDE:0000793",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -38463,7 +38392,7 @@
         {
           "name": "characteristics[dissolved hydrogen]",
           "requirement": "optional",
-          "description": "Dissolved hydrogen concentration. Corresponds to MIxS (MIXS:0000205).",
+          "description": "Dissolved hydrogen concentration. Corresponds to MIxS (MIXS:0000179).",
           "ontology_accession": "PRIDE:0000780",
           "cardinality": "single",
           "allow_not_applicable": true,
@@ -38727,6 +38656,30 @@
             }
           ],
           "example_value": "0.5 mg/L"
+        },
+        {
+          "name": "characteristics[n-alkanes]",
+          "requirement": "optional",
+          "description": "Concentration or composition of n-alkanes present in the sample. n-Alkanes are straight-chain saturated hydrocarbons that can be used as indicators of organic matter sources and environmental conditions.",
+          "ontology_accession": "MIXS:0000503",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "water",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "n-alkane concentration, composition, or distribution",
+                "examples": [
+                  "C15-C35 n-alkane profile determined by GC-MS",
+                  "Total n-alkanes 150 \u00b5g/g dry weight"
+                ]
+              }
+            }
+          ],
+          "example_value": "C15-C35 n-alkane profile determined by GC-MS"
         },
         {
           "name": "characteristics[chlorophyll]",
@@ -39374,6 +39327,11 @@
   "combination_rules": {
     "mutually_exclusive": [
       [
+        "affinity-proteomics",
+        "ms-metabolomics",
+        "ms-proteomics"
+      ],
+      [
         "human",
         "invertebrates",
         "plants",
@@ -39393,11 +39351,6 @@
       ],
       [
         "affinity-proteomics",
-        "ms-proteomics"
-      ],
-      [
-        "affinity-proteomics",
-        "ms-metabolomics",
         "ms-proteomics"
       ]
     ],
