@@ -34,8 +34,10 @@ def _compact_validators(validators: list[dict] | None) -> list[dict]:
         return []
     result = []
     for v in validators:
+        if not v:
+            continue
         compact: dict[str, Any] = {"type": v.get("validator_name", "")}
-        params = v.get("params", {})
+        params = v.get("params") or {}
         if params:
             compact["params"] = params
         result.append(compact)
@@ -46,7 +48,9 @@ def _example_value(column: dict) -> str:
     """Derive an example value for a column from validators or fallbacks."""
     validators = column.get("validators") or []
     for v in validators:
-        params = v.get("params", {})
+        if not v:
+            continue
+        params = v.get("params") or {}
         if params.get("examples"):
             return str(params["examples"][0])
         if params.get("values"):

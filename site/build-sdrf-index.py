@@ -98,6 +98,7 @@ def main():
     datasets_prefix = 'datasets'
     datasets_repo = os.environ.get('SDRF_DATASETS_REPO', 'bigbio/sdrf-annotated-datasets')
     datasets_branch = os.environ.get('SDRF_DATASETS_BRANCH', 'main')
+    datasets_repo_url = f'https://github.com/{datasets_repo}'
 
     # Annotated SDRFs live in the external sdrf-annotated-datasets repository.
     # SDRF_DATASETS_DIR must point at its datasets/ folder (either a local
@@ -131,6 +132,18 @@ def main():
 
     # Dataset index
     datasets = []
+    project_file_counts = Counter()
+
+    for filepath in sorted(sdrf_files):
+        if '/.' in filepath:
+            continue
+        rel_in_datasets = os.path.relpath(filepath, datasets_dir)
+        parts = rel_in_datasets.split(os.sep)
+        if len(parts) >= 2:
+            project_id = parts[0]
+        else:
+            project_id = os.path.basename(filepath).replace('.sdrf.tsv', '')
+        project_file_counts[project_id] += 1
 
     for filepath in sorted(sdrf_files):
         # Skip hidden files
@@ -267,7 +280,9 @@ def main():
             'file': os.path.basename(filepath),  # Alias for filename (used by quickstart search)
             'filename': os.path.basename(filepath),
             'path': datasets_rel_path,
+            'accession_path': os.path.join(datasets_prefix, project_id).replace(os.sep, '/'),
             'github_url': f'https://github.com/{datasets_repo}/blob/{datasets_branch}/{datasets_rel_path}',
+            'accession_github_url': f'https://github.com/{datasets_repo}/tree/{datasets_branch}/{datasets_prefix}/{project_id}',
             'raw_url': f'https://raw.githubusercontent.com/{datasets_repo}/{datasets_branch}/{datasets_rel_path}',
             'num_samples': num_samples,
             'num_columns': len(headers),
@@ -277,6 +292,7 @@ def main():
             'acquisition_methods': [a for a in dataset_acq if a],  # Used by quickstart search
             'experiment_type': exp_type,
             'label_type': label_type,
+            'accession_file_count': project_file_counts[project_id],
             'template': parsed['metadata'].get('template', 'unknown'),
             'version': parsed['metadata'].get('version', 'unknown')
         }
@@ -286,8 +302,12 @@ def main():
     # Build statistics summary
     statistics = {
         'total_datasets': len(datasets),
+        'total_accessions': len(project_file_counts),
+        'total_sdrf_files': len(datasets),
+        'split_accessions': sum(1 for count in project_file_counts.values() if count > 1),
         'total_samples': total_samples,
         'generated_at': datetime.utcnow().isoformat() + 'Z',
+        'source_repository_url': datasets_repo_url,
         'organisms': dict(organisms.most_common(50)),
         'organism_parts': dict(organism_parts.most_common(50)),
         'diseases': dict(diseases.most_common(50)),

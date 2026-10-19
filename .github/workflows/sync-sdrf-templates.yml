@@ -1,0 +1,106 @@
+name: Sync sdrf-templates
+
+on:
+  repository_dispatch:
+    types: [sync-sdrf-templates]
+  workflow_dispatch:
+    inputs:
+      templates_sha:
+        description: "Optional sdrf-templates commit SHA to sync"
+        required: false
+      templates_ref:
+        description: "Branch or ref to fetch from sdrf-templates"
+        required: false
+        default: "main"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Resolve target templates commit
+        id: vars
+        env:
+          PAYLOAD_SHA: ${{ github.event.client_payload.templates_sha }}
+          PAYLOAD_REF: ${{ github.event.client_payload.templates_ref }}
+          INPUT_SHA: ${{ github.event.inputs.templates_sha }}
+          INPUT_REF: ${{ github.event.inputs.templates_ref }}
+          SUBMODULE_PATH: sdrf-proteomics/sdrf-templates
+        run: |
+          set -euo pipefail
+
+          templates_sha="${PAYLOAD_SHA:-${INPUT_SHA:-}}"
+          templates_ref="${PAYLOAD_REF:-${INPUT_REF:-main}}"
+
+          git -C "${SUBMODULE_PATH}" fetch origin "${templates_ref}"
+
+          if [ -z "${templates_sha}" ]; then
+            templates_sha="$(git -C "${SUBMODULE_PATH}" rev-parse "origin/${templates_ref}")"
+          fi
+
+          echo "templates_sha=${templates_sha}" >> "${GITHUB_OUTPUT}"
+          echo "templates_short_sha=${templates_sha:0:7}" >> "${GITHUB_OUTPUT}"
+          echo "templates_ref=${templates_ref}" >> "${GITHUB_OUTPUT}"
+
+      - name: Update sdrf-templates submodule
+        env:
+          SUBMODULE_PATH: sdrf-proteomics/sdrf-templates
+          TEMPLATES_SHA: ${{ steps.vars.outputs.templates_sha }}
+        run: |
+          set -euo pipefail
+
+          git submodule sync --recursive
+          git submodule update --init --recursive
+          git -C "${SUBMODULE_PATH}" checkout "${TEMPLATES_SHA}"
+          git add "${SUBMODULE_PATH}"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install generation dependencies
+        run: pip install pyyaml jinja2
+
+      - name: Regenerate template-derived documentation
+        run: |
+          python3 scripts/generate_templates_appendix.py --templates-dir sdrf-proteomics/sdrf-templates --readme sdrf-proteomics/README.adoc
+          python3 scripts/build_index_templates.py sdrf-proteomics/sdrf-templates site/index.html
+          git diff --check
+
+      - name: Open or update sync PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: >-
+            chore: sync sdrf-templates main to
+            ${{ steps.vars.outputs.templates_short_sha }}
+          branch: automation/sync-sdrf-templates-main
+          delete-branch: true
+          base: dev
+          title: >-
+            Sync specification to sdrf-templates main
+            (${{ steps.vars.outputs.templates_short_sha }})
+          body: |
+            This automated PR syncs the vendored `sdrf-templates` submodule and regenerates the template-derived specification content.
+
+            - Source repository: `bigbio/sdrf-templates`
+            - Source ref: `${{ steps.vars.outputs.templates_ref }}`
+            - Source commit: `${{ steps.vars.outputs.templates_sha }}`
+            - Trigger: `${{ github.event_name }}`
+            - Target branch: `dev`
+
+            Validation run in this workflow:
+            - `python3 scripts/generate_templates_appendix.py --templates-dir sdrf-proteomics/sdrf-templates --readme sdrf-proteomics/README.adoc`
+            - `python3 scripts/build_index_templates.py sdrf-proteomics/sdrf-templates site/index.html`
+            - `git diff --check`
