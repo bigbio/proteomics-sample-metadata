@@ -1,125 +1,230 @@
 #!/usr/bin/env python3
+"""Build the SDRF Explorer catalog.
+
+Scans every ``*.sdrf.tsv`` under ``SDRF_DATASETS_DIR`` and writes a compact
+``site/sdrf-data.json``. The explorer page fetches that file at runtime.
+
+The weekly "Refresh SDRF explorer catalog" workflow rebuilds this file from
+``bigbio/sdrf-annotated-datasets``. Documentation builds reuse the published
+snapshot instead of cloning the dataset repository on every push.
 """
-Build SDRF Index and Statistics
 
-This script scans all SDRF files in the repository and generates:
-1. A JSON index of all datasets with metadata
-2. Pre-computed statistics for the SDRF explorer dashboard
-
-Run this script as part of the CI/CD build process.
-"""
-
-import os
 import json
-import glob
+import os
 import re
+import sys
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 
-def parse_sdrf_file(filepath):
-    """Parse an SDRF file and extract metadata and statistics."""
-    with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
-        content = f.read()
+HEADER_RE = re.compile(r'^#(\w+)=(.+)$')
+SKIP_VALUES = frozenset({'', 'not available', 'not applicable', 'na', 'n/a'})
+DISEASE_SKIP = frozenset({'normal'})
 
-    lines = content.strip().split('\n')
+COLUMN_BUCKETS = (
+    ('organism', ('characteristics[organism]',)),
+    ('organism_part', ('characteristics[organism part]',)),
+    ('disease', ('characteristics[disease]',)),
+    ('cell_type', ('characteristics[cell type]',)),
+    ('instrument', ('comment[instrument]',)),
+    ('label', ('comment[label]',)),
+    ('acquisition', ('comment[proteomics data acquisition method]',)),
+    ('modification', ('comment[modification parameters]', 'comment[modification identifier]')),
+    ('cleavage', ('comment[cleavage agent details]',)),
+)
 
-    # Parse header metadata
-    metadata = {}
-    data_start = 0
 
-    for i, line in enumerate(lines):
-        line = line.strip()
-        if line.startswith('#'):
-            match = re.match(r'^#(\w+)=(.+)$', line)
-            if match:
-                metadata[match.group(1)] = match.group(2)
-            data_start = i + 1
-        else:
-            break
+def column_matches(header, pattern):
+    """Match an SDRF column without treating a longer name as the shorter one.
 
-    # Parse column headers
-    if data_start >= len(lines):
+    ``characteristics[organism]`` is a prefix of ``characteristics[organism part]``.
+    A substring test would count tissues as organisms.
+    """
+    return header == pattern or header.startswith(pattern + '.')
+
+
+def parse_ontology_term(value):
+    """Return the label from ``NT=Homo sapiens;AC=NCBITaxon:9606`` style values."""
+    if not value:
+        return ''
+    nt_match = re.search(r'NT=([^;]+)', value)
+    if nt_match:
+        return nt_match.group(1).strip()
+    if ';AC=' in value:
+        return value.split(';AC=', 1)[0].strip()
+    return value.strip()
+
+
+def usable_term(value, extra_skip=()):
+    name = parse_ontology_term(value)
+    if not name:
         return None
+    lowered = name.lower()
+    if lowered in SKIP_VALUES or lowered in extra_skip:
+        return None
+    return name
 
-    headers = lines[data_start].split('\t')
-    headers = [h.strip().lower() for h in headers]
-    data_start += 1
 
-    # Parse data rows
-    rows = []
-    for i in range(data_start, len(lines)):
-        line = lines[i].strip()
-        if line:
+def classify_columns(headers):
+    classified = []
+    for index, header in enumerate(headers):
+        for bucket, patterns in COLUMN_BUCKETS:
+            if any(column_matches(header, pattern) for pattern in patterns):
+                classified.append((index, bucket))
+                break
+    return classified
+
+
+def classify_experiment(methods):
+    lowered = [method.lower() for method in methods if method]
+
+    def has(*needles):
+        return any(any(needle in item for needle in needles) for item in lowered)
+
+    if has('dia', 'data-independent', 'data independent', 'swath', 'diapasef', 'dia-pasef'):
+        return 'DIA'
+    if has('dda', 'data-dependent', 'data dependent'):
+        return 'DDA'
+    if has(
+        'srm',
+        'mrm',
+        'prm',
+        'selected reaction monitoring',
+        'multiple reaction monitoring',
+        'parallel reaction monitoring',
+    ):
+        return 'SRM/MRM'
+    return 'Unknown'
+
+
+def classify_label(labels):
+    lowered = [label.lower() for label in labels if label]
+    if any('tmt' in label for label in lowered):
+        return 'TMT'
+    if any('itraq' in label for label in lowered):
+        return 'iTRAQ'
+    if any('silac' in label for label in lowered):
+        return 'SILAC'
+    return 'Label-free'
+
+
+def iter_sdrf_paths(datasets_dir):
+    root = os.path.abspath(datasets_dir)
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [name for name in dirnames if not name.startswith('.')]
+        for name in sorted(filenames):
+            if name.startswith('.') or not name.endswith('.sdrf.tsv'):
+                continue
+            yield os.path.join(dirpath, name)
+
+
+def project_id_for(filepath, datasets_dir):
+    relative = os.path.relpath(filepath, datasets_dir)
+    parts = relative.split(os.sep)
+    if len(parts) >= 2:
+        return parts[0]
+    return os.path.basename(filepath).replace('.sdrf.tsv', '')
+
+
+def scan_sdrf_file(filepath):
+    """Stream one SDRF file. Returns metadata, row count, and per-bucket terms."""
+    metadata = {}
+    headers = None
+    classified = []
+    num_rows = 0
+    collected = {bucket: [] for bucket, _patterns in COLUMN_BUCKETS}
+
+    with open(filepath, 'r', encoding='utf-8-sig', errors='replace') as handle:
+        for raw_line in handle:
+            line = raw_line.rstrip('\r\n')
+            if headers is None:
+                stripped = line.strip()
+                if not stripped:
+                    continue
+                if stripped.startswith('#'):
+                    match = HEADER_RE.match(stripped)
+                    if match:
+                        metadata[match.group(1)] = match.group(2).strip()
+                    continue
+                headers = [cell.strip().lower() for cell in line.split('\t')]
+                classified = classify_columns(headers)
+                continue
+            if not line.strip():
+                continue
+            num_rows += 1
             values = line.split('\t')
-            row = {headers[j]: values[j].strip() if j < len(values) else ''
-                   for j in range(len(headers))}
-            rows.append(row)
+            for index, bucket in classified:
+                if index >= len(values):
+                    continue
+                collected[bucket].append(values[index].strip())
 
     return {
         'metadata': metadata,
-        'headers': headers,
-        'rows': rows,
-        'num_rows': len(rows)
+        'headers': headers or [],
+        'num_rows': num_rows,
+        'collected': collected,
     }
 
-def extract_column_values(rows, column_patterns):
-    """Extract values from columns matching patterns."""
-    values = []
-    for row in rows:
-        for col, val in row.items():
-            for pattern in column_patterns:
-                if pattern in col and val and val.lower() not in ['not available', 'not applicable', 'na', 'n/a', '']:
-                    values.append(val)
-                    break
-    return values
 
-def get_unique_values(rows, column_patterns):
-    """Get unique values from columns matching patterns."""
-    return list(set(extract_column_values(rows, column_patterns)))
+def _unique_terms(values, extra_skip=()):
+    terms = []
+    seen = set()
+    for value in values:
+        term = usable_term(value, extra_skip)
+        if term and term not in seen:
+            seen.add(term)
+            terms.append(term)
+    return terms
 
-def parse_ontology_term(value):
-    """Extract the name from an ontology term value like 'NT=Homo sapiens;AC=NCBITaxon:9606'."""
-    if not value:
-        return value
 
-    # Check for NT= format
-    nt_match = re.search(r'NT=([^;]+)', value)
-    if nt_match:
-        return nt_match.group(1)
+def casefold_total(counter):
+    return len({name.lower() for name in counter})
 
-    # Check for AC= format and return the value before it or the whole thing
-    if ';AC=' in value:
-        return value.split(';AC=')[0]
 
-    return value
+def _count_terms(counter, values, extra_skip=()):
+    for value in values:
+        term = usable_term(value, extra_skip)
+        if term:
+            counter[term] += 1
 
-def main():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    datasets_prefix = 'datasets'
-    datasets_repo = os.environ.get('SDRF_DATASETS_REPO', 'bigbio/sdrf-annotated-datasets')
-    datasets_branch = os.environ.get('SDRF_DATASETS_BRANCH', 'main')
-    datasets_repo_url = f'https://github.com/{datasets_repo}'
 
-    # Annotated SDRFs live in the external sdrf-annotated-datasets repository.
-    # SDRF_DATASETS_DIR must point at its datasets/ folder (either a local
-    # checkout or a shallow clone produced by scripts/build-docs.sh / CI).
-    datasets_dir = os.environ.get('SDRF_DATASETS_DIR')
-    if not datasets_dir:
-        raise SystemExit(
-            "SDRF_DATASETS_DIR is not set. Point it at a checkout of "
-            f"https://github.com/{datasets_repo} (the datasets/ folder). "
-            "scripts/build-docs.sh provisions this automatically."
-        )
+def dataset_entry(project_id, filename, parsed, file_count):
+    collected = parsed['collected']
+    organisms = _unique_terms(collected['organism'])
+    diseases = _unique_terms(collected['disease'], DISEASE_SKIP)
+    instruments = _unique_terms(collected['instrument'])
+    acquisitions = _unique_terms(collected['acquisition'])
+    template = parsed['metadata'].get('template') or 'unknown'
+    version = parsed['metadata'].get('version') or 'unknown'
+
+    entry = {
+        'id': project_id,
+        'file': filename,
+        'samples': parsed['num_rows'],
+        'columns': len(parsed['headers']),
+        'experiment_type': classify_experiment(acquisitions),
+        'label_type': classify_label(_unique_terms(collected['label'])),
+        'files': file_count,
+    }
+    if organisms:
+        entry['organisms'] = organisms
+    if diseases:
+        entry['diseases'] = diseases
+    if instruments:
+        entry['instruments'] = instruments
+    if acquisitions:
+        entry['acquisition_methods'] = acquisitions
+    if template != 'unknown':
+        entry['template'] = template
+    if version != 'unknown':
+        entry['version'] = version
+    return entry
+
+
+def build_catalog(datasets_dir, datasets_repo, datasets_branch):
     if not os.path.isdir(datasets_dir):
-        raise SystemExit(
-            f"SDRF_DATASETS_DIR={datasets_dir!r} does not exist or is not a directory."
-        )
+        raise SystemExit(f'SDRF_DATASETS_DIR={datasets_dir!r} does not exist or is not a directory.')
 
-    # Find all SDRF files
-    sdrf_files = glob.glob(os.path.join(datasets_dir, '**', '*.sdrf.tsv'), recursive=True)
-
-    # Statistics counters
-    total_samples = 0
+    paths = list(iter_sdrf_paths(datasets_dir))
     organisms = Counter()
     organism_parts = Counter()
     diseases = Counter()
@@ -129,185 +234,54 @@ def main():
     acquisition_methods = Counter()
     modifications = Counter()
     cleavage_agents = Counter()
+    pending = []
+    total_samples = 0
 
-    # Dataset index
+    counters = {
+        'organism': organisms,
+        'organism_part': organism_parts,
+        'disease': diseases,
+        'cell_type': cell_types,
+        'instrument': instruments,
+        'label': labels,
+        'acquisition': acquisition_methods,
+        'modification': modifications,
+        'cleavage': cleavage_agents,
+    }
+    extra_skips = {'disease': DISEASE_SKIP}
+
+    for index, filepath in enumerate(paths, start=1):
+        parsed = scan_sdrf_file(filepath)
+        if parsed['num_rows'] == 0:
+            continue
+        project_id = project_id_for(filepath, datasets_dir)
+        filename = os.path.basename(filepath)
+        for bucket, counter in counters.items():
+            _count_terms(counter, parsed['collected'][bucket], extra_skips.get(bucket, ()))
+        pending.append((project_id, dataset_entry(project_id, filename, parsed, 1)))
+        total_samples += parsed['num_rows']
+        if index % 500 == 0:
+            print(f'Indexed {index} of {len(paths)} SDRF files...', flush=True)
+
+    file_counts = Counter(project_id for project_id, _entry in pending)
     datasets = []
-    project_file_counts = Counter()
-
-    for filepath in sorted(sdrf_files):
-        if '/.' in filepath:
-            continue
-        rel_in_datasets = os.path.relpath(filepath, datasets_dir)
-        parts = rel_in_datasets.split(os.sep)
-        if len(parts) >= 2:
-            project_id = parts[0]
-        else:
-            project_id = os.path.basename(filepath).replace('.sdrf.tsv', '')
-        project_file_counts[project_id] += 1
-
-    for filepath in sorted(sdrf_files):
-        # Skip hidden files
-        if '/.' in filepath:
-            continue
-
-        # Extract project ID from the path inside the datasets/ tree
-        rel_in_datasets = os.path.relpath(filepath, datasets_dir)
-        parts = rel_in_datasets.split(os.sep)
-        if len(parts) >= 2:
-            project_id = parts[0]
-        else:
-            project_id = os.path.basename(filepath).replace('.sdrf.tsv', '')
-
-        # Parse the file
-        parsed = parse_sdrf_file(filepath)
-        if not parsed or parsed['num_rows'] == 0:
-            continue
-
-        rows = parsed['rows']
-        headers = parsed['headers']
-        num_samples = parsed['num_rows']
-        total_samples += num_samples
-
-        # Extract organisms
-        org_values = extract_column_values(rows, ['characteristics[organism]'])
-        for org in org_values:
-            org_name = parse_ontology_term(org)
-            if org_name:
-                organisms[org_name] += 1
-
-        # Extract organism parts
-        org_part_values = extract_column_values(rows, ['characteristics[organism part]'])
-        for op in org_part_values:
-            op_name = parse_ontology_term(op)
-            if op_name and op_name.lower() not in ['not available', 'not applicable']:
-                organism_parts[op_name] += 1
-
-        # Extract diseases
-        disease_values = extract_column_values(rows, ['characteristics[disease]'])
-        for d in disease_values:
-            d_name = parse_ontology_term(d)
-            if d_name and d_name.lower() not in ['not available', 'not applicable', 'normal']:
-                diseases[d_name] += 1
-
-        # Extract cell types
-        cell_type_values = extract_column_values(rows, ['characteristics[cell type]'])
-        for ct in cell_type_values:
-            ct_name = parse_ontology_term(ct)
-            if ct_name and ct_name.lower() not in ['not available', 'not applicable']:
-                cell_types[ct_name] += 1
-
-        # Extract instruments
-        instr_values = extract_column_values(rows, ['comment[instrument]'])
-        for instr in instr_values:
-            instr_name = parse_ontology_term(instr)
-            if instr_name:
-                instruments[instr_name] += 1
-
-        # Extract labels
-        label_values = extract_column_values(rows, ['comment[label]'])
-        for lbl in label_values:
-            lbl_name = parse_ontology_term(lbl)
-            if lbl_name:
-                labels[lbl_name] += 1
-
-        # Extract acquisition methods
-        acq_values = extract_column_values(rows, ['comment[proteomics data acquisition method]'])
-        for acq in acq_values:
-            acq_name = parse_ontology_term(acq)
-            if acq_name:
-                acquisition_methods[acq_name] += 1
-
-        # Extract modifications
-        mod_values = extract_column_values(rows, ['comment[modification parameters]', 'comment[modification identifier]'])
-        for mod in mod_values:
-            mod_name = parse_ontology_term(mod)
-            if mod_name:
-                modifications[mod_name] += 1
-
-        # Extract cleavage agents
-        cleav_values = extract_column_values(rows, ['comment[cleavage agent details]'])
-        for cleav in cleav_values:
-            cleav_name = parse_ontology_term(cleav)
-            if cleav_name:
-                cleavage_agents[cleav_name] += 1
-
-        # Get unique values for this dataset
-        dataset_organisms = list(set([parse_ontology_term(o) for o in get_unique_values(rows, ['characteristics[organism]'])]))
-        dataset_diseases = list(set([parse_ontology_term(d) for d in get_unique_values(rows, ['characteristics[disease]'])
-                                     if parse_ontology_term(d) and parse_ontology_term(d).lower() not in ['not available', 'not applicable', 'normal']]))
-        dataset_instruments = list(set([parse_ontology_term(i) for i in get_unique_values(rows, ['comment[instrument]'])]))
-        dataset_labels = list(set([parse_ontology_term(l) for l in get_unique_values(rows, ['comment[label]'])]))
-        dataset_acq = list(set([parse_ontology_term(a) for a in get_unique_values(rows, ['comment[proteomics data acquisition method]'])]))
-
-        # Determine experiment type (DDA/DIA/SRM)
-        exp_type = 'Unknown'
-        for acq in dataset_acq:
-            if acq:
-                acq_lower = acq.lower()
-                if 'dia' in acq_lower or 'data-independent' in acq_lower or 'data independent' in acq_lower:
-                    exp_type = 'DIA'
-                    break
-                elif 'dda' in acq_lower or 'data-dependent' in acq_lower or 'data dependent' in acq_lower:
-                    exp_type = 'DDA'
-                    break
-                elif 'srm' in acq_lower or 'mrm' in acq_lower or 'prm' in acq_lower or 'selected reaction monitoring' in acq_lower or 'multiple reaction monitoring' in acq_lower or 'parallel reaction monitoring' in acq_lower:
-                    exp_type = 'SRM/MRM'
-                    break
-
-        # Determine labeling type
-        label_type = 'Label-free'
-        for lbl in dataset_labels:
-            if lbl:
-                lbl_lower = lbl.lower()
-                if 'tmt' in lbl_lower:
-                    label_type = 'TMT'
-                    break
-                elif 'itraq' in lbl_lower:
-                    label_type = 'iTRAQ'
-                    break
-                elif 'silac' in lbl_lower:
-                    label_type = 'SILAC'
-                    break
-                elif 'label free' in lbl_lower or 'label-free' in lbl_lower:
-                    label_type = 'Label-free'
-
-        # Keep local parsing on annotated-projects/ while publishing links via datasets/
-        datasets_rel_path = os.path.join(datasets_prefix, project_id, os.path.basename(filepath)).replace(os.sep, '/')
-
-        # Create dataset entry
-        dataset_entry = {
-            'id': project_id,
-            'file': os.path.basename(filepath),  # Alias for filename (used by quickstart search)
-            'filename': os.path.basename(filepath),
-            'path': datasets_rel_path,
-            'accession_path': os.path.join(datasets_prefix, project_id).replace(os.sep, '/'),
-            'github_url': f'https://github.com/{datasets_repo}/blob/{datasets_branch}/{datasets_rel_path}',
-            'accession_github_url': f'https://github.com/{datasets_repo}/tree/{datasets_branch}/{datasets_prefix}/{project_id}',
-            'raw_url': f'https://raw.githubusercontent.com/{datasets_repo}/{datasets_branch}/{datasets_rel_path}',
-            'num_samples': num_samples,
-            'num_columns': len(headers),
-            'organisms': [o for o in dataset_organisms if o],
-            'diseases': [d for d in dataset_diseases if d],
-            'instruments': [i for i in dataset_instruments if i],
-            'acquisition_methods': [a for a in dataset_acq if a],  # Used by quickstart search
-            'experiment_type': exp_type,
-            'label_type': label_type,
-            'accession_file_count': project_file_counts[project_id],
-            'template': parsed['metadata'].get('template', 'unknown'),
-            'version': parsed['metadata'].get('version', 'unknown')
-        }
-
-        datasets.append(dataset_entry)
-
-    # Build statistics summary
+    for project_id, entry in pending:
+        entry['files'] = file_counts[project_id]
+        datasets.append(entry)
+    datasets.sort(key=lambda item: (item['id'], item['file']))
     statistics = {
         'total_datasets': len(datasets),
-        'total_accessions': len(project_file_counts),
+        'total_accessions': len(file_counts),
         'total_sdrf_files': len(datasets),
-        'split_accessions': sum(1 for count in project_file_counts.values() if count > 1),
+        'split_accessions': sum(1 for count in file_counts.values() if count > 1),
         'total_samples': total_samples,
-        'generated_at': datetime.utcnow().isoformat() + 'Z',
-        'source_repository_url': datasets_repo_url,
+        'organism_count': casefold_total(organisms),
+        'instrument_count': casefold_total(instruments),
+        'disease_count': casefold_total(diseases),
+        'generated_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'source_repository': datasets_repo,
+        'source_branch': datasets_branch,
+        'source_repository_url': f'https://github.com/{datasets_repo}',
         'organisms': dict(organisms.most_common(50)),
         'organism_parts': dict(organism_parts.most_common(50)),
         'diseases': dict(diseases.most_common(50)),
@@ -317,62 +291,42 @@ def main():
         'acquisition_methods': dict(acquisition_methods.most_common(20)),
         'modifications': dict(modifications.most_common(30)),
         'cleavage_agents': dict(cleavage_agents.most_common(20)),
-        'experiment_types': dict(Counter(d['experiment_type'] for d in datasets)),
-        'label_types': dict(Counter(d['label_type'] for d in datasets)),
-        'templates': dict(Counter(d['template'] for d in datasets))
+        'experiment_types': dict(Counter(item['experiment_type'] for item in datasets)),
+        'label_types': dict(Counter(item['label_type'] for item in datasets)),
+        'templates': dict(Counter(item.get('template', 'unknown') for item in datasets)),
     }
+    return {'statistics': statistics, 'datasets': datasets}
 
-    # Build final output
-    output = {
-        'statistics': statistics,
-        'datasets': datasets
-    }
 
-    # Write output
+def write_catalog(catalog, output_path):
+    with open(output_path, 'w', encoding='utf-8') as handle:
+        json.dump(catalog, handle, ensure_ascii=False, separators=(',', ':'))
+        handle.write('\n')
+
+
+def main():
+    datasets_repo = os.environ.get('SDRF_DATASETS_REPO', 'bigbio/sdrf-annotated-datasets')
+    datasets_branch = os.environ.get('SDRF_DATASETS_BRANCH', 'main')
+    datasets_dir = os.environ.get('SDRF_DATASETS_DIR')
+    if not datasets_dir:
+        raise SystemExit(
+            'SDRF_DATASETS_DIR is not set. Point it at a checkout of '
+            f'https://github.com/{datasets_repo} (the datasets/ folder). '
+            'scripts/refresh-explorer-catalog.sh provisions this.'
+        )
+
+    catalog = build_catalog(datasets_dir, datasets_repo, datasets_branch)
     output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sdrf-data.json')
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+    write_catalog(catalog, output_path)
 
-    print(f"Generated SDRF index with {len(datasets)} datasets and {total_samples} total samples")
-    print(f"Output written to: {output_path}")
+    stats = catalog['statistics']
+    print(
+        f"Generated SDRF catalog with {stats['total_accessions']} accessions, "
+        f"{stats['total_sdrf_files']} SDRF files, and {stats['total_samples']} samples"
+    )
+    print(f'Output written to: {output_path} ({os.path.getsize(output_path)} bytes)')
+    return 0
 
-    # Keep sdrf-explorer.html embedded index in sync with sdrf-data.json
-    explorer_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sdrf-explorer.html')
-    if os.path.isfile(explorer_path):
-        embedded = '\n' + json.dumps(output, indent=2, ensure_ascii=False) + '\n'
-        with open(explorer_path, 'r', encoding='utf-8') as f:
-            explorer_html = f.read()
-        pattern = re.compile(
-            r'(<script id="sdrf-data" type="application/json">)(.*?)(</script>)',
-            re.DOTALL,
-        )
-        new_explorer, repl_count = pattern.subn(
-            lambda m: m.group(1) + embedded + m.group(3),
-            explorer_html,
-            count=1,
-        )
-        if repl_count == 1:
-            with open(explorer_path, 'w', encoding='utf-8') as f:
-                f.write(new_explorer)
-            print(f"Updated embedded index in: {explorer_path}")
-        else:
-            print(
-                f"Warning: could not update embedded sdrf-data in {explorer_path} "
-                f"(matches={repl_count})"
-            )
-
-    # Print summary
-    print(f"\nTop 10 organisms:")
-    for org, count in organisms.most_common(10):
-        print(f"  {org}: {count}")
-
-    print(f"\nExperiment types:")
-    for exp_type, count in Counter(d['experiment_type'] for d in datasets).items():
-        print(f"  {exp_type}: {count}")
-
-    print(f"\nLabel types:")
-    for label_type, count in Counter(d['label_type'] for d in datasets).items():
-        print(f"  {label_type}: {count}")
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

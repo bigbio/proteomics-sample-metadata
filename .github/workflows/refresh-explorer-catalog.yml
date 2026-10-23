@@ -1,0 +1,58 @@
+name: Refresh SDRF explorer catalog
+
+on:
+  schedule:
+    # Monday 06:15 UTC. The page loads site/sdrf-data.json, and this rebuilds it
+    # from bigbio/sdrf-annotated-datasets, then republishes the documentation site.
+    - cron: '15 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    name: Rebuild catalog and deploy site
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install Asciidoctor
+        run: |
+          gem install asciidoctor
+          gem install asciidoctor-diagram
+
+      - name: Install Python dependencies
+        run: pip install pyyaml jinja2
+
+      - name: Build documentation site with a fresh catalog
+        env:
+          SDRF_REBUILD_CATALOG: "1"
+        run: |
+          chmod +x scripts/build-docs.sh scripts/refresh-explorer-catalog.sh scripts/publish-explorer-catalog.sh
+          ./scripts/build-docs.sh docs
+
+      - name: Add CNAME for custom domain
+        run: echo 'sdrf.quantms.org' > docs/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/
+
+      - name: Publish explorer catalog snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish-explorer-catalog.sh

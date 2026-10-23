@@ -454,13 +454,13 @@
             <div class="card-grid">
                 <div class="card">
                     <h4>SDRF Explorer</h4>
-                    <p>Browse and explore 298+ annotated proteomics datasets with statistics and filtering.</p>
+                    <p>Browse <span id="annotated-dataset-count">annotated proteomics datasets</span> with statistics and filtering.</p>
                     <a href="./sdrf-explorer.html">Explore Datasets</a>
                 </div>
                 <div class="card">
                     <h4>Annotated Projects</h4>
                     <p>Collection of SDRF files from ProteomeXchange datasets on GitHub.</p>
-                    <a href="https://github.com/bigbio/sdrf-annotated-datasets/tree/dev/datasets" target="_blank">Browse on GitHub</a>
+                    <a href="https://github.com/bigbio/sdrf-annotated-datasets/tree/main/datasets" target="_blank">Browse on GitHub</a>
                 </div>
                 <div class="card">
                     <h4>Publication</h4>
@@ -505,6 +505,18 @@
                 setTimeout(() => btn.textContent = originalText, 2000);
             });
         }
+
+        fetch('./sdrf-data.json', { cache: 'no-cache' })
+            .then(function (response) { return response.ok ? response.json() : null; })
+            .then(function (data) {
+                var stats = data && data.statistics;
+                var count = stats && (stats.total_accessions || stats.total_datasets);
+                var countElement = document.getElementById('annotated-dataset-count');
+                if (countElement && count) {
+                    countElement.textContent = Number(count).toLocaleString() + ' annotated proteomics datasets';
+                }
+            })
+            .catch(function () {});
         </script>
 
         <section id="contributors" class="section">
