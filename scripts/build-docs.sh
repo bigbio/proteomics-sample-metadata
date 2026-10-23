@@ -184,33 +184,44 @@ echo "Updating index template section..."
 python3 scripts/build_index_templates.py \
     sdrf-proteomics/sdrf-templates "$OUTPUT_DIR/index.html"
 
-# Provision the external sdrf-annotated-datasets repository so the index
-# script can read the SDRF files. Honour SDRF_DATASETS_DIR if the caller
-# already provided one (local dev with an existing checkout); otherwise
-# shallow-clone the default branch into vendor/.
-SDRF_DATASETS_REPO="${SDRF_DATASETS_REPO:-bigbio/sdrf-annotated-datasets}"
-SDRF_DATASETS_BRANCH="${SDRF_DATASETS_BRANCH:-main}"
-if [ -z "${SDRF_DATASETS_DIR:-}" ]; then
-    VENDOR_DIR="$REPO_ROOT/vendor/sdrf-annotated-datasets"
-    if [ ! -d "$VENDOR_DIR/.git" ]; then
-        echo "Cloning $SDRF_DATASETS_REPO@$SDRF_DATASETS_BRANCH into $VENDOR_DIR ..."
-        mkdir -p "$(dirname "$VENDOR_DIR")"
-        git clone --depth 1 --branch "$SDRF_DATASETS_BRANCH" \
-            "https://github.com/$SDRF_DATASETS_REPO.git" "$VENDOR_DIR"
-    else
-        echo "Updating existing clone at $VENDOR_DIR ..."
-        git -C "$VENDOR_DIR" fetch --depth 1 origin "$SDRF_DATASETS_BRANCH"
-        git -C "$VENDOR_DIR" reset --hard "origin/$SDRF_DATASETS_BRANCH"
+# The explorer fetches sdrf-data.json. Weekly refresh-explorer-catalog.yml
+# rebuilds that file from bigbio/sdrf-annotated-datasets and publishes it on
+# the explorer-catalog branch. Ordinary builds download the snapshot.
+# Set SDRF_REBUILD_CATALOG=1 to scan the dataset repository in this build.
+CATALOG_FILE="$REPO_ROOT/site/sdrf-data.json"
+ensure_explorer_catalog() {
+    if [ "${SDRF_REBUILD_CATALOG:-}" = "1" ]; then
+        echo "Rebuilding SDRF explorer catalog from annotated datasets..."
+        bash "$REPO_ROOT/scripts/refresh-explorer-catalog.sh"
+        return
     fi
-    SDRF_DATASETS_DIR="$VENDOR_DIR/datasets"
-fi
-export SDRF_DATASETS_DIR SDRF_DATASETS_REPO SDRF_DATASETS_BRANCH
-echo "Using SDRF datasets from: $SDRF_DATASETS_DIR"
 
-# Build SDRF Explorer index
-echo "Building SDRF Explorer index..."
-python3 site/build-sdrf-index.py
-cp site/sdrf-data.json "$OUTPUT_DIR/"
+    if [ -n "${GITHUB_ACTIONS:-}" ] || [ ! -s "$CATALOG_FILE" ]; then
+        CATALOG_REPO="${GITHUB_REPOSITORY:-bigbio/proteomics-sample-metadata}"
+        CATALOG_URL="${SDRF_CATALOG_URL:-https://raw.githubusercontent.com/${CATALOG_REPO}/explorer-catalog/sdrf-data.json}"
+        CATALOG_TMP="$(mktemp)"
+        echo "Downloading SDRF explorer catalog from ${CATALOG_URL}"
+        if curl -fsSL "$CATALOG_URL" -o "$CATALOG_TMP" \
+            && python3 -c 'import json,sys; data=json.load(open(sys.argv[1], encoding="utf-8")); assert "datasets" in data and "statistics" in data' "$CATALOG_TMP"; then
+            mv "$CATALOG_TMP" "$CATALOG_FILE"
+            echo "Using published explorer catalog."
+            return
+        fi
+        rm -f "$CATALOG_TMP"
+        if [ -s "$CATALOG_FILE" ]; then
+            echo "Published catalog is unavailable. Using the catalog already on disk."
+            return
+        fi
+        echo "Published catalog is unavailable. Building it from annotated datasets."
+        bash "$REPO_ROOT/scripts/refresh-explorer-catalog.sh"
+        return
+    fi
+
+    echo "Using existing SDRF explorer catalog: $CATALOG_FILE"
+}
+
+ensure_explorer_catalog
+cp "$CATALOG_FILE" "$OUTPUT_DIR/sdrf-data.json"
 
 # Inject navigation headers
 echo "Adding navigation headers..."

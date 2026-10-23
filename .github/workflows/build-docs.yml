@@ -9,9 +9,13 @@ on:
     - cron: '20 5 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     name: Build AsciiDoc documentation site
 
     steps:
@@ -35,7 +39,7 @@ jobs:
 
       - name: Build documentation site
         run: |
-          chmod +x scripts/build-docs.sh
+          chmod +x scripts/build-docs.sh scripts/refresh-explorer-catalog.sh scripts/publish-explorer-catalog.sh
           ./scripts/build-docs.sh docs
 
       - name: Add CNAME for custom domain
@@ -47,3 +51,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./docs/
+
+      - name: Publish explorer catalog snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish-explorer-catalog.sh
