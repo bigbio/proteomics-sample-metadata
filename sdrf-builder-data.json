@@ -1,7 +1,7 @@
 {
   "templates": {
     "affinity-proteomics": {
-      "description": "SDRF template for affinity-based proteomics experiments (Olink, SomaScan). This is the base template for all affinity proteomics experiments.",
+      "description": "SDRF template for affinity-based proteomics experiments (Olink, SomaScan, NULISA). This is the base template for all affinity proteomics experiments.",
       "layer": "technology",
       "usable_alone": true,
       "extends": "sample-metadata@>=1.0.0",
@@ -22,6 +22,42 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "required",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "affinity-proteomics",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control",
+                  "positive control",
+                  "calibrator",
+                  "plate control",
+                  "quality control sample",
+                  "buffer control",
+                  "reference",
+                  "standard",
+                  "bridge"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -362,42 +398,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "required",
-          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": false,
-          "allow_not_available": false,
-          "source_template": "affinity-proteomics",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "negative control",
-                  "positive control",
-                  "calibrator",
-                  "plate control",
-                  "quality control sample",
-                  "buffer control",
-                  "reference",
-                  "standard",
-                  "bridge"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -665,7 +665,7 @@
         {
           "name": "comment[platform]",
           "requirement": "required",
-          "description": "Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K)",
+          "description": "Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K, NULISAseq)",
           "ontology_accession": "",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -686,7 +686,8 @@
                 "examples": [
                   "Olink Explore HT",
                   "Olink Target 96",
-                  "SomaScan Assay 11K"
+                  "SomaScan Assay 11K",
+                  "NULISAseq"
                 ]
               }
             }
@@ -715,7 +716,8 @@
                 "examples": [
                   "Illumina NovaSeq X",
                   "Illumina NextSeq 2000",
-                  "Agilent SureScan Microarray Scanner"
+                  "Agilent SureScan Microarray Scanner",
+                  "Alamar ARGO HT System"
                 ]
               }
             }
@@ -742,7 +744,8 @@
                   "Target 96 Inflammation",
                   "Explore 1536",
                   "SomaScan 7K",
-                  "SomaScan 11K"
+                  "SomaScan 11K",
+                  "NULISAseq Inflammation Panel 250"
                 ]
               }
             }
@@ -764,7 +767,8 @@
               "params": {
                 "values": [
                   "NPX",
-                  "RFU"
+                  "RFU",
+                  "NPQ"
                 ],
                 "error_level": "warning",
                 "description": "Quantification unit"
@@ -946,7 +950,7 @@
         {
           "name": "comment[platform]",
           "requirement": "required",
-          "description": "Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K)",
+          "description": "Affinity proteomics platform used (e.g. Olink Explore HT, SomaScan Assay 7K, NULISAseq)",
           "ontology_accession": "",
           "cardinality": "single",
           "allow_not_applicable": false,
@@ -967,7 +971,8 @@
                 "examples": [
                   "Olink Explore HT",
                   "Olink Target 96",
-                  "SomaScan Assay 11K"
+                  "SomaScan Assay 11K",
+                  "NULISAseq"
                 ]
               }
             }
@@ -996,7 +1001,8 @@
                 "examples": [
                   "Illumina NovaSeq X",
                   "Illumina NextSeq 2000",
-                  "Agilent SureScan Microarray Scanner"
+                  "Agilent SureScan Microarray Scanner",
+                  "Alamar ARGO HT System"
                 ]
               }
             }
@@ -1023,7 +1029,8 @@
                   "Target 96 Inflammation",
                   "Explore 1536",
                   "SomaScan 7K",
-                  "SomaScan 11K"
+                  "SomaScan 11K",
+                  "NULISAseq Inflammation Panel 250"
                 ]
               }
             }
@@ -1045,7 +1052,8 @@
               "params": {
                 "values": [
                   "NPX",
-                  "RFU"
+                  "RFU",
+                  "NPQ"
                 ],
                 "error_level": "warning",
                 "description": "Quantification unit"
@@ -1208,6 +1216,38 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "base",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control sample",
+                  "positive control sample",
+                  "calibration sample",
+                  "blank sample",
+                  "quality control sample"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -1383,6 +1423,38 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "base",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control sample",
+                  "positive control sample",
+                  "calibration sample",
+                  "blank sample",
+                  "quality control sample"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -1569,6 +1641,48 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -1909,48 +2023,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -2854,6 +2926,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -3192,48 +3306,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -4438,6 +4510,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -4776,48 +4890,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -5576,6 +5648,85 @@
           "example_value": "2022-06-01"
         },
         {
+          "name": "comment[number of MS1 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS1 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000059",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS1 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "1803"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[number of MS2 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS2 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000060",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS2 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "13776"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[chromatography duration]",
+          "requirement": "optional",
+          "description": "Observed run duration in seconds: maximum minus minimum finite spectrum retention time across all MS levels. This is not the chromatography method's programmed gradient duration. Use 'not available' when no finite RT exists. Explicit second unit UO:0000010 is serialized with suffix ' s'.\n",
+          "ontology_accession": "MS:4000053",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)? s$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Finite nonnegative measured duration followed by the unit 's'.",
+                "examples": [
+                  "0 s",
+                  "3600 s",
+                  "3600.5 s"
+                ]
+              }
+            }
+          ],
+          "example_value": "0 s"
+        },
+        {
           "name": "comment[ms min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum precursor (MS1) m/z setting used to acquire the data",
@@ -5775,7 +5926,7 @@
           "name": "comment[ms2 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001011",
+          "ontology_accession": "PRIDE:0001032",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -5798,7 +5949,7 @@
           "name": "comment[ms2 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001012",
+          "ontology_accession": "PRIDE:0001033",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -5821,7 +5972,7 @@
           "name": "comment[ms3 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001013",
+          "ontology_accession": "PRIDE:0001034",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -5844,7 +5995,7 @@
           "name": "comment[ms3 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001014",
+          "ontology_accession": "PRIDE:0001035",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -5867,7 +6018,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -5890,7 +6041,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -5913,7 +6064,7 @@
           "name": "comment[ms3 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns",
-          "ontology_accession": "PRIDE:0001010",
+          "ontology_accession": "PRIDE:0001031",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -6599,6 +6750,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -6937,48 +7130,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -7750,6 +7901,85 @@
           "example_value": "2022-06-01"
         },
         {
+          "name": "comment[number of MS1 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS1 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000059",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS1 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "1803"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[number of MS2 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS2 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000060",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS2 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "13776"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[chromatography duration]",
+          "requirement": "optional",
+          "description": "Observed run duration in seconds: maximum minus minimum finite spectrum retention time across all MS levels. This is not the chromatography method's programmed gradient duration. Use 'not available' when no finite RT exists. Explicit second unit UO:0000010 is serialized with suffix ' s'.\n",
+          "ontology_accession": "MS:4000053",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)? s$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Finite nonnegative measured duration followed by the unit 's'.",
+                "examples": [
+                  "0 s",
+                  "3600 s",
+                  "3600.5 s"
+                ]
+              }
+            }
+          ],
+          "example_value": "0 s"
+        },
+        {
           "name": "comment[ms min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum precursor (MS1) m/z setting used to acquire the data",
@@ -7949,7 +8179,7 @@
           "name": "comment[ms2 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001011",
+          "ontology_accession": "PRIDE:0001032",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -7972,7 +8202,7 @@
           "name": "comment[ms2 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001012",
+          "ontology_accession": "PRIDE:0001033",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -7995,7 +8225,7 @@
           "name": "comment[ms3 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001013",
+          "ontology_accession": "PRIDE:0001034",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -8018,7 +8248,7 @@
           "name": "comment[ms3 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001014",
+          "ontology_accession": "PRIDE:0001035",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -8041,7 +8271,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -8064,7 +8294,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -8087,7 +8317,7 @@
           "name": "comment[ms3 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns",
-          "ontology_accession": "PRIDE:0001010",
+          "ontology_accession": "PRIDE:0001031",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -8353,6 +8583,48 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -8693,48 +8965,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -9433,7 +9663,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -9456,7 +9686,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -9990,6 +10220,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -10328,48 +10600,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -10991,6 +11221,38 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "base",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control sample",
+                  "positive control sample",
+                  "calibration sample",
+                  "blank sample",
+                  "quality control sample"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -11433,6 +11695,58 @@
             }
           ],
           "example_value": "7.0"
+        },
+        {
+          "name": "characteristics[broad-scale environmental context]",
+          "requirement": "optional",
+          "description": "Report the major environmental system the sample or specimen came from. This term describes the broad ecological context or biome and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000012",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Broad environmental context or biome",
+                "examples": [
+                  "temperate forest biome",
+                  "marine pelagic biome",
+                  "agricultural field",
+                  "desert biome"
+                ]
+              }
+            }
+          ],
+          "example_value": "temperate forest biome"
+        },
+        {
+          "name": "characteristics[local environmental context]",
+          "requirement": "optional",
+          "description": "Report the specific environmental setting or feature surrounding the sample within the broader ecosystem. This term provides finer-scale environmental context and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000013",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Local environmental context",
+                "examples": [
+                  "rhizosphere",
+                  "estuarine sediment",
+                  "leaf litter",
+                  "coral reef"
+                ]
+              }
+            }
+          ],
+          "example_value": "rhizosphere"
         },
         {
           "name": "characteristics[sample storage]",
@@ -12347,10 +12661,21 @@
           "source_template": "human-gut",
           "validators": [
             {
-              "type": "ontology"
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "ncbitaxon"
+                ],
+                "error_level": "warning",
+                "description": "Should be a valid NCBI Taxonomy term",
+                "examples": [
+                  "Bifidobacterium",
+                  "Lactobacillus"
+                ]
+              }
             }
           ],
-          "example_value": ""
+          "example_value": "Bifidobacterium"
         },
         {
           "name": "characteristics[medical history performed]",
@@ -13246,10 +13571,21 @@
           "source_template": "human-gut",
           "validators": [
             {
-              "type": "ontology"
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "ncbitaxon"
+                ],
+                "error_level": "warning",
+                "description": "Should be a valid NCBI Taxonomy term",
+                "examples": [
+                  "Bifidobacterium",
+                  "Lactobacillus"
+                ]
+              }
             }
           ],
-          "example_value": ""
+          "example_value": "Bifidobacterium"
         },
         {
           "name": "characteristics[medical history performed]",
@@ -13479,6 +13815,48 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -13819,48 +14197,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -14616,6 +14952,85 @@
           "example_value": "2022-06-01"
         },
         {
+          "name": "comment[number of MS1 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS1 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000059",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS1 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "1803"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[number of MS2 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS2 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000060",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS2 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "13776"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[chromatography duration]",
+          "requirement": "optional",
+          "description": "Observed run duration in seconds: maximum minus minimum finite spectrum retention time across all MS levels. This is not the chromatography method's programmed gradient duration. Use 'not available' when no finite RT exists. Explicit second unit UO:0000010 is serialized with suffix ' s'.\n",
+          "ontology_accession": "MS:4000053",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)? s$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Finite nonnegative measured duration followed by the unit 's'.",
+                "examples": [
+                  "0 s",
+                  "3600 s",
+                  "3600.5 s"
+                ]
+              }
+            }
+          ],
+          "example_value": "0 s"
+        },
+        {
           "name": "comment[ms min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum precursor (MS1) m/z setting used to acquire the data",
@@ -14815,7 +15230,7 @@
           "name": "comment[ms2 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001011",
+          "ontology_accession": "PRIDE:0001032",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -14838,7 +15253,7 @@
           "name": "comment[ms2 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001012",
+          "ontology_accession": "PRIDE:0001033",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -14861,7 +15276,7 @@
           "name": "comment[ms3 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001013",
+          "ontology_accession": "PRIDE:0001034",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -14884,7 +15299,7 @@
           "name": "comment[ms3 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001014",
+          "ontology_accession": "PRIDE:0001035",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -14907,7 +15322,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -14930,7 +15345,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -14953,7 +15368,7 @@
           "name": "comment[ms3 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns",
-          "ontology_accession": "PRIDE:0001010",
+          "ontology_accession": "PRIDE:0001031",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -15299,6 +15714,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -15637,48 +16094,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -16171,6 +16586,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -16509,48 +16966,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -17254,7 +17669,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -17277,7 +17692,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -17839,6 +18254,38 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "base",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control sample",
+                  "positive control sample",
+                  "calibration sample",
+                  "blank sample",
+                  "quality control sample"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -18281,6 +18728,58 @@
             }
           ],
           "example_value": "7.0"
+        },
+        {
+          "name": "characteristics[broad-scale environmental context]",
+          "requirement": "optional",
+          "description": "Report the major environmental system the sample or specimen came from. This term describes the broad ecological context or biome and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000012",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Broad environmental context or biome",
+                "examples": [
+                  "temperate forest biome",
+                  "marine pelagic biome",
+                  "agricultural field",
+                  "desert biome"
+                ]
+              }
+            }
+          ],
+          "example_value": "temperate forest biome"
+        },
+        {
+          "name": "characteristics[local environmental context]",
+          "requirement": "optional",
+          "description": "Report the specific environmental setting or feature surrounding the sample within the broader ecosystem. This term provides finer-scale environmental context and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000013",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Local environmental context",
+                "examples": [
+                  "rhizosphere",
+                  "estuarine sediment",
+                  "leaf litter",
+                  "coral reef"
+                ]
+              }
+            }
+          ],
+          "example_value": "rhizosphere"
         },
         {
           "name": "characteristics[sample storage]",
@@ -18790,6 +19289,58 @@
             }
           ],
           "example_value": "7.0"
+        },
+        {
+          "name": "characteristics[broad-scale environmental context]",
+          "requirement": "optional",
+          "description": "Report the major environmental system the sample or specimen came from. This term describes the broad ecological context or biome and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000012",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Broad environmental context or biome",
+                "examples": [
+                  "temperate forest biome",
+                  "marine pelagic biome",
+                  "agricultural field",
+                  "desert biome"
+                ]
+              }
+            }
+          ],
+          "example_value": "temperate forest biome"
+        },
+        {
+          "name": "characteristics[local environmental context]",
+          "requirement": "optional",
+          "description": "Report the specific environmental setting or feature surrounding the sample within the broader ecosystem. This term provides finer-scale environmental context and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000013",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Local environmental context",
+                "examples": [
+                  "rhizosphere",
+                  "estuarine sediment",
+                  "leaf litter",
+                  "coral reef"
+                ]
+              }
+            }
+          ],
+          "example_value": "rhizosphere"
         },
         {
           "name": "characteristics[sample storage]",
@@ -19041,6 +19592,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -19379,48 +19972,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -20124,7 +20675,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -20147,7 +20698,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -20811,7 +21362,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns.",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -20834,7 +21385,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns.",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -21057,6 +21608,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -21395,48 +21988,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -22192,6 +22743,85 @@
           "example_value": "2022-06-01"
         },
         {
+          "name": "comment[number of MS1 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS1 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000059",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS1 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "1803"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[number of MS2 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS2 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000060",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS2 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "13776"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[chromatography duration]",
+          "requirement": "optional",
+          "description": "Observed run duration in seconds: maximum minus minimum finite spectrum retention time across all MS levels. This is not the chromatography method's programmed gradient duration. Use 'not available' when no finite RT exists. Explicit second unit UO:0000010 is serialized with suffix ' s'.\n",
+          "ontology_accession": "MS:4000053",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)? s$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Finite nonnegative measured duration followed by the unit 's'.",
+                "examples": [
+                  "0 s",
+                  "3600 s",
+                  "3600.5 s"
+                ]
+              }
+            }
+          ],
+          "example_value": "0 s"
+        },
+        {
           "name": "comment[ms min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum precursor (MS1) m/z setting used to acquire the data",
@@ -22391,7 +23021,7 @@
           "name": "comment[ms2 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001011",
+          "ontology_accession": "PRIDE:0001032",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -22414,7 +23044,7 @@
           "name": "comment[ms2 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001012",
+          "ontology_accession": "PRIDE:0001033",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -22437,7 +23067,7 @@
           "name": "comment[ms3 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001013",
+          "ontology_accession": "PRIDE:0001034",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -22460,7 +23090,7 @@
           "name": "comment[ms3 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001014",
+          "ontology_accession": "PRIDE:0001035",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -22483,7 +23113,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -22506,7 +23136,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -22529,7 +23159,7 @@
           "name": "comment[ms3 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns",
-          "ontology_accession": "PRIDE:0001010",
+          "ontology_accession": "PRIDE:0001031",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23066,6 +23696,85 @@
           "example_value": "2022-06-01"
         },
         {
+          "name": "comment[number of MS1 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS1 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000059",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS1 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "1803"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[number of MS2 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS2 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000060",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS2 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "13776"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[chromatography duration]",
+          "requirement": "optional",
+          "description": "Observed run duration in seconds: maximum minus minimum finite spectrum retention time across all MS levels. This is not the chromatography method's programmed gradient duration. Use 'not available' when no finite RT exists. Explicit second unit UO:0000010 is serialized with suffix ' s'.\n",
+          "ontology_accession": "MS:4000053",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)? s$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Finite nonnegative measured duration followed by the unit 's'.",
+                "examples": [
+                  "0 s",
+                  "3600 s",
+                  "3600.5 s"
+                ]
+              }
+            }
+          ],
+          "example_value": "0 s"
+        },
+        {
           "name": "comment[ms min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum precursor (MS1) m/z setting used to acquire the data",
@@ -23265,7 +23974,7 @@
           "name": "comment[ms2 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001011",
+          "ontology_accession": "PRIDE:0001032",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23288,7 +23997,7 @@
           "name": "comment[ms2 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001012",
+          "ontology_accession": "PRIDE:0001033",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23311,7 +24020,7 @@
           "name": "comment[ms3 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001013",
+          "ontology_accession": "PRIDE:0001034",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23334,7 +24043,7 @@
           "name": "comment[ms3 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001014",
+          "ontology_accession": "PRIDE:0001035",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23357,7 +24066,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23380,7 +24089,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23403,7 +24112,7 @@
           "name": "comment[ms3 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns",
-          "ontology_accession": "PRIDE:0001010",
+          "ontology_accession": "PRIDE:0001031",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -23472,6 +24181,48 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -23812,48 +24563,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -25547,6 +26256,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -25886,48 +26637,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -26476,6 +27185,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -26816,48 +27567,6 @@
           "example_value": "not pooled"
         },
         {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
-        },
-        {
           "name": "characteristics[disease]",
           "requirement": "recommended",
           "description": "Disease state of the sample",
@@ -27123,6 +27832,48 @@
       ],
       "own_columns": [
         {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "characteristics[organism]",
           "requirement": "required",
           "description": "Species of the sample using NCBI Taxonomy",
@@ -27300,48 +28051,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -27633,6 +28342,48 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "single-cell",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -27971,48 +28722,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "recommended",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "single-cell",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -28768,6 +29477,85 @@
           "example_value": "2022-06-01"
         },
         {
+          "name": "comment[number of MS1 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS1 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000059",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS1 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "1803"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[number of MS2 spectra]",
+          "requirement": "optional",
+          "description": "Number of observed MS2 spectra in this raw data file, including empty scans. This is a per-run measurement, not a search parameter, identified-spectrum count, or cohort estimate. Nonnegative integer; implicit count unit UO:0000189.\n",
+          "ontology_accession": "MS:4000060",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Observed MS2 scan count must be a nonnegative integer, including zero.",
+                "examples": [
+                  "0",
+                  "13776"
+                ]
+              }
+            }
+          ],
+          "example_value": "0"
+        },
+        {
+          "name": "comment[chromatography duration]",
+          "requirement": "optional",
+          "description": "Observed run duration in seconds: maximum minus minimum finite spectrum retention time across all MS levels. This is not the chromatography method's programmed gradient duration. Use 'not available' when no finite RT exists. Explicit second unit UO:0000010 is serialized with suffix ' s'.\n",
+          "ontology_accession": "MS:4000053",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": true,
+          "source_template": "ms-proteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)? s$",
+                "case_sensitive": true,
+                "error_level": "error",
+                "description": "Finite nonnegative measured duration followed by the unit 's'.",
+                "examples": [
+                  "0 s",
+                  "3600 s",
+                  "3600.5 s"
+                ]
+              }
+            }
+          ],
+          "example_value": "0 s"
+        },
+        {
           "name": "comment[ms min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum precursor (MS1) m/z setting used to acquire the data",
@@ -28967,7 +29755,7 @@
           "name": "comment[ms2 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001011",
+          "ontology_accession": "PRIDE:0001032",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -28990,7 +29778,7 @@
           "name": "comment[ms2 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS2) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001012",
+          "ontology_accession": "PRIDE:0001033",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29013,7 +29801,7 @@
           "name": "comment[ms3 min mz]",
           "requirement": "optional",
           "description": "MS method-defined minimum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001013",
+          "ontology_accession": "PRIDE:0001034",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29036,7 +29824,7 @@
           "name": "comment[ms3 max mz]",
           "requirement": "optional",
           "description": "MS method-defined maximum product ion (MS3) m/z setting used to acquire the data",
-          "ontology_accession": "PRIDE:0001014",
+          "ontology_accession": "PRIDE:0001035",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29059,7 +29847,7 @@
           "name": "comment[ms1 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS1 spectra as an interval. Alternative to separate ms min mz / ms max mz columns",
-          "ontology_accession": "PRIDE:0001008",
+          "ontology_accession": "PRIDE:0001029",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29082,7 +29870,7 @@
           "name": "comment[ms2 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS2 spectra as an interval. Alternative to separate ms2 min mz / ms2 max mz columns",
-          "ontology_accession": "PRIDE:0001009",
+          "ontology_accession": "PRIDE:0001030",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29105,7 +29893,7 @@
           "name": "comment[ms3 scan range]",
           "requirement": "optional",
           "description": "m/z scan range for MS3 spectra as an interval. Alternative to separate ms3 min mz / ms3 max mz columns",
-          "ontology_accession": "PRIDE:0001010",
+          "ontology_accession": "PRIDE:0001031",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29243,7 +30031,7 @@
           "name": "comment[carrier channel]",
           "requirement": "recommended",
           "description": "TMT/TMTpro channel used for the carrier proteome",
-          "ontology_accession": "PRIDE:0000941",
+          "ontology_accession": "PRIDE:0000901",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29268,7 +30056,7 @@
           "name": "comment[reference channel]",
           "requirement": "recommended",
           "description": "TMT/TMTpro channel used for the reference sample (for normalization across sets)",
-          "ontology_accession": "PRIDE:0000942",
+          "ontology_accession": "PRIDE:0000899",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29789,7 +30577,7 @@
           "name": "comment[carrier channel]",
           "requirement": "recommended",
           "description": "TMT/TMTpro channel used for the carrier proteome",
-          "ontology_accession": "PRIDE:0000941",
+          "ontology_accession": "PRIDE:0000901",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -29814,7 +30602,7 @@
           "name": "comment[reference channel]",
           "requirement": "recommended",
           "description": "TMT/TMTpro channel used for the reference sample (for normalization across sets)",
-          "ontology_accession": "PRIDE:0000942",
+          "ontology_accession": "PRIDE:0000899",
           "cardinality": "single",
           "allow_not_applicable": true,
           "allow_not_available": true,
@@ -30196,6 +30984,38 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "base",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control sample",
+                  "positive control sample",
+                  "calibration sample",
+                  "blank sample",
+                  "quality control sample"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -30640,6 +31460,58 @@
             }
           ],
           "example_value": "7.0"
+        },
+        {
+          "name": "characteristics[broad-scale environmental context]",
+          "requirement": "optional",
+          "description": "Report the major environmental system the sample or specimen came from. This term describes the broad ecological context or biome and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000012",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Broad environmental context or biome",
+                "examples": [
+                  "temperate forest biome",
+                  "marine pelagic biome",
+                  "agricultural field",
+                  "desert biome"
+                ]
+              }
+            }
+          ],
+          "example_value": "temperate forest biome"
+        },
+        {
+          "name": "characteristics[local environmental context]",
+          "requirement": "optional",
+          "description": "Report the specific environmental setting or feature surrounding the sample within the broader ecosystem. This term provides finer-scale environmental context and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000013",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Local environmental context",
+                "examples": [
+                  "rhizosphere",
+                  "estuarine sediment",
+                  "leaf litter",
+                  "coral reef"
+                ]
+              }
+            }
+          ],
+          "example_value": "rhizosphere"
         },
         {
           "name": "characteristics[sample storage]",
@@ -31564,7 +32436,7 @@
             {
               "type": "values",
               "params": {
-                "unit": [
+                "units": [
                   "oC"
                 ],
                 "description": "Mean annual temperature in \u00b0C",
@@ -31612,9 +32484,9 @@
           "source_template": "soil",
           "validators": [
             {
-              "type": "numeric",
+              "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "mm/year"
                 ],
                 "description": "Annual precipitation in mm/year",
@@ -31688,11 +32560,11 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
-                "min": "0",
-                "max": "100",
+                "min": 0,
+                "max": 100,
                 "description": "Organic matter content (%)",
                 "examples": [
                   "5.2 %",
@@ -31764,7 +32636,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
                 "description": "Organic nitrogen (%)",
@@ -31790,7 +32662,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
                 "description": "Total nitrogen (%)",
@@ -31888,7 +32760,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "mg/kg"
                 ],
                 "description": "Microbial biomass concentration",
@@ -31986,7 +32858,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
                 "description": "Aluminum saturation (%)",
@@ -32162,17 +33034,13 @@
                 "pattern": "^.+:.+$",
                 "description": "Parameter name and value in key:value format",
                 "examples": [
-                  {
-                    "enzyme_activity": "high"
-                  },
-                  {
-                    "soil_color": "dark brown"
-                  }
+                  "enzyme_activity: high",
+                  "soil_color: dark brown"
                 ]
               }
             }
           ],
-          "example_value": "{'enzyme_activity': 'high'}"
+          "example_value": "enzyme_activity: high"
         }
       ],
       "own_columns": [
@@ -32875,7 +33743,7 @@
             {
               "type": "values",
               "params": {
-                "unit": [
+                "units": [
                   "oC"
                 ],
                 "description": "Mean annual temperature in \u00b0C",
@@ -32923,9 +33791,9 @@
           "source_template": "soil",
           "validators": [
             {
-              "type": "numeric",
+              "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "mm/year"
                 ],
                 "description": "Annual precipitation in mm/year",
@@ -32999,11 +33867,11 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
-                "min": "0",
-                "max": "100",
+                "min": 0,
+                "max": 100,
                 "description": "Organic matter content (%)",
                 "examples": [
                   "5.2 %",
@@ -33075,7 +33943,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
                 "description": "Organic nitrogen (%)",
@@ -33101,7 +33969,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
                 "description": "Total nitrogen (%)",
@@ -33199,7 +34067,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "mg/kg"
                 ],
                 "description": "Microbial biomass concentration",
@@ -33297,7 +34165,7 @@
             {
               "type": "number_with_unit",
               "params": {
-                "unit": [
+                "units": [
                   "%"
                 ],
                 "description": "Aluminum saturation (%)",
@@ -33473,17 +34341,13 @@
                 "pattern": "^.+:.+$",
                 "description": "Parameter name and value in key:value format",
                 "examples": [
-                  {
-                    "enzyme_activity": "high"
-                  },
-                  {
-                    "soil_color": "dark brown"
-                  }
+                  "enzyme_activity: high",
+                  "soil_color: dark brown"
                 ]
               }
             }
           ],
-          "example_value": "{'enzyme_activity': 'high'}"
+          "example_value": "enzyme_activity: high"
         }
       ]
     },
@@ -33509,6 +34373,48 @@
           "source_template": "base",
           "validators": [],
           "example_value": "sample_1"
+        },
+        {
+          "name": "characteristics[sample type]",
+          "requirement": "optional",
+          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "sample-metadata",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "single cell",
+                  "environmental sample",
+                  "reference",
+                  "bridge",
+                  "carrier",
+                  "pooled",
+                  "empty",
+                  "negative control",
+                  "positive control",
+                  "bulk control",
+                  "buffer control",
+                  "plate control",
+                  "quality control sample",
+                  "calibrator",
+                  "standard"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
         },
         {
           "name": "assay name",
@@ -33849,48 +34755,6 @@
             }
           ],
           "example_value": "not pooled"
-        },
-        {
-          "name": "characteristics[sample type]",
-          "requirement": "optional",
-          "description": "Classification of the sample role in the experiment. Distinguishes study samples under investigation from controls, references, and other roles in multiplexed or plate-based experiments.",
-          "ontology_accession": "PRIDE:0000895",
-          "cardinality": "single",
-          "allow_not_applicable": true,
-          "allow_not_available": true,
-          "source_template": "sample-metadata",
-          "validators": [
-            {
-              "type": "ontology",
-              "params": {
-                "ontologies": [
-                  "pride"
-                ],
-                "parent_term": "PRIDE:0000895",
-                "error_level": "error",
-                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
-                "examples": [
-                  "study sample",
-                  "single cell",
-                  "environmental sample",
-                  "reference",
-                  "bridge",
-                  "carrier",
-                  "pooled",
-                  "empty",
-                  "negative control",
-                  "positive control",
-                  "bulk control",
-                  "buffer control",
-                  "plate control",
-                  "quality control sample",
-                  "calibrator",
-                  "standard"
-                ]
-              }
-            }
-          ],
-          "example_value": "study sample"
         },
         {
           "name": "characteristics[disease]",
@@ -34382,6 +35246,38 @@
           "example_value": "sample_1"
         },
         {
+          "name": "characteristics[sample type]",
+          "requirement": "recommended",
+          "description": "Role of the sample in the assay. Distinguishes study samples from controls and reference materials for assay interpretation and quality control.",
+          "ontology_accession": "PRIDE:0000895",
+          "cardinality": "single",
+          "allow_not_applicable": false,
+          "allow_not_available": false,
+          "source_template": "base",
+          "validators": [
+            {
+              "type": "ontology",
+              "params": {
+                "ontologies": [
+                  "pride"
+                ],
+                "parent_term": "PRIDE:0000895",
+                "error_level": "error",
+                "description": "Sample type should be a child of PRIDE:0000895 (sample type)",
+                "examples": [
+                  "study sample",
+                  "negative control sample",
+                  "positive control sample",
+                  "calibration sample",
+                  "blank sample",
+                  "quality control sample"
+                ]
+              }
+            }
+          ],
+          "example_value": "study sample"
+        },
+        {
           "name": "assay name",
           "requirement": "required",
           "description": "Unique identifier for the data acquisition run",
@@ -34824,6 +35720,58 @@
             }
           ],
           "example_value": "7.0"
+        },
+        {
+          "name": "characteristics[broad-scale environmental context]",
+          "requirement": "optional",
+          "description": "Report the major environmental system the sample or specimen came from. This term describes the broad ecological context or biome and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000012",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Broad environmental context or biome",
+                "examples": [
+                  "temperate forest biome",
+                  "marine pelagic biome",
+                  "agricultural field",
+                  "desert biome"
+                ]
+              }
+            }
+          ],
+          "example_value": "temperate forest biome"
+        },
+        {
+          "name": "characteristics[local environmental context]",
+          "requirement": "optional",
+          "description": "Report the specific environmental setting or feature surrounding the sample within the broader ecosystem. This term provides finer-scale environmental context and is typically represented using controlled vocabulary terms such as ENVO.",
+          "ontology_accession": "MIXS:0000013",
+          "cardinality": "single",
+          "allow_not_applicable": true,
+          "allow_not_available": true,
+          "source_template": "metaproteomics",
+          "validators": [
+            {
+              "type": "pattern",
+              "params": {
+                "pattern": "^.+$",
+                "description": "Local environmental context",
+                "examples": [
+                  "rhizosphere",
+                  "estuarine sediment",
+                  "leaf litter",
+                  "coral reef"
+                ]
+              }
+            }
+          ],
+          "example_value": "rhizosphere"
         },
         {
           "name": "characteristics[sample storage]",
@@ -36994,6 +37942,7 @@
                 "units": [
                   "\u00b0C"
                 ],
+                "allow_negative": true,
                 "error_level": "warning",
                 "description": "temperature in Celsius",
                 "examples": [
@@ -37172,17 +38121,13 @@
                 "pattern": "^.+:.+$",
                 "description": "Parameter name and value in key:value format",
                 "examples": [
-                  {
-                    "enzyme_activity": "high"
-                  },
-                  {
-                    "soil_color": "dark brown"
-                  }
+                  "enzyme_activity: high",
+                  "soil_color: dark brown"
                 ]
               }
             }
           ],
-          "example_value": "{'enzyme_activity': 'high'}"
+          "example_value": "enzyme_activity: high"
         }
       ],
       "own_columns": [
@@ -39131,6 +40076,7 @@
                 "units": [
                   "\u00b0C"
                 ],
+                "allow_negative": true,
                 "error_level": "warning",
                 "description": "temperature in Celsius",
                 "examples": [
@@ -39309,17 +40255,13 @@
                 "pattern": "^.+:.+$",
                 "description": "Parameter name and value in key:value format",
                 "examples": [
-                  {
-                    "enzyme_activity": "high"
-                  },
-                  {
-                    "soil_color": "dark brown"
-                  }
+                  "enzyme_activity: high",
+                  "soil_color: dark brown"
                 ]
               }
             }
           ],
-          "example_value": "{'enzyme_activity': 'high'}"
+          "example_value": "enzyme_activity: high"
         }
       ]
     }
@@ -39334,15 +40276,6 @@
         "vertebrates"
       ],
       [
-        "human-gut",
-        "soil",
-        "water"
-      ],
-      [
-        "affinity-proteomics",
-        "ms-proteomics"
-      ],
-      [
         "human",
         "invertebrates",
         "plants",
@@ -39350,8 +40283,17 @@
       ],
       [
         "affinity-proteomics",
+        "ms-proteomics"
+      ],
+      [
+        "affinity-proteomics",
         "ms-metabolomics",
         "ms-proteomics"
+      ],
+      [
+        "human-gut",
+        "soil",
+        "water"
       ]
     ],
     "requires": {
