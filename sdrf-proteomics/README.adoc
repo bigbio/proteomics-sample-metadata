@@ -555,7 +555,7 @@ Templates follow a layered hierarchy:
 |Organism-specific and clinical metadata
 
 |**EXPERIMENT** (optional)
-|https://github.com/bigbio/sdrf-templates/tree/main/cell-lines[cell-lines], https://github.com/bigbio/sdrf-templates/tree/main/crosslinking[crosslinking], https://github.com/bigbio/sdrf-templates/tree/main/dia-acquisition[dia-acquisition], https://github.com/bigbio/sdrf-templates/tree/main/single-cell[single-cell], https://github.com/bigbio/sdrf-templates/tree/main/immunopeptidomics[immunopeptidomics], https://github.com/bigbio/sdrf-templates/tree/main/metaproteomics[metaproteomics], https://github.com/bigbio/sdrf-templates/tree/main/lc-ms-metabolomics[lc-ms-metabolomics], https://github.com/bigbio/sdrf-templates/tree/main/gc-ms-metabolomics[gc-ms-metabolomics]
+|https://github.com/bigbio/sdrf-templates/tree/main/cell-lines[cell-lines], https://github.com/bigbio/sdrf-templates/tree/main/crosslinking[crosslinking], https://github.com/bigbio/sdrf-templates/tree/main/top-down[top-down], https://github.com/bigbio/sdrf-templates/tree/main/dia-acquisition[dia-acquisition], https://github.com/bigbio/sdrf-templates/tree/main/single-cell[single-cell], https://github.com/bigbio/sdrf-templates/tree/main/immunopeptidomics[immunopeptidomics], https://github.com/bigbio/sdrf-templates/tree/main/metaproteomics[metaproteomics], https://github.com/bigbio/sdrf-templates/tree/main/lc-ms-metabolomics[lc-ms-metabolomics], https://github.com/bigbio/sdrf-templates/tree/main/gc-ms-metabolomics[gc-ms-metabolomics]
 |Methodology-specific columns
 |===
 
@@ -577,7 +577,7 @@ Some layers enforce **mutually exclusive** choices, while others allow combining
 |Mutually exclusive — choose one based on organism (RECOMMENDED)
 
 |EXPERIMENT (MS)
-|`dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics`, `metaproteomics`
+|`dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics`, `metaproteomics`, `top-down`
 |Can be combined (e.g., `dia-acquisition` + `single-cell`)
 
 |EXPERIMENT (metabolomics)
@@ -592,6 +592,7 @@ Templates from different layers can be freely combined. Common valid combination
 - `ms-proteomics` + `human` + `immunopeptidomics` (human immunopeptidomics)
 - `ms-proteomics` + `vertebrates` + `cell-lines` (mouse cell line proteomics)
 - `ms-proteomics` + `human` + `crosslinking` (human crosslinking MS)
+- `ms-proteomics` + `human` + `top-down` (human top-down or middle-down proteomics)
 - `affinity-proteomics` + `human` (human affinity proteomics, including Olink or SomaScan)
 - `ms-metabolomics` + `human` + `lc-ms-metabolomics` (human LC-MS metabolomics)
 - `ms-metabolomics` + `plants` + `gc-ms-metabolomics` (plant GC-MS metabolomics)
@@ -2041,6 +2042,71 @@ which generate diagnostic stub ions under specific fragmentation conditions.
 | pattern: Chemical name of quenching reagent
 | Tris-HCl, ammonium bicarbonate, glycine
 
+|===
+
+=== top-down
+
+**Version:** 1.0.0-dev | **Layer:** experiment | **Extends:** ms-proteomics | **Usable alone:** No
+
+SDRF template for top-down and middle-down proteomics experiments, where intact proteins (proteoforms) or large protein fragments are analyzed without full tryptic digestion. Extends ms-proteomics with the approach, deconvolution, resolution and proteoform search columns.
+
+[cols="2,1,3,2,2", options="header"]
+|===
+| Column Name | Req. | Description | Validators | Examples
+
+| `comment[top-down approach]`
+| required
+| Top-down family of the experiment: top-down (MS:1003351), native top-down (MS:1003352), non-native top-down (MS:1003353), middle-down (MS:1003354) or targeted top-down. PSI-MS has no term for targeted top-down yet, so it is accepted as free text.
+| ontology: ms (children of MS:1003350)
+| top-down proteomics, middle-down proteomics, targeted top-down proteomics
+
+| `comment[cleavage agent details]`
+| required
+| _(override)_ `not applicable` for intact-protein experiments; a restricted enzyme (Glu-C, Asp-N, Lys-C, Arg-C) for middle-down.
+| ontology: ms
+| not applicable, NT=Glu-C;AC=MS:1001917
+
+| `comment[dissociation method]`
+| required
+| _(override: requirement set to required)_ Fragmentation method. ETD/ECD, EThcD, HCD, CID and UVPD are used, often mixed within one project (one value per raw file).
+| ontology: ms, pride (children of MS:1000044)
+| NT=electron transfer dissociation;AC=MS:1000598, NT=beam-type collision-induced dissociation;AC=MS:1000422
+
+| `comment[fractionation method]`
+| optional
+| _(override)_ Fractionation of intact proteins before MS analysis (GELFrEE, ion exchange, RPLC, SEC, CZE).
+| ontology: pride, ms
+| Ion-exchange chromatography, Size-exclusion chromatography (SEC)
+
+| `comment[deconvolution software]`
+| recommended
+| Charge-deconvolution / deisotoping software that converted spectra to monoisotopic masses, with its version.
+| structured_kv
+| NT=TopFD;AC=MS:1002902;VV=1.6.2, NT=FLASHDeconv;AC=MS:1002714;VV=3.0
+
+| `comment[deconvolution max charge]`
+| recommended
+| Maximum charge state the deconvolution algorithm was allowed to resolve.
+| pattern: positive integer
+| 30, 60
+
+| `comment[ms1 resolution]`
+| recommended
+| Mass resolving power of the MS1 scans, optionally with the m/z it is specified at. Isotopically unresolved MS1 ("med/high" data) changes how data must be searched.
+| pattern: integer, optional ` at <m/z>m/z`
+| 120000, 120000 at 200m/z
+
+| `comment[ms2 resolution]`
+| recommended
+| Mass resolving power of the MS2 (fragment) scans, optionally with the m/z it is specified at.
+| pattern: integer, optional ` at <m/z>m/z`
+| 60000, 30000 at 400m/z
+
+| `comment[ptm search mode]`
+| recommended
+| How PTMs were handled by the proteoform search: `database-annotated` (candidates built from sequence-database annotations such as UniProt XML), `targeted` (fixed list as in bottom-up, recorded in `comment[modification parameters]`) or both.
+| values: database-annotated, targeted, database-annotated and targeted
+|
 |===
 
 === cell-lines

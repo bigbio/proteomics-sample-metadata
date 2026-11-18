@@ -27,7 +27,7 @@ base                         Infrastructure (identifiers, data files, versioning
     technology templates     MS or affinity proteomics columns                        [layer: technology]
     organism templates       Species-specific metadata (human, vertebrates, etc.)     [layer: sample]
     clinical templates       Clinical/oncology metadata                               [layer: sample]
-    experiment templates     Technique-specific columns (DIA, crosslinking, etc.)     [layer: experiment]
+    experiment templates     Technique-specific columns (DIA, crosslinking, top-down, etc.)     [layer: experiment]
 ----
 
 === Inheritance
@@ -42,6 +42,7 @@ base (construction artifact - not user-facing)
  │    │    ├── dia-acquisition (experiment)
  │    │    ├── crosslinking (experiment)
  │    │    ├── immunopeptidomics (experiment)
+ │    │    ├── top-down (experiment)
  │    │    └── single-cell (experiment)
  │    ├── affinity-proteomics (technology)
  │    ├── ms-metabolomics (technology)
@@ -146,7 +147,7 @@ An SDRF file is built by **combining** templates:
 
 1. **ONE technology template** (required): `ms-proteomics`, `affinity-proteomics`, or `ms-metabolomics`
 2. **ONE sample template** (recommended): either an organism template (`human`, `vertebrates`, `invertebrates`, `plants`) OR a metaproteomics template (`human-gut`, `soil`, `water`). These two groups are mutually exclusive.
-3. **ZERO or more experiment templates**: `dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics` (extend `ms-proteomics`), `lc-ms-metabolomics`, `gc-ms-metabolomics` (extend `ms-metabolomics`)
+3. **ZERO or more experiment templates**: `dia-acquisition`, `single-cell`, `crosslinking`, `immunopeptidomics`, `top-down` (extend `ms-proteomics`), `lc-ms-metabolomics`, `gc-ms-metabolomics` (extend `ms-metabolomics`)
 4. **ZERO or more clinical templates**: `clinical-metadata`, `oncology-metadata`
 5. **ZERO or one cell-lines template**: when samples are cultured cell lines
 
@@ -175,6 +176,7 @@ When templates are combined, columns from all selected templates are merged. If 
 | Human cell line drug screen | `cell-lines` + `human` + `ms-proteomics` + `clinical-metadata`
 | Human XL-MS structural study | `crosslinking` + `human`
 | In-vitro XL-MS (purified proteins) | `crosslinking`
+| Human top-down / middle-down proteomics | `top-down` + `human`
 | Human immunopeptidomics / HLA ligandomics | `immunopeptidomics` + `human`
 | Mouse immunopeptidomics / H-2 ligandomics | `immunopeptidomics` + `vertebrates`
 | Human DIA proteomics | `dia-acquisition` + `human`
@@ -1066,7 +1068,9 @@ ms-proteomics + human + dia-acquisition + cell-lines
 
 == Creating a New Template: Step-by-Step Guide
 
-This section walks through creating a new YAML template from scratch. The example creates a hypothetical `top-down` template for top-down proteomics experiments.
+This section walks through creating a new YAML template from scratch. The example creates a simplified, illustrative `top-down` template for top-down proteomics experiments.
+
+NOTE: The published `top-down` template (https://github.com/bigbio/sdrf-templates/tree/main/top-down[sdrf-templates/top-down]) is richer than this walkthrough: it adds the approach (top-down, middle-down, targeted top-down), deconvolution software and maximum charge, MS1/MS2 resolution and PTM search mode columns. Use it for real annotations and treat the example below only as a guide to the file structure.
 
 === Step 1: Choose the Parent Template
 
