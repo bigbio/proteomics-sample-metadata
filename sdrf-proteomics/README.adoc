@@ -2048,7 +2048,7 @@ which generate diagnostic stub ions under specific fragmentation conditions.
 
 **Version:** 1.0.0-dev | **Layer:** experiment | **Extends:** ms-proteomics | **Usable alone:** No
 
-SDRF template for top-down and middle-down proteomics experiments, where intact proteins (proteoforms) or large protein fragments are analyzed without full tryptic digestion. Extends ms-proteomics with the approach, deconvolution, resolution and proteoform search columns.
+SDRF template for top-down and middle-down proteomics experiments, where intact proteins (proteoforms) or large protein fragments are analyzed without full tryptic digestion. Extends ms-proteomics with the approach and resolution columns and top-down guidance for cleavage agent, dissociation method and modifications.
 
 [cols="2,1,3,2,2", options="header"]
 |===
@@ -2078,18 +2078,6 @@ SDRF template for top-down and middle-down proteomics experiments, where intact 
 | ontology: pride, ms
 | Ion-exchange chromatography, Size-exclusion chromatography (SEC)
 
-| `comment[deconvolution software]`
-| recommended
-| Charge-deconvolution / deisotoping software that converted spectra to monoisotopic masses, with its version.
-| structured_kv
-| NT=TopFD;AC=MS:1002902;VV=1.6.2, NT=FLASHDeconv;AC=MS:1002714;VV=3.0
-
-| `comment[deconvolution max charge]`
-| recommended
-| Maximum charge state the deconvolution algorithm was allowed to resolve.
-| pattern: positive integer
-| 30, 60
-
 | `comment[ms1 resolution]`
 | recommended
 | Mass resolving power of the MS1 scans, optionally with the m/z it is specified at. Isotopically unresolved MS1 ("med/high" data) changes how data must be searched.
@@ -2102,11 +2090,11 @@ SDRF template for top-down and middle-down proteomics experiments, where intact 
 | pattern: integer, optional ` at <m/z>m/z`
 | 60000, 30000 at 400m/z
 
-| `comment[ptm search mode]`
+| `comment[modification parameters]`
 | recommended
-| How PTMs were handled by the proteoform search: `database-annotated` (candidates built from sequence-database annotations such as UniProt XML), `targeted` (fixed list as in bottom-up, recorded in `comment[modification parameters]`) or both.
-| values: database-annotated, targeted, database-annotated and targeted
-|
+| _(override)_ Modifications known or expected to be present in the sample, at least the common ones (N-terminal and lysine acetylation, methylation, phosphorylation), one column per modification. Intact proteins carry their modifications, so this is not limited to search settings.
+| ontology: unimod, mod
+| NT=Acetyl;AC=UNIMOD:1;PP=Protein N-term;MT=Variable, NT=Acetyl;AC=UNIMOD:1;TA=K;MT=Variable
 |===
 
 === cell-lines

@@ -121,7 +121,7 @@ technical replicate	comment	MS:1001808	base, ms-proteomics, human, cell-lines, s
 data file	comment	MS:1003083	base, ms-proteomics, human, cell-lines, single-cell, immunopeptidomics, crosslinking, top-down, metaproteomics, dia-acquisition	file name	Name of the primary/canonical raw data file (e.g. .raw, .wiff, .d). For vendor formats that ship multiple files (e.g. AB Sciex .wiff + .wiff.scan), use comment[associated data file] for the secondary files.	false	false	false
 associated data file	comment		ms-proteomics, dia-acquisition	file name	Name of an auxiliary file required to read the primary data file (e.g. AB Sciex .wiff.scan companion to a .wiff). Multiple columns are allowed when several auxiliary files are needed. Pending accession from PRIDE-Archive/pride-ontology#180.	true	true	false
 associated file uri	comment	PRIDE:0000403	ms-proteomics, dia-acquisition	URI	URI to retrieve the auxiliary file referenced by comment[associated data file]. Multiple columns are allowed when several auxiliary files are needed.	true	true	false
-modification parameters	comment	MS:1001055	ms-proteomics, dia-acquisition	Unimod, PSI-MOD	Post-translational modifications searched	true	true	false
+modification parameters	comment	MS:1001055	ms-proteomics, dia-acquisition, top-down	Unimod, PSI-MOD	Modifications present in the sample or searched (for top-down, the known common PTMs such as N-terminal and lysine acetylation)	true	true	false
 precursor mass tolerance	comment	PRIDE:0000575	ms-proteomics, dia-acquisition	pattern: number + ppm/Da	Precursor mass tolerance for database search	true	true	false
 fragment mass tolerance	comment	PRIDE:0000576	ms-proteomics, dia-acquisition	pattern: number + ppm/Da	Fragment mass tolerance for database search	true	true	false
 ms min mz	comment	PRIDE:0000476	ms-proteomics, dia-acquisition	numeric (m/z)	MS method-defined minimum precursor m/z setting used to acquire the data	true	true	false
@@ -227,8 +227,5 @@ dilution	comment	OBI:0002483	somascan	pattern: 0.005%, 0.5%, 20%, 40%	Sample dil
 xenograft	characteristics	EFO:0003942	human, vertebrates	free text	Indicates if sample is a patient-derived xenograft (PDX). Metadata (age, sex) must refer to the original patient, not the host organism.	true	true	false
 mass	characteristics	PRIDE:0000505	sample-metadata	pattern: number + unit (e.g., 1 ug, 500 ng, 10 fmol)	Injected mass of the sample. Used for spiked-in experiments and quantitative comparisons.	true	true	false
 top-down approach	comment	MS:1003350	top-down	MS (children of MS:1003350: top-down, native/non-native top-down, middle-down); targeted top-down as free text	Top-down family of the experiment	false	false	false
-deconvolution software	comment	MS:1003398	top-down	structured: NT=name;VV=version (optional AC=ontology accession)	Charge-deconvolution / deisotoping software with version	true	true	false
-deconvolution max charge	comment		top-down	integer	Maximum charge state the deconvolution algorithm could resolve	true	true	false
 ms1 resolution	comment	MS:1000011	top-down	pattern: integer resolving power, optional ' at <m/z>m/z'	Mass resolving power of the MS1 scans	true	false	false
 ms2 resolution	comment	MS:1000011	top-down	pattern: integer resolving power, optional ' at <m/z>m/z'	Mass resolving power of the MS2 scans	true	false	false
-ptm search mode	comment		top-down	fixed: database-annotated, targeted, database-annotated and targeted	How PTMs were handled by the proteoform search (UniProt XML annotations vs targeted list)	true	true	false
