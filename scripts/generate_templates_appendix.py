@@ -186,11 +186,14 @@ def generate_template_section(
         if not col_desc and requirement:
             col_desc = f"_(override: requirement set to {requirement})_"
 
-        lines.append(f"| `{_escape_adoc(col_name)}`")
-        lines.append(f"| {requirement}")
-        lines.append(f"| {_escape_adoc(col_desc)}")
-        lines.append(f"| {_escape_adoc(validator_summary)}")
-        lines.append(f"| {_escape_adoc(examples)}")
+        cells = (
+            f"`{_escape_adoc(col_name)}`",
+            requirement,
+            _escape_adoc(col_desc),
+            _escape_adoc(validator_summary),
+            _escape_adoc(examples),
+        )
+        lines.extend(f"| {cell}".rstrip() for cell in cells)
         lines.append("")
 
     lines.append("|===")

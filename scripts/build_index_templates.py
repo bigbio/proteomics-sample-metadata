@@ -52,6 +52,8 @@ def render_section(templates: list[dict]) -> str:
         loader=FileSystemLoader(str(templates_dir)),
         autoescape=False,
         keep_trailing_newline=True,
+        lstrip_blocks=True,
+        trim_blocks=True,
     )
     template = env.get_template("index-templates.html.j2")
     return template.render(all_templates=templates)
