@@ -11,6 +11,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = REPO_ROOT / "sdrf-proteomics" / "sdrf-templates"
 
+from generate_templates_appendix import generate_template_section
 from resolve_templates import (
     load_manifest,
     load_template_yaml,
@@ -274,3 +275,16 @@ class TestBuildIndexTemplates:
             assert "clinical-metadata" in html.lower() or "Clinical" in html
             # Still has the section
             assert html.count('<section id="templates"') == 1
+            template_section = html.split('<section id="templates"', 1)[1]
+            template_section = template_section.split("</section>", 1)[0] + "</section>"
+            assert all(line == line.rstrip() for line in template_section.splitlines())
+
+
+def test_appendix_omits_trailing_whitespace_in_empty_cells():
+    template = {
+        "columns": [
+            {"name": "comment[example]", "requirement": "optional", "description": "Example column"}
+        ]
+    }
+    appendix = generate_template_section("example", template, {})
+    assert "| optional\n| Example column\n|\n|\n" in appendix
